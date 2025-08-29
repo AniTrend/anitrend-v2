@@ -16,39 +16,32 @@
  */
 package co.anitrend.medialist.editor.component.compose
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.MenuBook
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -60,128 +53,56 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import co.anitrend.android.core.helpers.date.AniTrendDateHelper
+import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
-import co.anitrend.domain.common.entity.shared.FuzzyDate
-import co.anitrend.domain.common.entity.shared.FuzzyDate.Companion.orEmpty
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.entity.Media.SiteUrl
-import co.anitrend.domain.media.entity.attribute.image.MediaImage
-import co.anitrend.domain.media.entity.attribute.origin.MediaSourceId
-import co.anitrend.domain.media.entity.attribute.score.MediaScore
-import co.anitrend.domain.media.entity.attribute.title.MediaTitle
-import co.anitrend.domain.media.entity.attribute.trailer.MediaTrailer
-import co.anitrend.domain.media.enums.MediaSeason
-import co.anitrend.domain.media.enums.MediaFormat
-import co.anitrend.domain.media.enums.MediaSource
-import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.domain.medialist.entity.MediaList
-import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
-import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.medialist.editor.R
-import co.anitrend.medialist.editor.component.compose.helper.MediaListEditorState
-import co.anitrend.medialist.editor.component.compose.helper.rememberMediaListEditorState
-import co.anitrend.navigation.MediaListEditorRouter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import co.anitrend.medialist.editor.component.compose.state.MediaListEditorState
+import co.anitrend.medialist.editor.component.compose.state.rememberMediaListEditorState
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MediaListEditorSheetScreen(
-    mediaData: LiveData<Media?>,
-    param: MediaListEditorRouter.MediaListEditorParam,
-    onDismiss: () -> Unit,
-    onSave: (MediaList.Core) -> Unit,
-) {
-    var showSheet by rememberSaveable { mutableStateOf(true) }
-    val scope = rememberCoroutineScope()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
-
-    val editorState =
-        rememberMediaListEditorState(
-            mediaData = mediaData,
-            param = param,
-        )
-
-    if (showSheet) {
-        ModalBottomSheet(
-            onDismissRequest = {
-                showSheet = false
-                onDismiss()
-            },
-            sheetState = sheetState,
-            modifier = Modifier.fillMaxHeight(0.9f),
-        ) {
-            MediaListEditorContent(
-                state = editorState,
-                onDismiss = {
-                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-                        if (!sheetState.isVisible) {
-                            showSheet = false
-                            onDismiss()
-                        }
-                    }
-                },
-                onSave = {
-                    val updatedMediaList = editorState.buildMediaListCore()
-                    onSave(updatedMediaList)
-                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-                        if (!sheetState.isVisible) {
-                            showSheet = false
-                            onDismiss()
-                        }
-                    }
-                },
-            )
-        }
-    }
+enum class OnMediaListEditorAction {
+    SAVE,
+    DELETE,
 }
 
 @Composable
-private fun MediaListEditorContent(
+fun MediaListEditorScreen(
+    modifier: Modifier = Modifier,
     state: MediaListEditorState,
-    onDismiss: () -> Unit,
-    onSave: () -> Unit,
+    onAction: (OnMediaListEditorAction) -> Unit,
 ) {
     Column(
         modifier =
-            Modifier
-                .verticalScroll(rememberScrollState())
+            modifier
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 80.dp),
-        // Space for save button
     ) {
         EditorHeader(
             mediaTitle = state.mediaTitle,
-            onDismiss = onDismiss,
+            onAction = onAction,
         )
         Spacer(modifier = Modifier.height(16.dp))
         PrivacySection(
@@ -195,7 +116,7 @@ private fun MediaListEditorContent(
         )
         Spacer(modifier = Modifier.height(16.dp))
         ProgressSection(
-            mediaType = state.param.mediaType,
+            mediaType = state.mediaType,
             progressText = state.progressText,
             onProgressChange = { state.progressText = it },
             totalUnits = state.totalUnits,
@@ -207,7 +128,7 @@ private fun MediaListEditorContent(
         ScoreSection(
             score = state.scoreText,
             onScoreChange = { state.scoreText = it },
-            maxScore = "100", // state.maxScore,
+            maxScore = state.maxScore,
         )
         Spacer(modifier = Modifier.height(16.dp))
         CustomListsSection(
@@ -224,26 +145,12 @@ private fun MediaListEditorContent(
         )
         Spacer(modifier = Modifier.height(32.dp))
     }
-
-    Box(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-    ) {
-        Button(
-            onClick = onSave,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(stringResource(R.string.action_media_list_editor_save))
-        }
-    }
 }
 
 @Composable
 private fun EditorHeader(
     mediaTitle: String,
-    onDismiss: () -> Unit,
+    onAction: (OnMediaListEditorAction) -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -260,8 +167,17 @@ private fun EditorHeader(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        IconButton(onClick = onDismiss) {
-            Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.action_media_list_editor_close))
+        IconButton(onClick = { onAction(OnMediaListEditorAction.SAVE) }) {
+            Icon(
+                Icons.Filled.Save,
+                contentDescription = stringResource(co.anitrend.common.medialist.ui.R.string.action_media_list_save),
+            )
+        }
+        IconButton(onClick = { onAction(OnMediaListEditorAction.DELETE) }) {
+            Icon(
+                Icons.Filled.Delete,
+                contentDescription = stringResource(co.anitrend.common.medialist.ui.R.string.action_media_list_delete),
+            )
         }
     }
 }
@@ -272,21 +188,12 @@ private fun PrivacySection(
     onPrivacyChange: (Boolean) -> Unit,
 ) {
     Column {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                Icons.Filled.Shield,
-                contentDescription = null,
-                modifier = Modifier.padding(end = 8.dp),
-            )
-            Text(
-                stringResource(R.string.label_media_list_editor_privacy),
-                style = MaterialTheme.typography.titleMedium,
-            )
-        }
-        Spacer(Modifier.height(8.dp))
         Card(
             shape = RoundedCornerShape(8.dp),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+            colors =
+                CardDefaults.cardColors().copy(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                ),
         ) {
             Row(
                 modifier =
@@ -336,14 +243,26 @@ private fun WatchStatusSection(
         ) {
             OutlinedTextField(
                 value =
-                    selectedStatus?.name?.replaceFirstChar { it.titlecase() } ?: stringResource(R.string.placeholder_media_list_editor_select_status),
+                    selectedStatus?.alias?.toString() ?: stringResource(R.string.placeholder_media_list_editor_select_status),
                 onValueChange = {},
                 readOnly = true,
+                leadingIcon = {
+                    val resource =
+                        when (selectedStatus) {
+                            MediaListStatus.CURRENT -> co.anitrend.common.media.ui.R.drawable.ic_current
+                            MediaListStatus.COMPLETED -> co.anitrend.common.media.ui.R.drawable.ic_completed
+                            MediaListStatus.DROPPED -> co.anitrend.common.media.ui.R.drawable.ic_dropped
+                            MediaListStatus.PAUSED -> co.anitrend.common.media.ui.R.drawable.ic_paused
+                            MediaListStatus.REPEATING -> co.anitrend.common.media.ui.R.drawable.ic_repeat
+                            else -> co.anitrend.common.media.ui.R.drawable.ic_planning
+                        }
+                    Icon(painter = painterResource(resource), contentDescription = "")
+                },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .menuAnchor(),
+                        .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = true),
             )
             ExposedDropdownMenu(
                 expanded = expanded,
@@ -351,7 +270,7 @@ private fun WatchStatusSection(
             ) {
                 items.forEach { status ->
                     DropdownMenuItem(
-                        text = { Text(status.name.replaceFirstChar { it.titlecase() }) },
+                        text = { Text(status.alias.toString()) },
                         onClick = {
                             onStatusSelected(status)
                             expanded = false
@@ -378,13 +297,8 @@ private fun ProgressSection(
             stringResource(R.string.label_media_list_editor_chapter_progress)
         }
 
-    val icon = if (mediaType == MediaType.ANIME) Icons.Filled.PlayArrow else Icons.Filled.MenuBook
-
     Column {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(icon, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
-            Text(label, style = MaterialTheme.typography.titleMedium)
-        }
+        Text(label, style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.height(8.dp))
         OutlinedTextField(
             value = progressText,
@@ -440,7 +354,7 @@ private fun DateSelectionSection(state: MediaListEditorState) {
     if (state.showStartDatePicker) {
         val datePickerState =
             rememberDatePickerState(
-                initialSelectedDateMillis = state.startDate.toEpochMillis(),
+                initialSelectedDateMillis = state.startDateEpoch,
             )
         DatePickerDialog(
             onDismissRequest = { state.showStartDatePicker = false },
@@ -466,7 +380,7 @@ private fun DateSelectionSection(state: MediaListEditorState) {
     if (state.showEndDatePicker) {
         val datePickerState =
             rememberDatePickerState(
-                initialSelectedDateMillis = state.endDate.toEpochMillis(),
+                initialSelectedDateMillis = state.endDateEpoch,
             )
         DatePickerDialog(
             onDismissRequest = { state.showEndDatePicker = false },
@@ -491,11 +405,6 @@ private fun DateSelectionSection(state: MediaListEditorState) {
 
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         Column(Modifier.weight(1f)) {
-            Text(
-                stringResource(R.string.label_media_list_editor_start_date),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(bottom = 8.dp),
-            )
             OutlinedTextField(
                 value = state.startDateText,
                 onValueChange = {},
@@ -504,7 +413,7 @@ private fun DateSelectionSection(state: MediaListEditorState) {
                     Modifier
                         .fillMaxWidth()
                         .clickable { state.showStartDatePicker = true },
-                label = { Text("yyyy/MM/dd") },
+                label = { Text(stringResource(R.string.label_media_list_editor_start_date)) },
                 trailingIcon = {
                     Icon(
                         Icons.Filled.CalendarToday,
@@ -514,11 +423,6 @@ private fun DateSelectionSection(state: MediaListEditorState) {
             )
         }
         Column(Modifier.weight(1f)) {
-            Text(
-                stringResource(R.string.label_media_list_editor_end_date),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(bottom = 8.dp),
-            )
             OutlinedTextField(
                 value = state.endDateText,
                 onValueChange = {},
@@ -527,7 +431,7 @@ private fun DateSelectionSection(state: MediaListEditorState) {
                     Modifier
                         .fillMaxWidth()
                         .clickable { state.showEndDatePicker = true },
-                label = { Text("yyyy/MM/dd") },
+                label = { Text(stringResource(R.string.label_media_list_editor_end_date)) },
                 trailingIcon = {
                     Icon(
                         Icons.Filled.CalendarToday,
@@ -641,94 +545,28 @@ private fun NotesSection(
             onValueChange = onNotesChange,
             modifier =
                 Modifier
-                    .fillMaxWidth()
-                    .defaultMinSize(minHeight = 100.dp),
+                    .fillMaxWidth(),
             label = { Text(stringResource(R.string.placeholder_media_list_editor_personal_notes)) },
             maxLines = 5,
         )
     }
 }
 
-@Preview(showBackground = true, name = "MediaListEditor Content Preview")
+@AniTrendPreview.Default
 @Composable
-private fun MediaListEditorContentPreview() {
-    val previewMedia =
-        Media.Extended.empty().copy(
-            title = MediaTitle("Attack on Titan", "Shingeki no Kyojin", "進撃の巨人", "Attack on Titan"),
-            image = MediaImage("url_banner", "url_extra_large", "url_large", "url_medium", "#FFC107"),
-            category =
-                Media.Category.Anime(
-                    episodes = 87,
-                    duration = 24,
-                    broadcast = "Sundays at 00:10 (JST)",
-                    premiered = "Spring 2013",
-                    schedule = null,
-                ),
-            status = MediaStatus.RELEASING,
-            score = MediaScore(88, 89, 9.5f, 100000, 5000),
-            format = MediaFormat.TV,
-            countryCode = "JP",
-            description = "Centuries ago...",
-            externalLinks = emptyList(),
-            favourites = 12000,
-            genres = emptyList(),
-            twitterTag = "#shingeki",
-            isRecommendationBlocked = false,
-            isReviewBlocked = false,
-            rankings = emptyList(),
-            isLicensed = true,
-            isLocked = false,
-            siteUrl = SiteUrl("anilist.co/anime/123", "myanimelist.net/anime/123"),
-            source = MediaSource.ANIME,
-            synonyms = emptyList(),
-            tags = emptyList(),
-            season = MediaSeason.SUMMER,
-            startDate = FuzzyDate(2013, 4, 7),
-            endDate = FuzzyDate.empty(),
-            trailer = MediaTrailer("trailer_id", "youtube", "thumbnail_url"),
-            isAdult = false,
-            isFavourite = false,
-            isFavouriteBlocked = false,
-            mediaList =
-                MediaList.Core(
-                    id = 1L,
-                    mediaId = 123L,
-                    userId = 1L,
-                    status = MediaListStatus.CURRENT,
-                    score = 9f,
-                    progress =
-                        MediaListProgress.Anime(
-                            episodeProgress = 60,
-                            repeatedCount = 0,
-                        ),
-                    startedOn = FuzzyDate(2020, 1, 15),
-                    finishedOn = FuzzyDate.empty(),
-                    privacy =
-                        MediaListPrivacy(
-                            isPrivate = false,
-                            notes = "Best anime ever!",
-                            isHidden = false,
-                        ),
-                    customLists = listOf(MediaList.CustomList("Favorites", true), MediaList.CustomList("To Discuss", false)),
-                    advancedScores = emptyList(),
-                    priority = 0,
-                    createdOn = System.currentTimeMillis(),
-                ),
-            id = 1L,
-        )
-    val param =
-        MediaListEditorRouter.MediaListEditorParam(
-            mediaId = 123L,
-            mediaType = MediaType.ANIME,
-            scoreFormat = ScoreFormat.POINT_10,
-        )
-    val state = rememberMediaListEditorState(MutableLiveData(previewMedia), param)
-
+private fun MediaListEditorScreenPreview(
+    @PreviewParameter(MediaListEditorContentPreviewProvider::class) media: Media,
+) {
     PreviewTheme(wrapInSurface = true) {
-        MediaListEditorContent(
+        val state =
+            rememberMediaListEditorState(
+                media = media,
+                scoreFormat = ScoreFormat.POINT_10_DECIMAL,
+                dateHelper = AniTrendDateHelper(),
+            )
+        MediaListEditorScreen(
             state = state,
-            onDismiss = {},
-            onSave = {},
+            onAction = {},
         )
     }
 }

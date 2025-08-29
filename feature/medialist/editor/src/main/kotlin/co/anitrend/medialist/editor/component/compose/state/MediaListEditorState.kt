@@ -14,36 +14,29 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.medialist.editor.component.compose.helper
+package co.anitrend.medialist.editor.component.compose.state
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.common.entity.shared.FuzzyDate.Companion.orEmpty
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.entity.MediaList
-import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
-import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus
-import co.anitrend.navigation.MediaListEditorRouter
-import kotlinx.coroutines.CoroutineScope
-import org.koin.compose.koinInject
+import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.navigation.MediaListTaskRouter
 
 @Stable
 class MediaListEditorState(
-    media: Media?,
-    val param: MediaListEditorRouter.MediaListEditorParam,
+    val media: Media,
+    val scoreFormat: ScoreFormat,
     val dateHelper: AniTrendDateHelper,
-    val scope: CoroutineScope,
 ) {
     var privateUpdate by mutableStateOf(false)
     var selectedStatus by mutableStateOf<MediaListStatus?>(null)
@@ -57,6 +50,38 @@ class MediaListEditorState(
     var showEndDatePicker by mutableStateOf(false)
     var selectedStartDate by mutableStateOf<FuzzyDate?>(null)
     var selectedEndDate by mutableStateOf<FuzzyDate?>(null)
+
+    /**
+     * Non-null views of the currently selected dates for convenience in UI bindings.
+     */
+    val startDate: FuzzyDate
+        get() = selectedStartDate.orEmpty()
+
+    val endDate: FuzzyDate
+        get() = selectedEndDate.orEmpty()
+
+    val mediaType: MediaType
+        get() = media.category.type
+
+    val maxScore: String = scoreFormat.base.toString()
+
+    /**
+     * Non-null views of the currently selected dates for convenience in UI bindings.
+     */
+    val startDateEpoch: Long?
+        get() = selectedStartDate?.let(dateHelper::convertToUnixTimeStamp)
+
+    val endDateEpoch: Long?
+        get() = selectedEndDate?.let(dateHelper::convertToUnixTimeStamp)
+
+    /**
+     * Text representations of the currently selected dates, formatted via [AniTrendDateHelper].
+     */
+    val startDateText: String
+        get() = dateHelper.convertToTextDate(selectedStartDate)?.toString() ?: ""
+
+    val endDateText: String
+        get() = dateHelper.convertToTextDate(selectedEndDate)?.toString() ?: ""
 
     val mediaTitle: String = media?.title?.userPreferred?.toString() ?: ""
     val totalUnits: Int? =
@@ -93,53 +118,40 @@ class MediaListEditorState(
         showEndDatePicker = false
     }
 
-    fun buildMediaListCore(): MediaList.Core =
-        MediaList.Core(
+    fun createSaveEntryParams(): MediaListTaskRouter.Param.SaveEntry =
+        MediaListTaskRouter.Param.SaveEntry(
             id = initialMediaList?.id ?: 0L,
-            mediaId = param.mediaId,
+            mediaId = media.id,
             status = selectedStatus ?: MediaListStatus.PLANNING,
             score = scoreText.toFloatOrNull() ?: 0f,
-            progress =
-                when (param.mediaType) {
-                    MediaType.ANIME ->
-                        MediaListProgress.Anime(
-                            episodeProgress = progressText.toIntOrNull() ?: 0,
-                            repeatedCount = (initialMediaList?.progress as? MediaListProgress.Anime)?.repeatedCount ?: 0,
-                        )
-
-                    MediaType.MANGA ->
-                        MediaListProgress.Manga(
-                            chapterProgress = progressText.toIntOrNull() ?: 0,
-                            volumeProgress = (initialMediaList?.progress as? MediaListProgress.Manga)?.volumeProgress ?: 0,
-                            repeatedCount = (initialMediaList?.progress as? MediaListProgress.Manga)?.repeatedCount ?: 0,
-                        )
-                },
-            startedOn = selectedStartDate.orEmpty(),
-            finishedOn = selectedEndDate.orEmpty(),
-            privacy =
-                MediaListPrivacy(
-                    isPrivate = privateUpdate,
-                    notes = notesText.takeIf { it.isNotBlank() },
-                    isHidden = initialMediaList?.privacy?.isHidden ?: false,
-                ),
-            customLists = customLists.filterValues { it }.keys.map { MediaList.CustomList(it, true) },
-            advancedScores = initialMediaList?.advancedScores ?: emptyList(),
-            userId = initialMediaList?.userId ?: 0L,
+            progress = initialMediaList?.progress?.progress,
+            startedAt = selectedStartDate,
+            completedAt = selectedEndDate,
+            private = privateUpdate,
+            customLists = customLists.filterValues { it }.keys.toList(),
+            advancedScores = initialMediaList?.advancedScores?.map { it.score },
             priority = initialMediaList?.priority,
-            createdOn = initialMediaList?.createdOn,
+            scoreFormat = scoreFormat,
+            scoreRaw = scoreText.toInt(),
+            progressVolumes = initialMediaList?.progress?.progress,
+            repeat = initialMediaList?.progress?.repeated,
+            notes = notesText,
+            hiddenFromStatusLists = privateUpdate,
         )
+
+    fun createDeleteEntryParams(): MediaListTaskRouter.Param.DeleteEntry? = initialMediaList?.id?.let(MediaListTaskRouter.Param::DeleteEntry)
 }
 
 @Composable
 fun rememberMediaListEditorState(
-    mediaData: LiveData<Media?>,
-    param: MediaListEditorRouter.MediaListEditorParam,
-    dateHelper: AniTrendDateHelper = koinInject<AniTrendDateHelper>(),
-    scope: CoroutineScope = rememberCoroutineScope(),
-): MediaListEditorState {
-    val media by mediaData.observeAsState()
-    // key on media so that if media object itself changes (e.g. different item loaded), state re-initializes
-    return remember(media, param, scope) {
-        MediaListEditorState(media, param, dateHelper, scope)
+    media: Media,
+    scoreFormat: ScoreFormat,
+    dateHelper: AniTrendDateHelper,
+): MediaListEditorState =
+    remember(key1 = media, key2 = scoreFormat) {
+        MediaListEditorState(
+            media = media,
+            scoreFormat = scoreFormat,
+            dateHelper = dateHelper,
+        )
     }
-}

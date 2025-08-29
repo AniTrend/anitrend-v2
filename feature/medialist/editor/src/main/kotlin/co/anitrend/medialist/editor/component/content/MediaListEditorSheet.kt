@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 AniTrend
+ * Copyright (C) 2025 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.media.discover.filter.component.content
+package co.anitrend.medialist.editor.component.content
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,35 +22,33 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
-import androidx.fragment.app.setFragmentResult
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import co.anitrend.android.core.helpers.date.AniTrendDateHelper
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.android.core.views.compose.composable
 import co.anitrend.arch.extension.ext.argument
-import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.core.component.sheet.compose.AniTrendSheetComposition
-import co.anitrend.domain.common.sort.order.SortOrder
-import co.anitrend.domain.genre.model.GenreParam
-import co.anitrend.domain.tag.model.TagParam
-import co.anitrend.media.discover.filter.component.compose.MediaFilterSheetScreen
-import co.anitrend.media.discover.filter.component.viewmodel.genre.GenreViewModel
-import co.anitrend.media.discover.filter.component.viewmodel.tag.TagViewModel
-import co.anitrend.navigation.MediaDiscoverFilterRouter
-import co.anitrend.navigation.MediaDiscoverRouter
-import co.anitrend.navigation.extensions.asBundle
+import co.anitrend.core.ui.inject
+import co.anitrend.data.user.settings.IUserSettings
+import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.medialist.editor.component.compose.MediaListEditorSheetScreen
+import co.anitrend.medialist.editor.component.viewmodel.MediaListEditorViewModel
+import co.anitrend.navigation.MediaListEditorRouter
 import co.anitrend.navigation.extensions.nameOf
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-internal class MediaFilterContent(
-    private val dateHelper: AbstractSupportDateHelper,
+class MediaListEditorSheet(
+    private val dateHelper: AniTrendDateHelper,
 ) : AniTrendSheetComposition() {
-    private val param by argument(
-        key = nameOf<MediaDiscoverRouter.MediaDiscoverParam>(),
-        default = MediaDiscoverRouter::MediaDiscoverParam,
+    private val viewModel by viewModel<MediaListEditorViewModel>()
+
+    private val param by argument<MediaListEditorRouter.MediaListEditorParam>(
+        key = nameOf<MediaListEditorRouter.MediaListEditorParam>(),
     )
 
-    private val genreViewModel by viewModel<GenreViewModel>()
-    private val tagViewModel by viewModel<TagViewModel>()
+    private val settings by inject<IUserSettings>()
 
     /**
      * Additional initialization to be done in this method, this method will be called in
@@ -72,22 +70,21 @@ internal class MediaFilterContent(
     ): View =
         composable(requireActivity()) {
             AniTrendTheme3 {
+                LaunchedEffect(param) {
+                    param?.also { viewModel(param = it) }
+                        ?: Timber.e("MediaListEditor param is null when it should not be")
+                }
                 Surface {
-                    LaunchedEffect(Unit) {
-                        genreViewModel(GenreParam(SortOrder.DESC))
-                        tagViewModel(TagParam(SortOrder.ASC))
-                    }
-                    MediaFilterSheetScreen(
+                    val scoreFormat by settings.scoreFormat.flow.collectAsStateWithLifecycle(ScoreFormat.POINT_100)
+                    MediaListEditorSheetScreen(
+                        viewModel = viewModel,
+                        scoreFormat = scoreFormat,
                         dateHelper = dateHelper,
-                        param = param,
-                        onParamChange = {
-                            setFragmentResult(
-                                MediaDiscoverFilterRouter.RESULT_LISTENER_KEY,
-                                it.asBundle(),
-                            )
-                            Timber.d("Sending param data to fragment: $it")
-                        },
                         onDismiss = { dismiss() },
+                        onSave = {
+                        },
+                        onDelete = {
+                        },
                     )
                 }
             }
