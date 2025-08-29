@@ -83,14 +83,13 @@ class MediaListEditorState(
     val endDateText: String
         get() = dateHelper.convertToTextDate(selectedEndDate)?.toString() ?: ""
 
-    val mediaTitle: String = media?.title?.userPreferred?.toString() ?: ""
+    val mediaTitle: String = media.title.userPreferred?.toString() ?: ""
     val totalUnits: Int? =
-        when (val category = media?.category) {
+        when (val category = media.category) {
             is Media.Category.Anime -> category.episodes
             is Media.Category.Manga -> category.chapters
-            else -> null
         }
-    private val initialMediaList: MediaList.Core? = media?.mediaList as? MediaList.Core
+    private val initialMediaList = media.mediaList as MediaList.Core?
 
     init {
         initialMediaList?.let { list ->

@@ -40,22 +40,17 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.compose.design.image.AniTrendImage
+import co.anitrend.android.core.compose.design.sheet.AniTrendSheet
 import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.android.core.koin.MarkdownFlavour
 import co.anitrend.android.core.ui.AniTrendPreview
@@ -204,46 +199,27 @@ fun EpisodeSheetScreen(
     onDownloadClick: () -> Unit = {},
     onDismiss: () -> Unit,
 ) {
-    var showSheet by remember { mutableStateOf(true) }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
-
-    val sheetShape =
-        if (sheetState.currentValue == SheetValue.Expanded) {
-            RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-        } else {
-            RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)
-        }
-
-    if (showSheet) {
-        ModalBottomSheet(
-            dragHandle = null,
-            onDismissRequest = {
-                showSheet = false
-                onDismiss()
-            },
-            sheetState = sheetState,
-            shape = sheetShape,
-        ) {
-            val model by viewModel.model.observeAsState()
-            when (val episode = model) {
-                null ->
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        CircularProgressIndicator(
-                            modifier =
-                                Modifier
-                                    .size(24.dp)
-                                    .padding(16.dp)
-                                    .align(alignment = Alignment.Center),
-                        )
-                    }
-                else ->
-                    EpisodeSheetContent(
-                        episode = episode,
-                        onPlayClick = onPlayClick,
-                        onPublisherClick = onPublisherClick,
-                        onDownloadClick = onDownloadClick,
+    AniTrendSheet(onDismiss = onDismiss, dragHandle = null) {
+        val model by viewModel.model.observeAsState()
+        when (val episode = model) {
+            null ->
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    CircularProgressIndicator(
+                        modifier =
+                            Modifier
+                                .size(24.dp)
+                                .padding(16.dp)
+                                .align(alignment = Alignment.Center),
                     )
-            }
+                }
+
+            else ->
+                EpisodeSheetContent(
+                    episode = episode,
+                    onPlayClick = onPlayClick,
+                    onPublisherClick = onPublisherClick,
+                    onDownloadClick = onDownloadClick,
+                )
         }
     }
 }
