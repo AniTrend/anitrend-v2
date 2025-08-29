@@ -16,9 +16,9 @@
  */
 package co.anitrend.medialist.editor.provider
 
-import co.anitrend.medialist.editor.component.content.MediaListEditorContent
+import co.anitrend.medialist.editor.component.content.MediaListEditorSheet
 import co.anitrend.navigation.MediaListEditorRouter
 
 class FeatureProvider : MediaListEditorRouter.Provider {
-    override fun sheet() = MediaListEditorContent::class.java
+    override fun sheet() = MediaListEditorSheet::class.java // MediaListEditorContent::class.java
 }
