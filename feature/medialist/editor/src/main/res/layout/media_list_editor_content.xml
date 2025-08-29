@@ -166,7 +166,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_margin="@dimen/lg_margin"
                     android:paddingBottom="@dimen/lg_margin"
-                    android:text="@string/media_list_editor_label_score" />
+                    android:text="@string/label_media_list_editor_score" />
 
                 <co.anitrend.common.medialist.ui.widget.score.ScoreEditWidget
                     android:id="@+id/mediaListScore"
@@ -227,7 +227,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_margin="@dimen/lg_margin"
                     android:paddingBottom="@dimen/lg_margin"
-                    android:text="@string/media_list_editor_label_start_date" />
+                    android:text="@string/label_media_list_editor_start_date" />
 
                 <co.anitrend.common.medialist.ui.widget.date.FuzzyDateWidget
                     android:id="@+id/mediaListFuzzyDateStart"
@@ -242,7 +242,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_margin="@dimen/lg_margin"
                     android:paddingBottom="@dimen/lg_margin"
-                    android:text="@string/media_list_editor_label_end_date" />
+                    android:text="@string/label_media_list_editor_end_date" />
 
                 <co.anitrend.common.medialist.ui.widget.date.FuzzyDateWidget
                     android:id="@+id/mediaListFuzzyDateEnd"
@@ -261,7 +261,7 @@
                         android:id="@+id/mediaListNotes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/media_list_editor_hint_enter_your_notes" />
+                        android:hint="@string/placeholder_media_list_editor_personal_notes" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
