@@ -25,7 +25,7 @@
     <!-- Screen title shown at top of media list editor sheet -->
     <string name="title_media_list_editor_add_to_library">Add to Library</string>
     <!-- Subtitle shown below title, %1$s will be replaced with media title -->
-    <string name="subtitle_media_list_editor_manage_media">Manage \"%1$s\" in your library</string>
+    <string name="subtitle_media_list_editor_manage_media" formatted="true">Manage \"%1$s\" in your library</string>
     <!-- Placeholder text shown in media title input field -->
     <string name="placeholder_media_list_editor_media_title">Media Title</string>
 
@@ -50,7 +50,7 @@
     <!-- Input field label for current chapter number -->
     <string name="label_media_list_editor_current_chapter">Current chapter</string>
     <!-- Shows completion percentage, %1$d will be replaced with percentage number -->
-    <string name="label_media_list_editor_progress_percentage">Progress %1$d%%</string>
+    <string name="label_media_list_editor_progress_percentage" formatted="true">Progress %1$d%%</string>
 
     <!-- Label for start date input field -->
     <string name="label_media_list_editor_start_date">Start Date</string>
@@ -62,10 +62,13 @@
     <!-- Label for score input field -->
     <string name="label_media_list_editor_score">Score</string>
 
+    <!-- Shows an editable list of additional score components configured in the user's media list options -->
+    <string name="label_media_list_editor_advanced_scores" formatted="true">Advanced Scores (%1$d)</string>
+
     <!-- Label showing number of custom lists, %1$d will be replaced with count -->
-    <string name="label_media_list_editor_custom_lists_count">Custom Lists (%1$d)</string>
+    <string name="label_media_list_editor_custom_lists_count" formatted="true">Custom Lists (%1$d)</string>
     <!-- Shows how many lists are selected, %1$d will be replaced with selected count -->
-    <string name="label_media_list_editor_custom_lists_selected">%1$d selected</string>
+    <string name="label_media_list_editor_custom_lists_selected" formatted="true">%1$d selected</string>
     <!-- Button text to create a new custom list -->
     <string name="action_media_list_editor_create_new_list">Create New List</string>
 
