@@ -17,6 +17,12 @@
 package co.anitrend.android.core.settings
 
 import android.content.Context
+import co.anitrend.android.core.R
+import co.anitrend.android.core.settings.common.IConfigurationSettings
+import co.anitrend.android.core.settings.common.locale.ILocaleSettings
+import co.anitrend.android.core.settings.common.theme.IThemeSettings
+import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale
+import co.anitrend.android.core.settings.helper.theme.model.AniTrendTheme
 import co.anitrend.arch.extension.preference.SupportPreference
 import co.anitrend.arch.extension.preference.contract.ISupportPreference
 import co.anitrend.arch.extension.settings.BooleanSetting
@@ -24,12 +30,6 @@ import co.anitrend.arch.extension.settings.EnumSetting
 import co.anitrend.arch.extension.settings.FloatSetting
 import co.anitrend.arch.extension.settings.IntSetting
 import co.anitrend.arch.extension.settings.LongSetting
-import co.anitrend.android.core.R
-import co.anitrend.android.core.settings.common.IConfigurationSettings
-import co.anitrend.android.core.settings.common.locale.ILocaleSettings
-import co.anitrend.android.core.settings.common.theme.IThemeSettings
-import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale
-import co.anitrend.android.core.settings.helper.theme.model.AniTrendTheme
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
 import co.anitrend.data.settings.cache.ICacheSettings
@@ -225,6 +225,14 @@ class Settings(
     override val showLeakLauncher =
         BooleanSetting(
             key = R.string.settings_show_leak_launcher,
+            default = false,
+            resources = context.resources,
+            preference = this,
+        )
+
+    override val experimentalComposeUi =
+        BooleanSetting(
+            key = R.string.settings_experimental_compose_ui,
             default = false,
             resources = context.resources,
             preference = this,
