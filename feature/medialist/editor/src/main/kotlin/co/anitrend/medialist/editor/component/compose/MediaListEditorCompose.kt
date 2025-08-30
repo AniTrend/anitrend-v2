@@ -82,6 +82,8 @@ import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.medialist.editor.R
 import co.anitrend.medialist.editor.component.compose.state.MediaListEditorState
 import co.anitrend.medialist.editor.component.compose.state.rememberMediaListEditorState
+import co.anitrend.medialist.editor.component.compose.util.filterDecimalInputOnePlace
+import co.anitrend.medialist.editor.component.compose.util.filterScoreInput
 
 enum class OnMediaListEditorAction {
     SAVE,
@@ -97,44 +99,62 @@ fun MediaListEditorScreen(
     Column(
         modifier =
             modifier
-                .padding(horizontal = 16.dp)
-                .padding(bottom = 80.dp),
+                .padding(horizontal = 16.dp),
     ) {
         EditorHeader(
             mediaTitle = state.mediaTitle,
+            canDelete = state.media.mediaList != null,
             onAction = onAction,
         )
         Spacer(modifier = Modifier.height(16.dp))
         PrivacySection(
-            isPrivate = state.privateUpdate,
-            onPrivacyChange = { state.privateUpdate = it },
+            isPrivate = state.isPrivate,
+            onPrivacyChange = { state.isPrivate = it },
         )
         Spacer(modifier = Modifier.height(16.dp))
         WatchStatusSection(
             selectedStatus = state.selectedStatus,
-            onStatusSelected = { state.selectedStatus = it },
+            onStatusSelected = state::onStatusSelected,
         )
         Spacer(modifier = Modifier.height(16.dp))
         ProgressSection(
             mediaType = state.mediaType,
             progressText = state.progressText,
-            onProgressChange = { state.progressText = it },
+            onProgressChange = state::updateProgressText,
             totalUnits = state.totalUnits,
             currentProgress = state.progressText.toIntOrNull() ?: 0,
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        VolumesAndRepeatSection(
+            mediaType = state.mediaType,
+            volumeProgress = state.volumeProgressText,
+            onVolumeChange = state::updateVolumeProgressText,
+            repeatCount = state.repeatText,
+            onRepeatChange = state::updateRepeatText,
         )
         Spacer(modifier = Modifier.height(16.dp))
         DateSelectionSection(state)
         Spacer(modifier = Modifier.height(16.dp))
         ScoreSection(
             score = state.scoreText,
-            onScoreChange = { state.scoreText = it },
+            onScoreChange = state::updateScoreText,
             maxScore = state.maxScore,
+            scoreFormat = state.scoreFormat,
         )
         Spacer(modifier = Modifier.height(16.dp))
+        if (state.advancedScoresText.isNotEmpty()) {
+            AdvancedScoresSection(
+                values = state.advancedScoresText,
+                onValueChange = { name, value ->
+                    state.setAdvancedScore(name, value)
+                },
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
         CustomListsSection(
             customLists = state.customLists,
             onCustomListToggle = { listName, isSelected ->
-                state.customLists = state.customLists.toMutableMap().apply { this[listName] = isSelected }
+                state.toggleCustomList(listName, isSelected)
             },
             onCreateNewList = { /* TODO: Handle create new list */ },
         )
@@ -150,6 +170,7 @@ fun MediaListEditorScreen(
 @Composable
 private fun EditorHeader(
     mediaTitle: String,
+    canDelete: Boolean,
     onAction: (OnMediaListEditorAction) -> Unit,
 ) {
     Row(
@@ -173,11 +194,13 @@ private fun EditorHeader(
                 contentDescription = stringResource(co.anitrend.common.medialist.ui.R.string.action_media_list_save),
             )
         }
-        IconButton(onClick = { onAction(OnMediaListEditorAction.DELETE) }) {
-            Icon(
-                Icons.Filled.Delete,
-                contentDescription = stringResource(co.anitrend.common.medialist.ui.R.string.action_media_list_delete),
-            )
+        if (canDelete) {
+            IconButton(onClick = { onAction(OnMediaListEditorAction.DELETE) }) {
+                Icon(
+                    Icons.Filled.Delete,
+                    contentDescription = stringResource(co.anitrend.common.medialist.ui.R.string.action_media_list_delete),
+                )
+            }
         }
     }
 }
@@ -448,6 +471,7 @@ private fun ScoreSection(
     score: String,
     onScoreChange: (String) -> Unit,
     maxScore: String,
+    scoreFormat: ScoreFormat,
 ) {
     Column {
         Text(
@@ -457,12 +481,95 @@ private fun ScoreSection(
         )
         OutlinedTextField(
             value = score,
-            onValueChange = { onScoreChange(it.filter { char -> char.isDigit() }) },
+            onValueChange = { value ->
+                val cleaned = filterScoreInput(value, scoreFormat)
+                onScoreChange(cleaned)
+            },
             modifier = Modifier.fillMaxWidth(),
             label = { Text(stringResource(R.string.label_media_list_editor_score)) },
             suffix = { Text("/ $maxScore") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
+    }
+}
+
+@Composable
+private fun VolumesAndRepeatSection(
+    mediaType: MediaType,
+    volumeProgress: String,
+    onVolumeChange: (String) -> Unit,
+    repeatCount: String,
+    onRepeatChange: (String) -> Unit,
+) {
+    Column {
+        if (mediaType == MediaType.MANGA) {
+            Text(
+                stringResource(co.anitrend.medialist.editor.R.string.media_list_editor_label_progress_volumes),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Spacer(Modifier.height(8.dp))
+            OutlinedTextField(
+                value = volumeProgress,
+                onValueChange = { onVolumeChange(it.filter { ch -> ch.isDigit() }) },
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(stringResource(co.anitrend.medialist.editor.R.string.media_list_editor_label_progress_volumes)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            )
+            Spacer(Modifier.height(12.dp))
+        }
+        Text(stringResource(co.anitrend.medialist.editor.R.string.media_list_editor_label_repeat_count), style = MaterialTheme.typography.titleMedium)
+        Spacer(Modifier.height(8.dp))
+        OutlinedTextField(
+            value = repeatCount,
+            onValueChange = { onRepeatChange(it.filter { ch -> ch.isDigit() }) },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(stringResource(co.anitrend.medialist.editor.R.string.media_list_editor_label_repeat_count)) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+    }
+}
+
+@Composable
+private fun AdvancedScoresSection(
+    values: Map<String, String>,
+    onValueChange: (name: String, value: String) -> Unit,
+) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    Column {
+        Row(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded }
+                    .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(stringResource(R.string.label_media_list_editor_advanced_scores, values.size), style = MaterialTheme.typography.titleMedium)
+            Icon(
+                imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                contentDescription = if (expanded) "Collapse" else "Expand",
+            )
+        }
+        if (expanded) {
+            Spacer(Modifier.height(4.dp))
+            values.forEach { (name, value) ->
+                OutlinedTextField(
+                    value = value,
+                    onValueChange = { newValue ->
+                        val cleaned =
+                            filterDecimalInputOnePlace(newValue)
+                        onValueChange(name, cleaned)
+                    },
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                    label = { Text(name) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+            }
+        }
     }
 }
 
@@ -552,7 +659,8 @@ private fun NotesSection(
     }
 }
 
-@AniTrendPreview.Default
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
 @Composable
 private fun MediaListEditorScreenPreview(
     @PreviewParameter(MediaListEditorContentPreviewProvider::class) media: Media,

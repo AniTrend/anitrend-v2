@@ -17,7 +17,7 @@ When developing new features or modifying existing ones, it’s important to **f
 - **Immutability and StateFlow**: In ViewModels or Compose states, prefer `StateFlow` or `Immutable data classes` for state. If using LiveData, stick to unidirectional flow: ViewModel exposes LiveData, UI observes. Given the Compose usage, you might see a shift to StateFlow + `collectAsState()` in composables. Follow whatever pattern the existing Compose screens use (check a feature like media discover or profile).
 - **Compose Best Practices**: If adding Composables:
 - Make them small and focused, with preview functions if possible.
-- Use theming (colors, typography) from the provided MaterialTheme (the project integrates Material3).
+- Use theming (colors, typography) from the provided MaterialTheme (the project integrates Material3 -> `AniTrendTheme3` and `PreviewTheme`).
 - Remember to handle state hoisting – view state should come from ViewModel (which may combine DataState flows).
 - Use accompanist libraries included for things like system UI controller, pager, etc., rather than writing from scratch.
 - **Resource Strings and Localization**: All user-facing strings should be in `strings.xml`. The project likely has multi-language support (the README mentions POEditor for translations[83]). When adding text, add an English entry to the appropriate `strings.xml`. Do not hard-code strings in code. Similarly, use dimension and style resources for spacing and text appearance, consistent with Material guidelines.
@@ -45,6 +45,7 @@ When developing new features or modifying existing ones, it’s important to **f
 - Be specific but concise: `media_list` not `medialist`, `episode_progress` not `progress`
 - Include feature/module context when strings are feature-specific
 - For common/shared strings, use generic context: `label_loading`, `action_save`, `error_network`
+- Use `formatted="true"` attribute for strings with parameters (e.g., `%1$s`, `%1$d`), as these will be formatted in code
 
 ### Examples of Good vs Bad Naming
 
@@ -103,7 +104,7 @@ When developing new features or modifying existing ones, it’s important to **f
 <string name="error_network_unavailable">Network unavailable</string>
 
 <!-- Placeholder text in search box, %1$s will be "anime and manga" -->
-<string name="placeholder_search_content">Search %1$s...</string>
+<string name="placeholder_search_content" formatted="true">Search %1$s...</string>
 ```
 
 ## Database: Room join tables and migrations
@@ -130,9 +131,11 @@ When making schema-impacting changes:
 
 ## Testing Guidelines
 
-- The structure allows for testing domain and data layers easily. For any critical logic (parsers, complex use case), add unit tests in the corresponding module. Use **JUnit4** and **MockK** (both are included)[69][70]. For coroutine flows, use the Turbine library to test emission of flows.
+- The structure allows for testing domain and data layers easily. For any critical logic (parsers, complex use case), add unit tests in the corresponding module. Use **KotlinTest** and **MockK** (both are included)[69][70]. For coroutine flows, use the Turbine library to test emission of flows.
 - Android UI tests (Espresso) can be written for critical flows. There is likely a setup for instrumented tests (androidTest) in some modules, including Koin test modules. Leverage the Koin test features to inject mocks if needed.
 - WorkManager tasks can be tested using WorkManager’s testing utils or by invoking the logic inside workers directly. The project included WorkManager testing dependencies commented out (there’s a reference in ProjectDependencies to a potential work test lib, commented)[84].
+- Always run gradle test using the debug build variant to ensure tests pass and run in no-daemon mode to save memory.
+- When mocking, prefer to mock interfaces rather than concrete classes. This keeps tests more stable against implementation changes.
 
 ## Workflow and Contribution Tips
 
