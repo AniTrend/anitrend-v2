@@ -54,6 +54,15 @@
     <string name="preference_summary_storage">Configure how the app should use storage space</string>
     <string name="preference_summary_heap">Dump heap automatically when leak is detected</string>
     <string name="preference_summary_power_management">Fine tune how the application uses your battery</string>
+      
+    <!-- Developer settings (debug-only usage preferred) -->
+    <!-- Toggle to display a launcher entry for LeakCanary or leak tools -->
+    <string name="preference_title_show_leak_launcher">Show Leak Launcher</string>
+    <string name="preference_summary_show_leak_launcher">Expose a launcher entry for memory leak inspection tools</string>
+
+    <!-- Toggle to enable experimental Compose UI features -->
+    <string name="preference_title_experimental_compose_ui">Experimental Compose UI</string>
+    <string name="preference_summary_experimental_compose_ui">Enable in-development Compose UI features (may be unstable)</string>
 
     <!-- Synchronization screen -->
     <!-- Category -->

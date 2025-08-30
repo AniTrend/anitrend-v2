@@ -214,6 +214,22 @@ class SettingsPresenter(
                         onValueChange = { newValue -> settings.automaticHeapDump.value = newValue },
                     ),
                     SettingItem.SwitchSetting(
+                        id = "show_leak_launcher",
+                        title = context.getString(co.anitrend.settings.R.string.preference_title_show_leak_launcher),
+                        summary = context.getString(co.anitrend.settings.R.string.preference_summary_show_leak_launcher),
+                        icon = Icons.Outlined.DeveloperBoard,
+                        onClick = { settings.showLeakLauncher.value },
+                        onValueChange = { newValue -> settings.showLeakLauncher.value = newValue },
+                    ),
+                    SettingItem.SwitchSetting(
+                        id = "experimental_compose_ui",
+                        title = context.getString(co.anitrend.settings.R.string.preference_title_experimental_compose_ui),
+                        summary = context.getString(co.anitrend.settings.R.string.preference_summary_experimental_compose_ui),
+                        icon = Icons.Outlined.DeveloperBoard,
+                        onClick = { settings.experimentalComposeUi.value },
+                        onValueChange = { newValue -> settings.experimentalComposeUi.value = newValue },
+                    ),
+                    SettingItem.SwitchSetting(
                         id = "clear_db_on_refresh",
                         title = context.getString(co.anitrend.settings.R.string.preference_title_refresh_behavior_config),
                         summary = context.getString(co.anitrend.settings.R.string.preference_summary_refresh_behavior_config),
