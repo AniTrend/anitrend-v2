@@ -58,7 +58,7 @@ private val featureModule =
     module {
         factory<MediaListEditorRouter.Provider> {
             FeatureProvider(
-                settings = get()
+                settings = get(),
             )
         }
     }
