@@ -55,6 +55,43 @@
     <string name="preference_summary_heap">Dump heap automatically when leak is detected</string>
     <string name="preference_summary_power_management">Fine tune how the application uses your battery</string>
 
+    <!-- Synchronization screen -->
+    <!-- Category -->
+
+    <!-- Title for the synchronization intervals category in the sync screen -->
+    <string name="preference_category_title_synchronization_intervals">Synchronization intervals</string>
+
+    <!-- Titles and summaries for specific sync groups -->
+
+    <!-- Metadata synchronization interval title -->
+    <string name="title_settings_sync_metadata_interval">Metadata sync interval</string>
+    <!-- Metadata synchronization interval summary -->
+    <string name="summary_settings_sync_metadata_interval">Choose how frequently genres, tags and other resource are refreshed</string>
+
+    <!-- Lists synchronization interval title -->
+    <string name="title_settings_sync_lists_interval">Lists sync interval</string>
+    <!-- Lists synchronization interval summary -->
+    <string name="summary_settings_sync_lists_interval">Choose how frequently your anime or manga lists are synced</string>
+
+    <!-- User synchronization interval title -->
+    <string name="title_settings_sync_user_interval">User sync interval</string>
+    <!-- User synchronization interval summary -->
+    <string name="summary_settings_sync_user_interval">Choose how frequently your profile information is synced</string>
+
+    <!-- Interval labels (formatted) -->
+    <!-- Example: Every 5 minutes -->
+    <string name="label_settings_sync_every_minutes" formatted="true">Every %1$d minutes</string>
+    <!-- Example: Every 1 hour -->
+    <string name="label_settings_sync_every_hour" formatted="true">Every %1$d hour</string>
+    <!-- Example: Every 2 hours -->
+    <string name="label_settings_sync_every_hours" formatted="true">Every %1$d hours</string>
+    <!-- Example: Every 1 hr 30 min -->
+    <string name="label_settings_sync_every_hr_min" formatted="true">Every %1$d hr %2$d min</string>
+
+    <!-- Common actions -->
+    <!-- Button label to close dialogs in settings -->
+    <string name="action_settings_close">Close</string>
+
 
     <!-- Preference Entries Title -->
     <string name="preference_title_locale_config">Application language</string>

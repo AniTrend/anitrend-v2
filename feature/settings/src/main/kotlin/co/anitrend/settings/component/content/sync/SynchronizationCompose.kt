@@ -16,32 +16,26 @@
  */
 package co.anitrend.settings.component.content.sync
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.settings.component.builder.PreferenceBuilder
+import co.anitrend.settings.component.compose.SettingsItemsList
+import co.anitrend.settings.component.content.sync.presenter.SynchronizationPresenter
+import org.koin.compose.koinInject
 
 @Composable
-fun SynchronizationScreen(modifier: Modifier = Modifier) {
-    SynchronizationContent(modifier = modifier)
-}
-
-@Composable
-private fun SynchronizationContent(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        AniTrendHintCard(
-            title = "Synchronization settings",
-            description = "Configure data synchronization preferences",
-            icon = Icons.Outlined.Sync,
-            onClick = {},
-        )
-    }
+fun SynchronizationScreen(
+    modifier: Modifier = Modifier,
+    presenter: SynchronizationPresenter = koinInject(),
+) {
+    val items = presenter.getItems()
+    SettingsItemsList(modifier = modifier, settingsItems = items)
 }
 
 @AniTrendPreview.Default
@@ -49,7 +43,13 @@ private fun SynchronizationContent(modifier: Modifier = Modifier) {
 private fun SynchronizationScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
+    val context = LocalContext.current
+    val presenter = SynchronizationPresenter(
+        context = context,
+        settings = Settings(context),
+        preferenceBuilder = PreferenceBuilder()
+    )
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
-        SynchronizationContent()
+        SynchronizationScreen(presenter = presenter)
     }
 }

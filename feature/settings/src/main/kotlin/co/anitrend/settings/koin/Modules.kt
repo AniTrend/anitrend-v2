@@ -22,6 +22,7 @@ import co.anitrend.settings.component.builder.PreferenceBuilder
 import co.anitrend.settings.component.content.log.viewmodel.LogViewModel
 import co.anitrend.settings.component.content.task.viewmodel.TaskViewModel
 import co.anitrend.settings.component.presenter.SettingsPresenter
+import co.anitrend.settings.component.content.sync.presenter.SynchronizationPresenter
 import co.anitrend.settings.component.screen.SettingsScreen
 import co.anitrend.settings.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
@@ -38,6 +39,15 @@ private val presenterModule =
                     preferenceBuilder = PreferenceBuilder(),
                 )
             }
+        }
+
+        // Presenter for synchronization screen
+        factory {
+            SynchronizationPresenter(
+                context = androidContext(),
+                settings = get(),
+                preferenceBuilder = PreferenceBuilder(),
+            )
         }
     }
 
