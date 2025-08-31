@@ -43,7 +43,7 @@ chuncker = "4.2.0"
 
 coil = "2.7.0"
 
-devrieze-xmlutil = "0.90.3"
+devrieze-xmlutil = "0.91.2"
 
 google-android-material = "1.12.0"
 
