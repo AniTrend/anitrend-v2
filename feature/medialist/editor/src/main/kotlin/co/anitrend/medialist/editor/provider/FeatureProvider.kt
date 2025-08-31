@@ -16,9 +16,18 @@
  */
 package co.anitrend.medialist.editor.provider
 
+import androidx.fragment.app.DialogFragment
+import co.anitrend.data.settings.developer.IDeveloperSettings
 import co.anitrend.medialist.editor.component.content.MediaListEditorContent
+import co.anitrend.medialist.editor.component.content.MediaListEditorSheet
 import co.anitrend.navigation.MediaListEditorRouter
 
-class FeatureProvider : MediaListEditorRouter.Provider {
-    override fun sheet() = MediaListEditorContent::class.java
+class FeatureProvider(
+    private val settings: IDeveloperSettings,
+) : MediaListEditorRouter.Provider {
+    override fun sheet(): Class<out DialogFragment> =
+        when (settings.experimentalComposeUi.value) {
+            true -> MediaListEditorSheet::class.java
+            else -> MediaListEditorContent::class.java
+        }
 }

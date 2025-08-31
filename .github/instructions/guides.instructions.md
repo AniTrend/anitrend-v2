@@ -17,32 +17,95 @@ When developing new features or modifying existing ones, it’s important to **f
 - **Immutability and StateFlow**: In ViewModels or Compose states, prefer `StateFlow` or `Immutable data classes` for state. If using LiveData, stick to unidirectional flow: ViewModel exposes LiveData, UI observes. Given the Compose usage, you might see a shift to StateFlow + `collectAsState()` in composables. Follow whatever pattern the existing Compose screens use (check a feature like media discover or profile).
 - **Compose Best Practices**: If adding Composables:
 - Make them small and focused, with preview functions if possible.
-- Use theming (colors, typography) from the provided MaterialTheme (the project integrates Material3).
+- Use theming (colors, typography) from the provided MaterialTheme (the project integrates Material3 -> `AniTrendTheme3` and `PreviewTheme`).
 - Remember to handle state hoisting – view state should come from ViewModel (which may combine DataState flows).
 - Use accompanist libraries included for things like system UI controller, pager, etc., rather than writing from scratch.
 - **Resource Strings and Localization**: All user-facing strings should be in `strings.xml`. The project likely has multi-language support (the README mentions POEditor for translations[83]). When adding text, add an English entry to the appropriate `strings.xml`. Do not hard-code strings in code. Similarly, use dimension and style resources for spacing and text appearance, consistent with Material guidelines.
 
-### Internationalization (i18n) and Strings Documentation
+## String Resource Naming Conventions
 
-You MUST document each string resource clearly to aid translators and maintainers and to avoid misuse in UI code.
+**CRITICAL**: Follow consistent naming patterns for string resources to maintain codebase coherence and enable AI/tooling assistance. Use these prefixes based on the string's semantic purpose:
 
-- Per-string comments: Place a concise XML comment directly above EVERY `<string>` and each `<plurals>` block describing where it’s used and what it represents.
-	- Example: `<!-- Label for a single episode (e.g., in metadata chips) -->` before `<string name="label_episode_singular">Episode</string>`.
-- Placeholders: When a string uses format arguments, you MUST document each placeholder and provide an example output.
-	- Use ordered placeholders (`%1$d`, `%2$s`) when there is more than one argument.
-	- Include an example: `<!-- "%1$d Episodes" e.g., "12 Episodes"; %1$d is an integer -->`.
-- Plurals: Always use `<plurals>` for quantities and document the expected forms with examples.
-	- Provide examples for `one` and `other` at minimum; add more quantities if languages require it.
-	- Ensure code passes the correct quantity (e.g., `count`) matching the plural resource.
-- Non-translatable content: Mark strings as `translatable="false"` when their content is a fixed abbreviation/symbol or should never be localized.
-	- Document the reason: `<!-- Not translatable because abbreviation and separator are fixed -->`.
-- Dates and times: If a string includes a date/time placeholder, note that the formatted value MUST be provided already localized by code.
-	- Example: `<!-- "Airs %s"; %s is a localized full date string provided by code -->`.
-- Consistent tone and capitalization: Keep capitalization and tone consistent with Material guidelines and existing modules.
-- No hard-coded text in code: UI text MUST come from resources; add new keys to the correct module’s `strings.xml`.
-- Review: When editing strings, run a quick module build to validate XML structure and resource compilation.
+### Naming Pattern Structure
+`{prefix}_{module_or_context}_{specific_identifier}`
 
-This practice is exemplified in `common/media/src/main/res/values/strings.xml`, where every resource includes a focused comment clarifying purpose, placeholders, and formatting.
+### Standard Prefixes
+- **`label_`** - Field labels, section headers, descriptive text (e.g., `label_media_list_editor_watch_status`)
+- **`title_`** - Screen titles, dialog titles, major headings (e.g., `title_media_list_editor_add_to_library`)
+- **`subtitle_`** - Secondary headings, descriptive subtitles (e.g., `subtitle_media_list_editor_manage_media`)
+- **`placeholder_`** - Input hints, empty state text (e.g., `placeholder_media_list_editor_select_status`)
+- **`action_`** - Button text, menu items, actionable text (e.g., `action_media_list_editor_create_new_list`)
+- **`message_`** - User messages, notifications, feedback text (e.g., `message_sync_complete`)
+- **`error_`** - Error messages, validation messages (e.g., `error_network_unavailable`)
+- **`hint_`** - Helper text, tooltips, guidance (e.g., `hint_swipe_to_refresh`)
+- **`description_`** - Accessibility descriptions, detailed explanations (e.g., `description_favorite_button`)
+
+### Module Context Guidelines
+- Use **underscores** to separate words: `media_list_editor` not `medialisteditor`
+- Be specific but concise: `media_list` not `medialist`, `episode_progress` not `progress`
+- Include feature/module context when strings are feature-specific
+- For common/shared strings, use generic context: `label_loading`, `action_save`, `error_network`
+- Use `formatted="true"` attribute for strings with parameters (e.g., `%1$s`, `%1$d`), as these will be formatted in code
+
+### Examples of Good vs Bad Naming
+
+**GOOD:**
+```xml
+<string name="label_media_list_editor_watch_status">Watch Status</string>
+<string name="title_profile_settings">Profile Settings</string>
+<string name="placeholder_search_anime_manga">Search anime and manga...</string>
+<string name="action_mark_as_watched">Mark as Watched</string>
+<string name="error_authentication_failed">Authentication failed</string>
+```
+
+**BAD:**
+```xml
+<string name="medialist_editor_watch_status">Watch Status</string>  <!-- Missing prefix -->
+<string name="profileSettingsTitle">Profile Settings</string>        <!-- CamelCase, wrong prefix -->
+<string name="searchHint">Search anime and manga...</string>         <!-- Generic, unclear purpose -->
+<string name="watchedButton">Mark as Watched</string>               <!-- Context unclear -->
+<string name="authError">Authentication failed</string>             <!-- Too abbreviated -->
+```
+
+### Migration Guidelines
+- When updating existing string resources, prefer the new naming convention
+- Add comments noting replacements: `<!-- Replaces old_string_name -->`
+- Update all references when renaming strings
+- Check that translations and plurals follow the same naming pattern
+
+### POEditor Integration for Community Translations
+**REQUIRED**: Always add descriptive comments above string resources to help community translators understand context. POEditor automatically picks up these comments and displays them to translators.
+
+**Format**: Use XML comments immediately before the string resource:
+```xml
+<!-- Displayed when user hasn't set a rating yet -->
+<string name="placeholder_media_score_section_rating">Not rated</string>
+
+<!-- Button to save changes to user's anime/manga list -->
+<string name="action_media_list_editor_save_changes">Save Changes</string>
+
+<!-- Shows current episode progress out of total episodes -->
+<string name="label_media_list_editor_progress_percentage">Progress %1$d%%</string>
+```
+
+**Guidelines for effective translator comments**:
+- **Context**: Explain where/when the string appears in the app
+- **Purpose**: Describe what action or information the string represents
+- **Variables**: Explain what `%1$s`, `%1$d` parameters represent
+- **Tone**: Indicate if the string should be formal, casual, urgent, etc.
+- **Character limits**: Note if there are UI space constraints
+
+**Examples**:
+```xml
+<!-- Title shown at top of screen when adding anime/manga to library -->
+<string name="title_media_list_editor_add_to_library">Add to Library</string>
+
+<!-- Error message when network request fails, shown in red text -->
+<string name="error_network_unavailable">Network unavailable</string>
+
+<!-- Placeholder text in search box, %1$s will be "anime and manga" -->
+<string name="placeholder_search_content" formatted="true">Search %1$s...</string>
+```
 
 ## Database: Room join tables and migrations
 
@@ -68,9 +131,11 @@ When making schema-impacting changes:
 
 ## Testing Guidelines
 
-- The structure allows for testing domain and data layers easily. For any critical logic (parsers, complex use case), add unit tests in the corresponding module. Use **JUnit4** and **MockK** (both are included)[69][70]. For coroutine flows, use the Turbine library to test emission of flows.
+- The structure allows for testing domain and data layers easily. For any critical logic (parsers, complex use case), add unit tests in the corresponding module. Use **KotlinTest** and **MockK** (both are included)[69][70]. For coroutine flows, use the Turbine library to test emission of flows.
 - Android UI tests (Espresso) can be written for critical flows. There is likely a setup for instrumented tests (androidTest) in some modules, including Koin test modules. Leverage the Koin test features to inject mocks if needed.
 - WorkManager tasks can be tested using WorkManager’s testing utils or by invoking the logic inside workers directly. The project included WorkManager testing dependencies commented out (there’s a reference in ProjectDependencies to a potential work test lib, commented)[84].
+- Always run gradle test using the debug build variant to ensure tests pass and run in no-daemon mode to save memory.
+- When mocking, prefer to mock interfaces rather than concrete classes. This keeps tests more stable against implementation changes.
 
 ## Workflow and Contribution Tips
 
