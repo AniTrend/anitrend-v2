@@ -3,6 +3,16 @@ on:
   pull_request:
     types:
       - closed
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to target for cleanup'
+        required: false
+        default: 'develop'
+      allCaches:
+        description: 'Delete all caches across the repo (true/false). When true, branch input is ignored.'
+        required: false
+        default: 'false'
 
 jobs:
   gradle-cache-cleanup:
@@ -15,17 +25,36 @@ jobs:
           gh extension install actions/gh-actions-cache
           
           REPO=${{ github.repository }}
-          BRANCH="refs/heads/develop"
+          TARGET_BRANCH="${{ github.event.inputs.branch }}"
+          ALL_CACHES="${{ github.event.inputs.allCaches }}"
+          
+          # Set default branch value
+          DEFAULT_BRANCH="develop"
+          
+          # Set default branch if not provided (for PR close events)
+          if [ -z "$TARGET_BRANCH" ]; then
+            TARGET_BRANCH="$DEFAULT_BRANCH"
+          fi
 
-          echo "Fetching list of cache key"
-          cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
+          echo "Fetching list of cache keys"
+          if [ "$ALL_CACHES" = "true" ]; then
+            echo "Listing all caches across the repository"
+            cacheKeys=$(gh actions-cache list -R $REPO | cut -f1)
+          else
+            echo "Listing caches for branch: refs/heads/$TARGET_BRANCH"
+            cacheKeys=$(gh actions-cache list -R $REPO -B "refs/heads/$TARGET_BRANCH" | cut -f1)
+          fi
 
           ## Setting this to not fail the workflow while deleting cache keys. 
           set +e
           echo "Deleting caches..."
-          for cacheKey in $cacheKeysForPR
+          for cacheKey in $cacheKeys
           do
-              gh actions-cache delete $cacheKey -R $REPO -B $BRANCH --confirm
+              if [ "$ALL_CACHES" = "true" ]; then
+                  gh actions-cache delete $cacheKey -R $REPO --confirm
+              else
+                  gh actions-cache delete $cacheKey -R $REPO -B "refs/heads/$TARGET_BRANCH" --confirm
+              fi
               echo "$cacheKey"
           done
           echo "Done"
