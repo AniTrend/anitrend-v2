@@ -1,0 +1,14 @@
+fragment EpisodeCrewType on SeriesEpisodeCrewType {
+  adult
+  character
+  creditId
+  department
+  id
+  image
+  job
+  knownFor
+  name
+  order
+  originalName
+  popularity
+}

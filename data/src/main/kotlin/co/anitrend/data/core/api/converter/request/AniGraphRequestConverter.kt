@@ -20,6 +20,7 @@ import co.anitrend.data.BuildConfig
 import co.anitrend.data.core.AniTrendExperimentalFeature
 import co.anitrend.data.util.GraphUtil.minify
 import com.google.gson.Gson
+import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
 import io.github.wax911.library.converter.request.GraphRequestConverter
 import io.github.wax911.library.model.request.QueryContainerBuilder
@@ -42,7 +43,11 @@ internal class AniRequestConverter(
     override fun convert(containerBuilder: QueryContainerBuilder): RequestBody {
         // we need structured line numbers if we're in the debug env otherwise we can minify queries
         val query = graphProcessor.getQuery(methodAnnotations)?.minify(!BuildConfig.DEBUG)
-        val queryContainer = containerBuilder.setQuery(query).build()
+        val annotation = methodAnnotations.filterIsInstance<GraphQuery>().firstOrNull()
+        val queryContainer = containerBuilder
+            .setOperationName(annotation?.value)
+            .setQuery(query)
+            .build()
 
         val queryJson = gson.toJson(queryContainer)
         return queryJson.toRequestBody(JSON_MIME_TYPE)
