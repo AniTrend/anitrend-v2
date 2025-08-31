@@ -23,10 +23,11 @@ import co.anitrend.medialist.editor.component.content.MediaListEditorSheet
 import co.anitrend.navigation.MediaListEditorRouter
 
 class FeatureProvider(
-    private val settings: IDeveloperSettings
+    private val settings: IDeveloperSettings,
 ) : MediaListEditorRouter.Provider {
-    override fun sheet(): Class<out DialogFragment> = when (settings.experimentalComposeUi.value) {
-        true -> MediaListEditorSheet::class.java
-        else -> MediaListEditorContent::class.java
-    }
+    override fun sheet(): Class<out DialogFragment> =
+        when (settings.experimentalComposeUi.value) {
+            true -> MediaListEditorSheet::class.java
+            else -> MediaListEditorContent::class.java
+        }
 }
