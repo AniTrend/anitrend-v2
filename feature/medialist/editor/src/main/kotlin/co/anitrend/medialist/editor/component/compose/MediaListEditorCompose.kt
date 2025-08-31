@@ -60,8 +60,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -166,19 +164,6 @@ fun MediaListEditorScreen(
             onNotesChange = { state.notesText = it },
         )
         Spacer(modifier = Modifier.height(32.dp))
-    }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-    ) {
-        Button(
-            onClick = onSave,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(stringResource(R.string.action_save))
-        }
     }
 }
 
@@ -334,25 +319,6 @@ private fun ProgressSection(
         } else {
             stringResource(R.string.label_media_list_editor_chapter_progress)
         }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                stringResource(R.string.label_progress_percentage, (progressFraction * 100).toInt()),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-        LinearProgressIndicator(
-            progress = { progressFraction },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp),
-        )
-    }
-}
 
     Column {
         Text(label, style = MaterialTheme.typography.titleMedium)
@@ -402,60 +368,6 @@ private fun ProgressSection(
                     .fillMaxWidth()
                     .padding(top = 4.dp),
         )
-    }
-
-    if (state.showEndDatePicker) {
-        val datePickerState = rememberDatePickerState(
-            initialSelectedDateMillis = state.endDate.toEpochMillis(),
-        )
-        DatePickerDialog(
-            onDismissRequest = { state.showEndDatePicker = false },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        state.onEndDateSelected(datePickerState.selectedDateMillis)
-                    },
-                ) {
-                    Text("OK")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { state.showEndDatePicker = false }) {
-                    Text("Cancel")
-                }
-            },
-        ) {
-            DatePicker(state = datePickerState)
-        }
-    }
-
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Column(Modifier.weight(1f)) {
-            Text(stringResource(R.string.label_start_date), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(bottom = 8.dp))
-            OutlinedTextField(
-                value = state.startDateText,
-                onValueChange = {},
-                readOnly = true,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { state.showStartDatePicker = true },
-                label = { Text("yyyy/MM/dd") },
-                trailingIcon = { Icon(Icons.Filled.CalendarToday, contentDescription = stringResource(R.string.action_select_date)) },
-            )
-        }
-        Column(Modifier.weight(1f)) {
-            Text(stringResource(R.string.label_end_date), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(bottom = 8.dp))
-            OutlinedTextField(
-                value = state.endDateText,
-                onValueChange = {},
-                readOnly = true,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { state.showEndDatePicker = true },
-                label = { Text("yyyy/MM/dd") },
-                trailingIcon = { Icon(Icons.Filled.CalendarToday, contentDescription = stringResource(R.string.action_select_date)) },
-            )
-        }
     }
 }
 
