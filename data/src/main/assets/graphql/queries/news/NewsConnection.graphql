@@ -1,0 +1,17 @@
+query NewsConnection($after: String, $before: String, $first: Int, $last: Int, $query: String) {
+  newsConnection(after: $after, before: $before, limit: $first) {
+    count
+    first
+    last
+    data {
+      id
+      title
+      link
+      image
+      description
+      content
+      publishedOn
+      author
+    }
+  }
+}

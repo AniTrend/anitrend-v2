@@ -34,6 +34,10 @@ dependencies {
     implementation(libs.anitrend.querybuilder.annotation)
     implementation(libs.anitrend.querybuilder.core)
     implementation(libs.anitrend.querybuilder.core.ext)
+
+    // Needed for database store (IAniTrendStore) & controller infrastructure
+    // Using direct project path to avoid visibility issue with internal Modules object
+    implementation(project(":data:android"))
 }
 
 android {

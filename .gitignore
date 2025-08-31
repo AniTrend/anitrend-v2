@@ -246,3 +246,5 @@ jacoco.exec
 .kotlin/
 
 app/playstore-service-account.json
+
+docs/specs

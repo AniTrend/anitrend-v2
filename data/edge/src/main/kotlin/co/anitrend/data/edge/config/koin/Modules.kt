@@ -25,15 +25,13 @@ import co.anitrend.data.edge.config.cache.EdgeConfigCache
 import co.anitrend.data.edge.config.converters.EdgeConfigEntityConverter
 import co.anitrend.data.edge.config.converters.EdgeConfigModelConverter
 import co.anitrend.data.edge.config.converters.EdgeConfigViewEntityConverter
-import co.anitrend.data.edge.config.extensions.configStore
-import co.anitrend.data.edge.config.extensions.genreStore
-import co.anitrend.data.edge.config.extensions.navigationStore
 import co.anitrend.data.edge.config.mapper.EdgeConfigMapper
 import co.anitrend.data.edge.config.repository.EdgeConfigRepository
 import co.anitrend.data.edge.config.source.EdgeConfigSourceImpl
 import co.anitrend.data.edge.config.source.contract.EdgeConfigSource
 import co.anitrend.data.edge.config.usecase.EdgeConfigInteractor
 import co.anitrend.data.edge.core.extensions.aniTrendApi
+import co.anitrend.data.edge.core.extensions.edgeStore
 import co.anitrend.data.edge.genre.mapper.EdgeGenreMapper
 import co.anitrend.data.edge.navigation.mapper.EdgeNavigationMapper
 import org.koin.dsl.module
@@ -43,7 +41,7 @@ private val sourceModule =
         factory<EdgeConfigSource> {
             EdgeConfigSourceImpl(
                 remoteSource = aniTrendApi(),
-                localSource = configStore().edgeConfigDao(),
+                localSource = edgeStore().edgeConfigDao(),
                 controller =
                     graphQLController(
                         mapper = get<EdgeConfigMapper>(),
@@ -85,19 +83,19 @@ private val mapperModule =
             EdgeConfigMapper(
                 genreMapper = get(),
                 navigationMapper = get(),
-                localSource = configStore().edgeConfigDao(),
+                localSource = edgeStore().edgeConfigDao(),
                 converter = get(),
             )
         }
         factory {
             EdgeNavigationMapper(
-                localSource = navigationStore().edgeNavigationDao(),
+                localSource = edgeStore().edgeNavigationDao(),
                 converter = get(),
             )
         }
         factory {
             EdgeGenreMapper(
-                localSource = genreStore().edgeGenreDao(),
+                localSource = edgeStore().edgeGenreDao(),
                 converter = get(),
             )
         }

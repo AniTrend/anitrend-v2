@@ -1,0 +1,50 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "gradle: debug",
+			"type": "shell",
+			"command": "./gradlew --no-daemon assembleDebug",
+			"problemMatcher": [
+				"$gradle"
+			],
+			"group": "build"
+		},
+		{
+			"label": "gradle: release",
+			"type": "shell",
+			"command": "./gradlew --no-daemon assembleRelease",
+			"problemMatcher": [
+				"$gradle"
+			],
+			"group": "build"
+		},
+		{
+			"label": "gradle: clean",
+			"type": "shell",
+			"command": "./gradlew --no-daemon clean",
+			"problemMatcher": [
+				"$gradle"
+			],
+			"group": "build"
+		},
+		{
+			"label": "gradle: lint",
+			"type": "shell",
+			"command": "./gradlew --no-daemon lint",
+			"problemMatcher": [
+				"$gradle"
+			],
+			"group": "build"
+		},
+		{
+			"label": "gradle: debug unit",
+			"type": "shell",
+			"command": "./gradlew --no-daemon testDebugUnitTest",
+			"problemMatcher": [
+				"$gradle"
+			],
+			"group": "test"
+		}
+	]
+}

@@ -24,18 +24,14 @@ import co.anitrend.data.carousel.datasource.local.ICarouselStore
 import co.anitrend.data.character.datasource.local.ICharacterStore
 import co.anitrend.data.customlist.datasource.ICustomListStore
 import co.anitrend.data.customscore.datasource.ICustomScoreStore
-import co.anitrend.data.edge.config.datasource.local.IEdgeConfigStore
-import co.anitrend.data.edge.genre.datasource.IEdgeGenreStore
-import co.anitrend.data.edge.navigation.datasource.IEdgeNavigationStore
+import co.anitrend.data.edge.core.store.IEdgeStore
 import co.anitrend.data.feed.episode.datasource.local.IEpisodeStore
 import co.anitrend.data.feed.news.datasource.local.INewsStore
 import co.anitrend.data.genre.datasource.local.IGenreStore
-import co.anitrend.data.jikan.media.datasource.local.IJikanStore
 import co.anitrend.data.link.datasource.ILinkStore
 import co.anitrend.data.media.datasource.local.IMediaStore
 import co.anitrend.data.medialist.datasource.local.IMediaListStore
 import co.anitrend.data.rank.datasource.IRankStore
-import co.anitrend.data.relation.datasource.local.IRelationStore
 import co.anitrend.data.review.datasource.local.IReviewStore
 import co.anitrend.data.staff.datasource.local.IStaffStore
 import co.anitrend.data.studio.datasource.local.IStudioStore
@@ -46,7 +42,6 @@ internal interface IAniTrendStore :
     IMediaStore,
     IGenreStore,
     ITagStore,
-    IRelationStore,
     IAuthStore,
     IAiringStore,
     ICarouselStore,
@@ -60,13 +55,10 @@ internal interface IAniTrendStore :
     IStudioStore,
     ILinkStore,
     IRankStore,
-    IJikanStore,
     ICustomListStore,
     ICustomScoreStore,
     IReviewStore,
-    IEdgeConfigStore,
-    IEdgeGenreStore,
-    IEdgeNavigationStore {
+    IEdgeStore {
     companion object {
         /** Binding types for [IAniTrendStore] */
         val BINDINGS =
@@ -74,7 +66,6 @@ internal interface IAniTrendStore :
                 IMediaStore::class,
                 ITagStore::class,
                 IGenreStore::class,
-                IRelationStore::class,
                 IAuthStore::class,
                 IAiringStore::class,
                 ICarouselStore::class,
@@ -88,13 +79,10 @@ internal interface IAniTrendStore :
                 IStudioStore::class,
                 ILinkStore::class,
                 IRankStore::class,
-                IJikanStore::class,
                 ICustomListStore::class,
                 ICustomScoreStore::class,
                 IReviewStore::class,
-                IEdgeConfigStore::class,
-                IEdgeGenreStore::class,
-                IEdgeNavigationStore::class,
+                IEdgeStore::class,
                 RoomDatabase::class,
             )
     }
