@@ -28,9 +28,12 @@ jobs:
           TARGET_BRANCH="${{ github.event.inputs.branch }}"
           ALL_CACHES="${{ github.event.inputs.allCaches }}"
           
+          # Set default branch value
+          DEFAULT_BRANCH="develop"
+          
           # Set default branch if not provided (for PR close events)
           if [ -z "$TARGET_BRANCH" ]; then
-            TARGET_BRANCH="develop"
+            TARGET_BRANCH="$DEFAULT_BRANCH"
           fi
 
           echo "Fetching list of cache keys"
