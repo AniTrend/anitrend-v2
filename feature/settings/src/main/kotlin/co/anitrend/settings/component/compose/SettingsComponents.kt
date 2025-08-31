@@ -30,9 +30,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import co.anitrend.android.core.compose.design.category.AniTrendCategoryItem
 import co.anitrend.android.core.compose.design.choice.AniTrendSingleChoiceItem
 import co.anitrend.settings.model.SettingItem
+import co.anitrend.settings.R
 
 @Composable
 fun <T> PreferenceDialog(item: SettingItem.DialogSetting<T>) {
@@ -78,7 +80,7 @@ fun <T> PreferenceDialog(item: SettingItem.DialogSetting<T>) {
             },
             confirmButton = {
                 TextButton(onClick = { showDialog = false }) {
-                    Text(text = "Close")
+                    Text(text = stringResource(id = R.string.action_settings_close))
                 }
             },
         )

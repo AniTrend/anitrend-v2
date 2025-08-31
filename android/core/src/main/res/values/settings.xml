@@ -46,6 +46,11 @@
     <string name="settings_sync_list_interval" translatable="false">_syncListInterval</string>
     <string name="settings_sync_user_interval" translatable="false">_syncUserInterval</string>
 
+  <!-- Notification settings keys -->
+  <string name="settings_notifications_enabled" translatable="false">_notificationsEnabled</string>
+  <string name="settings_notifications_anilist_enabled" translatable="false">_notificationsAniListEnabled</string>
+  <string name="settings_notifications_announcements_enabled" translatable="false">_notificationsAnnouncementsEnabled</string>
+
     <string name="settings_auto_heap_dump" translatable="false">_autoHeapDump</string>
     <string name="settings_show_leak_launcher" translatable="false">_showLeakLauncher</string>
     <string name="settings_experimental_compose_ui" translatable="false">_experimentalComposeUi</string>

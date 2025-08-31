@@ -49,11 +49,76 @@
     <string name="preference_summary_content_filtering">Configure how content is filtered</string>
     <string name="preference_summary_presentation">Change the general user interface style</string>
     <string name="preference_summary_notifications">Configure how notifications behave</string>
+  <!-- Title and description for the notification settings hint card -->
+  <!-- Opens system app notification settings screen for AniTrend -->
+  <string name="title_settings_notification_hint">Notification settings</string>
+  <string name="description_settings_notification_hint">Manage system-level notification permissions and channels</string>
+  <!-- Description when POST_NOTIFICATIONS permission is not granted yet -->
+  <string name="description_settings_notification_permission">Grant the notification permission to receive alerts</string>
+
+  <!-- App-level notification toggles -->
+  <!-- Master toggle controlling whether AniTrend shows any notifications at all -->
+  <string name="label_settings_notifications_master_toggle">Enable notifications</string>
+  <string name="summary_settings_notifications_master_toggle">Turn all AniTrend notifications on or off</string>
+
+  <!-- Toggle for AniList-related notifications (follows, replies, mentions) -->
+  <string name="label_settings_notifications_anilist_toggle">AniList notifications</string>
+  <string name="summary_settings_notifications_anilist_toggle">Show notifications related to your AniList activity</string>
+
+  <!-- Toggle for AniTrend announcements and important updates -->
+  <string name="label_settings_notifications_announcements_toggle">Announcements</string>
+  <string name="summary_settings_notifications_announcements_toggle">Receive app announcements and important updates</string>
     <string name="preference_summary_sync">Configure how data sync\'d between services</string>
     <string name="preference_summary_updates">Configure how and which updates to receive</string>
     <string name="preference_summary_storage">Configure how the app should use storage space</string>
     <string name="preference_summary_heap">Dump heap automatically when leak is detected</string>
     <string name="preference_summary_power_management">Fine tune how the application uses your battery</string>
+
+    <!-- Developer settings (debug-only usage preferred) -->
+    <!-- Toggle to display a launcher entry for LeakCanary or leak tools -->
+    <string name="preference_title_show_leak_launcher">Show Leak Launcher</string>
+    <string name="preference_summary_show_leak_launcher">Expose a launcher entry for memory leak inspection tools</string>
+
+    <!-- Toggle to enable experimental Compose UI features -->
+    <string name="preference_title_experimental_compose_ui">Experimental Compose UI</string>
+    <string name="preference_summary_experimental_compose_ui">Enable in-development Compose UI features (may be unstable)</string>
+
+    <!-- Synchronization screen -->
+    <!-- Category -->
+
+    <!-- Title for the synchronization intervals category in the sync screen -->
+    <string name="preference_category_title_synchronization_intervals">Synchronization intervals</string>
+
+    <!-- Titles and summaries for specific sync groups -->
+
+    <!-- Metadata synchronization interval title -->
+    <string name="title_settings_sync_metadata_interval">Metadata sync interval</string>
+    <!-- Metadata synchronization interval summary -->
+    <string name="summary_settings_sync_metadata_interval">Choose how frequently genres, tags and other resource are refreshed</string>
+
+    <!-- Lists synchronization interval title -->
+    <string name="title_settings_sync_lists_interval">Lists sync interval</string>
+    <!-- Lists synchronization interval summary -->
+    <string name="summary_settings_sync_lists_interval">Choose how frequently your anime or manga lists are synced</string>
+
+    <!-- User synchronization interval title -->
+    <string name="title_settings_sync_user_interval">User sync interval</string>
+    <!-- User synchronization interval summary -->
+    <string name="summary_settings_sync_user_interval">Choose how frequently your profile information is synced</string>
+
+    <!-- Interval labels (formatted) -->
+    <!-- Example: Every 5 minutes -->
+    <string name="label_settings_sync_every_minutes" formatted="true">Every %1$d minutes</string>
+    <!-- Example: Every 1 hour -->
+    <string name="label_settings_sync_every_hour" formatted="true">Every %1$d hour</string>
+    <!-- Example: Every 2 hours -->
+    <string name="label_settings_sync_every_hours" formatted="true">Every %1$d hours</string>
+    <!-- Example: Every 1 hr 30 min -->
+    <string name="label_settings_sync_every_hr_min" formatted="true">Every %1$d hr %2$d min</string>
+
+    <!-- Common actions -->
+    <!-- Button label to close dialogs in settings -->
+    <string name="action_settings_close">Close</string>
 
 
     <!-- Preference Entries Title -->
@@ -67,5 +132,20 @@
     <string name="preference_summary_privacy_analytics_config">Allows usage statistics to be sent to the developer</string>
     <string name="preference_summary_privacy_crash_analytics_config">Allows crashes to be reported automatically as they happen</string>
     <string name="preference_summary_refresh_behavior_config">Typically the database is cleared when you pull to refresh</string>
+
+  <!-- Power management screen -->
+  <!-- Titles and summaries for power settings toggles -->
+  <string name="preference_title_power_saver">Power saver</string>
+  <string name="preference_summary_power_saver">Reduce background activity to save battery</string>
+  <string name="preference_title_battery_optimization">Battery optimization</string>
+  <string name="preference_summary_battery_optimization">Allow the app to optimize battery usage</string>
+
+  <!-- Storage screen -->
+  <!-- Formatted percent label e.g., 25% -->
+  <string name="label_settings_storage_percent" formatted="true">%1$d%%</string>
+  <!-- Storage info summary: e.g., Limit: 25%, Limit size, Free space -->
+  <string name="label_settings_storage_info" formatted="true">Limit %1$s • Limit %2$s • Free %3$s</string>
+  <!-- Used percent label: e.g., Used 25% -->
+  <string name="label_settings_storage_used_percent" formatted="true">Used %1$d%%</string>
 
 </resources>

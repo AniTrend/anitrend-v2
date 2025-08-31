@@ -20,7 +20,13 @@ import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.SettingsRouter
 import co.anitrend.settings.component.builder.PreferenceBuilder
 import co.anitrend.settings.component.content.log.viewmodel.LogViewModel
+import co.anitrend.settings.component.content.notification.presenter.NotificationPresenter
+import co.anitrend.settings.component.content.power.presenter.PowerPresenter
+import co.anitrend.settings.component.content.privacy.presenter.PrivacyPresenter
+import co.anitrend.settings.component.content.storage.presenter.StoragePresenter
+import co.anitrend.settings.component.content.sync.presenter.SynchronizationPresenter
 import co.anitrend.settings.component.content.task.viewmodel.TaskViewModel
+import co.anitrend.settings.component.content.theme.presenter.ThemePresenter
 import co.anitrend.settings.component.presenter.SettingsPresenter
 import co.anitrend.settings.component.screen.SettingsScreen
 import co.anitrend.settings.provider.FeatureProvider
@@ -38,6 +44,61 @@ private val presenterModule =
                     preferenceBuilder = PreferenceBuilder(),
                 )
             }
+        }
+
+        // Presenter for synchronization screen
+        factory {
+            SynchronizationPresenter(
+                context = androidContext(),
+                settings = get(),
+                preferenceBuilder = PreferenceBuilder(),
+            )
+        }
+
+        // Presenter for privacy screen
+        factory {
+            PrivacyPresenter(
+                context = androidContext(),
+                settings = get(),
+                preferenceBuilder = PreferenceBuilder(),
+            )
+        }
+
+        // Presenter for power screen
+        factory {
+            PowerPresenter(
+                context = androidContext(),
+                settings = get(),
+                preferenceBuilder = PreferenceBuilder(),
+            )
+        }
+
+        // Presenter for storage screen
+        factory {
+            StoragePresenter(
+                context = androidContext(),
+                settings = get(),
+                preferenceBuilder = PreferenceBuilder(),
+                storageController = get(),
+            )
+        }
+
+        // Presenter for theme screen
+        factory {
+            ThemePresenter(
+                context = androidContext(),
+                settings = get(),
+                preferenceBuilder = PreferenceBuilder(),
+            )
+        }
+
+        // Presenter for notification screen
+        factory {
+            NotificationPresenter(
+                context = androidContext(),
+                settings = get(),
+                preferenceBuilder = PreferenceBuilder(),
+            )
         }
     }
 

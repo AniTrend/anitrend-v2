@@ -16,12 +16,7 @@
  */
 package co.anitrend.settings.component.compose
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -30,9 +25,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
-import co.anitrend.android.core.compose.design.category.AniTrendCategoryHeader
-import co.anitrend.android.core.compose.design.category.AniTrendCategoryItem
-import co.anitrend.android.core.compose.design.toggle.AniTrendSwitch
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
@@ -55,46 +47,7 @@ private fun SettingsContent(
     modifier: Modifier = Modifier,
     settingsItems: List<SettingItem>,
 ) {
-    LazyColumn(modifier = modifier.fillMaxSize()) {
-        items(
-            count = settingsItems.size,
-            key = { settingsItems[it].id },
-        ) { index ->
-            when (val item = settingsItems[index]) {
-                is SettingItem.CategoryHeader -> AniTrendCategoryHeader(text = item.title)
-                is SettingItem.HintCard ->
-                    AniTrendHintCard(
-                        title = item.title,
-                        description = item.description,
-                        icon = item.icon,
-                        onClick = item.onClick,
-                    )
-                is SettingItem.SwitchSetting ->
-                    AniTrendSwitch(
-                        title = item.title,
-                        description = item.summary,
-                        icon = item.icon,
-                        enabled = true,
-                        isChecked = item.onClick(),
-                        onClick = { item.onValueChange(!item.onClick()) },
-                    )
-                is SettingItem.ClickableSetting ->
-                    AniTrendCategoryItem(
-                        title = item.title,
-                        description = item.summary,
-                        icon = item.icon,
-                        onClick = item.onClick,
-                        trailingIcon = {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-                                contentDescription = null,
-                            )
-                        },
-                    )
-                is SettingItem.DialogSetting<*> -> PreferenceDialog(item = item)
-            }
-        }
-    }
+    SettingsItemsList(modifier = modifier, settingsItems = settingsItems)
 }
 
 @Composable

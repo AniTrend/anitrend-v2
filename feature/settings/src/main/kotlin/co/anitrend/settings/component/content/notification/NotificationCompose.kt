@@ -26,22 +26,19 @@ import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.settings.component.compose.SettingsItemsList
+import co.anitrend.settings.component.content.notification.presenter.NotificationPresenter
+import org.koin.compose.koinInject
 
 @Composable
-fun NotificationScreen(modifier: Modifier = Modifier) {
-    NotificationContent(modifier = modifier)
+fun NotificationScreen(modifier: Modifier = Modifier, presenter: NotificationPresenter = koinInject()) {
+    NotificationContent(modifier = modifier, presenter = presenter)
 }
 
 @Composable
-private fun NotificationContent(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        AniTrendHintCard(
-            title = "Notification settings",
-            description = "Configure notification preferences",
-            icon = Icons.Outlined.Notifications,
-            onClick = {},
-        )
-    }
+private fun NotificationContent(modifier: Modifier = Modifier, presenter: NotificationPresenter) {
+    val items = presenter.getItems()
+    SettingsItemsList(modifier = modifier, settingsItems = items)
 }
 
 @AniTrendPreview.Default
@@ -50,6 +47,12 @@ private fun NotificationScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
-        NotificationContent()
+        // Local preview without DI
+        val presenter = NotificationPresenter(
+            context = androidx.compose.ui.platform.LocalContext.current,
+            settings = co.anitrend.android.core.settings.Settings(androidx.compose.ui.platform.LocalContext.current),
+            preferenceBuilder = co.anitrend.settings.component.builder.PreferenceBuilder(),
+        )
+        NotificationContent(presenter = presenter)
     }
 }

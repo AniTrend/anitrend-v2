@@ -19,6 +19,8 @@ package co.anitrend.android.core.helpers.notification
 import android.Manifest
 import android.content.Context
 import android.os.Build
+import android.content.Intent
+import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -60,5 +62,34 @@ fun FragmentActivity.requestPostNotificationPermission() {
             // requestCode =
             POST_NOTIFICATION_PERMISSION_REQUEST_CODE,
         )
+    }
+}
+
+fun Context.openAppNotificationSettings() {
+    val intent =
+        Intent().apply {
+            action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+            // Fallback extras for older APIs
+            putExtra("app_package", packageName)
+            putExtra("app_uid", applicationInfo.uid)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+    try {
+        startActivity(intent)
+    } catch (_: Exception) {
+        // Fallback to general app settings if specific action not available
+        val fallback = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = android.net.Uri.parse("package:$packageName")
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        startActivity(fallback)
+    }
+}
+
+fun Context.requestPostNotificationPermissionIfPossible() {
+    when (this) {
+        is FragmentActivity -> this.requestPostNotificationPermission()
+        else -> openAppNotificationSettings()
     }
 }
