@@ -29,19 +29,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import co.anitrend.common.media.ui.compose.widget.releasing.MediaReleaseStatus
-import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
 import co.anitrend.android.core.compose.AniTrendDimensions
 import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.helpers.image.model.RequestImage
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.domain.common.entity.contract.IMediaCover
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.entity.attribute.score.IMediaScore
+import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
+import co.anitrend.domain.media.entity.attribute.title.MediaTitle
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.navigation.ImageViewerRouter
 
 @Composable
@@ -70,13 +73,13 @@ private fun MediaTitle(
     ) {
         Text(
             text = title.userPreferred.toString(),
-            maxLines = 2,
+            maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.headlineSmall,
         )
         Text(
             text = extraInfo ?: title.native.toString(),
-            maxLines = 1,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(start = 8.dp),
             style = MaterialTheme.typography.bodySmall,
@@ -85,24 +88,8 @@ private fun MediaTitle(
 }
 
 @Composable
-private fun MediaScore(
-    accentColor: Color,
-    mediaScore: IMediaScore,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = "${mediaScore.mean}%",
-        color = accentColor,
-        fontWeight = FontWeight.Bold,
-        style = MaterialTheme.typography.bodySmall,
-        modifier = modifier,
-    )
-}
-
-@Composable
-fun MediaSummarySection(
+fun MediaHeaderInfoSection(
     media: Media,
-    accentColor: Color,
     onCoverClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -126,12 +113,47 @@ fun MediaSummarySection(
                 title = media.title,
                 extraInfo = (media as Media.Extended).extraInfo,
             )
-            MediaReleaseStatus(media)
-            MediaSubTitleText(media = media)
-            MediaScore(
-                accentColor = accentColor,
-                mediaScore = media.score,
-            )
         }
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun MediaSummarySectionPreview() {
+    PreviewTheme(wrapInSurface = true) {
+        MediaHeaderInfoSection(
+            media =
+                Media.Extended.empty().copy(
+                    title =
+                        MediaTitle(
+                            userPreferred = "Seishun Buta Yarou wa Santa Claus no Yume wo Minai",
+                            english = "Rascal Does Not Dream of Santa Claus",
+                            romaji = "Seishun Buta Yarou wa Santa Claus no Yume wo Minai",
+                            native = "青春ブタ野郎はサンタクロースの夢を見ない",
+                        ),
+                    // extraInfo = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et",
+                    status = MediaStatus.RELEASING,
+                    image = MediaImage.empty().copy(color = "#e4c928"),
+                    startDate = FuzzyDate(2025, 7, 5),
+                    endDate = FuzzyDate(2025, 9, 27),
+                    format = MediaFormat.TV,
+                    category =
+                        Media.Category.Anime(
+                            episodes = 13,
+                            broadcast = "",
+                            duration = 24,
+                            premiered = "",
+                            schedule =
+                                AiringSchedule(
+                                    airingAt = 1756564200,
+                                    episode = 9,
+                                    timeUntilAiring = 323880,
+                                    mediaId = 171046,
+                                    id = 399334,
+                                ),
+                        ),
+                ),
+            onCoverClick = {},
+        )
     }
 }

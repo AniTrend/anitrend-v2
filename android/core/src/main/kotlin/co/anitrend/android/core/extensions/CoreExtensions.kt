@@ -29,7 +29,7 @@ fun Int.toHumanReadableQuantity(digits: Int = 1): String {
     val suffix = "KMGTPE"[exp - 1].toString()
     return String.format(
         Locale.getDefault(),
-        "%.${digits}f %s",
+        "%.${digits}f%s",
         quantity / unit.toDouble().pow(exp.toDouble()),
         suffix,
     )

@@ -22,6 +22,12 @@ interface IMediaScore {
     val mean: Int
     val average: Int
     val personal: Float?
+    val popularity: Int?
+    val trending: Int?
 
     fun asFormatted(scoreFormat: ScoreFormat): IMediaRating
+
+    fun asFormattedPersonal(scoreFormat: ScoreFormat): IMediaRating?
+
+    fun asFormattedCommunity(scoreFormat: ScoreFormat): IMediaRating
 }

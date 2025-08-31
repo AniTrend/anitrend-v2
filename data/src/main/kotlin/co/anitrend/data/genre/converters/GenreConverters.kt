@@ -44,7 +44,7 @@ internal class GenreModelConverter(
 ) : SupportConverter<GenreCollection.GenreModel, GenreEntity>() {
     private companion object {
         fun EmojiManager.withShortCode(alias: String): String {
-            val emoji = getForTag(alias)?.firstOrNull()
+            val emoji = getForShortCode(alias)?.firstOrNull()
             return emoji?.emoji.orEmpty()
         }
 
@@ -78,10 +78,7 @@ internal class GenreModelConverter(
         ) = GenreEntity(
             id = source.id,
             genre = source.genre,
-            emoji =
-                emojiManager.getEmojiFor(
-                    source.genre,
-                ),
+            emoji = emojiManager.getEmojiFor(source.genre),
         )
     }
 }

@@ -17,6 +17,7 @@
 package co.anitrend.common.genre.ui.compose
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -59,7 +60,7 @@ private fun GenreItem(
 }
 
 @Composable
-fun GenresListComponent(
+private fun GenresListComponent(
     genres: List<Genre>,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     modifier: Modifier = Modifier,
@@ -80,5 +81,53 @@ fun GenresListComponent(
                 onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
             )
         }
+    }
+}
+
+@Composable
+private fun GenreFlowComponent(
+    genres: List<Genre>,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        modifier = modifier,
+    ) {
+        genres.forEach { genre ->
+            GenreItem(
+                genre = genre,
+                onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
+            )
+        }
+    }
+}
+
+enum class MediaGenreSectionMode {
+    FLEX,
+    LAZY,
+}
+
+@Composable
+fun MediaGenreSection(
+    genres: List<Genre>,
+    onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
+    sectionMode: MediaGenreSectionMode,
+    modifier: Modifier = Modifier,
+) {
+    when (sectionMode) {
+        MediaGenreSectionMode.FLEX ->
+            GenreFlowComponent(
+                genres = genres,
+                onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
+                modifier = modifier,
+            )
+
+        else ->
+            GenresListComponent(
+                genres = genres,
+                onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
+                modifier = modifier,
+            )
     }
 }

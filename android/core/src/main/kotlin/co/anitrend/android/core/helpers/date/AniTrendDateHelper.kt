@@ -162,4 +162,8 @@ class AniTrendDateHelper : AbstractSupportDateHelper() {
         calendar.time = Date(timeInstant)
         return calendar
     }
+
+    companion object {
+        const val DATE_FORMAT_WITH_TIME_ZONE = "EEE, MMM dd, hh:mm a z"
+    }
 }

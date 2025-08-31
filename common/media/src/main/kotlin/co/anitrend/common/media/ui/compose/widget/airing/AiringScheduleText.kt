@@ -29,12 +29,12 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import co.anitrend.common.media.ui.R
-import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
-import co.anitrend.common.media.ui.widget.airing.controller.MediaAiringScheduleController
 import co.anitrend.android.core.asPrettyTime
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.common.media.ui.R
+import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
+import co.anitrend.common.media.ui.widget.airing.controller.MediaAiringScheduleController
 import co.anitrend.domain.media.entity.Media
 
 @Composable
@@ -42,19 +42,29 @@ import co.anitrend.domain.media.entity.Media
 private fun createDecoratedAiringText(
     controller: MediaAiringScheduleController,
     decoratorColor: Color,
+    format: AiringScheduleTextFormat,
 ): AnnotatedString.Builder {
     val schedule = controller.getSchedule()
     val builder = AnnotatedString.Builder()
-    builder.withStyle(style = SpanStyle(color = decoratorColor)) {
-        append(
-            stringResource(
-                R.string.label_episode_airing_in_time,
-                schedule.episode,
-                schedule.asPrettyTime(),
-            ),
-        )
+    if (format == AiringScheduleTextFormat.WITHOUT_PREFIX) {
+        builder.append(schedule.asPrettyTime())
+    } else {
+        builder.withStyle(style = SpanStyle(color = decoratorColor)) {
+            append(
+                stringResource(
+                    R.string.label_episode_airing_in_time,
+                    schedule.episode,
+                    schedule.asPrettyTime(),
+                ),
+            )
+        }
     }
     return builder
+}
+
+enum class AiringScheduleTextFormat {
+    WITH_PREFIX,
+    WITHOUT_PREFIX,
 }
 
 @Composable
@@ -62,6 +72,7 @@ fun AiringScheduleText(
     media: Media,
     modifier: Modifier = Modifier,
     style: TextStyle = LocalTextStyle.current,
+    format: AiringScheduleTextFormat = AiringScheduleTextFormat.WITH_PREFIX,
 ) {
     val controller = remember(media) { MediaAiringScheduleController(media) }
     if (controller.shouldHideWidget()) {
@@ -73,6 +84,7 @@ fun AiringScheduleText(
         createDecoratedAiringText(
             controller = controller,
             decoratorColor = palette,
+            format = format,
         )
 
     Text(

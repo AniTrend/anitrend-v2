@@ -96,6 +96,6 @@
         "eval": false,
         "Invoke-Expression": false,
         "iex": false,
-        ".*gradlew.*": true
+        "./gradlew": true
     }
 }
