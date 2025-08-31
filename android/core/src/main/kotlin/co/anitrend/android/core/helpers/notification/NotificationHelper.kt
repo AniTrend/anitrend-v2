@@ -55,7 +55,6 @@ class NotificationHelper(
             return when (config) {
                 NotificationConfig.GENERAL -> true
                 NotificationConfig.ANILIST -> settings.isAniListNotificationsEnabled.value
-                NotificationConfig.AIRING -> settings.areAiringNotificationsEnabled.value
                 NotificationConfig.ANNOUNCEMENT -> settings.isAnnouncementNotificationsEnabled.value
             }
         }

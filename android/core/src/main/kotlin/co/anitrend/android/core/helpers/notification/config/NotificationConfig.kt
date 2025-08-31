@@ -36,12 +36,6 @@ enum class NotificationConfig(
         importance = NotificationManager.IMPORTANCE_DEFAULT,
         group = "co.anitrend.notification.group.ANILIST",
     ),
-    AIRING(
-        title = "Airing",
-        description = "Episode airing reminders and schedules",
-        importance = NotificationManager.IMPORTANCE_DEFAULT,
-        group = "co.anitrend.notification.group.AIRING",
-    ),
     ANNOUNCEMENT(
         title = "Announcements",
         description = "Announcements and other important information",
