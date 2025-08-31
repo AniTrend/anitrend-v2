@@ -86,14 +86,15 @@ private fun RenderSettingItem(item: SettingItem) {
         is SettingItem.DialogSetting<*> ->
             PreferenceDialog(item = item)
 
-        is SettingItem.SliderSetting -> AniTrendSliderItem(
-            value = item.value,
-            onValueChange = item.onValueChange,
-            valueRange = item.valueRange,
-            steps = item.steps,
-            valueLabel = item.valueLabel,
-            extraInfo = item.extraInfo,
-            progress = item.progress,
-        )
+        is SettingItem.SliderSetting ->
+            AniTrendSliderItem(
+                value = item.value,
+                onValueChange = item.onValueChange,
+                valueRange = item.valueRange,
+                steps = item.steps,
+                valueLabel = item.valueLabel,
+                extraInfo = item.extraInfo,
+                progress = item.progress,
+            )
     }
 }

@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.settings.component.content.storage.presenter
 
 import android.content.Context
@@ -19,8 +35,7 @@ class StoragePresenter(
     private val preferenceBuilder: IPreferenceBuilder,
     settings: Settings,
     private val storageController: IStorageController? = null,
-): CorePresenter(context, settings) {
-
+) : CorePresenter(context, settings) {
     private fun percentLabel(value: Float): String {
         val percent = (value * 100).toInt()
         return context.getString(R.string.label_settings_storage_percent, percent)
@@ -33,15 +48,16 @@ class StoragePresenter(
 
         // Intro hint
         preferenceBuilder.add(
-            entries = listOf(
-                SettingItem.HintCard(
-                    id = "storage_hint",
-                    title = context.getString(R.string.preference_title_storage),
-                    description = context.getString(R.string.preference_summary_storage),
-                    icon = Icons.Outlined.Storage,
-                    onClick = {},
-                )
-            )
+            entries =
+                listOf(
+                    SettingItem.HintCard(
+                        id = "storage_hint",
+                        title = context.getString(R.string.preference_title_storage),
+                        description = context.getString(R.string.preference_summary_storage),
+                        icon = Icons.Outlined.Storage,
+                        onClick = {},
+                    ),
+                ),
         )
 
         // Options for ratio (discrete steps)
@@ -49,40 +65,43 @@ class StoragePresenter(
         val selected = options.minByOrNull { abs(it - cache.cacheUsageRatio.value) } ?: options.first()
 
         // Storage info (optional if controller provided)
-        val extraInfoProvider: (() -> String)? = storageController?.let { controller ->
-            {
-                val free = controller.getFreeSpace(context, StorageType.CACHE)
-                val limit = controller.getStorageUsageLimit(context, StorageType.CACHE, cache)
-                val usedPercent = (selected * 100).toInt()
-                context.getString(
-                    R.string.label_settings_storage_info,
-                    percentLabel(selected),
-                    limit.toHumanReadableByteValue(),
-                    free.toHumanReadableByteValue(),
-                ) + " • " + context.getString(R.string.label_settings_storage_used_percent, usedPercent)
+        val extraInfoProvider: (() -> String)? =
+            storageController?.let { controller ->
+                {
+                    val free = controller.getFreeSpace(context, StorageType.CACHE)
+                    val limit = controller.getStorageUsageLimit(context, StorageType.CACHE, cache)
+                    val usedPercent = (selected * 100).toInt()
+                    context.getString(
+                        R.string.label_settings_storage_info,
+                        percentLabel(selected),
+                        limit.toHumanReadableByteValue(),
+                        free.toHumanReadableByteValue(),
+                    ) + " • " + context.getString(R.string.label_settings_storage_used_percent, usedPercent)
+                }
             }
-        }
-        val progressProvider: (() -> Float)? = storageController?.let { _ ->
-            { selected }
-        }
+        val progressProvider: (() -> Float)? =
+            storageController?.let { _ ->
+                { selected }
+            }
 
         preferenceBuilder.add(
-            entries = listOf(
-                SettingItem.SliderSetting(
-                    id = "storage_cache_ratio",
-                    value = { cache.cacheUsageRatio.value },
-                    onValueChange = { value ->
-                        // Snap to nearest step in options
-                        val snapped = options.minByOrNull { abs(it - value) } ?: value
-                        cache.cacheUsageRatio.value = snapped
-                    },
-                    valueRange = options.first()..options.last(),
-                    steps = options.size - 2,
-                    valueLabel = { v -> percentLabel(options.minByOrNull { abs(it - v) } ?: v) },
-                    extraInfo = extraInfoProvider,
-                    progress = progressProvider,
+            entries =
+                listOf(
+                    SettingItem.SliderSetting(
+                        id = "storage_cache_ratio",
+                        value = { cache.cacheUsageRatio.value },
+                        onValueChange = { value ->
+                            // Snap to nearest step in options
+                            val snapped = options.minByOrNull { abs(it - value) } ?: value
+                            cache.cacheUsageRatio.value = snapped
+                        },
+                        valueRange = options.first()..options.last(),
+                        steps = options.size - 2,
+                        valueLabel = { v -> percentLabel(options.minByOrNull { abs(it - v) } ?: v) },
+                        extraInfo = extraInfoProvider,
+                        progress = progressProvider,
+                    ),
                 ),
-            ),
         )
 
         return preferenceBuilder.build()

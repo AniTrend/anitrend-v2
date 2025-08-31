@@ -31,12 +31,18 @@ import co.anitrend.settings.component.content.notification.presenter.Notificatio
 import org.koin.compose.koinInject
 
 @Composable
-fun NotificationScreen(modifier: Modifier = Modifier, presenter: NotificationPresenter = koinInject()) {
+fun NotificationScreen(
+    modifier: Modifier = Modifier,
+    presenter: NotificationPresenter = koinInject(),
+) {
     NotificationContent(modifier = modifier, presenter = presenter)
 }
 
 @Composable
-private fun NotificationContent(modifier: Modifier = Modifier, presenter: NotificationPresenter) {
+private fun NotificationContent(
+    modifier: Modifier = Modifier,
+    presenter: NotificationPresenter,
+) {
     val items = presenter.getItems()
     SettingsItemsList(modifier = modifier, settingsItems = items)
 }
@@ -48,11 +54,16 @@ private fun NotificationScreenPreview(
 ) {
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
         // Local preview without DI
-        val presenter = NotificationPresenter(
-            context = androidx.compose.ui.platform.LocalContext.current,
-            settings = co.anitrend.android.core.settings.Settings(androidx.compose.ui.platform.LocalContext.current),
-            preferenceBuilder = co.anitrend.settings.component.builder.PreferenceBuilder(),
-        )
+        val presenter =
+            NotificationPresenter(
+                context = androidx.compose.ui.platform.LocalContext.current,
+                settings =
+                    co.anitrend.android.core.settings
+                        .Settings(androidx.compose.ui.platform.LocalContext.current),
+                preferenceBuilder =
+                    co.anitrend.settings.component.builder
+                        .PreferenceBuilder(),
+            )
         NotificationContent(presenter = presenter)
     }
 }

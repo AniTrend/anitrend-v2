@@ -37,7 +37,10 @@ fun StorageScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun StorageContent(modifier: Modifier = Modifier, presenter: StoragePresenter) {
+private fun StorageContent(
+    modifier: Modifier = Modifier,
+    presenter: StoragePresenter,
+) {
     val items = presenter.getItems()
     SettingsItemsList(modifier = modifier, settingsItems = items)
 }
@@ -48,11 +51,12 @@ private fun StorageScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     val context = LocalContext.current
-    val presenter = StoragePresenter(
-        context = context,
-        settings = Settings(context),
-        preferenceBuilder = PreferenceBuilder(),
-    )
+    val presenter =
+        StoragePresenter(
+            context = context,
+            settings = Settings(context),
+            preferenceBuilder = PreferenceBuilder(),
+        )
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
         StorageContent(presenter = presenter)
     }

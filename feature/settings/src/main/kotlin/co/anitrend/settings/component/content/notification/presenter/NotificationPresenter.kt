@@ -36,7 +36,6 @@ class NotificationPresenter(
     private val preferenceBuilder: IPreferenceBuilder,
     settings: Settings,
 ) : CorePresenter(context, settings) {
-
     fun getItems(): List<SettingItem> {
         preferenceBuilder.clear()
 
@@ -44,52 +43,60 @@ class NotificationPresenter(
         val hasPermission = context.hasNotificationPermissionFor(NotificationConfig.GENERAL)
         val hintTitle = context.getString(R.string.title_settings_notification_hint)
         val hintDescription =
-            if (hasPermission) context.getString(R.string.description_settings_notification_hint)
-            else context.getString(R.string.description_settings_notification_permission)
+            if (hasPermission) {
+                context.getString(R.string.description_settings_notification_hint)
+            } else {
+                context.getString(R.string.description_settings_notification_permission)
+            }
         val hintAction: () -> Unit =
-            if (hasPermission) ({ context.openAppNotificationSettings() })
-            else ({ context.requestPostNotificationPermissionIfPossible() })
+            if (hasPermission) {
+                ({ context.openAppNotificationSettings() })
+            } else {
+                ({ context.requestPostNotificationPermissionIfPossible() })
+            }
 
         preferenceBuilder.add(
-            entries = listOf(
-                SettingItem.HintCard(
-                    id = "notification_hint",
-                    title = hintTitle,
-                    description = hintDescription,
-                    icon = Icons.Outlined.Notifications,
-                    onClick = hintAction,
+            entries =
+                listOf(
+                    SettingItem.HintCard(
+                        id = "notification_hint",
+                        title = hintTitle,
+                        description = hintDescription,
+                        icon = Icons.Outlined.Notifications,
+                        onClick = hintAction,
+                    ),
                 ),
-            ),
         )
 
         // Section header and app-level toggles
         preferenceBuilder.add(
-            entries = listOf(
-                SettingItem.SwitchSetting(
-                    id = "notifications_master",
-                    title = context.getString(R.string.label_settings_notifications_master_toggle),
-                    summary = context.getString(R.string.summary_settings_notifications_master_toggle),
-                    icon = Icons.Outlined.Notifications,
-                    onValueChange = { settings.isNotificationsEnabled.value = it },
-                    onClick = { settings.isNotificationsEnabled.value },
+            entries =
+                listOf(
+                    SettingItem.SwitchSetting(
+                        id = "notifications_master",
+                        title = context.getString(R.string.label_settings_notifications_master_toggle),
+                        summary = context.getString(R.string.summary_settings_notifications_master_toggle),
+                        icon = Icons.Outlined.Notifications,
+                        onValueChange = { settings.isNotificationsEnabled.value = it },
+                        onClick = { settings.isNotificationsEnabled.value },
+                    ),
+                    SettingItem.SwitchSetting(
+                        id = "notifications_anilist",
+                        title = context.getString(R.string.label_settings_notifications_anilist_toggle),
+                        summary = context.getString(R.string.summary_settings_notifications_anilist_toggle),
+                        icon = Icons.Outlined.Tv,
+                        onValueChange = { settings.isAniListNotificationsEnabled.value = it },
+                        onClick = { settings.isAniListNotificationsEnabled.value },
+                    ),
+                    SettingItem.SwitchSetting(
+                        id = "notifications_announcements",
+                        title = context.getString(R.string.label_settings_notifications_announcements_toggle),
+                        summary = context.getString(R.string.summary_settings_notifications_announcements_toggle),
+                        icon = Icons.AutoMirrored.Outlined.Announcement,
+                        onValueChange = { settings.isAnnouncementNotificationsEnabled.value = it },
+                        onClick = { settings.isAnnouncementNotificationsEnabled.value },
+                    ),
                 ),
-                SettingItem.SwitchSetting(
-                    id = "notifications_anilist",
-                    title = context.getString(R.string.label_settings_notifications_anilist_toggle),
-                    summary = context.getString(R.string.summary_settings_notifications_anilist_toggle),
-                    icon = Icons.Outlined.Tv,
-                    onValueChange = { settings.isAniListNotificationsEnabled.value = it },
-                    onClick = { settings.isAniListNotificationsEnabled.value },
-                ),
-                SettingItem.SwitchSetting(
-                    id = "notifications_announcements",
-                    title = context.getString(R.string.label_settings_notifications_announcements_toggle),
-                    summary = context.getString(R.string.summary_settings_notifications_announcements_toggle),
-                    icon = Icons.AutoMirrored.Outlined.Announcement,
-                    onValueChange = { settings.isAnnouncementNotificationsEnabled.value = it },
-                    onClick = { settings.isAnnouncementNotificationsEnabled.value },
-                ),
-            ),
         )
 
         return preferenceBuilder.build()

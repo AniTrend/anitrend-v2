@@ -44,11 +44,12 @@ private fun SynchronizationScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     val context = LocalContext.current
-    val presenter = SynchronizationPresenter(
-        context = context,
-        settings = Settings(context),
-        preferenceBuilder = PreferenceBuilder()
-    )
+    val presenter =
+        SynchronizationPresenter(
+            context = context,
+            settings = Settings(context),
+            preferenceBuilder = PreferenceBuilder(),
+        )
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
         SynchronizationScreen(presenter = presenter)
     }
