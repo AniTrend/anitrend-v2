@@ -62,4 +62,15 @@ sealed class SettingItem(
         val displayText: (T) -> String,
         val displayDescription: ((T) -> String)? = null,
     ) : SettingItem(id)
+
+    data class SliderSetting(
+        override val id: String,
+        val value: () -> Float,
+        val onValueChange: (Float) -> Unit,
+        val valueRange: ClosedFloatingPointRange<Float>,
+        val steps: Int = 0,
+        val valueLabel: (Float) -> String = { it.toString() },
+        val extraInfo: (() -> String)? = null,
+        val progress: (() -> Float)? = null,
+    ) : SettingItem(id)
 }

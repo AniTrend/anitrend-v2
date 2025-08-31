@@ -16,32 +16,30 @@
  */
 package co.anitrend.settings.component.content.power
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.BatterySaver
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.settings.component.builder.PreferenceBuilder
+import co.anitrend.settings.component.compose.SettingsItemsList
+import co.anitrend.settings.component.content.power.presenter.PowerPresenter
+import org.koin.compose.koinInject
 
 @Composable
 fun PowerScreen(modifier: Modifier = Modifier) {
-    PowerContent(modifier = modifier)
+    val presenter: PowerPresenter = koinInject()
+    val items = presenter.getItems()
+    SettingsItemsList(modifier = modifier, settingsItems = items)
 }
 
 @Composable
-private fun PowerContent(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        AniTrendHintCard(
-            title = "Power management",
-            description = "Configure power saving preferences",
-            icon = Icons.Outlined.BatterySaver,
-            onClick = {},
-        )
-    }
+private fun PowerContent(modifier: Modifier = Modifier, presenter: PowerPresenter) {
+    val items = presenter.getItems()
+    SettingsItemsList(modifier = modifier, settingsItems = items)
 }
 
 @AniTrendPreview.Default
@@ -49,7 +47,13 @@ private fun PowerContent(modifier: Modifier = Modifier) {
 private fun PowerScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
+    val context = LocalContext.current
+    val presenter = PowerPresenter(
+        context = context,
+        settings = Settings(context),
+        preferenceBuilder = PreferenceBuilder(),
+    )
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
-        PowerContent()
+        PowerContent(presenter = presenter)
     }
 }

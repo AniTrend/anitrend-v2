@@ -22,6 +22,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import co.anitrend.android.core.helpers.notification.config.NotificationConfig
+import co.anitrend.data.settings.notification.INotificationSettings
 
 class NotificationHelper(
     private val notificationManager: NotificationManagerCompat,
@@ -44,5 +45,19 @@ class NotificationHelper(
         const val POST_NOTIFICATION_PERMISSION_REQUEST_CODE = 0x12
 
         fun notificationVisibilityFor(isAdult: Boolean) = if (isAdult) NotificationCompat.VISIBILITY_SECRET else NotificationCompat.VISIBILITY_PUBLIC
+
+        /**
+         * Evaluate whether notifications for the given [config] are enabled in app-level settings.
+         * Use this before scheduling or showing notifications.
+         */
+        fun isEnabledBySettings(config: NotificationConfig, settings: INotificationSettings): Boolean {
+            if (!settings.isNotificationsEnabled.value) return false
+            return when (config) {
+                NotificationConfig.GENERAL -> true
+                NotificationConfig.ANILIST -> settings.isAniListNotificationsEnabled.value
+                NotificationConfig.AIRING -> settings.areAiringNotificationsEnabled.value
+                NotificationConfig.ANNOUNCEMENT -> settings.isAnnouncementNotificationsEnabled.value
+            }
+        }
     }
 }

@@ -16,32 +16,30 @@
  */
 package co.anitrend.settings.component.content.privacy
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.PrivacyTip
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.settings.component.builder.PreferenceBuilder
+import co.anitrend.settings.component.compose.SettingsItemsList
+import co.anitrend.settings.component.content.privacy.presenter.PrivacyPresenter
+import org.koin.compose.koinInject
 
 @Composable
 fun PrivacyScreen(modifier: Modifier = Modifier) {
-    PrivacyContent(modifier = modifier)
+    val presenter: PrivacyPresenter = koinInject()
+    val items = presenter.getItems()
+    SettingsItemsList(modifier = modifier, settingsItems = items)
 }
 
 @Composable
-private fun PrivacyContent(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        AniTrendHintCard(
-            title = "Privacy settings",
-            description = "Configure your privacy preferences",
-            icon = Icons.Outlined.PrivacyTip,
-            onClick = {},
-        )
-    }
+private fun PrivacyContent(modifier: Modifier = Modifier, presenter: PrivacyPresenter) {
+    val items = presenter.getItems()
+    SettingsItemsList(modifier = modifier, settingsItems = items)
 }
 
 @AniTrendPreview.Default
@@ -49,7 +47,13 @@ private fun PrivacyContent(modifier: Modifier = Modifier) {
 private fun PrivacyScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
+    val context = LocalContext.current
+    val presenter = PrivacyPresenter(
+        context = context,
+        settings = Settings(context),
+        preferenceBuilder = PreferenceBuilder(),
+    )
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
-        PrivacyContent()
+        PrivacyContent(presenter = presenter)
     }
 }

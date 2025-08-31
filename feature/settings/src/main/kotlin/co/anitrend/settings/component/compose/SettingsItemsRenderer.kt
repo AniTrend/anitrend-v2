@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
 import co.anitrend.android.core.compose.design.category.AniTrendCategoryHeader
 import co.anitrend.android.core.compose.design.category.AniTrendCategoryItem
+import co.anitrend.android.core.compose.design.slider.AniTrendSliderItem
 import co.anitrend.android.core.compose.design.toggle.AniTrendSwitch
 import co.anitrend.settings.model.SettingItem
 
@@ -84,5 +85,15 @@ private fun RenderSettingItem(item: SettingItem) {
 
         is SettingItem.DialogSetting<*> ->
             PreferenceDialog(item = item)
+
+        is SettingItem.SliderSetting -> AniTrendSliderItem(
+            value = item.value,
+            onValueChange = item.onValueChange,
+            valueRange = item.valueRange,
+            steps = item.steps,
+            valueLabel = item.valueLabel,
+            extraInfo = item.extraInfo,
+            progress = item.progress,
+        )
     }
 }

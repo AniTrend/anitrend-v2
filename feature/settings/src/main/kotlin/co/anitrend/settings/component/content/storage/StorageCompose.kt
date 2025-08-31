@@ -16,32 +16,30 @@
  */
 package co.anitrend.settings.component.content.storage
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.settings.component.builder.PreferenceBuilder
+import co.anitrend.settings.component.compose.SettingsItemsList
+import co.anitrend.settings.component.content.storage.presenter.StoragePresenter
+import org.koin.compose.koinInject
 
 @Composable
 fun StorageScreen(modifier: Modifier = Modifier) {
-    StorageContent(modifier = modifier)
+    val presenter: StoragePresenter = koinInject()
+    val items = presenter.getItems()
+    SettingsItemsList(modifier = modifier, settingsItems = items)
 }
 
 @Composable
-private fun StorageContent(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        AniTrendHintCard(
-            title = "Storage settings",
-            description = "Configure storage and cache preferences",
-            icon = Icons.Outlined.Storage,
-            onClick = {},
-        )
-    }
+private fun StorageContent(modifier: Modifier = Modifier, presenter: StoragePresenter) {
+    val items = presenter.getItems()
+    SettingsItemsList(modifier = modifier, settingsItems = items)
 }
 
 @AniTrendPreview.Default
@@ -49,7 +47,13 @@ private fun StorageContent(modifier: Modifier = Modifier) {
 private fun StorageScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
+    val context = LocalContext.current
+    val presenter = StoragePresenter(
+        context = context,
+        settings = Settings(context),
+        preferenceBuilder = PreferenceBuilder(),
+    )
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
-        StorageContent()
+        StorageContent(presenter = presenter)
     }
 }

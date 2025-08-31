@@ -84,12 +84,8 @@ class SynchronizationPresenter(
             ),
         )
 
-        // Category + Dialog settings
+        // Dialog settings
         preferenceBuilder.add(
-            category = SettingItem.CategoryHeader(
-                id = "sync_header",
-                title = context.getString(R.string.preference_category_title_synchronization_intervals),
-            ),
             entries = listOf(
                 SettingItem.DialogSetting(
                     id = "sync_meta_interval",

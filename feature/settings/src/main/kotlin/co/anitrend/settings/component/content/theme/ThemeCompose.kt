@@ -16,32 +16,30 @@
  */
 package co.anitrend.settings.component.content.theme
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.settings.component.builder.PreferenceBuilder
+import co.anitrend.settings.component.compose.SettingsItemsList
+import co.anitrend.settings.component.content.theme.presenter.ThemePresenter
+import org.koin.compose.koinInject
 
 @Composable
 fun ThemeScreen(modifier: Modifier = Modifier) {
-    ThemeContent(modifier = modifier)
+    val presenter: ThemePresenter = koinInject()
+    val items = presenter.getItems()
+    SettingsItemsList(modifier = modifier, settingsItems = items)
 }
 
 @Composable
-private fun ThemeContent(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        AniTrendHintCard(
-            title = "Theme settings",
-            description = "Configure application appearance and theme",
-            icon = Icons.Outlined.ColorLens,
-            onClick = {},
-        )
-    }
+private fun ThemeContent(modifier: Modifier = Modifier, presenter: ThemePresenter) {
+    val items = presenter.getItems()
+    SettingsItemsList(modifier = modifier, settingsItems = items)
 }
 
 @AniTrendPreview.Default
@@ -49,7 +47,13 @@ private fun ThemeContent(modifier: Modifier = Modifier) {
 private fun ThemeScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
+    val context = LocalContext.current
+    val presenter = ThemePresenter(
+        context = context,
+        settings = Settings(context),
+        preferenceBuilder = PreferenceBuilder(),
+    )
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
-        ThemeContent()
+        ThemeContent(presenter = presenter)
     }
 }

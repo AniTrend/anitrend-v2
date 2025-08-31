@@ -37,6 +37,7 @@ import co.anitrend.data.settings.connectivity.IConnectivitySettings
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.data.settings.developer.IDeveloperSettings
+import co.anitrend.data.settings.notification.INotificationSettings
 import co.anitrend.data.settings.power.IPowerSettings
 import co.anitrend.data.settings.privacy.IPrivacySettings
 import co.anitrend.data.settings.refresh.IRefreshBehaviourSettings
@@ -57,6 +58,7 @@ class Settings(
     IRefreshBehaviourSettings,
     ICustomizationSettings,
     IPowerSettings,
+    INotificationSettings,
     IConnectivitySettings,
     IUserSettings,
     ICacheSettings,
@@ -166,6 +168,30 @@ class Settings(
             preference = this,
         )
 
+    override val isNotificationsEnabled =
+        BooleanSetting(
+            key = R.string.settings_notifications_enabled,
+            default = true,
+            resources = context.resources,
+            preference = this,
+        )
+
+    override val isAniListNotificationsEnabled =
+        BooleanSetting(
+            key = R.string.settings_notifications_anilist_enabled,
+            default = true,
+            resources = context.resources,
+            preference = this,
+        )
+
+    override val isAnnouncementNotificationsEnabled =
+        BooleanSetting(
+            key = R.string.settings_notifications_announcements_enabled,
+            default = true,
+            resources = context.resources,
+            preference = this,
+        )
+
     override val titleLanguage =
         EnumSetting(
             key = R.string.settings_user_title_language,
@@ -255,6 +281,7 @@ class Settings(
                 ICustomizationSettings::class,
                 IPowerSettings::class,
                 IConnectivitySettings::class,
+                INotificationSettings::class,
                 IUserSettings::class,
                 ICacheSettings::class,
                 ISyncSettings::class,
