@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "ac0b90c81bb73d79dcdcd1aa1d425997",
+    "identityHash": "0aba0136f0d02a727099ce4f5c8bdb3f",
     "entities": [
       {
         "tableName": "cache_log",
@@ -3268,6 +3268,78 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "edge_news",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `cursor` TEXT NOT NULL, `news_id` TEXT NOT NULL, `title` TEXT NOT NULL, `url` TEXT NOT NULL, `image` TEXT, `source` TEXT, `published_at` INTEGER, `description` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "cursor",
+            "columnName": "cursor",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "newsId",
+            "columnName": "news_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image",
+            "columnName": "image",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "publishedAt",
+            "columnName": "published_at",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_edge_news_cursor",
+            "unique": true,
+            "columnNames": [
+              "cursor"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_edge_news_cursor` ON `${TABLE_NAME}` (`cursor`)"
+          }
+        ]
       }
     ],
     "views": [
@@ -3282,7 +3354,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ac0b90c81bb73d79dcdcd1aa1d425997')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0aba0136f0d02a727099ce4f5c8bdb3f')"
     ]
   }
 }

@@ -27,6 +27,7 @@ import co.anitrend.data.android.cache.entity.CacheEntity
 import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.android.database.converter.TypeConverterEnum
 import co.anitrend.data.android.database.converter.TypeConverterObject
+import co.anitrend.data.android.database.migration.AUTO_MIGRATION_10_11
 import co.anitrend.data.android.database.migration.migrations
 import co.anitrend.data.auth.entity.AuthEntity
 import co.anitrend.data.character.entity.CharacterEntity
@@ -34,19 +35,22 @@ import co.anitrend.data.character.entity.fts.CharacterFtsEntity
 import co.anitrend.data.customlist.entity.CustomListEntity
 import co.anitrend.data.customscore.entity.CustomScoreEntity
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
+import co.anitrend.data.edge.episode.entity.EdgeEpisodeEntity
 import co.anitrend.data.edge.genre.entity.EdgeGenreEntity
+import co.anitrend.data.edge.image.entity.EdgeMediaImageEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaEntity
 import co.anitrend.data.edge.navigation.entity.EdgeNavigationEntity
+import co.anitrend.data.edge.network.entity.EdgeNetworkEntity
+import co.anitrend.data.edge.news.entity.EdgeNewsEntity
+import co.anitrend.data.edge.season.entity.EdgeSeasonEntity
+import co.anitrend.data.edge.theme.entity.EdgeThemeEntity
+import co.anitrend.data.edge.trailer.entity.EdgeTrailerEntity
 import co.anitrend.data.feed.episode.entity.EpisodeEntity
 import co.anitrend.data.feed.episode.entity.fts.EpisodeFtsEntity
 import co.anitrend.data.feed.news.entity.NewsEntity
 import co.anitrend.data.feed.news.entity.fts.NewsFtsEntity
 import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
-import co.anitrend.data.jikan.author.entity.JikanAuthorEntity
-import co.anitrend.data.jikan.licensor.entity.JikanLicensorEntity
-import co.anitrend.data.jikan.media.entity.JikanEntity
-import co.anitrend.data.jikan.producer.entity.JikanProducerEntity
-import co.anitrend.data.jikan.studio.entity.JikanStudioEntity
 import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.fts.MediaFtsEntity
@@ -54,7 +58,6 @@ import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.CustomListCountView
 import co.anitrend.data.medialist.entity.view.MediaListCountView
 import co.anitrend.data.rank.entity.RankEntity
-import co.anitrend.data.relation.entity.RelationEntity
 import co.anitrend.data.review.entity.ReviewEntity
 import co.anitrend.data.staff.entity.StaffEntity
 import co.anitrend.data.staff.entity.fts.StaffFtsEntity
@@ -72,7 +75,7 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 
 @Database(
     entities = [
-        CacheEntity::class, RelationEntity::class,
+        CacheEntity::class,
         AuthEntity::class, TagEntity::class, TagConnectionEntity::class,
         GenreEntity::class, GenreConnectionEntity::class,
         MediaEntity::class, MediaFtsEntity::class, AiringScheduleEntity::class,
@@ -81,18 +84,23 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         NewsEntity::class, NewsFtsEntity::class, EpisodeEntity::class, EpisodeFtsEntity::class,
         CharacterEntity::class, CharacterFtsEntity::class, StudioEntity::class, StudioFtsEntity::class,
         StaffEntity::class, StaffFtsEntity::class, LinkEntity::class, RankEntity::class,
-        JikanEntity::class, JikanStudioEntity::class, JikanLicensorEntity::class,
-        JikanProducerEntity::class, JikanAuthorEntity::class,
         CustomListEntity::class, CustomScoreEntity::class,
         UserPreviousNameEntity::class, ReviewEntity::class,
         UserNotificationEntity::class,
-        EdgeConfigEntity::class, EdgeNavigationEntity::class, EdgeGenreEntity::class,
+        EdgeConfigEntity::class, EdgeEpisodeEntity::class,
+        EdgeGenreEntity::class, EdgeMediaImageEntity::class,
+        EdgeMediaEntity::class, EdgeNavigationEntity::class,
+        EdgeNetworkEntity::class, EdgeNewsEntity::class,
+        EdgeSeasonEntity::class, EdgeThemeEntity::class,
+        EdgeTrailerEntity::class,
     ],
     views = [MediaListCountView::class, CustomListCountView::class],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
     autoMigrations = [
         AutoMigration(from = 6, to = 8),
         AutoMigration(from = 8, to = 9),
+        AutoMigration(from = 9, to = 10),
+        AutoMigration(from = 10, to = 11, spec = AUTO_MIGRATION_10_11::class),
     ],
 )
 @TypeConverters(
@@ -105,7 +113,7 @@ internal abstract class AniTrendStore :
     RoomDatabase(),
     IAniTrendStore {
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 9
+        const val DATABASE_SCHEMA_VERSION = 11
 
         internal fun create(applicationContext: Context): IAniTrendStore =
             Room
@@ -113,7 +121,7 @@ internal abstract class AniTrendStore :
                     applicationContext,
                     AniTrendStore::class.java,
                     "anitrend-db",
-                ).fallbackToDestructiveMigration()
+                ).fallbackToDestructiveMigration(false)
                 .addMigrations(*migrations)
                 .build()
     }

@@ -18,29 +18,41 @@ package co.anitrend.domain.media.entity.attribute.origin
 
 data class MediaSourceId(
     override val aniDb: Long?,
-    override val anilist: Long?,
+    override val aniList: Long?,
     override val animePlanet: String?,
     override val aniSearch: Long?,
     override val imdb: String?,
     override val kitsu: Long?,
     override val liveChart: Long?,
-    override val notifyMoe: String?,
-    override val theMovieDb: Long?,
-    override val mal: Long?,
+    override val myAnimeList: Long?,
+    override val notify: String?,
+    override val shoboi: Long?,
+    override val slug: String?,
+    override val tmdb: Long?,
+    override val trakt: Long?,
+    override val tvDb: Long?,
+    override val tvMaze: Long?,
+    override val tvRage: String?
 ) : IMediaSourceId {
     companion object {
         fun empty() =
             MediaSourceId(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
+                aniDb = null,
+                aniList = null,
+                animePlanet = null,
+                aniSearch = null,
+                imdb = null,
+                kitsu = null,
+                liveChart = null,
+                myAnimeList = null,
+                notify = null,
+                shoboi = null,
+                slug = null,
+                tmdb = null,
+                trakt = null,
+                tvDb = null,
+                tvMaze = null,
+                tvRage = null,
             )
     }
 }

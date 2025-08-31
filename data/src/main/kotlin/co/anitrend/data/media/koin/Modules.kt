@@ -52,8 +52,7 @@ private val sourceModule =
                     ),
                 converter = get(),
                 clearDataHelper = get(),
-                jikanSource = get(),
-                moeSource = get(),
+                edgeSource = get(),
                 cachePolicy = get<MediaCache>(),
                 dispatcher = get(),
             )

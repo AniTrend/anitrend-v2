@@ -53,12 +53,6 @@ internal object Modules {
         Core("data:core"),
         Feed("data:feed"),
         Imgur("data:imgur"),
-        Jikan("data:jikan"),
-        Relation("data:relation"),
-        Theme("data:theme"),
-        TheXem("data:thexem"),
-        Tmdb("data:tmdb"),
-        Trakt("data:trakt"),
         Settings("data:settings"),
         Edge("data:edge"),
     }
