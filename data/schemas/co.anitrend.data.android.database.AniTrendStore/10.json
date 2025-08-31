@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 9,
-    "identityHash": "0aba0136f0d02a727099ce4f5c8bdb3f",
+    "version": 10,
+    "identityHash": "77b3b419486bf257d7765762e1956710",
     "entities": [
       {
         "tableName": "cache_log",
@@ -3340,6 +3340,139 @@
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_edge_news_cursor` ON `${TABLE_NAME}` (`cursor`)"
           }
         ]
+      },
+      {
+        "tableName": "edge_media",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title_romaji` TEXT, `title_english` TEXT, `title_native` TEXT, `format` TEXT, `status` TEXT, `banner` TEXT, `description` TEXT, `fanart` TEXT, `season` TEXT, `season_year` INTEGER, `cover_medium` TEXT, `cover_large` TEXT, `cover_xlarge` TEXT, `cover_color` TEXT, `age_rating` TEXT, `is_adult` INTEGER, `id_anilist` INTEGER, `id_mal` INTEGER, `id_notify` TEXT, `id_trakt` INTEGER, `id_tvdb` INTEGER, `id_tmdb` INTEGER, `updated_at` INTEGER, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "titleRomaji",
+            "columnName": "title_romaji",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "titleEnglish",
+            "columnName": "title_english",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "titleNative",
+            "columnName": "title_native",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "format",
+            "columnName": "format",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "bannerImage",
+            "columnName": "banner",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "fanart",
+            "columnName": "fanart",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "season",
+            "columnName": "season",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "seasonYear",
+            "columnName": "season_year",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "coverMedium",
+            "columnName": "cover_medium",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "coverLarge",
+            "columnName": "cover_large",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "coverExtraLarge",
+            "columnName": "cover_xlarge",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "coverColor",
+            "columnName": "cover_color",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "ageRating",
+            "columnName": "age_rating",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isAdult",
+            "columnName": "is_adult",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "idAniList",
+            "columnName": "id_anilist",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "idMyAnimeList",
+            "columnName": "id_mal",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "idNotify",
+            "columnName": "id_notify",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "idTrakt",
+            "columnName": "id_trakt",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "idTvdb",
+            "columnName": "id_tvdb",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "idTmdb",
+            "columnName": "id_tmdb",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
       }
     ],
     "views": [
@@ -3354,7 +3487,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0aba0136f0d02a727099ce4f5c8bdb3f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '77b3b419486bf257d7765762e1956710')"
     ]
   }
 }

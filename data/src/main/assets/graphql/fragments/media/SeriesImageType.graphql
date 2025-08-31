@@ -1,0 +1,11 @@
+fragment SeriesImageType on SeriesImageType {
+  posters {
+    ... ImageBackdrop
+  }
+  logos {
+    ... ImageBackdrop
+  }
+  backdrops {
+    ... ImageBackdrop
+  }
+}

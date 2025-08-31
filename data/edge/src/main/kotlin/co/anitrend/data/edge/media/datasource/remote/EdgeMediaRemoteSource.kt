@@ -14,23 +14,23 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.edge.koin
+package co.anitrend.data.edge.media.datasource.remote
 
-import co.anitrend.data.edge.config.koin.edgeConfigModules
+import co.anitrend.data.core.GRAPHQL
+import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.edge.core.api.factory.EdgeApiFactory
-import co.anitrend.data.edge.genre.koin.edgeGenreModule
-import co.anitrend.data.edge.navigation.koin.edgeNavigationModule
-import co.anitrend.data.edge.news.koin.edgeNewsModules
-import co.anitrend.data.edge.media.koin.edgeMediaModules
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.module
+import co.anitrend.data.edge.media.model.remote.EdgeMediaModel
+import io.github.wax911.library.annotation.GraphQuery
+import io.github.wax911.library.model.request.QueryContainerBuilder
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.POST
 
-private val coreModule =
-    module {
-        singleOf(::EdgeApiFactory)
-    }
-
-val edgeModules =
-    module {
-        includes(coreModule, edgeConfigModules, edgeNavigationModule, edgeGenreModule, edgeNewsModules, edgeMediaModules)
-    }
+internal interface EdgeMediaRemoteSource {
+    @GRAPHQL
+    @GraphQuery("EdgeMediaById")
+    @POST(EdgeApiFactory.BASE_ENDPOINT_PATH)
+    suspend fun getMediaById(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<EdgeMediaModel>>
+}

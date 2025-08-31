@@ -36,6 +36,8 @@ import co.anitrend.data.customscore.entity.CustomScoreEntity
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
 import co.anitrend.data.edge.genre.entity.EdgeGenreEntity
 import co.anitrend.data.edge.navigation.entity.EdgeNavigationEntity
+import co.anitrend.data.edge.news.entity.EdgeNewsEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaEntity
 import co.anitrend.data.feed.episode.entity.EpisodeEntity
 import co.anitrend.data.feed.episode.entity.fts.EpisodeFtsEntity
 import co.anitrend.data.feed.news.entity.NewsEntity
@@ -86,13 +88,15 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         CustomListEntity::class, CustomScoreEntity::class,
         UserPreviousNameEntity::class, ReviewEntity::class,
         UserNotificationEntity::class,
-        EdgeConfigEntity::class, EdgeNavigationEntity::class, EdgeGenreEntity::class,
+    EdgeConfigEntity::class, EdgeNavigationEntity::class, EdgeGenreEntity::class,
+    EdgeNewsEntity::class, EdgeMediaEntity::class,
     ],
     views = [MediaListCountView::class, CustomListCountView::class],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
     autoMigrations = [
         AutoMigration(from = 6, to = 8),
         AutoMigration(from = 8, to = 9),
+        AutoMigration(from = 9, to = 10),
     ],
 )
 @TypeConverters(
@@ -104,8 +108,9 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 internal abstract class AniTrendStore :
     RoomDatabase(),
     IAniTrendStore {
+
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 9
+        const val DATABASE_SCHEMA_VERSION = 10
 
         internal fun create(applicationContext: Context): IAniTrendStore =
             Room

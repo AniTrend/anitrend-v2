@@ -21,6 +21,7 @@ When developing new features or modifying existing ones, it’s important to **f
 - Remember to handle state hoisting – view state should come from ViewModel (which may combine DataState flows).
 - Use accompanist libraries included for things like system UI controller, pager, etc., rather than writing from scratch.
 - **Resource Strings and Localization**: All user-facing strings should be in `strings.xml`. The project likely has multi-language support (the README mentions POEditor for translations[83]). When adding text, add an English entry to the appropriate `strings.xml`. Do not hard-code strings in code. Similarly, use dimension and style resources for spacing and text appearance, consistent with Material guidelines.
+- **Import Clarity**: Avoid wildcard imports. The formatter should handle this, but ensure your IDE is set to not use `*` imports for clarity, and avoid using inline references when you can import the class directly, the only exceptions are for `R` classes and static imports, that are nested classes (in that case import the parent class).
 
 ## String Resource Naming Conventions
 

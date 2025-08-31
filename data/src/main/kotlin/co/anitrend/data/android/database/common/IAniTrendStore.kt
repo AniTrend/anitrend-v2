@@ -27,6 +27,8 @@ import co.anitrend.data.customscore.datasource.ICustomScoreStore
 import co.anitrend.data.edge.config.datasource.local.IEdgeConfigStore
 import co.anitrend.data.edge.genre.datasource.IEdgeGenreStore
 import co.anitrend.data.edge.navigation.datasource.IEdgeNavigationStore
+import co.anitrend.data.edge.news.datasource.IEdgeNewsStore
+import co.anitrend.data.edge.media.datasource.local.IEdgeMediaStore
 import co.anitrend.data.feed.episode.datasource.local.IEpisodeStore
 import co.anitrend.data.feed.news.datasource.local.INewsStore
 import co.anitrend.data.genre.datasource.local.IGenreStore
@@ -66,7 +68,9 @@ internal interface IAniTrendStore :
     IReviewStore,
     IEdgeConfigStore,
     IEdgeGenreStore,
-    IEdgeNavigationStore {
+    IEdgeNavigationStore,
+    IEdgeNewsStore,
+    IEdgeMediaStore {
     companion object {
         /** Binding types for [IAniTrendStore] */
         val BINDINGS =
@@ -95,6 +99,8 @@ internal interface IAniTrendStore :
                 IEdgeConfigStore::class,
                 IEdgeGenreStore::class,
                 IEdgeNavigationStore::class,
+                IEdgeNewsStore::class,
+                IEdgeMediaStore::class,
                 RoomDatabase::class,
             )
     }

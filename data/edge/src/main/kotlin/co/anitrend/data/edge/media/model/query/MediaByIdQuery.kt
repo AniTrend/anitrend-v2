@@ -14,23 +14,8 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.edge.koin
+package co.anitrend.data.edge.media.model.query
 
-import co.anitrend.data.edge.config.koin.edgeConfigModules
-import co.anitrend.data.edge.core.api.factory.EdgeApiFactory
-import co.anitrend.data.edge.genre.koin.edgeGenreModule
-import co.anitrend.data.edge.navigation.koin.edgeNavigationModule
-import co.anitrend.data.edge.news.koin.edgeNewsModules
-import co.anitrend.data.edge.media.koin.edgeMediaModules
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.module
-
-private val coreModule =
-    module {
-        singleOf(::EdgeApiFactory)
-    }
-
-val edgeModules =
-    module {
-        includes(coreModule, edgeConfigModules, edgeNavigationModule, edgeGenreModule, edgeNewsModules, edgeMediaModules)
-    }
+internal data class MediaByIdQuery(
+    val id: Int,
+)
