@@ -35,15 +35,17 @@ class SynchronizationPresenter(
     private val preferenceBuilder: IPreferenceBuilder,
     settings: Settings,
 ) : CorePresenter(context, settings) {
-
     private fun labelForSeconds(seconds: Int): String {
         val minutes = seconds / 60
         return when {
             minutes < 60 -> context.getString(R.string.label_settings_sync_every_minutes, minutes)
             minutes % 60 == 0 -> {
                 val hours = minutes / 60
-                if (hours == 1) context.getString(R.string.label_settings_sync_every_hour, hours)
-                else context.getString(R.string.label_settings_sync_every_hours, hours)
+                if (hours == 1) {
+                    context.getString(R.string.label_settings_sync_every_hour, hours)
+                } else {
+                    context.getString(R.string.label_settings_sync_every_hours, hours)
+                }
             }
             else -> {
                 val hours = minutes / 60
@@ -53,8 +55,10 @@ class SynchronizationPresenter(
         }
     }
 
-    private fun <T> coerceToOptions(value: T, options: List<T>): T =
-        options.firstOrNull { it == value } ?: options.first()
+    private fun <T> coerceToOptions(
+        value: T,
+        options: List<T>,
+    ): T = options.firstOrNull { it == value } ?: options.first()
 
     fun getItems(): List<SettingItem> {
         preferenceBuilder.clear()
@@ -64,7 +68,7 @@ class SynchronizationPresenter(
         // Options in seconds
         val metaOptions = listOf(900, 1800, 3600, 7200, 14400, 43200) // 15m -> 12h
         val listOptions = listOf(900, 1800, 3600, 7200, 14400, 43200) // 15m -> 12h
-        val userOptions = listOf(300, 900, 1800, 3600, 7200)          // 5m -> 2h
+        val userOptions = listOf(300, 900, 1800, 3600, 7200) // 5m -> 2h
 
         // Current selections (respect minimums)
         val selectedMeta = coerceToOptions(max(syncSettings.metaSyncInterval.value, ISyncSettings.MINIMUM_INTERVAL), metaOptions)
@@ -73,51 +77,53 @@ class SynchronizationPresenter(
 
         // Hint
         preferenceBuilder.add(
-            entries = listOf(
-                SettingItem.HintCard(
-                    id = "sync_hint",
-                    title = context.getString(R.string.preference_title_sync),
-                    description = context.getString(R.string.preference_summary_sync),
-                    icon = Icons.Outlined.Sync,
-                    onClick = { /* TODO: deeplink to docs/help if available */ },
+            entries =
+                listOf(
+                    SettingItem.HintCard(
+                        id = "sync_hint",
+                        title = context.getString(R.string.preference_title_sync),
+                        description = context.getString(R.string.preference_summary_sync),
+                        icon = Icons.Outlined.Sync,
+                        onClick = { /* TODO: deeplink to docs/help if available */ },
+                    ),
                 ),
-            ),
         )
 
         // Dialog settings
         preferenceBuilder.add(
-            entries = listOf(
-                SettingItem.DialogSetting(
-                    id = "sync_meta_interval",
-                    title = context.getString(R.string.title_settings_sync_metadata_interval),
-                    summary = context.getString(R.string.summary_settings_sync_metadata_interval),
-                    icon = Icons.Outlined.AppsOutage,
-                    options = metaOptions,
-                    selectedOption = { selectedMeta },
-                    onOptionSelected = { option -> syncSettings.metaSyncInterval.value = option },
-                    displayText = { seconds -> labelForSeconds(seconds) },
+            entries =
+                listOf(
+                    SettingItem.DialogSetting(
+                        id = "sync_meta_interval",
+                        title = context.getString(R.string.title_settings_sync_metadata_interval),
+                        summary = context.getString(R.string.summary_settings_sync_metadata_interval),
+                        icon = Icons.Outlined.AppsOutage,
+                        options = metaOptions,
+                        selectedOption = { selectedMeta },
+                        onOptionSelected = { option -> syncSettings.metaSyncInterval.value = option },
+                        displayText = { seconds -> labelForSeconds(seconds) },
+                    ),
+                    SettingItem.DialogSetting(
+                        id = "sync_list_interval",
+                        title = context.getString(R.string.title_settings_sync_lists_interval),
+                        summary = context.getString(R.string.summary_settings_sync_lists_interval),
+                        icon = Icons.Outlined.Checklist,
+                        options = listOptions,
+                        selectedOption = { selectedList },
+                        onOptionSelected = { option -> syncSettings.listSyncInterval.value = option },
+                        displayText = { seconds -> labelForSeconds(seconds) },
+                    ),
+                    SettingItem.DialogSetting(
+                        id = "sync_user_interval",
+                        title = context.getString(R.string.title_settings_sync_user_interval),
+                        summary = context.getString(R.string.summary_settings_sync_user_interval),
+                        icon = Icons.Outlined.SupervisedUserCircle,
+                        options = userOptions,
+                        selectedOption = { selectedUser },
+                        onOptionSelected = { option -> syncSettings.userSyncInterval.value = option },
+                        displayText = { seconds -> labelForSeconds(seconds) },
+                    ),
                 ),
-                SettingItem.DialogSetting(
-                    id = "sync_list_interval",
-                    title = context.getString(R.string.title_settings_sync_lists_interval),
-                    summary = context.getString(R.string.summary_settings_sync_lists_interval),
-                    icon = Icons.Outlined.Checklist,
-                    options = listOptions,
-                    selectedOption = { selectedList },
-                    onOptionSelected = { option -> syncSettings.listSyncInterval.value = option },
-                    displayText = { seconds -> labelForSeconds(seconds) },
-                ),
-                SettingItem.DialogSetting(
-                    id = "sync_user_interval",
-                    title = context.getString(R.string.title_settings_sync_user_interval),
-                    summary = context.getString(R.string.summary_settings_sync_user_interval),
-                    icon = Icons.Outlined.SupervisedUserCircle,
-                    options = userOptions,
-                    selectedOption = { selectedUser },
-                    onOptionSelected = { option -> syncSettings.userSyncInterval.value = option },
-                    displayText = { seconds -> labelForSeconds(seconds) },
-                ),
-            ),
         )
 
         return preferenceBuilder.build()

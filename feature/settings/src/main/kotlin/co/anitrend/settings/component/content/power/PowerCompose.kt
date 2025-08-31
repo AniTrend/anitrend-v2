@@ -37,7 +37,10 @@ fun PowerScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun PowerContent(modifier: Modifier = Modifier, presenter: PowerPresenter) {
+private fun PowerContent(
+    modifier: Modifier = Modifier,
+    presenter: PowerPresenter,
+) {
     val items = presenter.getItems()
     SettingsItemsList(modifier = modifier, settingsItems = items)
 }
@@ -48,11 +51,12 @@ private fun PowerScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     val context = LocalContext.current
-    val presenter = PowerPresenter(
-        context = context,
-        settings = Settings(context),
-        preferenceBuilder = PreferenceBuilder(),
-    )
+    val presenter =
+        PowerPresenter(
+            context = context,
+            settings = Settings(context),
+            preferenceBuilder = PreferenceBuilder(),
+        )
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
         PowerContent(presenter = presenter)
     }

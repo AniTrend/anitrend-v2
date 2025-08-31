@@ -79,10 +79,11 @@ fun Context.openAppNotificationSettings() {
         startActivity(intent)
     } catch (_: Exception) {
         // Fallback to general app settings if specific action not available
-        val fallback = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            data = android.net.Uri.parse("package:$packageName")
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
+        val fallback =
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = android.net.Uri.parse("package:$packageName")
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
         startActivity(fallback)
     }
 }

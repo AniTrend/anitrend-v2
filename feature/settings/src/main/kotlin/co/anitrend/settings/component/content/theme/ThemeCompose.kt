@@ -37,7 +37,10 @@ fun ThemeScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ThemeContent(modifier: Modifier = Modifier, presenter: ThemePresenter) {
+private fun ThemeContent(
+    modifier: Modifier = Modifier,
+    presenter: ThemePresenter,
+) {
     val items = presenter.getItems()
     SettingsItemsList(modifier = modifier, settingsItems = items)
 }
@@ -48,11 +51,12 @@ private fun ThemeScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     val context = LocalContext.current
-    val presenter = ThemePresenter(
-        context = context,
-        settings = Settings(context),
-        preferenceBuilder = PreferenceBuilder(),
-    )
+    val presenter =
+        ThemePresenter(
+            context = context,
+            settings = Settings(context),
+            preferenceBuilder = PreferenceBuilder(),
+        )
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
         ThemeContent(presenter = presenter)
     }

@@ -50,7 +50,10 @@ class NotificationHelper(
          * Evaluate whether notifications for the given [config] are enabled in app-level settings.
          * Use this before scheduling or showing notifications.
          */
-        fun isEnabledBySettings(config: NotificationConfig, settings: INotificationSettings): Boolean {
+        fun isEnabledBySettings(
+            config: NotificationConfig,
+            settings: INotificationSettings,
+        ): Boolean {
             if (!settings.isNotificationsEnabled.value) return false
             return when (config) {
                 NotificationConfig.GENERAL -> true

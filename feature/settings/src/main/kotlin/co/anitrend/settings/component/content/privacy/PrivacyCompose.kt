@@ -37,7 +37,10 @@ fun PrivacyScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun PrivacyContent(modifier: Modifier = Modifier, presenter: PrivacyPresenter) {
+private fun PrivacyContent(
+    modifier: Modifier = Modifier,
+    presenter: PrivacyPresenter,
+) {
     val items = presenter.getItems()
     SettingsItemsList(modifier = modifier, settingsItems = items)
 }
@@ -48,11 +51,12 @@ private fun PrivacyScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     val context = LocalContext.current
-    val presenter = PrivacyPresenter(
-        context = context,
-        settings = Settings(context),
-        preferenceBuilder = PreferenceBuilder(),
-    )
+    val presenter =
+        PrivacyPresenter(
+            context = context,
+            settings = Settings(context),
+            preferenceBuilder = PreferenceBuilder(),
+        )
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
         PrivacyContent(presenter = presenter)
     }
