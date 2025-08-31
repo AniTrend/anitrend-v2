@@ -1,0 +1,143 @@
+query EdgeMediaById($id: Int!) {
+  mediaById(id: $id) {
+    id
+    title {
+      ... on SeriesTitleType {
+        japanese
+        harigana
+        canonical
+        english
+        romaji
+        synonyms
+      }
+    }
+    cover {
+      ... CoverImageType
+    }
+    banner
+    description
+    fanart
+    format
+    source
+    status
+    ageRating
+    isAdult
+    homepage
+    airedEpisodes
+    mediaId {
+      ... on SeriesIdType {
+        anisearch
+        animePlanet
+        themoviedb
+        anilist
+        anidb
+        imdb
+        kitsu
+        livechart
+        myanimelist
+        notify
+        shoboi
+        slug
+        trakt
+        tvdb
+        tvMazeId
+        tvrage
+      }
+    }
+    image {
+      ... CoverImageType
+    }
+    schedule {
+      ... on SeriesScheduleType {
+        lastAiredEpisode {
+          ... ScheduleEpisodeType
+        }
+        lastAirDate
+        firstAirDate
+        nextEpisodeToAir {
+          ... ScheduleEpisodeType
+        }
+      }
+    }
+    seasons {
+      ... on SeriesSeasonType {
+        name
+        tmdbId
+        overview
+        image {
+          ... SeriesImageType
+        }
+        episodeCount
+        cover
+        airDate
+        number
+        episodes {
+          ... on SeriesEpisodeType {
+            airDate
+            image
+            overview
+            name
+            id
+            title
+            absoluteEpisodeNumber
+            airedAfterSeasonNumber
+            airedBeforeSeasonNumber
+            episodeNumber
+            airDate
+            poster
+            runtime
+            seasonNumber
+            tvdbId
+            tvdbShowId
+            crew {
+              ... EpisodeCrewType
+            }
+            guests {
+              ... EpisodeCrewType
+            }
+          }
+        }
+      }
+    }
+    networks {
+      ... on SeriesNetworkType {
+        isPrimary
+        category
+        id
+        logoPath
+        name
+        originCountry
+      }
+    }
+    themeSongs {
+      ... on AnimeThemeType {
+        name
+        id
+        audio
+        meta {
+          ... on AnimeThemeMetaType {
+            number
+            type
+            version
+          }
+        }
+        video
+      }
+    }
+    trailers {
+      ... on SeriesTrailerType {
+        id
+        thumbnail
+        site
+      }
+    }
+    updatedAt
+  }
+}
+
+# Fragments moved to separate files under `data/src/main/assets/graphql/fragments/`
+# - fragments/media/CoverImageType.graphql
+# - fragments/media/SeriesImageType.graphql
+# - fragments/media/ImageBackdrop.graphql
+# - fragments/airing/ScheduleEpisodeType.graphql
+# - fragments/media/EpisodeCrewType.graphql

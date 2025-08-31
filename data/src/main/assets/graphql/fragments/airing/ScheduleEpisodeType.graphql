@@ -1,0 +1,12 @@
+fragment ScheduleEpisodeType on SeriesScheduleEpisodeType {
+  seasonNumber
+  runtime
+  airDate
+  episodeNumber
+  id
+  name
+  overview
+  image
+  tmdbId
+  productionCode
+}
