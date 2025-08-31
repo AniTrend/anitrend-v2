@@ -16,7 +16,6 @@
  */
 package co.anitrend.common.media.ui.compose.component.status
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,15 +30,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.ErrorOutline
-import androidx.compose.material.icons.filled.PauseCircleOutline
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.SettingsInputAntenna
-import androidx.compose.material.icons.filled.Tv
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -48,8 +43,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -121,48 +114,9 @@ fun MediaStatusSection(
 }
 
 @Composable
-private fun SectionTitleRow(mediaType: MediaType) {
-    val titleIcon =
-        when (mediaType) {
-            MediaType.ANIME -> Icons.Filled.Tv
-            else -> Icons.AutoMirrored.Filled.MenuBook
-        }
-    val titleText =
-        stringResource(
-            id =
-                when (mediaType) {
-                    MediaType.ANIME -> R.string.label_media_status_airing
-                    else -> R.string.label_media_status_publishing
-                },
-        )
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        Icon(imageVector = titleIcon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-        Text(text = titleText, style = MaterialTheme.typography.titleLarge)
-    }
-}
-
-@Composable
 private fun StatusInfoRow(media: Media) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        StatusChipRedesigned(media = media)
-        if (media.status == MediaStatus.RELEASING) {
-            LiveActiveIndicator(mediaType = media.category.type)
-        }
-    }
-}
-
-@Composable
-private fun StatusChipRedesigned(media: Media) {
-    val status = media.status
     val statusText =
-        when (status) {
+        when (media.status) {
             MediaStatus.RELEASING ->
                 when (media.category.type) {
                     MediaType.ANIME -> stringResource(R.string.label_media_status_chip_airing)
@@ -174,43 +128,6 @@ private fun StatusChipRedesigned(media: Media) {
             MediaStatus.HIATUS -> stringResource(R.string.label_media_status_chip_hiatus)
             null -> stringResource(R.string.label_media_status_unknown_value)
         }
-    val icon =
-        when (status) {
-            MediaStatus.RELEASING -> Icons.Filled.SettingsInputAntenna
-            MediaStatus.FINISHED -> Icons.Filled.CheckCircleOutline
-            MediaStatus.HIATUS -> Icons.Filled.PauseCircleOutline
-            else -> Icons.AutoMirrored.Filled.HelpOutline
-        }
-
-    SuggestionChip(
-        onClick = {},
-        icon = {
-            Icon(
-                imageVector = icon,
-                contentDescription = "Filter by status",
-                modifier = Modifier.size(18.dp),
-            )
-        },
-        border = BorderStroke(width = 1.dp, color = statusColorFor(status)),
-        label = {
-            Text(
-                text = statusText,
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Bold,
-            )
-        },
-        colors = SuggestionChipDefaults.suggestionChipColors(),
-    )
-}
-
-@Composable
-private fun LiveActiveIndicator(mediaType: MediaType) {
-    val text =
-        when (mediaType) {
-            MediaType.ANIME -> stringResource(R.string.label_media_status_airing_indicator_live)
-            else -> stringResource(R.string.publication_status_active)
-        }
-    val color = MaterialTheme.colorScheme.primary
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -220,9 +137,9 @@ private fun LiveActiveIndicator(mediaType: MediaType) {
             modifier =
                 Modifier
                     .size(8.dp)
-                    .background(color, CircleShape),
+                    .background(statusColorFor(media.status), CircleShape),
         )
-        Text(text = text, style = MaterialTheme.typography.labelMedium)
+        Text(text = statusText, style = MaterialTheme.typography.labelMedium)
     }
 }
 

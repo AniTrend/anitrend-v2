@@ -17,115 +17,169 @@
   -->
 
 <resources>
+    <!-- Label for a single episode (e.g., in metadata chips) -->
     <string name="label_episode_singular">Episode</string>
+    <!-- Label for multiple episodes (e.g., section headers) -->
     <string name="label_episode_plural">Episodes</string>
 
+    <!-- Label for a single chapter (manga context) -->
     <string name="label_chapter_singular">Chapter</string>
+    <!-- Label for multiple chapters (manga context) -->
     <string name="label_chapter_plural">Chapters</string>
 
+    <!-- Shown as "1 Episode" or "2 Episodes" -->
     <plurals name="label_number_of_episodes">
         <item quantity="one">%d Episode</item>
         <item quantity="other">%d Episodes</item>
     </plurals>
 
+    <!-- Shown as "1 Chapter" or "2 Chapters" -->
     <plurals name="label_number_of_chapters">
         <item quantity="one">%d Chapter</item>
         <item quantity="other">%d Chapters</item>
     </plurals>
 
+    <!-- Shown as "1 Volume" or "2 Volumes" -->
     <plurals name="label_number_of_volumes">
         <item quantity="one">%d Volume</item>
         <item quantity="other">%d Volumes</item>
     </plurals>
 
 
-    <!-- Ep 5 • 3 days from now -->
+    <!-- Format: "Ep %d • %s" e.g., "Ep 5 • 3 days from now". Not translatable because abbreviation and separator are fixed. -->
     <string name="label_episode_airing_in_time" translatable="false">Ep %d • %s</string>
 
-    <!-- Airs October 21st -->
+    <!-- "Airs <DATE>" e.g., "Airs October 21st"; %s is a localized full date string provided by code -->
     <string name="label_episode_airing_on_date">Airs %s</string>
 
-    <!-- Carousel see more button -->
+    <!-- Button label for carousel to view more items -->
     <string name="label_carousel_see_more">More</string>
 
 
+    <!-- Carousel title for upcoming anime that will air soon -->
     <string name="label_carousel_airing_anime">Airing Soon</string>
+    <!-- Carousel description for upcoming anime list -->
     <string name="label_carousel_airing_anime_description">Shows that will be airing soon.</string>
 
+    <!-- Carousel title for all-time popular anime ranking -->
     <string name="label_carousel_popular_anime">All Time Popular • Anime</string>
+    <!-- Carousel description for all-time popular anime ranking -->
     <string name="label_carousel_popular_anime_description">Most popular anime of all time.</string>
 
+    <!-- Carousel title for currently trending anime -->
     <string name="label_carousel_trending_anime">Trending Right Now • Anime</string>
+    <!-- Carousel description for currently trending anime -->
     <string name="label_carousel_trending_anime_description">Shows that are getting a lot of attention.</string>
 
+    <!-- Carousel title for popular anime this season -->
     <string name="label_carousel_popular_season_anime">Popular This Season • Anime</string>
+    <!-- Carousel description for popular anime this season -->
     <string name="label_carousel_popular_season_anime_description">Shows with the most popularity this season.</string>
 
+    <!-- Carousel title for recently added anime to the catalog -->
     <string name="label_carousel_recently_added_anime">Recently Added • Anime</string>
+    <!-- Carousel description for recently added anime -->
     <string name="label_carousel_recently_added_anime_description">Shows that have been recently added.</string>
 
+    <!-- Carousel title for anticipated anime next season -->
     <string name="label_carousel_anticipated_anime">Anticipated Next Season • Anime</string>
+    <!-- Carousel description for anticipated anime next season -->
     <string name="label_carousel_anticipated_anime_description">Shows to look forward to next season</string>
 
 
+    <!-- Carousel title for all-time popular manga ranking -->
     <string name="label_carousel_popular_manga">All Time Popular • Manga</string>
+    <!-- Carousel description for all-time popular manga ranking -->
     <string name="label_carousel_popular_manga_description">Most popular manga of all time.</string>
 
+    <!-- Carousel title for currently trending manga -->
     <string name="label_carousel_trending_manga">Trending Right Now • Manga</string>
+    <!-- Carousel description for currently trending manga -->
     <string name="label_carousel_trending_manga_description">Manga that are getting a lot of attention.</string>
 
+    <!-- Carousel title for popular manhwa category -->
     <string name="label_carousel_popular_manhwa">Popular Manhwa</string>
+    <!-- Carousel description for popular manhwa category -->
     <string name="label_carousel_popular_manhwa_description">Popular comics from Korea.</string>
 
+    <!-- Carousel title for recently added manga to the catalog -->
     <string name="label_carousel_recently_added_manga">Recently Added • Manga</string>
+    <!-- Carousel description for recently added manga -->
     <string name="label_carousel_recently_added_manga_description">Manga that has been recently added.</string>
 
 
+    <!-- Label for the user's own rating of the media -->
     <string name="label_media_score_section_your_rating">Your rating</string>
+    <!-- Suffix shown after a number: e.g., "123 ratings" -->
     <string name="label_media_score_section_popularity_footer_suffix">ratings</string>
+    <!-- Placeholder dash when no rating is available; not translatable -->
     <string name="placeholder_media_score_section_rating" translatable="false">—</string>
+    <!-- Label for community-wide score/section -->
     <string name="label_media_score_section_community">Community</string>
 
+    <!-- Action to navigate to full list of rankings -->
     <string name="label_media_rank_section_show_all_rankings">Show all rankings</string>
+    <!-- Section title for rankings -->
     <string name="label_media_rank_section_title">Rankings</string>
 
+    <!-- Section title for synopsis/description -->
     <string name="label_media_synopsis_section_title">Synopsis</string>
 
     <!-- Media status section -->
+    <!-- Section title for anime airing status -->
     <string name="label_media_status_airing_title">Airing Status</string>
+    <!-- Section title for manga publishing status -->
     <string name="label_media_status_publishing_title">Publishing Status</string>
+    <!-- Action to open the full airing/publication schedule -->
     <string name="label_media_status_show_schedule">Show schedule</string>
+    <!-- Displays the volume count: e.g., "Volumes: 12"; %1$d is an integer -->
     <string name="label_volumes_count">Volumes: %1$d</string>
 
-    <!-- New strings for MediaStatusSection -->
-    <string name="label_media_status_chip_airing">Currently Airing</string>
+    <!-- Status chip label for currently airing anime -->
+    <string name="label_media_status_chip_airing">Airing</string>
+    <!-- Status chip label for currently publishing manga -->
     <string name="label_media_status_chip_publishing">Publishing</string>
+    <!-- Status chip label for completed series -->
     <string name="label_media_status_chip_completed">Completed</string>
-    <string name="label_media_status_chip_not_yet_released">Not Yet Released</string>
+    <!-- Status chip label for unreleased/upcoming series -->
+    <string name="label_media_status_chip_not_yet_released">Upcoming</string>
+    <!-- Status chip label for cancelled series -->
     <string name="label_media_status_chip_cancelled">Cancelled</string>
+    <!-- Status chip label for series on hiatus -->
     <string name="label_media_status_chip_hiatus">On Hiatus</string>
-    <string name="label_media_status_airing_indicator_live">Live</string>
-    <string name="publication_status_active">Active</string>
+
+    <!-- Label for next scheduled episode (anime) -->
     <string name="label_media_status_next_episode">Next Episode</string>
+    <!-- Label for next scheduled chapter (manga) -->
     <string name="label_media_status_next_chapter">Next Chapter</string>
+    <!-- Formatted episode number: e.g., "Episode 5"; %1$d is an integer -->
     <string name="label_media_status_episode_number">Episode %1$d</string>
+    <!-- Formatted chapter number: e.g., "Chapter 5"; %1$d is an integer -->
     <string name="label_media_status_chapter_number">Chapter %1$d</string>
+    <!-- Placeholder when next manga chapter is unknown; suggests checking external sources -->
     <string name="label_media_status_manga_next_chapter_placeholder">Check online for next chapter</string>
+    <!-- Placeholder text when a date is to be determined -->
     <string name="label_media_status_manga_next_chapter_date_placeholder">Date TBD</string>
+    <!-- Hiatus title when anime is paused without upcoming episodes -->
     <string name="label_media_status_anime_hiatus_title">Series is currently on hiatus</string>
+    <!-- Hiatus subtitle clarifying there are no upcoming episodes -->
     <string name="label_media_status_anime_hiatus_subtitle">No upcoming episodes scheduled</string>
+    <!-- Hiatus title when manga is paused without upcoming chapters -->
     <string name="label_media_status_manga_hiatus_title">Manga is currently on hiatus</string>
+    <!-- Hiatus subtitle clarifying there are no upcoming chapters -->
     <string name="label_media_status_manga_hiatus_subtitle">No upcoming chapters scheduled</string>
+    <!-- Metadata row label for broadcast information (anime) -->
     <string name="label_media_status_broadcast">Broadcast</string>
+    <!-- Metadata row label for publication information (manga) -->
     <string name="label_media_status_publication">Publication</string>
+    <!-- Fallback text for unknown values in status metadata -->
     <string name="label_media_status_unknown_value">Unknown</string>
+    <!-- Metadata label indicating premiere date/season -->
     <string name="label_media_status_premiered">Premiered</string>
+    <!-- Metadata label indicating start date -->
     <string name="label_media_status_started">Started</string>
+    <!-- Button text to open full episode schedule -->
     <string name="label_media_status_episode_schedule_button">Episode Schedule</string>
+    <!-- Button text to open full publication schedule -->
     <string name="label_media_status_publication_schedule_button">Publication Schedule</string>
-
-    <!-- Old strings that were previously commented as "Used for section title" - retaining them in case they are used elsewhere -->
-    <string name="label_media_status_airing">Airing Status</string>
-    <string name="label_media_status_publishing">Publishing Status</string>
-
 </resources>

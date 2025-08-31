@@ -22,6 +22,28 @@ When developing new features or modifying existing ones, it’s important to **f
 - Use accompanist libraries included for things like system UI controller, pager, etc., rather than writing from scratch.
 - **Resource Strings and Localization**: All user-facing strings should be in `strings.xml`. The project likely has multi-language support (the README mentions POEditor for translations[83]). When adding text, add an English entry to the appropriate `strings.xml`. Do not hard-code strings in code. Similarly, use dimension and style resources for spacing and text appearance, consistent with Material guidelines.
 
+### Internationalization (i18n) and Strings Documentation
+
+You MUST document each string resource clearly to aid translators and maintainers and to avoid misuse in UI code.
+
+- Per-string comments: Place a concise XML comment directly above EVERY `<string>` and each `<plurals>` block describing where it’s used and what it represents.
+	- Example: `<!-- Label for a single episode (e.g., in metadata chips) -->` before `<string name="label_episode_singular">Episode</string>`.
+- Placeholders: When a string uses format arguments, you MUST document each placeholder and provide an example output.
+	- Use ordered placeholders (`%1$d`, `%2$s`) when there is more than one argument.
+	- Include an example: `<!-- "%1$d Episodes" e.g., "12 Episodes"; %1$d is an integer -->`.
+- Plurals: Always use `<plurals>` for quantities and document the expected forms with examples.
+	- Provide examples for `one` and `other` at minimum; add more quantities if languages require it.
+	- Ensure code passes the correct quantity (e.g., `count`) matching the plural resource.
+- Non-translatable content: Mark strings as `translatable="false"` when their content is a fixed abbreviation/symbol or should never be localized.
+	- Document the reason: `<!-- Not translatable because abbreviation and separator are fixed -->`.
+- Dates and times: If a string includes a date/time placeholder, note that the formatted value MUST be provided already localized by code.
+	- Example: `<!-- "Airs %s"; %s is a localized full date string provided by code -->`.
+- Consistent tone and capitalization: Keep capitalization and tone consistent with Material guidelines and existing modules.
+- No hard-coded text in code: UI text MUST come from resources; add new keys to the correct module’s `strings.xml`.
+- Review: When editing strings, run a quick module build to validate XML structure and resource compilation.
+
+This practice is exemplified in `common/media/src/main/res/values/strings.xml`, where every resource includes a focused comment clarifying purpose, placeholders, and formatting.
+
 ## Database: Room join tables and migrations
 
 ### Room join-table best practices
