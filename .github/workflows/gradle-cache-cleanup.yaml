@@ -10,7 +10,7 @@ on:
         required: false
         default: 'develop'
       allCaches:
-        description: 'Delete all caches across the repo (true/false)'
+        description: 'Delete all caches across the repo (true/false). When true, branch input is ignored.'
         required: false
         default: 'false'
 
