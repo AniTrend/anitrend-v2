@@ -43,7 +43,9 @@ internal data class PageQuery(
      * Calculates the previous page offset and index
      */
     override fun onPagePrevious() {
-        page = page.dec()
+        if (page > 1) {
+            page = page.dec()
+        }
     }
 
     /**
