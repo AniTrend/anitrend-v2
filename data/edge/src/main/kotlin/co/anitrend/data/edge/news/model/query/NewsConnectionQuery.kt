@@ -22,4 +22,4 @@ package co.anitrend.data.edge.news.model.query
  */
 internal data class NewsConnectionQuery(
     val search: String? = null,
-) 
+)

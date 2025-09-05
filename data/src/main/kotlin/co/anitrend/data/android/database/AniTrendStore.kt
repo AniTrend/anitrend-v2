@@ -88,8 +88,8 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         CustomListEntity::class, CustomScoreEntity::class,
         UserPreviousNameEntity::class, ReviewEntity::class,
         UserNotificationEntity::class,
-    EdgeConfigEntity::class, EdgeNavigationEntity::class, EdgeGenreEntity::class,
-    EdgeNewsEntity::class, EdgeMediaEntity::class,
+        EdgeConfigEntity::class, EdgeNavigationEntity::class, EdgeGenreEntity::class,
+        EdgeNewsEntity::class, EdgeMediaEntity::class,
     ],
     views = [MediaListCountView::class, CustomListCountView::class],
     version = AniTrendStore.DATABASE_SCHEMA_VERSION,
@@ -108,7 +108,6 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 internal abstract class AniTrendStore :
     RoomDatabase(),
     IAniTrendStore {
-
     companion object {
         const val DATABASE_SCHEMA_VERSION = 10
 

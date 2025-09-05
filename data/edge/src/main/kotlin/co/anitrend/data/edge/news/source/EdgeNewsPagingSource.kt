@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.data.edge.news.source
 
 import androidx.paging.ExperimentalPagingApi
@@ -52,17 +68,19 @@ internal class EdgeNewsPagingSource(
             .asFlow()
 
     private suspend fun getNews(requestCallback: RequestCallback) {
-        val deferred = co.anitrend.data.android.extensions.deferred {
-            val builder = QueryContainerBuilder()
-                .apply {
-                    // Edge API expects: after/before and limit (we use 'first' for forward paging)
-                    nextCursor?.let { putVariable("after", it) }
-                    // Use supportPagingHelper.pageSize as first
-                    putVariable("first", supportPagingHelper.pageSize)
-                    query.search?.let { putVariable("query", it) }
-                }
-            remoteSource.getNewsConnection(builder)
-        }
+        val deferred =
+            co.anitrend.data.android.extensions.deferred {
+                val builder =
+                    QueryContainerBuilder()
+                        .apply {
+                            // Edge API expects: after/before and limit (we use 'first' for forward paging)
+                            nextCursor?.let { putVariable("after", it) }
+                            // Use supportPagingHelper.pageSize as first
+                            putVariable("first", supportPagingHelper.pageSize)
+                            query.search?.let { putVariable("query", it) }
+                        }
+                remoteSource.getNewsConnection(builder)
+            }
         controller(deferred, requestCallback) {
             // Determine paging completion based on returned data size and/or "last" cursor
             val items = it.connection.data
@@ -97,7 +115,10 @@ internal class EdgeNewsPagingSource(
         clearDataHelper(context = context, action = localSource::clear)
     }
 
-    override suspend fun load(loadType: LoadType, state: PagingState<Int, co.anitrend.domain.news.entity.News>): MediatorResult =
+    override suspend fun load(
+        loadType: LoadType,
+        state: PagingState<Int, co.anitrend.domain.news.entity.News>,
+    ): MediatorResult =
         when (loadType) {
             LoadType.REFRESH -> {
                 // Reset any local state and trigger initial load

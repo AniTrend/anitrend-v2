@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.data.edge.media.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
@@ -14,19 +30,21 @@ internal class EdgeMediaEntityConverter : SupportConverter<EdgeMediaEntity, Medi
     override val fromType: (EdgeMediaEntity) -> Media = { entity ->
         Media.Core.empty().copy(
             id = entity.id.toLong(),
-            title = MediaTitle(
-                romaji = entity.title.romaji,
-                english = entity.title.english,
-                native = entity.title.native,
-                userPreferred = null,
-            ),
-            image = MediaImage(
-                color = entity.cover.color,
-                extraLarge = entity.cover.extraLarge,
-                large = entity.cover.large,
-                medium = entity.cover.medium,
-                banner = entity.bannerImage,
-            ),
+            title =
+                MediaTitle(
+                    romaji = entity.title.romaji,
+                    english = entity.title.english,
+                    native = entity.title.native,
+                    userPreferred = null,
+                ),
+            image =
+                MediaImage(
+                    color = entity.cover.color,
+                    extraLarge = entity.cover.extraLarge,
+                    large = entity.cover.large,
+                    medium = entity.cover.medium,
+                    banner = entity.bannerImage,
+                ),
         )
     }
 
