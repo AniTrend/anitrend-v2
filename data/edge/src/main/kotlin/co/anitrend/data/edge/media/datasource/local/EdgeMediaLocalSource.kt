@@ -58,7 +58,7 @@ abstract class EdgeMediaLocalSource : AbstractLocalSource<EdgeMediaEntity>() {
             EdgeEpisodeEntity::class,
             EdgeSeasonEntity::class,
             EdgeThemeEntity::class,
-        ]
+        ],
     )
     abstract fun rawFlow(query: SupportSQLiteQuery): Flow<EdgeMediaEntityView?>
 }
