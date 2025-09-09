@@ -32,7 +32,7 @@ data class MediaSourceId(
     override val trakt: Long?,
     override val tvDb: Long?,
     override val tvMaze: Long?,
-    override val tvRage: String?
+    override val tvRage: String?,
 ) : IMediaSourceId {
     companion object {
         fun empty() =
