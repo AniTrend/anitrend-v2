@@ -28,9 +28,7 @@ import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
-import co.anitrend.domain.media.entity.attribute.link.MediaExternalLink
 import co.anitrend.domain.media.entity.attribute.origin.MediaSourceId
-import co.anitrend.domain.media.entity.attribute.rank.MediaRank
 import co.anitrend.domain.media.entity.attribute.score.MediaScore
 import co.anitrend.domain.media.entity.attribute.theme.MediaTheme
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
@@ -38,7 +36,6 @@ import co.anitrend.domain.media.entity.attribute.trailer.MediaTrailer
 import co.anitrend.domain.media.enums.MediaSource
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.entity.MediaList
-import co.anitrend.domain.tag.entity.Tag
 
 internal class MediaEntityViewConverter(
     override val fromType: (MediaEntityView) -> Media = ::transform,
@@ -56,7 +53,7 @@ internal class MediaEntityViewConverter(
                     },
             )
 
-        private fun MediaEntityView.createMedia(): Media =
+        private fun MediaEntityView.createMedia(): Media.Core =
             Media.Core(
                 sourceId =
                     MediaSourceId(
@@ -79,21 +76,6 @@ internal class MediaEntityViewConverter(
                     ),
                 countryCode = media.countryOfOrigin,
                 description = media.description ?: edge?.media?.description,
-                externalLinks =
-                    links.map {
-                        MediaExternalLink(
-                            color = it.color,
-                            icon = it.icon,
-                            isDisabled = it.isDisabled,
-                            language = it.language,
-                            notes = it.notes,
-                            siteId = it.siteId,
-                            linkType = it.linkType,
-                            site = it.site,
-                            url = it.url,
-                            id = it.id,
-                        )
-                    },
                 favourites = media.favourites,
                 genres =
                     genres.map {
@@ -109,19 +91,6 @@ internal class MediaEntityViewConverter(
                 isLocked = media.isLocked,
                 isRecommendationBlocked = media.isRecommendationBlocked,
                 isReviewBlocked = media.isReviewBlocked,
-                rankings =
-                    ranks.map {
-                        MediaRank(
-                            allTime = it.allTime,
-                            context = it.context,
-                            format = it.format,
-                            rank = it.rank,
-                            season = it.season,
-                            type = it.type,
-                            year = it.year,
-                            id = it.id,
-                        )
-                    },
                 siteUrl = media.createSiteUrl(),
                 source =
                     media.source ?: edge?.media?.source?.let {
@@ -138,20 +107,6 @@ internal class MediaEntityViewConverter(
                                 ?.synonyms
                                 .orEmpty()
                         }
-                    },
-                tags =
-                    tags.map {
-                        Tag.Extended(
-                            name = it.tag.name,
-                            description = it.tag.description,
-                            category = it.tag.category,
-                            rank = it.connection.rank,
-                            isGeneralSpoiler = it.tag.isGeneralSpoiler,
-                            isMediaSpoiler = it.connection.isMediaSpoiler,
-                            isAdult = it.tag.isAdult,
-                            id = it.tag.id,
-                            background = media.coverImage.color,
-                        )
                     },
                 trailer =
                     media.trailer?.let {
@@ -219,6 +174,9 @@ internal class MediaEntityViewConverter(
                 isFavouriteBlocked = media.isFavouriteBlocked,
                 id = media.id,
                 mediaList = mediaList?.createMediaList(),
+                externalLinks = emptyList(),
+                rankings = emptyList(),
+                tags = emptyList(),
             )
 
         override fun transform(source: MediaEntityView) =
