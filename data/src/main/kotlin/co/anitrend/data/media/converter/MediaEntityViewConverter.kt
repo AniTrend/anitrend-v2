@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.data.media.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
@@ -115,7 +131,13 @@ internal class MediaEntityViewConverter(
                     },
                 synonyms =
                     media.synonyms.let {
-                        it.ifEmpty { edge?.media?.title?.synonyms.orEmpty() }
+                        it.ifEmpty {
+                            edge
+                                ?.media
+                                ?.title
+                                ?.synonyms
+                                .orEmpty()
+                        }
                     },
                 tags =
                     tags.map {
@@ -189,7 +211,7 @@ internal class MediaEntityViewConverter(
                         MediaType.MANGA ->
                             Media.Category.Manga(
                                 media.chapters ?: 0, // ?: jikan?.chapters,
-                                media.volumes ?: 0, //?: jikan?.volumes,
+                                media.volumes ?: 0, // ?: jikan?.volumes,
                             )
                     },
                 isAdult = media.isAdult,
@@ -209,20 +231,24 @@ internal class MediaEntityViewConverter(
                             background = null, // source.edge?.media,
                             ageRating = source.edge?.media?.ageRating,
                             extraInfo = null, // source.jikan?.info,
-                            themes = source.edge?.themes?.map {
-                                MediaTheme(
-                                    mediaId = it.mediaId,
-                                    themeId = it.themeId,
-                                    name = it.name,
-                                    audio = it.audio,
-                                    video = it.video,
-                                    meta = MediaTheme.Meta(
-                                        number = it.meta.number,
-                                        type = it.meta.type,
-                                        version = it.meta.version
-                                    )
-                                )
-                            }.orEmpty(),
+                            themes =
+                                source.edge
+                                    ?.themes
+                                    ?.map {
+                                        MediaTheme(
+                                            mediaId = it.mediaId,
+                                            themeId = it.themeId,
+                                            name = it.name,
+                                            audio = it.audio,
+                                            video = it.video,
+                                            meta =
+                                                MediaTheme.Meta(
+                                                    number = it.meta.number,
+                                                    type = it.meta.type,
+                                                    version = it.meta.version,
+                                                ),
+                                        )
+                                    }.orEmpty(),
                             countryCode = media.countryCode,
                             description = media.description,
                             externalLinks = media.externalLinks,

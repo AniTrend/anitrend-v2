@@ -41,14 +41,15 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Media, 
             homepage = model.homepage,
             airedEpisodes = model.airedEpisodes,
             source = model.source,
-            schedule = model.schedule?.let {
-                EdgeMediaEntity.Schedule(
-                    firstAirDate = it.firstAirDate,
-                    lastAirDate = it.lastAirDate,
-                    nextEpisodeId = it.nextEpisodeToAir?.id,
-                    lastEpisodeId = it.lastAiredEpisode?.id,
-                )
-            },
+            schedule =
+                model.schedule?.let {
+                    EdgeMediaEntity.Schedule(
+                        firstAirDate = it.firstAirDate,
+                        lastAirDate = it.lastAirDate,
+                        nextEpisodeId = it.nextEpisodeToAir?.id,
+                        lastEpisodeId = it.lastAiredEpisode?.id,
+                    )
+                },
             cover =
                 EdgeMediaEntity.Cover(
                     medium = model.cover.medium,
