@@ -44,10 +44,11 @@ internal class AniRequestConverter(
         // we need structured line numbers if we're in the debug env otherwise we can minify queries
         val query = graphProcessor.getQuery(methodAnnotations)?.minify(!BuildConfig.DEBUG)
         val annotation = methodAnnotations.filterIsInstance<GraphQuery>().firstOrNull()
-        val queryContainer = containerBuilder
-            .setOperationName(annotation?.value)
-            .setQuery(query)
-            .build()
+        val queryContainer =
+            containerBuilder
+                .setOperationName(annotation?.value)
+                .setQuery(query)
+                .build()
 
         val queryJson = gson.toJson(queryContainer)
         return queryJson.toRequestBody(JSON_MIME_TYPE)
