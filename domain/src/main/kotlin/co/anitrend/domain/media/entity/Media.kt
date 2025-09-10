@@ -45,7 +45,6 @@ sealed class Media : IMedia {
     abstract val externalLinks: List<IMediaExternalLink>
     abstract val rankings: List<IMediaRank>
     abstract val trailer: IMediaTrailer?
-    abstract val sourceId: IMediaSourceId
     abstract val countryCode: CharSequence?
     abstract val genres: List<Genre.Extended>
     abstract val twitterTag: CharSequence?
@@ -136,7 +135,6 @@ sealed class Media : IMedia {
         override val endDate: FuzzyDate,
         override val mediaList: IMediaList?,
         override val id: Long,
-        override val sourceId: IMediaSourceId,
         override val countryCode: String?,
         override val description: String?,
         override val favourites: Int,
@@ -155,7 +153,6 @@ sealed class Media : IMedia {
         companion object {
             fun empty() =
                 Core(
-                    sourceId = MediaSourceId.empty(),
                     countryCode = null,
                     description = null,
                     favourites = 0,
@@ -195,6 +192,7 @@ sealed class Media : IMedia {
         val ageRating: String?,
         val extraInfo: String?,
         val themes: List<MediaTheme>,
+        val sourceId: IMediaSourceId,
         override val externalLinks: List<IMediaExternalLink>,
         override val rankings: List<IMediaRank>,
         override val trailer: IMediaTrailer?,
@@ -212,7 +210,6 @@ sealed class Media : IMedia {
         override val endDate: FuzzyDate,
         override val mediaList: IMediaList?,
         override val id: Long,
-        override val sourceId: IMediaSourceId,
         override val countryCode: CharSequence?,
         override val description: CharSequence?,
         override val favourites: Int,

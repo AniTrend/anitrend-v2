@@ -37,8 +37,5 @@ enum class CacheRequest(
     NEWS("news"),
     EPISODE("episode"),
     CONFIG("config"),
-    SERIES("series"),
-    PREVIEW("preview"),
-    NETWORK("network"),
-    SEASON("season"),
+    EDGE_MEDIA("edge_media"),
 }

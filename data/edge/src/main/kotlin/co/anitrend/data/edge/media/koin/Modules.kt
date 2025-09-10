@@ -16,11 +16,13 @@
  */
 package co.anitrend.data.edge.media.koin
 
+import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.android.extensions.offline
 import co.anitrend.data.edge.core.extensions.aniTrendApi
 import co.anitrend.data.edge.core.extensions.edgeStore
 import co.anitrend.data.edge.media.EdgeMediaController
+import co.anitrend.data.edge.media.cache.EdgeMediaCache
 import co.anitrend.data.edge.media.converters.EdgeMediaModelConverter
 import co.anitrend.data.edge.media.mapper.EdgeMediaMapper
 import co.anitrend.data.edge.media.source.EdgeMediaSourceImpl
@@ -30,7 +32,11 @@ import org.koin.dsl.module
 internal val edgeMediaModules =
     module {
         factory { EdgeMediaModelConverter() }
-
+        factory {
+            EdgeMediaCache(
+                localSource = cacheLocalSource()
+            )
+        }
         factory {
             EdgeMediaMapper(
                 localSource = edgeStore().edgeMediaDao(),
@@ -58,7 +64,7 @@ internal val edgeMediaModules =
                 controller = get(),
                 clearDataHelper = get(),
                 dispatcher = get(),
-                cachePolicy = get(),
+                cachePolicy = get<EdgeMediaCache>(),
             )
         }
     }

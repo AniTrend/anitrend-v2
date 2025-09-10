@@ -30,10 +30,8 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import co.anitrend.domain.media.entity.attribute.origin.MediaSourceId
 import co.anitrend.domain.media.entity.attribute.score.MediaScore
-import co.anitrend.domain.media.entity.attribute.theme.MediaTheme
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.entity.attribute.trailer.MediaTrailer
-import co.anitrend.domain.media.enums.MediaSource
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.entity.MediaList
 
@@ -55,27 +53,8 @@ internal class MediaEntityViewConverter(
 
         private fun MediaEntityView.createMedia(): Media.Core =
             Media.Core(
-                sourceId =
-                    MediaSourceId(
-                        aniDb = edge?.media?.externalIds?.aniDb,
-                        aniList = edge?.media?.externalIds?.aniList,
-                        animePlanet = edge?.media?.externalIds?.animePlanet,
-                        aniSearch = edge?.media?.externalIds?.aniSearch,
-                        imdb = edge?.media?.externalIds?.imdb,
-                        kitsu = edge?.media?.externalIds?.kitsu,
-                        liveChart = edge?.media?.externalIds?.liveChart,
-                        myAnimeList = edge?.media?.externalIds?.myAnimeList,
-                        notify = edge?.media?.externalIds?.notify,
-                        shoboi = edge?.media?.externalIds?.shoboi,
-                        slug = edge?.media?.externalIds?.slug,
-                        tmdb = edge?.media?.externalIds?.tmdb,
-                        trakt = edge?.media?.externalIds?.trakt,
-                        tvDb = edge?.media?.externalIds?.tvDb,
-                        tvMaze = edge?.media?.externalIds?.tvMaze,
-                        tvRage = edge?.media?.externalIds?.tvRage,
-                    ),
                 countryCode = media.countryOfOrigin,
-                description = media.description ?: edge?.media?.description,
+                description = media.description,// ?: edge?.media?.description,
                 favourites = media.favourites,
                 genres =
                     genres.map {
@@ -93,13 +72,13 @@ internal class MediaEntityViewConverter(
                 isReviewBlocked = media.isReviewBlocked,
                 siteUrl = media.createSiteUrl(),
                 source =
-                    media.source ?: edge?.media?.source?.let {
+                    media.source,/* ?: edge?.media?.source?.let {
                         runCatching {
                             MediaSource.valueOf(it.uppercase())
                         }.getOrNull()
-                    },
+                    },*/
                 synonyms =
-                    media.synonyms.let {
+                    media.synonyms,/*.let {
                         it.ifEmpty {
                             edge
                                 ?.media
@@ -107,7 +86,7 @@ internal class MediaEntityViewConverter(
                                 ?.synonyms
                                 .orEmpty()
                         }
-                    },
+                    },*/
                 trailer =
                     media.trailer?.let {
                         MediaTrailer(
@@ -131,25 +110,25 @@ internal class MediaEntityViewConverter(
                 endDate = media.endDate.asFuzzyDate(),
                 title =
                     MediaTitle(
-                        romaji = media.title.romaji ?: edge?.media?.title?.japanese,
-                        english = media.title.english ?: edge?.media?.title?.english,
+                        romaji = media.title.romaji,// ?: edge?.media?.title?.japanese,
+                        english = media.title.english,// ?: edge?.media?.title?.english,
                         native = media.title.original,
-                        userPreferred = media.title.userPreferred ?: edge?.media?.title?.canonical,
+                        userPreferred = media.title.userPreferred,// ?: edge?.media?.title?.canonical,
                     ),
                 image =
                     MediaImage(
-                        color = media.coverImage.color ?: edge?.media?.cover?.color,
-                        extraLarge = media.coverImage.extraLarge ?: edge?.media?.cover?.extraLarge,
-                        large = media.coverImage.large ?: edge?.media?.cover?.large,
-                        medium = media.coverImage.medium ?: edge?.media?.cover?.medium,
-                        banner = media.coverImage.banner ?: edge?.media?.banner,
+                        color = media.coverImage.color,// ?: edge?.media?.cover?.color,
+                        extraLarge = media.coverImage.extraLarge,// ?: edge?.media?.cover?.extraLarge,
+                        large = media.coverImage.large,// ?: edge?.media?.cover?.large,
+                        medium = media.coverImage.medium,// ?: edge?.media?.cover?.medium,
+                        banner = media.coverImage.banner,// ?: edge?.media?.banner,
                     ),
                 category =
                     when (media.type) {
                         MediaType.ANIME ->
                             Media.Category.Anime(
-                                media.episodes ?: edge?.media?.airedEpisodes ?: 0,
-                                media.duration ?: 0,
+                                media.episodes ?: 0,// ?: edge?.media?.airedEpisodes ?: 0,
+                                media.duration ?: 0,// ?: 0,
                                 broadcast = null, // edge?.networks?.firstOrNull { it.name },
                                 premiered = null, // edge?.media?.schedule.firstAirDate,
                                 nextAiring?.let {
@@ -185,12 +164,30 @@ internal class MediaEntityViewConverter(
                 is MediaEntityView.Extended ->
                     source.createMedia().let { media ->
                         Media.Extended(
-                            sourceId = media.sourceId,
+                            sourceId = MediaSourceId.empty(),
+                            /*MediaSourceId(
+                                aniDb = edge?.media?.externalIds?.aniDb,
+                                aniList = edge?.media?.externalIds?.aniList,
+                                animePlanet = edge?.media?.externalIds?.animePlanet,
+                                aniSearch = edge?.media?.externalIds?.aniSearch,
+                                imdb = edge?.media?.externalIds?.imdb,
+                                kitsu = edge?.media?.externalIds?.kitsu,
+                                liveChart = edge?.media?.externalIds?.liveChart,
+                                myAnimeList = edge?.media?.externalIds?.myAnimeList,
+                                notify = edge?.media?.externalIds?.notify,
+                                shoboi = edge?.media?.externalIds?.shoboi,
+                                slug = edge?.media?.externalIds?.slug,
+                                tmdb = edge?.media?.externalIds?.tmdb,
+                                trakt = edge?.media?.externalIds?.trakt,
+                                tvDb = edge?.media?.externalIds?.tvDb,
+                                tvMaze = edge?.media?.externalIds?.tvMaze,
+                                tvRage = edge?.media?.externalIds?.tvRage,
+                            ),*/
                             background = null, // source.edge?.media,
-                            ageRating = source.edge?.media?.ageRating,
+                            ageRating = null, // source.edge?.media?.ageRating,
                             extraInfo = null, // source.jikan?.info,
-                            themes =
-                                source.edge
+                            themes = emptyList(),
+                                /*source.edge
                                     ?.themes
                                     ?.map {
                                         MediaTheme(
@@ -206,7 +203,7 @@ internal class MediaEntityViewConverter(
                                                     version = it.meta.version,
                                                 ),
                                         )
-                                    }.orEmpty(),
+                                    }.orEmpty(),*/
                             countryCode = media.countryCode,
                             description = media.description,
                             externalLinks = media.externalLinks,
