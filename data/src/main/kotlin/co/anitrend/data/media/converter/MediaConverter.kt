@@ -116,11 +116,6 @@ internal class MediaConverter(
             when (source) {
                 is MediaModel.Media ->
                     Media.Core(
-                        sourceId =
-                            MediaSourceId.empty().copy(
-                                mal = source.idMal,
-                                anilist = source.id,
-                            ),
                         countryCode = source.countryOfOrigin,
                         description = source.description,
                         externalLinks =
@@ -252,11 +247,6 @@ internal class MediaConverter(
                     )
                 is MediaModel.Core ->
                     Media.Core(
-                        sourceId =
-                            MediaSourceId.empty().copy(
-                                mal = source.idMal,
-                                anilist = source.id,
-                            ),
                         countryCode = source.countryOfOrigin,
                         description = source.description,
                         externalLinks =
@@ -391,11 +381,10 @@ internal class MediaConverter(
                         ageRating = null,
                         extraInfo = null,
                         themes = emptyList(),
-                        endingThemes = emptyList(),
                         sourceId =
                             MediaSourceId.empty().copy(
-                                mal = source.idMal,
-                                anilist = source.id,
+                                myAnimeList = source.idMal,
+                                aniList = source.id,
                             ),
                         countryCode = source.countryOfOrigin,
                         description = source.description,

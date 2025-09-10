@@ -16,6 +16,7 @@
  */
 package co.anitrend.data.genre.koin
 
+import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
@@ -62,7 +63,7 @@ private val cacheModule =
     module {
         factory {
             GenreCache(
-                localSource = store().cacheDao(),
+                localSource = cacheLocalSource(),
             )
         }
     }
