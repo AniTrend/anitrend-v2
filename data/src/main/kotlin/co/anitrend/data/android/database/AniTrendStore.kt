@@ -27,8 +27,7 @@ import co.anitrend.data.android.cache.entity.CacheEntity
 import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.android.database.converter.TypeConverterEnum
 import co.anitrend.data.android.database.converter.TypeConverterObject
-import co.anitrend.data.android.database.migration.AUTO_MIGRATION_10_11
-import co.anitrend.data.android.database.migration.migrations
+import co.anitrend.data.android.database.migration.MIGRATIONS
 import co.anitrend.data.auth.entity.AuthEntity
 import co.anitrend.data.character.entity.CharacterEntity
 import co.anitrend.data.character.entity.fts.CharacterFtsEntity
@@ -99,8 +98,6 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
     autoMigrations = [
         AutoMigration(from = 6, to = 8),
         AutoMigration(from = 8, to = 9),
-        AutoMigration(from = 9, to = 10),
-        AutoMigration(from = 10, to = 11, spec = AUTO_MIGRATION_10_11::class),
     ],
 )
 @TypeConverters(
@@ -113,7 +110,7 @@ internal abstract class AniTrendStore :
     RoomDatabase(),
     IAniTrendStore {
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 11
+        const val DATABASE_SCHEMA_VERSION = 10
 
         internal fun create(applicationContext: Context): IAniTrendStore =
             Room
@@ -122,7 +119,7 @@ internal abstract class AniTrendStore :
                     AniTrendStore::class.java,
                     "anitrend-db",
                 ).fallbackToDestructiveMigration(false)
-                .addMigrations(*migrations)
+                .addMigrations(*MIGRATIONS)
                 .build()
     }
 }

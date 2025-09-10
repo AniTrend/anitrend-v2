@@ -17,8 +17,8 @@
 package co.anitrend.data.android.database.migration
 
 import androidx.room.migration.Migration
+import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.db.SupportSQLiteDatabase
-import org.intellij.lang.annotations.Language
 import timber.log.Timber
 
 private fun SupportSQLiteDatabase.usingTransaction(
@@ -36,24 +36,32 @@ private fun SupportSQLiteDatabase.usingTransaction(
     endTransaction()
 }
 
-internal val MIGRATION_1_2 =
-    object : Migration(1, 2) {
+private fun migrationOf(from: Int, to: Int, block: () -> String) =
+    object : Migration(from, to) {
         /**
          * Should run the necessary migrations.
          *
-         * This class cannot access any generated Dao in this method.
+         * The Migration class cannot access any generated Dao in this method.
          *
          * This method is already called inside a transaction and that transaction might actually be a
          * composite transaction of all necessary `Migration`s.
          *
+         * This function is only called when Room is configured without a driver. If a driver is set
+         * using [androidx.room.RoomDatabase.Builder.setDriver], then only the version that receives a
+         * [SQLiteConnection] is called.
+         *
          * @param db The database instance
+         * @throws NotImplementedError if migrate(SQLiteConnection) is not overridden.
          */
         override fun migrate(db: SupportSQLiteDatabase) {
-            val tableName = "media_list"
+            db.usingTransaction("MIGRATION_${from}_${to}", block())
+        }
+    }
 
-            @Language("sql")
-            val createQuery =
-                """
+internal val MIGRATIONS = arrayOf(
+    migrationOf(1, 2, {
+        val tableName = "media_list"
+        """
                 CREATE TABLE `${tableName}_temp`(
                     `media_type` TEXT NOT NULL,
                     `completed_at` TEXT,
@@ -84,8 +92,12 @@ internal val MIGRATION_1_2 =
 
                 ALTER TABLE `${tableName}_temp` RENAME TO `$tableName`;
                 """.trimIndent()
-            db.usingTransaction("MIGRATION_1_2", createQuery)
-        }
-    }
-
-internal val migrations = arrayOf(MIGRATION_1_2)
+    }),
+    migrationOf(9, 10,
+        {
+            """
+            Drop table relation;
+            Drop table jikan;
+            """.trimIndent()
+        })
+)

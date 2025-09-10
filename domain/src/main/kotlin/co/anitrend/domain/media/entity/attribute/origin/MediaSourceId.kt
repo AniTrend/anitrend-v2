@@ -18,7 +18,7 @@ package co.anitrend.domain.media.entity.attribute.origin
 
 data class MediaSourceId(
     override val aniDb: Long?,
-    override val aniList: Long?,
+    override val aniList: Long,
     override val animePlanet: String?,
     override val aniSearch: Long?,
     override val imdb: String?,
@@ -38,7 +38,7 @@ data class MediaSourceId(
         fun empty() =
             MediaSourceId(
                 aniDb = null,
-                aniList = null,
+                aniList = 0L,
                 animePlanet = null,
                 aniSearch = null,
                 imdb = null,

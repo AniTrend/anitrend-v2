@@ -19,7 +19,6 @@ package co.anitrend.data.media.entity.view
 import androidx.room.Embedded
 import androidx.room.Relation
 import co.anitrend.data.airing.entity.AiringScheduleEntity
-import co.anitrend.data.edge.media.entity.view.EdgeMediaEntityView
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
 import co.anitrend.data.genre.entity.view.GenreEntityView
 import co.anitrend.data.link.entity.LinkEntity
@@ -35,7 +34,7 @@ internal sealed class MediaEntityView {
     abstract val nextAiring: AiringScheduleEntity?
     abstract val mediaList: MediaListEntityView.Core?
     abstract val genres: List<GenreEntityView>
-    abstract val edge: EdgeMediaEntityView?
+    //abstract val edge: EdgeMediaEntityView?
 
     internal data class Core(
         @Embedded override val media: MediaEntity,
@@ -60,7 +59,7 @@ internal sealed class MediaEntityView {
             parentColumn = "id",
             entityColumn = "id_ani_list",
         )*/
-        override val edge: EdgeMediaEntityView?,
+        //override val edge: EdgeMediaEntityView?,
     ) : MediaEntityView()
 
     internal data class Extended(
@@ -102,6 +101,6 @@ internal sealed class MediaEntityView {
             parentColumn = "id",
             entityColumn = "id_ani_list",
         )*/
-        override val edge: EdgeMediaEntityView?,
+        //override val edge: EdgeMediaEntityView?,
     ) : MediaEntityView()
 }

@@ -30,6 +30,7 @@ import co.anitrend.data.android.cleaner.ClearDataHelper
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.database.AniTrendStore
 import co.anitrend.data.android.database.common.IAniTrendStore
+import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.info.AppInfo
 import co.anitrend.data.android.info.DeviceInfo
 import co.anitrend.data.android.logger.GraphLogger
@@ -104,7 +105,7 @@ private val coreModule =
                 userSettings = get(),
                 localSource = store().authDao(),
                 mediaListLocalSource = store().mediaListDao(),
-                cacheLocalSource = store().cacheDao(),
+                cacheLocalSource = cacheLocalSource(),
             )
         }
         factoryOf(::ClearDataHelper) {
