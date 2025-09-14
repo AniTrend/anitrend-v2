@@ -242,7 +242,7 @@ google-accompanist-pager-indicators = { module = "com.google.accompanist:accompa
 google-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version = "0.36.0" }
 google-accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version = "0.37.3" }
 
-google-gson = { module = "com.google.code.gson:gson", version = "2.13.1" }
+google-gson = { module = "com.google.code.gson:gson", version = "2.13.2" }
 
 google-firebase-core = { module = "com.google.firebase:firebase-core", version = "21.1.1" }
 google-firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version = "22.5.0" }
