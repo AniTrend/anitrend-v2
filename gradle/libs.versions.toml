@@ -45,7 +45,7 @@ coil = "2.7.0"
 
 devrieze-xmlutil = "0.90.3"
 
-google-android-material = "1.12.0"
+google-android-material = "1.13.0"
 
 jetbrains-dokka = "2.0.0"
 jetbrains-kotlin = "2.2.10"
