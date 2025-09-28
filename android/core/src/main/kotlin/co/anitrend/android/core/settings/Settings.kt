@@ -19,12 +19,9 @@ package co.anitrend.android.core.settings
 import android.content.Context
 import co.anitrend.android.core.R
 import co.anitrend.android.core.settings.common.IConfigurationSettings
-import co.anitrend.android.core.settings.common.locale.ILocaleSettings
-import co.anitrend.android.core.settings.common.theme.IThemeSettings
 import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale
 import co.anitrend.android.core.settings.helper.theme.model.AniTrendTheme
 import co.anitrend.arch.extension.preference.SupportPreference
-import co.anitrend.arch.extension.preference.contract.ISupportPreference
 import co.anitrend.arch.extension.settings.BooleanSetting
 import co.anitrend.arch.extension.settings.EnumSetting
 import co.anitrend.arch.extension.settings.FloatSetting
@@ -263,29 +260,4 @@ class Settings(
             resources = context.resources,
             preference = this,
         )
-
-    companion object {
-        /**
-         * Binding types for [Settings]
-         */
-        internal val BINDINGS =
-            arrayOf(
-                ISupportPreference::class,
-                IConfigurationSettings::class,
-                ILocaleSettings::class,
-                IThemeSettings::class,
-                IAuthenticationSettings::class,
-                IPrivacySettings::class,
-                ISortOrderSettings::class,
-                IRefreshBehaviourSettings::class,
-                ICustomizationSettings::class,
-                IPowerSettings::class,
-                IConnectivitySettings::class,
-                INotificationSettings::class,
-                IUserSettings::class,
-                ICacheSettings::class,
-                ISyncSettings::class,
-                IDeveloperSettings::class,
-            )
-    }
 }
