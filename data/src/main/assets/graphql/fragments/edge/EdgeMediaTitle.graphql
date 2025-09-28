@@ -1,0 +1,8 @@
+fragment EdgeMediaTitle on EdgeMediaTitle {
+  japanese
+  harigana
+  canonical
+  english
+  romaji
+  synonyms
+}

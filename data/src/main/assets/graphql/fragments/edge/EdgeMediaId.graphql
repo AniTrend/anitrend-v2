@@ -1,0 +1,18 @@
+fragment EdgeMediaId on EdgeMediaId {
+  anisearch
+  animePlanet
+  themoviedb
+  anilist
+  anidb
+  imdb
+  kitsu
+  livechart
+  myanimelist
+  notify
+  shoboi
+  slug
+  trakt
+  tvdb
+  tvMazeId
+  tvrage
+}

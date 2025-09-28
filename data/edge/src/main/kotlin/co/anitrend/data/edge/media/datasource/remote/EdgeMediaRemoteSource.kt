@@ -28,7 +28,7 @@ import retrofit2.http.POST
 
 internal interface EdgeMediaRemoteSource {
     @GRAPHQL
-    @GraphQuery("EdgeMediaById")
+    @GraphQuery("GetMediaById")
     @POST(EdgeApiFactory.BASE_ENDPOINT_PATH)
     suspend fun getMediaById(
         @Body queryContainer: QueryContainerBuilder,
