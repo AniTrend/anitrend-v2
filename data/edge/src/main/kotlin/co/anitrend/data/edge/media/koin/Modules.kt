@@ -44,7 +44,6 @@ internal val edgeMediaModules =
                 networkMapper = get(),
                 trailerMapper = get(),
                 themeMapper = get(),
-                seasonMapper = get(),
                 episodeMapper = get(),
             )
         }
