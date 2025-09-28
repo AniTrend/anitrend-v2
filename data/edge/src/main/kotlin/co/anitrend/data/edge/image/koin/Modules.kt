@@ -27,7 +27,7 @@ internal val edgeImageModule =
         factory {
             EdgeImageMapper(
                 localSource = edgeStore().edgeImageDao(),
-                converter = get(),
+                converter = get<EdgeImageConverter>(),
             )
         }
     }
