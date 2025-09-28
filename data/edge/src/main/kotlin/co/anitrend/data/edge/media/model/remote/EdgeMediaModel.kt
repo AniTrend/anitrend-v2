@@ -40,13 +40,19 @@ internal class EdgeMediaModel(
      * @param format Format of the media (e.g., TV, MOVIE, OVA, ONA, MANGA).
      * @param homepage URL to the official homepage of the media.
      * @param airedEpisodes Total number of aired episodes.
-     * @param type Internal GraphQL typename mapping (not present in schema as a property)
+     * @param broadcast Broadcast schedule information (day/time string) for anime entries.
      * @param source Source material of the media (e.g., ORIGINAL, MANGA, LIGHT_NOVEL, GAME).
      * @param status Current status of the media (e.g., RELEASING, FINISHED, NOT_YET_RELEASED, CANCELLED).
      * @param ageRating Age rating of the media (e.g., G, PG, R17).
      * @param isAdult Indicates if the media is considered adult content.
+     * @param kind Distinguishes the upstream media bucket (e.g., ANIME, MANGA).
+     * @param chapters Total number of chapters (manga specific).
+     * @param volumes Total number of volumes (manga specific).
+     * @param moreInfo External link to additional upstream information.
+     * @param publishedFrom Publication start timestamp (epoch seconds) for print media.
+     * @param publishedTo Publication end timestamp (epoch seconds) for print media.
      * @param mediaId A collection of alternative identifiers for the media from various sources.
-     * @param image Collection of images for the media (backdrops, logos, posters).
+     * @param images Collection of images for the media (backdrops, logos, posters).
      * @param schedule Airing schedule information for the media.
      * @param seasons List of seasons for the media, if applicable.
      * @param networks List of networks associated with the media.
@@ -65,19 +71,32 @@ internal class EdgeMediaModel(
         @SerialName("format") val format: String? = null,
         @SerialName("homepage") val homepage: String? = null,
         @SerialName("airedEpisodes") val airedEpisodes: Int? = null,
+        @SerialName("broadcast") val broadcast: String? = null,
         @SerialName("source") val source: String? = null,
         @SerialName("status") val status: String? = null,
         @SerialName("ageRating") val ageRating: String? = null,
         @SerialName("isAdult") val isAdult: Boolean? = null,
+        @SerialName("kind") val kind: Kind,
+        @SerialName("chapters") val chapters: Int? = null,
+        @SerialName("volumes") val volumes: Int? = null,
+        @SerialName("moreInfo") val moreInfo: String? = null,
+        @SerialName("publishedFrom") val publishedFrom: Long? = null,
+        @SerialName("publishedTo") val publishedTo: Long? = null,
         @SerialName("mediaId") val mediaId: SeriesIdType,
-        @SerialName("image") val image: EdgeImageModel,
+        @SerialName("images") val images: List<EdgeImageModel> = emptyList(),
         @SerialName("schedule") val schedule: SeriesScheduleType? = null,
         @SerialName("seasons") val seasons: List<EdgeSeasonModel>? = null,
-        @SerialName("networks") val networks: List<EdgeNetworkModel>,
-        @SerialName("themeSongs") val themeSongs: List<EdgeThemeModel>,
-        @SerialName("trailers") val trailers: List<EdgeTrailerModel>,
+        @SerialName("networks") val networks: List<EdgeNetworkModel> = emptyList(),
+        @SerialName("themeSongs") val themeSongs: List<EdgeThemeModel> = emptyList(),
+        @SerialName("trailers") val trailers: List<EdgeTrailerModel> = emptyList(),
         @SerialName("updatedAt") val updatedAt: Long,
-    )
+    ) {
+        @Serializable
+        enum class Kind {
+            @SerialName("ANIME") ANIME,
+            @SerialName("MANGA") MANGA
+        }
+    }
 
     /**
      * Titles of the media in various languages.
@@ -125,8 +144,8 @@ internal class EdgeMediaModel(
      */
     @Serializable
     data class SeriesScheduleType(
-        @SerialName("firstAirDate") val firstAirDate: Long,
-        @SerialName("lastAirDate") val lastAirDate: Long,
+        @SerialName("firstAirDate") val firstAirDate: Long? = null,
+        @SerialName("lastAirDate") val lastAirDate: Long? = null,
         @SerialName("lastAiredEpisode") val lastAiredEpisode: SeriesScheduleEpisodeType? = null,
         @SerialName("nextEpisodeToAir") val nextEpisodeToAir: SeriesScheduleEpisodeType? = null,
     )
@@ -147,16 +166,16 @@ internal class EdgeMediaModel(
      */
     @Serializable
     data class SeriesScheduleEpisodeType(
-        @SerialName("airDate") val airDate: Long,
-        @SerialName("episodeNumber") val episodeNumber: Int,
+        @SerialName("airDate") val airDate: Long? = null,
+        @SerialName("episodeNumber") val episodeNumber: Int? = null,
         @SerialName("id") val id: Long,
         @SerialName("image") val image: String? = null,
-        @SerialName("name") val name: String,
-        @SerialName("overview") val overview: String,
-        @SerialName("productionCode") val productionCode: String,
-        @SerialName("runtime") val runtime: Int,
-        @SerialName("seasonNumber") val seasonNumber: Int,
-        @SerialName("tmdbId") val tmdbId: Long,
+        @SerialName("name") val name: String? = null,
+        @SerialName("overview") val overview: String? = null,
+        @SerialName("productionCode") val productionCode: String? = null,
+        @SerialName("runtime") val runtime: Int? = null,
+        @SerialName("seasonNumber") val seasonNumber: Int? = null,
+        @SerialName("tmdbId") val tmdbId: Long? = null,
     )
 
     @Serializable
