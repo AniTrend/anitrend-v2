@@ -59,7 +59,7 @@ private fun migrationOf(from: Int, to: Int, block: () -> String) =
     }
 
 internal val MIGRATIONS = arrayOf(
-    migrationOf(1, 2, {
+    migrationOf(1, 2) {
         val tableName = "media_list"
         """
                 CREATE TABLE `${tableName}_temp`(
@@ -92,12 +92,22 @@ internal val MIGRATIONS = arrayOf(
 
                 ALTER TABLE `${tableName}_temp` RENAME TO `$tableName`;
                 """.trimIndent()
-    }),
-    migrationOf(9, 10,
-        {
-            """
+    },
+    migrationOf(9, 10) {
+        """
             Drop table relation;
             Drop table jikan;
             """.trimIndent()
-        })
+    },
+    migrationOf(11, 12) {
+        """
+            ALTER TABLE edge_media ADD COLUMN broadcast TEXT;
+            ALTER TABLE edge_media ADD COLUMN kind TEXT;
+            ALTER TABLE edge_media ADD COLUMN chapters INTEGER;
+            ALTER TABLE edge_media ADD COLUMN volumes INTEGER;
+            ALTER TABLE edge_media ADD COLUMN more_info TEXT;
+            ALTER TABLE edge_media ADD COLUMN published_from INTEGER;
+            ALTER TABLE edge_media ADD COLUMN published_to INTEGER;
+            """.trimIndent()
+    }
 )
