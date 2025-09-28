@@ -19,6 +19,7 @@ package co.anitrend.data.edge.media.converters
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.edge.media.entity.EdgeMediaEntity
 import co.anitrend.data.edge.media.model.remote.EdgeMediaModel
+import co.anitrend.domain.media.enums.MediaType
 
 internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Media, EdgeMediaEntity>() {
     override val fromType: (EdgeMediaModel.Media) -> EdgeMediaEntity = { model ->
@@ -40,6 +41,7 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Media, 
             fanart = model.fanart,
             homepage = model.homepage,
             airedEpisodes = model.airedEpisodes,
+            broadcast = model.broadcast,
             source = model.source,
             schedule =
                 model.schedule?.let {
@@ -59,6 +61,12 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Media, 
                 ),
             ageRating = model.ageRating,
             isAdult = model.isAdult,
+            kind = MediaType.valueOf(model.kind),
+            chapters = model.chapters,
+            volumes = model.volumes,
+            moreInfo = model.moreInfo,
+            publishedFrom = model.publishedFrom,
+            publishedTo = model.publishedTo,
             externalIds =
                 EdgeMediaEntity.ExternalIds(
                     aniDb = model.mediaId.aniDb,

@@ -17,7 +17,6 @@
 package co.anitrend.data.edge.media.mapper
 
 import co.anitrend.data.android.mapper.DefaultMapper
-import co.anitrend.data.edge.episode.EdgeEpisodeEmbedded
 import co.anitrend.data.edge.episode.mapper.EdgeEpisodeMapper
 import co.anitrend.data.edge.image.mapper.EdgeImageMapper
 import co.anitrend.data.edge.media.converters.EdgeMediaModelConverter
@@ -25,7 +24,6 @@ import co.anitrend.data.edge.media.datasource.local.EdgeMediaLocalSource
 import co.anitrend.data.edge.media.entity.EdgeMediaEntity
 import co.anitrend.data.edge.media.model.remote.EdgeMediaModel
 import co.anitrend.data.edge.network.mapper.EdgeNetworkMapper
-import co.anitrend.data.edge.season.mapper.EdgeSeasonMapper
 import co.anitrend.data.edge.theme.mapper.EdgeThemeMapper
 import co.anitrend.data.edge.trailer.mapper.EdgeTrailerMapper
 
@@ -36,7 +34,6 @@ internal class EdgeMediaMapper(
     private val networkMapper: EdgeNetworkMapper,
     private val trailerMapper: EdgeTrailerMapper,
     private val themeMapper: EdgeThemeMapper,
-    private val seasonMapper: EdgeSeasonMapper,
     private val episodeMapper: EdgeEpisodeMapper,
 ) : DefaultMapper<EdgeMediaModel, EdgeMediaEntity>() {
     override suspend fun persist(data: EdgeMediaEntity) {
@@ -45,7 +42,6 @@ internal class EdgeMediaMapper(
         networkMapper.persistEmbedded()
         trailerMapper.persistEmbedded()
         themeMapper.persistEmbedded()
-        seasonMapper.persistEmbedded()
         episodeMapper.persistEmbedded()
     }
 
@@ -53,18 +49,10 @@ internal class EdgeMediaMapper(
         val model = source.media
         if (model == null) throw NullPointerException("Media was not present be null")
         val entity = converter.convertFrom(source.media)
-        imageMapper.onEmbedded(source = entity.id to source.media.image)
+        imageMapper.onEmbedded(mediaId = entity.id, sources = model.images)
         networkMapper.onEmbedded(source = model.networks.map { entity.id to it })
         trailerMapper.onEmbedded(source = model.trailers.map { entity.id to it })
         themeMapper.onEmbedded(source = model.themeSongs.map { entity.id to it })
-        val seasons = model.seasons?.map { entity.id to it }.orEmpty()
-        seasonMapper.onEmbedded(source = seasons)
-        // Flatten all episodes across seasons
-        val episodes: List<EdgeEpisodeEmbedded> =
-            seasons.flatMap { (media, season) ->
-                season.episodes.map { media to it }
-            }
-        episodeMapper.onEmbedded(source = episodes)
         return entity
     }
 }
