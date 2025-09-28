@@ -4,28 +4,6 @@ schema {
   query: Query
 }
 
-type AnimeThemeMetaType {
-  "Sequence number of the theme (e.g., 1 for OP1, 2 for OP2)"
-  number: Int!
-  "Type of the theme song (e.g., OPENING, ENDING)"
-  type: String!
-  "Version number of the theme (e.g., for themes with multiple visual versions)"
-  version: Int!
-}
-
-type AnimeThemeType {
-  "URL to the audio of the theme song"
-  audio: String
-  "Unique ID for the anime theme song"
-  id: String!
-  "Metadata about the theme song (type, number, version)"
-  meta: AnimeThemeMetaType!
-  "Name or title of the theme song"
-  name: String!
-  "URL to the video of the theme song"
-  video: String!
-}
-
 type Configuration {
   "Genre and media connections"
   genres: [Genre!]!
@@ -37,6 +15,160 @@ type Configuration {
   navigation: [Navigation!]!
   "Configuration settings"
   settings: Settings!
+}
+
+type EdgeAiringSchedule {
+  "First air date of the series"
+  firstAirDate: Instant
+  "Last air date of the series"
+  lastAirDate: Instant
+  "Details of the last aired episode"
+  lastAiredEpisode: EdgeMediaEpisode
+  "Details of the next episode to air"
+  nextEpisodeToAir: EdgeMediaEpisode
+}
+
+type EdgeCoverImage {
+  "Dominant color of the cover image (hex code)"
+  color: String
+  "URL to an extra large cover image"
+  extraLarge: String
+  "URL to a large cover image"
+  large: String
+  "URL to a medium cover image"
+  medium: String
+}
+
+type EdgeImage {
+  "Height of the image in pixels"
+  height: Int
+  "Locale of the image (e.g., en, ja)"
+  locale: String
+  "Type of the image (e.g., BACKDROP, LOGO, POSTER)"
+  type: String
+  "URL to the image"
+  url: String!
+  "Width of the image in pixels"
+  width: Int
+}
+
+type EdgeMediaEpisode {
+  "Air date and time of the episode"
+  airDate: Instant
+  "Episode number in the season"
+  episodeNumber: Int
+  "Unique ID for the scheduled episode"
+  id: Int!
+  "URL to an image for the episode"
+  image: String
+  "Name or title of the episode"
+  name: String
+  "Brief overview or summary of the episode"
+  overview: String
+  "Production code of the episode"
+  productionCode: String
+  "Runtime of the episode in minutes"
+  runtime: Int
+  "Season number this episode belongs to"
+  seasonNumber: Int
+  "TheMovieDB ID for the episode"
+  tmdbId: Int
+}
+
+type EdgeMediaId {
+  "AniDB ID"
+  anidb: Int
+  "Anilist ID"
+  anilist: Int
+  "Anime-Planet ID or slug"
+  animePlanet: String
+  "Anisearch ID"
+  anisearch: Int
+  "IMDb ID"
+  imdb: String
+  "Kitsu ID"
+  kitsu: Int
+  "LiveChart ID"
+  livechart: Int
+  "MyAnimeList ID"
+  myanimelist: Int
+  "Notify.moe ID"
+  notify: String
+  "Shoboi Calendar ID"
+  shoboi: Int
+  "Series slug"
+  slug: String
+  "TheMovieDB ID"
+  themoviedb: Int
+  "Trakt ID"
+  trakt: Int
+  "TVMaze ID"
+  tvMazeId: Int
+  "TheTVDB ID"
+  tvdb: Int
+  "TVRage ID"
+  tvrage: String
+}
+
+type EdgeMediaNetwork {
+  "Category of the network (e.g., DISTRIBUTION, PRODUCTION)"
+  category: String!
+  "Unique ID for the network"
+  id: Int!
+  "Indicates if this is the primary network"
+  isPrimary: Boolean
+  "Path or URL to the network's logo"
+  logoPath: String
+  "Name of the network"
+  name: String!
+  "Origin country of the network"
+  originCountry: String!
+}
+
+type EdgeMediaTheme {
+  "URL to the audio track of the theme song"
+  audio: String
+  "Unique ID for the anime theme song"
+  id: String!
+  "Metadata about the theme song, including type, number, and version."
+  meta: EdgeMediaThemeMeta
+  "Name or title of the theme song"
+  name: String!
+  "URL to the video of the theme song"
+  video: String!
+}
+
+type EdgeMediaThemeMeta {
+  "Sequence number of the theme (e.g., 1 for OP1, 2 for OP2)"
+  number: Int!
+  "Type of the theme song (e.g., OP for opening, ED for ending)"
+  type: String!
+  "Version number of the theme (e.g., for themes with multiple visual versions)"
+  version: Int!
+}
+
+type EdgeMediaTitle {
+  "Canonical title"
+  canonical: String
+  "English title"
+  english: String
+  "Hiragana title (Note: source field name was 'harigana')"
+  harigana: String
+  "Japanese title"
+  japanese: String
+  "Romaji title"
+  romaji: String
+  "List of alternative titles or synonyms"
+  synonyms: [String!]
+}
+
+type EdgeMediaTrailer {
+  "Unique ID for the trailer (e.g., YouTube video ID)"
+  id: String!
+  "Site where the trailer is hosted (e.g., YouTube)"
+  site: String!
+  "URL to a thumbnail image for the trailer"
+  thumbnail: String
 }
 
 type Genre {
@@ -68,8 +200,12 @@ type MediaType {
   airedEpisodes: Int
   "URL to a banner image for the media."
   banner: String
+  "Broadcast schedule information (e.g., day and time)."
+  broadcast: String
+  "Total number of chapters (for manga)."
+  chapters: Int
   "Cover images for the media (extraLarge, large, medium, color)."
-  cover: SeriesCoverImageType!
+  cover: EdgeCoverImage!
   "Synopsis or description of the media."
   description: String
   "URL to a fanart image for the media."
@@ -78,32 +214,40 @@ type MediaType {
   format: String
   "URL to the official homepage of the media."
   homepage: String
-  "The unique identifier for the media entity (often corresponds to 'notify' ID or a combined key)."
+  "The unique identifier for the media entity (often corresponds to the Notify.moe edge ID)."
   id: String!
-  "Collection of images for the media (backdrops, logos, posters)."
-  image: SeriesImageType!
+  "Gallery of images related to the media (posters, backdrops, logos)."
+  images: [EdgeImage!]!
   "Indicates if the media is considered adult content."
   isAdult: Boolean
+  "The kind of media entity (e.g., ANIME, MANGA)."
+  kind: String!
   "A collection of alternative identifiers for the media from various sources."
-  mediaId: SeriesIdType!
+  mediaId: EdgeMediaId!
+  "Link to additional information about the media."
+  moreInfo: String
   "List of networks associated with the media."
-  networks: [SeriesNetworkType!]!
+  networks: [EdgeMediaNetwork!]!
+  "Publication start date (for manga)."
+  publishedFrom: Instant
+  "Publication end date (for manga)."
+  publishedTo: Instant
   "Airing schedule information for the media."
-  schedule: SeriesScheduleType
-  "List of seasons for the media, if applicable."
-  seasons: [SeriesSeasonType!]
+  schedule: EdgeAiringSchedule
   "Source material of the media (e.g., ORIGINAL, MANGA, LIGHT_NOVEL, GAME)."
   source: String
-  "Current status of the media (e.g., RELEASING, FINISHED, NOT_YET_RELEASED, CANCELLED)."
+  "Current status of the media (e.g., RELEASING, FINISHED, NOT_YET_RELEASED)."
   status: String
   "List of theme songs (openings and endings)."
-  themeSongs: [AnimeThemeType!]!
+  themeSongs: [EdgeMediaTheme!]!
   "Titles of the media in various languages (english, romaji, native, etc.)."
-  title: SeriesTitleType!
+  title: EdgeMediaTitle!
   "List of trailers for the media."
-  trailers: [SeriesTrailerType!]!
+  trailers: [EdgeMediaTrailer!]!
   "Timestamp of when the media information was last updated."
   updatedAt: Instant!
+  "Total number of volumes (for manga)."
+  volumes: Int
 }
 
 type Navigation {
@@ -165,234 +309,6 @@ type Query {
   newsConnection(after: String, before: String, limit: Int): NewsConnection
 }
 
-type SeriesCoverImageType {
-  "Dominant color of the cover image (hex code)"
-  color: String
-  "URL to an extra large cover image"
-  extraLarge: String
-  "URL to a large cover image"
-  large: String
-  "URL to a medium cover image"
-  medium: String
-}
-
-type SeriesEpisodeCrewType {
-  "Indicates if the crew member is associated with adult content"
-  adult: Boolean
-  "Character name if the crew member is a voice actor/actress for this episode"
-  character: String
-  "Credit ID for the crew member"
-  creditId: String!
-  "Department of the crew member (e.g., Directing, Writing)"
-  department: String
-  "Unique ID for the crew member"
-  id: Int!
-  "URL to an image of the crew member"
-  image: String
-  "Job title of the crew member for this episode (e.g., Director, Writer)"
-  job: String
-  "Department the crew member is known for"
-  knownFor: String!
-  "Name of the crew member"
-  name: String!
-  "Order of appearance or importance"
-  order: Int
-  "Original name of the crew member"
-  originalName: String!
-  "Popularity score of the crew member"
-  popularity: Float!
-}
-
-type SeriesEpisodeType {
-  "Absolute episode number across all seasons"
-  absoluteEpisodeNumber: Int
-  "Air date and time of the episode"
-  airDate: Instant!
-  "If this episode aired after a specific episode number (within airedAfterSeasonNumber)"
-  airedAfterEpisodeNumber: Int
-  "If this episode aired after a specific season number"
-  airedAfterSeasonNumber: Int
-  "If this episode aired before a specific episode number (within airedBeforeSeasonNumber)"
-  airedBeforeEpisodeNumber: Int
-  "If this episode aired before a specific season number"
-  airedBeforeSeasonNumber: Int
-  "List of crew members for this episode"
-  crew: [SeriesEpisodeCrewType!]!
-  "Episode number within the season"
-  episodeNumber: Int!
-  "List of guest stars for this episode"
-  guests: [SeriesEpisodeCrewType!]!
-  "Unique ID for the episode"
-  id: Int!
-  "URL to an image for the episode"
-  image: String
-  "Name of the episode (often same as title)"
-  name: String
-  "Brief overview or summary of the episode"
-  overview: String
-  "URL to a poster image for the episode"
-  poster: String
-  "Runtime of the episode in minutes"
-  runtime: Int
-  "Season number this episode belongs to"
-  seasonNumber: Int!
-  "Title of the episode"
-  title: String
-  "TheTVDB Episode ID"
-  tvdbId: Int!
-  "TheTVDB Show ID this episode belongs to"
-  tvdbShowId: Int!
-}
-
-type SeriesIdType {
-  "AniDB ID"
-  anidb: Int
-  "Anilist ID"
-  anilist: Int
-  "Anime-Planet ID or slug"
-  animePlanet: String
-  "Anisearch ID"
-  anisearch: Int
-  "IMDb ID"
-  imdb: String
-  "Kitsu ID"
-  kitsu: Int
-  "LiveChart ID"
-  livechart: Int
-  "MyAnimeList ID"
-  myanimelist: Int
-  "Notify.moe ID"
-  notify: String
-  "Shoboi Calendar ID"
-  shoboi: Int
-  "Series slug"
-  slug: String
-  "TheMovieDB ID"
-  themoviedb: Int
-  "Trakt ID"
-  trakt: Int
-  "TVMaze ID"
-  tvMazeId: Int
-  "TheTVDB ID"
-  tvdb: Int
-  "TVRage ID"
-  tvrage: String
-}
-
-type SeriesImageBackdropType {
-  "Height of the backdrop image in pixels"
-  height: Int!
-  "Locale of the backdrop image (e.g., en, ja)"
-  locale: String
-  "URL to the backdrop image"
-  url: String!
-  "Width of the backdrop image in pixels"
-  width: Int!
-}
-
-type SeriesImageType {
-  "List of backdrop images"
-  backdrops: [SeriesImageBackdropType!]!
-  "List of logo images (uses SeriesImageBackdropType structure)"
-  logos: [SeriesImageBackdropType!]!
-  "List of poster images (uses SeriesImageBackdropType structure)"
-  posters: [SeriesImageBackdropType!]!
-}
-
-type SeriesNetworkType {
-  "Category of the network (e.g., DISTRIBUTION, PRODUCTION)"
-  category: String!
-  "Unique ID for the network"
-  id: Int!
-  "Indicates if this is the primary network"
-  isPrimary: Boolean!
-  "Path or URL to the network's logo"
-  logoPath: String
-  "Name of the network"
-  name: String!
-  "Origin country of the network"
-  originCountry: String!
-}
-
-type SeriesScheduleEpisodeType {
-  "Air date and time of the episode"
-  airDate: Instant!
-  "Episode number in the season"
-  episodeNumber: Int!
-  "Unique ID for the scheduled episode"
-  id: Int!
-  "URL to an image for the episode"
-  image: String
-  "Name or title of the episode"
-  name: String!
-  "Brief overview or summary of the episode"
-  overview: String!
-  "Production code of the episode"
-  productionCode: String!
-  "Runtime of the episode in minutes"
-  runtime: Int!
-  "Season number this episode belongs to"
-  seasonNumber: Int!
-  "TheMovieDB ID for the episode"
-  tmdbId: Int!
-}
-
-type SeriesScheduleType {
-  "First air date of the series"
-  firstAirDate: Instant!
-  "Last air date of the series"
-  lastAirDate: Instant!
-  "Details of the last aired episode"
-  lastAiredEpisode: SeriesScheduleEpisodeType
-  "Details of the next episode to air"
-  nextEpisodeToAir: SeriesScheduleEpisodeType
-}
-
-type SeriesSeasonType {
-  "Air date of the first episode of the season"
-  airDate: Instant!
-  "URL to a cover image for the season"
-  cover: String
-  "Number of episodes in this season"
-  episodeCount: Int!
-  "List of episodes in this season"
-  episodes: [SeriesEpisodeType!]!
-  "Images associated with the season (posters, backdrops)"
-  image: SeriesImageType!
-  "Name of the season"
-  name: String!
-  "Season number"
-  number: Int!
-  "Brief overview or summary of the season"
-  overview: String!
-  "TheMovieDB ID for the season"
-  tmdbId: Int!
-}
-
-type SeriesTitleType {
-  "Canonical title"
-  canonical: String
-  "English title"
-  english: String
-  "Hiragana title (Note: source field name was 'harigana')"
-  harigana: String
-  "Japanese title"
-  japanese: String
-  "Romaji title"
-  romaji: String
-  "List of alternative titles or synonyms"
-  synonyms: [String!]
-}
-
-type SeriesTrailerType {
-  "Unique ID for the trailer (e.g., YouTube video ID)"
-  id: String!
-  "Site where the trailer is hosted (e.g., YouTube)"
-  site: String!
-  "URL to a thumbnail image for the trailer"
-  thumbnail: String
-}
-
 type Settings {
   "Analytics enabled status"
   analyticsEnabled: Boolean!
@@ -400,5 +316,5 @@ type Settings {
   platformSource: String
 }
 
-"Represents a point in time, typically as an Epoch timestamp (seconds since epoch)."
+"Represents a point in time, typically as an Epoch timestamp (seconds since Unix epoch)."
 scalar Instant
