@@ -50,6 +50,8 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Media, 
                         lastAirDate = it.lastAirDate,
                         nextEpisodeId = it.nextEpisodeToAir?.id,
                         lastEpisodeId = it.lastAiredEpisode?.id,
+                        nextEpisode = it.nextEpisodeToAir?.toScheduleEpisode(),
+                        lastEpisode = it.lastAiredEpisode?.toScheduleEpisode(),
                     )
                 },
             cover =
@@ -93,4 +95,18 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Media, 
     override val toType: (EdgeMediaEntity) -> EdgeMediaModel.Media = { _ ->
         throw NotImplementedError()
     }
+
+    private fun EdgeMediaModel.SeriesScheduleEpisodeType.toScheduleEpisode() =
+        EdgeMediaEntity.ScheduleEpisode(
+            id = id,
+            airDate = airDate,
+            episodeNumber = episodeNumber,
+            image = image,
+            name = name,
+            overview = overview,
+            productionCode = productionCode,
+            runtime = runtime,
+            seasonNumber = seasonNumber,
+            tmdbId = tmdbId,
+        )
 }
