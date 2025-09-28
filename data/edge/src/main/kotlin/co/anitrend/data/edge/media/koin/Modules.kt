@@ -21,7 +21,6 @@ import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.android.extensions.offline
 import co.anitrend.data.edge.core.extensions.aniTrendApi
 import co.anitrend.data.edge.core.extensions.edgeStore
-import co.anitrend.data.edge.media.EdgeMediaController
 import co.anitrend.data.edge.media.cache.EdgeMediaCache
 import co.anitrend.data.edge.media.converters.EdgeMediaModelConverter
 import co.anitrend.data.edge.media.mapper.EdgeMediaMapper
@@ -50,18 +49,14 @@ internal val edgeMediaModules =
             )
         }
 
-        factory<EdgeMediaController> {
-            graphQLController(
-                mapper = get<EdgeMediaMapper>(),
-                strategy = offline(),
-            )
-        }
-
         factory<EdgeMediaSource> {
             EdgeMediaSourceImpl(
                 remoteSource = aniTrendApi(),
                 localSource = edgeStore().edgeMediaDao(),
-                controller = get(),
+                controller = graphQLController(
+                    mapper = get<EdgeMediaMapper>(),
+                    strategy = offline(),
+                ),
                 clearDataHelper = get(),
                 dispatcher = get(),
                 cachePolicy = get<EdgeMediaCache>(),

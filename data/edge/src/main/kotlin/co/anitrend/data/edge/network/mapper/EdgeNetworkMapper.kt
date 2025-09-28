@@ -16,15 +16,17 @@
  */
 package co.anitrend.data.edge.network.mapper
 
-import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.edge.network.EdgeNetworkEmbedded
+import co.anitrend.data.edge.network.converter.EdgeNetworkConverter
 import co.anitrend.data.edge.network.datasource.EdgeNetworkLocalSource
 import co.anitrend.data.edge.network.entity.EdgeNetworkEntity
 
 internal class EdgeNetworkMapper(
     override val localSource: EdgeNetworkLocalSource,
-    override val converter: SupportConverter<EdgeNetworkEmbedded, EdgeNetworkEntity>,
+    override val converter: EdgeNetworkConverter,
 ) : EmbedMapper<EdgeNetworkEmbedded, EdgeNetworkEntity>() {
-    override suspend fun onResponseMapFrom(source: List<EdgeNetworkEmbedded>): List<EdgeNetworkEntity> = source.map(converter::convertFrom)
+    override suspend fun onResponseMapFrom(
+        source: List<EdgeNetworkEmbedded>
+    ): List<EdgeNetworkEntity> = source.map(converter::convertFrom)
 }
