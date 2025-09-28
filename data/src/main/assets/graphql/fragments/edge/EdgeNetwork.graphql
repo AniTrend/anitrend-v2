@@ -1,0 +1,8 @@
+fragment EdgeNetwork on EdgeMediaNetwork {
+  isPrimary
+  category
+  id
+  logoPath
+  name
+  originCountry
+}
