@@ -1,0 +1,7 @@
+fragment EdgeImage on EdgeImage {
+  height
+  locale
+  type
+  url
+  width
+}

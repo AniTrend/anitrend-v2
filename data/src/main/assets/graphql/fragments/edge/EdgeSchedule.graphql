@@ -1,0 +1,10 @@
+fragment EdgeSchedule on EdgeAiringSchedule {
+  lastAiredEpisode {
+    ... EdgeEpisode
+  }
+  lastAirDate
+  firstAirDate
+  nextEpisodeToAir {
+    ... EdgeEpisode
+  }
+}

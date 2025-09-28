@@ -1,4 +1,4 @@
-fragment ScheduleEpisodeType on SeriesScheduleEpisodeType {
+fragment EdgeEpisode on EdgeMediaEpisode {
   seasonNumber
   runtime
   airDate

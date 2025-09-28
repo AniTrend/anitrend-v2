@@ -1,0 +1,5 @@
+fragment EdgeTrailer on EdgeMediaTrailer {
+  id
+  thumbnail
+  site
+}

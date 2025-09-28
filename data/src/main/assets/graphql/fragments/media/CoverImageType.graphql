@@ -1,6 +1,0 @@
-fragment CoverImageType on SeriesCoverImageType {
-  color
-  extraLarge
-  large
-  medium
-}

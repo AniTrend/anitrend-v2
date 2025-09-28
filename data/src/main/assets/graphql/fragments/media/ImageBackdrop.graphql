@@ -1,6 +1,0 @@
-fragment ImageBackdrop on SeriesImageBackdropType {
-  url
-  height
-  locale
-  width
-}
