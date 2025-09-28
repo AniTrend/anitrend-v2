@@ -18,7 +18,6 @@ package co.anitrend.data.edge.media.model.remote
 
 import co.anitrend.data.edge.image.model.EdgeImageModel
 import co.anitrend.data.edge.network.model.EdgeNetworkModel
-import co.anitrend.data.edge.season.model.EdgeSeasonModel
 import co.anitrend.data.edge.theme.model.EdgeThemeModel
 import co.anitrend.data.edge.trailer.model.EdgeTrailerModel
 import kotlinx.serialization.SerialName
@@ -54,7 +53,6 @@ internal class EdgeMediaModel(
      * @param mediaId A collection of alternative identifiers for the media from various sources.
      * @param images Collection of images for the media (backdrops, logos, posters).
      * @param schedule Airing schedule information for the media.
-     * @param seasons List of seasons for the media, if applicable.
      * @param networks List of networks associated with the media.
      * @param themeSongs List of theme songs (openings and endings).
      * @param trailers List of trailers for the media.
@@ -76,7 +74,7 @@ internal class EdgeMediaModel(
         @SerialName("status") val status: String? = null,
         @SerialName("ageRating") val ageRating: String? = null,
         @SerialName("isAdult") val isAdult: Boolean? = null,
-        @SerialName("kind") val kind: Kind,
+        @SerialName("kind") val kind: String,
         @SerialName("chapters") val chapters: Int? = null,
         @SerialName("volumes") val volumes: Int? = null,
         @SerialName("moreInfo") val moreInfo: String? = null,
@@ -85,18 +83,11 @@ internal class EdgeMediaModel(
         @SerialName("mediaId") val mediaId: SeriesIdType,
         @SerialName("images") val images: List<EdgeImageModel> = emptyList(),
         @SerialName("schedule") val schedule: SeriesScheduleType? = null,
-        @SerialName("seasons") val seasons: List<EdgeSeasonModel>? = null,
         @SerialName("networks") val networks: List<EdgeNetworkModel> = emptyList(),
         @SerialName("themeSongs") val themeSongs: List<EdgeThemeModel> = emptyList(),
         @SerialName("trailers") val trailers: List<EdgeTrailerModel> = emptyList(),
         @SerialName("updatedAt") val updatedAt: Long,
-    ) {
-        @Serializable
-        enum class Kind {
-            @SerialName("ANIME") ANIME,
-            @SerialName("MANGA") MANGA
-        }
-    }
+    )
 
     /**
      * Titles of the media in various languages.

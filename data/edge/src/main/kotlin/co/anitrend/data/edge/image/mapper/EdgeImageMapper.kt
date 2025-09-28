@@ -21,11 +21,17 @@ import co.anitrend.data.edge.image.EdgeImageWithMediaId
 import co.anitrend.data.edge.image.converter.EdgeImageConverter
 import co.anitrend.data.edge.image.datasource.EdgeImageLocalSource
 import co.anitrend.data.edge.image.entity.EdgeMediaImageEntity
+import co.anitrend.data.edge.image.model.EdgeImageModel
 
 internal class EdgeImageMapper(
     override val localSource: EdgeImageLocalSource,
     override val converter: EdgeImageConverter,
 ) : EmbedMapper<EdgeImageWithMediaId, EdgeMediaImageEntity>() {
+
+    suspend fun onEmbedded(mediaId: String, sources: List<EdgeImageModel>) {
+        super.onEmbedded(sources.map { mediaId to it })
+    }
+
     override suspend fun onResponseMapFrom(
         source: List<EdgeImageWithMediaId>
     ): List<EdgeMediaImageEntity> = source.map(converter::convertFrom)

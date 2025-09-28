@@ -21,6 +21,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Index
 import co.anitrend.data.core.common.IEntityId
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
@@ -52,7 +53,7 @@ data class EdgeMediaEntity(
     @ColumnInfo(name = "status") val status: String?,
     @ColumnInfo(name = "age_rating") val ageRating: String?,
     @ColumnInfo(name = "is_adult") val isAdult: Boolean?,
-    @ColumnInfo(name = "kind") val kind: String?,
+    @ColumnInfo(name = "kind") val kind: MediaType,
     @ColumnInfo(name = "chapters") val chapters: Int?,
     @ColumnInfo(name = "volumes") val volumes: Int?,
     @ColumnInfo(name = "more_info") val moreInfo: String?,
