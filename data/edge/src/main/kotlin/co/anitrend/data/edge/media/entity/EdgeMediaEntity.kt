@@ -104,5 +104,20 @@ data class EdgeMediaEntity(
         @ColumnInfo(name = "last_air_date") val lastAirDate: Long?,
         @ColumnInfo(name = "next_episode_id") val nextEpisodeId: Long?,
         @ColumnInfo(name = "last_episode_id") val lastEpisodeId: Long?,
+        @Embedded(prefix = "next_episode_detail_") val nextEpisode: ScheduleEpisode?,
+        @Embedded(prefix = "last_episode_detail_") val lastEpisode: ScheduleEpisode?,
+    )
+
+    data class ScheduleEpisode(
+        @ColumnInfo(name = "id") val id: Long?,
+        @ColumnInfo(name = "air_date") val airDate: Long?,
+        @ColumnInfo(name = "episode_number") val episodeNumber: Int?,
+        @ColumnInfo(name = "image") val image: String?,
+        @ColumnInfo(name = "name") val name: String?,
+        @ColumnInfo(name = "overview") val overview: String?,
+        @ColumnInfo(name = "production_code") val productionCode: String?,
+        @ColumnInfo(name = "runtime") val runtime: Int?,
+        @ColumnInfo(name = "season_number") val seasonNumber: Int?,
+        @ColumnInfo(name = "tmdb_id") val tmdbId: Long?,
     )
 }
