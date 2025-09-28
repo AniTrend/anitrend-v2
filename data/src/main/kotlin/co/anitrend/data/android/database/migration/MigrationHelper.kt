@@ -108,6 +108,26 @@ internal val MIGRATIONS = arrayOf(
             ALTER TABLE edge_media ADD COLUMN more_info TEXT;
             ALTER TABLE edge_media ADD COLUMN published_from INTEGER;
             ALTER TABLE edge_media ADD COLUMN published_to INTEGER;
+            ALTER TABLE edge_media ADD COLUMN schedule_next_episode_detail_id INTEGER;
+            ALTER TABLE edge_media ADD COLUMN schedule_next_episode_detail_air_date INTEGER;
+            ALTER TABLE edge_media ADD COLUMN schedule_next_episode_detail_episode_number INTEGER;
+            ALTER TABLE edge_media ADD COLUMN schedule_next_episode_detail_image TEXT;
+            ALTER TABLE edge_media ADD COLUMN schedule_next_episode_detail_name TEXT;
+            ALTER TABLE edge_media ADD COLUMN schedule_next_episode_detail_overview TEXT;
+            ALTER TABLE edge_media ADD COLUMN schedule_next_episode_detail_production_code TEXT;
+            ALTER TABLE edge_media ADD COLUMN schedule_next_episode_detail_runtime INTEGER;
+            ALTER TABLE edge_media ADD COLUMN schedule_next_episode_detail_season_number INTEGER;
+            ALTER TABLE edge_media ADD COLUMN schedule_next_episode_detail_tmdb_id INTEGER;
+            ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_id INTEGER;
+            ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_air_date INTEGER;
+            ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_episode_number INTEGER;
+            ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_image TEXT;
+            ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_name TEXT;
+            ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_overview TEXT;
+            ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_production_code TEXT;
+            ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_runtime INTEGER;
+            ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_season_number INTEGER;
+            ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_tmdb_id INTEGER;
             """.trimIndent()
     }
 )
