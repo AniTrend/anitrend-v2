@@ -16,15 +16,17 @@
  */
 package co.anitrend.data.edge.episode.mapper
 
-import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.edge.episode.EdgeEpisodeEmbedded
+import co.anitrend.data.edge.episode.converter.EdgeEpisodeConverter
 import co.anitrend.data.edge.episode.datasource.EdgeEpisodeLocalSource
 import co.anitrend.data.edge.episode.entity.EdgeEpisodeEntity
 
 internal class EdgeEpisodeMapper(
     override val localSource: EdgeEpisodeLocalSource,
-    override val converter: SupportConverter<EdgeEpisodeEmbedded, EdgeEpisodeEntity>,
+    override val converter: EdgeEpisodeConverter,
 ) : EmbedMapper<EdgeEpisodeEmbedded, EdgeEpisodeEntity>() {
-    override suspend fun onResponseMapFrom(source: List<EdgeEpisodeEmbedded>): List<EdgeEpisodeEntity> = source.map(converter::convertFrom)
+    override suspend fun onResponseMapFrom(
+        source: List<EdgeEpisodeEmbedded>
+    ): List<EdgeEpisodeEntity> = source.map(converter::convertFrom)
 }

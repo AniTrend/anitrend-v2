@@ -16,15 +16,15 @@
  */
 package co.anitrend.data.edge.theme.mapper
 
-import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.edge.theme.EdgeThemeEmbedded
+import co.anitrend.data.edge.theme.converter.EdgeThemeConverter
 import co.anitrend.data.edge.theme.datasource.EdgeThemeLocalSource
 import co.anitrend.data.edge.theme.entity.EdgeThemeEntity
 
 internal class EdgeThemeMapper(
     override val localSource: EdgeThemeLocalSource,
-    override val converter: SupportConverter<EdgeThemeEmbedded, EdgeThemeEntity>,
+    override val converter: EdgeThemeConverter,
 ) : EmbedMapper<EdgeThemeEmbedded, EdgeThemeEntity>() {
     override suspend fun onResponseMapFrom(source: List<EdgeThemeEmbedded>): List<EdgeThemeEntity> = source.map(converter::convertFrom)
 }

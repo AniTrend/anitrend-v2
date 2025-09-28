@@ -16,15 +16,15 @@
  */
 package co.anitrend.data.edge.trailer.mapper
 
-import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.edge.trailer.EdgeTrailerEmbedded
+import co.anitrend.data.edge.trailer.converter.EdgeTrailerConverter
 import co.anitrend.data.edge.trailer.datasource.EdgeTrailerLocalSource
 import co.anitrend.data.edge.trailer.entity.EdgeTrailerEntity
 
 internal class EdgeTrailerMapper(
     override val localSource: EdgeTrailerLocalSource,
-    override val converter: SupportConverter<EdgeTrailerEmbedded, EdgeTrailerEntity>,
+    override val converter: EdgeTrailerConverter,
 ) : EmbedMapper<EdgeTrailerEmbedded, EdgeTrailerEntity>() {
     override suspend fun onResponseMapFrom(source: List<EdgeTrailerEmbedded>): List<EdgeTrailerEntity> = source.map(converter::convertFrom)
 }

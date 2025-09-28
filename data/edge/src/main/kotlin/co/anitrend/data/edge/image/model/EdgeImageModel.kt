@@ -19,32 +19,28 @@ package co.anitrend.data.edge.image.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+
 /**
- * Collection of images for the media (backdrops, logos, posters).
+ * Backdrop/poster/logo image information.
  *
- * @param backdrops List of backdrop images
- * @param logos List of logo images
- * @param posters List of poster images
+ * @param url URL to the backdrop image
+ * @param height Height of the backdrop image in pixels
+ * @param locale Locale of the backdrop image (e.g., en, ja)
+ * @param width Width of the backdrop image in pixels
+ * @param type Type of image backdrop, logo, poster
  */
 @Serializable
 data class EdgeImageModel(
-    @SerialName("backdrops") val backdrops: List<ImageType>,
-    @SerialName("logos") val logos: List<ImageType>,
-    @SerialName("posters") val posters: List<ImageType>,
+    @SerialName("url") val url: String,
+    @SerialName("height") val height: Int,
+    @SerialName("width") val width: Int,
+    @SerialName("locale") val locale: String?,
+    @SerialName("type") val type: ImageType,
 ) {
-    /**
-     * Backdrop/poster/logo image information.
-     *
-     * @param url URL to the backdrop image
-     * @param height Height of the backdrop image in pixels
-     * @param locale Locale of the backdrop image (e.g., en, ja)
-     * @param width Width of the backdrop image in pixels
-     */
     @Serializable
-    data class ImageType(
-        @SerialName("url") val url: String,
-        @SerialName("height") val height: Int,
-        @SerialName("width") val width: Int,
-        @SerialName("locale") val locale: String?,
-    )
+    enum class ImageType(val alias: String) {
+        @SerialName("backdrop") BACKDROP("backdrop"),
+        @SerialName("logo") LOGO("logo"),
+        @SerialName("poster") POSTER("poster"),
+    }
 }

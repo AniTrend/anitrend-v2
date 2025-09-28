@@ -21,37 +21,15 @@ import co.anitrend.data.edge.image.EdgeImageWithMediaId
 import co.anitrend.data.edge.image.entity.EdgeMediaImageEntity
 
 internal class EdgeImageConverter(
-    override val fromType: (EdgeImageWithMediaId) -> List<EdgeMediaImageEntity> = { model ->
-        model.second.backdrops.map {
-            EdgeMediaImageEntity(
-                mediaId = model.first,
-                type = EdgeMediaImageEntity.ImageType.BACKDROP,
-                url = it.url,
-                height = it.height,
-                width = it.width,
-                locale = it.locale,
-            )
-        } +
-            model.second.logos.map {
-                EdgeMediaImageEntity(
-                    mediaId = model.first,
-                    type = EdgeMediaImageEntity.ImageType.LOGO,
-                    url = it.url,
-                    height = it.height,
-                    width = it.width,
-                    locale = it.locale,
-                )
-            } +
-            model.second.posters.map {
-                EdgeMediaImageEntity(
-                    mediaId = model.first,
-                    type = EdgeMediaImageEntity.ImageType.POSTER,
-                    url = it.url,
-                    height = it.height,
-                    width = it.width,
-                    locale = it.locale,
-                )
-            }
+    override val fromType: (EdgeImageWithMediaId) -> EdgeMediaImageEntity = { model ->
+        EdgeMediaImageEntity(
+            mediaId = model.first,
+            type = EdgeMediaImageEntity.ImageType.valueOf(model.second.type.alias),
+            url = model.second.url,
+            height = model.second.height,
+            width = model.second.width,
+            locale = model.second.locale,
+        )
     },
-    override val toType: (List<EdgeMediaImageEntity>) -> EdgeImageWithMediaId = { throw NotImplementedError() },
-) : SupportConverter<EdgeImageWithMediaId, List<EdgeMediaImageEntity>>()
+    override val toType: (EdgeMediaImageEntity) -> EdgeImageWithMediaId = { throw NotImplementedError() },
+) : SupportConverter<EdgeImageWithMediaId, EdgeMediaImageEntity>()

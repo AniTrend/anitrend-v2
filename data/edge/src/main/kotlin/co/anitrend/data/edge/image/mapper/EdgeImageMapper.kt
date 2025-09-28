@@ -16,15 +16,17 @@
  */
 package co.anitrend.data.edge.image.mapper
 
-import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.edge.image.EdgeImageWithMediaId
+import co.anitrend.data.edge.image.converter.EdgeImageConverter
 import co.anitrend.data.edge.image.datasource.EdgeImageLocalSource
 import co.anitrend.data.edge.image.entity.EdgeMediaImageEntity
 
 internal class EdgeImageMapper(
     override val localSource: EdgeImageLocalSource,
-    override val converter: SupportConverter<EdgeImageWithMediaId, EdgeMediaImageEntity>,
+    override val converter: EdgeImageConverter,
 ) : EmbedMapper<EdgeImageWithMediaId, EdgeMediaImageEntity>() {
-    override suspend fun onResponseMapFrom(source: List<EdgeImageWithMediaId>): List<EdgeMediaImageEntity> = source.map(converter::convertFrom)
+    override suspend fun onResponseMapFrom(
+        source: List<EdgeImageWithMediaId>
+    ): List<EdgeMediaImageEntity> = source.map(converter::convertFrom)
 }
