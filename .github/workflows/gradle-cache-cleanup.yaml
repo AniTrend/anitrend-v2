@@ -1,4 +1,4 @@
-name: gradle-cache-cleanup
+name: Gradle Cache Cleanup
 on:
   pull_request:
     types:
