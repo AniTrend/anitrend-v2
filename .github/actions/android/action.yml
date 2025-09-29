@@ -3,7 +3,7 @@ description: 'Common setup for Android workflows'
 
 inputs:
   cache-read-only:
-    description: 'Whether to use read-only cache (for PRs), typically `github.ref != 'refs/heads/develop'`'
+    description: 'Whether to use read-only cache'
     required: false
     default: 'false'
 
