@@ -1,0 +1,29 @@
+name: 'Common - Android'
+description: 'Common setup for Android workflows'
+
+inputs:
+  cache-read-only:
+    description: 'Whether to use read-only cache'
+    required: false
+    default: 'false'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Increase swapfile
+      shell: bash
+      run: |
+        chmod +x .github/scripts/action-swap-increase.sh
+        bash .github/scripts/action-swap-increase.sh
+    - name: Set up JDK
+      uses: actions/setup-java@v5
+      with:
+        java-version-file: '.java-version'
+        distribution: 'adopt'
+        cache: 'gradle'
+        cache-dependency-path: ./gradle/libs.versions.toml
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        cache-read-only: ${{ inputs.cache-read-only }}
+

@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [develop, master]
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  wrapper-validation:
+    name: Gradle Wrapper Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: gradle/actions/wrapper-validation@v4
+
+  spotless:
+    name: Spotless Lint
+    runs-on: ubuntu-24.04
+    needs: [wrapper-validation]
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      - uses: actions/checkout@v5
+      - name: Common setup
+        uses: ./.github/actions/android
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/develop' }}
+      - name: Run spotless apply
+        run: ./gradlew spotlessApply
+      - name: Check for changes
+        run: |
+          git diff --exit-code || exit 0
+        continue-on-error: true
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          signoff: true
+          delete-branch: true
+          commit-message: "automation: apply spotless linting"
+          title: "platform: automated lint fix"
+          body: |
+            This PR was automatically generated to fix linting issues using spotless.
+          branch: platform/auto-lint-fix
+          labels: ":skateboard: skip-changelog"
+          base: ${{ github.head_ref }}
+
+  unit-test:
+    name: Unit Test
+    needs: [wrapper-validation, spotless]
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v5
+    - name: Common setup
+      uses: ./.github/actions/android
+      with:
+        cache-read-only: ${{ github.ref != 'refs/heads/develop' }}
+    - name: Configure properties
+      run: |
+        bash .github/scripts/staging-config.sh
+    - name: Post setup clean up
+      run: |
+        bash .github/scripts/cleanup-temp-directory.sh
+    - name: Check disk space
+      run: df -h
+    - name: Gradle test
+      run: ./gradlew test --stacktrace
+    - name: Publish test report
+      uses: mikepenz/action-junit-report@v5
+      if: always() # always run even if the previous step fails
+      with:
+        report_paths: '**/build/test-results/**/TEST-*.xml'
