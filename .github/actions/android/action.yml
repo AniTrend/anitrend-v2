@@ -11,6 +11,7 @@ runs:
   using: "composite"
   steps:
     - name: Increase swapfile
+      shell: bash
       run: |
         chmod +x .github/scripts/action-swap-increase.sh
         bash .github/scripts/action-swap-increase.sh
