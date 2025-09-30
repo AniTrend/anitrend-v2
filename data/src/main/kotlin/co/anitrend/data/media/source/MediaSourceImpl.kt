@@ -81,7 +81,6 @@ internal class MediaSourceImpl {
 
             val result = controller(deferred, requestCallback)
 
-
             return result != null
         }
 
