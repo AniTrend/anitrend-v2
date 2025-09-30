@@ -23,14 +23,12 @@ import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.DynamicFeaturePlugin
 import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.TestPlugin
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
-import org.gradle.api.internal.plugins.DefaultArtifactPublicationSet
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.publish.PublishingExtension
@@ -105,14 +103,8 @@ internal fun Project.baseAppExtension() =
 internal fun Project.libraryExtension() =
     extensions.getByType<LibraryExtension>()
 
-internal fun Project.dynamicFeatureExtension() =
-    extensions.getByType<BaseAppModuleExtension>()
-
 internal fun Project.extraPropertiesExtension() =
     extensions.getByType<ExtraPropertiesExtension>()
-
-internal fun Project.defaultArtifactPublicationSet() =
-    extensions.getByType<DefaultArtifactPublicationSet>()
 
 internal fun Project.reportingExtension() =
     extensions.getByType<ReportingExtension>()
@@ -150,12 +142,6 @@ internal fun Project.containsAndroidPlugin(): Boolean {
 internal fun Project.containsLibraryPlugin(): Boolean {
     return project.plugins.toList().any { plugin ->
         plugin is LibraryPlugin
-    }
-}
-
-internal fun Project.containsDynamicFeaturePlugin(): Boolean {
-    return project.plugins.toList().any { plugin ->
-        plugin is DynamicFeaturePlugin
     }
 }
 
