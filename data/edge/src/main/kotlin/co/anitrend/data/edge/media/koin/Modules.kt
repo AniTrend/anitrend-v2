@@ -33,7 +33,7 @@ internal val edgeMediaModules =
         factory { EdgeMediaModelConverter() }
         factory {
             EdgeMediaCache(
-                localSource = cacheLocalSource()
+                localSource = cacheLocalSource(),
             )
         }
         factory {
@@ -52,10 +52,11 @@ internal val edgeMediaModules =
             EdgeMediaSourceImpl(
                 remoteSource = aniTrendApi(),
                 localSource = edgeStore().edgeMediaDao(),
-                controller = graphQLController(
-                    mapper = get<EdgeMediaMapper>(),
-                    strategy = offline(),
-                ),
+                controller =
+                    graphQLController(
+                        mapper = get<EdgeMediaMapper>(),
+                        strategy = offline(),
+                    ),
                 clearDataHelper = get(),
                 dispatcher = get(),
                 cachePolicy = get<EdgeMediaCache>(),

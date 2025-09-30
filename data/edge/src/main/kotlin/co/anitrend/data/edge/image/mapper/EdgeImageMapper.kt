@@ -27,12 +27,12 @@ internal class EdgeImageMapper(
     override val localSource: EdgeImageLocalSource,
     override val converter: EdgeImageConverter,
 ) : EmbedMapper<EdgeImageWithMediaId, EdgeMediaImageEntity>() {
-
-    suspend fun onEmbedded(mediaId: String, sources: List<EdgeImageModel>) {
+    suspend fun onEmbedded(
+        mediaId: String,
+        sources: List<EdgeImageModel>,
+    ) {
         super.onEmbedded(sources.map { mediaId to it })
     }
 
-    override suspend fun onResponseMapFrom(
-        source: List<EdgeImageWithMediaId>
-    ): List<EdgeMediaImageEntity> = source.map(converter::convertFrom)
+    override suspend fun onResponseMapFrom(source: List<EdgeImageWithMediaId>): List<EdgeMediaImageEntity> = source.map(converter::convertFrom)
 }

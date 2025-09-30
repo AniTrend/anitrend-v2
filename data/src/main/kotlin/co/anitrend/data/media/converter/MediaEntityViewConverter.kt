@@ -54,7 +54,7 @@ internal class MediaEntityViewConverter(
         private fun MediaEntityView.createMedia(): Media.Core =
             Media.Core(
                 countryCode = media.countryOfOrigin,
-                description = media.description,// ?: edge?.media?.description,
+                description = media.description, // ?: edge?.media?.description,
                 favourites = media.favourites,
                 genres =
                     genres.map {
@@ -72,13 +72,15 @@ internal class MediaEntityViewConverter(
                 isReviewBlocked = media.isReviewBlocked,
                 siteUrl = media.createSiteUrl(),
                 source =
-                    media.source,/* ?: edge?.media?.source?.let {
+                    media.source,
+                /* ?: edge?.media?.source?.let {
                         runCatching {
                             MediaSource.valueOf(it.uppercase())
                         }.getOrNull()
                     },*/
                 synonyms =
-                    media.synonyms,/*.let {
+                    media.synonyms,
+                /*.let {
                         it.ifEmpty {
                             edge
                                 ?.media
@@ -110,25 +112,25 @@ internal class MediaEntityViewConverter(
                 endDate = media.endDate.asFuzzyDate(),
                 title =
                     MediaTitle(
-                        romaji = media.title.romaji,// ?: edge?.media?.title?.japanese,
-                        english = media.title.english,// ?: edge?.media?.title?.english,
+                        romaji = media.title.romaji, // ?: edge?.media?.title?.japanese,
+                        english = media.title.english, // ?: edge?.media?.title?.english,
                         native = media.title.original,
-                        userPreferred = media.title.userPreferred,// ?: edge?.media?.title?.canonical,
+                        userPreferred = media.title.userPreferred, // ?: edge?.media?.title?.canonical,
                     ),
                 image =
                     MediaImage(
-                        color = media.coverImage.color,// ?: edge?.media?.cover?.color,
-                        extraLarge = media.coverImage.extraLarge,// ?: edge?.media?.cover?.extraLarge,
-                        large = media.coverImage.large,// ?: edge?.media?.cover?.large,
-                        medium = media.coverImage.medium,// ?: edge?.media?.cover?.medium,
-                        banner = media.coverImage.banner,// ?: edge?.media?.banner,
+                        color = media.coverImage.color, // ?: edge?.media?.cover?.color,
+                        extraLarge = media.coverImage.extraLarge, // ?: edge?.media?.cover?.extraLarge,
+                        large = media.coverImage.large, // ?: edge?.media?.cover?.large,
+                        medium = media.coverImage.medium, // ?: edge?.media?.cover?.medium,
+                        banner = media.coverImage.banner, // ?: edge?.media?.banner,
                     ),
                 category =
                     when (media.type) {
                         MediaType.ANIME ->
                             Media.Category.Anime(
-                                media.episodes ?: 0,// ?: edge?.media?.airedEpisodes ?: 0,
-                                media.duration ?: 0,// ?: 0,
+                                media.episodes ?: 0, // ?: edge?.media?.airedEpisodes ?: 0,
+                                media.duration ?: 0, // ?: 0,
                                 broadcast = null, // edge?.networks?.firstOrNull { it.name },
                                 premiered = null, // edge?.media?.schedule.firstAirDate,
                                 nextAiring?.let {

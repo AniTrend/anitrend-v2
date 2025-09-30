@@ -36,71 +36,75 @@ private fun SupportSQLiteDatabase.usingTransaction(
     endTransaction()
 }
 
-private fun migrationOf(from: Int, to: Int, block: () -> String) =
-    object : Migration(from, to) {
-        /**
-         * Should run the necessary migrations.
-         *
-         * The Migration class cannot access any generated Dao in this method.
-         *
-         * This method is already called inside a transaction and that transaction might actually be a
-         * composite transaction of all necessary `Migration`s.
-         *
-         * This function is only called when Room is configured without a driver. If a driver is set
-         * using [androidx.room.RoomDatabase.Builder.setDriver], then only the version that receives a
-         * [SQLiteConnection] is called.
-         *
-         * @param db The database instance
-         * @throws NotImplementedError if migrate(SQLiteConnection) is not overridden.
-         */
-        override fun migrate(db: SupportSQLiteDatabase) {
-            db.usingTransaction("MIGRATION_${from}_${to}", block())
-        }
+private fun migrationOf(
+    from: Int,
+    to: Int,
+    block: () -> String,
+) = object : Migration(from, to) {
+    /**
+     * Should run the necessary migrations.
+     *
+     * The Migration class cannot access any generated Dao in this method.
+     *
+     * This method is already called inside a transaction and that transaction might actually be a
+     * composite transaction of all necessary `Migration`s.
+     *
+     * This function is only called when Room is configured without a driver. If a driver is set
+     * using [androidx.room.RoomDatabase.Builder.setDriver], then only the version that receives a
+     * [SQLiteConnection] is called.
+     *
+     * @param db The database instance
+     * @throws NotImplementedError if migrate(SQLiteConnection) is not overridden.
+     */
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.usingTransaction("MIGRATION_${from}_$to", block())
     }
+}
 
-internal val MIGRATIONS = arrayOf(
-    migrationOf(1, 2) {
-        val tableName = "media_list"
-        """
-                CREATE TABLE `${tableName}_temp`(
-                    `media_type` TEXT NOT NULL,
-                    `completed_at` TEXT,
-                    `created_at` INTEGER,
-                    `hidden_from_status` INTEGER NOT NULL,
-                    `media_id` INTEGER NOT NULL,
-                    `notes` TEXT,
-                    `priority` INTEGER,
-                    `hidden` INTEGER NOT NULL,
-                    `progress` INTEGER NOT NULL,
-                    `progress_volumes` INTEGER NOT NULL,
-                    `repeat_count` INTEGER NOT NULL,
-                    `score` REAL NOT NULL,
-                    `started_at` TEXT,
-                    `status` TEXT NOT NULL,
-                    `updated_at` INTEGER,
-                    `user_id` INTEGER NOT NULL,
-                    `id` INTEGER NOT NULL,
-                    PRIMARY KEY(`id`)
-                );
+internal val MIGRATIONS =
+    arrayOf(
+        migrationOf(1, 2) {
+            val tableName = "media_list"
+            """
+            CREATE TABLE `${tableName}_temp`(
+                `media_type` TEXT NOT NULL,
+                `completed_at` TEXT,
+                `created_at` INTEGER,
+                `hidden_from_status` INTEGER NOT NULL,
+                `media_id` INTEGER NOT NULL,
+                `notes` TEXT,
+                `priority` INTEGER,
+                `hidden` INTEGER NOT NULL,
+                `progress` INTEGER NOT NULL,
+                `progress_volumes` INTEGER NOT NULL,
+                `repeat_count` INTEGER NOT NULL,
+                `score` REAL NOT NULL,
+                `started_at` TEXT,
+                `status` TEXT NOT NULL,
+                `updated_at` INTEGER,
+                `user_id` INTEGER NOT NULL,
+                `id` INTEGER NOT NULL,
+                PRIMARY KEY(`id`)
+            );
 
-                INSERT INTO `${tableName}_temp` SELECT media_type, completed_at, created_at,
-                hidden_from_status, media_id, notes, priority, hidden, progress, progress_volumes,
-                repeat_count, score, started_at, status, updated_at, user_id, id
-                FROM `$tableName`;
+            INSERT INTO `${tableName}_temp` SELECT media_type, completed_at, created_at,
+            hidden_from_status, media_id, notes, priority, hidden, progress, progress_volumes,
+            repeat_count, score, started_at, status, updated_at, user_id, id
+            FROM `$tableName`;
 
-                DROP TABLE `$tableName`;
+            DROP TABLE `$tableName`;
 
-                ALTER TABLE `${tableName}_temp` RENAME TO `$tableName`;
-                """.trimIndent()
-    },
-    migrationOf(9, 10) {
-        """
+            ALTER TABLE `${tableName}_temp` RENAME TO `$tableName`;
+            """.trimIndent()
+        },
+        migrationOf(9, 10) {
+            """
             Drop table relation;
             Drop table jikan;
             """.trimIndent()
-    },
-    migrationOf(11, 12) {
-        """
+        },
+        migrationOf(11, 12) {
+            """
             ALTER TABLE edge_media ADD COLUMN broadcast TEXT;
             ALTER TABLE edge_media ADD COLUMN kind TEXT;
             ALTER TABLE edge_media ADD COLUMN chapters INTEGER;
@@ -129,5 +133,5 @@ internal val MIGRATIONS = arrayOf(
             ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_season_number INTEGER;
             ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_tmdb_id INTEGER;
             """.trimIndent()
-    }
-)
+        },
+    )

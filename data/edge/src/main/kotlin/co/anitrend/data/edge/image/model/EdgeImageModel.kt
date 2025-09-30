@@ -19,7 +19,6 @@ package co.anitrend.data.edge.image.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 /**
  * Backdrop/poster/logo image information.
  *
@@ -38,9 +37,16 @@ data class EdgeImageModel(
     @SerialName("type") val type: ImageType,
 ) {
     @Serializable
-    enum class ImageType(val alias: String) {
-        @SerialName("backdrop") BACKDROP("backdrop"),
-        @SerialName("logo") LOGO("logo"),
-        @SerialName("poster") POSTER("poster"),
+    enum class ImageType(
+        val alias: String,
+    ) {
+        @SerialName("backdrop")
+        BACKDROP("backdrop"),
+
+        @SerialName("logo")
+        LOGO("logo"),
+
+        @SerialName("poster")
+        POSTER("poster"),
     }
 }

@@ -67,24 +67,25 @@ private val coreModule =
             Settings(
                 context = androidContext(),
             )
-        } binds arrayOf(
-            ISupportPreference::class,
-            IConfigurationSettings::class,
-            ILocaleSettings::class,
-            IThemeSettings::class,
-            IAuthenticationSettings::class,
-            IPrivacySettings::class,
-            ISortOrderSettings::class,
-            IRefreshBehaviourSettings::class,
-            ICustomizationSettings::class,
-            IPowerSettings::class,
-            IConnectivitySettings::class,
-            INotificationSettings::class,
-            IUserSettings::class,
-            ICacheSettings::class,
-            ISyncSettings::class,
-            IDeveloperSettings::class,
-        )
+        } binds
+            arrayOf(
+                ISupportPreference::class,
+                IConfigurationSettings::class,
+                ILocaleSettings::class,
+                IThemeSettings::class,
+                IAuthenticationSettings::class,
+                IPrivacySettings::class,
+                ISortOrderSettings::class,
+                IRefreshBehaviourSettings::class,
+                ICustomizationSettings::class,
+                IPowerSettings::class,
+                IConnectivitySettings::class,
+                INotificationSettings::class,
+                IUserSettings::class,
+                ICacheSettings::class,
+                ISyncSettings::class,
+                IDeveloperSettings::class,
+            )
 
         single<ISupportDispatcher> {
             SupportDispatcher()
