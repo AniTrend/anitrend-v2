@@ -40,13 +40,13 @@ data class EdgeImageModel(
     enum class ImageType(
         val alias: String,
     ) {
-        @SerialName("backdrop")
+        @SerialName("BACKDROP")
         BACKDROP("backdrop"),
 
-        @SerialName("logo")
+        @SerialName("LOGO")
         LOGO("logo"),
 
-        @SerialName("poster")
+        @SerialName("POSTER")
         POSTER("poster"),
     }
 }
