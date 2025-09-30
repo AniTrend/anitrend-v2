@@ -26,7 +26,5 @@ internal class EdgeEpisodeMapper(
     override val localSource: EdgeEpisodeLocalSource,
     override val converter: EdgeEpisodeConverter,
 ) : EmbedMapper<EdgeEpisodeEmbedded, EdgeEpisodeEntity>() {
-    override suspend fun onResponseMapFrom(
-        source: List<EdgeEpisodeEmbedded>
-    ): List<EdgeEpisodeEntity> = source.map(converter::convertFrom)
+    override suspend fun onResponseMapFrom(source: List<EdgeEpisodeEmbedded>): List<EdgeEpisodeEntity> = source.map(converter::convertFrom)
 }

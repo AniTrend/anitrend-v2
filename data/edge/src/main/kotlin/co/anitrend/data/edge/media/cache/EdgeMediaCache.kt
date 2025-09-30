@@ -24,7 +24,7 @@ import org.threeten.bp.Instant
 
 internal class EdgeMediaCache(
     override val localSource: CacheLocalSource,
-    override val request: CacheRequest = CacheRequest.EDGE_MEDIA
+    override val request: CacheRequest = CacheRequest.EDGE_MEDIA,
 ) : CacheStorePolicy() {
     /**
      * Check if a resource with a given [identity] is permitted to refresh

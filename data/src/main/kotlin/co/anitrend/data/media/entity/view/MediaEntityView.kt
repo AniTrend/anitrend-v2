@@ -34,7 +34,7 @@ internal sealed class MediaEntityView {
     abstract val nextAiring: AiringScheduleEntity?
     abstract val mediaList: MediaListEntityView.Core?
     abstract val genres: List<GenreEntityView>
-    //abstract val edge: EdgeMediaEntityView?
+    // abstract val edge: EdgeMediaEntityView?
 
     internal data class Core(
         @Embedded override val media: MediaEntity,
@@ -58,8 +58,8 @@ internal sealed class MediaEntityView {
         /*@Relation(
             parentColumn = "id",
             entityColumn = "id_ani_list",
-        )*/
-        //override val edge: EdgeMediaEntityView?,
+        )
+        override val edge: EdgeMediaEntityView?,*/
     ) : MediaEntityView()
 
     internal data class Extended(
@@ -100,7 +100,7 @@ internal sealed class MediaEntityView {
         /*@Relation(
             parentColumn = "id",
             entityColumn = "id_ani_list",
-        )*/
-        //override val edge: EdgeMediaEntityView?,
+        )
+        override val edge: EdgeMediaEntityView?,*/
     ) : MediaEntityView()
 }
