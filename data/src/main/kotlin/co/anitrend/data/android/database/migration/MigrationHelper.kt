@@ -97,10 +97,10 @@ internal val MIGRATIONS =
             ALTER TABLE `${tableName}_temp` RENAME TO `$tableName`;
             """.trimIndent()
         },
-        migrationOf(9, 10) {
+        migrationOf(9, 11) {
             """
-            Drop table relation;
-            Drop table jikan;
+            DROP TABLE IF EXISTS relation;
+            DROP TABLE IF EXISTS jikan;
             """.trimIndent()
         },
         migrationOf(11, 12) {
