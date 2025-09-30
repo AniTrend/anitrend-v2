@@ -19,12 +19,17 @@ package co.anitrend.data.edge.image.converter
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.edge.image.EdgeImageWithMediaId
 import co.anitrend.data.edge.image.entity.EdgeMediaImageEntity
+import co.anitrend.data.edge.image.model.EdgeImageModel
 
 internal class EdgeImageConverter(
     override val fromType: (EdgeImageWithMediaId) -> EdgeMediaImageEntity = { model ->
         EdgeMediaImageEntity(
             mediaId = model.first,
-            type = EdgeMediaImageEntity.ImageType.valueOf(model.second.type.alias),
+            type = when (model.second.type) {
+                EdgeImageModel.ImageType.BACKDROP -> EdgeMediaImageEntity.ImageType.BACKDROP
+                EdgeImageModel.ImageType.LOGO -> EdgeMediaImageEntity.ImageType.LOGO
+                EdgeImageModel.ImageType.POSTER -> EdgeMediaImageEntity.ImageType.POSTER
+            },
             url = model.second.url,
             height = model.second.height,
             width = model.second.width,
