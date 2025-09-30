@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.core.api.model
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -46,8 +45,8 @@ data class SourceLocation(
 data class GraphQLError(
     @SerialName("message") val message: String,
     @SerialName("locations") val locations: List<SourceLocation>? = null,
-    @SerialName("path") val path: List<@Contextual Any>? = null,
-    @SerialName("extensions") val extensions: Map<String, @Contextual Any?>? = null,
+    @SerialName("path") val path: List<String>? = null,
+    @SerialName("extensions") val extensions: Map<String, String?>? = null,
 )
 
 /**
@@ -59,5 +58,5 @@ data class GraphQLError(
 data class GraphQLResponse<T>(
     @SerialName("data") val data: T? = null,
     @SerialName("errors") val errors: List<GraphQLError>? = null,
-    @SerialName("extensions") val extensions: Map<@Contextual Any, @Contextual Any>? = null,
+    @SerialName("extensions") val extensions: Map<String, String>? = null,
 )
