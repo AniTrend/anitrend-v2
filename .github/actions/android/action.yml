@@ -23,7 +23,7 @@ runs:
         cache: 'gradle'
         cache-dependency-path: ./gradle/libs.versions.toml
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v5
       with:
         cache-read-only: ${{ inputs.cache-read-only }}
 
