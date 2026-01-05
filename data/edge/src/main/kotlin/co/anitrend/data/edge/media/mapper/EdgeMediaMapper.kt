@@ -46,8 +46,7 @@ internal class EdgeMediaMapper(
     }
 
     override suspend fun onResponseMapFrom(source: EdgeMediaModel): EdgeMediaEntity {
-        val model = source.media
-        if (model == null) throw NullPointerException("Media was not present be null")
+        val model = source.media ?: throw NullPointerException("Media was not present be null")
         val entity = converter.convertFrom(source.media)
         imageMapper.onEmbedded(mediaId = entity.id, sources = model.images)
         networkMapper.onEmbedded(source = model.networks.map { entity.id to it })
