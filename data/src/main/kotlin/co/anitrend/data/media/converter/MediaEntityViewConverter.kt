@@ -20,26 +20,43 @@ import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.common.extension.asFuzzyDate
 import co.anitrend.data.core.extensions.koinOf
+import co.anitrend.data.edge.media.entity.EdgeMediaEntity
+import co.anitrend.data.edge.media.entity.view.EdgeMediaEntityView
+import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.medialist.converter.MediaListEntityViewConverter
 import co.anitrend.data.medialist.entity.view.MediaListEntityView
+import co.anitrend.data.rank.entity.RankEntity
+import co.anitrend.data.tag.entity.view.TagEntityView
 import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
+import co.anitrend.domain.media.entity.attribute.link.MediaExternalLink
 import co.anitrend.domain.media.entity.attribute.origin.MediaSourceId
+import co.anitrend.domain.media.entity.attribute.rank.MediaRank
 import co.anitrend.domain.media.entity.attribute.score.MediaScore
+import co.anitrend.domain.media.entity.attribute.theme.MediaTheme
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.entity.attribute.trailer.MediaTrailer
+import co.anitrend.domain.media.enums.MediaSource
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.entity.MediaList
+import co.anitrend.domain.tag.entity.Tag
 
 internal class MediaEntityViewConverter(
     override val fromType: (MediaEntityView) -> Media = ::transform,
     override val toType: (Media) -> MediaEntityView = { throw NotImplementedError() },
 ) : SupportConverter<MediaEntityView, Media>() {
     private companion object : ISupportTransformer<MediaEntityView, Media> {
+        private fun String?.asMediaSource(): MediaSource? =
+            this?.let {
+                runCatching {
+                    MediaSource.valueOf(it.uppercase())
+                }.getOrNull()
+            }
+
         private fun MediaListEntityView.createMediaList(): MediaList = koinOf<MediaListEntityViewConverter>().convertFrom(this)
 
         private fun MediaEntity.createSiteUrl(): Media.SiteUrl =
@@ -51,10 +68,82 @@ internal class MediaEntityViewConverter(
                     },
             )
 
-        private fun MediaEntityView.createMedia(): Media.Core =
-            Media.Core(
+        private fun MediaEntityView.edge(): EdgeMediaEntityView? =
+            when (this) {
+                is MediaEntityView.Core -> edge
+                is MediaEntityView.Extended -> edge
+            }
+
+        private fun MediaEntityView.links(): List<LinkEntity> =
+            when (this) {
+                is MediaEntityView.Extended -> links
+                else -> emptyList()
+            }
+
+        private fun MediaEntityView.ranks(): List<RankEntity> =
+            when (this) {
+                is MediaEntityView.Extended -> ranks
+                else -> emptyList()
+            }
+
+        private fun MediaEntityView.tags(): List<TagEntityView> =
+            when (this) {
+                is MediaEntityView.Extended -> tags
+                else -> emptyList()
+            }
+
+        private fun EdgeMediaEntity.ExternalIds?.toSourceId(fallbackAniList: Long) =
+            MediaSourceId(
+                aniDb = this?.aniDb,
+                aniList = this?.aniList ?: fallbackAniList,
+                animePlanet = this?.animePlanet,
+                aniSearch = this?.aniSearch,
+                imdb = this?.imdb,
+                kitsu = this?.kitsu,
+                liveChart = this?.liveChart,
+                myAnimeList = this?.myAnimeList,
+                notify = this?.notify,
+                shoboi = this?.shoboi,
+                slug = this?.slug,
+                tmdb = this?.tmdb,
+                trakt = this?.trakt,
+                tvDb = this?.tvDb,
+                tvMaze = this?.tvMaze,
+                tvRage = this?.tvRage,
+            )
+
+        private fun MediaEntityView.createMedia(): Media.Core {
+            val edge = edge()
+            val links = links()
+            val ranks = ranks()
+            val tags = tags()
+
+            val nextAiringSchedule =
+                nextAiring
+                    ?.let {
+                        AiringSchedule(
+                            airingAt = it.airingAt,
+                            episode = it.episode,
+                            mediaId = media.id,
+                            timeUntilAiring = it.timeUntilAiring,
+                            id = it.id,
+                        )
+                    }
+                    ?: edge?.media?.schedule?.nextEpisode?.let { next ->
+                        val airingAt = next.airDate ?: 0
+                        val timeUntilAiring = next.airDate?.let { date -> maxOf(0L, date - (System.currentTimeMillis() / 1000)) } ?: 0
+                        AiringSchedule(
+                            airingAt = airingAt,
+                            episode = next.episodeNumber ?: 0,
+                            mediaId = media.id,
+                            timeUntilAiring = timeUntilAiring,
+                            id = next.id ?: next.tmdbId ?: 0,
+                        )
+                    }
+
+            return Media.Core(
                 countryCode = media.countryOfOrigin,
-                description = media.description, // ?: edge?.media?.description,
+                description = media.description ?: edge?.media?.description,
                 favourites = media.favourites,
                 genres =
                     genres.map {
@@ -71,28 +160,18 @@ internal class MediaEntityViewConverter(
                 isRecommendationBlocked = media.isRecommendationBlocked,
                 isReviewBlocked = media.isReviewBlocked,
                 siteUrl = media.createSiteUrl(),
-                source =
-                    media.source,
-                /* ?: edge?.media?.source?.let {
-                        runCatching {
-                            MediaSource.valueOf(it.uppercase())
-                        }.getOrNull()
-                    },*/
-                synonyms =
-                    media.synonyms,
-                /*.let {
-                        it.ifEmpty {
-                            edge
-                                ?.media
-                                ?.title
-                                ?.synonyms
-                                .orEmpty()
-                        }
-                    },*/
+                source = media.source ?: edge?.media?.source.asMediaSource(),
+                synonyms = media.synonyms.ifEmpty { edge?.media?.title?.synonyms.orEmpty() },
                 trailer =
                     media.trailer?.let {
                         MediaTrailer(
                             id = it.id,
+                            site = it.site,
+                            thumbnail = it.thumbnail,
+                        )
+                    } ?: edge?.trailers?.firstOrNull()?.let {
+                        MediaTrailer(
+                            id = it.trailerId,
                             site = it.site,
                             thumbnail = it.thumbnail,
                         )
@@ -112,84 +191,104 @@ internal class MediaEntityViewConverter(
                 endDate = media.endDate.asFuzzyDate(),
                 title =
                     MediaTitle(
-                        romaji = media.title.romaji, // ?: edge?.media?.title?.japanese,
-                        english = media.title.english, // ?: edge?.media?.title?.english,
-                        native = media.title.original,
-                        userPreferred = media.title.userPreferred, // ?: edge?.media?.title?.canonical,
+                        romaji = media.title.romaji ?: edge?.media?.title?.romaji,
+                        english = media.title.english ?: edge?.media?.title?.english,
+                        native = media.title.original ?: edge?.media?.title?.japanese,
+                        userPreferred = media.title.userPreferred ?: edge?.media?.title?.canonical,
                     ),
                 image =
                     MediaImage(
-                        color = media.coverImage.color, // ?: edge?.media?.cover?.color,
-                        extraLarge = media.coverImage.extraLarge, // ?: edge?.media?.cover?.extraLarge,
-                        large = media.coverImage.large, // ?: edge?.media?.cover?.large,
-                        medium = media.coverImage.medium, // ?: edge?.media?.cover?.medium,
-                        banner = media.coverImage.banner, // ?: edge?.media?.banner,
+                        color = media.coverImage.color ?: edge?.media?.cover?.color,
+                        extraLarge = media.coverImage.extraLarge ?: edge?.media?.cover?.extraLarge,
+                        large = media.coverImage.large ?: edge?.media?.cover?.large,
+                        medium = media.coverImage.medium ?: edge?.media?.cover?.medium,
+                        banner = media.coverImage.banner ?: edge?.media?.banner ?: edge?.media?.fanart,
                     ),
                 category =
                     when (media.type) {
                         MediaType.ANIME ->
                             Media.Category.Anime(
-                                media.episodes ?: 0, // ?: edge?.media?.airedEpisodes ?: 0,
-                                media.duration ?: 0, // ?: 0,
-                                broadcast = null, // edge?.networks?.firstOrNull { it.name },
-                                premiered = null, // edge?.media?.schedule.firstAirDate,
-                                nextAiring?.let {
-                                    AiringSchedule(
-                                        airingAt = it.airingAt,
-                                        episode = it.episode,
-                                        mediaId = media.id,
-                                        timeUntilAiring = it.timeUntilAiring,
-                                        id = it.id,
-                                    )
-                                },
+                                media.episodes ?: edge?.media?.airedEpisodes ?: 0,
+                                media.duration ?: edge?.media?.schedule?.nextEpisode?.runtime ?: 0,
+                                broadcast = edge?.media?.broadcast,
+                                premiered = edge?.media?.schedule?.firstAirDate?.toString(),
+                                schedule = nextAiringSchedule,
                             )
 
                         MediaType.MANGA ->
                             Media.Category.Manga(
-                                media.chapters ?: 0, // ?: jikan?.chapters,
-                                media.volumes ?: 0, // ?: jikan?.volumes,
+                                media.chapters ?: edge?.media?.chapters ?: 0,
+                                media.volumes ?: edge?.media?.volumes ?: 0,
                             )
                     },
-                isAdult = media.isAdult,
+                isAdult = media.isAdult ?: edge?.media?.isAdult,
                 isFavourite = media.isFavourite,
                 isFavouriteBlocked = media.isFavouriteBlocked,
                 id = media.id,
                 mediaList = mediaList?.createMediaList(),
-                externalLinks = emptyList(),
-                rankings = emptyList(),
-                tags = emptyList(),
+                externalLinks =
+                    links.map {
+                        MediaExternalLink(
+                            color = it.color,
+                            icon = it.icon,
+                            isDisabled = it.isDisabled,
+                            language = it.language,
+                            notes = it.notes,
+                            siteId = it.siteId,
+                            linkType = it.linkType,
+                            site = it.site,
+                            url = it.url,
+                            id = it.id,
+                        )
+                    },
+                rankings =
+                    ranks.map {
+                        MediaRank(
+                            allTime = it.allTime,
+                            context = it.context,
+                            format = it.format,
+                            rank = it.rank,
+                            season = it.season,
+                            type = it.type,
+                            year = it.year,
+                            id = it.id,
+                        )
+                    },
+                tags =
+                    tags.map {
+                        Tag.Extended(
+                            name = it.tag.name,
+                            description = it.tag.description,
+                            category = it.tag.category,
+                            rank = it.connection.rank,
+                            isGeneralSpoiler = it.tag.isGeneralSpoiler,
+                            isMediaSpoiler = it.connection.isMediaSpoiler,
+                            isAdult = it.tag.isAdult,
+                            id = it.tag.id,
+                            background = media.coverImage.color,
+                        )
+                    },
             )
+        }
 
         override fun transform(source: MediaEntityView) =
             when (source) {
                 is MediaEntityView.Core -> source.createMedia()
                 is MediaEntityView.Extended ->
                     source.createMedia().let { media ->
+                        val edge = source.edge
+
                         Media.Extended(
-                            sourceId = MediaSourceId.empty(),
-                            /*MediaSourceId(
-                                aniDb = edge?.media?.externalIds?.aniDb,
-                                aniList = edge?.media?.externalIds?.aniList,
-                                animePlanet = edge?.media?.externalIds?.animePlanet,
-                                aniSearch = edge?.media?.externalIds?.aniSearch,
-                                imdb = edge?.media?.externalIds?.imdb,
-                                kitsu = edge?.media?.externalIds?.kitsu,
-                                liveChart = edge?.media?.externalIds?.liveChart,
-                                myAnimeList = edge?.media?.externalIds?.myAnimeList,
-                                notify = edge?.media?.externalIds?.notify,
-                                shoboi = edge?.media?.externalIds?.shoboi,
-                                slug = edge?.media?.externalIds?.slug,
-                                tmdb = edge?.media?.externalIds?.tmdb,
-                                trakt = edge?.media?.externalIds?.trakt,
-                                tvDb = edge?.media?.externalIds?.tvDb,
-                                tvMaze = edge?.media?.externalIds?.tvMaze,
-                                tvRage = edge?.media?.externalIds?.tvRage,
-                            ),*/
-                            background = null, // source.edge?.media,
-                            ageRating = null, // source.edge?.media?.ageRating,
-                            extraInfo = null, // source.jikan?.info,
-                            themes = emptyList(),
-                                /*source.edge
+                            sourceId =
+                                edge
+                                    ?.media
+                                    ?.externalIds
+                                    .toSourceId(media.id),
+                            background = edge?.media?.fanart ?: edge?.media?.banner,
+                            ageRating = edge?.media?.ageRating,
+                            extraInfo = edge?.media?.moreInfo,
+                            themes =
+                                edge
                                     ?.themes
                                     ?.map {
                                         MediaTheme(
@@ -205,7 +304,7 @@ internal class MediaEntityViewConverter(
                                                     version = it.meta.version,
                                                 ),
                                         )
-                                    }.orEmpty(),*/
+                                    }.orEmpty(),
                             countryCode = media.countryCode,
                             description = media.description,
                             externalLinks = media.externalLinks,
