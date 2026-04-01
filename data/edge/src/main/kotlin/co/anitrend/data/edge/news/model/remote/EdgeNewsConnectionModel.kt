@@ -21,25 +21,28 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal class EdgeNewsConnectionModel(
-    @SerialName("newsConnection") val connection: Connection,
+    @SerialName("news") val news: Paging,
 ) {
     @Serializable
-    data class Connection(
-        @SerialName("count") val count: Int,
-        @SerialName("first") val first: String,
-        @SerialName("last") val last: String,
+    data class Paging(
+        @SerialName("count") val count: Double,
+        @SerialName("first") val first: String? = null,
+        @SerialName("last") val last: String? = null,
         @SerialName("data") val data: List<News>,
     )
 
     @Serializable
     data class News(
+        @SerialName("area") val area: String? = null,
+        @SerialName("category") val category: String? = null,
+        @SerialName("genre") val genre: String? = null,
         @SerialName("id") val id: String,
+        @SerialName("lang") val language: String? = null,
         @SerialName("title") val title: String,
         @SerialName("link") val link: String,
         @SerialName("image") val image: String? = null,
-        @SerialName("author") val author: String? = null,
-        @SerialName("publishedOn") val publishedOn: Long? = null,
-        @SerialName("description") val description: String? = null,
-        @SerialName("content") val content: String? = null,
+        @SerialName("publishedOn") val publishedOn: Double? = null,
+        @SerialName("description") val description: String,
+        @SerialName("content") val content: String,
     )
 }

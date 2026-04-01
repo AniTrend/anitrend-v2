@@ -49,25 +49,23 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class EdgeEpisodeModel(
     @SerialName("absoluteEpisodeNumber") val absoluteEpisodeNumber: Int? = null,
-    @SerialName("airDate") val airDate: Long,
+    @SerialName("aired") val aired: Long? = null,
     @SerialName("airedAfterEpisodeNumber") val airedAfterEpisodeNumber: Int? = null,
     @SerialName("airedAfterSeasonNumber") val airedAfterSeasonNumber: Int? = null,
     @SerialName("airedBeforeEpisodeNumber") val airedBeforeEpisodeNumber: Int? = null,
     @SerialName("airedBeforeSeasonNumber") val airedBeforeSeasonNumber: Int? = null,
-    @SerialName("crew") val crew: List<EdgeEpisodeCrewModel> = emptyList(),
-    @SerialName("episodeNumber") val episodeNumber: Int,
-    @SerialName("guests") val guests: List<EdgeEpisodeCrewModel> = emptyList(),
-    @SerialName("id") val id: Long,
+    @SerialName("duration") val duration: Int? = null,
+    @SerialName("episodeNumber") val episodeNumber: Int? = null,
+    @SerialName("id") val id: Long? = null,
     @SerialName("image") val image: String? = null,
-    @SerialName("name") val name: String? = null,
-    @SerialName("overview") val overview: String? = null,
+    @SerialName("synopsis") val synopsis: String? = null,
+    @SerialName("title") val title: EdgeEpisodeTitleModel? = null,
     @SerialName("poster") val poster: String? = null,
-    @SerialName("runtime") val runtime: Int? = null,
-    @SerialName("seasonNumber") val seasonNumber: Int,
-    @SerialName("title") val title: String? = null,
+    @SerialName("seasonNumber") val seasonNumber: Int? = null,
     @SerialName("tvdbId") val tvdbId: Long? = null,
     @SerialName("tvdbShowId") val tvdbShowId: Long? = null,
-) {
+) 
+{
     /**
      * Crew / Guest credit entry for an episode.
      *
@@ -100,5 +98,12 @@ data class EdgeEpisodeModel(
         @SerialName("order") val order: Int? = null,
         @SerialName("originalName") val originalName: String,
         @SerialName("popularity") val popularity: Float,
+    )
+
+    @Serializable
+    data class EdgeEpisodeTitleModel(
+        @SerialName("english") val english: String? = null,
+        @SerialName("native") val native: String? = null,
+        @SerialName("romanji") val romanji: String? = null,
     )
 }

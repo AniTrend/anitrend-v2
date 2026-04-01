@@ -29,9 +29,9 @@ internal class EdgeNewsModelConverter(
                 title = item.title,
                 url = item.link,
                 image = item.image,
-                source = item.author,
-                publishedAt = item.publishedOn,
-                description = item.description ?: item.content,
+                source = item.category ?: item.area ?: item.genre ?: item.language,
+                publishedAt = item.publishedOn?.toLong(),
+                description = item.description.ifBlank { item.content },
             )
         }
     },

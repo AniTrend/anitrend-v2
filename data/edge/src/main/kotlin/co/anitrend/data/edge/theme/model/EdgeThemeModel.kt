@@ -35,11 +35,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class EdgeThemeModel(
     @SerialName("audio") val audio: String? = null,
-    @SerialName("id") val id: String,
-    @SerialName("meta") val meta: EdgeThemeMetaModel,
-    @SerialName("name") val name: String,
-    @SerialName("video") val video: String,
+    @SerialName("id") val id: String? = null,
+    @SerialName("meta") val meta: EdgeThemeMetaModel? = null,
+    @SerialName("name") val name: String? = null,
+    @SerialName("video") val video: String? = null,
 ) {
+    val isPersistable: Boolean
+        get() = !id.isNullOrBlank() && !name.isNullOrBlank()
+
     /**
      * Metadata for a theme song.
      *
@@ -51,8 +54,8 @@ internal data class EdgeThemeModel(
      */
     @Serializable
     data class EdgeThemeMetaModel(
-        @SerialName("number") val number: Int,
-        @SerialName("type") val type: String,
-        @SerialName("version") val version: Int,
+        @SerialName("number") val number: Int? = null,
+        @SerialName("type") val type: String? = null,
+        @SerialName("version") val version: Int? = null,
     )
 }

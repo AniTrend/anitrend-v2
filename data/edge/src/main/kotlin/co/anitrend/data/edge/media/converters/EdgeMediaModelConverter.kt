@@ -21,10 +21,10 @@ import co.anitrend.data.edge.media.entity.EdgeMediaEntity
 import co.anitrend.data.edge.media.model.remote.EdgeMediaModel
 import co.anitrend.domain.media.enums.MediaType
 
-internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Media, EdgeMediaEntity>() {
-    override val fromType: (EdgeMediaModel.Media) -> EdgeMediaEntity = { model ->
+internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Series, EdgeMediaEntity>() {
+    override val fromType: (EdgeMediaModel.Series) -> EdgeMediaEntity = { model ->
         EdgeMediaEntity(
-            id = model.id,
+            id = model.mediaId.asEntityId(),
             title =
                 EdgeMediaEntity.Title(
                     romaji = model.title.romaji,
@@ -92,9 +92,16 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Media, 
         )
     }
 
-    override val toType: (EdgeMediaEntity) -> EdgeMediaModel.Media = { _ ->
+    override val toType: (EdgeMediaEntity) -> EdgeMediaModel.Series = { _ ->
         throw NotImplementedError()
     }
+
+    private fun EdgeMediaModel.SeriesIdType.asEntityId(): String =
+        notify
+            ?: slug
+            ?: aniList?.toString()
+            ?: myAnimeList?.toString()
+            ?: throw IllegalStateException("Series payload did not contain a stable identifier in mediaId")
 
     private fun EdgeMediaModel.SeriesScheduleEpisodeType.toScheduleEpisode() =
         EdgeMediaEntity.ScheduleEpisode(

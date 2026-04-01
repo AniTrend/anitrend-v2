@@ -84,9 +84,9 @@ internal class EdgeNewsPagingSource(
             }
         controller(deferred, requestCallback) {
             // Determine paging completion based on returned data size and/or "last" cursor
-            val items = it.connection.data
+            val items = it.news.data
             supportPagingHelper.isPagingLimit = items.size < supportPagingHelper.pageSize
-            nextCursor = it.connection.last
+            nextCursor = it.news.last
             it
         }
     }
