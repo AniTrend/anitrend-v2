@@ -1,18 +1,23 @@
 fragment EdgeEpisode on query_episodes_data_items {
   absoluteEpisodeNumber
-  airDate: aired
+  aired
   airedAfterEpisodeNumber
   airedAfterSeasonNumber
   airedBeforeEpisodeNumber
   airedBeforeSeasonNumber
+  duration
   episodeNumber
   id
   image
   kind
   poster
-  runtime: duration
   seasonNumber
-  overview: synopsis
+  synopsis
+  title {
+    english
+    native
+    romanji
+  }
   tmdbId
   tvdbId
   tvdbShowId

@@ -1,5 +1,5 @@
 query NewsConnection($after: String, $before: String, $first: PositiveFloat) {
-  newsConnection: news(after: $after, before: $before, limit: $first) {
+  news(after: $after, before: $before, limit: $first) {
     count
     first
     last
