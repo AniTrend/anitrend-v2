@@ -25,20 +25,28 @@ import co.anitrend.data.edge.episode.model.EdgeEpisodeModel
  * Converts a (mediaId, EpisodeModel) pair into [EdgeEpisodeEntity].
  */
 internal class EdgeEpisodeConverter : SupportConverter<EdgeEpisodeEmbedded, EdgeEpisodeEntity>() {
-    override val fromType: (EdgeEpisodeEmbedded) -> EdgeEpisodeEntity = { pair ->
+    fun convertFromOrNull(pair: EdgeEpisodeEmbedded): EdgeEpisodeEntity? {
         val (mediaId, model) = pair
-        EdgeEpisodeEntity(
+        val seasonNumber = model.seasonNumber ?: return null
+        val episodeNumber = model.episodeNumber ?: return null
+        val airDate = model.aired ?: return null
+
+        return EdgeEpisodeEntity(
             mediaId = mediaId,
-            seasonNumber = model.seasonNumber,
-            episodeNumber = model.episodeNumber,
-            name = model.name,
-            overview = model.overview,
+            seasonNumber = seasonNumber,
+            episodeNumber = episodeNumber,
+            name = model.title?.english ?: model.title?.romanji ?: model.title?.native,
+            overview = model.synopsis,
             image = model.image,
             poster = model.poster,
-            runtime = model.runtime,
+            runtime = model.duration,
             absoluteEpisodeNumber = model.absoluteEpisodeNumber,
-            airDate = model.airDate,
+            airDate = airDate,
         )
+    }
+
+    override val fromType: (EdgeEpisodeEmbedded) -> EdgeEpisodeEntity = { pair ->
+        convertFromOrNull(pair) ?: throw IllegalArgumentException("Episode payload was missing required fields")
     }
     override val toType: (EdgeEpisodeEntity) -> EdgeEpisodeEmbedded = { throw NotImplementedError() }
 }

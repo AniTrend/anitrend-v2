@@ -29,15 +29,15 @@ internal class EdgeThemeConverter : SupportConverter<EdgeThemeEmbedded, EdgeThem
         val (mediaId, model) = pair
         EdgeThemeEntity(
             mediaId = mediaId,
-            themeId = model.id,
-            name = model.name,
+            themeId = model.id.orEmpty(),
+            name = model.name.orEmpty(),
             audio = model.audio,
-            video = model.video,
+            video = model.video.orEmpty(),
             meta =
                 EdgeThemeEntity.ThemeMeta(
-                    number = model.meta.number,
-                    type = model.meta.type,
-                    version = model.meta.version,
+                    number = model.meta?.number ?: 0,
+                    type = model.meta?.type.orEmpty(),
+                    version = model.meta?.version ?: 0,
                 ),
         )
     }

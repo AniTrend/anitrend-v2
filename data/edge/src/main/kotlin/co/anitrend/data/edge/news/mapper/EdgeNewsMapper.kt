@@ -26,7 +26,7 @@ internal class EdgeNewsMapper(
     private val localSource: EdgeNewsLocalSource,
     private val converter: EdgeNewsModelConverter,
 ) : DefaultMapper<EdgeNewsConnectionModel, List<EdgeNewsEntity>>() {
-    override suspend fun onResponseMapFrom(source: EdgeNewsConnectionModel): List<EdgeNewsEntity> = converter.convertFrom(source.connection.data)
+    override suspend fun onResponseMapFrom(source: EdgeNewsConnectionModel): List<EdgeNewsEntity> = converter.convertFrom(source.news.data)
 
     override suspend fun persist(data: List<EdgeNewsEntity>) {
         localSource.upsert(data)

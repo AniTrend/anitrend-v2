@@ -19,13 +19,14 @@ package co.anitrend.data.edge.media.model.remote
 import co.anitrend.data.edge.image.model.EdgeImageModel
 import co.anitrend.data.edge.network.model.EdgeNetworkModel
 import co.anitrend.data.edge.theme.model.EdgeThemeModel
+import co.anitrend.data.edge.theme.model.serializer.EdgeThemeListSerializer
 import co.anitrend.data.edge.trailer.model.EdgeTrailerModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 internal class EdgeMediaModel(
-    @SerialName("mediaById") val media: Media?,
+    @SerialName("series") val series: Series?,
 ) {
     /**
      * Matches MediaType in anitrend.schema.graphql
@@ -59,8 +60,7 @@ internal class EdgeMediaModel(
      * @param updatedAt Timestamp of when the media information was last updated (epoch seconds).
      */
     @Serializable
-    data class Media(
-        @SerialName("id") val id: String,
+    data class Series(
         @SerialName("title") val title: SeriesTitleType,
         @SerialName("cover") val cover: SeriesCoverImageType,
         @SerialName("banner") val banner: String? = null,
@@ -84,6 +84,7 @@ internal class EdgeMediaModel(
         @SerialName("images") val images: List<EdgeImageModel> = emptyList(),
         @SerialName("schedule") val schedule: SeriesScheduleType? = null,
         @SerialName("networks") val networks: List<EdgeNetworkModel> = emptyList(),
+        @Serializable(with = EdgeThemeListSerializer::class)
         @SerialName("themeSongs") val themeSongs: List<EdgeThemeModel> = emptyList(),
         @SerialName("trailers") val trailers: List<EdgeTrailerModel> = emptyList(),
         @SerialName("updatedAt") val updatedAt: Long,
@@ -188,4 +189,5 @@ internal class EdgeMediaModel(
         @SerialName("tvMazeId") val tvMaze: Long? = null,
         @SerialName("tvrage") val tvRage: String? = null,
     )
+
 }

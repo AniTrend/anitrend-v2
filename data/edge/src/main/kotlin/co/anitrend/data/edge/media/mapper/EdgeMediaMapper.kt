@@ -25,6 +25,7 @@ import co.anitrend.data.edge.media.entity.EdgeMediaEntity
 import co.anitrend.data.edge.media.model.remote.EdgeMediaModel
 import co.anitrend.data.edge.network.mapper.EdgeNetworkMapper
 import co.anitrend.data.edge.theme.mapper.EdgeThemeMapper
+import co.anitrend.data.edge.theme.model.EdgeThemeModel
 import co.anitrend.data.edge.trailer.mapper.EdgeTrailerMapper
 
 internal class EdgeMediaMapper(
@@ -46,12 +47,12 @@ internal class EdgeMediaMapper(
     }
 
     override suspend fun onResponseMapFrom(source: EdgeMediaModel): EdgeMediaEntity {
-        val model = source.media ?: throw NullPointerException("Media was not present be null")
-        val entity = converter.convertFrom(source.media)
+        val model = source.series ?: throw NullPointerException("Series payload was null")
+        val entity = converter.convertFrom(model)
         imageMapper.onEmbedded(mediaId = entity.id, sources = model.images)
         networkMapper.onEmbedded(source = model.networks.map { entity.id to it })
         trailerMapper.onEmbedded(source = model.trailers.map { entity.id to it })
-        themeMapper.onEmbedded(source = model.themeSongs.map { entity.id to it })
+        themeMapper.onEmbedded(source = model.themeSongs.filter(EdgeThemeModel::isPersistable).map { entity.id to it })
         return entity
     }
 }
