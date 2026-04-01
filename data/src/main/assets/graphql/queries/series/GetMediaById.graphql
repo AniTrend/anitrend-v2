@@ -1,5 +1,5 @@
 query GetMediaById($id: Int!) {
-  mediaById: series(anilist: $id) {
+  series(anilist: $id) {
     title {
       ... EdgeMediaTitle
     }
