@@ -1,4 +1,4 @@
-fragment EdgeMediaTitle on EdgeMediaTitle {
+fragment EdgeMediaTitle on query_series_title {
   japanese
   harigana
   canonical

@@ -1,4 +1,4 @@
-fragment EdgeNetwork on EdgeMediaNetwork {
+fragment EdgeNetwork on query_series_networks_items {
   isPrimary
   category
   id
