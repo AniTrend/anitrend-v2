@@ -1,320 +1,347 @@
 # This file was generated. Do not edit manually.
 
 schema {
-  query: Query
+    query: Query
 }
 
-type Configuration {
-  "Genre and media connections"
-  genres: [Genre!]!
-  "Configuration ID"
-  id: String!
-  "Default image resources"
-  image: ImageResource!
-  "Navigation configurations"
-  navigation: [Navigation!]!
-  "Configuration settings"
-  settings: Settings!
+directive @enum(subgraph: String, value: String) repeatable on ENUM_VALUE
+
+directive @extraSchemaDefinitionDirective(directives: _DirectiveExtensions) repeatable on OBJECT
+
+directive @httpOperation(httpMethod: HTTPMethod, isBinary: Boolean, jsonApiFields: Boolean, operationSpecificHeaders: [[String]], path: String, queryParamArgMap: ObjMap, queryStringOptions: ObjMap, queryStringOptionsByParam: ObjMap, requestBaseBody: ObjMap, subgraph: String) repeatable on FIELD_DEFINITION
+
+directive @length(max: Int, min: Int, subgraph: String) repeatable on SCALAR
+
+"Indicates exactly one field must be supplied and this field must not be `null`."
+directive @oneOf on INPUT_OBJECT
+
+directive @transport(headers: [[String]], kind: String, location: String, queryParams: [[String]], queryStringOptions: ObjMap, subgraph: String) repeatable on SCHEMA
+
+"Client configuration"
+type Config {
+    genres: [query_config_genres_items]
+    id: String!
+    image: query_config_image!
+    navigation: [query_config_navigation_items]
+    settings: query_config_settings!
 }
 
-type EdgeAiringSchedule {
-  "First air date of the series"
-  firstAirDate: Instant
-  "Last air date of the series"
-  lastAirDate: Instant
-  "Details of the last aired episode"
-  lastAiredEpisode: EdgeMediaEpisode
-  "Details of the next episode to air"
-  nextEpisodeToAir: EdgeMediaEpisode
+"Paginated episode listing with cursor navigation"
+type Episodes {
+    count: Float!
+    data: [query_episodes_data_items]!
+    first: String
+    last: String
+    total: Float!
 }
 
-type EdgeCoverImage {
-  "Dominant color of the cover image (hex code)"
-  color: String
-  "URL to an extra large cover image"
-  extraLarge: String
-  "URL to a large cover image"
-  large: String
-  "URL to a medium cover image"
-  medium: String
-}
-
-type EdgeImage {
-  "Height of the image in pixels"
-  height: Int
-  "Locale of the image (e.g., en, ja)"
-  locale: String
-  "Type of the image (e.g., BACKDROP, LOGO, POSTER)"
-  type: String
-  "URL to the image"
-  url: String!
-  "Width of the image in pixels"
-  width: Int
-}
-
-type EdgeMediaEpisode {
-  "Air date and time of the episode"
-  airDate: Instant
-  "Episode number in the season"
-  episodeNumber: Int
-  "Unique ID for the scheduled episode"
-  id: Int!
-  "URL to an image for the episode"
-  image: String
-  "Name or title of the episode"
-  name: String
-  "Brief overview or summary of the episode"
-  overview: String
-  "Production code of the episode"
-  productionCode: String
-  "Runtime of the episode in minutes"
-  runtime: Int
-  "Season number this episode belongs to"
-  seasonNumber: Int
-  "TheMovieDB ID for the episode"
-  tmdbId: Int
-}
-
-type EdgeMediaId {
-  "AniDB ID"
-  anidb: Int
-  "Anilist ID"
-  anilist: Int
-  "Anime-Planet ID or slug"
-  animePlanet: String
-  "Anisearch ID"
-  anisearch: Int
-  "IMDb ID"
-  imdb: String
-  "Kitsu ID"
-  kitsu: Int
-  "LiveChart ID"
-  livechart: Int
-  "MyAnimeList ID"
-  myanimelist: Int
-  "Notify.moe ID"
-  notify: String
-  "Shoboi Calendar ID"
-  shoboi: Int
-  "Series slug"
-  slug: String
-  "TheMovieDB ID"
-  themoviedb: Int
-  "Trakt ID"
-  trakt: Int
-  "TVMaze ID"
-  tvMazeId: Int
-  "TheTVDB ID"
-  tvdb: Int
-  "TVRage ID"
-  tvrage: String
-}
-
-type EdgeMediaNetwork {
-  "Category of the network (e.g., DISTRIBUTION, PRODUCTION)"
-  category: String!
-  "Unique ID for the network"
-  id: Int!
-  "Indicates if this is the primary network"
-  isPrimary: Boolean
-  "Path or URL to the network's logo"
-  logoPath: String
-  "Name of the network"
-  name: String!
-  "Origin country of the network"
-  originCountry: String!
-}
-
-type EdgeMediaTheme {
-  "URL to the audio track of the theme song"
-  audio: String
-  "Unique ID for the anime theme song"
-  id: String!
-  "Metadata about the theme song, including type, number, and version."
-  meta: EdgeMediaThemeMeta
-  "Name or title of the theme song"
-  name: String!
-  "URL to the video of the theme song"
-  video: String!
-}
-
-type EdgeMediaThemeMeta {
-  "Sequence number of the theme (e.g., 1 for OP1, 2 for OP2)"
-  number: Int!
-  "Type of the theme song (e.g., OP for opening, ED for ending)"
-  type: String!
-  "Version number of the theme (e.g., for themes with multiple visual versions)"
-  version: Int!
-}
-
-type EdgeMediaTitle {
-  "Canonical title"
-  canonical: String
-  "English title"
-  english: String
-  "Hiragana title (Note: source field name was 'harigana')"
-  harigana: String
-  "Japanese title"
-  japanese: String
-  "Romaji title"
-  romaji: String
-  "List of alternative titles or synonyms"
-  synonyms: [String!]
-}
-
-type EdgeMediaTrailer {
-  "Unique ID for the trailer (e.g., YouTube video ID)"
-  id: String!
-  "Site where the trailer is hosted (e.g., YouTube)"
-  site: String!
-  "URL to a thumbnail image for the trailer"
-  thumbnail: String
-}
-
-type Genre {
-  "Related media ID"
-  mediaId: Int!
-  "Genre title"
-  name: String!
-}
-
-type ImageResource {
-  "Banner image URL"
-  banner: String
-  "Default image URL"
-  default: String
-  "Error image URL"
-  error: String
-  "Info image URL"
-  info: String
-  "Loading image URL"
-  loading: String
-  "Poster image URL"
-  poster: String
-}
-
-type MediaType {
-  "Age rating of the media (e.g., G, PG, R17)."
-  ageRating: String
-  "Total number of aired episodes."
-  airedEpisodes: Int
-  "URL to a banner image for the media."
-  banner: String
-  "Broadcast schedule information (e.g., day and time)."
-  broadcast: String
-  "Total number of chapters (for manga)."
-  chapters: Int
-  "Cover images for the media (extraLarge, large, medium, color)."
-  cover: EdgeCoverImage!
-  "Synopsis or description of the media."
-  description: String
-  "URL to a fanart image for the media."
-  fanart: String
-  "Format of the media (e.g., TV, MOVIE, OVA, ONA, MANGA)."
-  format: String
-  "URL to the official homepage of the media."
-  homepage: String
-  "The unique identifier for the media entity (often corresponds to the Notify.moe edge ID)."
-  id: String!
-  "Gallery of images related to the media (posters, backdrops, logos)."
-  images: [EdgeImage!]!
-  "Indicates if the media is considered adult content."
-  isAdult: Boolean
-  "The kind of media entity (e.g., ANIME, MANGA)."
-  kind: String!
-  "A collection of alternative identifiers for the media from various sources."
-  mediaId: EdgeMediaId!
-  "Link to additional information about the media."
-  moreInfo: String
-  "List of networks associated with the media."
-  networks: [EdgeMediaNetwork!]!
-  "Publication start date (for manga)."
-  publishedFrom: Instant
-  "Publication end date (for manga)."
-  publishedTo: Instant
-  "Airing schedule information for the media."
-  schedule: EdgeAiringSchedule
-  "Source material of the media (e.g., ORIGINAL, MANGA, LIGHT_NOVEL, GAME)."
-  source: String
-  "Current status of the media (e.g., RELEASING, FINISHED, NOT_YET_RELEASED)."
-  status: String
-  "List of theme songs (openings and endings)."
-  themeSongs: [EdgeMediaTheme!]!
-  "Titles of the media in various languages (english, romaji, native, etc.)."
-  title: EdgeMediaTitle!
-  "List of trailers for the media."
-  trailers: [EdgeMediaTrailer!]!
-  "Timestamp of when the media information was last updated."
-  updatedAt: Instant!
-  "Total number of volumes (for manga)."
-  volumes: Int
-}
-
-type Navigation {
-  "Display criteria as semver"
-  criteria: String!
-  "Target destination"
-  destination: String!
-  "Associated group for this navigation item"
-  group: NavigationGroup!
-  "Language resource associated with grouping"
-  i18n: String!
-  "Image resource associated with the navigation item"
-  icon: String!
-}
-
-type NavigationGroup {
-  "Should only display when viewer is authenticated"
-  authenticated: Boolean!
-  "Language resource associated with grouping"
-  i18n: String!
-}
-
+"Schema representing a news document."
 type News {
-  "News author"
-  author: String!
-  "Full news content"
-  content: String!
-  "News description/summary"
-  description: String!
-  "Unique identifier"
-  id: String!
-  "News thumbnail image URL"
-  image: String
-  "News source URL"
-  link: String!
-  "Publishing timestamp"
-  publishedOn: Int!
-  "News title"
-  title: String!
+    area: String
+    category: String
+    content: String!
+    description: String!
+    genre: String
+    id: String!
+    image: URL
+    lang: String
+    link: URL!
+    publishedOn: Float!
+    title: String!
 }
 
-type NewsConnection {
-  "Total number of news items"
-  count: Int!
-  "Paginated news items"
-  data: [News!]!
-  "First news item ID"
-  first: String!
-  "Last news item ID"
-  last: String!
+"Paged response for news documents."
+type NewsPaging {
+    count: NonNegativeFloat!
+    data: [query_news_data_items]!
+    first: String
+    last: String
 }
 
 type Query {
-  "Client configuration"
-  config: Configuration
-  "Fetch a media entity by its unique ID"
-  mediaById(id: Int!): MediaType
-  "Paginated news items using cursor-based pagination"
-  newsConnection(after: String, before: String, limit: Int): NewsConnection
+    config: Config
+    episodes(after: String, before: String, end: Int, includeOrphans: Boolean, kind: queryInput_episodes_kind, limit: PositiveInt = 25, malId: Int!, specialsOnly: Boolean, start: Int): Episodes
+    index: JSON
+    news(after: String, before: String, limit: PositiveFloat = 15): NewsPaging
+    newsFeed(
+        "Locale for the news feed, e.g., en-GB, de-DE, fr-FR."
+        locale: queryInput_newsFeed_locale
+    ): [News]
+    series(anilist: Int, mal: Int, notify: NonEmptyString, slug: NonEmptyString, tmdb: Int, trakt: Int, tvdb: Int): Series
 }
 
-type Settings {
-  "Analytics enabled status"
-  analyticsEnabled: Boolean!
-  "Upstream platform for additional services"
-  platformSource: String
+"Aggregated of media entities from multiple sources"
+type Series {
+    ageRating: String
+    airedEpisodes: Float
+    banner: String
+    broadcast: String
+    chapters: Float
+    classification: JSON
+    cover: query_series_cover!
+    description: String
+    duration: Float
+    fanart: String
+    format: JSON
+    homepage: String
+    images: [query_series_images_items]!
+    isAdult: Boolean
+    kind: query_series_kind!
+    mediaId: query_series_mediaId!
+    moreInfo: String
+    networks: [query_series_networks_items]!
+    publishedFrom: Float
+    publishedTo: Float
+    schedule: query_series_schedule
+    source: JSON
+    status: JSON
+    themeSongs: [JSON]!
+    title: query_series_title!
+    trailers: [query_series_trailers_items]!
+    updatedAt: Float!
+    volumes: Float
 }
 
-"Represents a point in time, typically as an Epoch timestamp (seconds since Unix epoch)."
-scalar Instant
+type query_config_genres_items {
+    mediaId: PositiveFloat!
+    name: String!
+}
+
+type query_config_image {
+    banner: URL!
+    default: URL!
+    error: URL!
+    info: URL!
+    loading: URL!
+    poster: URL!
+}
+
+type query_config_navigation_items {
+    criteria: String!
+    destination: String!
+    group: query_config_navigation_items_group!
+    i18n: String!
+    icon: String!
+}
+
+type query_config_navigation_items_group {
+    authenticated: Boolean!
+    i18n: String!
+}
+
+type query_config_settings {
+    analyticsEnabled: Boolean!
+    platformSource: URL
+}
+
+type query_episodes_data_items {
+    absoluteEpisodeNumber: Float
+    aired: Float
+    airedAfterEpisodeNumber: Float
+    airedAfterSeasonNumber: Float
+    airedBeforeEpisodeNumber: Float
+    airedBeforeSeasonNumber: Float
+    duration: Float
+    episodeNumber: Float
+    id: Float!
+    image: String
+    kind: query_episodes_data_items_kind
+    number: Float
+    poster: String
+    score: Float
+    seasonNumber: Float
+    synopsis: String
+    themes: query_episodes_data_items_themes
+    title: query_episodes_data_items_title
+    tmdbId: Float
+    tvdbId: Float
+    tvdbShowId: Float
+    url: String
+}
+
+type query_episodes_data_items_themes {
+    endings: [String]
+    openings: [String]
+}
+
+type query_episodes_data_items_title {
+    english: String
+    native: String
+    romanji: String
+}
+
+type query_news_data_items {
+    area: String
+    category: String
+    content: String!
+    description: String!
+    genre: String
+    id: String!
+    image: URL
+    lang: String
+    link: URL!
+    publishedOn: Float!
+    title: String!
+}
+
+type query_series_cover {
+    color: String
+    extraLarge: String
+    large: String
+    medium: String
+}
+
+type query_series_images_items {
+    height: Float!
+    locale: String
+    type: query_series_images_items_type!
+    url: String!
+    width: Float!
+}
+
+type query_series_mediaId {
+    anidb: Float
+    anilist: Float
+    animePlanet: String
+    anisearch: Float
+    imdb: String
+    kitsu: Float
+    livechart: Float
+    myanimelist: Float
+    notify: String
+    shoboi: Float
+    slug: String
+    themoviedb: Float
+    trakt: Float
+    tvMazeId: Float
+    tvdb: Float
+    tvrage: String
+}
+
+type query_series_networks_items {
+    category: query_series_networks_items_category!
+    id: Float!
+    isPrimary: Boolean!
+    logoPath: String
+    name: String!
+    originCountry: String!
+}
+
+type query_series_schedule {
+    firstAirDate: Float
+    lastAirDate: Float
+    lastAiredEpisode: query_series_schedule_lastAiredEpisode
+    nextEpisodeToAir: query_series_schedule_nextEpisodeToAir
+}
+
+type query_series_schedule_lastAiredEpisode {
+    airDate: Float
+    episodeNumber: Float
+    id: Float!
+    image: String
+    name: String!
+    overview: String
+    productionCode: String
+    runtime: Float
+    seasonNumber: Float
+    tmdbId: Float
+}
+
+type query_series_schedule_nextEpisodeToAir {
+    airDate: Float
+    episodeNumber: Float
+    id: Float!
+    image: String
+    name: String!
+    overview: String
+    productionCode: String
+    runtime: Float
+    seasonNumber: Float
+    tmdbId: Float
+}
+
+type query_series_title {
+    canonical: String
+    english: String
+    harigana: String
+    japanese: String
+    romaji: String
+    synonyms: [String]
+}
+
+type query_series_trailers_items {
+    id: String!
+    site: String!
+    thumbnail: String
+}
+
+enum HTTPMethod {
+    CONNECT
+    DELETE
+    GET
+    HEAD
+    OPTIONS
+    PATCH
+    POST
+    PUT
+    TRACE
+}
+
+enum queryInput_episodes_kind {
+    filler
+    main
+    ona
+    ova
+    recap
+    special
+}
+
+enum query_episodes_data_items_kind {
+    filler
+    main
+    ona
+    ova
+    recap
+    special
+}
+
+enum query_series_images_items_type {
+    BACKDROP
+    LOGO
+    POSTER
+}
+
+enum query_series_kind {
+    ANIME
+    MANGA
+}
+
+enum query_series_networks_items_category {
+    DISTRIBUTION
+    PRODUCTION
+}
+
+"The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."
+scalar JSON
+
+"A string that cannot be passed as an empty value"
+scalar NonEmptyString
+
+"Floats that will have a value of 0 or more."
+scalar NonNegativeFloat
+
+scalar ObjMap
+
+"Floats that will have a value greater than 0."
+scalar PositiveFloat
+
+"Integers that will have a value greater than 0."
+scalar PositiveInt
+
+"A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt."
+scalar URL
+
+scalar _DirectiveExtensions
+
+"Locale for the news feed, e.g., en-GB, de-DE, fr-FR."
+scalar queryInput_newsFeed_locale
