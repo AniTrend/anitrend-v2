@@ -1,6 +1,5 @@
 query GetMediaById($id: Int!) {
-  mediaById(id: $id) {
-    id
+  mediaById: series(anilist: $id) {
     title {
       ... EdgeMediaTitle
     }
@@ -16,8 +15,6 @@ query GetMediaById($id: Int!) {
     ageRating
     isAdult
     homepage
-    airedEpisodes
-    ageRating
     airedEpisodes
     broadcast
     chapters
@@ -38,9 +35,7 @@ query GetMediaById($id: Int!) {
     networks {
       ... EdgeNetwork
     }
-    themeSongs {
-      ... EdgeTheme
-    }
+    themeSongs
     trailers {
       ... EdgeTrailer
     }

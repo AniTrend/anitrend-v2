@@ -1,10 +1,7 @@
 query MediaWithEpisodes($id: Int!) {
-    Media(id: $id) {
-        streamingEpisodes {
-            site
-            thumbnail
-            title
-            url
+    episodes(malId: $id) {
+        data {
+            ... EdgeEpisode
         }
     }
 }

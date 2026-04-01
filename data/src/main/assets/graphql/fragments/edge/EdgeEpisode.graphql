@@ -1,12 +1,20 @@
-fragment EdgeEpisode on EdgeMediaEpisode {
-  seasonNumber
-  runtime
-  airDate
+fragment EdgeEpisode on query_episodes_data_items {
+  absoluteEpisodeNumber
+  airDate: aired
+  airedAfterEpisodeNumber
+  airedAfterSeasonNumber
+  airedBeforeEpisodeNumber
+  airedBeforeSeasonNumber
   episodeNumber
   id
-  name
-  overview
   image
+  kind
+  poster
+  runtime: duration
+  seasonNumber
+  overview: synopsis
   tmdbId
-  productionCode
+  tvdbId
+  tvdbShowId
+  url
 }
