@@ -5,6 +5,17 @@ description: Guidelines for contributing to AniTrend's Room database layer, focu
 
 # AniTrend v2 Data Layer Contribution Guidelines
 
+## Reference Routing
+
+This file captures Room-specific policy for `data/**` changes. Pair it with:
+
+- `.github/skills/room-entity-pattern/SKILL.md` for four-file entity/DAO/mapper/repository structure.
+- `.github/skills/data-state-pattern/SKILL.md` for repository return-type and flow behavior.
+- `.github/skills/reference-map/SKILL.md` for cross-cutting navigation.
+
+For docs hygiene, use repo-relative links and validate with
+`.github/scripts/audit-instruction-refs.sh`.
+
 ## Database: Room join tables and migrations
 
 ### Room join-table best practices

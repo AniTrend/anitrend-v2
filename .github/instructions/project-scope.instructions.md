@@ -5,46 +5,81 @@ description: This file describes the project scope and purpose for AniTrend v2.
 
 ## Project Purpose and Scope
 
-**AniTrend v2** is an Android client for the AniList service (an anime and manga tracking platform) (see [README.md#L6-L14](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/README.md#L6-L14)). The app allows users to discover and track anime/manga, read news and forum posts, get recommendations, see trending or airing shows, and manage their AniList profile and lists. It’s essentially a feature-rich third-party AniList client with additional integrations. Understanding the context: - The primary backend API is the **AniList GraphQL API** (AniList is a popular anime listing website). The app uses GraphQL queries to fetch data like anime details, user lists, etc. - AniTrend v2 goes beyond AniList by integrating **multiple data sources** to enrich the user experience. This includes services like: - **AniList** – Main source for anime/manga data, user information, and social features. All core data (anime details, lists, etc.) come from here via GraphQL. - **MyAnimeList (MAL) via Jikan API** – Jikan is an unofficial REST API for MAL. The presence of a `:data:edge` module suggests the app can fetch data from MAL (perhaps for content not available on AniList, or to allow linking MAL entries). - **Imgur** – The `:data:imgur` module and an **Imgur API** integration suggests the app might allow image uploads (e.g., uploading screenshots or images in posts) using Imgur’s service. - **AniTrend Edge Functions** – The project utilizes custom Deno-based edge functions (repository **on-the-edge**) to offload certain data aggregation tasks from the app (see [README.md#L2-L5](https://github.com/AniTrend/on-the-edge/blob/37ce2af384f7082092ee288a1c489614924dcff9/README.md#L2-L5)). These could handle things like fetching and combining news from multiple sources, or any heavy computations (for example, generating recommendations or content that requires multiple API calls). The `:data:edge` module in the app communicates with these cloud functions. In short, some features retrieve data from AniTrend’s own backend services running on the edge (for performance or to avoid doing it on the device). - **Firebase** – The app includes Firebase Analytics and Crashlytics (see dependencies for firebase-analytics and crashlytics). These are used for usage analytics and crash reporting. They are likely only enabled in certain build flavors (e.g., the “google” flavor). - **Other services**: The app might also fetch community content like anime news, forum discussions, or ratings. For example, news could be aggregated by the edge functions, or via an AniList forum API.
+For architecture and implementation routing, pair this file with:
 
-Understanding these data sources helps in navigating the code: each external integration typically has a dedicated data module, with network clients and data models specific to that API. For instance, `:data:tmdb` will contain TMDB API Retrofit interfaces and models, and a repository that the app uses to fetch images or additional info for anime. Similarly, `:data:trakt` might handle syncing watch history.
+- `.github/instructions/context.instructions.md` for clean-architecture boundaries.
+- `.github/instructions/guides.instructions.md` for contribution conventions.
+- `.github/skills/key-libraries/SKILL.md` for library-level detail.
+- `.github/skills/reference-map/SKILL.md` for task-first navigation across instructions and skills.
 
-## Key Libraries and Frameworks
+**AniTrend v2** is an Android client for the AniList service — an anime and manga tracking
+platform. The app lets users discover and track anime/manga, read news and forum posts, get
+recommendations, see trending/airing shows, and manage their AniList profile and lists.
 
-AniTrend v2 makes heavy use of both standard Android libraries and custom support libraries:
+### External data sources
 
-- **Jetpack components**: The app is built with Android Jetpack. This includes Lifecycle, Room, Paging, WorkManager, Navigation, and other AndroidX artifacts that compose the primary dependency set (see [README.md#L56-L65](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/README.md#L56-L65), [README.md#L82-L90](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/README.md#L82-L90)). Jetpack Compose powers most of the UI.
-- **Koin dependency injection**: All dependency wiring is handled through Koin initializers that load the module registry at app start (see [initializer/injector/InjectorInitializer.kt#L37-L45](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/app/core/src/main/kotlin/co/anitrend/core/initializer/injector/InjectorInitializer.kt#L37-L45), [core/koin/Modules.kt#L185-L189](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt#L185-L189)). Each feature or data module contributes its own bindings so factories and singletons stay localized.
-- **Networking stack**: Retrofit, OkHttp, and Kotlinx Serialization are registered alongside AniTrend’s custom GraphQL converter to communicate with AniList and other services (see [plugins/components/ProjectDependencies.kt#L209-L213](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/buildSrc/src/main/java/co/anitrend/buildSrc/plugins/components/ProjectDependencies.kt#L209-L213)). This shared configuration ensures consistent serialization, logging, and request handling across modules.
-- **GraphQL query builder**: The support-query-builder library generates schema-aware DSLs for composing GraphQL and SQL queries. Entities such as `TagEntity` expose generated schema objects, and filters like `TagQueryFilter` build Room queries dynamically (see [tag/entity/TagEntity.kt#L39-L48](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/data/src/main/kotlin/co/anitrend/data/tag/entity/TagEntity.kt#L39-L48), [entity/filter/TagQueryFilter.kt#L30-L38](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/data/src/main/kotlin/co/anitrend/data/tag/entity/filter/TagQueryFilter.kt#L30-L38)).
-- **Local database (Room)**: Entities in `co.anitrend.data.*.entity` map server responses into Room tables, while DAOs and data sources in the data layer coordinate caching and Flow-based reads. Follow the existing pattern—entity, DAO, mapper, and repository—to keep persistence behavior consistent.
-- **Image loading and debugging**: Coil is configured through shared Koin modules to support GIF, SVG, and video frames with tuned caches and dispatchers (see [core/koin/Modules.kt#L128-L137](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt#L128-L137), [core/koin/Modules.kt#L130-L140](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt#L130-L140), [core/koin/Modules.kt#L154-L163](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt#L154-L163)). Chucker is bundled in debug builds for inspecting HTTP traffic (see [plugins/components/ProjectDependencies.kt#L216-L224](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/buildSrc/src/main/java/co/anitrend/buildSrc/plugins/components/ProjectDependencies.kt#L216-L224)).
-- **Emoji support**: The android-emojify stack provides emoji parsing and rendering, exposed via a shared `EmojiManager` singleton so text processors can inject emoji spans where needed (see [core/koin/Modules.kt#L96-L102](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt#L96-L102)).
-- **Markdown rendering**: support-markdown wraps Markwon configuration so features can render Markdown-rich content without custom parsing (see [gradle/libs.versions.toml#L19-L25](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/gradle/libs.versions.toml#L19-L25), [gradle/libs.versions.toml#L30-L38](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/gradle/libs.versions.toml#L30-L38)).
-- **Material design & theming**: Material3 Compose and classic Material Components sit alongside support-arch theme helpers to deliver consistent theming across composables and legacy views (see [gradle/libs.versions.toml#L8-L16](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/gradle/libs.versions.toml#L8-L16), [gradle/libs.versions.toml#L253-L260](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/gradle/libs.versions.toml#L253-L260), [core/koin/Modules.kt#L64-L72](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt#L64-L72)).
+Each integration has a dedicated data module with its own network client and models:
+
+| Source | Module | Purpose |
+|---|---|---|
+| **AniList GraphQL API** | `:data` (core) | Primary source: anime/manga data, user lists, social |
+| **MyAnimeList via Jikan** | `:data:jikan` | Supplementary MAL data |
+| **Imgur** | `:data:imgur` | Image uploads |
+| **AniTrend Edge Functions** | `:data:edge` | Deno-based aggregation (news, recommendations, etc.) |
+| **TMDB** | `:data:tmdb` | Additional media metadata / images |
+| **Trakt** | `:data:trakt` | Watch-history sync |
+| **Firebase** | `google` flavor only | Analytics (Crashlytics, Analytics) |
+
+### Key libraries and frameworks
+
+For the complete library reference including versions, DI wiring, and usage rules, see
+`.github/skills/key-libraries/SKILL.md`. Summary:
+
+- **Jetpack**: Lifecycle, Room, Paging, WorkManager, Navigation Compose — core Android stack.
+- **support-arch** (in-house, via JitPack) — `DataState`, `UiState`, base data sources and UI.
+- **Retrofit + OkHttp + retrofit-graphql** — networking and GraphQL requests.
+- **Kotlinx Serialization** — JSON serialization.
+- **Koin** — dependency injection (see `.github/skills/koin-module-wiring/SKILL.md`).
+- **Coil** — image loading (GIF, SVG, video frames).
+- **Material3 Compose** — primary design system.
+- **Timber** — logging (use `Timber.*` not `Log.*`).
 
 ## Domain Model Context
 
-Understanding the app’s domain will help in making sense of classes: - **Media**: Central concept (anime or manga). Media have details, lists, etc. Expect features around browsing media, media detail screens, lists (watch list/read list). - **Characters, Staff, Studio**: These likely have their own screens and lists (character details, staff info, studios for anime). The common modules and feature modules for these indicate the app lets you browse and view these related entities. - **Airing**: There is a feature for airing shows – probably a schedule of currently airing episodes. - **News/Forum**: Possibly aggregated news or forum posts (the edge functions might fetch news). The presence of a `:feature:forum` and `:feature:news` suggests in-app reading of AniList forum discussions or anime news. - **Notifications**: The app might display AniList notifications (e.g., if someone comments on your post). - **Profile & Social**: There’s a profile feature (viewing user profiles) and maybe social features (followers, etc). - **Lists**: MediaList features (viewing and editing your anime/manga lists). - **Search & Discover**: Search feature for finding anime/manga, and discovery features like trending, recommendations, suggestions. - **Settings**: Contains user preferences. Also note the `:data:settings` module: it likely handles reading/writing app settings or user preferences (maybe wrapping `DataStore` or SharedPreferences). It might also store remote config or feature flags (the domain `Config` entity mentioned in `data:edge:config`). - **Updates**: An Updater feature exists (perhaps checking for app updates or showing changelogs).
+Core domain concepts and where to find them:
 
-When working in this project, it’s useful to know **where to look for certain functionality**: - If it’s about data retrieval or logic for a specific entity (like anime or character), check the corresponding `:data:<entity>` module for implementation and `:domain:<entity>` (often all domain code is under one common domain module with packages per entity). - For UI or user interactions of a feature, find the `:feature:<name>` module. - Shared UI components (like a tag chip, a media card layout, etc.) might be in `:common:<name>` modules if multiple screens use them.
+| Concept | Module hint |
+|---|---|
+| **Media** (anime/manga) | `:feature:media:*`, `:common:media`, `:data:media` |
+| **Characters, Staff, Studio** | `:feature:character`, `:feature:staff`, `:common:character` |
+| **Airing schedule** | `:feature:airing` |
+| **News / Forum** | `:feature:news`, `:feature:forum` |
+| **Notifications** | `:feature:notification` |
+| **Profile / Social** | `:feature:profile` |
+| **Media lists** | `:feature:media-list` |
+| **Search / Discover** | `:feature:search` |
+| **Settings** | `:feature:settings`, `:data:settings` |
+| **Updates** | `:feature:updater` |
+
+**Navigation rule:** data logic lives in `:data:<entity>`, UI in `:feature:<name>`, shared UI
+components in `:common:<name>`.
 
 ## Custom Edge Functionality
 
-The **on-the-edge** Deno functions are a unique part of AniTrend’s architecture (see [README.md#L2-L5](https://github.com/AniTrend/on-the-edge/blob/37ce2af384f7082092ee288a1c489614924dcff9/README.md#L2-L5)). They offload things like data aggregation: - One example could be **News aggregation**: Instead of the app calling multiple news sources, a Deno function might fetch news from various feeds (Anime News Network, MAL news, etc.) and present a combined result to the app, which the app then displays under a News section. - Another could be **Recommendations or Suggestions**: Possibly the edge service crunches user list data or global trends to recommend anime, so the app just calls one endpoint. - **MAL/AniList sync**: Maybe to sync AniList and MAL lists, an edge function could bridge those APIs (just speculation due to Jikan integration).
-
-From the app’s perspective, these edge calls would appear as simple HTTP endpoints. The `:data:edge` module likely contains models and a Retrofit interface for calling AniTrend’s cloud functions (for example, an endpoint to get a list of curated content or perform some action that AniList API alone can’t do).
-
-When modifying or utilizing edge functionality, keep in mind that those are remote and might not be as instantaneous as local or direct API calls. Ensure proper error handling and retries (likely why `DataState` is also used for edge calls to handle loading/error UI).
+The `on-the-edge` Deno functions (separate repo) offload data-aggregation tasks — news feeds,
+recommendation crunching, MAL/AniList bridging — to cloud functions. From the app's perspective
+they are plain HTTP endpoints consumed by `:data:edge`. Always use `DataState` for edge calls so
+loading/error states propagate correctly to the UI.
 
 ## Guidelines for Contributors and AI Assistants
 
-- **Follow Established Patterns**: The project is consistent in how each feature is implemented (use case in domain, repository in data, Koin module for DI, ViewModel in feature). By understanding one feature (e.g., how “Tag” or “Genre” is done), you can apply the same structure to others. When writing code (or prompts for AI), leverage this consistency: for instance, if Copilot is suggesting code for a new repository, it should resemble existing repositories in style and structure.
-- **Leverage Module Boundaries**: Only use classes that are exposed to your module. If you are in a feature module, you should mainly call domain layer interfaces or use cases – avoid reaching deep into data layer classes. The build system enforces this via Gradle (feature modules depend on domain, not on data, typically).
-- **Resource Management**: The context of Android means lifecycle. The app uses AndroidX Startup Initializers to set up things like Koin and migrations on app launch (see [initializer/injector/InjectorInitializer.kt#L30-L38](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/app/core/src/main/kotlin/co/anitrend/core/initializer/injector/InjectorInitializer.kt#L30-L38)). Also WorkManager is used for tasks. Keep in mind background work should be scheduled through WorkManager (there might be helper functions in task modules).
-- **Performance**: Many features involve potentially heavy data (lists, images). The app caches data in Room and uses flows with the Paging library for efficient loading. If implementing a new list or feed, use the existing Paging setup (look for any PagingData or Pager usage in the codebase). This ensures infinite scrolling and caching behave consistently.
-- **Testing**: There are references to test dependencies (Junit, MockK, Turbine for coroutine testing (see [plugins/strategy/DependencyStrategy.kt#L64-L72](https://github.com/AniTrend/anitrend-v2/blob/4931af9c33f9bb986507ef3a61a634aeed01550e/buildSrc/src/main/java/co/anitrend/buildSrc/plugins/strategy/DependencyStrategy.kt#L64-L72))). While not heavily mentioned in documentation, the architecture facilitates testing. Domain and data classes can be tested with JUnit and MockK by injecting fake dependencies via Koin modules in tests. Keep this in mind (e.g., write pure functions in use cases when possible, to allow easy testing).
-
-In summary, AniTrend v2’s context is that of a complex, feature-rich Android app pulling data from multiple sources but unified under a clean architecture. When writing or generating code within this project, always think about **which layer** the code belongs to, and what existing component you can utilize: - Need to fetch something? There’s probably an existing data source or a pattern in the data layer to follow. - Displaying content? The UI likely has a base component or a common format (maybe Compose LazyLists with placeholders). - New integration? See how others (like `data/edge/src/main/kotlin/co/anitrend/data/edge/config`, or `data/src/main/kotlin/co/anitrend/data/media`) were integrated – likely via a new data module, some domain interface, and Koin wiring.
+- **Follow established patterns**: understand one feature end-to-end (the `tag` package is the
+  canonical example) and apply the same structure to new work.
+- **Respect module boundaries**: feature modules depend on `:domain`, not on `:data:*` directly.
+- **Background work**: schedule via WorkManager in `:task:*` modules.
+- **Performance**: use Paging (`PagingData` / `Pager`) for list/feed screens; do not build a
+  custom scroll + load mechanism.
+- **Testing**: see `.github/skills/testing-guidelines/SKILL.md`.
+- **String resources**: see `.github/skills/string-resources-convention/SKILL.md`.
 
 ---
