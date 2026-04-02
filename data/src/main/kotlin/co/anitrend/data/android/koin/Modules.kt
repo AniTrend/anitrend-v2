@@ -30,6 +30,7 @@ import co.anitrend.data.android.cleaner.ClearDataHelper
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.database.AniTrendStore
 import co.anitrend.data.android.database.common.IAniTrendStore
+import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.info.AppInfo
 import co.anitrend.data.android.info.DeviceInfo
 import co.anitrend.data.android.logger.GraphLogger
@@ -47,28 +48,23 @@ import co.anitrend.data.core.device.IDeviceInfo
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.customlist.koin.customListModules
 import co.anitrend.data.customscore.koin.customScoreModules
-import co.anitrend.data.edge.koin.edgeModules
+import co.anitrend.data.edge.core.koin.edgeModules
 import co.anitrend.data.feed.api.factory.IFeedFactory
 import co.anitrend.data.feed.koin.feedModules
 import co.anitrend.data.genre.koin.genreModules
-import co.anitrend.data.jikan.koin.jikanModules
 import co.anitrend.data.link.koin.linkModules
 import co.anitrend.data.media.koin.mediaModules
 import co.anitrend.data.medialist.koin.mediaListModules
 import co.anitrend.data.rank.koin.rankModules
-import co.anitrend.data.relation.koin.sourceModules
 import co.anitrend.data.review.koin.reviewModules
 import co.anitrend.data.status.model.StatusModel
 import co.anitrend.data.tag.koin.tagModules
-import co.anitrend.data.themes.koin.themesModules
-import co.anitrend.data.thexem.koin.theXemModules
-import co.anitrend.data.tmdb.koin.tmdbModules
-import co.anitrend.data.trakt.koin.traktModules
 import co.anitrend.data.user.koin.userModules
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
 import com.google.gson.GsonBuilder
+import com.google.gson.Strictness
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import io.github.wax911.library.annotation.processor.GraphProcessor
 import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
@@ -109,7 +105,7 @@ private val coreModule =
                 userSettings = get(),
                 localSource = store().authDao(),
                 mediaListLocalSource = store().mediaListDao(),
-                cacheLocalSource = store().cacheDao(),
+                cacheLocalSource = cacheLocalSource(),
             )
         }
         factoryOf(::ClearDataHelper) {
@@ -131,7 +127,7 @@ private val retrofitModule =
         }
         single {
             GsonBuilder()
-                .setLenient()
+                .setStrictness(Strictness.LENIENT)
                 .create()
         }
         single {
@@ -242,7 +238,6 @@ val dataModules =
             airingModules,
             tagModules,
             genreModules,
-            sourceModules,
             mediaModules,
             carouselModules,
             authModules,
@@ -250,13 +245,8 @@ val dataModules =
             userModules,
             mediaListModules,
             feedModules,
-            jikanModules,
             linkModules,
             rankModules,
-            traktModules,
-            tmdbModules,
-            themesModules,
-            theXemModules,
             customListModules,
             customScoreModules,
             reviewModules,

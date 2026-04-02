@@ -36,12 +36,6 @@ enum class CacheRequest(
     STATISTIC("statistic"),
     NEWS("news"),
     EPISODE("episode"),
-    MOE("moe"),
-    JIKAN("jikan"),
-    XEM("the_xem"),
     CONFIG("config"),
-    SERIES("series"),
-    PREVIEW("preview"),
-    NETWORK("network"),
-    SEASON("season"),
+    EDGE_MEDIA("edge_media"),
 }

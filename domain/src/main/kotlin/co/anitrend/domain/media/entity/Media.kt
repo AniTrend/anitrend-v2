@@ -28,6 +28,7 @@ import co.anitrend.domain.media.entity.attribute.origin.MediaSourceId
 import co.anitrend.domain.media.entity.attribute.rank.IMediaRank
 import co.anitrend.domain.media.entity.attribute.score.IMediaScore
 import co.anitrend.domain.media.entity.attribute.score.MediaScore
+import co.anitrend.domain.media.entity.attribute.theme.MediaTheme
 import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.entity.attribute.trailer.IMediaTrailer
@@ -44,7 +45,6 @@ sealed class Media : IMedia {
     abstract val externalLinks: List<IMediaExternalLink>
     abstract val rankings: List<IMediaRank>
     abstract val trailer: IMediaTrailer?
-    abstract val sourceId: IMediaSourceId
     abstract val countryCode: CharSequence?
     abstract val genres: List<Genre.Extended>
     abstract val twitterTag: CharSequence?
@@ -135,26 +135,24 @@ sealed class Media : IMedia {
         override val endDate: FuzzyDate,
         override val mediaList: IMediaList?,
         override val id: Long,
-        override val sourceId: IMediaSourceId,
-        override val countryCode: CharSequence?,
-        override val description: CharSequence?,
+        override val countryCode: String?,
+        override val description: String?,
         override val favourites: Int,
         override val genres: List<Genre.Extended>,
-        override val twitterTag: CharSequence?,
+        override val twitterTag: String?,
         override val isLicensed: Boolean?,
         override val isLocked: Boolean?,
         override val isRecommendationBlocked: Boolean,
         override val isReviewBlocked: Boolean,
         override val siteUrl: SiteUrl,
         override val source: MediaSource?,
-        override val synonyms: List<CharSequence>,
+        override val synonyms: List<String>,
         override val tags: List<Tag>,
         override val trailer: IMediaTrailer?,
     ) : Media() {
         companion object {
             fun empty() =
                 Core(
-                    sourceId = MediaSourceId.empty(),
                     countryCode = null,
                     description = null,
                     favourites = 0,
@@ -193,8 +191,8 @@ sealed class Media : IMedia {
         val background: String?,
         val ageRating: String?,
         val extraInfo: String?,
-        val openingThemes: List<String>,
-        val endingThemes: List<String>,
+        val themes: List<MediaTheme>,
+        val sourceId: IMediaSourceId,
         override val externalLinks: List<IMediaExternalLink>,
         override val rankings: List<IMediaRank>,
         override val trailer: IMediaTrailer?,
@@ -212,7 +210,6 @@ sealed class Media : IMedia {
         override val endDate: FuzzyDate,
         override val mediaList: IMediaList?,
         override val id: Long,
-        override val sourceId: IMediaSourceId,
         override val countryCode: CharSequence?,
         override val description: CharSequence?,
         override val favourites: Int,
@@ -233,8 +230,7 @@ sealed class Media : IMedia {
                     background = null,
                     ageRating = null,
                     extraInfo = null,
-                    openingThemes = emptyList(),
-                    endingThemes = emptyList(),
+                    themes = emptyList(),
                     sourceId = MediaSourceId.empty(),
                     countryCode = null,
                     description = null,

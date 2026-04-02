@@ -1,0 +1,28 @@
+fragment EdgeSchedule on query_series_schedule {
+  lastAiredEpisode {
+    airDate
+    episodeNumber
+    id
+    image
+    name
+    overview
+    productionCode
+    runtime
+    seasonNumber
+    tmdbId
+  }
+  lastAirDate
+  firstAirDate
+  nextEpisodeToAir {
+    airDate
+    episodeNumber
+    id
+    image
+    name
+    overview
+    productionCode
+    runtime
+    seasonNumber
+    tmdbId
+  }
+}

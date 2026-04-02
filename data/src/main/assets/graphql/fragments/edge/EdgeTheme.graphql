@@ -1,0 +1,13 @@
+fragment EdgeTheme on EdgeMediaTheme {
+  name
+  id
+  audio
+  meta {
+    ... on EdgeMediaThemeMeta {
+      number
+      type
+      version
+    }
+  }
+  video
+}

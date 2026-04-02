@@ -17,13 +17,18 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.extensions.*
+import co.anitrend.buildSrc.extensions.isAndroidCoreModule
+import co.anitrend.buildSrc.extensions.isCoreModule
+import co.anitrend.buildSrc.extensions.isDataModule
+import co.anitrend.buildSrc.extensions.libraryExtension
+import co.anitrend.buildSrc.extensions.matchesDataModule
+import co.anitrend.buildSrc.extensions.props
 import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.LibraryDefaultConfig
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
-import java.util.*
+import java.util.Properties
 
 private fun Properties.applyToBuildConfigFor(buildType: LibraryBuildType) {
     forEach { propEntry ->
@@ -77,8 +82,6 @@ private fun LibraryDefaultConfig.applyRoomCompilerOptions(project: Project) {
             arguments(
                 mapOf(
                     "room.schemaLocation" to "${project.projectDir}/schemas",
-                    "room.expandingProjections" to "true",
-                    "room.incremental" to "true"
                 )
             )
         }

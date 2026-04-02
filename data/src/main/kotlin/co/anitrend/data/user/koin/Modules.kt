@@ -16,6 +16,7 @@
  */
 package co.anitrend.data.user.koin
 
+import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.android.extensions.offline
 import co.anitrend.data.auth.mapper.AuthMapper
@@ -154,22 +155,22 @@ private val cacheModule =
     module {
         factory {
             UserCache.Viewer(
-                localSource = store().cacheDao(),
+                localSource = cacheLocalSource(),
             )
         }
         factory {
             UserCache.Identifier(
-                localSource = store().cacheDao(),
+                localSource = cacheLocalSource(),
             )
         }
         factory {
             UserCache.Profile(
-                localSource = store().cacheDao(),
+                localSource = cacheLocalSource(),
             )
         }
         factory {
             UserCache.Statistic(
-                localSource = store().cacheDao(),
+                localSource = cacheLocalSource(),
             )
         }
     }

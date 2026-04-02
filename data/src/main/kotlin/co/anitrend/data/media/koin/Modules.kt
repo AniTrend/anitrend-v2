@@ -16,6 +16,7 @@
  */
 package co.anitrend.data.media.koin
 
+import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.android.extensions.offline
 import co.anitrend.data.core.extensions.aniListApi
@@ -52,8 +53,7 @@ private val sourceModule =
                     ),
                 converter = get(),
                 clearDataHelper = get(),
-                jikanSource = get(),
-                moeSource = get(),
+                edgeSource = get(),
                 cachePolicy = get<MediaCache>(),
                 dispatcher = get(),
             )
@@ -99,7 +99,7 @@ private val cacheModule =
     module {
         factory {
             MediaCache(
-                localSource = store().cacheDao(),
+                localSource = cacheLocalSource(),
             )
         }
     }

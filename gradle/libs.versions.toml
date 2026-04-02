@@ -89,8 +89,6 @@ timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 junit = { module = "junit:junit", version = "4.13.2" }
 
 treessence = { module = "com.github.bastienpaulfr:Treessence", version = "1.1.2" }
-tmdb = { module = "com.uwetrottmann.tmdb2:tmdb-java", version = "2.12.0" }
-trakt = { module = "com.uwetrottmann.trakt5:trakt-java", version = "6.16.0" }
 jsoup = { module = "org.jsoup:jsoup", version = "1.21.2" }
 scalingImageView = { module = "com.davemorrissey.labs:subsampling-scale-image-view-androidx", version = "3.10.0" }
 prettyTime = { module = "org.ocpsoft.prettytime:prettytime", version = "5.0.8.Final" }
@@ -334,7 +332,7 @@ square-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "s
 square-retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "square-retrofit" }
 square-retrofit-converter-simplexml = { module = "com.squareup.retrofit2:converter-simplexml", version.ref = "square-retrofit" }
 
-spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "7.2.1" }
+spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "8.0.0" }
 
 pintrest-ktlint-rule-engine = { module = "com.pinterest.ktlint:ktlint-rule-engine", version.ref = "ktlint" }
 pintrest-ktlint-ruleset-core = { module = "com.pinterest.ktlint:ktlint-cli-ruleset-core", version.ref = "ktlint" }

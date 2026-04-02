@@ -16,6 +16,7 @@
  */
 package co.anitrend.data.carousel.koin
 
+import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.carousel.GetCarouselInteractor
 import co.anitrend.data.carousel.MediaCarouselListRepository
@@ -51,7 +52,7 @@ private val cacheModule =
     module {
         factory {
             CarouselCache(
-                localSource = store().cacheDao(),
+                localSource = cacheLocalSource(),
             )
         }
     }

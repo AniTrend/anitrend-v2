@@ -20,15 +20,14 @@ import android.content.pm.ShortcutManager
 import android.net.ConnectivityManager
 import android.os.PowerManager
 import androidx.core.app.NotificationManagerCompat
-import co.anitrend.arch.extension.dispatchers.SupportDispatcher
-import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.arch.extension.ext.systemServiceOf
-import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.android.core.controller.power.AndroidPowerController
 import co.anitrend.android.core.controller.power.contract.IPowerController
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
 import co.anitrend.android.core.helpers.notification.NotificationHelper
 import co.anitrend.android.core.settings.Settings
+import co.anitrend.android.core.settings.common.IConfigurationSettings
+import co.anitrend.android.core.settings.common.locale.ILocaleSettings
+import co.anitrend.android.core.settings.common.theme.IThemeSettings
 import co.anitrend.android.core.settings.helper.config.ConfigurationHelper
 import co.anitrend.android.core.settings.helper.config.contract.IConfigurationHelper
 import co.anitrend.android.core.settings.helper.locale.LocaleHelper
@@ -39,6 +38,23 @@ import co.anitrend.android.core.shortcut.ShortcutController
 import co.anitrend.android.core.shortcut.contract.IShortcutController
 import co.anitrend.android.core.storage.StorageController
 import co.anitrend.android.core.storage.contract.IStorageController
+import co.anitrend.arch.extension.dispatchers.SupportDispatcher
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.extension.ext.systemServiceOf
+import co.anitrend.arch.extension.preference.contract.ISupportPreference
+import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
+import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.settings.cache.ICacheSettings
+import co.anitrend.data.settings.connectivity.IConnectivitySettings
+import co.anitrend.data.settings.customize.ICustomizationSettings
+import co.anitrend.data.settings.developer.IDeveloperSettings
+import co.anitrend.data.settings.notification.INotificationSettings
+import co.anitrend.data.settings.power.IPowerSettings
+import co.anitrend.data.settings.privacy.IPrivacySettings
+import co.anitrend.data.settings.refresh.IRefreshBehaviourSettings
+import co.anitrend.data.settings.sort.ISortOrderSettings
+import co.anitrend.data.settings.sync.ISyncSettings
+import co.anitrend.data.user.settings.IUserSettings
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.bind
 import org.koin.dsl.binds
@@ -51,7 +67,25 @@ private val coreModule =
             Settings(
                 context = androidContext(),
             )
-        } binds (Settings.BINDINGS)
+        } binds
+            arrayOf(
+                ISupportPreference::class,
+                IConfigurationSettings::class,
+                ILocaleSettings::class,
+                IThemeSettings::class,
+                IAuthenticationSettings::class,
+                IPrivacySettings::class,
+                ISortOrderSettings::class,
+                IRefreshBehaviourSettings::class,
+                ICustomizationSettings::class,
+                IPowerSettings::class,
+                IConnectivitySettings::class,
+                INotificationSettings::class,
+                IUserSettings::class,
+                ICacheSettings::class,
+                ISyncSettings::class,
+                IDeveloperSettings::class,
+            )
 
         single<ISupportDispatcher> {
             SupportDispatcher()

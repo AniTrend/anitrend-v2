@@ -1,0 +1,347 @@
+# This file was generated. Do not edit manually.
+
+schema {
+    query: Query
+}
+
+directive @enum(subgraph: String, value: String) repeatable on ENUM_VALUE
+
+directive @extraSchemaDefinitionDirective(directives: _DirectiveExtensions) repeatable on OBJECT
+
+directive @httpOperation(httpMethod: HTTPMethod, isBinary: Boolean, jsonApiFields: Boolean, operationSpecificHeaders: [[String]], path: String, queryParamArgMap: ObjMap, queryStringOptions: ObjMap, queryStringOptionsByParam: ObjMap, requestBaseBody: ObjMap, subgraph: String) repeatable on FIELD_DEFINITION
+
+directive @length(max: Int, min: Int, subgraph: String) repeatable on SCALAR
+
+"Indicates exactly one field must be supplied and this field must not be `null`."
+directive @oneOf on INPUT_OBJECT
+
+directive @transport(headers: [[String]], kind: String, location: String, queryParams: [[String]], queryStringOptions: ObjMap, subgraph: String) repeatable on SCHEMA
+
+"Client configuration"
+type Config {
+    genres: [query_config_genres_items]
+    id: String!
+    image: query_config_image!
+    navigation: [query_config_navigation_items]
+    settings: query_config_settings!
+}
+
+"Paginated episode listing with cursor navigation"
+type Episodes {
+    count: Float!
+    data: [query_episodes_data_items]!
+    first: String
+    last: String
+    total: Float!
+}
+
+"Schema representing a news document."
+type News {
+    area: String
+    category: String
+    content: String!
+    description: String!
+    genre: String
+    id: String!
+    image: URL
+    lang: String
+    link: URL!
+    publishedOn: Float!
+    title: String!
+}
+
+"Paged response for news documents."
+type NewsPaging {
+    count: NonNegativeFloat!
+    data: [query_news_data_items]!
+    first: String
+    last: String
+}
+
+type Query {
+    config: Config
+    episodes(after: String, before: String, end: Int, includeOrphans: Boolean, kind: queryInput_episodes_kind, limit: PositiveInt = 25, malId: Int!, specialsOnly: Boolean, start: Int): Episodes
+    index: JSON
+    news(after: String, before: String, limit: PositiveFloat = 15): NewsPaging
+    newsFeed(
+        "Locale for the news feed, e.g., en-GB, de-DE, fr-FR."
+        locale: queryInput_newsFeed_locale
+    ): [News]
+    series(anilist: Int, mal: Int, notify: NonEmptyString, slug: NonEmptyString, tmdb: Int, trakt: Int, tvdb: Int): Series
+}
+
+"Aggregated of media entities from multiple sources"
+type Series {
+    ageRating: String
+    airedEpisodes: Float
+    banner: String
+    broadcast: String
+    chapters: Float
+    classification: JSON
+    cover: query_series_cover!
+    description: String
+    duration: Float
+    fanart: String
+    format: JSON
+    homepage: String
+    images: [query_series_images_items]!
+    isAdult: Boolean
+    kind: query_series_kind!
+    mediaId: query_series_mediaId!
+    moreInfo: String
+    networks: [query_series_networks_items]!
+    publishedFrom: Float
+    publishedTo: Float
+    schedule: query_series_schedule
+    source: JSON
+    status: JSON
+    themeSongs: [JSON]!
+    title: query_series_title!
+    trailers: [query_series_trailers_items]!
+    updatedAt: Float!
+    volumes: Float
+}
+
+type query_config_genres_items {
+    mediaId: PositiveFloat!
+    name: String!
+}
+
+type query_config_image {
+    banner: URL!
+    default: URL!
+    error: URL!
+    info: URL!
+    loading: URL!
+    poster: URL!
+}
+
+type query_config_navigation_items {
+    criteria: String!
+    destination: String!
+    group: query_config_navigation_items_group!
+    i18n: String!
+    icon: String!
+}
+
+type query_config_navigation_items_group {
+    authenticated: Boolean!
+    i18n: String!
+}
+
+type query_config_settings {
+    analyticsEnabled: Boolean!
+    platformSource: URL
+}
+
+type query_episodes_data_items {
+    absoluteEpisodeNumber: Float
+    aired: Float
+    airedAfterEpisodeNumber: Float
+    airedAfterSeasonNumber: Float
+    airedBeforeEpisodeNumber: Float
+    airedBeforeSeasonNumber: Float
+    duration: Float
+    episodeNumber: Float
+    id: Float!
+    image: String
+    kind: query_episodes_data_items_kind
+    number: Float
+    poster: String
+    score: Float
+    seasonNumber: Float
+    synopsis: String
+    themes: query_episodes_data_items_themes
+    title: query_episodes_data_items_title
+    tmdbId: Float
+    tvdbId: Float
+    tvdbShowId: Float
+    url: String
+}
+
+type query_episodes_data_items_themes {
+    endings: [String]
+    openings: [String]
+}
+
+type query_episodes_data_items_title {
+    english: String
+    native: String
+    romanji: String
+}
+
+type query_news_data_items {
+    area: String
+    category: String
+    content: String!
+    description: String!
+    genre: String
+    id: String!
+    image: URL
+    lang: String
+    link: URL!
+    publishedOn: Float!
+    title: String!
+}
+
+type query_series_cover {
+    color: String
+    extraLarge: String
+    large: String
+    medium: String
+}
+
+type query_series_images_items {
+    height: Float!
+    locale: String
+    type: query_series_images_items_type!
+    url: String!
+    width: Float!
+}
+
+type query_series_mediaId {
+    anidb: Float
+    anilist: Float
+    animePlanet: String
+    anisearch: Float
+    imdb: String
+    kitsu: Float
+    livechart: Float
+    myanimelist: Float
+    notify: String
+    shoboi: Float
+    slug: String
+    themoviedb: Float
+    trakt: Float
+    tvMazeId: Float
+    tvdb: Float
+    tvrage: String
+}
+
+type query_series_networks_items {
+    category: query_series_networks_items_category!
+    id: Float!
+    isPrimary: Boolean!
+    logoPath: String
+    name: String!
+    originCountry: String!
+}
+
+type query_series_schedule {
+    firstAirDate: Float
+    lastAirDate: Float
+    lastAiredEpisode: query_series_schedule_lastAiredEpisode
+    nextEpisodeToAir: query_series_schedule_nextEpisodeToAir
+}
+
+type query_series_schedule_lastAiredEpisode {
+    airDate: Float
+    episodeNumber: Float
+    id: Float!
+    image: String
+    name: String!
+    overview: String
+    productionCode: String
+    runtime: Float
+    seasonNumber: Float
+    tmdbId: Float
+}
+
+type query_series_schedule_nextEpisodeToAir {
+    airDate: Float
+    episodeNumber: Float
+    id: Float!
+    image: String
+    name: String!
+    overview: String
+    productionCode: String
+    runtime: Float
+    seasonNumber: Float
+    tmdbId: Float
+}
+
+type query_series_title {
+    canonical: String
+    english: String
+    harigana: String
+    japanese: String
+    romaji: String
+    synonyms: [String]
+}
+
+type query_series_trailers_items {
+    id: String!
+    site: String!
+    thumbnail: String
+}
+
+enum HTTPMethod {
+    CONNECT
+    DELETE
+    GET
+    HEAD
+    OPTIONS
+    PATCH
+    POST
+    PUT
+    TRACE
+}
+
+enum queryInput_episodes_kind {
+    filler
+    main
+    ona
+    ova
+    recap
+    special
+}
+
+enum query_episodes_data_items_kind {
+    filler
+    main
+    ona
+    ova
+    recap
+    special
+}
+
+enum query_series_images_items_type {
+    BACKDROP
+    LOGO
+    POSTER
+}
+
+enum query_series_kind {
+    ANIME
+    MANGA
+}
+
+enum query_series_networks_items_category {
+    DISTRIBUTION
+    PRODUCTION
+}
+
+"The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."
+scalar JSON
+
+"A string that cannot be passed as an empty value"
+scalar NonEmptyString
+
+"Floats that will have a value of 0 or more."
+scalar NonNegativeFloat
+
+scalar ObjMap
+
+"Floats that will have a value greater than 0."
+scalar PositiveFloat
+
+"Integers that will have a value greater than 0."
+scalar PositiveInt
+
+"A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt."
+scalar URL
+
+scalar _DirectiveExtensions
+
+"Locale for the news feed, e.g., en-GB, de-DE, fr-FR."
+scalar queryInput_newsFeed_locale

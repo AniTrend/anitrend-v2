@@ -1,0 +1,6 @@
+fragment EdgeCover on query_series_cover {
+  color
+  extraLarge
+  large
+  medium
+}

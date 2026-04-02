@@ -26,8 +26,7 @@ import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.common.extension.from
-import co.anitrend.data.jikan.media.model.query.JikanQuery
-import co.anitrend.data.jikan.media.source.contract.JikanSource
+import co.anitrend.data.edge.media.source.contract.EdgeMediaSource
 import co.anitrend.data.media.MediaDetailController
 import co.anitrend.data.media.MediaNetworkController
 import co.anitrend.data.media.MediaPagedController
@@ -38,8 +37,6 @@ import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.media.entity.filter.MediaQueryFilter
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.data.media.source.contract.MediaSource
-import co.anitrend.data.relation.model.local.RelationQuery
-import co.anitrend.data.relation.source.contract.RelationSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.model.MediaParam
@@ -47,8 +44,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
 internal class MediaSourceImpl {
     class Detail(
@@ -57,8 +56,7 @@ internal class MediaSourceImpl {
         private val controller: MediaDetailController,
         private val converter: MediaEntityViewConverter,
         private val clearDataHelper: IClearDataHelper,
-        private val moeSource: RelationSource,
-        private val jikanSource: JikanSource,
+        private val edgeSource: EdgeMediaSource,
         override val cachePolicy: ICacheStorePolicy,
         override val dispatcher: ISupportDispatcher,
     ) : MediaSource.Detail() {
@@ -72,18 +70,16 @@ internal class MediaSourceImpl {
                 .flowOn(dispatcher.computation)
 
         override suspend fun getMedia(requestCallback: RequestCallback): Boolean {
-            moeSource(RelationQuery(query.param.id))
+            val edgeEntity = edgeSource(id = query.param.id)
             val deferred =
                 deferred {
+                    val e = edgeEntity.firstOrNull()
+                    Timber.d("EdgeEntity: $e")
                     val queryBuilder = query.toQueryContainerBuilder()
                     remoteSource.getMediaDetail(queryBuilder)
                 }
 
             val result = controller(deferred, requestCallback)
-
-            if (result?.malId != null) {
-                jikanSource(JikanQuery(result.malId, result.type))
-            }
 
             return result != null
         }
@@ -94,8 +90,7 @@ internal class MediaSourceImpl {
          * @param context Dispatcher context to run in
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
-            jikanSource.clearDataSource(context)
-            moeSource.clearDataSource(context)
+            edgeSource.clearDataSource(context)
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
                 localSource.clearById(cacheIdentity.id)

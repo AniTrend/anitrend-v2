@@ -37,12 +37,6 @@ include(
 	":data:edge",
     ":data:feed",
     ":data:imgur",
-    ":data:jikan",
-	":data:relation",
-    ":data:theme",
-    ":data:thexem",
-    ":data:tmdb",
-    ":data:trakt",
 	":data:settings",
     // Android modules
     ":android:deeplink",

@@ -1,0 +1,64 @@
+/*
+ * Copyright (C) 2025 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+package co.anitrend.data.edge.media.datasource.local
+
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.RawQuery
+import androidx.room.Transaction
+import androidx.sqlite.db.SupportSQLiteQuery
+import co.anitrend.data.android.source.local.AbstractLocalSource
+import co.anitrend.data.edge.episode.entity.EdgeEpisodeEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaEntity
+import co.anitrend.data.edge.media.entity.view.EdgeMediaEntityView
+import co.anitrend.data.edge.network.entity.EdgeNetworkEntity
+import co.anitrend.data.edge.season.entity.EdgeSeasonEntity
+import co.anitrend.data.edge.theme.entity.EdgeThemeEntity
+import co.anitrend.data.edge.trailer.entity.EdgeTrailerEntity
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+abstract class EdgeMediaLocalSource : AbstractLocalSource<EdgeMediaEntity>() {
+    @Query("select count(id) from edge_media")
+    abstract override suspend fun count(): Int
+
+    @Query("delete from edge_media")
+    abstract override suspend fun clear()
+
+    @Query("delete from edge_media where id = :id")
+    abstract suspend fun clearById(id: String)
+
+    @Query("select * from edge_media where id_ani_list = :mediaId")
+    abstract fun mediaByIdFlow(mediaId: Long): Flow<EdgeMediaEntity?>
+
+    @Query("select * from edge_media where id_ani_list = :mediaId")
+    @Transaction
+    abstract fun mediaViewByIdFlow(mediaId: Long): Flow<EdgeMediaEntityView?>
+
+    @Transaction
+    @RawQuery(
+        observedEntities = [
+            EdgeMediaEntity::class,
+            EdgeNetworkEntity::class,
+            EdgeTrailerEntity::class,
+            EdgeEpisodeEntity::class,
+            EdgeSeasonEntity::class,
+            EdgeThemeEntity::class,
+        ],
+    )
+    abstract fun rawFlow(query: SupportSQLiteQuery): Flow<EdgeMediaEntityView?>
+}

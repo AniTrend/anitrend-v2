@@ -1,18 +1,23 @@
-schema: schema.graphql
-documents: 'src/main/assets/graphql/*.graphql'
+schema:
+  - schema.graphql
+  - anitrend.schema.graphql
+documents:
+  - 'src/main/assets/graphql/*.graphql'
 extensions:
   endpoints:
     AniList:
       url: https://graphql.anilist.co
+      schema: schema.graphql
       headers:
         user-agent: JS GraphQL
       introspect: true
     AniTrend:
       url: https://api.anitrend.co/graphql
+      schema: anitrend.schema.graphql
       headers:
         User-Agent: "JS GraphQL"
         Accept: "*/*"
-        HOST: "graphql.anitrend.co"
+        HOST: "api.anitrend.co"
         Accept-Encoding: "gzip, deflate, br"
         Content-Type: "application/json"
       introspect: true

@@ -21,13 +21,13 @@ import androidx.room.Relation
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
 import co.anitrend.data.genre.entity.view.GenreEntityView
-import co.anitrend.data.jikan.media.entity.JikanEntity
 import co.anitrend.data.link.entity.LinkEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaEntity
+import co.anitrend.data.edge.media.entity.view.EdgeMediaEntityView
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.MediaListEntityView
 import co.anitrend.data.rank.entity.RankEntity
-import co.anitrend.data.relation.entity.RelationEntity
 import co.anitrend.data.tag.entity.connection.TagConnectionEntity
 import co.anitrend.data.tag.entity.view.TagEntityView
 
@@ -35,30 +35,13 @@ internal sealed class MediaEntityView {
     abstract val media: MediaEntity
     abstract val nextAiring: AiringScheduleEntity?
     abstract val mediaList: MediaListEntityView.Core?
-
-    abstract val jikan: JikanEntity?
-    abstract val moe: RelationEntity?
-
-    abstract val tags: List<TagEntityView>
     abstract val genres: List<GenreEntityView>
-
-    abstract val links: List<LinkEntity>
-    abstract val ranks: List<RankEntity>
+    abstract val edge: EdgeMediaEntityView?
 
     internal data class Core(
         @Embedded override val media: MediaEntity,
         @Relation(
             parentColumn = "id",
-            entityColumn = "anilist",
-        )
-        override val moe: RelationEntity?,
-        @Relation(
-            parentColumn = "mal_id",
-            entityColumn = "id",
-        )
-        override val jikan: JikanEntity?,
-        @Relation(
-            parentColumn = "id",
             entityColumn = "media_id",
             entity = MediaListEntity::class,
         )
@@ -71,39 +54,35 @@ internal sealed class MediaEntityView {
         @Relation(
             parentColumn = "id",
             entityColumn = "media_id",
-            entity = TagConnectionEntity::class,
-        )
-        override val tags: List<TagEntityView> = emptyList(),
-        @Relation(
-            parentColumn = "id",
-            entityColumn = "media_id",
             entity = GenreConnectionEntity::class,
         )
         override val genres: List<GenreEntityView> = emptyList(),
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_id",
+            entityColumn = "id_ani_list",
+            entity = EdgeMediaEntity::class,
         )
-        override val links: List<LinkEntity> = emptyList(),
-        @Relation(
-            parentColumn = "id",
-            entityColumn = "media_id",
-        )
-        override val ranks: List<RankEntity> = emptyList(),
+        override val edge: EdgeMediaEntityView?,
     ) : MediaEntityView()
 
     internal data class Extended(
-        @Embedded override val media: MediaEntity,
         @Relation(
             parentColumn = "id",
-            entityColumn = "anilist",
+            entityColumn = "media_id",
         )
-        override val moe: RelationEntity?,
+        val links: List<LinkEntity> = emptyList(),
         @Relation(
-            parentColumn = "mal_id",
-            entityColumn = "id",
+            parentColumn = "id",
+            entityColumn = "media_id",
         )
-        override val jikan: JikanEntity?,
+        val ranks: List<RankEntity> = emptyList(),
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "media_id",
+            entity = TagConnectionEntity::class,
+        )
+        val tags: List<TagEntityView> = emptyList(),
+        @Embedded override val media: MediaEntity,
         @Relation(
             parentColumn = "id",
             entityColumn = "media_id",
@@ -118,24 +97,14 @@ internal sealed class MediaEntityView {
         @Relation(
             parentColumn = "id",
             entityColumn = "media_id",
-            entity = TagConnectionEntity::class,
-        )
-        override val tags: List<TagEntityView> = emptyList(),
-        @Relation(
-            parentColumn = "id",
-            entityColumn = "media_id",
             entity = GenreConnectionEntity::class,
         )
         override val genres: List<GenreEntityView> = emptyList(),
         @Relation(
             parentColumn = "id",
-            entityColumn = "media_id",
+            entityColumn = "id_ani_list",
+            entity = EdgeMediaEntity::class,
         )
-        override val links: List<LinkEntity> = emptyList(),
-        @Relation(
-            parentColumn = "id",
-            entityColumn = "media_id",
-        )
-        override val ranks: List<RankEntity> = emptyList(),
+        override val edge: EdgeMediaEntityView?,
     ) : MediaEntityView()
 }
