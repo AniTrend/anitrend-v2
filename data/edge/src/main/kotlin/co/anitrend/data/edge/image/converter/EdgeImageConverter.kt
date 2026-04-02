@@ -25,11 +25,12 @@ internal class EdgeImageConverter(
     override val fromType: (EdgeImageWithMediaId) -> EdgeMediaImageEntity = { model ->
         EdgeMediaImageEntity(
             mediaId = model.first,
-            type = when (model.second.type) {
-                EdgeImageModel.ImageType.BACKDROP -> EdgeMediaImageEntity.ImageType.BACKDROP
-                EdgeImageModel.ImageType.LOGO -> EdgeMediaImageEntity.ImageType.LOGO
-                EdgeImageModel.ImageType.POSTER -> EdgeMediaImageEntity.ImageType.POSTER
-            },
+            type =
+                when (model.second.type) {
+                    EdgeImageModel.ImageType.BACKDROP -> EdgeMediaImageEntity.ImageType.BACKDROP
+                    EdgeImageModel.ImageType.LOGO -> EdgeMediaImageEntity.ImageType.LOGO
+                    EdgeImageModel.ImageType.POSTER -> EdgeMediaImageEntity.ImageType.POSTER
+                },
             url = model.second.url,
             height = model.second.height,
             width = model.second.width,

@@ -189,5 +189,4 @@ internal class EdgeMediaModel(
         @SerialName("tvMazeId") val tvMaze: Long? = null,
         @SerialName("tvrage") val tvRage: String? = null,
     )
-
 }

@@ -64,8 +64,7 @@ data class EdgeEpisodeModel(
     @SerialName("seasonNumber") val seasonNumber: Int? = null,
     @SerialName("tvdbId") val tvdbId: Long? = null,
     @SerialName("tvdbShowId") val tvdbShowId: Long? = null,
-) 
-{
+) {
     /**
      * Crew / Guest credit entry for an episode.
      *
