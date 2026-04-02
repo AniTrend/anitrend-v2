@@ -161,7 +161,14 @@ internal class MediaEntityViewConverter(
                 isReviewBlocked = media.isReviewBlocked,
                 siteUrl = media.createSiteUrl(),
                 source = media.source ?: edge?.media?.source.asMediaSource(),
-                synonyms = media.synonyms.ifEmpty { edge?.media?.title?.synonyms.orEmpty() },
+                synonyms =
+                    media.synonyms.ifEmpty {
+                        edge
+                            ?.media
+                            ?.title
+                            ?.synonyms
+                            .orEmpty()
+                    },
                 trailer =
                     media.trailer?.let {
                         MediaTrailer(
@@ -209,9 +216,18 @@ internal class MediaEntityViewConverter(
                         MediaType.ANIME ->
                             Media.Category.Anime(
                                 media.episodes ?: edge?.media?.airedEpisodes ?: 0,
-                                media.duration ?: edge?.media?.schedule?.nextEpisode?.runtime ?: 0,
+                                media.duration ?: edge
+                                    ?.media
+                                    ?.schedule
+                                    ?.nextEpisode
+                                    ?.runtime ?: 0,
                                 broadcast = edge?.media?.broadcast,
-                                premiered = edge?.media?.schedule?.firstAirDate?.toString(),
+                                premiered =
+                                    edge
+                                        ?.media
+                                        ?.schedule
+                                        ?.firstAirDate
+                                        ?.toString(),
                                 schedule = nextAiringSchedule,
                             )
 
