@@ -220,6 +220,10 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     tasks.withType(Test::class.java) {
         useJUnitPlatform()
 
+        // Gradle 9 fails test tasks when no tests are discovered, even when generated
+        // Android unit-test classes are present in modules without real test cases.
+        failOnNoDiscoveredTests.set(false)
+
         maxHeapSize = "1G"
 
         testLogging {
