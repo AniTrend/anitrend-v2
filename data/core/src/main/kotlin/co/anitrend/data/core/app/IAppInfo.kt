@@ -19,6 +19,7 @@ package co.anitrend.data.core.app
 interface IAppInfo {
     val locale: String
     val version: String
+    val build: String
     val source: String
     val code: String
     val label: String
