@@ -17,7 +17,7 @@
 package co.anitrend.common.media.ui.compose.component.rank
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
@@ -69,17 +69,18 @@ fun MediaRankSection(
         shape = CardDefaults.outlinedShape,
         modifier = modifier.fillMaxWidth(),
     ) {
-        Column(modifier = Modifier.padding(all = 16.dp)) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.padding(all = 16.dp),
+        ) {
             MediaRankSectionHeader()
-            Spacer(modifier = Modifier.padding(bottom = 8.dp))
-            ranks.take(2).forEachIndexed { index, rank ->
+            ranks.take(3).forEach { rank ->
                 MediaRankItem(
-                    rank = ranks[index],
+                    rank = rank,
                     onClick = onClick,
-                    modifier = Modifier.padding(horizontal = 8.dp),
                 )
             }
-            if (ranks.size > 2) {
+            if (ranks.size > 3) {
                 TextButton(
                     onClick = {
                         showAll = true

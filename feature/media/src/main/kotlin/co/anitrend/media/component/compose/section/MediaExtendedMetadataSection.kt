@@ -42,30 +42,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
-import co.anitrend.domain.media.entity.attribute.theme.MediaTheme
 import co.anitrend.media.R
 
 private data class MetadataEntry(
     val label: String,
     val value: String,
 )
-
-private fun MediaTheme.toLabel(): String {
-    val themeMeta =
-        meta?.let {
-            buildString {
-                append(it.type.uppercase())
-                append(' ')
-                append(it.number)
-                if (it.version > 1) {
-                    append(" v")
-                    append(it.version)
-                }
-            }
-        }
-
-    return listOf(name, themeMeta).filter { it?.isNotBlank() == true }.joinToString(" • ")
-}
 
 private fun IMediaSourceId.toLabels(): List<String> =
     buildList {
@@ -222,13 +204,8 @@ fun MediaExtendedMetadataSection(
             .distinct()
 
     val sourceIds = if (showExternalIdentifiers) media.sourceId.toLabels() else emptyList()
-    val themes =
-        media.themes
-            .map(MediaTheme::toLabel)
-            .filter(String::isNotBlank)
-            .distinct()
 
-    if (detailRows.isEmpty() && synonyms.isEmpty() && sourceIds.isEmpty() && themes.isEmpty()) {
+    if (detailRows.isEmpty() && synonyms.isEmpty() && sourceIds.isEmpty()) {
         return
     }
 
@@ -261,14 +238,6 @@ fun MediaExtendedMetadataSection(
                     title = stringResource(R.string.label_media_extended_details_synonyms),
                     values = synonyms,
                     collapsedCount = 2,
-                )
-            }
-
-            if (themes.isNotEmpty()) {
-                MetadataGroup(
-                    title = stringResource(R.string.label_media_extended_details_themes),
-                    values = themes,
-                    collapsedCount = 3,
                 )
             }
 

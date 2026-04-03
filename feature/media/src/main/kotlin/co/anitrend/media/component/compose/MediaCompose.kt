@@ -90,6 +90,7 @@ import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.R
 import co.anitrend.media.component.compose.section.MediaExtendedMetadataSection
 import co.anitrend.media.component.compose.section.MediaTagSection
+import co.anitrend.media.component.compose.section.MediaThemeSection
 import co.anitrend.media.component.schedule.MediaScheduleSheet
 import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
 import co.anitrend.media.component.viewmodel.MediaViewModel
@@ -399,6 +400,11 @@ private fun MediaDetailContent(
                 MediaExtendedMetadataSection(
                     media = media,
                 )
+                if (media.themes.isNotEmpty()) {
+                    MediaThemeSection(
+                        themes = media.themes,
+                    )
+                }
                 if (showScheduleSheet && media.category is Media.Category.Anime) {
                     val scheduleViewModel: MediaScheduleViewModel = koinViewModel()
                     MediaScheduleSheet(
