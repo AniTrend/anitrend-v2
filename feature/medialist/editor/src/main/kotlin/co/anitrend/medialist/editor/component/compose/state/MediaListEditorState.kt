@@ -34,6 +34,7 @@ import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.navigation.MediaListTaskRouter
+import java.util.Locale
 import kotlin.math.roundToInt
 
 @Stable
@@ -100,37 +101,47 @@ class MediaListEditorState(
     val mediaTitle: String = media.title.userPreferred?.toString() ?: ""
     val totalUnits: Int? =
         when (val category = media.category) {
-            is Media.Category.Anime -> category.episodes
-            is Media.Category.Manga -> category.chapters
+            is Media.Category.Anime -> category.episodes?.takeIf { it > 0 }
+            is Media.Category.Manga -> category.chapters?.takeIf { it > 0 }
+        }
+    val totalVolumes: Int? =
+        when (val category = media.category) {
+            is Media.Category.Anime -> null
+            is Media.Category.Manga -> category.volumes?.takeIf { it > 0 }
         }
     private val initialMediaList = media.mediaList as MediaList.Core?
     private val initialVolumeProgress: Int? =
         (initialMediaList?.progress as? MediaListProgress.Manga)?.let { it.volumeProgress }
+    val currentProgress: Int
+        get() = parseBoundedInt(progressText, totalUnits) ?: 0
+    val currentVolumeProgress: Int
+        get() = parseBoundedInt(volumeProgressText, totalVolumes) ?: 0
+    val currentRepeatCount: Int
+        get() = parseBoundedInt(repeatText, max = null) ?: 0
+    val currentScore: Float?
+        get() = parseScoreClamped()
 
     init {
         initialMediaList?.let { list ->
             isPrivate = list.privacy.isPrivate
             selectedStatus = list.status
-            progressText = list.progress.progress.toString()
-            scoreText = list.score
-                .takeIf { it > 0 }
-                ?.toInt()
-                ?.toString() ?: ""
+            progressText = sanitizeWholeNumberInput(list.progress.progress.toString(), totalUnits)
+            scoreText = formatInitialScore(list.score)
             selectedStartDate = list.startedOn
             selectedEndDate = list.finishedOn
             notesText = list.privacy.notes?.toString() ?: ""
             list.customLists.forEach { customLists[it.name.toString()] = it.enabled }
             when (val prog = list.progress) {
                 is MediaListProgress.Anime -> {
-                    repeatText = prog.repeated.toString()
+                    repeatText = sanitizeWholeNumberInput(prog.repeated.toString(), max = null)
                 }
                 is MediaListProgress.Manga -> {
-                    volumeProgressText = prog.volumeProgress.toString()
-                    repeatText = prog.repeated.toString()
+                    volumeProgressText = sanitizeWholeNumberInput(prog.volumeProgress.toString(), totalVolumes)
+                    repeatText = sanitizeWholeNumberInput(prog.repeated.toString(), max = null)
                 }
             }
             if (list.advancedScores.isNotEmpty()) {
-                list.advancedScores.forEach { advancedScoresText[it.name] = it.score.toString() }
+                list.advancedScores.forEach { advancedScoresText[it.name] = formatAdvancedScore(it.score) }
             }
         }
     }
@@ -189,7 +200,7 @@ class MediaListEditorState(
             mediaId = media.id,
             status = selectedStatus ?: MediaListStatus.PLANNING,
             score = parseScoreClamped(),
-            progress = progressText.toIntOrNull(),
+            progress = parseBoundedInt(progressText, totalUnits),
             startedAt = selectedStartDate,
             completedAt = selectedEndDate,
             private = isPrivate,
@@ -201,10 +212,10 @@ class MediaListEditorState(
             progressVolumes =
                 when {
                     mediaType == MediaType.MANGA && selectedStatus == MediaListStatus.REPEATING -> 0
-                    mediaType == MediaType.MANGA -> volumeProgressText.toIntOrNull() ?: initialVolumeProgress
+                    mediaType == MediaType.MANGA -> parseBoundedInt(volumeProgressText, totalVolumes) ?: initialVolumeProgress
                     else -> null
                 },
-            repeat = repeatText.toIntOrNull() ?: initialMediaList?.progress?.repeated,
+            repeat = parseBoundedInt(repeatText, max = null) ?: initialMediaList?.progress?.repeated,
             notes = notesText,
             hiddenFromStatusLists = initialMediaList?.privacy?.isHidden,
         )
@@ -247,19 +258,19 @@ class MediaListEditorState(
     }
 
     fun updateProgressText(value: String) {
-        progressText = value
+        progressText = sanitizeWholeNumberInput(value, totalUnits)
     }
 
     fun updateScoreText(value: String) {
-        scoreText = value
+        scoreText = sanitizeScoreInput(value)
     }
 
     fun updateRepeatText(value: String) {
-        repeatText = value
+        repeatText = sanitizeWholeNumberInput(value, max = null)
     }
 
     fun updateVolumeProgressText(value: String) {
-        volumeProgressText = value
+        volumeProgressText = sanitizeWholeNumberInput(value, totalVolumes)
     }
 
     fun toggleCustomList(
@@ -273,10 +284,200 @@ class MediaListEditorState(
         name: String,
         value: String,
     ) {
-        advancedScoresText[name] = value
+        advancedScoresText[name] = sanitizeAdvancedScoreInput(value)
+    }
+
+    fun adjustProgress(delta: Int) {
+        progressText = stepWholeNumber(progressText, delta, totalUnits)
+    }
+
+    fun adjustVolumeProgress(delta: Int) {
+        volumeProgressText = stepWholeNumber(volumeProgressText, delta, totalVolumes)
+    }
+
+    fun adjustRepeat(delta: Int) {
+        repeatText = stepWholeNumber(repeatText, delta, max = null)
+    }
+
+    fun adjustScore(delta: Int) {
+        val updated =
+            stepFormattedScore(
+                currentText = scoreText,
+                delta = delta,
+                allowBlankAtZero = true,
+            )
+        scoreText = updated
+    }
+
+    fun clearScore() {
+        scoreText = ""
+    }
+
+    fun setDiscreteScore(value: Int) {
+        val clamped = value.coerceIn(0, scoreBase.roundToInt())
+        scoreText =
+            if (clamped == 0) {
+                ""
+            } else {
+                clamped.toString()
+            }
+    }
+
+    fun adjustAdvancedScore(
+        name: String,
+        delta: Int,
+    ) {
+        advancedScoresText[name] =
+            stepFormattedScore(
+                currentText = advancedScoresText[name].orEmpty(),
+                delta = delta,
+                allowBlankAtZero = false,
+            )
     }
 
     fun createDeleteEntryParams(): MediaListTaskRouter.Param.DeleteEntry? = initialMediaList?.id?.let(MediaListTaskRouter.Param::DeleteEntry)
+
+    private val scoreStep: Float
+        get() = if (scoreFormat == ScoreFormat.POINT_10_DECIMAL) 0.1f else 1f
+
+    private val scoreBase: Float
+        get() =
+            when (scoreFormat) {
+                ScoreFormat.POINT_10, ScoreFormat.POINT_10_DECIMAL -> 10f
+                ScoreFormat.POINT_100 -> 100f
+                ScoreFormat.POINT_5 -> 5f
+                ScoreFormat.POINT_3 -> 3f
+            }
+
+    private fun formatInitialScore(score: Float): String {
+        if (score <= 0f) {
+            return ""
+        }
+        return formatScore(score.coerceIn(0f, scoreBase))
+    }
+
+    private fun sanitizeWholeNumberInput(
+        value: String,
+        max: Int?,
+    ): String {
+        val digitsOnly = value.filter(Char::isDigit)
+        if (digitsOnly.isEmpty()) {
+            return ""
+        }
+        val parsed = digitsOnly.toIntOrNull() ?: return digitsOnly
+        val clamped = max?.let { parsed.coerceIn(0, it) } ?: parsed.coerceAtLeast(0)
+        return clamped.toString()
+    }
+
+    private fun sanitizeScoreInput(value: String): String {
+        val cleaned =
+            when (scoreFormat) {
+                ScoreFormat.POINT_10_DECIMAL ->
+                    value
+                        .replace(Regex("[^0-9.]"), "")
+                        .trimStart('.')
+                        .let { sanitized ->
+                            val singleDot =
+                                sanitized
+                                    .replaceFirst("\\.".toRegex(), "#")
+                                    .replace(".", "")
+                                    .replace("#", ".")
+                            val parts = singleDot.split('.')
+                            val integer = parts.first().take(2)
+                            val fractional = parts.getOrNull(1)?.take(1) ?: ""
+                            if (fractional.isEmpty()) integer else "$integer.$fractional"
+                        }
+                else -> value.substringBefore('.').filter(Char::isDigit)
+            }
+        if (cleaned.isBlank()) {
+            return ""
+        }
+        val parsed = cleaned.toFloatOrNull() ?: return cleaned
+        return formatScore(parsed.coerceIn(0f, scoreBase))
+    }
+
+    private fun sanitizeAdvancedScoreInput(value: String): String {
+        val cleaned =
+            if (scoreFormat == ScoreFormat.POINT_10_DECIMAL) {
+                value
+                    .replace(Regex("[^0-9.]"), "")
+                    .trimStart('.')
+                    .let { sanitized ->
+                        val singleDot =
+                            sanitized
+                                .replaceFirst("\\.".toRegex(), "#")
+                                .replace(".", "")
+                                .replace("#", ".")
+                        val parts = singleDot.split('.')
+                        val integer = parts.first().take(2)
+                        val fractional = parts.getOrNull(1)?.take(1) ?: ""
+                        if (fractional.isEmpty()) integer else "$integer.$fractional"
+                    }
+            } else {
+                value.substringBefore('.').filter(Char::isDigit)
+            }
+        if (cleaned.isBlank()) {
+            return ""
+        }
+        val parsed = cleaned.toFloatOrNull() ?: return cleaned
+        return formatAdvancedScore(parsed.coerceIn(0f, scoreBase))
+    }
+
+    private fun stepWholeNumber(
+        currentText: String,
+        delta: Int,
+        max: Int?,
+    ): String {
+        val current = parseBoundedInt(currentText, max) ?: 0
+        val stepped = (current + delta).coerceAtLeast(0)
+        val clamped = max?.let { stepped.coerceAtMost(it) } ?: stepped
+        return clamped.toString()
+    }
+
+    private fun stepFormattedScore(
+        currentText: String,
+        delta: Int,
+        allowBlankAtZero: Boolean,
+    ): String {
+        val stepped =
+            if (scoreFormat == ScoreFormat.POINT_10_DECIMAL) {
+                val currentTenths = ((currentText.toFloatOrNull() ?: 0f) * 10).roundToInt()
+                val maxTenths = (scoreBase * 10).roundToInt()
+                val nextTenths = (currentTenths + delta).coerceIn(0, maxTenths)
+                nextTenths / 10f
+            } else {
+                val currentWhole = (currentText.toFloatOrNull() ?: 0f).roundToInt()
+                val nextWhole = (currentWhole + delta).coerceIn(0, scoreBase.roundToInt())
+                nextWhole.toFloat()
+            }
+        if (stepped <= 0f && allowBlankAtZero) {
+            return ""
+        }
+        return formatScore(stepped)
+    }
+
+    private fun formatScore(value: Float): String =
+        if (scoreFormat == ScoreFormat.POINT_10_DECIMAL) {
+            String.format(Locale.US, "%.1f", value)
+        } else {
+            value.roundToInt().toString()
+        }
+
+    private fun formatAdvancedScore(value: Float): String =
+        if (scoreFormat == ScoreFormat.POINT_10_DECIMAL) {
+            String.format(Locale.US, "%.1f", value)
+        } else {
+            value.roundToInt().toString()
+        }
+
+    private fun parseBoundedInt(
+        value: String,
+        max: Int?,
+    ): Int? {
+        val parsed = value.toIntOrNull() ?: return null
+        val clamped = max?.let { parsed.coerceIn(0, it) } ?: parsed.coerceAtLeast(0)
+        return clamped
+    }
 }
 
 @Composable

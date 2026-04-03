@@ -151,6 +151,19 @@ class MediaListEditorStateTest {
     }
 
     @Test
+    fun `decimal score initialization preserves fractional value`() {
+        val media = baseMedia.copy(
+            mediaList = (baseMedia.mediaList as MediaList.Core).copy(
+                score = 7.4f,
+            ),
+        )
+
+        val state = MediaListEditorState(media, ScoreFormat.POINT_10_DECIMAL, dateHelper)
+
+        assertEquals("7.4", state.scoreText)
+    }
+
+    @Test
     fun `scoreRaw normalizes to 100 for POINT_100`() {
         val media = baseMedia
         val state = MediaListEditorState(media, ScoreFormat.POINT_100, dateHelper)
@@ -194,6 +207,73 @@ class MediaListEditorStateTest {
         val params = state.createSaveEntryParams()
         assertEquals(7, params.progressVolumes)
         assertEquals(3, params.repeat)
+    }
+
+    @Test
+    fun `progress stepper clamps to known total`() {
+        val media = baseMedia.copy(
+            category = Media.Category.Anime(episodes = 12, duration = 0, broadcast = null, premiered = null, schedule = null),
+        )
+        val state = MediaListEditorState(media, ScoreFormat.POINT_10, dateHelper)
+        state.progressText = "11"
+
+        state.adjustProgress(2)
+
+        assertEquals("12", state.progressText)
+        assertEquals(12, state.currentProgress)
+    }
+
+    @Test
+    fun `volume stepper clamps to known total volumes`() {
+        val media = baseMedia.copy(
+            category = Media.Category.Manga(chapters = 100, volumes = 7),
+            mediaList = (baseMedia.mediaList as MediaList.Core).copy(
+                progress = MediaListProgress.Manga(10, 6, 0),
+            ),
+        )
+        val state = MediaListEditorState(media, ScoreFormat.POINT_10, dateHelper)
+
+        state.adjustVolumeProgress(3)
+
+        assertEquals("7", state.volumeProgressText)
+        assertEquals(7, state.currentVolumeProgress)
+    }
+
+    @Test
+    fun `repeat stepper never goes negative`() {
+        val state = MediaListEditorState(baseMedia, ScoreFormat.POINT_10, dateHelper)
+        state.repeatText = "0"
+
+        state.adjustRepeat(-1)
+
+        assertEquals("0", state.repeatText)
+        assertEquals(0, state.currentRepeatCount)
+    }
+
+    @Test
+    fun `decimal score stepper moves in tenths`() {
+        val state = MediaListEditorState(baseMedia, ScoreFormat.POINT_10_DECIMAL, dateHelper)
+        state.scoreText = "7.4"
+
+        state.adjustScore(1)
+
+        assertEquals("7.5", state.scoreText)
+    }
+
+    @Test
+    fun `advanced score stepper respects score format range`() {
+        val media = baseMedia.copy(
+            mediaList = (baseMedia.mediaList as MediaList.Core).copy(
+                advancedScores = listOf(
+                    MediaList.AdvancedScore(name = "Story", score = 9f),
+                ),
+            ),
+        )
+        val state = MediaListEditorState(media, ScoreFormat.POINT_10, dateHelper)
+
+        state.adjustAdvancedScore("Story", 2)
+
+        assertEquals("10", state.advancedScoresText.getValue("Story"))
     }
 
     @Test
