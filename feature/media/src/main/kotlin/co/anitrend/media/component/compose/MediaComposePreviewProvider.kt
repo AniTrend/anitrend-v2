@@ -24,18 +24,18 @@ import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import co.anitrend.domain.media.entity.attribute.rank.MediaRank
 import co.anitrend.domain.media.entity.attribute.score.MediaScore
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
-import co.anitrend.domain.media.entity.contract.IMedia
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaRankType
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.domain.media.enums.MediaSource
 import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.tag.entity.Tag
 
 internal data class MediaComposePreviewProvider(
-    override val values: Sequence<IMedia> =
+    override val values: Sequence<Media.Extended> =
         sequenceOf(
             Media.Extended.empty().copy(
                 title =
@@ -97,6 +97,10 @@ internal data class MediaComposePreviewProvider(
                         popularity = 4_000,
                         trending = 800,
                     ),
+                ageRating = "PG-13",
+                source = MediaSource.MANGA,
+                twitterTag = "heroaca_anime",
+                synonyms = listOf("My Hero Academia 3rd Season", "BNHA Season 3"),
                 mediaList =
                     MediaList.Core.empty().copy(
                         id = 100,
@@ -111,4 +115,4 @@ internal data class MediaComposePreviewProvider(
                     ),
             ),
         ),
-) : PreviewParameterProvider<IMedia>
+) : PreviewParameterProvider<Media.Extended>

@@ -17,6 +17,31 @@
 
 <resources>
 
+    <!-- Section title for additional metadata shown on the media detail screen -->
+    <string name="label_media_extended_details_section_title">More details</string>
+    <!-- Label for the age rating row shown on the media detail screen -->
+    <string name="label_media_extended_details_age_rating">Age rating</string>
+    <!-- Label for the source material row shown on the media detail screen -->
+    <string name="label_media_extended_details_source">Source</string>
+    <!-- Label for the social hashtag row shown on the media detail screen -->
+    <string name="label_media_extended_details_twitter_tag">Twitter tag</string>
+    <!-- Heading for alternate titles shown as chips on the media detail screen -->
+    <string name="label_media_extended_details_synonyms">Alternative titles</string>
+    <!-- Heading for theme song chips shown on the media detail screen -->
+    <string name="label_media_extended_details_themes">Theme songs</string>
+    <!-- Heading for upstream identifier chips shown on the media detail screen -->
+    <string name="label_media_extended_details_external_ids">External IDs</string>
+    <!-- Primary action to add a media item to the user's list from the detail screen -->
+    <string name="action_add_to_list">Add to list</string>
     <string name="action_my_anime_list">MyAnimeList</string>
+    <!-- Primary action to manage the user's list state from the detail screen -->
     <string name="action_manage_on_list">Manage status</string>
+    <!-- Secondary action label when the media is already marked as favourite -->
+    <string name="action_remove_from_favourites">Remove favourite</string>
+    <!-- Secondary action label when the media is not yet marked as favourite -->
+    <string name="action_add_to_favourites">Favourite</string>
+    <!-- Compact user-state label when the media is marked as favourite -->
+    <string name="label_media_user_state_favourite">Favourite</string>
+    <!-- Compact user-state label when the media is not marked as favourite -->
+    <string name="label_media_user_state_not_favourite">Not favourite</string>
 </resources>
