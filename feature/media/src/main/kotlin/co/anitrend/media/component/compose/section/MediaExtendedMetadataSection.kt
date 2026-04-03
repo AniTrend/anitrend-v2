@@ -19,7 +19,9 @@ package co.anitrend.media.component.compose.section
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
@@ -27,8 +29,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -91,12 +99,12 @@ private fun MetadataRow(
         Text(
             text = entry.label,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.weight(0.36f),
         )
         Text(
             text = entry.value,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.weight(0.64f),
         )
     }
@@ -108,8 +116,8 @@ private fun MetadataChip(
     modifier: Modifier = Modifier,
 ) {
     Surface(
-        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.45f),
-        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         shape = CardDefaults.shape,
         modifier = modifier,
     ) {
@@ -117,8 +125,8 @@ private fun MetadataChip(
             text = label,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.labelLarge,
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            style = MaterialTheme.typography.labelMedium,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
         )
     }
 }
@@ -127,22 +135,53 @@ private fun MetadataChip(
 private fun MetadataGroup(
     title: String,
     values: List<String>,
+    collapsedCount: Int = Int.MAX_VALUE,
     modifier: Modifier = Modifier,
 ) {
+    var isExpanded by rememberSaveable(title, values.size) {
+        mutableStateOf(false)
+    }
+    val canExpand = values.size > collapsedCount
+    val visibleValues = if (canExpand && !isExpanded) values.take(collapsedCount) else values
+
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         modifier = modifier.fillMaxWidth(),
     ) {
-        Text(
-            text = title,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.titleSmall,
-        )
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            values.forEach { value ->
+            Text(
+                text = title,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.labelLarge,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            if (canExpand) {
+                TextButton(
+                    onClick = { isExpanded = !isExpanded },
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp),
+                ) {
+                    Text(
+                        text =
+                            stringResource(
+                                if (isExpanded) {
+                                    R.string.action_media_extended_details_show_less
+                                } else {
+                                    R.string.action_media_extended_details_show_more
+                                },
+                            ),
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+            }
+        }
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            visibleValues.forEach { value ->
                 MetadataChip(label = value)
             }
         }
@@ -202,15 +241,15 @@ fun MediaExtendedMetadataSection(
         modifier = modifier,
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(14.dp),
         ) {
             Text(
                 text = stringResource(R.string.label_media_extended_details_section_title),
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
             )
 
             detailRows.forEach { entry ->
@@ -221,6 +260,7 @@ fun MediaExtendedMetadataSection(
                 MetadataGroup(
                     title = stringResource(R.string.label_media_extended_details_synonyms),
                     values = synonyms,
+                    collapsedCount = 2,
                 )
             }
 
@@ -228,6 +268,7 @@ fun MediaExtendedMetadataSection(
                 MetadataGroup(
                     title = stringResource(R.string.label_media_extended_details_themes),
                     values = themes,
+                    collapsedCount = 4,
                 )
             }
 
@@ -235,6 +276,7 @@ fun MediaExtendedMetadataSection(
                 MetadataGroup(
                     title = stringResource(R.string.label_media_extended_details_external_ids),
                     values = sourceIds,
+                    collapsedCount = 4,
                 )
             }
         }

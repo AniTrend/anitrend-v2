@@ -74,7 +74,7 @@ fun MediaSynopsisSection(
     ) {
         Text(
             text = stringResource(R.string.label_media_synopsis_section_title),
-            modifier = Modifier.padding(all = 16.dp),
+            modifier = Modifier.padding(all = 14.dp),
             textAlign = TextAlign.Start,
             style = MaterialTheme.typography.titleLarge,
         )
@@ -83,9 +83,9 @@ fun MediaSynopsisSection(
             maxLines = if (isExpanded) Int.MAX_VALUE else requireNotNull(collapsedMaxLines),
             modifier =
                 Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = if (canCollapse) 0.dp else 24.dp,
+                    start = 14.dp,
+                    end = 14.dp,
+                    bottom = if (canCollapse) 0.dp else 20.dp,
                 ),
         )
         if (canCollapse) {
@@ -93,7 +93,7 @@ fun MediaSynopsisSection(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 8.dp, vertical = 8.dp),
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
                 horizontalArrangement = Arrangement.End,
             ) {
                 TextButton(

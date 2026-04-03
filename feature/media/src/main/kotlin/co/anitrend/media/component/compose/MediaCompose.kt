@@ -124,6 +124,9 @@ private fun Media.Extended.personalRating(scoreFormat: ScoreFormat): IMediaRatin
         ?.asDisplayRating(scoreFormat)
         ?: score.personal?.takeIf { it > 0f }?.asDisplayRating(scoreFormat)
 
+private fun Media.Extended.hasVisibleUserState(scoreFormat: ScoreFormat): Boolean =
+    mediaList?.status != null || personalRating(scoreFormat) != null || isFavourite
+
 private fun mediaListStatusIcon(mediaListStatus: MediaListStatus?): Int? =
     when (mediaListStatus) {
         MediaListStatus.CURRENT -> MediaUiR.drawable.ic_current
@@ -139,23 +142,27 @@ private fun mediaListStatusIcon(mediaListStatus: MediaListStatus?): Int? =
 private fun MediaStatePill(
     label: String,
     modifier: Modifier = Modifier,
+    compact: Boolean = false,
     leadingContent: (@Composable () -> Unit)? = null,
 ) {
+    val horizontalPadding = if (compact) 10.dp else 12.dp
+    val verticalPadding = if (compact) 6.dp else 8.dp
+
     Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = if (compact) 0.34f else 0.45f),
         contentColor = MaterialTheme.colorScheme.onSurface,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(if (compact) 14.dp else 16.dp),
         modifier = modifier,
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            modifier = Modifier.padding(horizontal = horizontalPadding, vertical = verticalPadding),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
         ) {
             leadingContent?.invoke()
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelLarge,
+                style = if (compact) MaterialTheme.typography.labelMedium else MaterialTheme.typography.labelLarge,
             )
         }
     }
@@ -172,23 +179,27 @@ private fun MediaIdentityBlock(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         MediaHeaderInfoSection(
             media = media,
             onCoverClick = onImageClick,
             preferExtendedExtraInfo = false,
+            compact = true,
             modifier = Modifier.absoluteOffset(y = (-16).dp),
         )
         MediaSubTitleText(
             media = media,
             modifier = Modifier.padding(start = textInset),
-            style = MaterialTheme.typography.bodyMedium,
+            style =
+                MaterialTheme.typography.bodySmall.copy(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
         )
         extraInfo?.let {
             Text(
                 text = it,
-                maxLines = 2,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -203,6 +214,7 @@ private fun MediaUserStateSummary(
     media: Media.Extended,
     scoreFormat: ScoreFormat,
     modifier: Modifier = Modifier,
+    compact: Boolean = false,
 ) {
     val userRating = media.personalRating(scoreFormat)
     val listStatus = media.mediaList?.status
@@ -214,18 +226,19 @@ private fun MediaUserStateSummary(
 
     FlowRow(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
+        verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
     ) {
         listStatus?.let { status ->
             MediaStatePill(
                 label = status.alias.toString(),
+                compact = compact,
                 leadingContent = {
                     mediaListStatusIcon(status)?.let { icon ->
                         Icon(
                             painter = painterResource(icon),
                             contentDescription = null,
-                            modifier = Modifier.size(18.dp),
+                            modifier = Modifier.size(if (compact) 16.dp else 18.dp),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     }
@@ -237,11 +250,12 @@ private fun MediaUserStateSummary(
             is IMediaRating.Text ->
                 MediaStatePill(
                     label = "${stringResource(MediaUiR.string.label_media_score_section_your_rating)} ${userRating.score}",
+                    compact = compact,
                     leadingContent = {
                         Icon(
                             imageVector = Icons.Rounded.Star,
                             contentDescription = null,
-                            modifier = Modifier.size(18.dp),
+                            modifier = Modifier.size(if (compact) 16.dp else 18.dp),
                             tint = MaterialTheme.colorScheme.primary,
                         )
                     },
@@ -250,11 +264,12 @@ private fun MediaUserStateSummary(
             is IMediaRating.Mood ->
                 MediaStatePill(
                     label = stringResource(MediaUiR.string.label_media_score_section_your_rating),
+                    compact = compact,
                     leadingContent = {
                         IconScoreContent(
                             rating = userRating,
                             iconTint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(18.dp),
+                            modifier = Modifier.size(if (compact) 16.dp else 18.dp),
                         )
                     },
                 )
@@ -265,11 +280,12 @@ private fun MediaUserStateSummary(
         if (showFavouriteState) {
             MediaStatePill(
                 label = stringResource(R.string.label_media_user_state_favourite),
+                compact = compact,
                 leadingContent = {
                     Icon(
                         imageVector = Icons.Rounded.Favorite,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp),
+                        modifier = Modifier.size(if (compact) 16.dp else 18.dp),
                         tint = MaterialTheme.colorScheme.primary,
                     )
                 },
@@ -293,8 +309,8 @@ private fun MediaPrimaryActionDock(
         modifier = modifier.fillMaxWidth(),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             FilledTonalButton(
                 onClick = onManageListClick,
@@ -319,7 +335,7 @@ private fun MediaPrimaryActionDock(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 OutlinedButton(
                     onClick = onFavouriteClick,
@@ -367,7 +383,7 @@ private fun MediaSynopsisPreviewSection(
 ) {
     MediaSynopsisSection(
         synopsis = media,
-        collapsedMaxLines = 8,
+        collapsedMaxLines = 5,
         modifier = modifier,
     )
 }
@@ -383,6 +399,8 @@ private fun MediaDetailContent(
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val hasUserState = media.hasVisibleUserState(scoreFormat)
+
     Column(modifier = modifier) {
         AniTrendImage(
             image = media.image,
@@ -408,7 +426,7 @@ private fun MediaDetailContent(
                             end = 16.dp,
                             bottom = 16.dp,
                         ),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 var showScheduleSheet by remember { mutableStateOf(false) }
 
@@ -419,10 +437,19 @@ private fun MediaDetailContent(
                 MediaScoreSection(
                     mediaScore = media.score,
                     scoreFormat = scoreFormat,
-                )
-                MediaUserStateSummary(
-                    media = media,
-                    scoreFormat = scoreFormat,
+                    compact = true,
+                    supportingContent =
+                        if (hasUserState) {
+                            {
+                                MediaUserStateSummary(
+                                    media = media,
+                                    scoreFormat = scoreFormat,
+                                    compact = true,
+                                )
+                            }
+                        } else {
+                            null
+                        },
                 )
                 MediaPrimaryActionDock(
                     media = media,

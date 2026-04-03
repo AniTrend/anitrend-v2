@@ -23,14 +23,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.Tag
 import androidx.compose.material.icons.rounded.Warning
-import androidx.compose.material3.ElevatedSuggestionChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -46,7 +47,12 @@ private fun TagItem(
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    ElevatedSuggestionChip(
+    val mutedAccent =
+        accentColor
+            .copy(alpha = 0.14f)
+            .compositeOver(MaterialTheme.colorScheme.surfaceVariant)
+
+    SuggestionChip(
         onClick = {
             onMediaDiscoverableItemClick(
                 MediaDiscoverRouter.MediaDiscoverParam(tag = tag.name),
@@ -54,14 +60,15 @@ private fun TagItem(
         },
         colors =
             SuggestionChipDefaults.suggestionChipColors(
-                containerColor = accentColor,
+                containerColor = mutedAccent,
+                labelColor = MaterialTheme.colorScheme.onSurface,
+                iconContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
             ),
         label = {
             Text(
                 text = tag.name,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimary,
-                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Medium,
+                style = MaterialTheme.typography.labelLarge,
             )
         },
         icon = {
@@ -85,7 +92,6 @@ private fun TagItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimary,
             )
         },
         modifier = modifier,
@@ -101,7 +107,7 @@ fun TagListItems(
 ) {
     LazyRow(
         state = rememberLazyListState(),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
         modifier = modifier,
     ) {
         items(
