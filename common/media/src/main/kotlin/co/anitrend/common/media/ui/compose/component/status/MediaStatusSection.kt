@@ -77,6 +77,7 @@ import org.koin.compose.koinInject
 fun MediaStatusSection(
     media: Media,
     onShowSchedule: () -> Unit,
+    showScheduleAction: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
     OutlinedCard(
@@ -111,7 +112,9 @@ fun MediaStatusSection(
 
             MediaDetailsRow(media = media)
             ProgressDetails(media = media)
-            ScheduleButton(mediaType = media.category.type, onClick = onShowSchedule)
+            if (showScheduleAction) {
+                ScheduleButton(mediaType = media.category.type, onClick = onShowSchedule)
+            }
         }
     }
 }

@@ -124,6 +124,10 @@
 
     <!-- Section title for synopsis/description -->
     <string name="label_media_synopsis_section_title">Synopsis</string>
+    <!-- Action to expand the synopsis preview and show the full description -->
+    <string name="action_media_synopsis_section_show_more">Show more</string>
+    <!-- Action to collapse the synopsis back to its preview height -->
+    <string name="action_media_synopsis_section_show_less">Show less</string>
 
     <!-- Media status section -->
     <!-- Section title for anime airing status -->
