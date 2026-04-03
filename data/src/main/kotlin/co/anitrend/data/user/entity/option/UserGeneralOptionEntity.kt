@@ -55,7 +55,7 @@ internal data class UserGeneralOptionEntity(
     @Serializable
     data class NotificationOption(
         @SerialName("enabled") val enabled: Boolean,
-        @SerialName("notification_type") val notificationType: NotificationType,
+        @SerialName("notification_type") val notificationType: NotificationType? = null,
     )
 
     @Serializable
