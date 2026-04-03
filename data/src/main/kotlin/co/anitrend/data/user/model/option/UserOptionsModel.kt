@@ -70,7 +70,7 @@ internal sealed class UserOptionsModel {
     @Serializable
     internal data class NotificationOptions(
         @SerialName("enabled") val enabled: Boolean,
-        @SerialName("type") val notificationType: NotificationType,
+        @SerialName("type") val notificationType: NotificationType? = null,
     )
 
     /**
