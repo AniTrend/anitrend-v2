@@ -61,7 +61,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -83,10 +82,8 @@ import co.anitrend.common.media.ui.compose.component.rank.MediaRankSection
 import co.anitrend.common.media.ui.compose.component.score.MediaScoreSection
 import co.anitrend.common.media.ui.compose.component.status.MediaStatusSection
 import co.anitrend.common.media.ui.compose.component.synopsis.MediaSynopsisSection
-import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
 import co.anitrend.common.media.ui.compose.section.MediaHeaderInfoSection
 import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
-import co.anitrend.common.tag.ui.compose.TagListItems
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.score.IMediaRating
@@ -94,6 +91,7 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.R
 import co.anitrend.media.component.compose.section.MediaExtendedMetadataSection
+import co.anitrend.media.component.compose.section.MediaTagSection
 import co.anitrend.media.component.schedule.MediaScheduleSheet
 import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
 import co.anitrend.media.component.viewmodel.MediaViewModel
@@ -179,14 +177,14 @@ private fun MediaIdentityBlock(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         MediaHeaderInfoSection(
             media = media,
             onCoverClick = onImageClick,
             preferExtendedExtraInfo = false,
             compact = true,
-            modifier = Modifier.absoluteOffset(y = (-16).dp),
+            modifier = Modifier.absoluteOffset(y = (-12).dp),
         )
         MediaSubTitleText(
             media = media,
@@ -309,8 +307,8 @@ private fun MediaPrimaryActionDock(
         modifier = modifier.fillMaxWidth(),
     ) {
         Column(
-            modifier = Modifier.padding(12.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.padding(10.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             FilledTonalButton(
                 onClick = onManageListClick,
@@ -335,7 +333,7 @@ private fun MediaPrimaryActionDock(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 OutlinedButton(
                     onClick = onFavouriteClick,
@@ -383,7 +381,7 @@ private fun MediaSynopsisPreviewSection(
 ) {
     MediaSynopsisSection(
         synopsis = media,
-        collapsedMaxLines = 5,
+        collapsedMaxLines = 4,
         modifier = modifier,
     )
 }
@@ -392,7 +390,6 @@ private fun MediaSynopsisPreviewSection(
 private fun MediaDetailContent(
     media: Media.Extended,
     scoreFormat: ScoreFormat,
-    accentColor: Color,
     onManageListClick: () -> Unit,
     onFavouriteClick: () -> Unit,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
@@ -426,7 +423,7 @@ private fun MediaDetailContent(
                             end = 16.dp,
                             bottom = 16.dp,
                         ),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 var showScheduleSheet by remember { mutableStateOf(false) }
 
@@ -505,8 +502,7 @@ private fun MediaDetailContent(
                     )
                 }
                 if (media.tags.isNotEmpty()) {
-                    TagListItems(
-                        accentColor = accentColor,
+                    MediaTagSection(
                         tags = media.tags,
                         onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
                     )
@@ -530,8 +526,6 @@ fun MediaScreenContent(
 ) {
     val state by mediaState.model.observeAsState()
     val media = state as? Media.Extended ?: return
-
-    val accentColor = media.image.rememberAccentColor()
 
     val view = LocalView.current
 
@@ -568,7 +562,6 @@ fun MediaScreenContent(
         MediaDetailContent(
             media = media,
             scoreFormat = scoreFormat,
-            accentColor = accentColor,
             onManageListClick = { onBookmarkButtonClick(view, media) },
             onFavouriteClick = {
                 val param =
@@ -598,7 +591,6 @@ private fun MediaDetailComponentPreview(
         MediaDetailContent(
             media = media,
             scoreFormat = ScoreFormat.POINT_10_DECIMAL,
-            accentColor = Color.DarkGray,
             onManageListClick = {},
             onFavouriteClick = {},
             onMediaDiscoverableItemClick = {},
