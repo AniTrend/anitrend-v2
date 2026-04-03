@@ -35,6 +35,38 @@
     <string name="action_media_extended_details_show_more">Show more</string>
     <!-- Action label to collapse additional metadata chips in the media details section -->
     <string name="action_media_extended_details_show_less">Show less</string>
+    <!-- Action label to expand the visible theme rows on the media detail screen -->
+    <string name="action_media_theme_section_show_all">Show all themes</string>
+    <!-- Action label to collapse the visible theme rows on the media detail screen -->
+    <string name="action_media_theme_section_show_less">Show fewer</string>
+    <!-- Compact availability summary when both audio and video assets are known -->
+    <string name="label_media_theme_section_audio_video_available">Audio + video available</string>
+    <!-- Compact availability summary when only audio assets are known -->
+    <string name="label_media_theme_section_audio_available">Audio available</string>
+    <!-- Compact availability summary when only video assets are known -->
+    <string name="label_media_theme_section_video_available">Video available</string>
+    <!-- Compact availability summary when no preview assets are exposed -->
+    <string name="label_media_theme_section_details_only">Details only</string>
+    <!-- Row label for the theme type inside the theme detail sheet -->
+    <string name="label_media_theme_sheet_type">Type</string>
+    <!-- Row label for the theme number inside the theme detail sheet -->
+    <string name="label_media_theme_sheet_number">Number</string>
+    <!-- Row label for the theme version inside the theme detail sheet -->
+    <string name="label_media_theme_sheet_version">Version</string>
+    <!-- Row label describing audio asset availability -->
+    <string name="label_media_theme_sheet_audio">Audio</string>
+    <!-- Row label describing video asset availability -->
+    <string name="label_media_theme_sheet_video">Video</string>
+    <!-- Availability value when the requested preview asset exists -->
+    <string name="label_media_theme_sheet_available">Available</string>
+    <!-- Availability value when the requested preview asset does not exist -->
+    <string name="label_media_theme_sheet_not_available">Not available</string>
+    <!-- Disabled future-facing action shown when an audio preview asset exists -->
+    <string name="action_media_theme_sheet_preview_audio_coming_soon">Preview audio coming soon</string>
+    <!-- Disabled future-facing action shown when a video preview asset exists -->
+    <string name="action_media_theme_sheet_preview_video_coming_soon">Preview video coming soon</string>
+    <!-- Informational copy shown when no preview assets are currently available for a theme -->
+    <string name="label_media_theme_sheet_no_preview_assets">No preview assets are available for this theme yet.</string>
     <!-- Section title for descriptive tags shown on the media detail screen -->
     <string name="label_media_tag_section_title">Tags</string>
     <!-- Action label to expand the visible non-spoiler media-detail tags -->

@@ -121,6 +121,10 @@
     <string name="label_media_rank_section_show_all_rankings">Show all rankings</string>
     <!-- Section title for rankings -->
     <string name="label_media_rank_section_title">Rankings</string>
+    <!-- Supporting copy for the rankings sheet explaining the insight-focused list -->
+    <string name="label_media_rank_sheet_subtitle">Popularity and score highlights for this title.</string>
+    <!-- Label used when a ranking applies across the full catalog history -->
+    <string name="label_media_rank_timeframe_all_time">All Time</string>
 
     <!-- Section title for synopsis/description -->
     <string name="label_media_synopsis_section_title">Synopsis</string>
