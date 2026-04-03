@@ -77,7 +77,7 @@ private fun MediaTitle(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 8.dp),
+        verticalArrangement = Arrangement.spacedBy(if (compact) 2.dp else 8.dp),
     ) {
         Text(
             text = title.userPreferred?.toString().orEmpty(),
@@ -114,7 +114,7 @@ fun MediaHeaderInfoSection(
         }
 
     Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
         modifier = modifier,
     ) {
         MediaCover(
@@ -126,8 +126,8 @@ fun MediaHeaderInfoSection(
             onCoverClick = onCoverClick,
         )
         Column(
-            verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
-            modifier = Modifier.offset(y = if (compact) 14.dp else 24.dp),
+            verticalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 8.dp),
+            modifier = Modifier.offset(y = if (compact) 10.dp else 24.dp),
         ) {
             MediaTitle(
                 title = media.title,

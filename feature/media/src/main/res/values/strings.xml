@@ -35,6 +35,44 @@
     <string name="action_media_extended_details_show_more">Show more</string>
     <!-- Action label to collapse additional metadata chips in the media details section -->
     <string name="action_media_extended_details_show_less">Show less</string>
+    <!-- Section title for descriptive tags shown on the media detail screen -->
+    <string name="label_media_tag_section_title">Tags</string>
+    <!-- Action label to expand the visible non-spoiler media-detail tags -->
+    <string name="action_media_tag_section_show_all">Show all tags</string>
+    <!-- Action label to collapse the visible non-spoiler media-detail tags -->
+    <string name="action_media_tag_section_show_less">Show fewer</string>
+    <!-- Action label to reveal spoiler-sensitive tags on the media detail screen -->
+    <string name="action_media_tag_section_reveal_spoilers">Reveal spoilers</string>
+    <!-- Action label to hide spoiler-sensitive tags on the media detail screen -->
+    <string name="action_media_tag_section_hide_spoilers">Hide spoilers</string>
+    <!-- Status label shown when spoiler-sensitive tags are hidden by default -->
+    <string name="label_media_tag_section_spoilers_hidden">Spoiler tags hidden</string>
+    <!-- Status label shown after spoiler-sensitive tags have been explicitly revealed -->
+    <string name="label_media_tag_section_spoilers_revealed">Spoiler tags revealed</string>
+    <!-- Compact adult-content badge shown on media-detail tags -->
+    <string name="label_media_tag_indicator_adult">18+</string>
+    <!-- Label for the category row inside the media-detail tag info sheet -->
+    <string name="label_media_tag_sheet_category">Category</string>
+    <!-- Label for the confidence row inside the media-detail tag info sheet -->
+    <string name="label_media_tag_sheet_confidence">Confidence</string>
+    <!-- Fallback text shown when a media-detail tag does not have a description -->
+    <string name="label_media_tag_sheet_no_description">No description available yet.</string>
+    <!-- Badge label shown when a media-detail tag is a spoiler for the current title -->
+    <string name="label_media_tag_sheet_media_spoiler">Media spoiler</string>
+    <!-- Badge label shown when a media-detail tag is a broader spoiler warning -->
+    <string name="label_media_tag_sheet_general_spoiler">Potential spoiler</string>
+    <!-- Action label to explore media by the selected tag from the tag info sheet -->
+    <string name="action_media_tag_sheet_explore">Explore tag</string>
+    <!-- Summary label for hidden media-specific spoiler tags in the media-detail spoiler disclosure -->
+    <plurals name="plural_media_tag_section_media_spoiler_count">
+        <item quantity="one">%1$d media spoiler</item>
+        <item quantity="other">%1$d media spoilers</item>
+    </plurals>
+    <!-- Summary label for hidden general spoiler tags in the media-detail spoiler disclosure -->
+    <plurals name="plural_media_tag_section_general_spoiler_count">
+        <item quantity="one">%1$d potential spoiler</item>
+        <item quantity="other">%1$d potential spoilers</item>
+    </plurals>
     <!-- Primary action to add a media item to the user's list from the detail screen -->
     <string name="action_add_to_list">Add to list</string>
     <string name="action_my_anime_list">MyAnimeList</string>

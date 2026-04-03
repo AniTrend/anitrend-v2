@@ -145,7 +145,7 @@ private fun MetadataGroup(
     val visibleValues = if (canExpand && !isExpanded) values.take(collapsedCount) else values
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
         modifier = modifier.fillMaxWidth(),
     ) {
         Row(
@@ -241,15 +241,15 @@ fun MediaExtendedMetadataSection(
         modifier = modifier,
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(14.dp),
+                    .padding(12.dp),
         ) {
             Text(
                 text = stringResource(R.string.label_media_extended_details_section_title),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleSmall,
             )
 
             detailRows.forEach { entry ->
@@ -268,7 +268,7 @@ fun MediaExtendedMetadataSection(
                 MetadataGroup(
                     title = stringResource(R.string.label_media_extended_details_themes),
                     values = themes,
-                    collapsedCount = 4,
+                    collapsedCount = 3,
                 )
             }
 
