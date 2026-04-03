@@ -31,6 +31,10 @@
     <string name="label_media_extended_details_themes">Theme songs</string>
     <!-- Heading for upstream identifier chips shown on the media detail screen -->
     <string name="label_media_extended_details_external_ids">External IDs</string>
+    <!-- Action label to reveal additional metadata chips in the media details section -->
+    <string name="action_media_extended_details_show_more">Show more</string>
+    <!-- Action label to collapse additional metadata chips in the media details section -->
+    <string name="action_media_extended_details_show_less">Show less</string>
     <!-- Primary action to add a media item to the user's list from the detail screen -->
     <string name="action_add_to_list">Add to list</string>
     <string name="action_my_anime_list">MyAnimeList</string>

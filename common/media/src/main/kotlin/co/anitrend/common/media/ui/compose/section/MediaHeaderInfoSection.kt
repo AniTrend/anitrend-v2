@@ -71,26 +71,28 @@ private fun MediaTitle(
     title: IMediaTitle,
     modifier: Modifier = Modifier,
     supportingText: String? = null,
+    compact: Boolean = false,
 ) {
     val secondaryText = supportingText?.takeIf(String::isNotBlank) ?: title.defaultSupportingText()
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 8.dp),
     ) {
         Text(
             text = title.userPreferred?.toString().orEmpty(),
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.headlineSmall,
+            style = if (compact) MaterialTheme.typography.titleLarge else MaterialTheme.typography.headlineSmall,
         )
         secondaryText?.let {
             Text(
                 text = it,
-                maxLines = 2,
+                maxLines = if (compact) 1 else 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(start = 8.dp),
+                modifier = Modifier.padding(start = if (compact) 4.dp else 8.dp),
                 style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
@@ -102,6 +104,7 @@ fun MediaHeaderInfoSection(
     onCoverClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier,
     preferExtendedExtraInfo: Boolean = true,
+    compact: Boolean = false,
 ) {
     val supportingText =
         if (preferExtendedExtraInfo) {
@@ -123,12 +126,13 @@ fun MediaHeaderInfoSection(
             onCoverClick = onCoverClick,
         )
         Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.offset(y = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
+            modifier = Modifier.offset(y = if (compact) 14.dp else 24.dp),
         ) {
             MediaTitle(
                 title = media.title,
                 supportingText = supportingText,
+                compact = compact,
             )
         }
     }
