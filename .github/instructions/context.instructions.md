@@ -11,6 +11,7 @@ This file defines architecture boundaries and module intent. For focused impleme
 follow these companion skills:
 
 - `.github/skills/data-state-pattern/SKILL.md`
+- `.github/skills/navigation-architecture/SKILL.md`
 - `.github/skills/koin-module-wiring/SKILL.md`
 - `.github/skills/new-module-checklist/SKILL.md`
 - `.github/skills/string-resources-convention/SKILL.md`
@@ -90,6 +91,11 @@ Never embed compatibility hacks or inferred IDs directly in serialized models.
 Most screens are built with **Jetpack Compose** using Material3 (`AniTrendTheme3`). Navigation
 uses **AndroidX Navigation Compose** (NavHost in `:app:navigation`). ViewModels expose
 `StateFlow` consumed via `collectAsState()`.
+
+Navigation remains hybrid: deep links enter through `:android:deeplink`, cross-feature routing
+goes through shared router contracts in `:app:navigation`, and many feature screens still bridge
+Compose hosts to fragment content while newer screens may keep navigation local to a feature.
+See `.github/skills/navigation-architecture/SKILL.md` for the end-to-end flow.
 
 Key UI conventions:
 - Composables should be small and focused; include `@Preview` functions.
