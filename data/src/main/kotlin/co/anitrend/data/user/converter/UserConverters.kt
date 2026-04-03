@@ -266,11 +266,13 @@ internal class UserGeneralOptionModelConverter(
                         notificationOption =
                             source.options
                                 ?.notificationOptions
-                                ?.map { option ->
-                                    UserGeneralOptionEntity.NotificationOption(
-                                        enabled = option.enabled,
-                                        notificationType = option.notificationType,
-                                    )
+                                ?.mapNotNull { option ->
+                                    option.notificationType?.let { notificationType ->
+                                        UserGeneralOptionEntity.NotificationOption(
+                                            enabled = option.enabled,
+                                            notificationType = notificationType,
+                                        )
+                                    }
                                 }.orEmpty(),
                         titleLanguage = source.options?.titleLanguage ?: UserTitleLanguage.ROMAJI,
                         profileColor = source.options?.profileColor,
@@ -383,11 +385,13 @@ internal class UserViewEntityConverter(
                                 displayAdultContent = source.generalOption.displayAdultContent,
                                 airingNotifications = source.generalOption.airingNotifications,
                                 notificationOptions =
-                                    source.generalOption.notificationOption.map { option ->
-                                        UserNotificationOption(
-                                            isEnabled = option.enabled,
-                                            type = option.notificationType,
-                                        )
+                                    source.generalOption.notificationOption.mapNotNull { option ->
+                                        option.notificationType?.let { notificationType ->
+                                            UserNotificationOption(
+                                                isEnabled = option.enabled,
+                                                type = notificationType,
+                                            )
+                                        }
                                     },
                                 profileColor = source.generalOption.profileColor,
                             ),
@@ -452,11 +456,13 @@ internal class UserViewEntityConverter(
                                 displayAdultContent = source.generalOption.displayAdultContent,
                                 airingNotifications = source.generalOption.airingNotifications,
                                 notificationOptions =
-                                    source.generalOption.notificationOption.map { option ->
-                                        UserNotificationOption(
-                                            isEnabled = option.enabled,
-                                            type = option.notificationType,
-                                        )
+                                    source.generalOption.notificationOption.mapNotNull { option ->
+                                        option.notificationType?.let { notificationType ->
+                                            UserNotificationOption(
+                                                isEnabled = option.enabled,
+                                                type = notificationType,
+                                            )
+                                        }
                                     },
                                 profileColor = source.generalOption.profileColor,
                             ),
