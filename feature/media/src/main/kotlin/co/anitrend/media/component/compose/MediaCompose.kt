@@ -32,7 +32,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkAdded
 import androidx.compose.material.icons.rounded.Favorite
@@ -48,7 +47,6 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -122,8 +120,7 @@ private fun Media.Extended.personalRating(scoreFormat: ScoreFormat): IMediaRatin
         ?.asDisplayRating(scoreFormat)
         ?: score.personal?.takeIf { it > 0f }?.asDisplayRating(scoreFormat)
 
-private fun Media.Extended.hasVisibleUserState(scoreFormat: ScoreFormat): Boolean =
-    mediaList?.status != null || personalRating(scoreFormat) != null || isFavourite
+private fun Media.Extended.hasVisibleUserState(scoreFormat: ScoreFormat): Boolean = mediaList?.status != null || personalRating(scoreFormat) != null
 
 private fun mediaListStatusIcon(mediaListStatus: MediaListStatus?): Int? =
     when (mediaListStatus) {
@@ -216,9 +213,8 @@ private fun MediaUserStateSummary(
 ) {
     val userRating = media.personalRating(scoreFormat)
     val listStatus = media.mediaList?.status
-    val showFavouriteState = media.isFavourite
 
-    if (listStatus == null && userRating == null && !showFavouriteState) {
+    if (listStatus == null && userRating == null) {
         return
     }
 
@@ -274,21 +270,6 @@ private fun MediaUserStateSummary(
 
             null -> Unit
         }
-
-        if (showFavouriteState) {
-            MediaStatePill(
-                label = stringResource(R.string.label_media_user_state_favourite),
-                compact = compact,
-                leadingContent = {
-                    Icon(
-                        imageVector = Icons.Rounded.Favorite,
-                        contentDescription = null,
-                        modifier = Modifier.size(if (compact) 16.dp else 18.dp),
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
-                },
-            )
-        }
     }
 }
 
@@ -296,80 +277,35 @@ private fun MediaUserStateSummary(
 private fun MediaPrimaryActionDock(
     media: Media.Extended,
     onManageListClick: () -> Unit,
-    onFavouriteClick: () -> Unit,
-    onShowSchedule: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isOnMyList = media.mediaList != null
-    val isAnime = media.category is Media.Category.Anime
 
     OutlinedCard(
         modifier = modifier.fillMaxWidth(),
     ) {
-        Column(
-            modifier = Modifier.padding(10.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        FilledTonalButton(
+            onClick = onManageListClick,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
         ) {
-            FilledTonalButton(
-                onClick = onManageListClick,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Icon(
-                    imageVector = if (isOnMyList) Icons.Rounded.BookmarkAdded else Icons.Rounded.BookmarkAdd,
-                    contentDescription = null,
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text(
-                    text =
-                        stringResource(
-                            if (isOnMyList) {
-                                R.string.action_manage_on_list
-                            } else {
-                                R.string.action_add_to_list
-                            },
-                        ),
-                )
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                OutlinedButton(
-                    onClick = onFavouriteClick,
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Icon(
-                        imageVector = if (media.isFavourite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
-                        contentDescription = null,
-                    )
-                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text(
-                        text =
-                            stringResource(
-                                if (media.isFavourite) {
-                                    R.string.action_remove_from_favourites
-                                } else {
-                                    R.string.action_add_to_favourites
-                                },
-                            ),
-                    )
-                }
-
-                if (isAnime) {
-                    OutlinedButton(
-                        onClick = onShowSchedule,
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Schedule,
-                            contentDescription = null,
-                        )
-                        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                        Text(text = stringResource(MediaUiR.string.label_media_status_show_schedule))
-                    }
-                }
-            }
+            Icon(
+                imageVector = if (isOnMyList) Icons.Rounded.BookmarkAdded else Icons.Rounded.BookmarkAdd,
+                contentDescription = null,
+            )
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text(
+                text =
+                    stringResource(
+                        if (isOnMyList) {
+                            R.string.action_manage_on_list
+                        } else {
+                            R.string.action_add_to_list
+                        },
+                    ),
+            )
         }
     }
 }
@@ -391,7 +327,6 @@ private fun MediaDetailContent(
     media: Media.Extended,
     scoreFormat: ScoreFormat,
     onManageListClick: () -> Unit,
-    onFavouriteClick: () -> Unit,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier,
@@ -451,17 +386,12 @@ private fun MediaDetailContent(
                 MediaPrimaryActionDock(
                     media = media,
                     onManageListClick = onManageListClick,
-                    onFavouriteClick = onFavouriteClick,
-                    onShowSchedule = {
-                        showScheduleSheet = media.category is Media.Category.Anime
-                    },
                 )
                 MediaSynopsisPreviewSection(
                     media = media,
                 )
                 MediaStatusSection(
                     media = media,
-                    showScheduleAction = false,
                     onShowSchedule = {
                         showScheduleSheet = media.category is Media.Category.Anime
                     },
@@ -543,6 +473,28 @@ fun MediaScreenContent(
                             )
                         }
                     }
+                    IconButton(
+                        onClick = {
+                            val param =
+                                FavouriteTaskRouter.Param.MediaToggleParam(
+                                    id = media.id,
+                                    mediaType = media.category.type,
+                                )
+                            onFavouriteButtonClick(view, param)
+                        },
+                    ) {
+                        Icon(
+                            imageVector = if (media.isFavourite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                            contentDescription =
+                                stringResource(
+                                    if (media.isFavourite) {
+                                        R.string.action_remove_from_favourites
+                                    } else {
+                                        R.string.action_add_to_favourites
+                                    },
+                                ),
+                        )
+                    }
                 },
                 floatingActionButton = {
                     FloatingActionButton(
@@ -563,14 +515,6 @@ fun MediaScreenContent(
             media = media,
             scoreFormat = scoreFormat,
             onManageListClick = { onBookmarkButtonClick(view, media) },
-            onFavouriteClick = {
-                val param =
-                    FavouriteTaskRouter.Param.MediaToggleParam(
-                        id = media.id,
-                        mediaType = media.category.type,
-                    )
-                onFavouriteButtonClick(view, param)
-            },
             onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
             onImageClick = onImageClick,
             modifier =
@@ -592,7 +536,6 @@ private fun MediaDetailComponentPreview(
             media = media,
             scoreFormat = ScoreFormat.POINT_10_DECIMAL,
             onManageListClick = {},
-            onFavouriteClick = {},
             onMediaDiscoverableItemClick = {},
             onImageClick = {},
             modifier = Modifier.verticalScroll(rememberScrollState()),
