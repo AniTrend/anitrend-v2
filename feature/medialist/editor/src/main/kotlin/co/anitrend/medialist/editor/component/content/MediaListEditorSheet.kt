@@ -35,6 +35,8 @@ import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.medialist.editor.component.compose.MediaListEditorSheetScreen
 import co.anitrend.medialist.editor.component.viewmodel.MediaListEditorViewModel
 import co.anitrend.navigation.MediaListEditorRouter
+import co.anitrend.navigation.MediaListTaskRouter
+import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
 import co.anitrend.navigation.extensions.nameOf
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -82,8 +84,16 @@ class MediaListEditorSheet(
                         dateHelper = dateHelper,
                         onDismiss = { dismiss() },
                         onSave = {
+                            MediaListTaskRouter
+                                .forMediaListSaveEntryWorker()
+                                .createOneTimeUniqueWorker(requireContext(), it)
+                                .enqueue()
                         },
                         onDelete = {
+                            MediaListTaskRouter
+                                .forMediaListDeleteEntryWorker()
+                                .createOneTimeUniqueWorker(requireContext(), it)
+                                .enqueue()
                         },
                     )
                 }

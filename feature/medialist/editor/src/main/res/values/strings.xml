@@ -24,8 +24,12 @@
 
     <!-- Screen title shown at top of media list editor sheet -->
     <string name="title_media_list_editor_add_to_library">Add to Library</string>
+    <!-- Compact editor title shown when updating an existing entry -->
+    <string name="title_media_list_editor_quick_edit">Quick Edit</string>
     <!-- Subtitle shown below title, %1$s will be replaced with media title -->
     <string name="subtitle_media_list_editor_manage_media" formatted="true">Manage \"%1$s\" in your library</string>
+    <!-- Supporting copy for the redesigned quick-edit editor -->
+    <string name="subtitle_media_list_editor_quick_edit">Quick edit status, progress, score, dates, and personal metadata.</string>
     <!-- Placeholder text shown in media title input field -->
     <string name="placeholder_media_list_editor_media_title">Media Title</string>
 
@@ -40,6 +44,8 @@
     <string name="label_media_list_editor_watch_status">Watch Status</string>
     <!-- Placeholder shown in status dropdown when no status is selected -->
     <string name="placeholder_media_list_editor_select_status">Select watch status</string>
+    <!-- Small supporting label used beside the status chips -->
+    <string name="label_media_list_editor_primary_state">Primary state</string>
 
     <!-- Label for episode progress section (anime) -->
     <string name="label_media_list_editor_episode_progress">Episode Progress</string>
@@ -51,19 +57,49 @@
     <string name="label_media_list_editor_current_chapter">Current chapter</string>
     <!-- Shows completion percentage, %1$d will be replaced with percentage number -->
     <string name="label_media_list_editor_progress_percentage" formatted="true">Progress %1$d%%</string>
+    <!-- Supporting text explaining auto-progress behavior -->
+    <string name="label_media_list_editor_progress_auto_complete_hint">Auto-completed when status is completed</string>
+    <!-- Quick fact showing known episode totals -->
+    <string name="label_media_list_editor_episode_count" formatted="true">%1$d episodes</string>
+    <!-- Quick fact showing known chapter totals -->
+    <string name="label_media_list_editor_chapter_count" formatted="true">%1$d chapters</string>
+    <!-- Quick fact showing known volume totals -->
+    <string name="label_media_list_editor_volume_count" formatted="true">%1$d volumes</string>
 
     <!-- Label for start date input field -->
     <string name="label_media_list_editor_start_date">Start Date</string>
     <!-- Label for end date input field -->
     <string name="label_media_list_editor_end_date">End Date</string>
+    <!-- Placeholder shown for unset dates -->
+    <string name="label_media_list_editor_not_set">Not set</string>
 
     <!-- Label for personal score section -->
     <string name="label_media_list_editor_your_score">Your Score</string>
     <!-- Label for score input field -->
     <string name="label_media_list_editor_score">Score</string>
+    <!-- Button text that clears the current score selection -->
+    <string name="action_media_list_editor_clear_score">Clear</string>
+    <!-- Discrete score label for an empty score state -->
+    <string name="label_media_list_editor_score_none">No score</string>
+    <!-- Discrete low-end score label used in mood-based POINT_3 scoring -->
+    <string name="label_media_list_editor_score_low">Low</string>
+    <!-- Discrete neutral score label used in mood-based POINT_3 scoring -->
+    <string name="label_media_list_editor_score_okay">Okay</string>
+    <!-- Discrete positive score label used in mood-based POINT_3 scoring -->
+    <string name="label_media_list_editor_score_great">Great</string>
+    <!-- Accessibility label for decrement buttons; %1$s is the edited field label -->
+    <string name="description_media_list_editor_decrement_value" formatted="true">Decrease %1$s</string>
+    <!-- Accessibility label for increment buttons; %1$s is the edited field label -->
+    <string name="description_media_list_editor_increment_value" formatted="true">Increase %1$s</string>
 
     <!-- Shows an editable list of additional score components configured in the user's media list options -->
     <string name="label_media_list_editor_advanced_scores" formatted="true">Advanced Scores (%1$d)</string>
+    <!-- Section heading for collapsed secondary options -->
+    <string name="label_media_list_editor_more_options">More Options</string>
+    <!-- Supporting text shown when optional content is collapsed -->
+    <string name="label_media_list_editor_collapsed_by_default">Collapsed by default</string>
+    <!-- Supporting label for non-required sections -->
+    <string name="label_media_list_editor_optional">Optional</string>
 
     <!-- Label showing number of custom lists, %1$d will be replaced with count -->
     <string name="label_media_list_editor_custom_lists_count" formatted="true">Custom Lists (%1$d)</string>
@@ -79,6 +115,10 @@
 
     <!-- Button text to save changes -->
     <string name="action_media_list_editor_save">Save</string>
+    <!-- Primary action text used by the redesigned header -->
+    <string name="action_media_list_editor_save_changes">Save changes</string>
+    <!-- Destructive action text used by the redesigned header -->
+    <string name="action_media_list_editor_delete_entry">Delete entry</string>
     <!-- Content description for close button -->
     <string name="action_media_list_editor_close">Close</string>
     <!-- Content description for calendar icon to select date -->
