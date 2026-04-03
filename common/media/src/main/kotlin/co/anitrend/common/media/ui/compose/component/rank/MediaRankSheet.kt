@@ -17,16 +17,18 @@
 package co.anitrend.common.media.ui.compose.component.rank
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.ui.AniTrendPreview
@@ -69,17 +71,25 @@ private fun MediaRankSheetContent(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        MediaRankSectionHeader(
+        Column(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-        )
-        Spacer(modifier = Modifier.padding(bottom = 8.dp))
+                    .padding(horizontal = 16.dp, vertical = 4.dp),
+        ) {
+            MediaRankSectionHeader(modifier = Modifier.fillMaxWidth())
+            Text(
+                text = stringResource(co.anitrend.common.media.ui.R.string.label_media_rank_sheet_subtitle),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
         RankingItems(
             rankings = ranks,
-            accentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(horizontal = 16.dp),
+            modifier =
+                Modifier
+                    .padding(horizontal = 16.dp)
+                    .heightIn(max = 520.dp),
             onClick = onItemClick,
         )
     }
