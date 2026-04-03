@@ -44,7 +44,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
@@ -70,11 +69,14 @@ internal class MediaSourceImpl {
                 .flowOn(dispatcher.computation)
 
         override suspend fun getMedia(requestCallback: RequestCallback): Boolean {
-            val edgeEntity = edgeSource(id = query.param.id)
+            runCatching {
+                edgeSource(id = query.param.id)
+            }.onFailure { throwable ->
+                Timber.w(throwable, "Unable to refresh edge media for id=%s", query.param.id)
+            }
+
             val deferred =
                 deferred {
-                    val e = edgeEntity.firstOrNull()
-                    Timber.d("EdgeEntity: $e")
                     val queryBuilder = query.toQueryContainerBuilder()
                     remoteSource.getMediaDetail(queryBuilder)
                 }
