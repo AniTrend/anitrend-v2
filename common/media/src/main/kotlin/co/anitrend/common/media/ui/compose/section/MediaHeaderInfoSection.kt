@@ -47,6 +47,11 @@ import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.navigation.ImageViewerRouter
 
+private fun IMediaTitle.defaultSupportingText(): String? =
+    listOf(native, english, romaji)
+        .mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
+        .firstOrNull()
+
 @Composable
 private fun MediaCover(
     cover: IMediaCover,
@@ -65,25 +70,29 @@ private fun MediaCover(
 private fun MediaTitle(
     title: IMediaTitle,
     modifier: Modifier = Modifier,
-    extraInfo: String? = null,
+    supportingText: String? = null,
 ) {
+    val secondaryText = supportingText?.takeIf(String::isNotBlank) ?: title.defaultSupportingText()
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
-            text = title.userPreferred.toString(),
+            text = title.userPreferred?.toString().orEmpty(),
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.headlineSmall,
         )
-        Text(
-            text = extraInfo ?: title.native.toString(),
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(start = 8.dp),
-            style = MaterialTheme.typography.bodySmall,
-        )
+        secondaryText?.let {
+            Text(
+                text = it,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(start = 8.dp),
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
     }
 }
 
@@ -92,7 +101,15 @@ fun MediaHeaderInfoSection(
     media: Media,
     onCoverClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier,
+    preferExtendedExtraInfo: Boolean = true,
 ) {
+    val supportingText =
+        if (preferExtendedExtraInfo) {
+            (media as? Media.Extended)?.extraInfo?.takeIf(String::isNotBlank) ?: media.title.defaultSupportingText()
+        } else {
+            media.title.defaultSupportingText()
+        }
+
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
@@ -111,7 +128,7 @@ fun MediaHeaderInfoSection(
         ) {
             MediaTitle(
                 title = media.title,
-                extraInfo = (media as Media.Extended).extraInfo,
+                supportingText = supportingText,
             )
         }
     }

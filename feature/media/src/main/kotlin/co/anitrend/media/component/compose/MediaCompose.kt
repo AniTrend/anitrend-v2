@@ -21,26 +21,38 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkAdded
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.icons.rounded.Share
+import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -48,30 +60,40 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import co.anitrend.android.core.compose.AniTrendDimensions
 import co.anitrend.android.core.compose.design.BackIconButton
 import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.compose.design.image.AniTrendImageDefaults
+import co.anitrend.android.core.extensions.format
 import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.common.genre.ui.compose.MediaGenreSection
 import co.anitrend.common.genre.ui.compose.MediaGenreSectionMode
+import co.anitrend.common.media.ui.compose.component.IconScoreContent
 import co.anitrend.common.media.ui.compose.component.rank.MediaRankSection
 import co.anitrend.common.media.ui.compose.component.score.MediaScoreSection
 import co.anitrend.common.media.ui.compose.component.status.MediaStatusSection
 import co.anitrend.common.media.ui.compose.component.synopsis.MediaSynopsisSection
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
 import co.anitrend.common.media.ui.compose.section.MediaHeaderInfoSection
+import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
 import co.anitrend.common.tag.ui.compose.TagListItems
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.attribute.score.IMediaRating
+import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.R
+import co.anitrend.media.component.compose.section.MediaExtendedMetadataSection
 import co.anitrend.media.component.schedule.MediaScheduleSheet
 import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
 import co.anitrend.media.component.viewmodel.MediaViewModel
@@ -79,12 +101,284 @@ import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
 import org.koin.androidx.compose.koinViewModel
+import co.anitrend.common.media.ui.R as MediaUiR
+
+private fun Float.asDisplayRating(scoreFormat: ScoreFormat): IMediaRating =
+    when (scoreFormat) {
+        ScoreFormat.POINT_3 ->
+            when (toInt()) {
+                1 -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.BAD)
+                2 -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.NEUTRAL)
+                3 -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.GOOD)
+                else -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.NONE)
+            }
+
+        ScoreFormat.POINT_10_DECIMAL -> IMediaRating.Text(format(1))
+        else -> IMediaRating.Text(toInt().toString())
+    }
+
+private fun Media.Extended.personalRating(scoreFormat: ScoreFormat): IMediaRating? =
+    mediaList
+        ?.score
+        ?.takeIf { it > 0f }
+        ?.asDisplayRating(scoreFormat)
+        ?: score.personal?.takeIf { it > 0f }?.asDisplayRating(scoreFormat)
+
+private fun mediaListStatusIcon(mediaListStatus: MediaListStatus?): Int? =
+    when (mediaListStatus) {
+        MediaListStatus.CURRENT -> MediaUiR.drawable.ic_current
+        MediaListStatus.COMPLETED -> MediaUiR.drawable.ic_completed
+        MediaListStatus.DROPPED -> MediaUiR.drawable.ic_dropped
+        MediaListStatus.PAUSED -> MediaUiR.drawable.ic_paused
+        MediaListStatus.PLANNING -> MediaUiR.drawable.ic_planning
+        MediaListStatus.REPEATING -> MediaUiR.drawable.ic_repeat
+        null -> null
+    }
+
+@Composable
+private fun MediaStatePill(
+    label: String,
+    modifier: Modifier = Modifier,
+    leadingContent: (@Composable () -> Unit)? = null,
+) {
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f),
+        contentColor = MaterialTheme.colorScheme.onSurface,
+        shape = RoundedCornerShape(16.dp),
+        modifier = modifier,
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            leadingContent?.invoke()
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelLarge,
+            )
+        }
+    }
+}
+
+@Composable
+private fun MediaIdentityBlock(
+    media: Media.Extended,
+    onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val textInset = (AniTrendDimensions.series_image_lg * AniTrendDimensions.series_image_aspect_ratio) + 16.dp
+    val extraInfo = media.extraInfo?.trim()?.takeIf(String::isNotBlank)
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        MediaHeaderInfoSection(
+            media = media,
+            onCoverClick = onImageClick,
+            preferExtendedExtraInfo = false,
+            modifier = Modifier.absoluteOffset(y = (-16).dp),
+        )
+        MediaSubTitleText(
+            media = media,
+            modifier = Modifier.padding(start = textInset),
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        extraInfo?.let {
+            Text(
+                text = it,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(start = textInset),
+            )
+        }
+    }
+}
+
+@Composable
+private fun MediaUserStateSummary(
+    media: Media.Extended,
+    scoreFormat: ScoreFormat,
+    modifier: Modifier = Modifier,
+) {
+    val userRating = media.personalRating(scoreFormat)
+    val listStatus = media.mediaList?.status
+    val showFavouriteState = media.isFavourite
+
+    if (listStatus == null && userRating == null && !showFavouriteState) {
+        return
+    }
+
+    FlowRow(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        listStatus?.let { status ->
+            MediaStatePill(
+                label = status.alias.toString(),
+                leadingContent = {
+                    mediaListStatusIcon(status)?.let { icon ->
+                        Icon(
+                            painter = painterResource(icon),
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                },
+            )
+        }
+
+        when (userRating) {
+            is IMediaRating.Text ->
+                MediaStatePill(
+                    label = "${stringResource(MediaUiR.string.label_media_score_section_your_rating)} ${userRating.score}",
+                    leadingContent = {
+                        Icon(
+                            imageVector = Icons.Rounded.Star,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    },
+                )
+
+            is IMediaRating.Mood ->
+                MediaStatePill(
+                    label = stringResource(MediaUiR.string.label_media_score_section_your_rating),
+                    leadingContent = {
+                        IconScoreContent(
+                            rating = userRating,
+                            iconTint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    },
+                )
+
+            null -> Unit
+        }
+
+        if (showFavouriteState) {
+            MediaStatePill(
+                label = stringResource(R.string.label_media_user_state_favourite),
+                leadingContent = {
+                    Icon(
+                        imageVector = Icons.Rounded.Favorite,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun MediaPrimaryActionDock(
+    media: Media.Extended,
+    onManageListClick: () -> Unit,
+    onFavouriteClick: () -> Unit,
+    onShowSchedule: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val isOnMyList = media.mediaList != null
+    val isAnime = media.category is Media.Category.Anime
+
+    OutlinedCard(
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            FilledTonalButton(
+                onClick = onManageListClick,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Icon(
+                    imageVector = if (isOnMyList) Icons.Rounded.BookmarkAdded else Icons.Rounded.BookmarkAdd,
+                    contentDescription = null,
+                )
+                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                Text(
+                    text =
+                        stringResource(
+                            if (isOnMyList) {
+                                R.string.action_manage_on_list
+                            } else {
+                                R.string.action_add_to_list
+                            },
+                        ),
+                )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                OutlinedButton(
+                    onClick = onFavouriteClick,
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Icon(
+                        imageVector = if (media.isFavourite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
+                        contentDescription = null,
+                    )
+                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                    Text(
+                        text =
+                            stringResource(
+                                if (media.isFavourite) {
+                                    R.string.action_remove_from_favourites
+                                } else {
+                                    R.string.action_add_to_favourites
+                                },
+                            ),
+                    )
+                }
+
+                if (isAnime) {
+                    OutlinedButton(
+                        onClick = onShowSchedule,
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Schedule,
+                            contentDescription = null,
+                        )
+                        Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                        Text(text = stringResource(MediaUiR.string.label_media_status_show_schedule))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MediaSynopsisPreviewSection(
+    media: Media.Extended,
+    modifier: Modifier = Modifier,
+) {
+    MediaSynopsisSection(
+        synopsis = media,
+        collapsedMaxLines = 8,
+        modifier = modifier,
+    )
+}
 
 @Composable
 private fun MediaDetailContent(
-    media: Media,
+    media: Media.Extended,
     scoreFormat: ScoreFormat,
     accentColor: Color,
+    onManageListClick: () -> Unit,
+    onFavouriteClick: () -> Unit,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier,
@@ -114,35 +408,42 @@ private fun MediaDetailContent(
                             end = 16.dp,
                             bottom = 16.dp,
                         ),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                // Local state for schedule sheet visibility
                 var showScheduleSheet by remember { mutableStateOf(false) }
 
-                MediaHeaderInfoSection(
+                MediaIdentityBlock(
                     media = media,
-                    onCoverClick = onImageClick,
-                    modifier =
-                        Modifier
-                            .absoluteOffset(y = (-16).dp),
-                )
-                MediaGenreSection(
-                    genres = media.genres as List<Genre>,
-                    onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
-                    sectionMode = MediaGenreSectionMode.FLEX,
+                    onImageClick = onImageClick,
                 )
                 MediaScoreSection(
                     mediaScore = media.score,
                     scoreFormat = scoreFormat,
                 )
-                MediaSynopsisSection(
-                    synopsis = media,
-                )
-                MediaStatusSection(
+                MediaUserStateSummary(
                     media = media,
+                    scoreFormat = scoreFormat,
+                )
+                MediaPrimaryActionDock(
+                    media = media,
+                    onManageListClick = onManageListClick,
+                    onFavouriteClick = onFavouriteClick,
                     onShowSchedule = {
                         showScheduleSheet = media.category is Media.Category.Anime
                     },
+                )
+                MediaSynopsisPreviewSection(
+                    media = media,
+                )
+                MediaStatusSection(
+                    media = media,
+                    showScheduleAction = false,
+                    onShowSchedule = {
+                        showScheduleSheet = media.category is Media.Category.Anime
+                    },
+                )
+                MediaExtendedMetadataSection(
+                    media = media,
                 )
                 if (showScheduleSheet && media.category is Media.Category.Anime) {
                     val scheduleViewModel: MediaScheduleViewModel = koinViewModel()
@@ -169,11 +470,20 @@ private fun MediaDetailContent(
                         },
                     )
                 }
-                TagListItems(
-                    accentColor = accentColor,
-                    tags = media.tags,
-                    onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
-                )
+                if (media.genres.isNotEmpty()) {
+                    MediaGenreSection(
+                        genres = media.genres as List<Genre>,
+                        onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
+                        sectionMode = MediaGenreSectionMode.FLEX,
+                    )
+                }
+                if (media.tags.isNotEmpty()) {
+                    TagListItems(
+                        accentColor = accentColor,
+                        tags = media.tags,
+                        onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
+                    )
+                }
             }
         }
     }
@@ -192,7 +502,7 @@ fun MediaScreenContent(
     onBackClick: () -> Unit,
 ) {
     val state by mediaState.model.observeAsState()
-    val media: Media = state ?: return
+    val media = state as? Media.Extended ?: return
 
     val accentColor = media.image.rememberAccentColor()
 
@@ -203,30 +513,14 @@ fun MediaScreenContent(
             BottomAppBar(
                 actions = {
                     BackIconButton(onBackClick = onBackClick)
-                    media.siteUrl.myAnimeList?.also { url ->
+                    if (media.siteUrl.myAnimeList != null) {
+                        val url = requireNotNull(media.siteUrl.myAnimeList)
                         IconButton(onClick = { onMyAnimeListButtonClick(url) }) {
-                            Icon(painter = painterResource(R.drawable.ic_my_anime_list), contentDescription = "Open my anime list")
-                        }
-                    }
-                    IconButton(onClick = { onBookmarkButtonClick(view, media) }) {
-                        val isOnMyList = media.mediaList != null
-                        Icon(
-                            imageVector = if (isOnMyList) Icons.Rounded.BookmarkAdded else Icons.Rounded.BookmarkAdd,
-                            contentDescription = if (isOnMyList) "Manage media listing" else "Add to list",
-                        )
-                    }
-                    IconButton(onClick = {
-                        val param =
-                            FavouriteTaskRouter.Param.MediaToggleParam(
-                                id = media.id,
-                                mediaType = media.category.type,
+                            Icon(
+                                painter = painterResource(R.drawable.ic_my_anime_list),
+                                contentDescription = stringResource(R.string.action_my_anime_list),
                             )
-                        onFavouriteButtonClick(view, param)
-                    }) {
-                        Icon(
-                            imageVector = if (media.isFavourite) Icons.Rounded.Favorite else Icons.Rounded.FavoriteBorder,
-                            contentDescription = if (media.isFavourite) "Remove from favourites" else "Add to favourites",
-                        )
+                        }
                     }
                 },
                 floatingActionButton = {
@@ -235,7 +529,10 @@ fun MediaScreenContent(
                         containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                         elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
                     ) {
-                        Icon(Icons.Rounded.Share, "Share")
+                        Icon(
+                            imageVector = Icons.Rounded.Share,
+                            contentDescription = stringResource(co.anitrend.android.core.R.string.action_share),
+                        )
                     }
                 },
             )
@@ -245,6 +542,15 @@ fun MediaScreenContent(
             media = media,
             scoreFormat = scoreFormat,
             accentColor = accentColor,
+            onManageListClick = { onBookmarkButtonClick(view, media) },
+            onFavouriteClick = {
+                val param =
+                    FavouriteTaskRouter.Param.MediaToggleParam(
+                        id = media.id,
+                        mediaType = media.category.type,
+                    )
+                onFavouriteButtonClick(view, param)
+            },
             onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
             onImageClick = onImageClick,
             modifier =
@@ -259,13 +565,15 @@ fun MediaScreenContent(
 @AniTrendPreview.Dark
 @Composable
 private fun MediaDetailComponentPreview(
-    @PreviewParameter(MediaComposePreviewProvider::class) media: Media,
+    @PreviewParameter(MediaComposePreviewProvider::class) media: Media.Extended,
 ) {
     PreviewTheme(wrapInSurface = true) {
         MediaDetailContent(
             media = media,
             scoreFormat = ScoreFormat.POINT_10_DECIMAL,
             accentColor = Color.DarkGray,
+            onManageListClick = {},
+            onFavouriteClick = {},
             onMediaDiscoverableItemClick = {},
             onImageClick = {},
             modifier = Modifier.verticalScroll(rememberScrollState()),
