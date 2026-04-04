@@ -239,6 +239,7 @@ object MediaPeopleRouter : NavigationRouter() {
     @Parcelize
     data class MediaPeopleParam(
         val mediaId: Long,
+        val mediaTitle: String? = null,
         val initialSection: Section = Section.CHARACTERS,
     ) : IParam
 }

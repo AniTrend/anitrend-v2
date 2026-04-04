@@ -37,6 +37,7 @@ class MediaPeopleScreen : AniTrendScreen() {
             AniTrendTheme3 {
                 MediaPeopleRoute(
                     mediaId = peopleParam.mediaId,
+                    mediaTitle = peopleParam.mediaTitle,
                     initialSection = peopleParam.initialSection,
                     onBackPress = onBackPressedDispatcher::onBackPressed,
                 )
