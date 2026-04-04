@@ -21,6 +21,7 @@ import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.media.model.container.MediaConnectionModelContainer
 import co.anitrend.data.media.model.container.MediaModelContainer
+import co.anitrend.data.media.model.container.MediaSidecarModelContainer
 import co.anitrend.data.media.model.container.MediaPeopleModelContainer
 import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.model.request.QueryContainerBuilder
@@ -70,4 +71,18 @@ internal interface MediaRemoteSource {
     suspend fun getMediaRecommendations(
         @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<MediaConnectionModelContainer.Recommendations>>
+
+    @GRAPHQL
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetMediaWithStudio")
+    suspend fun getMediaStudios(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<MediaSidecarModelContainer.Studios>>
+
+    @GRAPHQL
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetMediaStats")
+    suspend fun getMediaStats(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<MediaSidecarModelContainer.Stats>>
 }

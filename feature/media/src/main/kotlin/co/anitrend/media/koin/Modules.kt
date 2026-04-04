@@ -19,9 +19,11 @@ package co.anitrend.media.koin
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.component.viewmodel.MediaCommunityViewModel
 import co.anitrend.media.component.viewmodel.MediaCharactersViewModel
+import co.anitrend.media.component.viewmodel.MediaStatsViewModel
 import co.anitrend.media.component.viewmodel.MediaRecommendationsViewModel
 import co.anitrend.media.component.viewmodel.MediaRelationsViewModel
 import co.anitrend.media.component.viewmodel.MediaStaffViewModel
+import co.anitrend.media.component.viewmodel.MediaStudiosViewModel
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
 import co.anitrend.media.provider.FeatureProvider
@@ -60,6 +62,16 @@ private val viewModelModule =
         }
         viewModel {
             MediaCommunityViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            MediaStudiosViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            MediaStatsViewModel(
                 interactor = get(),
             )
         }

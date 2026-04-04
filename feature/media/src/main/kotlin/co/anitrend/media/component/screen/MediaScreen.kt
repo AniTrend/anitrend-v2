@@ -42,6 +42,7 @@ import co.anitrend.navigation.MediaRecommendationsRouter
 import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.ReviewDiscoverRouter
+import co.anitrend.navigation.StudioRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
 import co.anitrend.navigation.extensions.nameOf
@@ -119,6 +120,12 @@ class MediaScreen : AniTrendScreen() {
                         },
                         onPeopleClick = { param ->
                             MediaPeopleRouter.startActivity(
+                                context = this@MediaScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onStudioClick = { param ->
+                            StudioRouter.startActivity(
                                 context = this@MediaScreen,
                                 navPayload = param.asNavPayload(),
                             )

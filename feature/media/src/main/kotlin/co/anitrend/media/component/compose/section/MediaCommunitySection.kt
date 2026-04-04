@@ -44,22 +44,34 @@ import org.threeten.bp.Instant
 internal fun MediaCommunitySection(
     reviews: PagedList<Review>?,
     loadState: LoadState?,
+    isBlocked: Boolean,
     onSeeAllClick: () -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val previewItems = remember(reviews) { reviews?.previewItems(maxCount = 3).orEmpty() }
+    val canSeeAll = !isBlocked && previewItems.isNotEmpty()
 
     MediaHubSection(
         title = stringResource(R.string.title_media_community_section),
         subtitle = stringResource(R.string.subtitle_media_community_section),
         trailingActionLabel =
-            previewItems.takeIf(List<Review>::isNotEmpty)?.let {
+            if (canSeeAll) {
                 stringResource(R.string.action_media_community_section_see_all)
+            } else {
+                null
             },
-        onTrailingAction = previewItems.takeIf(List<Review>::isNotEmpty)?.let { { onSeeAllClick() } },
+        onTrailingAction = if (canSeeAll) { { onSeeAllClick() } } else { null },
         modifier = modifier,
     ) {
+        if (isBlocked) {
+            MediaHubSectionEmptyState(
+                title = stringResource(R.string.label_media_community_blocked_title),
+                message = stringResource(R.string.message_media_community_blocked),
+            )
+            return@MediaHubSection
+        }
+
         when {
             previewItems.isNotEmpty() -> {
                 Column(

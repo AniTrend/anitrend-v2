@@ -25,9 +25,12 @@ import co.anitrend.data.media.entity.connection.MediaStaffConnectionEntity
 import co.anitrend.data.media.model.container.MediaConnectionModelContainer
 import co.anitrend.data.media.model.container.MediaModelContainer
 import co.anitrend.data.media.model.container.MediaPeopleModelContainer
+import co.anitrend.data.media.model.container.MediaSidecarModelContainer
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.entity.MediaRelationEntry
+import co.anitrend.domain.media.entity.MediaStats
+import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.interactor.MediaUseCase
 import co.anitrend.domain.media.repository.IMediaRepository
@@ -39,6 +42,8 @@ internal typealias MediaNetworkController = GraphQLController<MediaModelContaine
 internal typealias MediaRelationsController = GraphQLController<MediaConnectionModelContainer.Relations, List<MediaRelationEntry>>
 internal typealias MediaRecommendationsController = GraphQLController<MediaConnectionModelContainer.Recommendations, List<MediaRecommendationEntry>>
 internal typealias MediaStaffController = GraphQLController<MediaPeopleModelContainer.Staff, List<MediaStaffConnectionEntity>>
+internal typealias MediaStudiosController = GraphQLController<MediaSidecarModelContainer.Studios, List<MediaStudioEntry>>
+internal typealias MediaStatsController = GraphQLController<MediaSidecarModelContainer.Stats, MediaStats>
 
 internal typealias MediaDetailRepository = IMediaRepository.Detail<DataState<Media>>
 internal typealias MediaCharactersRepository = IMediaRepository.Characters<DataState<PagedList<MediaPerson.Character>>>
@@ -47,6 +52,8 @@ internal typealias MediaNetworkRepository = IMediaRepository.Network<DataState<P
 internal typealias MediaRelationsRepository = IMediaRepository.Relations<DataState<List<MediaRelationEntry>>>
 internal typealias MediaRecommendationsRepository = IMediaRepository.Recommendations<DataState<List<MediaRecommendationEntry>>>
 internal typealias MediaStaffRepository = IMediaRepository.Staff<DataState<PagedList<MediaPerson.Staff>>>
+internal typealias MediaStudiosRepository = IMediaRepository.Studios<DataState<List<MediaStudioEntry>>>
+internal typealias MediaStatsRepository = IMediaRepository.Stats<DataState<MediaStats>>
 
 typealias GetDetailMediaInteractor = MediaUseCase.GetDetail<DataState<Media>>
 typealias GetMediaCharactersInteractor = MediaUseCase.GetCharacters<DataState<PagedList<MediaPerson.Character>>>
@@ -55,3 +62,5 @@ typealias GetNetworkMediaInteractor = MediaUseCase.GetByNetwork<DataState<PagedL
 typealias GetMediaRelationsInteractor = MediaUseCase.GetRelations<DataState<List<MediaRelationEntry>>>
 typealias GetMediaRecommendationsInteractor = MediaUseCase.GetRecommendations<DataState<List<MediaRecommendationEntry>>>
 typealias GetMediaStaffInteractor = MediaUseCase.GetStaff<DataState<PagedList<MediaPerson.Staff>>>
+typealias GetMediaStudiosInteractor = MediaUseCase.GetStudios<DataState<List<MediaStudioEntry>>>
+typealias GetMediaStatsInteractor = MediaUseCase.GetStats<DataState<MediaStats>>
