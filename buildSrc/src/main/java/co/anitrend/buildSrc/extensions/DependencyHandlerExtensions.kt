@@ -30,6 +30,7 @@ private enum class DependencyType(val configurationName: String) {
     DEBUG("debugOnly"),
     KAPT("kapt"),
     IMPLEMENTATION("implementation"),
+    // Platform enum entries use the same Gradle configuration names as base entries, but addPlatformDependency() wraps with platform(...)
     PLATFORM_IMPLEMENTATION("implementation"),
     DEBUG_IMPLEMENTATION("debugImplementation"),
     PLATFORM_DEBUG_IMPLEMENTATION("debugImplementation"),
