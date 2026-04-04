@@ -136,7 +136,9 @@ private fun MediaPeopleSegmentedControl(
     Surface(
         modifier = modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f),
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp),
+        shape =
+            androidx.compose.foundation.shape
+                .RoundedCornerShape(24.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.45f)),
     ) {
         Row(
@@ -162,7 +164,9 @@ private fun MediaPeopleSegmentedControl(
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant
                         },
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp),
+                    shape =
+                        androidx.compose.foundation.shape
+                            .RoundedCornerShape(20.dp),
                     tonalElevation = 0.dp,
                     shadowElevation = 0.dp,
                     onClick = { onSelect(section) },
@@ -337,7 +341,9 @@ private fun RetryPeopleState(
             )
             androidx.compose.material3.OutlinedButton(
                 onClick = onRetry,
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp),
+                shape =
+                    androidx.compose.foundation.shape
+                        .RoundedCornerShape(20.dp),
             ) {
                 Text(text = stringResource(co.anitrend.core.R.string.label_text_action_retry))
             }

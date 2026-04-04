@@ -240,7 +240,14 @@ internal fun CharacterPreviewCard(
 ) {
     val primaryName = item.name?.userPreferred ?: item.name?.full ?: item.mediaRoleName.orEmpty()
     val roleLabel = item.role?.alias?.toString()
-    val voiceActor = item.voiceActors.firstOrNull()?.name?.userPreferred ?: item.voiceActors.firstOrNull()?.name?.full
+    val voiceActor =
+        item.voiceActors
+            .firstOrNull()
+            ?.name
+            ?.userPreferred ?: item.voiceActors
+            .firstOrNull()
+            ?.name
+            ?.full
 
     Surface(
         modifier =
@@ -256,10 +263,11 @@ internal fun CharacterPreviewCard(
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f),
         tonalElevation = 0.dp,
         shape = RoundedCornerShape(24.dp),
-        border = androidx.compose.foundation.BorderStroke(
-            width = 1.dp,
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.45f),
-        ),
+        border =
+            androidx.compose.foundation.BorderStroke(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.45f),
+            ),
     ) {
         Column(
             modifier = Modifier.padding(10.dp),
@@ -335,10 +343,11 @@ internal fun StaffPreviewListItem(
                 ),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f),
         shape = RoundedCornerShape(22.dp),
-        border = androidx.compose.foundation.BorderStroke(
-            width = 1.dp,
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
-        ),
+        border =
+            androidx.compose.foundation.BorderStroke(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
+            ),
         tonalElevation = 0.dp,
     ) {
         Row(

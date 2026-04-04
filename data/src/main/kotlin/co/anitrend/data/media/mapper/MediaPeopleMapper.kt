@@ -31,7 +31,10 @@ internal sealed class MediaPeopleMapper<S, D> : DefaultMapper<S, D>() {
 
         override suspend fun onResponseMapFrom(source: MediaPeopleModelContainer.Characters) =
             converter.convertFrom(
-                source.media?.characters?.edges.orEmpty(),
+                source.media
+                    ?.characters
+                    ?.edges
+                    .orEmpty(),
             )
     }
 
@@ -43,7 +46,10 @@ internal sealed class MediaPeopleMapper<S, D> : DefaultMapper<S, D>() {
 
         override suspend fun onResponseMapFrom(source: MediaPeopleModelContainer.Staff) =
             converter.convertFrom(
-                source.media?.staff?.edges.orEmpty(),
+                source.media
+                    ?.staff
+                    ?.edges
+                    .orEmpty(),
             )
     }
 }
