@@ -25,13 +25,18 @@ import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
+import co.anitrend.data.android.extensions.invoke
 import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.MediaStats
+import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.media.model.MediaParam
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filterNotNull
 
 internal class MediaSource {
     abstract class Detail : AbstractCoreDataSource() {
@@ -55,6 +60,36 @@ internal class MediaSource {
                 block = ::getMedia,
             )
             return observable()
+        }
+    }
+
+    abstract class Studios : AbstractCoreDataSource() {
+        protected lateinit var query: MediaQuery.Studios
+
+        protected abstract val observable: MutableStateFlow<List<MediaStudioEntry>?>
+
+        protected abstract suspend fun getStudios(requestCallback: RequestCallback): Boolean
+
+        operator fun invoke(param: MediaParam.Studios): Flow<List<MediaStudioEntry>> {
+            query = MediaQuery.Studios(param)
+            observable.value = null
+            invoke(block = ::getStudios)
+            return observable.filterNotNull()
+        }
+    }
+
+    abstract class Stats : AbstractCoreDataSource() {
+        protected lateinit var query: MediaQuery.Stats
+
+        protected abstract val observable: MutableStateFlow<MediaStats?>
+
+        protected abstract suspend fun getStats(requestCallback: RequestCallback): Boolean
+
+        operator fun invoke(param: MediaParam.Stats): Flow<MediaStats> {
+            query = MediaQuery.Stats(param)
+            observable.value = null
+            invoke(block = ::getStats)
+            return observable.filterNotNull()
         }
     }
 

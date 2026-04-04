@@ -30,6 +30,8 @@ import co.anitrend.data.edge.media.source.contract.EdgeMediaSource
 import co.anitrend.data.media.MediaDetailController
 import co.anitrend.data.media.MediaNetworkController
 import co.anitrend.data.media.MediaPagedController
+import co.anitrend.data.media.MediaStatsController
+import co.anitrend.data.media.MediaStudiosController
 import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
@@ -39,6 +41,8 @@ import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.data.media.source.contract.MediaSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.MediaStats
+import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.media.model.MediaParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -46,6 +50,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 
 internal class MediaSourceImpl {
@@ -98,6 +103,58 @@ internal class MediaSourceImpl {
                 localSource.clearById(cacheIdentity.id)
             }
         }
+    }
+
+    class Studios(
+        private val remoteSource: MediaRemoteSource,
+        private val controller: MediaStudiosController,
+        override val dispatcher: ISupportDispatcher,
+    ) : MediaSource.Studios() {
+        override val observable = MutableStateFlow<List<MediaStudioEntry>?>(null)
+
+        override suspend fun getStudios(requestCallback: RequestCallback): Boolean {
+            val deferred =
+                deferred {
+                    val queryBuilder = query.toQueryContainerBuilder()
+                    remoteSource.getMediaStudios(queryBuilder)
+                }
+
+            val result =
+                controller(deferred, requestCallback) {
+                    it
+                }
+
+            observable.value = result.orEmpty()
+            return !result.isNullOrEmpty()
+        }
+
+        override suspend fun clearDataSource(context: CoroutineDispatcher) = Unit
+    }
+
+    class Stats(
+        private val remoteSource: MediaRemoteSource,
+        private val controller: MediaStatsController,
+        override val dispatcher: ISupportDispatcher,
+    ) : MediaSource.Stats() {
+        override val observable = MutableStateFlow<MediaStats?>(null)
+
+        override suspend fun getStats(requestCallback: RequestCallback): Boolean {
+            val deferred =
+                deferred {
+                    val queryBuilder = query.toQueryContainerBuilder()
+                    remoteSource.getMediaStats(queryBuilder)
+                }
+
+            val result =
+                controller(deferred, requestCallback) {
+                    it
+                }
+
+            observable.value = result
+            return result != null
+        }
+
+        override suspend fun clearDataSource(context: CoroutineDispatcher) = Unit
     }
 
     class Paged(

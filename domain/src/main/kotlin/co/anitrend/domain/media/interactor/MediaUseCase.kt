@@ -51,6 +51,18 @@ sealed class MediaUseCase {
         operator fun invoke(param: MediaParam.Staff) = repository.getStaff(param)
     }
 
+    abstract class GetStudios<State : UiState<*>>(
+        protected val repository: IMediaRepository.Studios<State>,
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Studios) = repository.getStudios(param)
+    }
+
+    abstract class GetStats<State : UiState<*>>(
+        protected val repository: IMediaRepository.Stats<State>,
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Stats) = repository.getStats(param)
+    }
+
     abstract class GetPaged<State : UiState<*>>(
         protected val repository: IMediaRepository.Paged<State>,
     ) : MediaUseCase() {

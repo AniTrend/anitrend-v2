@@ -113,4 +113,23 @@ internal sealed class MediaQuery : IGraphPayload {
                 "volumes_lesser" to param.volumes_lesser,
             )
     }
+
+    data class Studios(
+        val param: MediaParam.Studios,
+    ) : MediaQuery() {
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+                "sort" to param.sort,
+            )
+    }
+
+    data class Stats(
+        val param: MediaParam.Stats,
+    ) : MediaQuery() {
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+            )
+    }
 }

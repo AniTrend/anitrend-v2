@@ -40,6 +40,14 @@ interface IMediaRepository {
         fun getStaff(param: MediaParam.Staff): State
     }
 
+    interface Studios<State : UiState<*>> : IMediaRepository {
+        fun getStudios(param: MediaParam.Studios): State
+    }
+
+    interface Stats<State : UiState<*>> : IMediaRepository {
+        fun getStats(param: MediaParam.Stats): State
+    }
+
     interface Paged<State : UiState<*>> : IMediaRepository {
         fun getPaged(param: MediaParam.Find): State
     }
