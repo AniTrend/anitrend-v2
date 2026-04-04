@@ -17,10 +17,12 @@
 package co.anitrend.domain.media.entity
 
 import co.anitrend.domain.common.entity.contract.IEntity
+import co.anitrend.domain.recommendation.enums.RecommendationRating
 
 data class MediaRecommendationEntry(
     val media: Media,
     val rating: Int?,
     val userName: String?,
+    val userRating: RecommendationRating? = null,
     override val id: Long,
 ) : IEntity

@@ -9,6 +9,7 @@ import co.anitrend.domain.media.enums.MediaRelation
 import co.anitrend.domain.media.enums.MediaRankType
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.tag.entity.Tag
+import co.anitrend.domain.recommendation.enums.RecommendationRating
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -162,6 +163,7 @@ class MediaDetailSectionSupportTest {
             media = mediaItem(mediaId),
             rating = id.toInt(),
             userName = "User $id",
+            userRating = RecommendationRating.NO_RATING,
             id = id,
         )
 

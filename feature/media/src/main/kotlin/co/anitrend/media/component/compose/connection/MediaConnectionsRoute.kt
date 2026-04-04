@@ -21,8 +21,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -30,13 +28,11 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -44,10 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
-import co.anitrend.common.media.ui.compose.item.MediaCompactItem
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
-import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.entity.MediaRelationEntry
 import co.anitrend.domain.medialist.enums.ScoreFormat
@@ -58,8 +51,6 @@ import co.anitrend.media.component.viewmodel.MediaRecommendationsViewModel
 import co.anitrend.media.component.viewmodel.MediaRelationsViewModel
 import co.anitrend.navigation.model.common.IParam
 import org.koin.androidx.compose.koinViewModel
-
-private val ConnectionGridCardHeight = 280.dp
 
 @Composable
 fun MediaRelationsRoute(
@@ -228,29 +219,19 @@ private fun RelationGrid(
     onMediaItemClick: (IParam) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val mediaPreferenceData = remember(scoreFormat) { MediaPreferenceData(scoreFormat) }
-
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 156.dp),
+        columns = GridCells.Adaptive(minSize = 176.dp),
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 24.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         items(relations, key = MediaRelationEntry::id) { relation ->
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                ConnectionMetaPill(
-                    label = relation.relation?.alias?.toString().orEmpty(),
-                )
-                MediaCompactItem(
-                    media = relation.media,
-                    mediaPreferenceData = mediaPreferenceData,
-                    mediaItemClick = onMediaItemClick,
-                    modifier = Modifier.fillMaxWidth().height(ConnectionGridCardHeight),
-                )
-            }
+            RelatedMediaCard(
+                relation = relation,
+                scoreFormat = scoreFormat,
+                onMediaItemClick = onMediaItemClick,
+            )
         }
     }
 }
@@ -262,59 +243,20 @@ private fun RecommendationGrid(
     onMediaItemClick: (IParam) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val mediaPreferenceData = remember(scoreFormat) { MediaPreferenceData(scoreFormat) }
-
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 156.dp),
+        columns = GridCells.Adaptive(minSize = 176.dp),
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 24.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         items(recommendations, key = MediaRecommendationEntry::id) { recommendation ->
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                ConnectionMetaPill(
-                    label = recommendation.rating?.let { "+$it" } ?: stringResource(R.string.label_media_recommendations_rating_unknown),
-                )
-                MediaCompactItem(
-                    media = recommendation.media,
-                    mediaPreferenceData = mediaPreferenceData,
-                    mediaItemClick = onMediaItemClick,
-                    modifier = Modifier.fillMaxWidth().height(ConnectionGridCardHeight),
-                )
-                Text(
-                    text = recommendation.userName ?: stringResource(R.string.label_media_recommendations_source_unknown),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
+            RecommendationMediaCard(
+                recommendation = recommendation,
+                scoreFormat = scoreFormat,
+                onMediaItemClick = onMediaItemClick,
+            )
         }
-    }
-}
-
-@Composable
-private fun ConnectionMetaPill(
-    label: String,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.55f),
-        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        shape = RoundedCornerShape(16.dp),
-        modifier = modifier.fillMaxWidth(),
-    ) {
-        Text(
-            text = label,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 7.dp),
-        )
     }
 }
 
