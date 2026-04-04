@@ -30,16 +30,16 @@ private enum class DependencyType(val configurationName: String) {
     DEBUG("debugOnly"),
     KAPT("kapt"),
     IMPLEMENTATION("implementation"),
-    IMPLEMENTATION_PLATFORM("implementation"),
+    PLATFORM_IMPLEMENTATION("implementation"),
     DEBUG_IMPLEMENTATION("debugImplementation"),
-    DEBUG_IMPLEMENTATION_PLATFORM("debugImplementation"),
+    PLATFORM_DEBUG_IMPLEMENTATION("debugImplementation"),
     RELEASE_IMPLEMENTATION("releaseImplementation"),
     GITHUB_IMPLEMENTATION("githubImplementation"),
     GOOGLE_IMPLEMENTATION("googleImplementation"),
     RUNTIME("runtimeOnly"),
     TEST("testImplementation"),
     ANDROID_TEST("androidTestImplementation"),
-    ANDROID_TEST_PLATFORM("androidTestImplementation")
+    PLATFORM_ANDROID_TEST("androidTestImplementation")
 }
 
 
@@ -191,7 +191,7 @@ internal fun DependencyHandler.implementation(
 
 internal fun DependencyHandler.implementationPlatform(
     dependencyNotation: Any,
-) = addPlatformDependency(dependencyNotation, DependencyType.IMPLEMENTATION_PLATFORM)
+) = addPlatformDependency(dependencyNotation, DependencyType.PLATFORM_IMPLEMENTATION)
 
 /**
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
@@ -208,7 +208,7 @@ internal fun DependencyHandler.debugImplementation(
 
 internal fun DependencyHandler.debugImplementationPlatform(
     dependencyNotation: Any,
-) = addPlatformDependency(dependencyNotation, DependencyType.DEBUG_IMPLEMENTATION_PLATFORM)
+) = addPlatformDependency(dependencyNotation, DependencyType.PLATFORM_DEBUG_IMPLEMENTATION)
 
 /**
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
@@ -290,4 +290,4 @@ internal fun DependencyHandler.androidTest(
 
 internal fun DependencyHandler.androidTestPlatform(
     dependencyNotation: Any,
-) = addPlatformDependency(dependencyNotation, DependencyType.ANDROID_TEST_PLATFORM)
+) = addPlatformDependency(dependencyNotation, DependencyType.PLATFORM_ANDROID_TEST)
