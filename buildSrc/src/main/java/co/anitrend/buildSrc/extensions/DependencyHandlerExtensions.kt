@@ -20,9 +20,11 @@ package co.anitrend.buildSrc.extensions
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.ExternalModuleDependency
+import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.ModuleDependency
 import org.gradle.api.artifacts.ResolutionStrategy
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.api.provider.Provider
 
 private enum class DependencyType(val configurationName: String) {
     API("api"),
@@ -30,7 +32,7 @@ private enum class DependencyType(val configurationName: String) {
     DEBUG("debugOnly"),
     KAPT("kapt"),
     IMPLEMENTATION("implementation"),
-    // Platform enum entries use the same Gradle configuration names as base entries, but addPlatformDependency() wraps with platform(...)
+    // Platform enum entries use the same Gradle configuration names as base entries, but addPlatformDependency wraps with platform(...)
     PLATFORM_IMPLEMENTATION("implementation"),
     DEBUG_IMPLEMENTATION("debugImplementation"),
     PLATFORM_DEBUG_IMPLEMENTATION("debugImplementation"),
@@ -121,6 +123,11 @@ private fun DependencyHandler.addDependency(
 }
 
 private fun DependencyHandler.addPlatformDependency(
+    dependencyNotation: Provider<MinimalExternalModuleDependency>,
+    dependencyType: DependencyType,
+) = add(dependencyType.configurationName, platform(dependencyNotation.get()))
+
+private fun DependencyHandler.addPlatformDependency(
     dependencyNotation: Any,
     dependencyType: DependencyType,
 ) = add(dependencyType.configurationName, platform(dependencyNotation))
@@ -191,7 +198,7 @@ internal fun DependencyHandler.implementation(
 ) = addDependency(dependencyNotation, DependencyType.IMPLEMENTATION, dependencyConfiguration)
 
 internal fun DependencyHandler.implementationPlatform(
-    dependencyNotation: Any,
+    dependencyNotation: Provider<MinimalExternalModuleDependency>,
 ) = addPlatformDependency(dependencyNotation, DependencyType.PLATFORM_IMPLEMENTATION)
 
 /**
@@ -208,7 +215,7 @@ internal fun DependencyHandler.debugImplementation(
 ) = addDependency(dependencyNotation, DependencyType.DEBUG_IMPLEMENTATION, dependencyConfiguration)
 
 internal fun DependencyHandler.debugImplementationPlatform(
-    dependencyNotation: Any,
+    dependencyNotation: Provider<MinimalExternalModuleDependency>,
 ) = addPlatformDependency(dependencyNotation, DependencyType.PLATFORM_DEBUG_IMPLEMENTATION)
 
 /**
@@ -290,5 +297,5 @@ internal fun DependencyHandler.androidTest(
 ) = addDependency(dependencyNotation, DependencyType.ANDROID_TEST, dependencyConfiguration)
 
 internal fun DependencyHandler.androidTestPlatform(
-    dependencyNotation: Any,
+    dependencyNotation: Provider<MinimalExternalModuleDependency>,
 ) = addPlatformDependency(dependencyNotation, DependencyType.PLATFORM_ANDROID_TEST)

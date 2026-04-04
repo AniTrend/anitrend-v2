@@ -70,8 +70,12 @@ private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
             }
         }
     }
-    else
-        consumerProguardFiles.add(File("consumer-rules.pro"))
+    else {
+        val consumerRules = project.file("consumer-rules.pro")
+        if (consumerRules.exists()) {
+            consumerProguardFiles.add(consumerRules)
+        }
+    }
 
     if (!project.matchesAppModule() && !project.matchesTaskModule()) {
         // checking app module again since the group for app modules is
