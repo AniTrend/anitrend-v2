@@ -53,9 +53,10 @@ internal fun MediaCommunitySection(
     MediaHubSection(
         title = stringResource(R.string.title_media_community_section),
         subtitle = stringResource(R.string.subtitle_media_community_section),
-        trailingActionLabel = previewItems.takeIf(List<Review>::isNotEmpty)?.let {
-            stringResource(R.string.action_media_community_section_see_all)
-        },
+        trailingActionLabel =
+            previewItems.takeIf(List<Review>::isNotEmpty)?.let {
+                stringResource(R.string.action_media_community_section_see_all)
+            },
         onTrailingAction = previewItems.takeIf(List<Review>::isNotEmpty)?.let { { onSeeAllClick() } },
         modifier = modifier,
     ) {
@@ -123,9 +124,10 @@ private fun CommunityReviewCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = review.user.name.toString().ifBlank {
-                        stringResource(R.string.label_media_community_review_by_unknown)
-                    },
+                    text =
+                        review.user.name.toString().ifBlank {
+                            stringResource(R.string.label_media_community_review_by_unknown)
+                        },
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                 )
