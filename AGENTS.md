@@ -20,6 +20,13 @@ Before merging doc changes, run `.github/scripts/audit-instruction-refs.sh`.
 
 Reference index: `.github/skills/reference-map/SKILL.md`
 
+## AI-Native SDLC Packs
+
+- `docs/support-arch/instructions/*.md` contains autonomous operational playbooks for CI, migrations,
+  API contract auditing, and QA/compliance routines.
+- `docs/support-arch/prompts/*.md` contains paired prompt templates that invoke those playbooks.
+- When adding a new pack, link it from `.github/skills/reference-map/SKILL.md`.
+
 ## Scope Routing
 
 | Task | Read first | Then read |
@@ -36,7 +43,9 @@ Reference index: `.github/skills/reference-map/SKILL.md`
 
 ## Engineering Defaults
 
-- Keep clean boundaries: `feature -> domain -> data`, never `feature -> data` direct imports.
+- Keep clean boundaries: `feature/common/task -> interactor aliases -> domain contracts -> data implementations`.
+  Never import data repositories, sources, mappers, controllers, or remote models into
+  `feature`, `common`, or `task` code.
 - Return `DataState<T>` for repository streams, not raw models or `LiveData`.
 - Wire new implementations through Koin `Modules.kt` near the owning module.
 - Register new modules in `buildSrc/src/main/java/co/anitrend/buildSrc/module/Modules.kt`.
