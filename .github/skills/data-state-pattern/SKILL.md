@@ -62,9 +62,47 @@ ViewModel / Presenter / Worker
 - Put the concrete data-layer use-case bridge in the module's `usecase/` package. Simple modules
   may use a single `XxxUseCaseImpl`; operation-heavy modules may use nested `XxxInteractor`
   classes such as `MediaListInteractor`, `ReviewInteractor`, or `FavouriteInteractor`.
-- Query sources usually emit `Flow<Model>` or `Flow<PagedList<Model>>`; mutation sources often
-  emit `Flow<Boolean?>` or a persisted model and then rely on the repository wrapper to expose the
-  final `DataState`.
+- Query sources usually emit `Flow<Model>`, `Flow<List<Model>>`, or `Flow<PagedList<Model>>`;
+  mutation sources often emit `Flow<Boolean?>` or a persisted model and then rely on the
+  repository wrapper to expose the final `DataState`.
+
+## Offline-first non-paged read pattern
+
+Use this pattern for single-entity reads or fixed-size collections that should render from Room
+first and refresh from the network opportunistically.
+
+- The source contract should extend `AbstractCoreDataSource` and expose
+  `observable(): Flow<Model>` or `observable(): Flow<List<Model>>`.
+- The source `invoke(...)` operator should store any query context it needs, call `cachePolicy(...)`
+  with the source cache identity, and return `observable()` immediately.
+- `observable()` should read local Room state and project it into the domain model. The standard
+  flow pipeline is local query on `dispatcher.io`, optional `filterNotNull()`, converter mapping,
+  optional `distinctUntilChanged()`, and final emission on `dispatcher.computation`.
+- `get*()` methods should only orchestrate the remote refresh path through the controller and
+  return `Boolean` success so `cachePolicy(...)` can update the last request timestamp.
+- Persistence still belongs to the controller and mapper chain. Do not manually merge cached rows,
+  build domain models from remote payloads inline, or make `observable()` depend on network work.
+- `clearDataSource(...)` for read flows should invalidate the relevant cache identity and clear the
+  local rows that back `observable()`.
+
+### Non-paged source shapes
+
+- Use `Flow<List<Model>>` for immutable or fixed-size collections such as `TagSource` and
+  `GenreSource`.
+- Use `Flow<Model>` for singleton or detail reads such as `EdgeConfigSource`,
+  `MediaSource.Detail`, and `ReviewSource.Entry`.
+- For entity families with multiple read contexts, define separate source variants for each
+  contract, as in `UserSource.Identifier`, `UserSource.Viewer`, `UserSource.Profile`, and
+  `UserSource.Statistic`.
+
+### Contrast with mutation-only variants
+
+- Mutation sources such as `ReviewSource.Rate/Delete/Save` and
+  `UserSource.ToggleFollow/Update` are not offline-first read baselines.
+- They commonly expose terminal state streams such as `MutableStateFlow<Boolean?>` or reuse a
+  persisted entity stream after the controller mutates local state.
+- Keep their request orchestration and `observable()` contracts separate from the non-paged read
+  pattern so read guidance does not get conflated with mutation-only flows.
 
 ## Offline-first paged read pattern
 
@@ -105,6 +143,8 @@ media detail screen exposing characters or staff.
 - An import such as `co.anitrend.data.review.GetReviewPagedInteractor` in `feature` or `task`
   code is acceptable because it aliases a domain use case. Importing `ReviewRepository`,
   `ReviewSourceImpl`, or `ReviewMapper` into those layers is not.
+- For DB-backed non-paged reads, prefer `AbstractCoreDataSource` plus a cache-policy-gated local
+  observable flow. Do not model them as paging sources or network-only live-data sources.
 - For DB-backed paged reads, do not choose `SupportPagingLiveDataSource` unless the flow is truly
   network-only. If a local source exists, prefer `AbstractPagingSource` plus a local observable
   flow.
