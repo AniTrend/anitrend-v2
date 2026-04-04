@@ -150,6 +150,24 @@ private fun Media.Extended.secondaryTitle(): String? {
         .firstOrNull { it != preferred }
 }
 
+private fun Media.Extended.displayTitle(): String? =
+    title.userPreferred
+        ?.toString()
+        ?.trim()
+        ?.takeIf(String::isNotBlank)
+        ?: listOf(title.english, title.romaji, title.native)
+            .mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
+            .firstOrNull()
+
+private fun resolvePeopleInitialSection(
+    characters: PagedList<MediaPerson.Character>?,
+    staff: PagedList<MediaPerson.Staff>?,
+): MediaPeopleRouter.Section =
+    when {
+        staff?.isNotEmpty() == true && characters?.isEmpty() != false -> MediaPeopleRouter.Section.STAFF
+        else -> MediaPeopleRouter.Section.CHARACTERS
+    }
+
 private fun Media.Extended.heroFacts(): List<String> =
     buildList {
         season
@@ -524,6 +542,8 @@ private fun MediaDetailContent(
     modifier: Modifier = Modifier,
 ) {
     var showScheduleSheet by remember { mutableStateOf(false) }
+    val mediaTitle = media.displayTitle()
+    val defaultPeopleSection = resolvePeopleInitialSection(characters = characters, staff = staff)
     val hasUserState = media.hasVisibleUserState(scoreFormat)
 
     Column(modifier = modifier) {
@@ -618,7 +638,8 @@ private fun MediaDetailContent(
                     onPeopleClick(
                         MediaPeopleRouter.MediaPeopleParam(
                             mediaId = media.id,
-                            initialSection = MediaPeopleRouter.Section.CHARACTERS,
+                            mediaTitle = mediaTitle,
+                            initialSection = defaultPeopleSection,
                         ),
                     )
                 },
@@ -626,6 +647,7 @@ private fun MediaDetailContent(
                     onPeopleClick(
                         MediaPeopleRouter.MediaPeopleParam(
                             mediaId = media.id,
+                            mediaTitle = mediaTitle,
                             initialSection = MediaPeopleRouter.Section.CHARACTERS,
                         ),
                     )
@@ -634,6 +656,7 @@ private fun MediaDetailContent(
                     onPeopleClick(
                         MediaPeopleRouter.MediaPeopleParam(
                             mediaId = media.id,
+                            mediaTitle = mediaTitle,
                             initialSection = MediaPeopleRouter.Section.STAFF,
                         ),
                     )
