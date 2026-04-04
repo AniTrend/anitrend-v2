@@ -52,6 +52,24 @@ Use repo-relative paths only, then run `.github/scripts/audit-instruction-refs.s
 | Add tests for data/domain logic | `.github/instructions/guides.instructions.md` | `.github/skills/testing-guidelines/SKILL.md` |
 | Update dependencies or build logic | `.github/instructions/build-system.instructions.md` | `.github/skills/key-libraries/SKILL.md` |
 
+## AI-Native SDLC Packs
+
+These support-arch prompt packs are repo-local execution playbooks for autonomous operational work.
+Use them alongside the `.github` instructions and skills when the task is broader than one module.
+
+- CI/CD pipeline intervention:
+  `docs/support-arch/instructions/ci-pipeline-intervention.md` and
+  `docs/support-arch/prompts/ci-pipeline-intervention.md`
+- Room migration fail-safes:
+  `docs/support-arch/instructions/room-migration-failsafe.md` and
+  `docs/support-arch/prompts/room-migration-failsafe.md`
+- GraphQL contract auditing:
+  `docs/support-arch/instructions/graphql-schema-contract-audit.md` and
+  `docs/support-arch/prompts/graphql-schema-contract-audit.md`
+- QA and license autofix:
+  `docs/support-arch/instructions/qa-license-autofix.md` and
+  `docs/support-arch/prompts/qa-license-autofix.md`
+
 ## Canonical code anchors
 
 Use these as concrete implementation references:
