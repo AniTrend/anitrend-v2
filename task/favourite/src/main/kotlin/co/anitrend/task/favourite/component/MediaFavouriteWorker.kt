@@ -19,14 +19,18 @@ package co.anitrend.task.favourite.component
 import android.content.Context
 import androidx.work.WorkerParameters
 import co.anitrend.arch.core.worker.SupportCoroutineWorker
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.data.favourite.ToggleFavouriteInteractor
 import co.anitrend.domain.favourite.model.FavouriteInput
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.extensions.transform
+import kotlinx.coroutines.flow.first
 
 class MediaFavouriteWorker(
     context: Context,
     parameters: WorkerParameters,
+    private val interactor: ToggleFavouriteInteractor,
 ) : SupportCoroutineWorker(context, parameters) {
     private val param by parameters.transform<
         FavouriteTaskRouter.Param.MediaToggleParam,
@@ -50,16 +54,17 @@ class MediaFavouriteWorker(
      * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
     override suspend fun doWork(): Result {
-        // val dataState = interactor(param)
-//
-        // val loadState = dataState.loadState.first { state ->
-        //    state is LoadState.Success || state is LoadState.Error
-        // }
-//
-        // return if (loadState is LoadState.Success)
-        //    Result.success()
-        // else Result.failure()
+        val dataState = interactor(param)
 
-        return Result.failure()
+        val loadState =
+            dataState.loadState.first { state ->
+                state is LoadState.Success || state is LoadState.Error
+            }
+
+        return if (loadState is LoadState.Success) {
+            Result.success()
+        } else {
+            Result.failure()
+        }
     }
 }

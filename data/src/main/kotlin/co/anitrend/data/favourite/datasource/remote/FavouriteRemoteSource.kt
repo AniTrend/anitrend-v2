@@ -34,7 +34,7 @@ internal interface FavouriteRemoteSource {
 
     @GRAPHQL
     @POST
-    @GraphQuery("ToggleAnimeFavorite")
+    @GraphQuery("ToggleMangaFavorite")
     suspend fun toggleMangaFavorite(
         @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<Boolean>>

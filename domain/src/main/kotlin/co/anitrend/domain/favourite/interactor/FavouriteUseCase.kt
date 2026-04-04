@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 AniTrend
+ * Copyright (C) 2026 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,13 +14,16 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.favourite
+package co.anitrend.domain.favourite.interactor
 
-import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.android.controller.graphql.GraphQLController
-import co.anitrend.domain.favourite.interactor.FavouriteUseCase
+import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.favourite.model.FavouriteInput
 import co.anitrend.domain.favourite.repository.IFavouriteRepository
 
-internal typealias FavouriteToggleController = GraphQLController<Boolean, Boolean>
-internal typealias FavouriteToggleRepository = IFavouriteRepository.Toggle<DataState<Boolean>>
-typealias ToggleFavouriteInteractor = FavouriteUseCase.Toggle<DataState<Boolean>>
+sealed class FavouriteUseCase {
+    abstract class Toggle<State : UiState<*>>(
+        protected val repository: IFavouriteRepository.Toggle<State>,
+    ) : FavouriteUseCase() {
+        suspend operator fun invoke(param: FavouriteInput): State = repository.toggle(param)
+    }
+}

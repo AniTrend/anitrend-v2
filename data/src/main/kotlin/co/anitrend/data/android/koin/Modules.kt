@@ -51,6 +51,7 @@ import co.anitrend.data.customscore.koin.customScoreModules
 import co.anitrend.data.edge.core.koin.edgeModules
 import co.anitrend.data.feed.api.factory.IFeedFactory
 import co.anitrend.data.feed.koin.feedModules
+import co.anitrend.data.favourite.koin.favouriteModules
 import co.anitrend.data.genre.koin.genreModules
 import co.anitrend.data.link.koin.linkModules
 import co.anitrend.data.media.koin.mediaModules
@@ -245,6 +246,7 @@ val dataModules =
             userModules,
             mediaListModules,
             feedModules,
+            favouriteModules,
             linkModules,
             rankModules,
             customListModules,
