@@ -17,6 +17,7 @@ fragment StaffCore on Staff {
         medium
     }
     isFavourite
+    isFavouriteBlocked
     languageV2
     name {
         alternative
