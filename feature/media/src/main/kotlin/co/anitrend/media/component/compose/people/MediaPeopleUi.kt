@@ -63,7 +63,6 @@ import co.anitrend.media.component.compose.section.MediaHubSection
 import co.anitrend.media.component.compose.section.MediaHubSectionEmptyState
 import co.anitrend.media.component.compose.section.MediaHubSectionErrorState
 import co.anitrend.media.component.compose.section.MediaHubSectionLoadingState
-import kotlin.math.min
 
 private const val CHARACTER_PREVIEW_COUNT = 6
 private const val STAFF_PREVIEW_COUNT = 4
@@ -160,11 +159,6 @@ private val PreviewStaff =
         ),
     )
 
-internal fun <T : Any> PagedList<T>.asItems(limit: Int = size): List<T> {
-    val end = min(size, limit)
-    return (0 until end).mapNotNull(::get)
-}
-
 private fun LoadState?.isLoading() = this is LoadState.Loading
 
 private fun LoadState?.isError() = this is LoadState.Error
@@ -182,8 +176,8 @@ fun MediaPeopleSection(
     onRetryStaff: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val previewCharacters = characters?.asItems(CHARACTER_PREVIEW_COUNT).orEmpty()
-    val previewStaff = staff?.asItems(STAFF_PREVIEW_COUNT).orEmpty()
+    val previewCharacters = characters?.curatedCharacterPreview(CHARACTER_PREVIEW_COUNT).orEmpty()
+    val previewStaff = staff?.curatedStaffPreview(STAFF_PREVIEW_COUNT).orEmpty()
 
     MediaHubSection(
         title = stringResource(R.string.title_media_people_section),
