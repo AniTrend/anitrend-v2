@@ -26,6 +26,7 @@ Use repo-relative paths only, then run `.github/scripts/audit-instruction-refs.s
 | Legacy topic | Primary instruction | Primary skill |
 |---|---|---|
 | Architecture boundaries | `.github/instructions/context.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
+| Layered module plumbing | `.github/instructions/context.instructions.md` | `.github/skills/layered-module-patterns/SKILL.md` |
 | UI navigation architecture | `.github/instructions/context.instructions.md` | `.github/skills/navigation-architecture/SKILL.md` |
 | Build system conventions | `.github/instructions/build-system.instructions.md` | `.github/skills/new-module-checklist/SKILL.md` |
 | DataState / UiState behavior | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
@@ -41,6 +42,7 @@ Use repo-relative paths only, then run `.github/scripts/audit-instruction-refs.s
 | If your task is... | Read this first | Then read |
 |---|---|---|
 | Add a new feature module | `.github/instructions/context.instructions.md` | `.github/skills/new-module-checklist/SKILL.md` |
+| Evaluate or add domain/data/feature/task plumbing | `.github/instructions/context.instructions.md` | `.github/skills/layered-module-patterns/SKILL.md` |
 | Trace or add screen navigation | `.github/instructions/context.instructions.md` | `.github/skills/navigation-architecture/SKILL.md` |
 | Add a new repository or source | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
 | Add DI bindings | `.github/instructions/context.instructions.md` | `.github/skills/koin-module-wiring/SKILL.md` |
@@ -56,6 +58,17 @@ Use these as concrete implementation references:
 
 - `domain/src/main/kotlin/co/anitrend/domain/tag/`
 - `data/src/main/kotlin/co/anitrend/data/tag/`
+- `domain/src/main/kotlin/co/anitrend/domain/media/`
+- `data/src/main/kotlin/co/anitrend/data/media/`
+- `domain/src/main/kotlin/co/anitrend/domain/medialist/`
+- `data/src/main/kotlin/co/anitrend/data/medialist/`
+- `domain/src/main/kotlin/co/anitrend/domain/review/`
+- `data/src/main/kotlin/co/anitrend/data/review/`
+- `domain/src/main/kotlin/co/anitrend/domain/favourite/`
+- `data/src/main/kotlin/co/anitrend/data/favourite/`
+- `task/medialist/src/main/kotlin/co/anitrend/task/medialist/`
+- `task/review/src/main/kotlin/co/anitrend/task/review/`
+- `task/favourite/src/main/kotlin/co/anitrend/task/favourite/`
 - `data/android/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
 - `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt`
 - `buildSrc/src/main/java/co/anitrend/buildSrc/module/Modules.kt`

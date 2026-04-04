@@ -54,7 +54,7 @@ All versions are declared in `gradle/libs.versions.toml`.
 
 ## Dependency injection
 
-- **Koin** — loaded at startup via `InjectorInitializer`. See `skills/koin-module-wiring.md`
+- **Koin** — loaded at startup via `InjectorInitializer`. See `.github/skills/koin-module-wiring/SKILL.md`
   for wiring conventions.
 
 ## Logging and analytics

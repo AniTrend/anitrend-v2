@@ -40,10 +40,13 @@ External URIs enter through `DeepLinkScreen`, not straight into feature screens.
 
 Flow:
 
-1. `android/deeplink/.../DeepLinkScreen.kt` receives the incoming intent.
+1. `android/deeplink/src/main/kotlin/co/anitrend/android/deeplink/component/screen/DeepLinkScreen.kt`
+   receives the incoming intent.
 2. `DeepLinkViewModel` calls `DeepLinkRouter.forMatchingIntent(uri)`.
-3. `DeepLinkRouter.Provider` is implemented by `android/deeplink/.../provider/FeatureProvider.kt`.
-4. That provider delegates to a `DeepLinkParser` built in `android/deeplink/.../koin/Modules.kt`.
+3. `DeepLinkRouter.Provider` is implemented by
+   `android/deeplink/src/main/kotlin/co/anitrend/android/deeplink/provider/FeatureProvider.kt`.
+4. That provider delegates to a `DeepLinkParser` built in
+   `android/deeplink/src/main/kotlin/co/anitrend/android/deeplink/koin/Modules.kt`.
 5. Route objects in `AppRoutes.kt` and `WebRoutes.kt` convert the URI into a target router call
    such as `SettingsRouter.forActivity(...)` or `MainRouter.forActivity(...)`.
 6. The deep-link screen launches the resolved intent, then exits.
@@ -60,8 +63,10 @@ Each router:
 - exposes a contract such as `activity()`, `fragment()`, or `sheet()`
 - defines typed params with `IParam` when payload is required
 
-The shared helpers in `app/navigation/.../extensions/RouterExtensions.kt` build or start intents
-from those providers. Callers should prefer router helpers over constructing intents directly.
+The shared helpers in
+`app/navigation/src/main/kotlin/co/anitrend/navigation/extensions/RouterExtensions.kt` build or
+start intents from those providers. Callers should prefer router helpers over constructing intents
+directly.
 
 ### 3. Feature-owned UI host style
 
@@ -78,10 +83,13 @@ Examples:
 
 - `app/src/main/kotlin/co/anitrend/component/screen/MainScreen.kt` is the app shell and still
   uses fragment transactions plus the navigation drawer router.
-- `feature/airing/.../AiringScreen.kt` shows the bridge pattern: activity host, Compose scaffold,
-  then `FragmentItemHost(fragment = AiringRouter.forFragment())`.
-- `feature/settings/.../SettingsScreen.kt` and `SettingsCompose.kt` show the Compose-local
-  navigation pattern with `SettingsRouter.Destination` and a local Compose `NavHost`.
+- `feature/airing/src/main/kotlin/co/anitrend/airing/component/screen/AiringScreen.kt` shows the
+  bridge pattern: activity host, Compose scaffold, then
+  `FragmentItemHost(fragment = AiringRouter.forFragment())`.
+- `feature/settings/src/main/kotlin/co/anitrend/settings/component/screen/SettingsScreen.kt` and
+  `feature/settings/src/main/kotlin/co/anitrend/settings/component/compose/SettingsCompose.kt`
+  show the Compose-local navigation pattern with `SettingsRouter.Destination` and a local Compose
+  `NavHost`.
 
 ## Procedure: Trace an Existing Flow
 
@@ -126,7 +134,7 @@ Examples:
    - Compose-local feature: update the feature screen and local `NavHost` routes.
    - Sheet/dialog feature: return the dialog fragment class from `sheet()`.
 6. If the route must be deep-linkable, add a `Route` implementation and register it in
-   `android/deeplink/.../koin/Modules.kt`.
+   `android/deeplink/src/main/kotlin/co/anitrend/android/deeplink/koin/Modules.kt`.
 
 ## Decision Rules
 
