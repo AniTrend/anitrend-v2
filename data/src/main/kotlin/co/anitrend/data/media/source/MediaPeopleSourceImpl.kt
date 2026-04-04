@@ -36,8 +36,6 @@ import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.media.entity.MediaPerson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
-import kotlin.math.ceil
 
 internal class MediaPeopleSourceImpl {
     class Characters(
@@ -50,8 +48,6 @@ internal class MediaPeopleSourceImpl {
         override val dispatcher: ISupportDispatcher,
     ) : MediaPeopleSource.Characters() {
         override fun observable(): Flow<PagedList<MediaPerson.Character>> {
-            syncPagingState()
-
             val dataSourceFactory =
                 localSource
                     .mediaCharactersFactory(query.param.id)
@@ -89,25 +85,6 @@ internal class MediaPeopleSourceImpl {
             return result != null
         }
 
-        private fun syncPagingState() {
-            scope.launch(dispatcher.io) {
-                val totalItems = localSource.mediaCharactersCount(query.param.id)
-                alignPagingState(totalItems)
-            }
-        }
-
-        private fun alignPagingState(totalItems: Int) {
-            val totalPages =
-                ceil(totalItems.coerceAtLeast(1).toDouble() / supportPagingHelper.pageSize.toDouble())
-                    .toInt()
-                    .coerceAtLeast(1)
-
-            supportPagingHelper.onPageRefresh()
-            repeat(totalPages) {
-                supportPagingHelper.onPageNext()
-            }
-        }
-
         override suspend fun clearDataSource(context: CoroutineDispatcher) = Unit
     }
 
@@ -121,8 +98,6 @@ internal class MediaPeopleSourceImpl {
         override val dispatcher: ISupportDispatcher,
     ) : MediaPeopleSource.Staff() {
         override fun observable(): Flow<PagedList<MediaPerson.Staff>> {
-            syncPagingState()
-
             val dataSourceFactory =
                 localSource
                     .mediaStaffFactory(query.param.id)
@@ -158,25 +133,6 @@ internal class MediaPeopleSourceImpl {
                 }
 
             return result != null
-        }
-
-        private fun syncPagingState() {
-            scope.launch(dispatcher.io) {
-                val totalItems = localSource.mediaStaffCount(query.param.id)
-                alignPagingState(totalItems)
-            }
-        }
-
-        private fun alignPagingState(totalItems: Int) {
-            val totalPages =
-                ceil(totalItems.coerceAtLeast(1).toDouble() / supportPagingHelper.pageSize.toDouble())
-                    .toInt()
-                    .coerceAtLeast(1)
-
-            supportPagingHelper.onPageRefresh()
-            repeat(totalPages) {
-                supportPagingHelper.onPageNext()
-            }
         }
 
         override suspend fun clearDataSource(context: CoroutineDispatcher) = Unit
