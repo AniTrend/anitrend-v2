@@ -182,6 +182,114 @@
     <string name="message_media_people_staff_loading">Fetching the most relevant staff credits for this title.</string>
     <!-- Fallback role label when a staff role is missing from the upstream payload -->
     <string name="label_media_people_staff_role_unknown">Role unavailable</string>
+    <!-- Section title for grouped production credits on media detail -->
+    <string name="title_media_production_section">Production</string>
+    <!-- Supporting copy for the grouped production credit section -->
+    <string name="subtitle_media_production_section">Studios and major creators, grouped for quick recognition.</string>
+    <!-- Group heading for original source and creator credits -->
+    <string name="label_media_production_original_creator">Original creator</string>
+    <!-- Group heading for directorial credits -->
+    <string name="label_media_production_directors">Directors</string>
+    <!-- Group heading for writing and composition credits -->
+    <string name="label_media_production_writers">Writers</string>
+    <!-- Group heading for producer credits -->
+    <string name="label_media_production_producers">Producers</string>
+    <!-- Group heading for grouped production credits that do not fit a stronger bucket -->
+    <string name="label_media_production_additional_credits">Additional credits</string>
+    <!-- Group heading for animation studios in the production section -->
+    <string name="label_media_production_studios_heading">Studios</string>
+    <!-- Badge label for the primary studio credit -->
+    <string name="label_media_production_studio_main_badge">Main</string>
+    <!-- Overflow label for hidden production credits -->
+    <string name="label_media_production_more_count">+%1$d more</string>
+    <!-- Loading label for the production-studios sidecar fetch -->
+    <string name="label_media_production_studios_loading">Loading studios</string>
+    <!-- Supporting loading copy for the production-studios sidecar fetch -->
+    <string name="message_media_production_studios_loading">Fetching animation studio credits for this title.</string>
+    <!-- Error-state title for failed production-studios fetches -->
+    <string name="label_media_production_studios_error_title">Studios unavailable</string>
+    <!-- Loading label for the production-staff sidecar fetch -->
+    <string name="label_media_production_staff_loading">Loading production credits</string>
+    <!-- Supporting loading copy for the production-staff sidecar fetch -->
+    <string name="message_media_production_staff_loading">Fetching creators, directors, and writers for this title.</string>
+    <!-- Error-state title for failed production-staff fetches -->
+    <string name="label_media_production_staff_error_title">Production credits unavailable</string>
+    <!-- Empty-state title for a title without exposed production credits -->
+    <string name="label_media_production_empty_title">No production credits yet</string>
+    <!-- Empty-state copy for a title without exposed production credits -->
+    <string name="message_media_production_empty">Production roles and studio credits are not exposed for this title yet.</string>
+    <!-- Section title for the localized release timeline -->
+    <string name="title_media_release_timeline_section">Release timeline</string>
+    <!-- Supporting copy for the localized release timeline -->
+    <string name="subtitle_media_release_timeline_section">Start and end dates that adapt to the title’s release state.</string>
+    <!-- Timeline verb for an upcoming title -->
+    <string name="label_media_release_timeline_starts">Starts %1$s</string>
+    <!-- Timeline verb for a title that is currently releasing -->
+    <string name="label_media_release_timeline_started">Started %1$s</string>
+    <!-- Timeline verb for an anime title that has finished airing -->
+    <string name="label_media_release_timeline_aired">Aired %1$s</string>
+    <!-- Timeline verb for a manga title that has finished publishing -->
+    <string name="label_media_release_timeline_published">Published %1$s</string>
+    <!-- Timeline verb for an anime title that has finished airing with a full range -->
+    <string name="label_media_release_timeline_aired_range">Aired %1$s – %2$s</string>
+    <!-- Timeline verb for a manga title that has finished publishing with a full range -->
+    <string name="label_media_release_timeline_published_range">Published %1$s – %2$s</string>
+    <!-- Timeline verb for a title that has an end date but no start date -->
+    <string name="label_media_release_timeline_ended">Ended %1$s</string>
+    <!-- Fallback timeline label when a title is finished but no dates are exposed -->
+    <string name="label_media_release_timeline_finished">Finished</string>
+    <!-- Timeline verb for cancelled titles with a known release start -->
+    <string name="label_media_release_timeline_cancelled_after">Cancelled after %1$s</string>
+    <!-- Fallback timeline label for cancelled titles without a known start -->
+    <string name="label_media_release_timeline_cancelled">Cancelled</string>
+    <!-- Timeline verb for hiatus titles with a known release start -->
+    <string name="label_media_release_timeline_hiatus_since">On hiatus since %1$s</string>
+    <!-- Fallback timeline label for hiatus titles without a known start -->
+    <string name="label_media_release_timeline_hiatus">On hiatus</string>
+    <!-- Timeline fallback for titles still in release but with no usable date label -->
+    <string name="label_media_release_timeline_releasing">Releasing</string>
+    <!-- Timeline fallback for titles that have not yet released and no date is exposed -->
+    <string name="label_media_release_timeline_upcoming">Upcoming</string>
+    <!-- Timeline chip label for the release season -->
+    <string name="label_media_release_timeline_season">Season</string>
+    <!-- Timeline chip label for the release end date -->
+    <string name="label_media_release_timeline_end">End</string>
+    <!-- Localized release season label for fall -->
+    <string name="label_media_release_timeline_season_fall">Fall</string>
+    <!-- Localized release season label for spring -->
+    <string name="label_media_release_timeline_season_spring">Spring</string>
+    <!-- Localized release season label for summer -->
+    <string name="label_media_release_timeline_season_summer">Summer</string>
+    <!-- Localized release season label for winter -->
+    <string name="label_media_release_timeline_season_winter">Winter</string>
+    <!-- Empty-state title for a title without exposed timeline data -->
+    <string name="label_media_release_timeline_empty_title">No timeline available</string>
+    <!-- Empty-state copy for a title without exposed timeline data -->
+    <string name="message_media_release_timeline_empty">Release dates have not been exposed for this title yet.</string>
+    <!-- Section title for media-detail stats -->
+    <string name="title_media_stats_section">Stats</string>
+    <!-- Supporting copy for the media-detail stats section -->
+    <string name="subtitle_media_stats_section">Title-level signals and distribution snapshots without the noise.</string>
+    <!-- Metric label for favourites -->
+    <string name="label_media_stats_favourites">Favourites</string>
+    <!-- Metric label for popularity -->
+    <string name="label_media_stats_popularity">Popularity</string>
+    <!-- Metric label for trending -->
+    <string name="label_media_stats_trending">Trending</string>
+    <!-- Subheading for score distribution snapshots -->
+    <string name="label_media_stats_score_distribution">Score distribution</string>
+    <!-- Subheading for status distribution snapshots -->
+    <string name="label_media_stats_status_distribution">Status distribution</string>
+    <!-- Loading label for the media-detail stats sidecar fetch -->
+    <string name="label_media_stats_loading">Loading stats</string>
+    <!-- Supporting loading copy for the media-detail stats sidecar fetch -->
+    <string name="message_media_stats_loading">Fetching score and status distribution snapshots for this title.</string>
+    <!-- Error-state title for failed media-detail stats fetches -->
+    <string name="label_media_stats_error_title">Stats unavailable</string>
+    <!-- Empty-state title for media-detail stats -->
+    <string name="label_media_stats_empty_title">No stats yet</string>
+    <!-- Empty-state copy for media-detail stats -->
+    <string name="message_media_stats_empty">No secondary stats are exposed for this title yet.</string>
     <!-- Section title for related titles shown on the media detail hub -->
     <string name="title_media_related_section">Related</string>
     <!-- Supporting copy for the related titles hub section -->
@@ -269,6 +377,10 @@
     <string name="label_media_community_review_by_unknown">Unknown reviewer</string>
     <!-- Compact score label for review preview cards -->
     <string name="label_media_community_review_score">Score %1$d</string>
+    <!-- Empty-state title for review-blocked titles -->
+    <string name="label_media_community_blocked_title">Reviews hidden</string>
+    <!-- Empty-state copy for review-blocked titles -->
+    <string name="message_media_community_blocked">Community reviews are not exposed for this title.</string>
     <!-- Screen title for the dedicated related destination -->
     <string name="title_media_related_screen">Related</string>
     <!-- Supporting copy for the dedicated related destination -->

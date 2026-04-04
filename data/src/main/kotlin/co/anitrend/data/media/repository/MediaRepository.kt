@@ -28,6 +28,8 @@ import co.anitrend.data.media.MediaPagedRepository
 import co.anitrend.data.media.MediaRecommendationsRepository
 import co.anitrend.data.media.MediaRelationsRepository
 import co.anitrend.data.media.MediaStaffRepository
+import co.anitrend.data.media.MediaStatsRepository
+import co.anitrend.data.media.MediaStudiosRepository
 import co.anitrend.data.media.source.contract.MediaConnectionSource
 import co.anitrend.data.media.source.contract.MediaPeopleSource
 import co.anitrend.data.media.source.contract.MediaSource
@@ -36,6 +38,8 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.entity.MediaRelationEntry
 import co.anitrend.domain.media.entity.MediaPerson
+import co.anitrend.domain.media.entity.MediaStats
+import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.media.model.MediaParam
 
 internal sealed class MediaRepository {
@@ -79,6 +83,20 @@ internal sealed class MediaRepository {
     ) : MediaRepository(),
         MediaStaffRepository {
         override fun getStaff(param: MediaParam.Staff): DataState<PagedList<MediaPerson.Staff>> = source create source(param)
+    }
+
+    class Studios(
+        private val source: MediaSource.Studios,
+    ) : MediaRepository(),
+        MediaStudiosRepository {
+        override fun getStudios(param: MediaParam.Studios): DataState<List<MediaStudioEntry>> = source create source(param)
+    }
+
+    class Stats(
+        private val source: MediaSource.Stats,
+    ) : MediaRepository(),
+        MediaStatsRepository {
+        override fun getStats(param: MediaParam.Stats): DataState<MediaStats> = source create source(param)
     }
 
     class Network(

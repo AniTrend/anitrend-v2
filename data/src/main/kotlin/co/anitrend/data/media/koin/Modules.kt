@@ -23,6 +23,8 @@ import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.media.GetMediaCharactersInteractor
+import co.anitrend.data.media.GetMediaStatsInteractor
+import co.anitrend.data.media.GetMediaStudiosInteractor
 import co.anitrend.data.media.GetNetworkMediaInteractor
 import co.anitrend.data.media.GetPagedMediaInteractor
 import co.anitrend.data.media.GetMediaRecommendationsInteractor
@@ -35,6 +37,8 @@ import co.anitrend.data.media.MediaPagedRepository
 import co.anitrend.data.media.MediaRecommendationsRepository
 import co.anitrend.data.media.MediaRelationsRepository
 import co.anitrend.data.media.MediaStaffRepository
+import co.anitrend.data.media.MediaStatsRepository
+import co.anitrend.data.media.MediaStudiosRepository
 import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.converter.MediaCharacterConnectionEntityConverter
 import co.anitrend.data.media.converter.MediaCharacterEdgeConverter
@@ -47,6 +51,7 @@ import co.anitrend.data.media.entity.filter.MediaQueryFilter
 import co.anitrend.data.media.mapper.MediaConnectionMapper
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.media.mapper.MediaPeopleMapper
+import co.anitrend.data.media.mapper.MediaSidecarMapper
 import co.anitrend.data.media.repository.MediaRepository
 import co.anitrend.data.media.source.MediaConnectionSourceImpl
 import co.anitrend.data.media.source.MediaPeopleSourceImpl
@@ -92,6 +97,26 @@ private val sourceModule =
                 controller =
                     graphQLController(
                         mapper = get<MediaConnectionMapper.Recommendations>(),
+                ),
+                dispatcher = get(),
+            )
+        }
+        factory<MediaSource.Studios> {
+            MediaSourceImpl.Studios(
+                remoteSource = aniListApi(),
+                controller =
+                    graphQLController(
+                        mapper = get<MediaSidecarMapper.Studios>(),
+                    ),
+                dispatcher = get(),
+            )
+        }
+        factory<MediaSource.Stats> {
+            MediaSourceImpl.Stats(
+                remoteSource = aniListApi(),
+                controller =
+                    graphQLController(
+                        mapper = get<MediaSidecarMapper.Stats>(),
                     ),
                 dispatcher = get(),
             )
@@ -255,6 +280,14 @@ private val mapperModule =
             )
         }
         factory {
+            MediaSidecarMapper.Studios(
+                converter = get(),
+            )
+        }
+        factory {
+            MediaSidecarMapper.Stats()
+        }
+        factory {
             MediaMapper.Embed(
                 genreMapper = get(),
                 tagMapper = get(),
@@ -306,6 +339,16 @@ private val useCaseModule =
                 repository = get(),
             )
         }
+        factory<GetMediaStatsInteractor> {
+            MediaInteractor.Stats(
+                repository = get(),
+            )
+        }
+        factory<GetMediaStudiosInteractor> {
+            MediaInteractor.Studios(
+                repository = get(),
+            )
+        }
         factory<GetPagedMediaInteractor> {
             MediaInteractor.Paged(
                 repository = get(),
@@ -342,6 +385,16 @@ private val repositoryModule =
         }
         factory<MediaRecommendationsRepository> {
             MediaRepository.Recommendations(
+                source = get(),
+            )
+        }
+        factory<MediaStatsRepository> {
+            MediaRepository.Stats(
+                source = get(),
+            )
+        }
+        factory<MediaStudiosRepository> {
+            MediaRepository.Studios(
                 source = get(),
             )
         }

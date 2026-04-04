@@ -23,6 +23,8 @@ import co.anitrend.data.media.GetPagedMediaInteractor
 import co.anitrend.data.media.GetMediaRecommendationsInteractor
 import co.anitrend.data.media.GetMediaRelationsInteractor
 import co.anitrend.data.media.GetMediaStaffInteractor
+import co.anitrend.data.media.GetMediaStatsInteractor
+import co.anitrend.data.media.GetMediaStudiosInteractor
 import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaNetworkRepository
@@ -30,6 +32,8 @@ import co.anitrend.data.media.MediaPagedRepository
 import co.anitrend.data.media.MediaRecommendationsRepository
 import co.anitrend.data.media.MediaRelationsRepository
 import co.anitrend.data.media.MediaStaffRepository
+import co.anitrend.data.media.MediaStatsRepository
+import co.anitrend.data.media.MediaStudiosRepository
 
 internal interface MediaInteractor {
     class Detail(
@@ -55,6 +59,14 @@ internal interface MediaInteractor {
     class Staff(
         repository: MediaStaffRepository,
     ) : GetMediaStaffInteractor(repository)
+
+    class Studios(
+        repository: MediaStudiosRepository,
+    ) : GetMediaStudiosInteractor(repository)
+
+    class Stats(
+        repository: MediaStatsRepository,
+    ) : GetMediaStatsInteractor(repository)
 
     class Network(
         repository: MediaNetworkRepository,
