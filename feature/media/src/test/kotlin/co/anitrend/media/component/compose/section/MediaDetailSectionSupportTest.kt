@@ -1,7 +1,11 @@
 package co.anitrend.media.component.compose.section
 
+import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.MediaRecommendationEntry
+import co.anitrend.domain.media.entity.MediaRelationEntry
 import co.anitrend.domain.media.entity.attribute.rank.MediaRank
 import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaRelation
 import co.anitrend.domain.media.enums.MediaRankType
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.domain.tag.entity.Tag
@@ -62,6 +66,37 @@ class MediaDetailSectionSupportTest {
     }
 
     @Test
+    fun `selectRelationPreview prioritizes sequel and prequel before broader relation types`() {
+        val relations =
+            listOf(
+                relationEntry(id = 1L, relation = MediaRelation.CHARACTER, mediaId = 101L),
+                relationEntry(id = 2L, relation = MediaRelation.PREQUEL, mediaId = 102L),
+                relationEntry(id = 3L, relation = MediaRelation.SEQUEL, mediaId = 103L),
+                relationEntry(id = 4L, relation = MediaRelation.SIDE_STORY, mediaId = 104L),
+                relationEntry(id = 5L, relation = MediaRelation.ADAPTATION, mediaId = 105L),
+            )
+
+        val preview = selectRelationPreview(relations, maxCount = 4)
+
+        assertEquals(listOf(3L, 2L, 5L, 4L), preview.map { it.id })
+    }
+
+    @Test
+    fun `selectRecommendationPreview keeps first distinct recommended titles only`() {
+        val recommendations =
+            listOf(
+                recommendationEntry(id = 1L, mediaId = 301L),
+                recommendationEntry(id = 2L, mediaId = 302L),
+                recommendationEntry(id = 3L, mediaId = 301L),
+                recommendationEntry(id = 4L, mediaId = 303L),
+            )
+
+        val preview = selectRecommendationPreview(recommendations, maxCount = 3)
+
+        assertEquals(listOf(1L, 2L, 4L), preview.map { it.id })
+    }
+
+    @Test
     fun `partitionMediaTags groups spoiler levels and counts correctly`() {
         val tags =
             listOf(
@@ -107,4 +142,28 @@ class MediaDetailSectionSupportTest {
         assertEquals(1, partition.generalSpoilerCount)
         assertEquals(1, partition.mediaSpoilerCount)
     }
+
+    private fun relationEntry(
+        id: Long,
+        relation: MediaRelation,
+        mediaId: Long,
+    ) =
+        MediaRelationEntry(
+            relation = relation,
+            media = mediaItem(mediaId),
+            id = id,
+        )
+
+    private fun recommendationEntry(
+        id: Long,
+        mediaId: Long,
+    ) =
+        MediaRecommendationEntry(
+            media = mediaItem(mediaId),
+            rating = id.toInt(),
+            userName = "User $id",
+            id = id,
+        )
+
+    private fun mediaItem(id: Long) = Media.Core.empty().copy(id = id)
 }

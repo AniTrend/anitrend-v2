@@ -23,6 +23,10 @@
             android:exported="true" />
         <activity android:name=".component.screen.MediaPeopleScreen"
             android:exported="true" />
+        <activity android:name=".component.screen.MediaRelationsScreen"
+            android:exported="true" />
+        <activity android:name=".component.screen.MediaRecommendationsScreen"
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

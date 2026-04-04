@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 AniTrend
+ * Copyright (C) 2026 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,16 +14,18 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.recommendation.model.edge
+package co.anitrend.media.component.viewmodel
 
-import co.anitrend.data.common.entity.IEntityEdge
-import co.anitrend.data.recommendation.model.RecommendationModel
-import kotlinx.serialization.Serializable
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.media.GetMediaRelationsInteractor
+import co.anitrend.domain.media.entity.MediaRelationEntry
+import co.anitrend.domain.media.model.MediaParam
 
-/** [RecommendationEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/recommendationedge.doc.html)
- * Recommendation edge connection
- */
-@Serializable
-internal class RecommendationEdge(
-    override val node: RecommendationModel.Core?,
-) : IEntityEdge<RecommendationModel>
+class MediaRelationsViewModel(
+    private val interactor: GetMediaRelationsInteractor,
+) : AniTrendViewModelState<List<MediaRelationEntry>>() {
+    operator fun invoke(mediaId: Long) {
+        val result = interactor(MediaParam.Relations(id = mediaId))
+        state.postValue(result)
+    }
+}

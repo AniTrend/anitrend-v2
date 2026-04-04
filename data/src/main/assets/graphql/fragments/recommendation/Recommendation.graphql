@@ -1,7 +1,7 @@
 fragment Recommendation on Recommendation {
     id
     mediaRecommendation {
-        ... MediaCore
+        ... Media
     }
     rating
     user {

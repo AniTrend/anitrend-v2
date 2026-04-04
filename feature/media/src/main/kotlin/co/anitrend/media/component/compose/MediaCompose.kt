@@ -84,19 +84,28 @@ import co.anitrend.common.media.ui.compose.component.score.MediaScoreSection
 import co.anitrend.common.media.ui.compose.component.status.MediaStatusSection
 import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.MediaRecommendationEntry
+import co.anitrend.domain.media.entity.MediaRelationEntry
 import co.anitrend.domain.media.entity.MediaPerson
+import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.media.entity.attribute.score.IMediaRating
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.R
 import co.anitrend.media.component.compose.people.MediaPeopleSection
+import co.anitrend.media.component.compose.section.MediaCommunitySection
 import co.anitrend.media.component.compose.section.MediaExtendedMetadataSection
 import co.anitrend.media.component.compose.section.MediaGenrePreviewSection
+import co.anitrend.media.component.compose.section.MediaRecommendationsPreviewSection
 import co.anitrend.media.component.compose.section.MediaRankPreviewSection
+import co.anitrend.media.component.compose.section.MediaRelatedPreviewSection
 import co.anitrend.media.component.compose.section.MediaSynopsisPreviewSection
 import co.anitrend.media.component.compose.section.MediaTagSection
 import co.anitrend.media.component.schedule.MediaScheduleSheet
+import co.anitrend.media.component.viewmodel.MediaCommunityViewModel
 import co.anitrend.media.component.viewmodel.MediaCharactersViewModel
+import co.anitrend.media.component.viewmodel.MediaRecommendationsViewModel
+import co.anitrend.media.component.viewmodel.MediaRelationsViewModel
 import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
 import co.anitrend.media.component.viewmodel.MediaStaffViewModel
 import co.anitrend.media.component.viewmodel.MediaViewModel
@@ -104,6 +113,10 @@ import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.MediaPeopleRouter
+import co.anitrend.navigation.MediaRecommendationsRouter
+import co.anitrend.navigation.MediaRelationsRouter
+import co.anitrend.navigation.ReviewDiscoverRouter
+import co.anitrend.navigation.model.common.IParam
 import org.koin.androidx.compose.koinViewModel
 import co.anitrend.common.media.ui.R as MediaUiR
 
@@ -532,13 +545,27 @@ private fun MediaDetailContent(
     onMyAnimeListButtonClick: (String) -> Unit,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
+    onMediaConnectionItemClick: (IParam) -> Unit,
+    onExternalLinkClick: (String) -> Unit,
     characters: PagedList<MediaPerson.Character>? = null,
     charactersLoadState: LoadState? = null,
     staff: PagedList<MediaPerson.Staff>? = null,
     staffLoadState: LoadState? = null,
+    relations: List<MediaRelationEntry>? = null,
+    relationsLoadState: LoadState? = null,
+    recommendations: List<MediaRecommendationEntry>? = null,
+    recommendationsLoadState: LoadState? = null,
+    communityReviews: PagedList<Review>? = null,
+    communityLoadState: LoadState? = null,
     onPeopleClick: (MediaPeopleRouter.MediaPeopleParam) -> Unit = {},
+    onRelatedClick: (MediaRelationsRouter.MediaRelationsParam) -> Unit = {},
+    onRecommendationsClick: (MediaRecommendationsRouter.MediaRecommendationsParam) -> Unit = {},
+    onCommunityClick: (ReviewDiscoverRouter.ReviewDiscoverParam) -> Unit = {},
     onRetryCharacters: () -> Unit = {},
     onRetryStaff: () -> Unit = {},
+    onRetryRelations: () -> Unit = {},
+    onRetryRecommendations: () -> Unit = {},
+    onRetryCommunity: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     var showScheduleSheet by remember { mutableStateOf(false) }
@@ -665,9 +692,61 @@ private fun MediaDetailContent(
                 onRetryStaff = onRetryStaff,
             )
 
+            MediaRelatedPreviewSection(
+                relations = relations,
+                loadState = relationsLoadState,
+                scoreFormat = scoreFormat,
+                onMediaItemClick = onMediaConnectionItemClick,
+                onSeeAllClick = {
+                    onRelatedClick(
+                        MediaRelationsRouter.MediaRelationsParam(
+                            mediaId = media.id,
+                            mediaTitle = mediaTitle,
+                        ),
+                    )
+                },
+                onRetry = onRetryRelations,
+            )
+
+            if (!media.isRecommendationBlocked) {
+                MediaRecommendationsPreviewSection(
+                    recommendations = recommendations,
+                    loadState = recommendationsLoadState,
+                    scoreFormat = scoreFormat,
+                    onMediaItemClick = onMediaConnectionItemClick,
+                    onSeeAllClick = {
+                        onRecommendationsClick(
+                            MediaRecommendationsRouter.MediaRecommendationsParam(
+                                mediaId = media.id,
+                                mediaTitle = mediaTitle,
+                            ),
+                        )
+                    },
+                    onRetry = onRetryRecommendations,
+                )
+            }
+
+            if (!media.isReviewBlocked) {
+                MediaCommunitySection(
+                    reviews = communityReviews,
+                    loadState = communityLoadState,
+                    onSeeAllClick = {
+                        onCommunityClick(
+                            ReviewDiscoverRouter.ReviewDiscoverParam(
+                                mediaId = media.id,
+                                mediaType = media.category.type,
+                                scoreFormat = scoreFormat,
+                            ),
+                        )
+                    },
+                    onRetry = onRetryCommunity,
+                )
+            }
+
             MediaExtendedMetadataSection(
                 media = media,
                 themes = media.themes,
+                onExternalLinkClick = onExternalLinkClick,
             )
         }
     }
@@ -692,23 +771,47 @@ fun MediaScreenContent(
     onFloatingActionButtonClick: (Media) -> Unit,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
+    onMediaConnectionItemClick: (IParam) -> Unit,
     onPeopleClick: (MediaPeopleRouter.MediaPeopleParam) -> Unit,
+    onRelatedClick: (MediaRelationsRouter.MediaRelationsParam) -> Unit,
+    onRecommendationsClick: (MediaRecommendationsRouter.MediaRecommendationsParam) -> Unit,
+    onCommunityClick: (ReviewDiscoverRouter.ReviewDiscoverParam) -> Unit,
+    onExternalLinkClick: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
     val state by mediaState.model.observeAsState()
     val media = state as? Media.Extended ?: return
     val charactersViewModel: MediaCharactersViewModel = koinViewModel()
     val staffViewModel: MediaStaffViewModel = koinViewModel()
+    val relationsViewModel: MediaRelationsViewModel = koinViewModel()
+    val recommendationsViewModel: MediaRecommendationsViewModel = koinViewModel()
+    val communityViewModel: MediaCommunityViewModel = koinViewModel()
     val characters by charactersViewModel.model.observeAsState()
     val charactersLoadState by charactersViewModel.loadState.observeAsState()
     val staff by staffViewModel.model.observeAsState()
     val staffLoadState by staffViewModel.loadState.observeAsState()
+    val relations by relationsViewModel.model.observeAsState()
+    val relationsLoadState by relationsViewModel.loadState.observeAsState()
+    val recommendations by recommendationsViewModel.model.observeAsState()
+    val recommendationsLoadState by recommendationsViewModel.loadState.observeAsState()
+    val communityReviews by communityViewModel.model.observeAsState()
+    val communityLoadState by communityViewModel.loadState.observeAsState()
 
     val view = LocalView.current
 
     LaunchedEffect(media.id) {
         charactersViewModel(media.id)
         staffViewModel(media.id)
+        relationsViewModel(media.id)
+        if (!media.isRecommendationBlocked) {
+            recommendationsViewModel(media.id)
+        }
+    }
+
+    LaunchedEffect(media.id, scoreFormat) {
+        if (!media.isReviewBlocked) {
+            communityViewModel(media.id, media.category.type, scoreFormat)
+        }
     }
 
     Scaffold(
@@ -747,13 +850,27 @@ fun MediaScreenContent(
             onMyAnimeListButtonClick = onMyAnimeListButtonClick,
             onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
             onImageClick = onImageClick,
+            onMediaConnectionItemClick = onMediaConnectionItemClick,
+            onExternalLinkClick = onExternalLinkClick,
             characters = characters,
             charactersLoadState = charactersLoadState,
             staff = staff,
             staffLoadState = staffLoadState,
+            relations = relations,
+            relationsLoadState = relationsLoadState,
+            recommendations = recommendations,
+            recommendationsLoadState = recommendationsLoadState,
+            communityReviews = communityReviews,
+            communityLoadState = communityLoadState,
             onPeopleClick = onPeopleClick,
+            onRelatedClick = onRelatedClick,
+            onRecommendationsClick = onRecommendationsClick,
+            onCommunityClick = onCommunityClick,
             onRetryCharacters = { charactersViewModel(media.id) },
             onRetryStaff = { staffViewModel(media.id) },
+            onRetryRelations = { relationsViewModel(media.id) },
+            onRetryRecommendations = { recommendationsViewModel(media.id) },
+            onRetryCommunity = { communityViewModel(media.id, media.category.type, scoreFormat) },
             modifier =
                 Modifier
                     .padding(innerPadding)
@@ -777,6 +894,8 @@ private fun MediaDetailComponentPreview(
             onMyAnimeListButtonClick = {},
             onMediaDiscoverableItemClick = {},
             onImageClick = {},
+            onMediaConnectionItemClick = {},
+            onExternalLinkClick = {},
             modifier = Modifier.verticalScroll(rememberScrollState()),
         )
     }

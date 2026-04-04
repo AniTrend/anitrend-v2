@@ -25,11 +25,15 @@ import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.media.GetMediaCharactersInteractor
 import co.anitrend.data.media.GetNetworkMediaInteractor
 import co.anitrend.data.media.GetPagedMediaInteractor
+import co.anitrend.data.media.GetMediaRecommendationsInteractor
+import co.anitrend.data.media.GetMediaRelationsInteractor
 import co.anitrend.data.media.GetMediaStaffInteractor
 import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaNetworkRepository
 import co.anitrend.data.media.MediaPagedRepository
+import co.anitrend.data.media.MediaRecommendationsRepository
+import co.anitrend.data.media.MediaRelationsRepository
 import co.anitrend.data.media.MediaStaffRepository
 import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.converter.MediaCharacterConnectionEntityConverter
@@ -40,10 +44,13 @@ import co.anitrend.data.media.converter.MediaStaffEdgeConverter
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.converter.MediaModelConverter
 import co.anitrend.data.media.entity.filter.MediaQueryFilter
+import co.anitrend.data.media.mapper.MediaConnectionMapper
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.media.mapper.MediaPeopleMapper
 import co.anitrend.data.media.repository.MediaRepository
+import co.anitrend.data.media.source.MediaConnectionSourceImpl
 import co.anitrend.data.media.source.MediaPeopleSourceImpl
+import co.anitrend.data.media.source.contract.MediaConnectionSource
 import co.anitrend.data.media.source.contract.MediaPeopleSource
 import co.anitrend.data.media.source.MediaSourceImpl
 import co.anitrend.data.media.source.contract.MediaSource
@@ -66,6 +73,26 @@ private val sourceModule =
                 clearDataHelper = get(),
                 edgeSource = get(),
                 cachePolicy = get<MediaCache>(),
+                dispatcher = get(),
+            )
+        }
+        factory<MediaConnectionSource.Relations> {
+            MediaConnectionSourceImpl.Relations(
+                remoteSource = aniListApi(),
+                controller =
+                    graphQLController(
+                        mapper = get<MediaConnectionMapper.Relations>(),
+                    ),
+                dispatcher = get(),
+            )
+        }
+        factory<MediaConnectionSource.Recommendations> {
+            MediaConnectionSourceImpl.Recommendations(
+                remoteSource = aniListApi(),
+                controller =
+                    graphQLController(
+                        mapper = get<MediaConnectionMapper.Recommendations>(),
+                    ),
                 dispatcher = get(),
             )
         }
@@ -189,6 +216,16 @@ private val mapperModule =
             )
         }
         factory {
+            MediaConnectionMapper.Relations(
+                converter = get(),
+            )
+        }
+        factory {
+            MediaConnectionMapper.Recommendations(
+                converter = get(),
+            )
+        }
+        factory {
             MediaMapper.Paged(
                 mediaListMapper = get(),
                 genreMapper = get(),
@@ -259,6 +296,16 @@ private val useCaseModule =
                 repository = get(),
             )
         }
+        factory<GetMediaRelationsInteractor> {
+            MediaInteractor.Relations(
+                repository = get(),
+            )
+        }
+        factory<GetMediaRecommendationsInteractor> {
+            MediaInteractor.Recommendations(
+                repository = get(),
+            )
+        }
         factory<GetPagedMediaInteractor> {
             MediaInteractor.Paged(
                 repository = get(),
@@ -285,6 +332,16 @@ private val repositoryModule =
     module {
         factory<MediaDetailRepository> {
             MediaRepository.Detail(
+                source = get(),
+            )
+        }
+        factory<MediaRelationsRepository> {
+            MediaRepository.Relations(
+                source = get(),
+            )
+        }
+        factory<MediaRecommendationsRepository> {
+            MediaRepository.Recommendations(
                 source = get(),
             )
         }
