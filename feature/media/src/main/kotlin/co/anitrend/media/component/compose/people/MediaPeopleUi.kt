@@ -16,10 +16,10 @@
  */
 package co.anitrend.media.component.compose.people
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -33,7 +33,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -46,11 +45,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.paging.PagedList
 import coil.compose.AsyncImage
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.domain.character.enums.CharacterRole
+import co.anitrend.domain.common.entity.shared.CoverImage
+import co.anitrend.domain.common.entity.shared.CoverName
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.domain.media.entity.MediaPerson
+import co.anitrend.domain.staff.enums.StaffLanguage
 import co.anitrend.media.R
 import co.anitrend.media.component.compose.section.MediaHubSection
 import co.anitrend.media.component.compose.section.MediaHubSectionEmptyState
@@ -60,6 +67,98 @@ import kotlin.math.min
 
 private const val CHARACTER_PREVIEW_COUNT = 6
 private const val STAFF_PREVIEW_COUNT = 4
+
+private fun previewName(name: String) =
+    CoverName(
+        middle = null,
+        alternativeSpoiler = emptyList(),
+        alternative = emptyList(),
+        first = name.substringBefore(' ').takeIf(String::isNotBlank),
+        full = name,
+        last = name.substringAfter(' ', missingDelimiterValue = "").takeIf(String::isNotBlank),
+        native = null,
+        userPreferred = name,
+    )
+
+private val PreviewCharacters =
+    listOf(
+        MediaPerson.Character(
+            role = CharacterRole.MAIN,
+            mediaRoleName = null,
+            voiceActors =
+                listOf(
+                    MediaPerson.VoiceActor(
+                        dubGroup = null,
+                        roleNotes = null,
+                        language = StaffLanguage.JAPANESE,
+                        image = null,
+                        name = previewName("Daiki Yamashita"),
+                        siteUrl = null,
+                        id = 101,
+                    ),
+                ),
+            image =
+                CoverImage(
+                    large = "https://s4.anilist.co/file/anilistcdn/character/large/b1.png",
+                    medium = "https://s4.anilist.co/file/anilistcdn/character/medium/b1.png",
+                ),
+            name = previewName("Izuku Midoriya"),
+            siteUrl = null,
+            id = 1,
+        ),
+        MediaPerson.Character(
+            role = CharacterRole.SUPPORTING,
+            mediaRoleName = null,
+            voiceActors =
+                listOf(
+                    MediaPerson.VoiceActor(
+                        dubGroup = null,
+                        roleNotes = null,
+                        language = StaffLanguage.JAPANESE,
+                        image = null,
+                        name = previewName("Nobuhiko Okamoto"),
+                        siteUrl = null,
+                        id = 102,
+                    ),
+                ),
+            image =
+                CoverImage(
+                    large = "https://s4.anilist.co/file/anilistcdn/character/large/b2.png",
+                    medium = "https://s4.anilist.co/file/anilistcdn/character/medium/b2.png",
+                ),
+            name = previewName("Katsuki Bakugo"),
+            siteUrl = null,
+            id = 2,
+        ),
+    )
+
+private val PreviewStaff =
+    listOf(
+        MediaPerson.Staff(
+            role = "Director",
+            language = StaffLanguage.JAPANESE,
+            image =
+                CoverImage(
+                    large = "https://s4.anilist.co/file/anilistcdn/staff/large/n1.png",
+                    medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n1.png",
+                ),
+            name = previewName("Kenji Nagasaki"),
+            siteUrl = null,
+            id = 11,
+        ),
+        MediaPerson.Staff(
+            role = "Series Composition",
+            language = StaffLanguage.JAPANESE,
+            image =
+                CoverImage(
+                    large = "https://s4.anilist.co/file/anilistcdn/staff/large/n2.png",
+                    medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n2.png",
+                ),
+            name = previewName("Yosuke Kuroda"),
+            siteUrl = null,
+            id = 12,
+        ),
+    )
 
 internal fun <T : Any> PagedList<T>.asItems(limit: Int = size): List<T> {
     val end = min(size, limit)
@@ -203,7 +302,10 @@ fun CharacterPreviewRail(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(end = 4.dp),
     ) {
-        items(items.size) { index ->
+        items(
+            count = items.size,
+            key = { index -> items[index].id },
+        ) { index ->
             CharacterPreviewCard(
                 item = items[index],
                 onClick = { onItemClick(items[index]) },
@@ -238,7 +340,11 @@ internal fun CharacterPreviewCard(
     showVoiceActor: Boolean = false,
     onClick: (() -> Unit)? = null,
 ) {
-    val primaryName = item.name?.userPreferred ?: item.name?.full ?: item.mediaRoleName.orEmpty()
+    val primaryName =
+        item.name?.userPreferred
+            ?: item.name?.full
+            ?: item.mediaRoleName
+            ?: stringResource(R.string.label_media_people_character_name_unknown)
     val roleLabel = item.role?.alias?.toString()
     val voiceActor = item.voiceActors.firstOrNull()?.name?.userPreferred ?: item.voiceActors.firstOrNull()?.name?.full
 
@@ -318,7 +424,10 @@ internal fun StaffPreviewListItem(
     showLanguage: Boolean = false,
     onClick: (() -> Unit)? = null,
 ) {
-    val displayName = item.name?.userPreferred ?: item.name?.full.orEmpty()
+    val displayName =
+        item.name?.userPreferred
+            ?: item.name?.full
+            ?: stringResource(R.string.label_media_people_staff_name_unknown)
     val roleLabel = item.role ?: stringResource(R.string.label_media_people_staff_role_unknown)
     val language = item.language
 
@@ -387,5 +496,63 @@ internal fun StaffPreviewListItem(
                 }
             }
         }
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun CharacterPreviewCardPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            CharacterPreviewCard(
+                item = PreviewCharacters.first(),
+                showVoiceActor = true,
+            )
+        }
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun StaffPreviewListItemPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            StaffPreviewListItem(
+                item = PreviewStaff.first(),
+                showLanguage = true,
+            )
+        }
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun CharacterPreviewRailPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        CharacterPreviewRail(
+            items = PreviewCharacters,
+            onItemClick = {},
+            modifier = Modifier.padding(16.dp),
+        )
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun StaffPreviewListPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        StaffPreviewList(
+            items = PreviewStaff,
+            onItemClick = {},
+            modifier = Modifier.padding(16.dp),
+        )
     }
 }

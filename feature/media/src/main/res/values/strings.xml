@@ -168,6 +168,10 @@
     <string name="label_media_people_characters_error_title">Characters unavailable</string>
     <!-- Error-state title for failed staff requests -->
     <string name="label_media_people_staff_error_title">Staff unavailable</string>
+    <!-- Fallback label when a character name is missing from the upstream payload -->
+    <string name="label_media_people_character_name_unknown">Unknown character</string>
+    <!-- Fallback label when a staff name is missing from the upstream payload -->
+    <string name="label_media_people_staff_name_unknown">Unknown staff</string>
     <!-- Screen title for the dedicated people destination -->
     <string name="title_media_people_screen">People</string>
     <!-- Supporting copy for the dedicated people destination -->

@@ -44,8 +44,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.paging.PagedList
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.domain.media.entity.MediaPerson
@@ -264,7 +268,10 @@ private fun CharacterGrid(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        items(characters.size) { index ->
+        items(
+            count = characters.size,
+            key = { index -> characters[index]?.id ?: "character-$index" },
+        ) { index ->
             val item = characters[index] ?: return@items
             CharacterPreviewCard(
                 item = item,
@@ -284,7 +291,10 @@ private fun StaffList(
         contentPadding = PaddingValues(bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        items(staff.size) { index ->
+        items(
+            count = staff.size,
+            key = { index -> staff[index]?.id ?: "staff-$index" },
+        ) { index ->
             val item = staff[index] ?: return@items
             StaffPreviewListItem(
                 item = item,
@@ -348,5 +358,31 @@ private fun RetryPeopleState(
                 Text(text = stringResource(co.anitrend.core.R.string.label_text_action_retry))
             }
         }
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun RetryPeopleStatePreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        RetryPeopleState(
+            title = stringResource(R.string.label_media_people_characters_error_title),
+            onRetry = {},
+        )
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun CenteredPeopleStatePreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        CenteredPeopleState(
+            title = stringResource(R.string.label_media_people_staff_empty_title),
+            subtitle = stringResource(R.string.message_media_people_staff_empty),
+        )
     }
 }
