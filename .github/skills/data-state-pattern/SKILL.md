@@ -18,6 +18,9 @@ provides built-in refresh and retry support.
   a repository returning `DataState`
 - `domain/src/main/kotlin/co/anitrend/domain/tag/repository/ITagRepository.kt` — matching domain
   interface that declares the `DataState`-typed contract
+- `domain/src/main/kotlin/co/anitrend/domain/medialist/` and
+  `data/src/main/kotlin/co/anitrend/data/medialist/` — reference mutation flow showing domain
+  repository contracts + abstract use cases, then data-layer typealiases and concrete interactors
 - `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt` — how `StateLayoutConfig` and
   dispatchers are registered so UI can bind to `DataState` streams
 
@@ -36,6 +39,16 @@ data source       →  extends AbstractDataSource, performs network + DB ops
    function from `support-arch`) to wrap a data source into a `DataState`.
 3. **Presentation layer** — the ViewModel collects the `DataState`, exposes it as `StateFlow`,
    and the Compose UI observes it via `collectAsState()`.
+
+## Mutation-specific pattern
+
+- Keep repository contracts in `:domain`, even for a single toggle or save/delete mutation.
+- Keep abstract use cases in `:domain` as `XxxUseCase` / `XxxInteractor` base classes.
+- Keep each module's `Types.kt` lean: use it for controller aliases, specialized repository
+  aliases, and use-case aliases only. Do not introduce new repository interfaces or standalone
+  interactor implementations there.
+- Put the concrete data-layer use-case bridge in the module's `usecase/` package, mirroring
+  `data/src/main/kotlin/co/anitrend/data/medialist/usecase/MediaListInteractor.kt`.
 
 ## Rules
 

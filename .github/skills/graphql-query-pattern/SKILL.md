@@ -16,6 +16,9 @@ pattern that wraps the raw `GraphQLResponse` into a standardised result handled 
   — the core controller: validates the response, extracts errors, maps result, handles threading
 - `data/src/main/kotlin/co/anitrend/data/tag/source/` — example data source showing how a
   controller is constructed and called
+- `data/src/main/kotlin/co/anitrend/data/medialist/` and
+  `data/src/main/kotlin/co/anitrend/data/review/` — reference mutation modules for save/delete/
+  rate flows, including source contracts, repository wiring, and concrete use-case bridges
 - `buildSrc/src/main/java/co/anitrend/buildSrc/plugins/components/ProjectDependencies.kt` —
   where Retrofit, OkHttp, and the GraphQL converter are wired as shared data-module dependencies
 
@@ -44,6 +47,15 @@ Retrofit interface method (suspend fun)
 3. Create or reuse a `GraphQLController` instance, passing the mapper and dispatcher.
 4. In the data source `invoke()` / `getX()` method, call the Retrofit method then feed the result
    to the controller.
+
+## Mutation flow rules
+
+- For GraphQL mutation-only features, still define the repository contract and abstract use case in
+  `:domain`; the data module should implement and wire them rather than inventing local contracts.
+- Keep the module `Types.kt` limited to aliases. Put concrete use-case subclasses in the module
+  `usecase/` package.
+- When wiring `graphQLController(...)` in Koin, prefer `get<ConcreteMapper>()` over bare `get()`
+  so generic mapper/controller resolution stays explicit and stable.
 
 ## Edge modeling rules
 

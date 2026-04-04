@@ -16,28 +16,61 @@
  */
 package co.anitrend.data.favourite.koin
 
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.core.extensions.aniListApi
+import co.anitrend.data.favourite.datasource.remote.FavouriteRemoteSource
+import co.anitrend.data.favourite.mapper.FavouriteMapper
+import co.anitrend.data.favourite.repository.FavouriteRepository
+import co.anitrend.data.favourite.source.FavouriteSourceImpl
+import co.anitrend.data.favourite.source.contract.FavouriteSource
+import co.anitrend.data.favourite.usecase.FavouriteInteractor
 import org.koin.dsl.module
 
 private val sourceModule =
     module {
+        factory<FavouriteSource.Toggle> {
+            FavouriteSourceImpl.Toggle(
+                remoteSource = aniListApi<FavouriteRemoteSource>(),
+                controller =
+                    graphQLController(
+                        mapper = get<FavouriteMapper>(),
+                    ),
+                dispatcher = get(),
+            )
+        }
     }
 
 private val mapperModule =
     module {
+        factory {
+            FavouriteMapper()
+        }
     }
 
 private val useCaseModule =
     module {
+        factory {
+            FavouriteInteractor.Toggle(
+                repository = get(),
+            )
+        }
     }
 
 private val repositoryModule =
     module {
+        factory {
+            FavouriteRepository(
+                source = get(),
+            )
+        }
     }
 
 internal val favouriteModules =
-    listOf(
-        sourceModule,
-        mapperModule,
-        useCaseModule,
-        repositoryModule,
-    )
+    module {
+        includes(
+            sourceModule,
+            mapperModule,
+            useCaseModule,
+            repositoryModule,
+        )
+    }
