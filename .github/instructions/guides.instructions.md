@@ -33,6 +33,10 @@ detail in skill files to prevent context drift and duplication.
 - **DataState for public data contracts**: data-layer repository specializations return
   `DataState<T>`; feature and task code should never depend on raw repository values or `LiveData`.
   See `.github/skills/data-state-pattern/SKILL.md`.
+- **Non-paged offline-first reads**: for single entities or fixed-size collections, use
+  `observable(): Flow<T>` or `observable(): Flow<List<T>>` with Room as the source of truth.
+  Cache policy should gate refresh at the source boundary while the observable flow continues to
+  emit local state. See `.github/skills/data-state-pattern/SKILL.md`.
 - **Offline-first paged reads**: for DB-backed paged query flows, treat Room as the source of
   truth. The source contract should expose `observable(): Flow<PagedList<T>>` from a local
   `DataSource.Factory`, and network refreshes should persist through the controller/mapper chain.
@@ -52,6 +56,9 @@ detail in skill files to prevent context drift and duplication.
   parent entity and order the rows explicitly for paging. Convert local connection entities back
   to domain models with a converter, and keep request-specific persistence decisions inside the
   mapper rather than the source.
+- **Context-specific source variants**: when one entity type has multiple distinct read contexts,
+  define separate source variants for those contexts instead of overloading one broad contract.
+  `UserSource.Identifier`, `Viewer`, `Profile`, and `Statistic` are the clearest reference.
 - **GraphQL networking**: use `GraphQLController` and the `retrofit-graphql` adapter. See
   `.github/skills/graphql-query-pattern/SKILL.md`.
 - **New module**: register in `Modules.kt`, add Koin wiring, follow the full checklist in
@@ -113,7 +120,7 @@ Summary:
 
 Pick the closest reference module instead of defaulting to `tag` for every task:
 
-1. `domain/tag` + `data/tag` for the smallest query-only baseline.
+1. `domain/tag` + `data/tag` for the smallest non-paged query-only baseline.
 2. `domain/media` + `data/media` for multi-contract read modules (`Detail`, `Paged`, `Network`).
 3. `domain/medialist` + `data/medialist` + `task/medialist` for hybrid fetch plus save/delete/sync
    flows.

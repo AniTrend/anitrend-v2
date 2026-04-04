@@ -17,7 +17,7 @@ Use this skill to choose the closest existing pattern before adding or documenti
 
 | Pattern | Reference module | When to copy it | Domain shape | Data shape | Entry-point shape |
 |---|---|---|---|---|---|
-| Simple query-only | `domain/tag` + `data/tag` | Small read-only lookups | Single repository contract + abstract use case | Single repository + source + `TagUseCaseImpl` | Feature/common code reads through interactor |
+| Simple query-only | `domain/tag` + `data/tag` | Small non-paged read-only collections or singleton/detail lookups | Single repository contract + abstract use case | Single repository + non-paged source + `TagUseCaseImpl` | Feature/common code reads through interactor |
 | Read-heavy multi-contract | `domain/media` + `data/media` | Detail, paged, and network variants in one domain package | Nested repository contracts such as `Detail`, `Paged`, `Network` | `Types.kt` aliases + `MediaRepository.*` + `MediaInteractor.*` | Feature ViewModels consume read interactors |
 | Hybrid query + mutation | `domain/medialist` + `data/medialist` + `task/medialist` | Fetch plus save/delete/sync for the same concept | Nested contracts per operation | Separate source/repository/interactor classes per operation | Feature/common code reads directly, mutations usually enqueue task workers |
 | Hybrid fetch + action | `domain/review` + `data/review` + `task/review` | Paged/detail reads plus vote/save/delete writes | Nested contracts per read/write action | Separate read and mutation sources, repositories, and interactors | Review UI fetches via feature ViewModel; voting/deleting routes through task workers |
@@ -59,6 +59,8 @@ with `DataState<T>`.
 - Keep concrete repositories, sources, controllers, converters, mappers, and Koin bindings in
   `:data`.
 - Keep `Types.kt` lean: controller aliases, repository aliases, and interactor aliases only.
+- For offline-first non-paged read flows, wire the repository as `source create source(param)`
+  over a source that extends `AbstractCoreDataSource` and returns a local observable flow.
 - For offline-first paged read flows, wire the repository as `source create source(param)` over a
   source that reads from Room via `observable(): Flow<PagedList<T>>`. Do not keep a separate
   factory-based network paging path once a local source-of-truth exists.
@@ -75,6 +77,23 @@ with `DataState<T>`.
 
 ## Offline-first read notes
 
+### Non-paged offline-first reads
+
+- Use `TagSource`, `GenreSource`, `EdgeConfigSource`, `MediaSource.Detail`,
+  `ReviewSource.Entry`, and `UserSource.Identifier/Viewer/Profile/Statistic` as the baseline
+  references.
+- Sources should return `Flow<Model>` or `Flow<List<Model>>`, not `PagedList`.
+- The source `invoke(...)` operator should store query context, call `cachePolicy(...)`, and then
+  return the local `observable()` flow.
+- `observable()` should read Room-backed local state and project it with converters, typically
+  across IO and computation dispatcher boundaries.
+- Multi-context entity families should model distinct source variants as inner classes instead of
+  collapsing unrelated query contexts into one broad source contract.
+- Mutation-only variants such as review save/rate/delete or user follow/update are separate
+  source shapes and should not be used as the baseline for non-paged read contracts.
+
+### Paged offline-first reads
+
 - Use `MediaSource.Paged`, `AiringScheduleSource.Paged`, and `UserSource.Search` as the baseline
   for paged offline-first reads.
 - Sources should coordinate refreshes and paging triggers, not convert remote payloads into domain
@@ -88,7 +107,7 @@ with `DataState<T>`.
 
 ## Choosing the nearest reference
 
-- Copy `tag` when the module is a single read path with no task or mutation plumbing.
+- Copy `tag` when the module is a single non-paged read path with no task or mutation plumbing.
 - Copy `media` when you need multiple read contracts against the same entity package.
 - Copy `medialist` when reads and writes share one domain area and writes are background-task
   driven.
