@@ -19,35 +19,26 @@ package co.anitrend.media.component.compose.section
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
-import co.anitrend.common.media.ui.compose.item.MediaCompactItem
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.entity.MediaRelationEntry
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.R
+import co.anitrend.media.component.compose.connection.ConnectionRailCardWidth
+import co.anitrend.media.component.compose.connection.RecommendationMediaCard
+import co.anitrend.media.component.compose.connection.RelatedMediaCard
 import co.anitrend.navigation.model.common.IParam
-
-private val PreviewRailCardWidth = 150.dp
-private val PreviewRailCardHeight = 268.dp
 
 @Composable
 internal fun MediaRelatedPreviewSection(
@@ -74,11 +65,11 @@ internal fun MediaRelatedPreviewSection(
             previewItems.isNotEmpty() -> {
                 ConnectionPreviewRail {
                     items(previewItems, key = MediaRelationEntry::id) { relation ->
-                        MediaConnectionRailItem(
-                            metadata = relation.relation?.alias?.toString(),
+                        RelatedMediaCard(
+                            relation = relation,
                             scoreFormat = scoreFormat,
                             onMediaItemClick = onMediaItemClick,
-                            param = relation.media,
+                            modifier = Modifier.width(ConnectionRailCardWidth),
                         )
                     }
                 }
@@ -133,12 +124,12 @@ internal fun MediaRecommendationsPreviewSection(
             previewItems.isNotEmpty() -> {
                 ConnectionPreviewRail {
                     items(previewItems, key = MediaRecommendationEntry::id) { recommendation ->
-                        MediaConnectionRailItem(
-                            metadata = recommendationRatingLabel(recommendation),
-                            supportingText = recommendation.userName?.takeIf(String::isNotBlank),
+                        RecommendationMediaCard(
+                            recommendation = recommendation,
                             scoreFormat = scoreFormat,
                             onMediaItemClick = onMediaItemClick,
-                            param = recommendation.media,
+                            modifier = Modifier.width(ConnectionRailCardWidth),
+                            rationaleMaxLines = 1,
                         )
                     }
                 }
@@ -178,79 +169,6 @@ private fun ConnectionPreviewRail(
         content = content,
     )
 }
-
-@Composable
-private fun MediaConnectionRailItem(
-    param: co.anitrend.domain.media.entity.Media,
-    scoreFormat: ScoreFormat,
-    onMediaItemClick: (IParam) -> Unit,
-    metadata: String?,
-    modifier: Modifier = Modifier,
-    supportingText: String? = null,
-) {
-    val preferenceData = remember(scoreFormat) { MediaPreferenceData(scoreFormat) }
-
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier.width(PreviewRailCardWidth),
-    ) {
-        metadata
-            ?.trim()
-            ?.takeIf(String::isNotBlank)
-            ?.let {
-                ConnectionMetaPill(
-                    label = it,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-
-        MediaCompactItem(
-            media = param,
-            mediaPreferenceData = preferenceData,
-            mediaItemClick = onMediaItemClick,
-            modifier = Modifier.fillMaxWidth().height(PreviewRailCardHeight),
-        )
-
-        supportingText
-            ?.trim()
-            ?.takeIf(String::isNotBlank)
-            ?.let {
-                Text(
-                    text = it,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-    }
-}
-
-@Composable
-private fun ConnectionMetaPill(
-    label: String,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.55f),
-        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-        shape = RoundedCornerShape(16.dp),
-        modifier = modifier,
-    ) {
-        Text(
-            text = label,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 7.dp),
-        )
-    }
-}
-
-@Composable
-private fun recommendationRatingLabel(recommendation: MediaRecommendationEntry): String =
-    recommendation.rating?.let { "+$it" } ?: stringResource(R.string.label_media_recommendations_rating_unknown)
 
 @Composable
 private fun MediaSectionRetryState(

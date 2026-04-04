@@ -66,6 +66,7 @@ internal sealed class MediaConnectionMapper<S, D> : DefaultMapper<S, D>() {
                         media = converter.convertFrom(media),
                         rating = recommendation.rating,
                         userName = recommendation.user?.name,
+                        userRating = recommendation.userRating,
                         id = recommendation.id,
                     )
                 }
