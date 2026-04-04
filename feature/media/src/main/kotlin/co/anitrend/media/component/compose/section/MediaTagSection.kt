@@ -34,6 +34,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Tag
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.ButtonDefaults
@@ -42,7 +43,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -55,12 +55,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import co.anitrend.android.core.helpers.color.asColorInt
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
@@ -69,18 +72,7 @@ import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.media.R
 import co.anitrend.navigation.MediaDiscoverRouter
 
-private enum class TagSpoilerLevel {
-    NONE,
-    GENERAL,
-    MEDIA,
-}
-
-private fun Tag.spoilerLevel(): TagSpoilerLevel =
-    when {
-        this is Tag.Extended && isMediaSpoiler -> TagSpoilerLevel.MEDIA
-        isGeneralSpoiler -> TagSpoilerLevel.GENERAL
-        else -> TagSpoilerLevel.NONE
-    }
+private const val TAG_PREVIEW_COUNT = 6
 
 private fun Tag.rankPercent(): Int? =
     (this as? Tag.Extended)
@@ -111,46 +103,57 @@ private fun TagBadge(
 }
 
 @Composable
+private fun Tag.rememberAccentColor(spoilerLevel: MediaTagSpoilerLevel): Color {
+    val surface = MaterialTheme.colorScheme.surface.toArgb()
+    val errorColor = MaterialTheme.colorScheme.error
+    val secondaryColor = MaterialTheme.colorScheme.secondary
+    val defaultAccent = MaterialTheme.colorScheme.primary
+
+    return remember(this, spoilerLevel, surface, errorColor, secondaryColor, defaultAccent) {
+        when (spoilerLevel) {
+            MediaTagSpoilerLevel.MEDIA -> errorColor
+            MediaTagSpoilerLevel.GENERAL -> secondaryColor
+            MediaTagSpoilerLevel.NONE ->
+                (this as? Tag.Extended)
+                    ?.background
+                    ?.let { background ->
+                        runCatching { Color(background.asColorInt(surface)) }.getOrNull()
+                    }
+                    ?: defaultAccent
+        }
+    }
+}
+
+@Composable
 private fun MediaTagItem(
     tag: Tag,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val spoilerLevel = tag.spoilerLevel()
-    val (containerColor, borderColor, iconTint) =
+    val accent = tag.rememberAccentColor(spoilerLevel)
+    val containerColor =
         when (spoilerLevel) {
-            TagSpoilerLevel.MEDIA ->
-                Triple(
-                    MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.34f),
-                    MaterialTheme.colorScheme.error.copy(alpha = 0.45f),
-                    MaterialTheme.colorScheme.error,
-                )
-
-            TagSpoilerLevel.GENERAL ->
-                Triple(
-                    MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.32f),
-                    MaterialTheme.colorScheme.secondary.copy(alpha = 0.35f),
-                    MaterialTheme.colorScheme.secondary,
-                )
-
-            TagSpoilerLevel.NONE ->
-                Triple(
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.28f),
-                    MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.7f),
-                    MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+            MediaTagSpoilerLevel.MEDIA -> MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.38f)
+            MediaTagSpoilerLevel.GENERAL -> MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.34f)
+            MediaTagSpoilerLevel.NONE -> accent.copy(alpha = 0.14f).compositeOver(MaterialTheme.colorScheme.surfaceVariant)
         }
-
+    val borderColor =
+        when (spoilerLevel) {
+            MediaTagSpoilerLevel.MEDIA -> MaterialTheme.colorScheme.error.copy(alpha = 0.48f)
+            MediaTagSpoilerLevel.GENERAL -> MaterialTheme.colorScheme.secondary.copy(alpha = 0.42f)
+            MediaTagSpoilerLevel.NONE -> accent.copy(alpha = 0.38f)
+        }
     val icon =
         when (spoilerLevel) {
-            TagSpoilerLevel.MEDIA -> Icons.Filled.VisibilityOff
-            TagSpoilerLevel.GENERAL -> Icons.Rounded.Warning
-            TagSpoilerLevel.NONE -> Icons.Rounded.Tag
+            MediaTagSpoilerLevel.MEDIA -> Icons.Filled.VisibilityOff
+            MediaTagSpoilerLevel.GENERAL -> Icons.Rounded.Warning
+            MediaTagSpoilerLevel.NONE -> Icons.Rounded.Tag
         }
 
     OutlinedButton(
         onClick = onClick,
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(20.dp),
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
         border = BorderStroke(1.dp, borderColor),
         colors =
@@ -160,13 +163,13 @@ private fun MediaTagItem(
             ),
         modifier =
             modifier
-                .widthIn(max = 280.dp)
-                .defaultMinSize(minHeight = 40.dp),
+                .widthIn(max = 300.dp)
+                .defaultMinSize(minHeight = 44.dp),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = iconTint,
+            tint = accent,
             modifier = Modifier.size(16.dp),
         )
         Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
@@ -175,13 +178,13 @@ private fun MediaTagItem(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.labelLarge,
-            modifier = Modifier.widthIn(max = 168.dp),
+            modifier = Modifier.widthIn(max = 176.dp),
         )
         tag.rankPercent()?.let { rank ->
             Spacer(modifier = Modifier.size(8.dp))
             TagBadge(
                 label = "$rank%",
-                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
+                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.78f),
                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
@@ -189,7 +192,7 @@ private fun MediaTagItem(
             Spacer(modifier = Modifier.size(8.dp))
             TagBadge(
                 label = stringResource(R.string.label_media_tag_indicator_adult),
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.42f),
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.4f),
                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
             )
         }
@@ -226,25 +229,45 @@ private fun SpoilerDisclosureCard(
             }
         }.joinToString(" • ")
 
-    OutlinedCard(modifier = modifier.fillMaxWidth()) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(22.dp),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.68f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.32f)),
+    ) {
         Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                    .padding(horizontal = 12.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Icon(
-                imageVector = if (spoilersRevealed) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                contentDescription = null,
-                tint =
+            Surface(
+                color =
                     if (spoilersRevealed) {
-                        MaterialTheme.colorScheme.tertiary
+                        MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.48f)
                     } else {
-                        MaterialTheme.colorScheme.error
+                        MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.48f)
                     },
-            )
+                contentColor =
+                    if (spoilersRevealed) {
+                        MaterialTheme.colorScheme.onTertiaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.onErrorContainer
+                    },
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier.size(40.dp),
+            ) {
+                androidx.compose.foundation.layout.Box(
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        imageVector = if (spoilersRevealed) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                        contentDescription = null,
+                    )
+                }
+            }
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(2.dp),
@@ -313,6 +336,7 @@ private fun MediaTagInfoSheet(
     onDismiss: () -> Unit,
 ) {
     val spoilerLevel = tag.spoilerLevel()
+    val accent = tag.rememberAccentColor(spoilerLevel)
     val description = tag.description?.trim().orEmpty()
 
     ListBottomSheet(onDismiss = onDismiss) {
@@ -324,31 +348,41 @@ private fun MediaTagInfoSheet(
                     .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            Text(
-                text = tag.name,
-                style = MaterialTheme.typography.titleLarge,
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                Text(
+                    text = tag.name,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = accent,
+                )
+                Text(
+                    text = stringResource(R.string.subtitle_media_tag_sheet),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
 
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 when (spoilerLevel) {
-                    TagSpoilerLevel.MEDIA ->
+                    MediaTagSpoilerLevel.MEDIA ->
                         TagBadge(
                             label = stringResource(R.string.label_media_tag_sheet_media_spoiler),
                             containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.5f),
                             contentColor = MaterialTheme.colorScheme.onErrorContainer,
                         )
 
-                    TagSpoilerLevel.GENERAL ->
+                    MediaTagSpoilerLevel.GENERAL ->
                         TagBadge(
                             label = stringResource(R.string.label_media_tag_sheet_general_spoiler),
                             containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
                             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                         )
 
-                    TagSpoilerLevel.NONE -> Unit
+                    MediaTagSpoilerLevel.NONE -> Unit
                 }
 
                 if (tag.isAdult) {
@@ -426,49 +460,44 @@ fun MediaTagSection(
         return
     }
 
-    val safeTags = remember(tags) { tags.filter { it.spoilerLevel() == TagSpoilerLevel.NONE } }
-    val spoilerTags = remember(tags) { tags.filter { it.spoilerLevel() != TagSpoilerLevel.NONE } }
-    val mediaSpoilerCount = remember(tags) { tags.count { it.spoilerLevel() == TagSpoilerLevel.MEDIA } }
-    val generalSpoilerCount = remember(tags) { tags.count { it.spoilerLevel() == TagSpoilerLevel.GENERAL } }
+    val partition = remember(tags) { partitionMediaTags(tags) }
+    val rememberKey = remember(tags) { tags.map(Tag::id) }
 
-    var showAllSafeTags by rememberSaveable(tags.size) { mutableStateOf(false) }
-    var showSpoilers by rememberSaveable(tags.size) { mutableStateOf(false) }
+    var showAllSafeTags by rememberSaveable(rememberKey) { mutableStateOf(false) }
+    var showSpoilers by rememberSaveable(rememberKey) { mutableStateOf(false) }
     var selectedTag by remember(tags) { mutableStateOf<Tag?>(null) }
 
-    val visibleSafeTags = if (showAllSafeTags) safeTags else safeTags.take(6)
-    val hasSafeTagOverflow = safeTags.size > 6
-
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = stringResource(R.string.label_media_tag_section_title),
-                style = MaterialTheme.typography.titleMedium,
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            if (hasSafeTagOverflow) {
-                TextButton(
-                    onClick = { showAllSafeTags = !showAllSafeTags },
-                ) {
-                    Text(
-                        text =
-                            stringResource(
-                                if (showAllSafeTags) {
-                                    R.string.action_media_tag_section_show_less
-                                } else {
-                                    R.string.action_media_tag_section_show_all
-                                },
-                            ),
-                    )
-                }
-            }
+    val visibleSafeTags =
+        if (showAllSafeTags) {
+            partition.safeTags
+        } else {
+            partition.safeTags.take(TAG_PREVIEW_COUNT)
         }
+    val hasSafeTagOverflow = partition.safeTags.size > TAG_PREVIEW_COUNT
 
+    MediaHubSection(
+        title = stringResource(R.string.label_media_tag_section_title),
+        subtitle = stringResource(R.string.subtitle_media_tag_section),
+        trailingActionLabel =
+            if (hasSafeTagOverflow) {
+                stringResource(
+                    if (showAllSafeTags) {
+                        R.string.action_media_tag_section_show_less
+                    } else {
+                        R.string.action_media_tag_section_show_all
+                    },
+                )
+            } else {
+                null
+            },
+        onTrailingAction =
+            if (hasSafeTagOverflow) {
+                { showAllSafeTags = !showAllSafeTags }
+            } else {
+                null
+            },
+        modifier = modifier,
+    ) {
         if (visibleSafeTags.isNotEmpty()) {
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -481,23 +510,29 @@ fun MediaTagSection(
                     )
                 }
             }
+        } else {
+            MediaHubSectionEmptyState(
+                title = stringResource(R.string.label_media_tag_section_no_safe_tags_title),
+                message = stringResource(R.string.label_media_tag_section_no_safe_tags_message),
+                icon = Icons.Rounded.Info,
+            )
         }
 
-        if (spoilerTags.isNotEmpty()) {
+        if (partition.spoilerTags.isNotEmpty()) {
             SpoilerDisclosureCard(
-                mediaSpoilerCount = mediaSpoilerCount,
-                generalSpoilerCount = generalSpoilerCount,
+                mediaSpoilerCount = partition.mediaSpoilerCount,
+                generalSpoilerCount = partition.generalSpoilerCount,
                 spoilersRevealed = showSpoilers,
                 onToggleSpoilers = { showSpoilers = !showSpoilers },
             )
         }
 
-        if (showSpoilers && spoilerTags.isNotEmpty()) {
+        if (showSpoilers && partition.spoilerTags.isNotEmpty()) {
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                spoilerTags.forEach { tag ->
+                partition.spoilerTags.forEach { tag ->
                     MediaTagItem(
                         tag = tag,
                         onClick = { selectedTag = tag },
@@ -521,56 +556,36 @@ fun MediaTagSection(
     }
 }
 
-@AniTrendPreview.Light
-@AniTrendPreview.Dark
+@AniTrendPreview.Default
 @Composable
 private fun MediaTagSectionPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
-    PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
         MediaTagSection(
             tags =
                 listOf(
                     Tag.Extended(
-                        rank = 92,
+                        rank = 91,
                         isMediaSpoiler = false,
-                        background = null,
-                        name = "Found Family",
-                        description = "Characters create a close-knit bond outside their original family structure.",
-                        category = "Dynamic",
+                        background = "#6AA5FF",
+                        name = "Time Skip",
+                        description = "Narrative jumps across major character milestones.",
+                        category = "Storytelling",
                         isGeneralSpoiler = false,
                         isAdult = false,
-                        id = 1,
+                        id = 0,
                     ),
                     Tag.Extended(
-                        rank = 71,
-                        isMediaSpoiler = false,
-                        background = null,
-                        name = "Politics",
-                        description = "Power struggles and formal political systems shape the narrative.",
-                        category = "Setting",
-                        isGeneralSpoiler = false,
-                        isAdult = true,
-                        id = 2,
-                    ),
-                    Tag.Extended(
-                        rank = 58,
+                        rank = 78,
                         isMediaSpoiler = true,
-                        background = null,
-                        name = "Identity Reveal",
-                        description = "A major reveal changes how key characters understand one another.",
+                        background = "#FF7A7A",
+                        name = "Major protagonist death",
+                        description = "Contains a critical late-story loss.",
                         category = "Plot",
                         isGeneralSpoiler = false,
                         isAdult = false,
-                        id = 3,
-                    ),
-                    Tag.Core(
-                        name = "Time Skip",
-                        description = "The story jumps forward significantly.",
-                        category = "Structure",
-                        isGeneralSpoiler = true,
-                        isAdult = false,
-                        id = 4,
+                        id = 1,
                     ),
                 ),
             onMediaDiscoverableItemClick = {},
