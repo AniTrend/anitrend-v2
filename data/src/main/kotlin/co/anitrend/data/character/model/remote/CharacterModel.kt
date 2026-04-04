@@ -18,6 +18,7 @@ package co.anitrend.data.character.model.remote
 
 import co.anitrend.data.character.model.contract.ICharacterModel
 import co.anitrend.data.common.model.date.FuzzyDateModel
+import co.anitrend.data.common.model.scalar.LenientNullableIntSerializer
 import co.anitrend.data.media.model.connection.MediaConnection
 import co.anitrend.data.shared.model.SharedImageModel
 import co.anitrend.data.shared.model.SharedNameModel
@@ -36,6 +37,7 @@ internal sealed class CharacterModel : ICharacterModel {
 
     @Serializable
     internal data class Core(
+        @Serializable(with = LenientNullableIntSerializer::class)
         @SerialName("age") override val age: Int? = null,
         @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel? = null,
         @SerialName("gender") override val gender: String? = null,
@@ -53,6 +55,7 @@ internal sealed class CharacterModel : ICharacterModel {
     @Serializable
     internal data class Extended(
         @SerialName("media") val media: MediaConnection.Character? = null,
+        @Serializable(with = LenientNullableIntSerializer::class)
         @SerialName("age") override val age: Int? = null,
         @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel? = null,
         @SerialName("gender") override val gender: String? = null,

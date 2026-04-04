@@ -52,6 +52,8 @@ import co.anitrend.data.genre.entity.GenreEntity
 import co.anitrend.data.genre.entity.connection.GenreConnectionEntity
 import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.entity.connection.MediaCharacterConnectionEntity
+import co.anitrend.data.media.entity.connection.MediaStaffConnectionEntity
 import co.anitrend.data.media.entity.fts.MediaFtsEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.CustomListCountView
@@ -83,6 +85,7 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         NewsEntity::class, NewsFtsEntity::class, EpisodeEntity::class, EpisodeFtsEntity::class,
         CharacterEntity::class, CharacterFtsEntity::class, StudioEntity::class, StudioFtsEntity::class,
         StaffEntity::class, StaffFtsEntity::class, LinkEntity::class, RankEntity::class,
+        MediaCharacterConnectionEntity::class, MediaStaffConnectionEntity::class,
         CustomListEntity::class, CustomScoreEntity::class,
         UserPreviousNameEntity::class, ReviewEntity::class,
         UserNotificationEntity::class,
@@ -110,7 +113,7 @@ internal abstract class AniTrendStore :
     RoomDatabase(),
     IAniTrendStore {
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 12
+        const val DATABASE_SCHEMA_VERSION = 13
 
         internal fun create(applicationContext: Context): IAniTrendStore =
             Room

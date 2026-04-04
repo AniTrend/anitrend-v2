@@ -18,12 +18,16 @@ package co.anitrend.data.media.datasource.local
 
 import androidx.paging.DataSource
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.android.source.local.AbstractLocalSource
+import co.anitrend.data.media.entity.connection.MediaCharacterConnectionEntity
+import co.anitrend.data.media.entity.connection.MediaStaffConnectionEntity
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.medialist.entity.MediaListEntity
@@ -75,4 +79,88 @@ internal abstract class MediaLocalSource : AbstractLocalSource<MediaEntity>() {
     @Transaction
     @RawQuery(observedEntities = [MediaEntity::class, MediaListEntity::class, AiringScheduleEntity::class])
     abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, MediaEntityView.Core>
+
+    @Query(
+        """
+        select * from media_character_connection
+        where media_id = :mediaId
+        order by sort_index asc
+    """,
+    )
+    abstract fun mediaCharactersFactory(mediaId: Long): DataSource.Factory<Int, MediaCharacterConnectionEntity>
+
+    @Query(
+        """
+        select * from media_character_connection
+        where media_id = :mediaId
+        order by sort_index asc
+        limit :limit offset :offset
+    """,
+    )
+    abstract suspend fun mediaCharactersByPage(
+        mediaId: Long,
+        limit: Int,
+        offset: Int,
+    ): List<MediaCharacterConnectionEntity>
+
+    @Query(
+        """
+        select * from media_staff_connection
+        where media_id = :mediaId
+        order by sort_index asc
+    """,
+    )
+    abstract fun mediaStaffFactory(mediaId: Long): DataSource.Factory<Int, MediaStaffConnectionEntity>
+
+    @Query(
+        """
+        select * from media_staff_connection
+        where media_id = :mediaId
+        order by sort_index asc
+        limit :limit offset :offset
+    """,
+    )
+    abstract suspend fun mediaStaffByPage(
+        mediaId: Long,
+        limit: Int,
+        offset: Int,
+    ): List<MediaStaffConnectionEntity>
+
+    @Query(
+        """
+        select count(id) from media_character_connection
+        where media_id = :mediaId
+    """,
+    )
+    abstract suspend fun mediaCharactersCount(mediaId: Long): Int
+
+    @Query(
+        """
+        select count(id) from media_staff_connection
+        where media_id = :mediaId
+    """,
+    )
+    abstract suspend fun mediaStaffCount(mediaId: Long): Int
+
+    @Query(
+        """
+        delete from media_character_connection
+        where media_id = :mediaId
+    """,
+    )
+    abstract suspend fun clearMediaCharactersByMediaId(mediaId: Long)
+
+    @Query(
+        """
+        delete from media_staff_connection
+        where media_id = :mediaId
+    """,
+    )
+    abstract suspend fun clearMediaStaffByMediaId(mediaId: Long)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsertMediaCharacters(attribute: List<MediaCharacterConnectionEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsertMediaStaff(attribute: List<MediaStaffConnectionEntity>)
 }
