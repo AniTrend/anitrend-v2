@@ -20,10 +20,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -44,6 +42,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.compose.design.image.AniTrendImage
@@ -51,7 +50,6 @@ import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
-import co.anitrend.common.media.ui.R as MediaUiR
 import co.anitrend.common.media.ui.compose.component.MediaRating
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
 import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleText
@@ -72,8 +70,10 @@ import co.anitrend.media.R
 import co.anitrend.navigation.MediaListEditorRouter
 import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.model.common.IParam
+import kotlin.math.abs
 
 internal val ConnectionRailCardWidth = 176.dp
+private val ConnectionRailCardNarrowWidth = 148.dp
 
 private val ConnectionCardShape = RoundedCornerShape(22.dp)
 private val ConnectionPosterShape = RoundedCornerShape(18.dp)
@@ -109,17 +109,6 @@ internal fun RelatedMediaCard(
             ConnectionTitle(media = media)
             MediaQuickFacts(media = media)
             ConnectionSupportLine(media = media)
-            ConnectionStateRow(
-                chips =
-                    buildList {
-                        if (media.isFavourite) {
-                            add(stringResource(R.string.label_media_connection_favourite))
-                        }
-                        media.score.average.takeIf { it > 0 }?.let {
-                            add(stringResource(R.string.label_media_connection_score_average, it))
-                        }
-                    },
-            )
         }
     }
 }
@@ -163,20 +152,16 @@ internal fun RecommendationMediaCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            ConnectionStateRow(
-                chips =
-                    buildList {
-                        recommendation.userRating?.let {
-                            add(recommendationVoteLabel(it))
-                        }
-                        if (media.isFavourite) {
-                            add(stringResource(R.string.label_media_connection_favourite))
-                        }
-                        media.score.average.takeIf { it > 0 }?.let {
-                            add(stringResource(R.string.label_media_connection_score_average, it))
-                        }
-                    },
-            )
+            recommendationVoteLabel(recommendation.userRating)
+                ?.let { footer ->
+                    Text(
+                        text = footer,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
         }
     }
 }
@@ -270,8 +255,9 @@ private fun ConnectionTitle(
 ) {
     Text(
         text =
-            media.title.userPreferred
-                ?.toString()
+            listOf(media.title.userPreferred, media.title.english, media.title.romaji, media.title.native)
+                .mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
+                .firstOrNull()
                 .orEmpty(),
         maxLines = 2,
         overflow = TextOverflow.Ellipsis,
@@ -294,7 +280,7 @@ private fun MediaQuickFacts(
 
     Text(
         text = facts.joinToString(separator = " • "),
-        maxLines = 1,
+        maxLines = 2,
         overflow = TextOverflow.Ellipsis,
         style = MaterialTheme.typography.labelMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -334,31 +320,6 @@ private fun ConnectionSupportLine(
 }
 
 @Composable
-private fun ConnectionStateRow(
-    chips: List<String>,
-    modifier: Modifier = Modifier,
-) {
-    if (chips.isEmpty()) {
-        return
-    }
-
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier,
-    ) {
-        chips.take(2).forEachIndexed { index, chip ->
-            ConnectionChip(
-                label = chip,
-                containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.42f),
-                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                modifier = if (index == 0) Modifier.weight(1f, fill = false) else Modifier,
-            )
-        }
-    }
-}
-
-@Composable
 private fun ConnectionChip(
     label: String,
     containerColor: Color,
@@ -384,7 +345,13 @@ private fun ConnectionChip(
 
 @Composable
 private fun recommendationSignalLabel(rating: Int?): String =
-    rating?.let { stringResource(R.string.label_media_recommendations_signal_value, it) }
+    rating?.let {
+        if (it > 0) {
+            stringResource(R.string.label_media_recommendations_signal_value, it)
+        } else {
+            stringResource(R.string.label_media_recommendations_signal_signed, if (it < 0) -abs(it) else 0)
+        }
+    }
         ?: stringResource(R.string.label_media_recommendations_signal_unknown)
 
 @Composable
@@ -395,11 +362,13 @@ private fun recommendationRationaleLabel(recommendation: MediaRecommendationEntr
         ?: stringResource(R.string.label_media_recommendations_rationale_unknown)
 
 @Composable
-private fun recommendationVoteLabel(rating: RecommendationRating): String =
+private fun recommendationVoteLabel(rating: RecommendationRating?): String? =
     when (rating) {
         RecommendationRating.RATE_UP -> stringResource(R.string.label_media_recommendations_vote_up)
         RecommendationRating.RATE_DOWN -> stringResource(R.string.label_media_recommendations_vote_down)
-        RecommendationRating.NO_RATING -> stringResource(R.string.label_media_recommendations_vote_neutral)
+        RecommendationRating.NO_RATING,
+        null,
+        -> null
     }
 
 @Composable
@@ -508,12 +477,67 @@ private fun RecommendationMediaCardSparsePreview(
     }
 }
 
-private fun previewMedia(isFavourite: Boolean) =
+@AniTrendPreview.Default
+@Composable
+private fun RelatedMediaCardNarrowPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        RelatedMediaCard(
+            relation =
+                MediaRelationEntry(
+                    relation = MediaRelation.SIDE_STORY,
+                    media =
+                        previewMedia(
+                            title = "Legend of the Galactic Heroes: Die Neue These - Intrigue",
+                            isFavourite = false,
+                            episodes = 12,
+                        ),
+                    id = 4L,
+                ),
+            scoreFormat = ScoreFormat.POINT_10_DECIMAL,
+            onMediaItemClick = {},
+            modifier = Modifier.width(ConnectionRailCardNarrowWidth),
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 180)
+@Composable
+private fun RecommendationMediaCardNarrowPreview() {
+    PreviewTheme(darkTheme = false, wrapInSurface = true) {
+        RecommendationMediaCard(
+            recommendation =
+                MediaRecommendationEntry(
+                    media =
+                        previewMedia(
+                            title = "March Comes in like a Lion: Season 2",
+                            isFavourite = true,
+                            episodes = 22,
+                        ),
+                    rating = 126,
+                    userName = "Akari from the community favourites circle",
+                    userRating = RecommendationRating.RATE_UP,
+                    id = 5L,
+                ),
+            scoreFormat = ScoreFormat.POINT_10_DECIMAL,
+            onMediaItemClick = {},
+            modifier = Modifier.width(ConnectionRailCardNarrowWidth),
+            rationaleMaxLines = 1,
+        )
+    }
+}
+
+private fun previewMedia(
+    title: String = "Cowboy Bebop: The Movie",
+    isFavourite: Boolean,
+    episodes: Int = 1,
+) =
     Media.Core.empty().copy(
         title =
             MediaTitle(
-                userPreferred = "Cowboy Bebop: The Movie",
-                english = "Cowboy Bebop: The Movie",
+                userPreferred = title,
+                english = title,
                 romaji = "Cowboy Bebop: Tengoku no Tobira",
                 native = "カウボーイビバップ 天国の扉",
             ),
@@ -524,7 +548,7 @@ private fun previewMedia(isFavourite: Boolean) =
         category =
             Media.Category.Anime
                 .empty()
-                .copy(1),
+                .copy(episodes),
         score =
             MediaScore(
                 average = 82,
