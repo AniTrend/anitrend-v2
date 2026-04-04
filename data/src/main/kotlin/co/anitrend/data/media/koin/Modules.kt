@@ -22,20 +22,29 @@ import co.anitrend.data.android.extensions.offline
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.media.GetDetailMediaInteractor
+import co.anitrend.data.media.GetMediaCharactersInteractor
 import co.anitrend.data.media.GetNetworkMediaInteractor
 import co.anitrend.data.media.GetPagedMediaInteractor
+import co.anitrend.data.media.GetMediaStaffInteractor
+import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaNetworkRepository
 import co.anitrend.data.media.MediaPagedRepository
+import co.anitrend.data.media.MediaStaffRepository
 import co.anitrend.data.media.cache.MediaCache
+import co.anitrend.data.media.converter.MediaCharacterEdgeConverter
 import co.anitrend.data.media.converter.MediaConverter
+import co.anitrend.data.media.converter.MediaStaffEdgeConverter
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.converter.MediaModelConverter
 import co.anitrend.data.media.entity.filter.MediaQueryFilter
 import co.anitrend.data.media.mapper.MediaMapper
+import co.anitrend.data.media.mapper.MediaPeopleMapper
 import co.anitrend.data.media.repository.MediaRepository
+import co.anitrend.data.media.source.contract.MediaPeopleSource
 import co.anitrend.data.media.source.MediaSourceImpl
 import co.anitrend.data.media.source.contract.MediaSource
+import co.anitrend.data.media.source.factory.MediaPeopleSourceFactory
 import co.anitrend.data.media.source.factory.MediaSourceFactory
 import co.anitrend.data.media.usecase.MediaInteractor
 import org.koin.dsl.module
@@ -84,6 +93,26 @@ private val sourceModule =
                 dispatcher = get(),
             )
         }
+        factory {
+            MediaPeopleSourceFactory.Characters(
+                remoteSource = aniListApi(),
+                controller =
+                    graphQLController(
+                        mapper = get<MediaPeopleMapper.Characters>(),
+                    ),
+                dispatcher = get(),
+            )
+        }
+        factory {
+            MediaPeopleSourceFactory.Staff(
+                remoteSource = aniListApi(),
+                controller =
+                    graphQLController(
+                        mapper = get<MediaPeopleMapper.Staff>(),
+                    ),
+                dispatcher = get(),
+            )
+        }
     }
 
 private val filterModule =
@@ -115,6 +144,12 @@ private val converterModule =
         factory {
             MediaConverter()
         }
+        factory {
+            MediaCharacterEdgeConverter()
+        }
+        factory {
+            MediaStaffEdgeConverter()
+        }
     }
 
 private val mapperModule =
@@ -145,6 +180,16 @@ private val mapperModule =
         }
         factory {
             MediaMapper.Network(
+                converter = get(),
+            )
+        }
+        factory {
+            MediaPeopleMapper.Characters(
+                converter = get(),
+            )
+        }
+        factory {
+            MediaPeopleMapper.Staff(
                 converter = get(),
             )
         }
@@ -195,6 +240,16 @@ private val useCaseModule =
                 repository = get(),
             )
         }
+        factory<GetMediaCharactersInteractor> {
+            MediaInteractor.Characters(
+                repository = get(),
+            )
+        }
+        factory<GetMediaStaffInteractor> {
+            MediaInteractor.Staff(
+                repository = get(),
+            )
+        }
         factory<GetNetworkMediaInteractor> {
             MediaInteractor.Network(
                 repository = get(),
@@ -211,6 +266,16 @@ private val repositoryModule =
         }
         factory<MediaPagedRepository> {
             MediaRepository.Paged(
+                source = get(),
+            )
+        }
+        factory<MediaCharactersRepository> {
+            MediaRepository.Characters(
+                source = get(),
+            )
+        }
+        factory<MediaStaffRepository> {
+            MediaRepository.Staff(
                 source = get(),
             )
         }

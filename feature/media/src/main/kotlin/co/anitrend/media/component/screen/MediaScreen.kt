@@ -37,6 +37,7 @@ import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.MediaPeopleRouter
 import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
@@ -98,6 +99,12 @@ class MediaScreen : AniTrendScreen() {
                         },
                         onImageClick = { param ->
                             ImageViewerRouter.startActivity(
+                                context = this@MediaScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onPeopleClick = { param ->
+                            MediaPeopleRouter.startActivity(
                                 context = this@MediaScreen,
                                 navPayload = param.asNavPayload(),
                             )

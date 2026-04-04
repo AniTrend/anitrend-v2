@@ -20,6 +20,7 @@ import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.media.model.container.MediaModelContainer
+import co.anitrend.data.media.model.container.MediaPeopleModelContainer
 import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import retrofit2.Response
@@ -40,4 +41,18 @@ internal interface MediaRemoteSource {
     suspend fun getMediaDetail(
         @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<MediaModelContainer.Detail>>
+
+    @GRAPHQL
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetMediaWithCharacter")
+    suspend fun getMediaCharacters(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<MediaPeopleModelContainer.Characters>>
+
+    @GRAPHQL
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetMediaWithStaff")
+    suspend fun getMediaStaff(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<MediaPeopleModelContainer.Staff>>
 }

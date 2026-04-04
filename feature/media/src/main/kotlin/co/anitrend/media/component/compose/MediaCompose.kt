@@ -17,6 +17,7 @@
 package co.anitrend.media.component.compose
 
 import android.view.View
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -69,6 +70,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagedList
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.android.core.compose.AniTrendDimensions
 import co.anitrend.android.core.compose.design.BackIconButton
 import co.anitrend.android.core.compose.design.image.AniTrendImage
@@ -81,21 +84,26 @@ import co.anitrend.common.media.ui.compose.component.score.MediaScoreSection
 import co.anitrend.common.media.ui.compose.component.status.MediaStatusSection
 import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.entity.attribute.score.IMediaRating
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.R
+import co.anitrend.media.component.compose.people.MediaPeopleSection
 import co.anitrend.media.component.compose.section.MediaExtendedMetadataSection
 import co.anitrend.media.component.compose.section.MediaGenrePreviewSection
 import co.anitrend.media.component.compose.section.MediaRankPreviewSection
 import co.anitrend.media.component.compose.section.MediaSynopsisPreviewSection
 import co.anitrend.media.component.compose.section.MediaTagSection
 import co.anitrend.media.component.schedule.MediaScheduleSheet
+import co.anitrend.media.component.viewmodel.MediaCharactersViewModel
 import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
+import co.anitrend.media.component.viewmodel.MediaStaffViewModel
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.MediaPeopleRouter
 import org.koin.androidx.compose.koinViewModel
 import co.anitrend.common.media.ui.R as MediaUiR
 
@@ -506,6 +514,13 @@ private fun MediaDetailContent(
     onMyAnimeListButtonClick: (String) -> Unit,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
+    characters: PagedList<MediaPerson.Character>? = null,
+    charactersLoadState: LoadState? = null,
+    staff: PagedList<MediaPerson.Staff>? = null,
+    staffLoadState: LoadState? = null,
+    onPeopleClick: (MediaPeopleRouter.MediaPeopleParam) -> Unit = {},
+    onRetryCharacters: () -> Unit = {},
+    onRetryStaff: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     var showScheduleSheet by remember { mutableStateOf(false) }
@@ -594,6 +609,39 @@ private fun MediaDetailContent(
                 )
             }
 
+            MediaPeopleSection(
+                characters = characters,
+                charactersLoadState = charactersLoadState,
+                staff = staff,
+                staffLoadState = staffLoadState,
+                onSeeAllClick = {
+                    onPeopleClick(
+                        MediaPeopleRouter.MediaPeopleParam(
+                            mediaId = media.id,
+                            initialSection = MediaPeopleRouter.Section.CHARACTERS,
+                        ),
+                    )
+                },
+                onCharacterClick = {
+                    onPeopleClick(
+                        MediaPeopleRouter.MediaPeopleParam(
+                            mediaId = media.id,
+                            initialSection = MediaPeopleRouter.Section.CHARACTERS,
+                        ),
+                    )
+                },
+                onStaffClick = {
+                    onPeopleClick(
+                        MediaPeopleRouter.MediaPeopleParam(
+                            mediaId = media.id,
+                            initialSection = MediaPeopleRouter.Section.STAFF,
+                        ),
+                    )
+                },
+                onRetryCharacters = onRetryCharacters,
+                onRetryStaff = onRetryStaff,
+            )
+
             MediaExtendedMetadataSection(
                 media = media,
                 themes = media.themes,
@@ -621,12 +669,24 @@ fun MediaScreenContent(
     onFloatingActionButtonClick: (Media) -> Unit,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
+    onPeopleClick: (MediaPeopleRouter.MediaPeopleParam) -> Unit,
     onBackClick: () -> Unit,
 ) {
     val state by mediaState.model.observeAsState()
     val media = state as? Media.Extended ?: return
+    val charactersViewModel: MediaCharactersViewModel = koinViewModel()
+    val staffViewModel: MediaStaffViewModel = koinViewModel()
+    val characters by charactersViewModel.model.observeAsState()
+    val charactersLoadState by charactersViewModel.loadState.observeAsState()
+    val staff by staffViewModel.model.observeAsState()
+    val staffLoadState by staffViewModel.loadState.observeAsState()
 
     val view = LocalView.current
+
+    LaunchedEffect(media.id) {
+        charactersViewModel(media.id)
+        staffViewModel(media.id)
+    }
 
     Scaffold(
         bottomBar = {
@@ -664,6 +724,13 @@ fun MediaScreenContent(
             onMyAnimeListButtonClick = onMyAnimeListButtonClick,
             onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
             onImageClick = onImageClick,
+            characters = characters,
+            charactersLoadState = charactersLoadState,
+            staff = staff,
+            staffLoadState = staffLoadState,
+            onPeopleClick = onPeopleClick,
+            onRetryCharacters = { charactersViewModel(media.id) },
+            onRetryStaff = { staffViewModel(media.id) },
             modifier =
                 Modifier
                     .padding(innerPadding)

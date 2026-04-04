@@ -17,9 +17,13 @@
 package co.anitrend.media.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.media.component.viewmodel.MediaCharactersViewModel
+import co.anitrend.media.component.viewmodel.MediaStaffViewModel
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
 import co.anitrend.media.provider.FeatureProvider
+import co.anitrend.media.provider.PeopleFeatureProvider
+import co.anitrend.navigation.MediaPeopleRouter
 import co.anitrend.navigation.MediaRouter
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -37,12 +41,25 @@ private val viewModelModule =
                 interactor = get(),
             )
         }
+        viewModel {
+            MediaCharactersViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            MediaStaffViewModel(
+                interactor = get(),
+            )
+        }
     }
 
 private val featureModule =
     module {
         factory<MediaRouter.Provider> {
             FeatureProvider()
+        }
+        factory<MediaPeopleRouter.Provider> {
+            PeopleFeatureProvider()
         }
     }
 
