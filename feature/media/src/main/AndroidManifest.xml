@@ -21,6 +21,8 @@
     <application>
         <activity android:name=".component.screen.MediaScreen"
             android:exported="true" />
+        <activity android:name=".component.screen.MediaPeopleScreen"
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

@@ -22,11 +22,16 @@ import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
 import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.data.media.MediaDetailRepository
+import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaNetworkRepository
 import co.anitrend.data.media.MediaPagedRepository
+import co.anitrend.data.media.MediaStaffRepository
 import co.anitrend.data.media.source.contract.MediaSource
+import co.anitrend.data.media.source.contract.MediaPeopleSource
 import co.anitrend.data.media.source.factory.MediaSourceFactory
+import co.anitrend.data.media.source.factory.MediaPeopleSourceFactory
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.model.MediaParam
 
 internal sealed class MediaRepository {
@@ -42,6 +47,38 @@ internal sealed class MediaRepository {
     ) : MediaRepository(),
         MediaPagedRepository {
         override fun getPaged(param: MediaParam.Find) = source create source(param)
+    }
+
+    class Characters(
+        private val source: MediaPeopleSourceFactory.Characters,
+    ) : MediaRepository(),
+        MediaCharactersRepository {
+        override fun getCharacters(param: MediaParam.Characters): DataState<PagedList<MediaPerson.Character>> {
+            source.initialKey = param
+            val dataSource = source.create()
+
+            return dataSource create
+                FlowPagedListBuilder(
+                    source,
+                    PAGING_CONFIGURATION,
+                ).buildFlow()
+        }
+    }
+
+    class Staff(
+        private val source: MediaPeopleSourceFactory.Staff,
+    ) : MediaRepository(),
+        MediaStaffRepository {
+        override fun getStaff(param: MediaParam.Staff): DataState<PagedList<MediaPerson.Staff>> {
+            source.initialKey = param
+            val dataSource = source.create()
+
+            return dataSource create
+                FlowPagedListBuilder(
+                    source,
+                    PAGING_CONFIGURATION,
+                ).buildFlow()
+        }
     }
 
     class Network(

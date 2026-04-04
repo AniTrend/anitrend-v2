@@ -45,6 +45,18 @@ internal class MediaCache(
             override val key: String = "media_detail",
         ) : Identity()
 
+        class Characters(
+            val param: MediaParam.Characters,
+            override val id: Long = param.id,
+            override val key: String = "media_characters",
+        ) : Identity()
+
+        class Staff(
+            val param: MediaParam.Staff,
+            override val id: Long = param.id,
+            override val key: String = "media_staff",
+        ) : Identity()
+
         class Paged(
             override val id: Long = 0,
             override val key: String = "media_paged",
