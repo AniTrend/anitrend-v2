@@ -64,9 +64,10 @@ internal fun MediaRelatedPreviewSection(
     MediaHubSection(
         title = stringResource(R.string.title_media_related_section),
         subtitle = stringResource(R.string.subtitle_media_related_section),
-        trailingActionLabel = previewItems.takeIf(List<MediaRelationEntry>::isNotEmpty)?.let {
-            stringResource(R.string.action_media_related_section_see_all)
-        },
+        trailingActionLabel =
+            previewItems.takeIf(List<MediaRelationEntry>::isNotEmpty)?.let {
+                stringResource(R.string.action_media_related_section_see_all)
+            },
         onTrailingAction = previewItems.takeIf(List<MediaRelationEntry>::isNotEmpty)?.let { { onSeeAllClick() } },
         modifier = modifier,
     ) {
@@ -123,9 +124,10 @@ internal fun MediaRecommendationsPreviewSection(
     MediaHubSection(
         title = stringResource(R.string.title_media_recommendations_section),
         subtitle = stringResource(R.string.subtitle_media_recommendations_section),
-        trailingActionLabel = previewItems.takeIf(List<MediaRecommendationEntry>::isNotEmpty)?.let {
-            stringResource(R.string.action_media_recommendations_section_see_all)
-        },
+        trailingActionLabel =
+            previewItems.takeIf(List<MediaRecommendationEntry>::isNotEmpty)?.let {
+                stringResource(R.string.action_media_recommendations_section_see_all)
+            },
         onTrailingAction = previewItems.takeIf(List<MediaRecommendationEntry>::isNotEmpty)?.let { { onSeeAllClick() } },
         modifier = modifier,
     ) {
@@ -169,9 +171,7 @@ internal fun MediaRecommendationsPreviewSection(
 }
 
 @Composable
-private fun ConnectionPreviewRail(
-    content: androidx.compose.foundation.lazy.LazyListScope.() -> Unit,
-) {
+private fun ConnectionPreviewRail(content: androidx.compose.foundation.lazy.LazyListScope.() -> Unit) {
     LazyRow(
         contentPadding = PaddingValues(vertical = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),

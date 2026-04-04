@@ -32,7 +32,10 @@ internal sealed class MediaPeopleMapper<S, D> : DefaultMapper<S, D>() {
         private var mediaId: Long = 0L
         private var sortIndexOffset: Int = 0
 
-        suspend fun onRequest(mediaId: Long, page: Int) {
+        suspend fun onRequest(
+            mediaId: Long,
+            page: Int,
+        ) {
             this.mediaId = mediaId
             sortIndexOffset =
                 if (page <= 1) {
@@ -52,33 +55,37 @@ internal sealed class MediaPeopleMapper<S, D> : DefaultMapper<S, D>() {
         }
 
         override suspend fun onResponseMapFrom(source: MediaPeopleModelContainer.Characters) =
-            converter.convertFrom(
-                source.media?.characters?.edges.orEmpty(),
-            ).mapIndexed { index, character ->
-                val voiceActor = character.voiceActors.firstOrNull()
+            converter
+                .convertFrom(
+                    source.media
+                        ?.characters
+                        ?.edges
+                        .orEmpty(),
+                ).mapIndexed { index, character ->
+                    val voiceActor = character.voiceActors.firstOrNull()
 
-                MediaCharacterConnectionEntity(
-                    mediaId = mediaId,
-                    characterId = character.id,
-                    role = character.role,
-                    mediaRoleName = character.mediaRoleName,
-                    sortIndex = sortIndexOffset + index,
-                    imageLarge = character.image?.large,
-                    imageMedium = character.image?.medium,
-                    nameFirst = character.name?.first,
-                    nameFull = character.name?.full,
-                    nameLast = character.name?.last,
-                    nameMiddle = character.name?.middle,
-                    nameNative = character.name?.native,
-                    nameUserPreferred = character.name?.userPreferred,
-                    nameAlternative = character.name?.alternative.orEmpty(),
-                    nameAlternativeSpoiler = character.name?.alternativeSpoiler.orEmpty(),
-                    siteUrl = character.siteUrl,
-                    voiceActorId = voiceActor?.id,
-                    voiceActorNameFull = voiceActor?.name?.full,
-                    voiceActorNameUserPreferred = voiceActor?.name?.userPreferred,
-                )
-            }
+                    MediaCharacterConnectionEntity(
+                        mediaId = mediaId,
+                        characterId = character.id,
+                        role = character.role,
+                        mediaRoleName = character.mediaRoleName,
+                        sortIndex = sortIndexOffset + index,
+                        imageLarge = character.image?.large,
+                        imageMedium = character.image?.medium,
+                        nameFirst = character.name?.first,
+                        nameFull = character.name?.full,
+                        nameLast = character.name?.last,
+                        nameMiddle = character.name?.middle,
+                        nameNative = character.name?.native,
+                        nameUserPreferred = character.name?.userPreferred,
+                        nameAlternative = character.name?.alternative.orEmpty(),
+                        nameAlternativeSpoiler = character.name?.alternativeSpoiler.orEmpty(),
+                        siteUrl = character.siteUrl,
+                        voiceActorId = voiceActor?.id,
+                        voiceActorNameFull = voiceActor?.name?.full,
+                        voiceActorNameUserPreferred = voiceActor?.name?.userPreferred,
+                    )
+                }
     }
 
     class Staff(
@@ -88,7 +95,10 @@ internal sealed class MediaPeopleMapper<S, D> : DefaultMapper<S, D>() {
         private var mediaId: Long = 0L
         private var sortIndexOffset: Int = 0
 
-        suspend fun onRequest(mediaId: Long, page: Int) {
+        suspend fun onRequest(
+            mediaId: Long,
+            page: Int,
+        ) {
             this.mediaId = mediaId
             sortIndexOffset =
                 if (page <= 1) {
@@ -108,27 +118,31 @@ internal sealed class MediaPeopleMapper<S, D> : DefaultMapper<S, D>() {
         }
 
         override suspend fun onResponseMapFrom(source: MediaPeopleModelContainer.Staff) =
-            converter.convertFrom(
-                source.media?.staff?.edges.orEmpty(),
-            ).mapIndexed { index, staff ->
-                MediaStaffConnectionEntity(
-                    mediaId = mediaId,
-                    staffId = staff.id,
-                    role = staff.role,
-                    language = staff.language,
-                    sortIndex = sortIndexOffset + index,
-                    imageLarge = staff.image?.large,
-                    imageMedium = staff.image?.medium,
-                    nameFirst = staff.name?.first,
-                    nameFull = staff.name?.full,
-                    nameLast = staff.name?.last,
-                    nameMiddle = staff.name?.middle,
-                    nameNative = staff.name?.native,
-                    nameUserPreferred = staff.name?.userPreferred,
-                    nameAlternative = staff.name?.alternative.orEmpty(),
-                    nameAlternativeSpoiler = staff.name?.alternativeSpoiler.orEmpty(),
-                    siteUrl = staff.siteUrl,
-                )
-            }
+            converter
+                .convertFrom(
+                    source.media
+                        ?.staff
+                        ?.edges
+                        .orEmpty(),
+                ).mapIndexed { index, staff ->
+                    MediaStaffConnectionEntity(
+                        mediaId = mediaId,
+                        staffId = staff.id,
+                        role = staff.role,
+                        language = staff.language,
+                        sortIndex = sortIndexOffset + index,
+                        imageLarge = staff.image?.large,
+                        imageMedium = staff.image?.medium,
+                        nameFirst = staff.name?.first,
+                        nameFull = staff.name?.full,
+                        nameLast = staff.name?.last,
+                        nameMiddle = staff.name?.middle,
+                        nameNative = staff.name?.native,
+                        nameUserPreferred = staff.name?.userPreferred,
+                        nameAlternative = staff.name?.alternative.orEmpty(),
+                        nameAlternativeSpoiler = staff.name?.alternativeSpoiler.orEmpty(),
+                        siteUrl = staff.siteUrl,
+                    )
+                }
     }
 }

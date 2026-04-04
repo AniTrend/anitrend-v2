@@ -242,7 +242,11 @@ private fun RelationGrid(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 ConnectionMetaPill(
-                    label = relation.relation?.alias?.toString().orEmpty(),
+                    label =
+                        relation.relation
+                            ?.alias
+                            ?.toString()
+                            .orEmpty(),
                 )
                 MediaCompactItem(
                     media = relation.media,
