@@ -40,6 +40,8 @@ adding any new Gradle module.
 
 ### 4. Domain / Data wiring (if a data or feature module)
 - [ ] Define the domain interface in `:domain` (e.g., `IXxxRepository`).
+- [ ] For mutation-only flows, also define the abstract domain use case first; do not keep the
+  repository contract or concrete interactor implementation inside the module `Types.kt`.
 - [ ] Implement it in the new data module (`XxxRepository`).
 - [ ] Create `XxxUseCaseImpl` bridging the domain use case to the repository.
 - [ ] Follow the four-file entity pattern if adding persistence (see `skills/room-entity-pattern.md`).

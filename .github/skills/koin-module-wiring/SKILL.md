@@ -20,6 +20,8 @@ by the app-level aggregator and loaded at startup via `InjectorInitializer`.
 - `data/src/main/kotlin/co/anitrend/data/tag/koin/` — example of a data-module Koin file that
   binds `ITagRepository → TagRepository` and provides `TagUseCaseImpl`
 - `data/src/main/kotlin/co/anitrend/data/genre/koin/Modules.kt` — another concrete example
+- `data/src/main/kotlin/co/anitrend/data/medialist/koin/Modules.kt` — mutation-heavy example
+  showing explicit typed mapper lookup for generic `graphQLController(...)` bindings
 
 ## Wiring checklist for a new module
 
@@ -38,3 +40,6 @@ by the app-level aggregator and loaded at startup via `InjectorInitializer`.
   cases and ViewModels (new instance per consumer).
 - Use `get()` to resolve transitive dependencies; never import concrete data-layer classes into a
   feature module's Koin file.
+- When a binding depends on a generic contract such as `graphQLController(mapper = ...)`, prefer
+  explicit typed lookup like `get<ConcreteMapper>()` instead of bare `get()` so Koin does not have
+  to infer an ambiguous generic mapper.
