@@ -21,7 +21,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,13 +34,11 @@ import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.MusicNote
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -61,6 +58,8 @@ import androidx.compose.ui.unit.dp
 import co.anitrend.common.shared.ui.compose.sheet.ListBottomSheet
 import co.anitrend.domain.media.entity.attribute.theme.MediaTheme
 import co.anitrend.media.R
+
+private const val THEME_PREVIEW_COUNT = 2
 
 private fun MediaTheme.hasAudioAsset(): Boolean = !audio.isNullOrBlank()
 
@@ -150,10 +149,10 @@ private fun MediaThemeItem(
     val availability = theme.availabilitySummary()
 
     Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.16f),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.72f),
         contentColor = MaterialTheme.colorScheme.onSurface,
-        shape = RoundedCornerShape(18.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.56f)),
+        shape = RoundedCornerShape(20.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.42f)),
         modifier =
             modifier
                 .fillMaxWidth()
@@ -188,9 +187,9 @@ private fun MediaThemeItem(
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
-                FlowRow(
+                Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     metadataLabel?.let {
                         ThemeBadge(label = it)
@@ -230,14 +229,22 @@ private fun MediaThemeDetailSheet(
                     .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            Text(
-                text = theme.name,
-                style = MaterialTheme.typography.titleLarge,
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                Text(
+                    text = theme.name,
+                    style = MaterialTheme.typography.titleLarge,
+                )
+                Text(
+                    text = stringResource(R.string.subtitle_media_theme_sheet),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
 
-            FlowRow(
+            Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 metadataLabel?.let {
                     ThemeBadge(
@@ -359,41 +366,34 @@ private fun MediaThemeDetailSheet(
 }
 
 @Composable
-fun MediaThemeSection(
+internal fun MediaThemePreviewBlock(
     themes: List<MediaTheme>,
     modifier: Modifier = Modifier,
+    title: String? = null,
+    collapsedCount: Int = THEME_PREVIEW_COUNT,
 ) {
     if (themes.isEmpty()) {
         return
     }
 
     var showAll by rememberSaveable(themes.size) { mutableStateOf(false) }
-    var selectedTheme by remember { mutableStateOf<MediaTheme?>(null) }
-    val canExpand = themes.size > 3
-    val visibleThemes = if (canExpand && !showAll) themes.take(3) else themes
+    var selectedTheme by remember(themes) { mutableStateOf<MediaTheme?>(null) }
+    val canExpand = themes.size > collapsedCount
+    val visibleThemes = if (canExpand && !showAll) themes.take(collapsedCount) else themes
 
-    OutlinedCard(
-        colors =
-            CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-            ),
-        shape = CardDefaults.outlinedShape,
+    Column(
         modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-        ) {
+        if (!title.isNullOrBlank()) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stringResource(R.string.label_media_extended_details_themes),
-                    style = MaterialTheme.typography.titleSmall,
+                    text = title,
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 if (canExpand) {
@@ -411,13 +411,13 @@ fun MediaThemeSection(
                     }
                 }
             }
+        }
 
-            visibleThemes.forEach { theme ->
-                MediaThemeItem(
-                    theme = theme,
-                    onClick = { selectedTheme = theme },
-                )
-            }
+        visibleThemes.forEach { theme ->
+            MediaThemeItem(
+                theme = theme,
+                onClick = { selectedTheme = theme },
+            )
         }
     }
 
@@ -426,5 +426,23 @@ fun MediaThemeSection(
             theme = theme,
             onDismiss = { selectedTheme = null },
         )
+    }
+}
+
+@Composable
+fun MediaThemeSection(
+    themes: List<MediaTheme>,
+    modifier: Modifier = Modifier,
+) {
+    if (themes.isEmpty()) {
+        return
+    }
+
+    MediaHubSection(
+        title = stringResource(R.string.label_media_extended_details_themes),
+        subtitle = stringResource(R.string.subtitle_media_theme_section),
+        modifier = modifier,
+    ) {
+        MediaThemePreviewBlock(themes = themes)
     }
 }
