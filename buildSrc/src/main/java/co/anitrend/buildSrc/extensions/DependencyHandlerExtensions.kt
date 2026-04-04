@@ -30,13 +30,16 @@ private enum class DependencyType(val configurationName: String) {
     DEBUG("debugOnly"),
     KAPT("kapt"),
     IMPLEMENTATION("implementation"),
+    IMPLEMENTATION_PLATFORM("implementation"),
     DEBUG_IMPLEMENTATION("debugImplementation"),
+    DEBUG_IMPLEMENTATION_PLATFORM("debugImplementation"),
     RELEASE_IMPLEMENTATION("releaseImplementation"),
     GITHUB_IMPLEMENTATION("githubImplementation"),
     GOOGLE_IMPLEMENTATION("googleImplementation"),
     RUNTIME("runtimeOnly"),
     TEST("testImplementation"),
-    ANDROID_TEST("androidTestImplementation")
+    ANDROID_TEST("androidTestImplementation"),
+    ANDROID_TEST_PLATFORM("androidTestImplementation")
 }
 
 
@@ -116,6 +119,11 @@ private fun DependencyHandler.addDependency(
     )
 }
 
+private fun DependencyHandler.addPlatformDependency(
+    dependencyNotation: Any,
+    dependencyType: DependencyType,
+) = add(dependencyType.configurationName, platform(dependencyNotation))
+
 /**
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
  *
@@ -181,6 +189,10 @@ internal fun DependencyHandler.implementation(
     dependencyConfiguration: (ExternalModuleDependency.() -> Unit)? = null
 ) = addDependency(dependencyNotation, DependencyType.IMPLEMENTATION, dependencyConfiguration)
 
+internal fun DependencyHandler.implementationPlatform(
+    dependencyNotation: Any,
+) = addPlatformDependency(dependencyNotation, DependencyType.IMPLEMENTATION_PLATFORM)
+
 /**
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
  *
@@ -193,6 +205,10 @@ internal fun DependencyHandler.debugImplementation(
     dependencyNotation: Any,
     dependencyConfiguration: (ExternalModuleDependency.() -> Unit)? = null
 ) = addDependency(dependencyNotation, DependencyType.DEBUG_IMPLEMENTATION, dependencyConfiguration)
+
+internal fun DependencyHandler.debugImplementationPlatform(
+    dependencyNotation: Any,
+) = addPlatformDependency(dependencyNotation, DependencyType.DEBUG_IMPLEMENTATION_PLATFORM)
 
 /**
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.
@@ -271,3 +287,7 @@ internal fun DependencyHandler.androidTest(
     dependencyNotation: Any,
     dependencyConfiguration: (ExternalModuleDependency.() -> Unit)? = null
 ) = addDependency(dependencyNotation, DependencyType.ANDROID_TEST, dependencyConfiguration)
+
+internal fun DependencyHandler.androidTestPlatform(
+    dependencyNotation: Any,
+) = addPlatformDependency(dependencyNotation, DependencyType.ANDROID_TEST_PLATFORM)

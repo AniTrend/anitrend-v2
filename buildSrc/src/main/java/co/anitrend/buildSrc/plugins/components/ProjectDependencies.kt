@@ -18,11 +18,14 @@
 package co.anitrend.buildSrc.plugins.components
 
 import co.anitrend.buildSrc.extensions.androidTest
+import co.anitrend.buildSrc.extensions.androidTestPlatform
 import co.anitrend.buildSrc.extensions.compile
 import co.anitrend.buildSrc.extensions.debugImplementation
+import co.anitrend.buildSrc.extensions.debugImplementationPlatform
 import co.anitrend.buildSrc.extensions.googleImplementation
 import co.anitrend.buildSrc.extensions.hasComposeSupport
 import co.anitrend.buildSrc.extensions.implementation
+import co.anitrend.buildSrc.extensions.implementationPlatform
 import co.anitrend.buildSrc.extensions.isAndroidCoreModule
 import co.anitrend.buildSrc.extensions.isAppModule
 import co.anitrend.buildSrc.extensions.isDataModule
@@ -380,6 +383,9 @@ private fun Project.applyTaskModuleGroupDependencies() {
 
 private fun Project.applyComposeDependencies() {
     logger.lifecycle("Applying compose dependencies for module -> $path")
+    dependencies.implementationPlatform(libs.androidx.compose.bom)
+    dependencies.debugImplementationPlatform(libs.androidx.compose.bom)
+    dependencies.androidTestPlatform(libs.androidx.compose.bom)
     dependencies.implementation(libs.androidx.compose.foundation)
     dependencies.implementation(libs.androidx.compose.foundation.layout)
     dependencies.implementation(libs.androidx.compose.material)
