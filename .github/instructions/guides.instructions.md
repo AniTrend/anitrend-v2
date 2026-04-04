@@ -10,6 +10,7 @@ description: This file provides guidelines for using and extending the architect
 This file is the high-level contributor playbook. For deep implementation specifics, jump to:
 
 - `.github/skills/data-state-pattern/SKILL.md`
+- `.github/skills/layered-module-patterns/SKILL.md`
 - `.github/skills/room-entity-pattern/SKILL.md`
 - `.github/skills/graphql-query-pattern/SKILL.md`
 - `.github/skills/string-resources-convention/SKILL.md`
@@ -21,13 +22,24 @@ detail in skill files to prevent context drift and duplication.
 
 ## Architectural patterns — quick reference
 
-- **Domain use cases**: business logic lives in `*UseCase` / `*Interactor` in `:domain`. Return
-  `UiState<T>` or `DataState<T>`. Never place substantial logic in a ViewModel or repository.
+- **Domain use cases**: keep params, repository contracts, and abstract `*UseCase` /
+  `*Interactor` wrappers in `:domain`. These contracts are usually generic over `UiState<T>`;
+  the data layer specializes them to `DataState<T>`. Do not move contract shape into feature or
+  data `Types.kt`.
 - **Repository interfaces in domain, implementations in data**: define `IXxxRepository` in
-  `:domain`, implement `XxxRepository` in `:data`. Wire via Koin (see
-  `.github/skills/koin-module-wiring/SKILL.md`).
-- **DataState for all data streams**: repositories return `DataState<T>` — never raw values or
-  `LiveData`. See `.github/skills/data-state-pattern/SKILL.md`.
+  `:domain`, implement `XxxRepository` in `:data`. For hybrid modules, split the contract by
+  operation (`Detail`, `Paged`, `Save`, `Delete`, `Rate`, etc.). Wire via Koin (see
+  `.github/skills/koin-module-wiring/SKILL.md` and `.github/skills/layered-module-patterns/SKILL.md`).
+- **DataState for public data contracts**: data-layer repository specializations return
+  `DataState<T>`; feature and task code should never depend on raw repository values or `LiveData`.
+  See `.github/skills/data-state-pattern/SKILL.md`.
+- **Feature and task modules consume interactors, not repositories**: imports like
+  `co.anitrend.data.media.GetDetailMediaInteractor` are acceptable because they alias domain use
+  cases. Do not inject repositories, sources, mappers, controllers, or remote models into
+  `feature`, `common`, or `task` code.
+- **Mutation routing**: if the existing flow is task-backed or should survive process transitions,
+  create params through the corresponding `*TaskRouter` and let the worker execute the mutation
+  interactor. Current references: `task/medialist`, `task/review`, and `task/favourite`.
 - **Room persistence**: follow the four-file entity/DAO/mapper/repository pattern. See
   `.github/skills/room-entity-pattern/SKILL.md`.
 - **GraphQL networking**: use `GraphQLController` and the `retrofit-graphql` adapter. See
@@ -89,12 +101,17 @@ Summary:
 
 ## Getting Help from the Code
 
-The `tag` domain + data package is the canonical reference implementation. For any new entity:
+Pick the closest reference module instead of defaulting to `tag` for every task:
 
-1. Read `domain/src/main/kotlin/co/anitrend/domain/tag/` — use case, repository interface.
-2. Read `data/src/main/kotlin/co/anitrend/data/tag/` — entity, DAO, mapper, source, repository,
-   use-case impl, Koin module.
-3. Apply the same structure to the new entity, adjusting names.
+1. `domain/tag` + `data/tag` for the smallest query-only baseline.
+2. `domain/media` + `data/media` for multi-contract read modules (`Detail`, `Paged`, `Network`).
+3. `domain/medialist` + `data/medialist` + `task/medialist` for hybrid fetch plus save/delete/sync
+   flows.
+4. `domain/review` + `data/review` + `task/review` for paged/detail fetch plus vote/save/delete.
+5. `domain/favourite` + `data/favourite` + `task/favourite` for mutation-only toggle flow.
+
+If the module shape is unclear, read `.github/skills/layered-module-patterns/SKILL.md` first,
+then inspect the closest code reference.
 
 For GraphQL queries, search for existing usages of `@GraphQuery` in the data source files.
 
