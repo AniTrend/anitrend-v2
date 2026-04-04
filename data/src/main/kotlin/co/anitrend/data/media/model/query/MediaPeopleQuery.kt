@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 AniTrend
+ * Copyright (C) 2026 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,29 +14,30 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.domain.media.repository
+package co.anitrend.data.media.model.query
 
-import co.anitrend.arch.domain.state.UiState
+import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.media.model.MediaParam
 
-interface IMediaRepository {
-    interface Detail<State : UiState<*>> : IMediaRepository {
-        fun getMedia(param: MediaParam.Detail): State
+internal sealed class MediaPeopleQuery : IGraphPayload {
+    data class Characters(
+        val param: MediaParam.Characters,
+    ) : MediaPeopleQuery() {
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+                "role" to param.role,
+                "sort" to param.sort,
+            )
     }
 
-    interface Characters<State : UiState<*>> : IMediaRepository {
-        fun getCharacters(param: MediaParam.Characters): State
-    }
-
-    interface Staff<State : UiState<*>> : IMediaRepository {
-        fun getStaff(param: MediaParam.Staff): State
-    }
-
-    interface Paged<State : UiState<*>> : IMediaRepository {
-        fun getPaged(param: MediaParam.Find): State
-    }
-
-    interface Network<State : UiState<*>> : IMediaRepository {
-        fun getPaged(param: MediaParam.Find): State
+    data class Staff(
+        val param: MediaParam.Staff,
+    ) : MediaPeopleQuery() {
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+                "sort" to param.sort,
+            )
     }
 }

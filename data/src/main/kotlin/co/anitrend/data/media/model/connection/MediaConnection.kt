@@ -17,6 +17,7 @@
 package co.anitrend.data.media.model.connection
 
 import co.anitrend.data.common.entity.IEntityConnection
+import co.anitrend.data.common.model.paging.data.IPageModel
 import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.media.model.edge.MediaEdge
 import co.anitrend.data.review.model.remote.ReviewModel
@@ -75,12 +76,14 @@ internal sealed class MediaConnection : IEntityConnection {
         @SerialName("edges") override val edges: List<MediaEdge.Character>?,
         @SerialName("pageInfo") override val pageInfo: PageInfo?,
     ) : MediaConnection(),
-        IEntityConnection.IEdge<MediaEdge>
+        IEntityConnection.IEdge<MediaEdge>,
+        IPageModel
 
     @Serializable
     data class Staff(
         @SerialName("edges") override val edges: List<MediaEdge.Staff>?,
         @SerialName("pageInfo") override val pageInfo: PageInfo?,
     ) : MediaConnection(),
-        IEntityConnection.IEdge<MediaEdge>
+        IEntityConnection.IEdge<MediaEdge>,
+        IPageModel
 }

@@ -142,4 +142,40 @@
     <string name="label_media_synopsis_empty_title">Synopsis unavailable</string>
     <!-- Empty-state copy for a missing synopsis -->
     <string name="label_media_synopsis_empty_message">A synopsis has not been added for this title yet.</string>
+    <!-- Section title for the media detail people preview module -->
+    <string name="title_media_people_section">People</string>
+    <!-- Supporting copy for the media detail people preview module -->
+    <string name="subtitle_media_people_section">Key characters and core creators, previewed without leaving the hub.</string>
+    <!-- Trailing action label for the media detail people section -->
+    <string name="action_media_people_section_see_all">See all</string>
+    <!-- Subheading for the character preview inside the media detail people section -->
+    <string name="label_media_people_characters_heading">Characters</string>
+    <!-- Subheading for the staff preview inside the media detail people section and segmented control -->
+    <string name="label_media_people_staff_heading">Staff</string>
+    <!-- Loading label for media-detail character preview content -->
+    <string name="label_media_people_characters_loading">Loading characters</string>
+    <!-- Loading label for media-detail staff preview content -->
+    <string name="label_media_people_staff_loading">Loading staff</string>
+    <!-- Empty-state title when no characters are available for a media title -->
+    <string name="label_media_people_characters_empty_title">No characters listed</string>
+    <!-- Empty-state copy when no characters are available for a media title -->
+    <string name="message_media_people_characters_empty">Character credits are not available for this title yet.</string>
+    <!-- Empty-state title when no staff are available for a media title -->
+    <string name="label_media_people_staff_empty_title">No staff listed</string>
+    <!-- Empty-state copy when no staff are available for a media title -->
+    <string name="message_media_people_staff_empty">Staff credits are not available for this title yet.</string>
+    <!-- Error-state title for failed character requests -->
+    <string name="label_media_people_characters_error_title">Characters unavailable</string>
+    <!-- Error-state title for failed staff requests -->
+    <string name="label_media_people_staff_error_title">Staff unavailable</string>
+    <!-- Screen title for the dedicated people destination -->
+    <string name="title_media_people_screen">People</string>
+    <!-- Supporting copy for the dedicated people destination -->
+    <string name="subtitle_media_people_screen">Switch between cast recognition and creator credits without leaving the media flow.</string>
+    <!-- Supporting loading copy for the dedicated characters pane -->
+    <string name="message_media_people_characters_loading">Fetching the most relevant cast for this title.</string>
+    <!-- Supporting loading copy for the dedicated staff pane -->
+    <string name="message_media_people_staff_loading">Fetching the most relevant staff credits for this title.</string>
+    <!-- Fallback role label when a staff role is missing from the upstream payload -->
+    <string name="label_media_people_staff_role_unknown">Role unavailable</string>
 </resources>

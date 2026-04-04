@@ -226,6 +226,23 @@ object MediaRouter : NavigationRouter() {
     ) : IParam
 }
 
+object MediaPeopleRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    enum class Section {
+        CHARACTERS,
+        STAFF,
+    }
+
+    @Parcelize
+    data class MediaPeopleParam(
+        val mediaId: Long,
+        val initialSection: Section = Section.CHARACTERS,
+    ) : IParam
+}
+
 object MediaDiscoverRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
