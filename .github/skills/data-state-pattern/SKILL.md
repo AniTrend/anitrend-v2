@@ -66,6 +66,35 @@ ViewModel / Presenter / Worker
   emit `Flow<Boolean?>` or a persisted model and then rely on the repository wrapper to expose the
   final `DataState`.
 
+## Offline-first paged read pattern
+
+Use this pattern whenever the UI should page over locally persisted data and refresh from the
+network opportunistically.
+
+- The source contract should extend `AbstractPagingSource<T>` and expose
+  `observable(): Flow<PagedList<T>>`.
+- `observable()` should be built from a local `DataSource.Factory` using `FlowPagedListBuilder`,
+  with a converter mapping local entities or views into domain models.
+- The source should orchestrate refresh timing only: initial cache-policy gating and
+  `cacheIdentity(...)` paging callbacks for append or zero-item refreshes.
+- If Room is the source of truth, the controller generic should resolve to the persisted entity
+  shape, not the final domain model. Let the mapper produce local entities and persist them.
+- Do not perform domain-model assembly, local-page merging, or ad hoc cache replacement inside the
+  source implementation. Those responsibilities belong to converters and mappers.
+
+### Relationship collection variant
+
+Some paged reads are not a top-level entity table but a relationship collection, for example a
+media detail screen exposing characters or staff.
+
+- Persist those rows in dedicated connection tables keyed by the parent id plus the related id.
+- Store explicit ordering information such as `sort_index` so local paging reproduces the remote
+  list order.
+- Allow the mapper to receive request context when needed, for example the parent id or current
+  page, so it can clear or append the correct connection rows during persistence.
+- Convert connection entities back to the domain model in a local converter that the source uses
+  when building the `FlowPagedListBuilder` pipeline.
+
 ## Rules
 
 - Never return a raw value or `LiveData` from a repository; always return `DataState`.
@@ -76,3 +105,6 @@ ViewModel / Presenter / Worker
 - An import such as `co.anitrend.data.review.GetReviewPagedInteractor` in `feature` or `task`
   code is acceptable because it aliases a domain use case. Importing `ReviewRepository`,
   `ReviewSourceImpl`, or `ReviewMapper` into those layers is not.
+- For DB-backed paged reads, do not choose `SupportPagingLiveDataSource` unless the flow is truly
+  network-only. If a local source exists, prefer `AbstractPagingSource` plus a local observable
+  flow.
