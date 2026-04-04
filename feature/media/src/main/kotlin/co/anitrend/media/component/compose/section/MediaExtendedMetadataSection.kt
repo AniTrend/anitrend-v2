@@ -24,9 +24,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -35,13 +34,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
+import co.anitrend.domain.media.entity.attribute.theme.MediaTheme
 import co.anitrend.media.R
 
 private data class MetadataEntry(
@@ -98,9 +98,9 @@ private fun MetadataChip(
     modifier: Modifier = Modifier,
 ) {
     Surface(
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.72f),
         contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        shape = CardDefaults.shape,
+        shape = MaterialTheme.shapes.medium,
         modifier = modifier,
     ) {
         Text(
@@ -127,7 +127,7 @@ private fun MetadataGroup(
     val visibleValues = if (canExpand && !isExpanded) values.take(collapsedCount) else values
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier.fillMaxWidth(),
     ) {
         Row(
@@ -173,8 +173,9 @@ private fun MetadataGroup(
 @Composable
 fun MediaExtendedMetadataSection(
     media: Media.Extended,
-    showExternalIdentifiers: Boolean = false,
     modifier: Modifier = Modifier,
+    showExternalIdentifiers: Boolean = false,
+    themes: List<MediaTheme> = emptyList(),
 ) {
     val detailRows =
         buildList {
@@ -205,49 +206,51 @@ fun MediaExtendedMetadataSection(
 
     val sourceIds = if (showExternalIdentifiers) media.sourceId.toLabels() else emptyList()
 
-    if (detailRows.isEmpty() && synonyms.isEmpty() && sourceIds.isEmpty()) {
+    if (detailRows.isEmpty() && synonyms.isEmpty() && sourceIds.isEmpty() && themes.isEmpty()) {
         return
     }
 
-    OutlinedCard(
-        colors =
-            CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface,
-            ),
-        shape = CardDefaults.outlinedShape,
+    MediaHubSection(
+        title = stringResource(R.string.label_media_extended_details_section_title),
+        subtitle = stringResource(R.string.subtitle_media_extended_details_section),
         modifier = modifier,
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-        ) {
-            Text(
-                text = stringResource(R.string.label_media_extended_details_section_title),
-                style = MaterialTheme.typography.titleSmall,
+        if (detailRows.isNotEmpty()) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                detailRows.forEach { entry ->
+                    MetadataRow(entry = entry)
+                }
+            }
+        }
+
+        if (detailRows.isNotEmpty() && (synonyms.isNotEmpty() || sourceIds.isNotEmpty() || themes.isNotEmpty())) {
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
+        }
+
+        if (synonyms.isNotEmpty()) {
+            MetadataGroup(
+                title = stringResource(R.string.label_media_extended_details_synonyms),
+                values = synonyms,
+                collapsedCount = 2,
             )
+        }
 
-            detailRows.forEach { entry ->
-                MetadataRow(entry = entry)
-            }
+        if (themes.isNotEmpty()) {
+            MediaThemePreviewBlock(
+                themes = themes,
+                title = stringResource(R.string.label_media_extended_details_themes),
+            )
+        }
 
-            if (synonyms.isNotEmpty()) {
-                MetadataGroup(
-                    title = stringResource(R.string.label_media_extended_details_synonyms),
-                    values = synonyms,
-                    collapsedCount = 2,
-                )
-            }
-
-            if (sourceIds.isNotEmpty()) {
-                MetadataGroup(
-                    title = stringResource(R.string.label_media_extended_details_external_ids),
-                    values = sourceIds,
-                    collapsedCount = 4,
-                )
-            }
+        if (sourceIds.isNotEmpty()) {
+            MetadataGroup(
+                title = stringResource(R.string.label_media_extended_details_external_ids),
+                values = sourceIds,
+                collapsedCount = 4,
+            )
         }
     }
 }

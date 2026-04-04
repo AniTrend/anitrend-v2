@@ -23,6 +23,7 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import co.anitrend.domain.media.entity.attribute.rank.MediaRank
 import co.anitrend.domain.media.entity.attribute.score.MediaScore
+import co.anitrend.domain.media.entity.attribute.theme.MediaTheme
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaRankType
@@ -97,10 +98,30 @@ internal data class MediaComposePreviewProvider(
                         popularity = 4_000,
                         trending = 800,
                     ),
+                themes =
+                    listOf(
+                        MediaTheme(
+                            mediaId = "1",
+                            themeId = "op1",
+                            name = "Odd Future",
+                            audio = "https://example.com/audio.mp3",
+                            video = "",
+                            meta = MediaTheme.Meta(number = 1, type = "OP", version = 1),
+                        ),
+                        MediaTheme(
+                            mediaId = "1",
+                            themeId = "ed1",
+                            name = "Update",
+                            audio = null,
+                            video = "https://example.com/video.mp4",
+                            meta = MediaTheme.Meta(number = 1, type = "ED", version = 1),
+                        ),
+                    ),
                 ageRating = "PG-13",
                 source = MediaSource.MANGA,
                 twitterTag = "heroaca_anime",
                 synonyms = listOf("My Hero Academia 3rd Season", "BNHA Season 3"),
+                siteUrl = Media.SiteUrl(myAnimeList = "https://myanimelist.net/anime/36456"),
                 mediaList =
                     MediaList.Core.empty().copy(
                         id = 100,

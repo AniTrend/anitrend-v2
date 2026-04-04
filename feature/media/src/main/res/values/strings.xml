@@ -19,6 +19,8 @@
 
     <!-- Section title for additional metadata shown on the media detail screen -->
     <string name="label_media_extended_details_section_title">More details</string>
+    <!-- Supporting copy for the quieter metadata overflow module on media detail -->
+    <string name="subtitle_media_extended_details_section">Alternative titles, theme previews, and quieter metadata.</string>
     <!-- Label for the age rating row shown on the media detail screen -->
     <string name="label_media_extended_details_age_rating">Age rating</string>
     <!-- Label for the source material row shown on the media detail screen -->
@@ -29,6 +31,8 @@
     <string name="label_media_extended_details_synonyms">Alternative titles</string>
     <!-- Heading for theme song chips shown on the media detail screen -->
     <string name="label_media_extended_details_themes">Theme songs</string>
+    <!-- Supporting copy for the standalone theme section variant -->
+    <string name="subtitle_media_theme_section">Openings, endings, and preview asset availability.</string>
     <!-- Heading for upstream identifier chips shown on the media detail screen -->
     <string name="label_media_extended_details_external_ids">External IDs</string>
     <!-- Action label to reveal additional metadata chips in the media details section -->
@@ -57,6 +61,8 @@
     <string name="label_media_theme_sheet_audio">Audio</string>
     <!-- Row label describing video asset availability -->
     <string name="label_media_theme_sheet_video">Video</string>
+    <!-- Supporting copy shown at the top of the theme detail sheet -->
+    <string name="subtitle_media_theme_sheet">Asset availability and theme metadata for this track.</string>
     <!-- Availability value when the requested preview asset exists -->
     <string name="label_media_theme_sheet_available">Available</string>
     <!-- Availability value when the requested preview asset does not exist -->
@@ -69,6 +75,8 @@
     <string name="label_media_theme_sheet_no_preview_assets">No preview assets are available for this theme yet.</string>
     <!-- Section title for descriptive tags shown on the media detail screen -->
     <string name="label_media_tag_section_title">Tags</string>
+    <!-- Supporting copy for spoiler-aware media-detail tags -->
+    <string name="subtitle_media_tag_section">Analytical descriptors with spoiler-aware reveal.</string>
     <!-- Action label to expand the visible non-spoiler media-detail tags -->
     <string name="action_media_tag_section_show_all">Show all tags</string>
     <!-- Action label to collapse the visible non-spoiler media-detail tags -->
@@ -77,6 +85,10 @@
     <string name="action_media_tag_section_reveal_spoilers">Reveal spoilers</string>
     <!-- Action label to hide spoiler-sensitive tags on the media detail screen -->
     <string name="action_media_tag_section_hide_spoilers">Hide spoilers</string>
+    <!-- Empty-state title shown when only spoiler-sensitive tags exist -->
+    <string name="label_media_tag_section_no_safe_tags_title">Spoiler-aware tags only</string>
+    <!-- Empty-state copy shown when safe tags are unavailable -->
+    <string name="label_media_tag_section_no_safe_tags_message">This title only exposes spoiler-sensitive tags until you reveal them.</string>
     <!-- Status label shown when spoiler-sensitive tags are hidden by default -->
     <string name="label_media_tag_section_spoilers_hidden">Spoiler tags hidden</string>
     <!-- Status label shown after spoiler-sensitive tags have been explicitly revealed -->
@@ -89,6 +101,8 @@
     <string name="label_media_tag_sheet_confidence">Confidence</string>
     <!-- Fallback text shown when a media-detail tag does not have a description -->
     <string name="label_media_tag_sheet_no_description">No description available yet.</string>
+    <!-- Supporting copy shown at the top of the media-detail tag info sheet -->
+    <string name="subtitle_media_tag_sheet">Read the tag context before exploring related titles.</string>
     <!-- Badge label shown when a media-detail tag is a spoiler for the current title -->
     <string name="label_media_tag_sheet_media_spoiler">Media spoiler</string>
     <!-- Badge label shown when a media-detail tag is a broader spoiler warning -->
@@ -118,4 +132,14 @@
     <string name="label_media_user_state_favourite">Favourite</string>
     <!-- Compact user-state label when the media is not marked as favourite -->
     <string name="label_media_user_state_not_favourite">Not favourite</string>
+    <!-- Section title for primary discoverability genres on media detail -->
+    <string name="label_media_genre_section_title">Genres</string>
+    <!-- Supporting copy for the genre preview module -->
+    <string name="subtitle_media_genre_section">Primary discovery signals for this title.</string>
+    <!-- Supporting copy for the synopsis preview module -->
+    <string name="subtitle_media_synopsis_section">Story overview with capped preview text.</string>
+    <!-- Empty-state title for a missing synopsis -->
+    <string name="label_media_synopsis_empty_title">Synopsis unavailable</string>
+    <!-- Empty-state copy for a missing synopsis -->
+    <string name="label_media_synopsis_empty_message">A synopsis has not been added for this title yet.</string>
 </resources>
