@@ -73,9 +73,12 @@ loading/error states propagate correctly to the UI.
 
 ## Guidelines for Contributors and AI Assistants
 
-- **Follow established patterns**: understand one feature end-to-end (the `tag` package is the
-  canonical example) and apply the same structure to new work.
-- **Respect module boundaries**: feature modules depend on `:domain`, not on `:data:*` directly.
+- **Follow established patterns**: pick the closest current reference module before copying a
+  structure. Use `tag` for simple query-only flows, `media` for read-heavy modules, and
+  `medialist` / `review` / `favourite` for hybrid or mutation-heavy flows.
+- **Respect module boundaries**: feature and task code may depend on interactor aliases exported by
+  `:data:*`, but they must not import data repositories, sources, mappers, controllers, or remote
+  models directly.
 - **Background work**: schedule via WorkManager in `:task:*` modules.
 - **Performance**: use Paging (`PagingData` / `Pager`) for list/feed screens; do not build a
   custom scroll + load mechanism.
