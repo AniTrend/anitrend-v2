@@ -23,10 +23,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -61,6 +59,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MediaPeopleRoute(
     mediaId: Long,
+    mediaTitle: String?,
     initialSection: MediaPeopleRouter.Section,
     onBackPress: () -> Unit,
     charactersViewModel: MediaCharactersViewModel = koinViewModel(),
@@ -94,6 +93,13 @@ fun MediaPeopleRoute(
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.SemiBold,
                 )
+                if (!mediaTitle.isNullOrBlank()) {
+                    Text(
+                        text = mediaTitle,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Medium,
+                    )
+                }
                 Text(
                     text = stringResource(R.string.subtitle_media_people_screen),
                     style = MaterialTheme.typography.bodyMedium,
