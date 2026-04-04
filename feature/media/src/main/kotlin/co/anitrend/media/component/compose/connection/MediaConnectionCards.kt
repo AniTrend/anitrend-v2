@@ -532,30 +532,29 @@ private fun previewMedia(
     title: String = "Cowboy Bebop: The Movie",
     isFavourite: Boolean,
     episodes: Int = 1,
-) =
-    Media.Core.empty().copy(
-        title =
-            MediaTitle(
-                userPreferred = title,
-                english = title,
-                romaji = "Cowboy Bebop: Tengoku no Tobira",
-                native = "カウボーイビバップ 天国の扉",
-            ),
-        status = MediaStatus.FINISHED,
-        image = MediaImage.empty().copy(color = "#5B6FD8"),
-        startDate = FuzzyDate.empty().copy(2001),
-        format = MediaFormat.MOVIE,
-        category =
-            Media.Category.Anime
-                .empty()
-                .copy(episodes),
-        score =
-            MediaScore(
-                average = 82,
-                mean = 84,
-                personal = null,
-                popularity = 150000,
-                trending = 0,
-            ),
-        isFavourite = isFavourite,
-    )
+) = Media.Core.empty().copy(
+    title =
+        MediaTitle(
+            userPreferred = title,
+            english = title,
+            romaji = "Cowboy Bebop: Tengoku no Tobira",
+            native = "カウボーイビバップ 天国の扉",
+        ),
+    status = MediaStatus.FINISHED,
+    image = MediaImage.empty().copy(color = "#5B6FD8"),
+    startDate = FuzzyDate.empty().copy(2001),
+    format = MediaFormat.MOVIE,
+    category =
+        Media.Category.Anime
+            .empty()
+            .copy(episodes),
+    score =
+        MediaScore(
+            average = 82,
+            mean = 84,
+            personal = null,
+            popularity = 150000,
+            trending = 0,
+        ),
+    isFavourite = isFavourite,
+)
