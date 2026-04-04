@@ -25,11 +25,16 @@ import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaNetworkRepository
 import co.anitrend.data.media.MediaPagedRepository
+import co.anitrend.data.media.MediaRecommendationsRepository
+import co.anitrend.data.media.MediaRelationsRepository
 import co.anitrend.data.media.MediaStaffRepository
+import co.anitrend.data.media.source.contract.MediaConnectionSource
 import co.anitrend.data.media.source.contract.MediaPeopleSource
 import co.anitrend.data.media.source.contract.MediaSource
 import co.anitrend.data.media.source.factory.MediaSourceFactory
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.MediaRecommendationEntry
+import co.anitrend.domain.media.entity.MediaRelationEntry
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.model.MediaParam
 
@@ -39,6 +44,22 @@ internal sealed class MediaRepository {
     ) : MediaRepository(),
         MediaDetailRepository {
         override fun getMedia(param: MediaParam.Detail) = source create source(param)
+    }
+
+    class Relations(
+        private val source: MediaConnectionSource.Relations,
+    ) : MediaRepository(),
+        MediaRelationsRepository {
+        override fun getRelations(param: MediaParam.Relations): DataState<List<MediaRelationEntry>> =
+            source create source(param)
+    }
+
+    class Recommendations(
+        private val source: MediaConnectionSource.Recommendations,
+    ) : MediaRepository(),
+        MediaRecommendationsRepository {
+        override fun getRecommendations(param: MediaParam.Recommendations): DataState<List<MediaRecommendationEntry>> =
+            source create source(param)
     }
 
     class Paged(

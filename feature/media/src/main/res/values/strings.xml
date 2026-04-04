@@ -182,4 +182,70 @@
     <string name="message_media_people_staff_loading">Fetching the most relevant staff credits for this title.</string>
     <!-- Fallback role label when a staff role is missing from the upstream payload -->
     <string name="label_media_people_staff_role_unknown">Role unavailable</string>
+    <!-- Section title for related titles shown on the media detail hub -->
+    <string name="title_media_related_section">Related</string>
+    <!-- Supporting copy for the related titles hub section -->
+    <string name="subtitle_media_related_section">Sequels, prequels, adaptations, and adjacent entries worth opening next.</string>
+    <!-- Action label to open the full related titles destination -->
+    <string name="action_media_related_section_see_all">See all</string>
+    <!-- Loading label for the related titles preview section -->
+    <string name="label_media_related_loading">Loading related titles</string>
+    <!-- Supporting loading copy for the related titles preview section -->
+    <string name="message_media_related_loading">Gathering the strongest continuity and franchise links.</string>
+    <!-- Empty-state title for a media title with no related entries -->
+    <string name="label_media_related_empty_title">No related titles listed</string>
+    <!-- Empty-state copy for a media title with no related entries -->
+    <string name="message_media_related_empty">This title does not expose related works yet.</string>
+    <!-- Error-state title for failed related-title requests -->
+    <string name="label_media_related_error_title">Related titles unavailable</string>
+    <!-- Section title for recommendation signals shown on the media detail hub -->
+    <string name="title_media_recommendations_section">Recommendations</string>
+    <!-- Supporting copy for the recommendation preview module -->
+    <string name="subtitle_media_recommendations_section">Community-backed pairings that usually travel with this title.</string>
+    <!-- Action label to open the full recommendations destination -->
+    <string name="action_media_recommendations_section_see_all">See all</string>
+    <!-- Loading label for recommendation preview content -->
+    <string name="label_media_recommendations_loading">Loading recommendations</string>
+    <!-- Supporting loading copy for recommendation preview content -->
+    <string name="message_media_recommendations_loading">Reading community recommendation signals for this title.</string>
+    <!-- Empty-state title when no recommendations are available -->
+    <string name="label_media_recommendations_empty_title">No recommendations yet</string>
+    <!-- Empty-state copy when no recommendations are available -->
+    <string name="message_media_recommendations_empty">Community recommendation data has not surfaced for this title yet.</string>
+    <!-- Error-state title for failed recommendation requests -->
+    <string name="label_media_recommendations_error_title">Recommendations unavailable</string>
+    <!-- Fallback label when a recommendation does not expose a rating signal -->
+    <string name="label_media_recommendations_rating_unknown">No rating signal</string>
+    <!-- Fallback label when the recommending user is not exposed -->
+    <string name="label_media_recommendations_source_unknown">AniList community</string>
+    <!-- Section title for community activity shown on the media detail hub -->
+    <string name="title_media_community_section">Community</string>
+    <!-- Supporting copy for the community preview section -->
+    <string name="subtitle_media_community_section">High-signal reviews without forcing a full context switch.</string>
+    <!-- Action label to open the full review discover surface -->
+    <string name="action_media_community_section_see_all">See all</string>
+    <!-- Loading label for community preview content -->
+    <string name="label_media_community_loading">Loading community notes</string>
+    <!-- Supporting loading copy for community preview content -->
+    <string name="message_media_community_loading">Pulling the strongest recent reviews for this title.</string>
+    <!-- Empty-state title when no reviews are available for the media -->
+    <string name="label_media_community_empty_title">No community notes yet</string>
+    <!-- Empty-state copy when no reviews are available for the media -->
+    <string name="message_media_community_empty">Reviews have not been published for this title yet.</string>
+    <!-- Error-state title for failed community requests -->
+    <string name="label_media_community_error_title">Community unavailable</string>
+    <!-- Fallback author label when a review author is missing -->
+    <string name="label_media_community_review_by_unknown">Unknown reviewer</string>
+    <!-- Compact score label for review preview cards -->
+    <string name="label_media_community_review_score">Score %1$d</string>
+    <!-- Screen title for the dedicated related destination -->
+    <string name="title_media_related_screen">Related</string>
+    <!-- Supporting copy for the dedicated related destination -->
+    <string name="subtitle_media_related_screen">Browse continuity links and adjacent entries without leaving the media flow.</string>
+    <!-- Screen title for the dedicated recommendations destination -->
+    <string name="title_media_recommendations_screen">Recommendations</string>
+    <!-- Supporting copy for the dedicated recommendations destination -->
+    <string name="subtitle_media_recommendations_screen">Follow the community’s strongest recommendation trails from this title.</string>
+    <!-- Heading for official and third-party links in the extended metadata section -->
+    <string name="label_media_extended_details_links">External links</string>
 </resources>

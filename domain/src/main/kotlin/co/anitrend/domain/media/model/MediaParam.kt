@@ -29,6 +29,7 @@ import co.anitrend.domain.media.enums.MediaSource
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.domain.recommendation.enums.RecommendationSort
 import co.anitrend.domain.staff.enums.StaffSort
 
 sealed class MediaParam {
@@ -53,6 +54,16 @@ sealed class MediaParam {
     data class Staff(
         val id: Long,
         val sort: List<ISortWithOrder<StaffSort>>? = null,
+    ) : MediaParam()
+
+    data class Relations(
+        val id: Long,
+    ) : MediaParam()
+
+    data class Recommendations(
+        val id: Long,
+        val perPage: Int = 18,
+        val sort: List<RecommendationSort>? = null,
     ) : MediaParam()
 
     /** [Media query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]

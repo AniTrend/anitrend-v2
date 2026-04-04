@@ -20,17 +20,29 @@ import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.media.GetMediaCharactersInteractor
 import co.anitrend.data.media.GetNetworkMediaInteractor
 import co.anitrend.data.media.GetPagedMediaInteractor
+import co.anitrend.data.media.GetMediaRecommendationsInteractor
+import co.anitrend.data.media.GetMediaRelationsInteractor
 import co.anitrend.data.media.GetMediaStaffInteractor
 import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaNetworkRepository
 import co.anitrend.data.media.MediaPagedRepository
+import co.anitrend.data.media.MediaRecommendationsRepository
+import co.anitrend.data.media.MediaRelationsRepository
 import co.anitrend.data.media.MediaStaffRepository
 
 internal interface MediaInteractor {
     class Detail(
         repository: MediaDetailRepository,
     ) : GetDetailMediaInteractor(repository)
+
+    class Relations(
+        repository: MediaRelationsRepository,
+    ) : GetMediaRelationsInteractor(repository)
+
+    class Recommendations(
+        repository: MediaRecommendationsRepository,
+    ) : GetMediaRecommendationsInteractor(repository)
 
     class Paged(
         repository: MediaPagedRepository,

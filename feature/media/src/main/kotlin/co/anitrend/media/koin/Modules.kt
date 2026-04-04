@@ -17,13 +17,20 @@
 package co.anitrend.media.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.media.component.viewmodel.MediaCommunityViewModel
 import co.anitrend.media.component.viewmodel.MediaCharactersViewModel
+import co.anitrend.media.component.viewmodel.MediaRecommendationsViewModel
+import co.anitrend.media.component.viewmodel.MediaRelationsViewModel
 import co.anitrend.media.component.viewmodel.MediaStaffViewModel
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
 import co.anitrend.media.provider.FeatureProvider
 import co.anitrend.media.provider.PeopleFeatureProvider
+import co.anitrend.media.provider.RecommendationsFeatureProvider
+import co.anitrend.media.provider.RelationsFeatureProvider
 import co.anitrend.navigation.MediaPeopleRouter
+import co.anitrend.navigation.MediaRecommendationsRouter
+import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.MediaRouter
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -38,6 +45,21 @@ private val viewModelModule =
         }
         viewModel {
             MediaScheduleViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            MediaRelationsViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            MediaRecommendationsViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            MediaCommunityViewModel(
                 interactor = get(),
             )
         }
@@ -60,6 +82,12 @@ private val featureModule =
         }
         factory<MediaPeopleRouter.Provider> {
             PeopleFeatureProvider()
+        }
+        factory<MediaRelationsRouter.Provider> {
+            RelationsFeatureProvider()
+        }
+        factory<MediaRecommendationsRouter.Provider> {
+            RecommendationsFeatureProvider()
         }
     }
 

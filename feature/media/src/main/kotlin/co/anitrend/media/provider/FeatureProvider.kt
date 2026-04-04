@@ -19,8 +19,12 @@ package co.anitrend.media.provider
 import android.content.Context
 import android.content.Intent
 import co.anitrend.media.component.screen.MediaPeopleScreen
+import co.anitrend.media.component.screen.MediaRecommendationsScreen
+import co.anitrend.media.component.screen.MediaRelationsScreen
 import co.anitrend.media.component.screen.MediaScreen
 import co.anitrend.navigation.MediaPeopleRouter
+import co.anitrend.navigation.MediaRecommendationsRouter
+import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.MediaRouter
 
 class FeatureProvider : MediaRouter.Provider {
@@ -29,4 +33,12 @@ class FeatureProvider : MediaRouter.Provider {
 
 class PeopleFeatureProvider : MediaPeopleRouter.Provider {
     override fun activity(context: Context?) = Intent(context, MediaPeopleScreen::class.java)
+}
+
+class RelationsFeatureProvider : MediaRelationsRouter.Provider {
+    override fun activity(context: Context?) = Intent(context, MediaRelationsScreen::class.java)
+}
+
+class RecommendationsFeatureProvider : MediaRecommendationsRouter.Provider {
+    override fun activity(context: Context?) = Intent(context, MediaRecommendationsScreen::class.java)
 }

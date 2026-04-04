@@ -16,7 +16,10 @@
  */
 package co.anitrend.media.component.compose.section
 
+import co.anitrend.domain.media.entity.MediaRecommendationEntry
+import co.anitrend.domain.media.entity.MediaRelationEntry
 import co.anitrend.domain.media.entity.attribute.rank.IMediaRank
+import co.anitrend.domain.media.enums.MediaRelation
 import co.anitrend.domain.media.enums.MediaRankType
 import co.anitrend.domain.tag.entity.Tag
 
@@ -95,4 +98,49 @@ internal fun selectRankingPreview(
             ).filterNot { rank -> anchorsByPriority.any { it.id == rank.id } }
 
     return (anchorsByPriority + remainingRanked).take(maxCount)
+}
+
+internal fun selectRelationPreview(
+    relations: List<MediaRelationEntry>,
+    maxCount: Int = 6,
+): List<MediaRelationEntry> {
+    if (relations.isEmpty() || maxCount <= 0) {
+        return emptyList()
+    }
+
+    val priorityOrder =
+        listOf(
+            MediaRelation.SEQUEL,
+            MediaRelation.PREQUEL,
+            MediaRelation.ADAPTATION,
+            MediaRelation.SOURCE,
+            MediaRelation.PARENT,
+            MediaRelation.SIDE_STORY,
+            MediaRelation.SPIN_OFF,
+            MediaRelation.ALTERNATIVE,
+            MediaRelation.CHARACTER,
+            MediaRelation.SUMMARY,
+            MediaRelation.OTHER,
+            MediaRelation.COMPILATION,
+            MediaRelation.CONTAINS,
+            null,
+        )
+
+    return priorityOrder
+        .flatMap { relation -> relations.filter { it.relation == relation } }
+        .distinctBy { it.media.id }
+        .take(maxCount)
+}
+
+internal fun selectRecommendationPreview(
+    recommendations: List<MediaRecommendationEntry>,
+    maxCount: Int = 6,
+): List<MediaRecommendationEntry> {
+    if (recommendations.isEmpty() || maxCount <= 0) {
+        return emptyList()
+    }
+
+    return recommendations
+        .distinctBy { it.media.id }
+        .take(maxCount)
 }

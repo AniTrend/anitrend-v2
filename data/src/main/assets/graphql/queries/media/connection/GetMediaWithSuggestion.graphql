@@ -2,7 +2,6 @@ query GetMediaWithSuggestion(
     $page: Int!,
     $perPage: Int!,
     $id: Int!,
-    $scoreFormat: ScoreFormat,
     $sort: [RecommendationSort]
 ) {
     Media(id: $id) {
