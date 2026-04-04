@@ -50,16 +50,14 @@ internal sealed class MediaRepository {
         private val source: MediaConnectionSource.Relations,
     ) : MediaRepository(),
         MediaRelationsRepository {
-        override fun getRelations(param: MediaParam.Relations): DataState<List<MediaRelationEntry>> =
-            source create source(param)
+        override fun getRelations(param: MediaParam.Relations): DataState<List<MediaRelationEntry>> = source create source(param)
     }
 
     class Recommendations(
         private val source: MediaConnectionSource.Recommendations,
     ) : MediaRepository(),
         MediaRecommendationsRepository {
-        override fun getRecommendations(param: MediaParam.Recommendations): DataState<List<MediaRecommendationEntry>> =
-            source create source(param)
+        override fun getRecommendations(param: MediaParam.Recommendations): DataState<List<MediaRecommendationEntry>> = source create source(param)
     }
 
     class Paged(

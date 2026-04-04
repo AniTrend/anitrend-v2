@@ -110,14 +110,15 @@ internal fun RelatedMediaCard(
             MediaQuickFacts(media = media)
             ConnectionSupportLine(media = media)
             ConnectionStateRow(
-                chips = buildList {
-                    if (media.isFavourite) {
-                        add(stringResource(R.string.label_media_connection_favourite))
-                    }
-                    media.score.average.takeIf { it > 0 }?.let {
-                        add(stringResource(R.string.label_media_connection_score_average, it))
-                    }
-                },
+                chips =
+                    buildList {
+                        if (media.isFavourite) {
+                            add(stringResource(R.string.label_media_connection_favourite))
+                        }
+                        media.score.average.takeIf { it > 0 }?.let {
+                            add(stringResource(R.string.label_media_connection_score_average, it))
+                        }
+                    },
             )
         }
     }
@@ -163,17 +164,18 @@ internal fun RecommendationMediaCard(
             )
 
             ConnectionStateRow(
-                chips = buildList {
-                    recommendation.userRating?.let {
-                        add(recommendationVoteLabel(it))
-                    }
-                    if (media.isFavourite) {
-                        add(stringResource(R.string.label_media_connection_favourite))
-                    }
-                    media.score.average.takeIf { it > 0 }?.let {
-                        add(stringResource(R.string.label_media_connection_score_average, it))
-                    }
-                },
+                chips =
+                    buildList {
+                        recommendation.userRating?.let {
+                            add(recommendationVoteLabel(it))
+                        }
+                        if (media.isFavourite) {
+                            add(stringResource(R.string.label_media_connection_favourite))
+                        }
+                        media.score.average.takeIf { it > 0 }?.let {
+                            add(stringResource(R.string.label_media_connection_score_average, it))
+                        }
+                    },
             )
         }
     }
@@ -267,7 +269,10 @@ private fun ConnectionTitle(
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text = media.title.userPreferred?.toString().orEmpty(),
+        text =
+            media.title.userPreferred
+                ?.toString()
+                .orEmpty(),
         maxLines = 2,
         overflow = TextOverflow.Ellipsis,
         style = MaterialTheme.typography.titleSmall,
@@ -313,7 +318,11 @@ private fun ConnectionSupportLine(
 
         media.status != null -> {
             Text(
-                text = media.status?.alias?.toString().orEmpty(),
+                text =
+                    media.status
+                        ?.alias
+                        ?.toString()
+                        .orEmpty(),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodySmall,
@@ -396,8 +405,14 @@ private fun recommendationVoteLabel(rating: RecommendationRating): String =
 @Composable
 private fun buildQuickFacts(media: Media): List<String> =
     buildList {
-        media.startDate.year.takeIf { it > 0 }?.let { add(it.toString()) }
-        media.format?.alias?.toString()?.takeIf(String::isNotBlank)?.let(::add)
+        media.startDate.year
+            .takeIf { it > 0 }
+            ?.let { add(it.toString()) }
+        media.format
+            ?.alias
+            ?.toString()
+            ?.takeIf(String::isNotBlank)
+            ?.let(::add)
         media.category.quickFactLabel()?.let(::add)
     }
 
@@ -506,7 +521,10 @@ private fun previewMedia(isFavourite: Boolean) =
         image = MediaImage.empty().copy(color = "#5B6FD8"),
         startDate = FuzzyDate.empty().copy(2001),
         format = MediaFormat.MOVIE,
-        category = Media.Category.Anime.empty().copy(1),
+        category =
+            Media.Category.Anime
+                .empty()
+                .copy(1),
         score =
             MediaScore(
                 average = 82,
