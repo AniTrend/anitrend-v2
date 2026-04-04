@@ -220,12 +220,10 @@
     <string name="label_media_recommendations_source_unknown">AniList community</string>
     <!-- Fallback relation label for a related title when upstream relation metadata is missing -->
     <string name="label_media_related_relation_unknown">Related</string>
-    <!-- Compact state label for favourited media inside connection cards -->
-    <string name="label_media_connection_favourite">Favourite</string>
-    <!-- Compact average-score label for connection cards -->
-    <string name="label_media_connection_score_average">%1$d avg</string>
     <!-- Recommendation strength label when a positive community signal is available -->
     <string name="label_media_recommendations_signal_value">+%1$d signal</string>
+    <!-- Recommendation strength label when the community signal is neutral or negative -->
+    <string name="label_media_recommendations_signal_signed">%1$d signal</string>
     <!-- Recommendation strength fallback when no explicit rating signal is available -->
     <string name="label_media_recommendations_signal_unknown">Community signal</string>
     <!-- Recommendation rationale label when the recommending user is known -->
@@ -236,8 +234,6 @@
     <string name="label_media_recommendations_vote_up">You rated this up</string>
     <!-- Compact label when the current user has rated a recommendation down -->
     <string name="label_media_recommendations_vote_down">You rated this down</string>
-    <!-- Compact label when recommendation vote metadata exists but carries no vote -->
-    <string name="label_media_recommendations_vote_neutral">No vote yet</string>
     <!-- Compact quick-facts label for anime episode counts in connection cards -->
     <plurals name="label_media_connection_episodes_short">
         <item quantity="one">%d ep</item>
