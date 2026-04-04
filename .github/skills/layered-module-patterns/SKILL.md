@@ -59,6 +59,9 @@ with `DataState<T>`.
 - Keep concrete repositories, sources, controllers, converters, mappers, and Koin bindings in
   `:data`.
 - Keep `Types.kt` lean: controller aliases, repository aliases, and interactor aliases only.
+- For offline-first paged read flows, wire the repository as `source create source(param)` over a
+  source that reads from Room via `observable(): Flow<PagedList<T>>`. Do not keep a separate
+  factory-based network paging path once a local source-of-truth exists.
 - Imports like `co.anitrend.data.review.GetReviewPagedInteractor` in `feature` or `task` modules
   are acceptable because they alias domain use cases. Imports of `ReviewRepository`,
   `ReviewSourceImpl`, `ReviewMapper`, or remote models are not.
@@ -69,6 +72,19 @@ with `DataState<T>`.
   current references.
 - Use `tag` as the smallest baseline only. Do not treat it as the canonical pattern for media,
   review, or other mutation-heavy modules.
+
+## Offline-first read notes
+
+- Use `MediaSource.Paged`, `AiringScheduleSource.Paged`, and `UserSource.Search` as the baseline
+  for paged offline-first reads.
+- Sources should coordinate refreshes and paging triggers, not convert remote payloads into domain
+  models inline.
+- Mappers own persistence. If the local table shape depends on request context such as a parent id
+  or page number, pass that context into the mapper before invoking the controller.
+- Converters own projection from local entity or view types into domain models consumed by the
+  `FlowPagedListBuilder` pipeline.
+- Relationship collections such as media-to-character or media-to-staff should use dedicated
+  connection entities instead of trying to reuse the remote edge model as the local cache shape.
 
 ## Choosing the nearest reference
 

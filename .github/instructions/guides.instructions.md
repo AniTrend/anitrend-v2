@@ -33,6 +33,11 @@ detail in skill files to prevent context drift and duplication.
 - **DataState for public data contracts**: data-layer repository specializations return
   `DataState<T>`; feature and task code should never depend on raw repository values or `LiveData`.
   See `.github/skills/data-state-pattern/SKILL.md`.
+- **Offline-first paged reads**: for DB-backed paged query flows, treat Room as the source of
+  truth. The source contract should expose `observable(): Flow<PagedList<T>>` from a local
+  `DataSource.Factory`, and network refreshes should persist through the controller/mapper chain.
+  Do not implement local entity mapping or cache-merging logic directly inside the source class,
+  and do not fall back to `SupportPagingLiveDataSource` for a flow that already has a local store.
 - **Feature and task modules consume interactors, not repositories**: imports like
   `co.anitrend.data.media.GetDetailMediaInteractor` are acceptable because they alias domain use
   cases. Do not inject repositories, sources, mappers, controllers, or remote models into
@@ -42,6 +47,11 @@ detail in skill files to prevent context drift and duplication.
   interactor. Current references: `task/medialist`, `task/review`, and `task/favourite`.
 - **Room persistence**: follow the four-file entity/DAO/mapper/repository pattern. See
   `.github/skills/room-entity-pattern/SKILL.md`.
+- **Relationship collections**: when a screen needs an offline-first related collection such as
+  media characters or staff, persist the collection in dedicated connection tables keyed to the
+  parent entity and order the rows explicitly for paging. Convert local connection entities back
+  to domain models with a converter, and keep request-specific persistence decisions inside the
+  mapper rather than the source.
 - **GraphQL networking**: use `GraphQLController` and the `retrofit-graphql` adapter. See
   `.github/skills/graphql-query-pattern/SKILL.md`.
 - **New module**: register in `Modules.kt`, add Koin wiring, follow the full checklist in
