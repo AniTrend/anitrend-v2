@@ -32,8 +32,10 @@ import co.anitrend.data.media.MediaNetworkRepository
 import co.anitrend.data.media.MediaPagedRepository
 import co.anitrend.data.media.MediaStaffRepository
 import co.anitrend.data.media.cache.MediaCache
+import co.anitrend.data.media.converter.MediaCharacterConnectionEntityConverter
 import co.anitrend.data.media.converter.MediaCharacterEdgeConverter
 import co.anitrend.data.media.converter.MediaConverter
+import co.anitrend.data.media.converter.MediaStaffConnectionEntityConverter
 import co.anitrend.data.media.converter.MediaStaffEdgeConverter
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.converter.MediaModelConverter
@@ -41,10 +43,10 @@ import co.anitrend.data.media.entity.filter.MediaQueryFilter
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.media.mapper.MediaPeopleMapper
 import co.anitrend.data.media.repository.MediaRepository
+import co.anitrend.data.media.source.MediaPeopleSourceImpl
 import co.anitrend.data.media.source.contract.MediaPeopleSource
 import co.anitrend.data.media.source.MediaSourceImpl
 import co.anitrend.data.media.source.contract.MediaSource
-import co.anitrend.data.media.source.factory.MediaPeopleSourceFactory
 import co.anitrend.data.media.source.factory.MediaSourceFactory
 import co.anitrend.data.media.usecase.MediaInteractor
 import org.koin.dsl.module
@@ -93,23 +95,37 @@ private val sourceModule =
                 dispatcher = get(),
             )
         }
-        factory {
-            MediaPeopleSourceFactory.Characters(
+        factory<MediaPeopleSource.Characters> {
+            val mapper = get<MediaPeopleMapper.Characters>()
+
+            MediaPeopleSourceImpl.Characters(
                 remoteSource = aniListApi(),
+                localSource = store().mediaDao(),
                 controller =
                     graphQLController(
-                        mapper = get<MediaPeopleMapper.Characters>(),
+                        mapper = mapper,
+                        strategy = offline(),
                     ),
+                mapper = mapper,
+                converter = get(),
+                cachePolicy = get<MediaCache>(),
                 dispatcher = get(),
             )
         }
-        factory {
-            MediaPeopleSourceFactory.Staff(
+        factory<MediaPeopleSource.Staff> {
+            val mapper = get<MediaPeopleMapper.Staff>()
+
+            MediaPeopleSourceImpl.Staff(
                 remoteSource = aniListApi(),
+                localSource = store().mediaDao(),
                 controller =
                     graphQLController(
-                        mapper = get<MediaPeopleMapper.Staff>(),
+                        mapper = mapper,
+                        strategy = offline(),
                     ),
+                mapper = mapper,
+                converter = get(),
+                cachePolicy = get<MediaCache>(),
                 dispatcher = get(),
             )
         }
@@ -148,7 +164,13 @@ private val converterModule =
             MediaCharacterEdgeConverter()
         }
         factory {
+            MediaCharacterConnectionEntityConverter()
+        }
+        factory {
             MediaStaffEdgeConverter()
+        }
+        factory {
+            MediaStaffConnectionEntityConverter()
         }
     }
 
@@ -185,11 +207,13 @@ private val mapperModule =
         }
         factory {
             MediaPeopleMapper.Characters(
+                localSource = store().mediaDao(),
                 converter = get(),
             )
         }
         factory {
             MediaPeopleMapper.Staff(
+                localSource = store().mediaDao(),
                 converter = get(),
             )
         }

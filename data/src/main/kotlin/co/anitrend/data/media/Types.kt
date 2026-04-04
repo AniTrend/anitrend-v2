@@ -20,6 +20,8 @@ import androidx.paging.PagedList
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.entity.connection.MediaCharacterConnectionEntity
+import co.anitrend.data.media.entity.connection.MediaStaffConnectionEntity
 import co.anitrend.data.media.model.container.MediaModelContainer
 import co.anitrend.data.media.model.container.MediaPeopleModelContainer
 import co.anitrend.domain.media.entity.Media
@@ -28,10 +30,10 @@ import co.anitrend.domain.media.interactor.MediaUseCase
 import co.anitrend.domain.media.repository.IMediaRepository
 
 internal typealias MediaDetailController = GraphQLController<MediaModelContainer.Detail, MediaEntity>
-internal typealias MediaCharactersController = GraphQLController<MediaPeopleModelContainer.Characters, List<MediaPerson.Character>>
+internal typealias MediaCharactersController = GraphQLController<MediaPeopleModelContainer.Characters, List<MediaCharacterConnectionEntity>>
 internal typealias MediaPagedController = GraphQLController<MediaModelContainer.Paged, List<MediaEntity>>
 internal typealias MediaNetworkController = GraphQLController<MediaModelContainer.Paged, List<Media>>
-internal typealias MediaStaffController = GraphQLController<MediaPeopleModelContainer.Staff, List<MediaPerson.Staff>>
+internal typealias MediaStaffController = GraphQLController<MediaPeopleModelContainer.Staff, List<MediaStaffConnectionEntity>>
 
 internal typealias MediaDetailRepository = IMediaRepository.Detail<DataState<Media>>
 internal typealias MediaCharactersRepository = IMediaRepository.Characters<DataState<PagedList<MediaPerson.Character>>>
