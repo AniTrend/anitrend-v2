@@ -38,7 +38,10 @@ import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.MediaPeopleRouter
+import co.anitrend.navigation.MediaRecommendationsRouter
+import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.ReviewDiscoverRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
 import co.anitrend.navigation.extensions.nameOf
@@ -103,11 +106,43 @@ class MediaScreen : AniTrendScreen() {
                                 navPayload = param.asNavPayload(),
                             )
                         },
+                        onMediaConnectionItemClick = { param ->
+                            when (param) {
+                                is MediaRouter.MediaParam ->
+                                    MediaRouter.startActivity(
+                                        context = this@MediaScreen,
+                                        navPayload = param.asNavPayload(),
+                                    )
+
+                                else -> Unit
+                            }
+                        },
                         onPeopleClick = { param ->
                             MediaPeopleRouter.startActivity(
                                 context = this@MediaScreen,
                                 navPayload = param.asNavPayload(),
                             )
+                        },
+                        onRelatedClick = { param ->
+                            MediaRelationsRouter.startActivity(
+                                context = this@MediaScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onRecommendationsClick = { param ->
+                            MediaRecommendationsRouter.startActivity(
+                                context = this@MediaScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onCommunityClick = { param ->
+                            ReviewDiscoverRouter.startActivity(
+                                context = this@MediaScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onExternalLinkClick = { url ->
+                            startViewIntent(url.toUri())
                         },
                         onBackClick = onBackPressedDispatcher::onBackPressed,
                     )

@@ -24,6 +24,14 @@ interface IMediaRepository {
         fun getMedia(param: MediaParam.Detail): State
     }
 
+    interface Relations<State : UiState<*>> : IMediaRepository {
+        fun getRelations(param: MediaParam.Relations): State
+    }
+
+    interface Recommendations<State : UiState<*>> : IMediaRepository {
+        fun getRecommendations(param: MediaParam.Recommendations): State
+    }
+
     interface Characters<State : UiState<*>> : IMediaRepository {
         fun getCharacters(param: MediaParam.Characters): State
     }

@@ -1,4 +1,6 @@
-query GetMediaWithRelation($id: Int!) {
+query GetMediaWithRelation(
+    $id: Int!
+) {
     Media(id: $id) {
         relations {
             ... MediaRelationConnection

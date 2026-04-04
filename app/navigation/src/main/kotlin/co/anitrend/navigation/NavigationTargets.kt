@@ -244,6 +244,30 @@ object MediaPeopleRouter : NavigationRouter() {
     ) : IParam
 }
 
+object MediaRelationsRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class MediaRelationsParam(
+        val mediaId: Long,
+        val mediaTitle: String? = null,
+    ) : IParam
+}
+
+object MediaRecommendationsRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class MediaRecommendationsParam(
+        val mediaId: Long,
+        val mediaTitle: String? = null,
+    ) : IParam
+}
+
 object MediaDiscoverRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 

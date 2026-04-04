@@ -49,6 +49,11 @@ private data class MetadataEntry(
     val value: String,
 )
 
+private data class MetadataLinkEntry(
+    val label: String,
+    val url: String,
+)
+
 private fun IMediaSourceId.toLabels(): List<String> =
     buildList {
         aniList?.let { add("AniList $it") }
@@ -171,11 +176,80 @@ private fun MetadataGroup(
 }
 
 @Composable
+private fun MetadataLinkGroup(
+    title: String,
+    links: List<MetadataLinkEntry>,
+    onLinkClick: (String) -> Unit,
+    collapsedCount: Int = Int.MAX_VALUE,
+    modifier: Modifier = Modifier,
+) {
+    var isExpanded by rememberSaveable(title, links.size) {
+        mutableStateOf(false)
+    }
+    val canExpand = links.size > collapsedCount
+    val visibleLinks = if (canExpand && !isExpanded) links.take(collapsedCount) else links
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = title,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.labelLarge,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            if (canExpand) {
+                TextButton(
+                    onClick = { isExpanded = !isExpanded },
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp),
+                ) {
+                    Text(
+                        text =
+                            stringResource(
+                                if (isExpanded) {
+                                    R.string.action_media_extended_details_show_less
+                                } else {
+                                    R.string.action_media_extended_details_show_more
+                                },
+                            ),
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+            }
+        }
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            visibleLinks.forEach { link ->
+                TextButton(
+                    onClick = { onLinkClick(link.url) },
+                    contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
+                ) {
+                    Text(
+                        text = link.label,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun MediaExtendedMetadataSection(
     media: Media.Extended,
     modifier: Modifier = Modifier,
     showExternalIdentifiers: Boolean = false,
     themes: List<MediaTheme> = emptyList(),
+    onExternalLinkClick: (String) -> Unit = {},
 ) {
     val detailRows =
         buildList {
@@ -205,8 +279,30 @@ fun MediaExtendedMetadataSection(
             .distinct()
 
     val sourceIds = if (showExternalIdentifiers) media.sourceId.toLabels() else emptyList()
+    val externalLinks =
+        buildList {
+            media.siteUrl.aniList?.takeIf(String::isNotBlank)?.let {
+                add(MetadataLinkEntry(label = "AniList", url = it))
+            }
+            media.siteUrl.myAnimeList?.takeIf(String::isNotBlank)?.let {
+                add(MetadataLinkEntry(label = "MyAnimeList", url = it))
+            }
+            media.externalLinks.forEach { link ->
+                val url = link.url.toString().trim()
+                if (link.isDisabled == true || url.isBlank()) {
+                    return@forEach
+                }
 
-    if (detailRows.isEmpty() && synonyms.isEmpty() && sourceIds.isEmpty() && themes.isEmpty()) {
+                add(
+                    MetadataLinkEntry(
+                        label = link.site.toString(),
+                        url = url,
+                    ),
+                )
+            }
+        }.distinctBy { it.label to it.url }
+
+    if (detailRows.isEmpty() && synonyms.isEmpty() && sourceIds.isEmpty() && themes.isEmpty() && externalLinks.isEmpty()) {
         return
     }
 
@@ -250,6 +346,15 @@ fun MediaExtendedMetadataSection(
                 title = stringResource(R.string.label_media_extended_details_external_ids),
                 values = sourceIds,
                 collapsedCount = 4,
+            )
+        }
+
+        if (externalLinks.isNotEmpty()) {
+            MetadataLinkGroup(
+                title = stringResource(R.string.label_media_extended_details_links),
+                links = externalLinks,
+                collapsedCount = 4,
+                onLinkClick = onExternalLinkClick,
             )
         }
     }

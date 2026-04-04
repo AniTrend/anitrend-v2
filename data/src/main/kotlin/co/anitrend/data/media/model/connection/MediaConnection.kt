@@ -52,8 +52,8 @@ internal sealed class MediaConnection : IEntityConnection {
 
     @Serializable
     data class Relation(
-        @SerialName("edges") override val edges: List<MediaEdge.Relation>?,
-        @SerialName("pageInfo") override val pageInfo: PageInfo?,
+        @SerialName("edges") override val edges: List<MediaEdge.Relation>? = null,
+        @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
     ) : MediaConnection(),
         IEntityConnection.IEdge<MediaEdge>
 
