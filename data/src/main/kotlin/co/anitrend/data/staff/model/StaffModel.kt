@@ -18,6 +18,7 @@ package co.anitrend.data.staff.model
 
 import co.anitrend.data.character.model.remote.connection.CharacterConnection
 import co.anitrend.data.common.model.date.FuzzyDateModel
+import co.anitrend.data.common.model.scalar.LenientNullableIntSerializer
 import co.anitrend.data.media.model.connection.MediaConnection
 import co.anitrend.data.shared.model.SharedImageModel
 import co.anitrend.data.shared.model.SharedNameModel
@@ -52,6 +53,7 @@ internal sealed class StaffModel : IStaffModel {
 
     @Serializable
     internal data class Core(
+        @Serializable(with = LenientNullableIntSerializer::class)
         @SerialName("age") override val age: Int? = null,
         @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel? = null,
         @SerialName("dateOfDeath") override val dateOfDeath: FuzzyDateModel? = null,
@@ -80,6 +82,7 @@ internal sealed class StaffModel : IStaffModel {
     internal data class Extended(
         @SerialName("character") val character: CharacterConnection? = null,
         @SerialName("staffMedia") val staffMedia: MediaConnection? = null,
+        @Serializable(with = LenientNullableIntSerializer::class)
         @SerialName("age") override val age: Int? = null,
         @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel? = null,
         @SerialName("dateOfDeath") override val dateOfDeath: FuzzyDateModel? = null,

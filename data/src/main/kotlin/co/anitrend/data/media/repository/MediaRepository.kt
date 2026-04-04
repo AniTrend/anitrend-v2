@@ -21,15 +21,14 @@ import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
 import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
-import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaCharactersRepository
+import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaNetworkRepository
 import co.anitrend.data.media.MediaPagedRepository
 import co.anitrend.data.media.MediaStaffRepository
-import co.anitrend.data.media.source.contract.MediaSource
 import co.anitrend.data.media.source.contract.MediaPeopleSource
+import co.anitrend.data.media.source.contract.MediaSource
 import co.anitrend.data.media.source.factory.MediaSourceFactory
-import co.anitrend.data.media.source.factory.MediaPeopleSourceFactory
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.model.MediaParam
@@ -50,35 +49,17 @@ internal sealed class MediaRepository {
     }
 
     class Characters(
-        private val source: MediaPeopleSourceFactory.Characters,
+        private val source: MediaPeopleSource.Characters,
     ) : MediaRepository(),
         MediaCharactersRepository {
-        override fun getCharacters(param: MediaParam.Characters): DataState<PagedList<MediaPerson.Character>> {
-            source.initialKey = param
-            val dataSource = source.create()
-
-            return dataSource create
-                FlowPagedListBuilder(
-                    source,
-                    PAGING_CONFIGURATION,
-                ).buildFlow()
-        }
+        override fun getCharacters(param: MediaParam.Characters): DataState<PagedList<MediaPerson.Character>> = source create source(param)
     }
 
     class Staff(
-        private val source: MediaPeopleSourceFactory.Staff,
+        private val source: MediaPeopleSource.Staff,
     ) : MediaRepository(),
         MediaStaffRepository {
-        override fun getStaff(param: MediaParam.Staff): DataState<PagedList<MediaPerson.Staff>> {
-            source.initialKey = param
-            val dataSource = source.create()
-
-            return dataSource create
-                FlowPagedListBuilder(
-                    source,
-                    PAGING_CONFIGURATION,
-                ).buildFlow()
-        }
+        override fun getStaff(param: MediaParam.Staff): DataState<PagedList<MediaPerson.Staff>> = source create source(param)
     }
 
     class Network(
