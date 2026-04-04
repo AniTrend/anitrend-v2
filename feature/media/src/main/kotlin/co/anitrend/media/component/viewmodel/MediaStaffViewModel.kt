@@ -36,6 +36,7 @@ class MediaStaffViewModel(
                     sort =
                         listOf(
                             Sorting(StaffSort.RELEVANCE, SortOrder.DESC),
+                            Sorting(StaffSort.ROLE, SortOrder.ASC),
                         ),
                 ),
             )
