@@ -56,6 +56,13 @@ detail in skill files to prevent context drift and duplication.
   parent entity and order the rows explicitly for paging. Convert local connection entities back
   to domain models with a converter, and keep request-specific persistence decisions inside the
   mapper rather than the source.
+- **Fixed-size detail reads**: non-paged detail children and aggregate reads should follow the
+  same Room-first rule as larger collections. Back them with dedicated tables keyed to the parent,
+  keep refresh orchestration inside the controller + mapper chain, and use source-level
+  `clearDataSource()` to invalidate cache identity and local rows together.
+- **Query-shape cache variants**: if two callers intentionally request different result sizes from
+  the same parent resource, keep one local table but use distinct cache identities so each shape
+  can refresh independently without fragmenting persistence.
 - **Context-specific source variants**: when one entity type has multiple distinct read contexts,
   define separate source variants for those contexts instead of overloading one broad contract.
   `UserSource.Identifier`, `Viewer`, `Profile`, and `Statistic` are the clearest reference.

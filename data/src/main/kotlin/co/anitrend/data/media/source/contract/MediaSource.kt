@@ -35,8 +35,6 @@ import co.anitrend.domain.media.entity.MediaStats
 import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.media.model.MediaParam
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filterNotNull
 
 internal class MediaSource {
     abstract class Detail : AbstractCoreDataSource() {
@@ -66,30 +64,48 @@ internal class MediaSource {
     abstract class Studios : AbstractCoreDataSource() {
         protected lateinit var query: MediaQuery.Studios
 
-        protected abstract val observable: MutableStateFlow<List<MediaStudioEntry>?>
+        protected lateinit var cacheIdentity: CacheIdentity
 
-        protected abstract suspend fun getStudios(requestCallback: RequestCallback): Boolean
+        protected abstract val cachePolicy: ICacheStorePolicy
+
+        protected abstract fun observable(): Flow<List<MediaStudioEntry>>
+
+        protected abstract suspend fun refreshStudios(requestCallback: RequestCallback): Boolean
 
         operator fun invoke(param: MediaParam.Studios): Flow<List<MediaStudioEntry>> {
             query = MediaQuery.Studios(param)
-            observable.value = null
-            invoke(block = ::getStudios)
-            return observable.filterNotNull()
+            cacheIdentity = MediaCache.Identity.Studios(param)
+            cachePolicy(
+                scope = scope,
+                requestHelper = requestHelper,
+                cacheIdentity = cacheIdentity,
+                block = ::refreshStudios,
+            )
+            return observable()
         }
     }
 
     abstract class Stats : AbstractCoreDataSource() {
         protected lateinit var query: MediaQuery.Stats
 
-        protected abstract val observable: MutableStateFlow<MediaStats?>
+        protected lateinit var cacheIdentity: CacheIdentity
 
-        protected abstract suspend fun getStats(requestCallback: RequestCallback): Boolean
+        protected abstract val cachePolicy: ICacheStorePolicy
+
+        protected abstract fun observable(): Flow<MediaStats>
+
+        protected abstract suspend fun refreshStats(requestCallback: RequestCallback): Boolean
 
         operator fun invoke(param: MediaParam.Stats): Flow<MediaStats> {
             query = MediaQuery.Stats(param)
-            observable.value = null
-            invoke(block = ::getStats)
-            return observable.filterNotNull()
+            cacheIdentity = MediaCache.Identity.Stats(param)
+            cachePolicy(
+                scope = scope,
+                requestHelper = requestHelper,
+                cacheIdentity = cacheIdentity,
+                block = ::refreshStats,
+            )
+            return observable()
         }
     }
 

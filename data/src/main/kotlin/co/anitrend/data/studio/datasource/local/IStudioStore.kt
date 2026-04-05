@@ -16,6 +16,10 @@
  */
 package co.anitrend.data.studio.datasource.local
 
+import co.anitrend.data.studio.datasource.local.connection.MediaStudioConnectionLocalSource
+
 internal interface IStudioStore {
     fun studioDao(): StudioLocalSource
+
+    fun mediaStudioConnectionDao(): MediaStudioConnectionLocalSource
 }

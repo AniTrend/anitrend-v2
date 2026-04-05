@@ -32,6 +32,7 @@ Use repo-relative paths only, then run `.github/scripts/audit-instruction-refs.s
 | DataState / UiState behavior | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
 | Koin DI wiring | `.github/instructions/context.instructions.md` | `.github/skills/koin-module-wiring/SKILL.md` |
 | Room entity + migration pattern | `.github/instructions/guides.instructions.md` | `.github/skills/room-entity-pattern/SKILL.md` |
+| CacheRequest collision / empty UI with no crash | `.github/instructions/guides.instructions.md` | `.github/skills/cache-request-isolation/SKILL.md` |
 | GraphQL controller lifecycle | `.github/instructions/guides.instructions.md` | `.github/skills/graphql-query-pattern/SKILL.md` |
 | String naming and POEditor context | `.github/instructions/guides.instructions.md` | `.github/skills/string-resources-convention/SKILL.md` |
 | Test strategy and commands | `.github/instructions/guides.instructions.md` | `.github/skills/testing-guidelines/SKILL.md` |
@@ -45,8 +46,10 @@ Use repo-relative paths only, then run `.github/scripts/audit-instruction-refs.s
 | Evaluate or add domain/data/feature/task plumbing | `.github/instructions/context.instructions.md` | `.github/skills/layered-module-patterns/SKILL.md` |
 | Trace or add screen navigation | `.github/instructions/context.instructions.md` | `.github/skills/navigation-architecture/SKILL.md` |
 | Add a new repository or source | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
+| Convert a fixed-size detail read to offline-first | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
 | Add DI bindings | `.github/instructions/context.instructions.md` | `.github/skills/koin-module-wiring/SKILL.md` |
 | Add or update Room entities | `.github/instructions/data.guides.instructions.md` | `.github/skills/room-entity-pattern/SKILL.md` |
+| Debug empty-UI / silent cache bypass | `.github/instructions/guides.instructions.md` | `.github/skills/cache-request-isolation/SKILL.md` |
 | Add or change GraphQL query flow | `.github/instructions/guides.instructions.md` | `.github/skills/graphql-query-pattern/SKILL.md` |
 | Update user-facing strings | `.github/instructions/context.instructions.md` | `.github/skills/string-resources-convention/SKILL.md` |
 | Add tests for data/domain logic | `.github/instructions/guides.instructions.md` | `.github/skills/testing-guidelines/SKILL.md` |

@@ -3,6 +3,7 @@ query GetMediaWithStudio(
     $sort: [StudioSort]
 ) {
     Media(id: $id) {
+        id
         studios(sort: $sort) {
             ... MediaStudioConnection
         }

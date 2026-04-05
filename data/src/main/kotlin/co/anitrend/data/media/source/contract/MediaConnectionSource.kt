@@ -17,41 +17,64 @@
 package co.anitrend.data.media.source.contract
 
 import co.anitrend.arch.request.callback.RequestCallback
+import co.anitrend.data.android.cache.extensions.invoke
+import co.anitrend.data.android.cache.model.CacheIdentity
+import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.invoke
 import co.anitrend.data.android.source.AbstractCoreDataSource
+import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.model.query.MediaConnectionQuery
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.entity.MediaRelationEntry
 import co.anitrend.domain.media.model.MediaParam
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterNotNull
 
 internal class MediaConnectionSource {
     abstract class Relations : AbstractCoreDataSource() {
         protected lateinit var query: MediaConnectionQuery.Relations
 
-        protected abstract val observable: Flow<List<MediaRelationEntry>?>
+        protected lateinit var cacheIdentity: CacheIdentity
 
-        protected abstract suspend fun getRelations(requestCallback: RequestCallback)
+        protected abstract val cachePolicy: ICacheStorePolicy
+
+        protected abstract fun observable(): Flow<List<MediaRelationEntry>>
+
+        protected abstract suspend fun refreshRelations(requestCallback: RequestCallback): Boolean
 
         operator fun invoke(param: MediaParam.Relations): Flow<List<MediaRelationEntry>> {
             query = MediaConnectionQuery.Relations(param)
-            invoke(block = ::getRelations)
-            return observable.filterNotNull()
+            cacheIdentity = MediaCache.Identity.Relations(param)
+            cachePolicy(
+                scope = scope,
+                requestHelper = requestHelper,
+                cacheIdentity = cacheIdentity,
+                block = ::refreshRelations,
+            )
+            return observable()
         }
     }
 
     abstract class Recommendations : AbstractCoreDataSource() {
         protected lateinit var query: MediaConnectionQuery.Recommendations
 
-        protected abstract val observable: Flow<List<MediaRecommendationEntry>?>
+        protected lateinit var cacheIdentity: CacheIdentity
 
-        protected abstract suspend fun getRecommendations(requestCallback: RequestCallback)
+        protected abstract val cachePolicy: ICacheStorePolicy
+
+        protected abstract fun observable(): Flow<List<MediaRecommendationEntry>>
+
+        protected abstract suspend fun refreshRecommendations(requestCallback: RequestCallback): Boolean
 
         operator fun invoke(param: MediaParam.Recommendations): Flow<List<MediaRecommendationEntry>> {
             query = MediaConnectionQuery.Recommendations(param)
-            invoke(block = ::getRecommendations)
-            return observable.filterNotNull()
+            cacheIdentity = MediaCache.Identity.Recommendations(param)
+            cachePolicy(
+                scope = scope,
+                requestHelper = requestHelper,
+                cacheIdentity = cacheIdentity,
+                block = ::refreshRecommendations,
+            )
+            return observable()
         }
     }
 }
