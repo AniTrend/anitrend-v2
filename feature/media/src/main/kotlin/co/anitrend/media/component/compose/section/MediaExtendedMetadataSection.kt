@@ -39,12 +39,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import co.anitrend.android.core.helpers.date.AniTrendDateHelper
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
 import co.anitrend.domain.media.entity.attribute.theme.MediaTheme
+import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.media.R
+import java.util.Locale
+import org.koin.compose.koinInject
+import org.threeten.bp.LocalDate
+import org.threeten.bp.format.DateTimeFormatter
+import co.anitrend.common.media.ui.R as MediaUiR
 
-private data class MetadataEntry(
+internal data class MetadataEntry(
     val label: String,
     val value: String,
 )
@@ -54,25 +61,71 @@ private data class MetadataLinkEntry(
     val url: String,
 )
 
-private fun IMediaSourceId.toLabels(): List<String> =
-    buildList {
-        aniList?.let { add("AniList $it") }
-        myAnimeList?.let { add("MyAnimeList $it") }
-        aniDb?.let { add("AniDB $it") }
-        aniSearch?.let { add("AniSearch $it") }
-        animePlanet?.takeIf(String::isNotBlank)?.let { add("Anime-Planet $it") }
-        imdb?.takeIf(String::isNotBlank)?.let { add("IMDb $it") }
-        kitsu?.let { add("Kitsu $it") }
-        liveChart?.let { add("LiveChart $it") }
-        notify?.takeIf(String::isNotBlank)?.let { add("Notify $it") }
-        shoboi?.let { add("Shoboi $it") }
-        slug?.takeIf(String::isNotBlank)?.let { add("Slug $it") }
-        tmdb?.let { add("TMDb $it") }
-        trakt?.let { add("Trakt $it") }
-        tvDb?.let { add("TVDb $it") }
-        tvMaze?.let { add("TVMaze $it") }
-        tvRage?.takeIf(String::isNotBlank)?.let { add("TVRage $it") }
+private enum class MetadataDatePrecision {
+    NONE,
+    YEAR,
+    MONTH_YEAR,
+    FULL,
+}
+
+private fun FuzzyDate.precision(): MetadataDatePrecision =
+    when {
+        isDateNotSet() -> MetadataDatePrecision.NONE
+        year > 0 && month > 0 && day > 0 -> MetadataDatePrecision.FULL
+        year > 0 && month > 0 -> MetadataDatePrecision.MONTH_YEAR
+        year > 0 -> MetadataDatePrecision.YEAR
+        else -> MetadataDatePrecision.NONE
     }
+
+private fun FuzzyDate.localizedMetadataDate(dateHelper: AniTrendDateHelper): String? =
+    when (precision()) {
+        MetadataDatePrecision.FULL -> dateHelper.convertToTextDate(this)?.toString()
+        MetadataDatePrecision.MONTH_YEAR ->
+            DateTimeFormatter
+                .ofPattern("MMM yyyy", Locale.getDefault())
+                .format(LocalDate.of(year, month, 1))
+        MetadataDatePrecision.YEAR -> year.takeIf { it > 0 }?.toString()
+        MetadataDatePrecision.NONE -> null
+    }
+
+@Composable
+private fun MediaSeason.localizedSeasonLabel(): String =
+    when (this) {
+        MediaSeason.FALL -> stringResource(R.string.label_media_release_timeline_season_fall)
+        MediaSeason.SPRING -> stringResource(R.string.label_media_release_timeline_season_spring)
+        MediaSeason.SUMMER -> stringResource(R.string.label_media_release_timeline_season_summer)
+        MediaSeason.WINTER -> stringResource(R.string.label_media_release_timeline_season_winter)
+    }
+
+internal fun buildReleaseMetadataEntries(
+    media: Media.Extended,
+    dateHelper: AniTrendDateHelper,
+    premieredLabel: String,
+    startedLabel: String,
+    endedLabel: String,
+    seasonLabel: String?,
+): List<MetadataEntry> {
+    val premieredValue =
+        seasonLabel?.let { label ->
+            media.startDate.year
+                .takeIf { it > 0 }
+                ?.let { year -> "$label $year" }
+                ?: label
+        }
+    val startedValue = media.startDate.localizedMetadataDate(dateHelper)
+    val endedValue = media.endDate.localizedMetadataDate(dateHelper)
+    val duplicateStartedValue =
+        premieredValue != null &&
+            (startedValue == premieredValue || media.startDate.precision() == MetadataDatePrecision.YEAR)
+
+    return buildList {
+        premieredValue?.let { add(MetadataEntry(premieredLabel, it)) }
+        startedValue
+            ?.takeUnless { duplicateStartedValue }
+            ?.let { add(MetadataEntry(startedLabel, it)) }
+        endedValue?.let { add(MetadataEntry(endedLabel, it)) }
+    }
+}
 
 @Composable
 private fun MetadataRow(
@@ -247,10 +300,10 @@ private fun MetadataLinkGroup(
 fun MediaExtendedMetadataSection(
     media: Media.Extended,
     modifier: Modifier = Modifier,
-    showExternalIdentifiers: Boolean = false,
     themes: List<MediaTheme> = emptyList(),
     onExternalLinkClick: (String) -> Unit = {},
 ) {
+    val dateHelper: AniTrendDateHelper = koinInject()
     val detailRows =
         buildList {
             media.ageRating
@@ -269,6 +322,16 @@ fun MediaExtendedMetadataSection(
                     val hashtag = if (it.startsWith("#")) it else "#$it"
                     add(MetadataEntry(stringResource(R.string.label_media_extended_details_twitter_tag), hashtag))
                 }
+            addAll(
+                buildReleaseMetadataEntries(
+                    media = media,
+                    dateHelper = dateHelper,
+                    premieredLabel = stringResource(MediaUiR.string.label_media_status_premiered),
+                    startedLabel = stringResource(MediaUiR.string.label_media_status_started),
+                    endedLabel = stringResource(R.string.label_media_extended_details_ended),
+                    seasonLabel = media.season?.localizedSeasonLabel(),
+                ),
+            )
         }
 
     val synonyms =
@@ -278,7 +341,6 @@ fun MediaExtendedMetadataSection(
             .filter(String::isNotBlank)
             .distinct()
 
-    val sourceIds = if (showExternalIdentifiers) media.sourceId.toLabels() else emptyList()
     val externalLinks =
         buildList {
             media.siteUrl.aniList?.takeIf(String::isNotBlank)?.let {
@@ -302,7 +364,7 @@ fun MediaExtendedMetadataSection(
             }
         }.distinctBy { it.label to it.url }
 
-    if (detailRows.isEmpty() && synonyms.isEmpty() && sourceIds.isEmpty() && themes.isEmpty() && externalLinks.isEmpty()) {
+    if (detailRows.isEmpty() && synonyms.isEmpty() && themes.isEmpty() && externalLinks.isEmpty()) {
         return
     }
 
@@ -322,7 +384,7 @@ fun MediaExtendedMetadataSection(
             }
         }
 
-        if (detailRows.isNotEmpty() && (synonyms.isNotEmpty() || sourceIds.isNotEmpty() || themes.isNotEmpty())) {
+        if (detailRows.isNotEmpty() && (synonyms.isNotEmpty() || themes.isNotEmpty() || externalLinks.isNotEmpty())) {
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
         }
 
@@ -338,14 +400,6 @@ fun MediaExtendedMetadataSection(
             MediaThemePreviewBlock(
                 themes = themes,
                 title = stringResource(R.string.label_media_extended_details_themes),
-            )
-        }
-
-        if (sourceIds.isNotEmpty()) {
-            MetadataGroup(
-                title = stringResource(R.string.label_media_extended_details_external_ids),
-                values = sourceIds,
-                collapsedCount = 4,
             )
         }
 

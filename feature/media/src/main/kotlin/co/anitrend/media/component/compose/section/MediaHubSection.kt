@@ -46,7 +46,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
-internal val MediaHubSectionShape = RoundedCornerShape(28.dp)
+internal val MediaHubSectionShape = RoundedCornerShape(26.dp)
 
 @Composable
 internal fun MediaHubSection(
@@ -55,9 +55,9 @@ internal fun MediaHubSection(
     subtitle: String? = null,
     trailingActionLabel: String? = null,
     onTrailingAction: (() -> Unit)? = null,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.14f),
-    borderColor: Color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
-    contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
+    containerColor: Color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.08f),
+    borderColor: Color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.24f),
+    contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 14.dp),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Surface(

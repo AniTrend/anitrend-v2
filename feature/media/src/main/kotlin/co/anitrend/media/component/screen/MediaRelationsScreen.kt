@@ -22,11 +22,13 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.arch.extension.ext.extra
+import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.component.compose.connection.MediaRelationsRoute
+import co.anitrend.navigation.MediaListEditorRouter
 import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.extensions.asNavPayload
@@ -58,6 +60,9 @@ class MediaRelationsScreen : AniTrendScreen() {
                                     context = this@MediaRelationsScreen,
                                     navPayload = param.asNavPayload(),
                                 )
+
+                            is MediaListEditorRouter.MediaListEditorParam ->
+                                window.decorView.openMediaListSheetFor(param, settings)
 
                             else -> Unit
                         }
