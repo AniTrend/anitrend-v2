@@ -30,18 +30,18 @@ import kotlinx.serialization.Serializable
 internal sealed class StudioConnection :
     IEntityConnection,
     IEntityConnection.IEdge<StudioEdge>,
-    IEntityConnection.INode<StudioModel> {
+    IEntityConnection.INode<StudioModel.Core> {
     @Serializable
     data class Favourite(
-        @SerialName("edges") override val edges: List<StudioEdge.Favourite>?,
-        @SerialName("nodes") override val nodes: List<StudioModel>?,
-        @SerialName("pageInfo") override val pageInfo: PageInfo?,
+        @SerialName("edges") override val edges: List<StudioEdge.Favourite>? = null,
+        @SerialName("nodes") override val nodes: List<StudioModel.Core>? = null,
+        @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
     ) : StudioConnection()
 
     @Serializable
     data class Media(
-        @SerialName("edges") override val edges: List<StudioEdge.Media>?,
-        @SerialName("nodes") override val nodes: List<StudioModel>?,
-        @SerialName("pageInfo") override val pageInfo: PageInfo?,
+        @SerialName("edges") override val edges: List<StudioEdge.Media>? = null,
+        @SerialName("nodes") override val nodes: List<StudioModel.Core>? = null,
+        @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
     ) : StudioConnection()
 }
