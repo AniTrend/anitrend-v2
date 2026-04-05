@@ -1,6 +1,6 @@
 ---
 name: adb-device-workflow
-description: 'Use ADB to connect devices, install Android debug builds, inspect logs, and troubleshoot deployment failures. Use for device detection errors, install failures, and debug launch workflows.'
+description: 'Use ADB to connect devices, install Android debug builds, inspect logs, and troubleshoot deployment failures. Use for device detection errors, install failures, launch failures, package selection across flavors, and first-pass pid-scoped logcat capture.'
 argument-hint: 'Describe the ADB task, target variant, and whether device is USB or wireless'
 ---
 
@@ -17,6 +17,7 @@ argument-hint: 'Describe the ADB task, target variant, and whether device is USB
 - Installing a debug build to a phone/emulator.
 - Diagnosing adb device detection issues.
 - Capturing app logs after launch failures.
+- Narrowing runtime failures to the correct installed package and process.
 - Reinstalling, clearing app data, or validating package state.
 
 ## Procedure
@@ -74,7 +75,18 @@ adb -s <serial> shell pidof co.anitrend
 Quality check:
 - App process should have a PID after launch.
 
-6. Capture focused logs for startup/debug failures.
+6. If the repo ships multiple flavors or package names, resolve the installed package before collecting logs.
+
+```bash
+adb -s <serial> shell pm list packages | grep anitrend
+adb -s <serial> shell pidof -s <package-name>
+```
+
+Decision point:
+- If more than one AniTrend package is installed, pick the exact package that matches the variant you just installed.
+- If the process exits too quickly to keep a PID, fall back to unscoped `adb logcat -d` immediately after repro.
+
+7. Capture focused logs for startup/debug failures.
 
 ```bash
 adb -s <serial> logcat -c
@@ -83,6 +95,23 @@ adb -s <serial> logcat | grep -E "AndroidRuntime|FATAL EXCEPTION|anitrend|Activi
 
 Decision point:
 - If process crashes immediately, collect stack trace and check runtime permissions or missing resources.
+
+8. Prefer pid-scoped logcat once the app is alive.
+
+```bash
+pid=$(adb -s <serial> shell pidof -s <package-name> | tr -d '\r')
+adb -s <serial> logcat -d --pid="$pid"
+```
+
+Quality check:
+- The captured log should be dominated by the target process instead of unrelated system noise.
+
+9. Escalate to the deeper runtime workflow when logs alone are insufficient.
+
+Use the `android-runtime-investigation` skill when you need to:
+- correlate UI failures with recorded HTTP responses
+- inspect debug-only Chucker traffic
+- pull evidence from the app sandbox before changing serializers or mappers
 
 ## Wireless ADB Branch
 
@@ -126,7 +155,7 @@ adb -s <serial> shell pm clear co.anitrend
 - ADB server is running and target device is `device` state.
 - Debug APK installs successfully.
 - App launches and remains alive (PID present).
-- If failure occurred, actionable log output was captured.
+- If failure occurred, actionable log output was captured and scoped to the correct package when possible.
 
 ## Fast Invocation Examples
 
