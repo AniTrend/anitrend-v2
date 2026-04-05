@@ -97,7 +97,7 @@ private val sourceModule =
                 controller =
                     graphQLController(
                         mapper = get<MediaConnectionMapper.Recommendations>(),
-                ),
+                    ),
                 dispatcher = get(),
             )
         }
