@@ -64,7 +64,7 @@ markwon = "4.6.2"
 
 mockk = "1.14.9"
 
-square-kotlinpoet = "2.2.0"
+square-kotlinpoet = "2.3.0"
 square-leakcanary = "2.14"
 square-okhttp = "5.2.1"
 square-retrofit = "3.0.0"
