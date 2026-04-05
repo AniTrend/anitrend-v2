@@ -33,12 +33,12 @@
     <string name="label_media_extended_details_themes">Theme songs</string>
     <!-- Supporting copy for the standalone theme section variant -->
     <string name="subtitle_media_theme_section">Openings, endings, and preview asset availability.</string>
-    <!-- Heading for upstream identifier chips shown on the media detail screen -->
-    <string name="label_media_extended_details_external_ids">External IDs</string>
     <!-- Action label to reveal additional metadata chips in the media details section -->
     <string name="action_media_extended_details_show_more">Show more</string>
     <!-- Action label to collapse additional metadata chips in the media details section -->
     <string name="action_media_extended_details_show_less">Show less</string>
+    <!-- Label for release end metadata shown in the extended details section -->
+    <string name="label_media_extended_details_ended">Ended</string>
     <!-- Action label to expand the visible theme rows on the media detail screen -->
     <string name="action_media_theme_section_show_all">Show all themes</string>
     <!-- Action label to collapse the visible theme rows on the media detail screen -->
@@ -218,42 +218,6 @@
     <string name="label_media_production_empty_title">No production credits yet</string>
     <!-- Empty-state copy for a title without exposed production credits -->
     <string name="message_media_production_empty">Production roles and studio credits are not exposed for this title yet.</string>
-    <!-- Section title for the localized release timeline -->
-    <string name="title_media_release_timeline_section">Release timeline</string>
-    <!-- Supporting copy for the localized release timeline -->
-    <string name="subtitle_media_release_timeline_section">Start and end dates that adapt to the title’s release state.</string>
-    <!-- Timeline verb for an upcoming title -->
-    <string name="label_media_release_timeline_starts">Starts %1$s</string>
-    <!-- Timeline verb for a title that is currently releasing -->
-    <string name="label_media_release_timeline_started">Started %1$s</string>
-    <!-- Timeline verb for an anime title that has finished airing -->
-    <string name="label_media_release_timeline_aired">Aired %1$s</string>
-    <!-- Timeline verb for a manga title that has finished publishing -->
-    <string name="label_media_release_timeline_published">Published %1$s</string>
-    <!-- Timeline verb for an anime title that has finished airing with a full range -->
-    <string name="label_media_release_timeline_aired_range">Aired %1$s – %2$s</string>
-    <!-- Timeline verb for a manga title that has finished publishing with a full range -->
-    <string name="label_media_release_timeline_published_range">Published %1$s – %2$s</string>
-    <!-- Timeline verb for a title that has an end date but no start date -->
-    <string name="label_media_release_timeline_ended">Ended %1$s</string>
-    <!-- Fallback timeline label when a title is finished but no dates are exposed -->
-    <string name="label_media_release_timeline_finished">Finished</string>
-    <!-- Timeline verb for cancelled titles with a known release start -->
-    <string name="label_media_release_timeline_cancelled_after">Cancelled after %1$s</string>
-    <!-- Fallback timeline label for cancelled titles without a known start -->
-    <string name="label_media_release_timeline_cancelled">Cancelled</string>
-    <!-- Timeline verb for hiatus titles with a known release start -->
-    <string name="label_media_release_timeline_hiatus_since">On hiatus since %1$s</string>
-    <!-- Fallback timeline label for hiatus titles without a known start -->
-    <string name="label_media_release_timeline_hiatus">On hiatus</string>
-    <!-- Timeline fallback for titles still in release but with no usable date label -->
-    <string name="label_media_release_timeline_releasing">Releasing</string>
-    <!-- Timeline fallback for titles that have not yet released and no date is exposed -->
-    <string name="label_media_release_timeline_upcoming">Upcoming</string>
-    <!-- Timeline chip label for the release season -->
-    <string name="label_media_release_timeline_season">Season</string>
-    <!-- Timeline chip label for the release end date -->
-    <string name="label_media_release_timeline_end">End</string>
     <!-- Localized release season label for fall -->
     <string name="label_media_release_timeline_season_fall">Fall</string>
     <!-- Localized release season label for spring -->
@@ -262,10 +226,6 @@
     <string name="label_media_release_timeline_season_summer">Summer</string>
     <!-- Localized release season label for winter -->
     <string name="label_media_release_timeline_season_winter">Winter</string>
-    <!-- Empty-state title for a title without exposed timeline data -->
-    <string name="label_media_release_timeline_empty_title">No timeline available</string>
-    <!-- Empty-state copy for a title without exposed timeline data -->
-    <string name="message_media_release_timeline_empty">Release dates have not been exposed for this title yet.</string>
     <!-- Section title for media-detail stats -->
     <string name="title_media_stats_section">Stats</string>
     <!-- Supporting copy for the media-detail stats section -->
@@ -295,7 +255,7 @@
     <!-- Supporting copy for the related titles hub section -->
     <string name="subtitle_media_related_section">Sequels, prequels, adaptations, and adjacent entries worth opening next.</string>
     <!-- Action label to open the full related titles destination -->
-    <string name="action_media_related_section_see_all">See all</string>
+    <string name="action_media_related_section_see_all">See all related</string>
     <!-- Loading label for the related titles preview section -->
     <string name="label_media_related_loading">Loading related titles</string>
     <!-- Supporting loading copy for the related titles preview section -->
@@ -307,11 +267,11 @@
     <!-- Error-state title for failed related-title requests -->
     <string name="label_media_related_error_title">Related titles unavailable</string>
     <!-- Section title for recommendation signals shown on the media detail hub -->
-    <string name="title_media_recommendations_section">Recommendations</string>
+    <string name="title_media_recommendations_section">Similar</string>
     <!-- Supporting copy for the recommendation preview module -->
     <string name="subtitle_media_recommendations_section">Community-backed pairings that usually travel with this title.</string>
     <!-- Action label to open the full recommendations destination -->
-    <string name="action_media_recommendations_section_see_all">See all</string>
+    <string name="action_media_recommendations_section_see_all">See all recommendations</string>
     <!-- Loading label for recommendation preview content -->
     <string name="label_media_recommendations_loading">Loading recommendations</string>
     <!-- Supporting loading copy for recommendation preview content -->
@@ -391,4 +351,22 @@
     <string name="subtitle_media_recommendations_screen">Follow the community’s strongest recommendation trails from this title.</string>
     <!-- Heading for official and third-party links in the extended metadata section -->
     <string name="label_media_extended_details_links">External links</string>
+    <!-- Section title for the unified related and recommendation browser -->
+    <string name="title_media_connections_browser_section">Continue the story</string>
+    <!-- Supporting copy for the unified related and recommendation browser -->
+    <string name="subtitle_media_connections_browser_section">Switch between franchise continuity and community follow-up picks without scanning oversized cards.</string>
+    <!-- Section title for the flattened contributor band -->
+    <string name="title_media_contributors_section">Contributors</string>
+    <!-- Supporting copy for the flattened contributor band -->
+    <string name="subtitle_media_contributors_section">Characters first, then the staff and studios most likely to matter.</string>
+    <!-- Secondary label for non-primary studio rows -->
+    <string name="label_media_contributors_studio_secondary">Supporting studio</string>
+    <!-- Group title for continuity-first related entries -->
+    <string name="title_media_related_group_story_continuity">Story continuity</string>
+    <!-- Group title for source and adaptation related entries -->
+    <string name="title_media_related_group_source_adaptation">Source &amp; adaptation</string>
+    <!-- Group title for side stories, spin-offs, and alternative entries -->
+    <string name="title_media_related_group_side_paths">Side paths</string>
+    <!-- Group title for shared-cast and miscellaneous related entries -->
+    <string name="title_media_related_group_shared_universe">Shared universe</string>
 </resources>

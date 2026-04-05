@@ -18,14 +18,19 @@ package co.anitrend.media.component.compose.connection
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -72,8 +77,8 @@ import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.model.common.IParam
 import kotlin.math.abs
 
-internal val ConnectionRailCardWidth = 176.dp
-private val ConnectionRailCardNarrowWidth = 148.dp
+internal val ConnectionRailCardWidth = 292.dp
+private val ConnectionRailCardNarrowWidth = 248.dp
 
 private val ConnectionCardShape = RoundedCornerShape(22.dp)
 private val ConnectionPosterShape = RoundedCornerShape(18.dp)
@@ -88,29 +93,22 @@ internal fun RelatedMediaCard(
     val media = relation.media
     val relationLabel = relation.relation?.alias?.toString() ?: stringResource(R.string.label_media_related_relation_unknown)
 
-    MediaConnectionCardSurface(modifier = modifier) {
-        ConnectionPoster(
-            media = media,
-            scoreFormat = scoreFormat,
-            onMediaItemClick = onMediaItemClick,
-            topStart = {
-                ConnectionChip(
-                    label = relationLabel,
-                    containerColor = relationChipContainerColor(media.image),
-                    contentColor = MaterialTheme.colorScheme.onSurface,
-                )
-            },
-        )
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 12.dp),
-        ) {
-            ConnectionTitle(media = media)
-            MediaQuickFacts(media = media)
+    MediaRailCard(
+        media = media,
+        scoreFormat = scoreFormat,
+        onMediaItemClick = onMediaItemClick,
+        modifier = modifier,
+        topContent = {
+            ConnectionChip(
+                label = relationLabel,
+                containerColor = relationChipContainerColor(media.image),
+                contentColor = MaterialTheme.colorScheme.onSurface,
+            )
+        },
+        supportingContent = {
             ConnectionSupportLine(media = media)
-        }
-    }
+        },
+    )
 }
 
 @Composable
@@ -123,27 +121,19 @@ internal fun RecommendationMediaCard(
 ) {
     val media = recommendation.media
 
-    MediaConnectionCardSurface(modifier = modifier) {
-        ConnectionPoster(
-            media = media,
-            scoreFormat = scoreFormat,
-            onMediaItemClick = onMediaItemClick,
-            topStart = {
-                ConnectionChip(
-                    label = recommendationSignalLabel(recommendation.rating),
-                    containerColor = recommendationChipContainerColor(media.image),
-                    contentColor = MaterialTheme.colorScheme.onSurface,
-                )
-            },
-        )
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 12.dp),
-        ) {
-            ConnectionTitle(media = media)
-            MediaQuickFacts(media = media)
-
+    MediaRailCard(
+        media = media,
+        scoreFormat = scoreFormat,
+        onMediaItemClick = onMediaItemClick,
+        modifier = modifier,
+        topContent = {
+            ConnectionChip(
+                label = recommendationSignalLabel(recommendation.rating),
+                containerColor = recommendationChipContainerColor(media.image),
+                contentColor = MaterialTheme.colorScheme.onSurface,
+            )
+        },
+        middleContent = {
             Text(
                 text = recommendationRationaleLabel(recommendation),
                 maxLines = rationaleMaxLines,
@@ -151,7 +141,8 @@ internal fun RecommendationMediaCard(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-
+        },
+        supportingContent = {
             recommendationVoteLabel(recommendation.userRating)
                 ?.let { footer ->
                     Text(
@@ -161,64 +152,91 @@ internal fun RecommendationMediaCard(
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                }
+                } ?: ConnectionSupportLine(media = media)
+        },
+    )
+}
+
+@Composable
+internal fun MediaRailCard(
+    media: Media,
+    scoreFormat: ScoreFormat,
+    onMediaItemClick: (IParam) -> Unit,
+    modifier: Modifier = Modifier,
+    topContent: @Composable ColumnScope.() -> Unit = {},
+    middleContent: @Composable ColumnScope.() -> Unit = {},
+    supportingContent: @Composable ColumnScope.() -> Unit = {},
+) {
+    Surface(
+        shape = ConnectionCardShape,
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.38f)),
+        tonalElevation = 0.dp,
+        modifier =
+            modifier.combinedClickable(
+                onClick = {
+                    onMediaItemClick(
+                        MediaRouter.MediaParam(
+                            id = media.id,
+                            type = media.category.type,
+                        ),
+                    )
+                },
+                onLongClick = {
+                    onMediaItemClick(
+                        MediaListEditorRouter.MediaListEditorParam(
+                            mediaId = media.id,
+                            mediaType = media.category.type,
+                            scoreFormat = scoreFormat,
+                        ),
+                    )
+                },
+            ),
+    ) {
+        Row(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            ConnectionRailPoster(
+                media = media,
+                scoreFormat = scoreFormat,
+            )
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                topContent()
+                ConnectionTitle(media = media)
+                MediaQuickFacts(media = media)
+                middleContent()
+                supportingContent()
+            }
         }
     }
 }
 
 @Composable
-private fun MediaConnectionCardSurface(
-    modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit,
-) {
-    Surface(
-        shape = ConnectionCardShape,
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.55f)),
-        tonalElevation = 0.dp,
-        modifier = modifier,
-    ) {
-        Column(content = content)
-    }
-}
-
-@Composable
-private fun ConnectionPoster(
+private fun ConnectionRailPoster(
     media: Media,
     scoreFormat: ScoreFormat,
-    onMediaItemClick: (IParam) -> Unit,
     modifier: Modifier = Modifier,
-    topStart: @Composable () -> Unit = {},
 ) {
     Box(
         modifier =
             modifier
-                .fillMaxWidth()
-                .aspectRatio(0.74f)
-                .padding(10.dp)
+                .width(84.dp)
+                .height(118.dp)
                 .clip(ConnectionPosterShape),
     ) {
         AniTrendImage(
             image = media.image,
             imageType = RequestImage.Media.ImageType.POSTER,
-            onClick = {
-                onMediaItemClick(
-                    MediaRouter.MediaParam(
-                        id = media.id,
-                        type = media.category.type,
-                    ),
-                )
-            },
-            onLongClick = {
-                onMediaItemClick(
-                    MediaListEditorRouter.MediaListEditorParam(
-                        mediaId = media.id,
-                        mediaType = media.category.type,
-                        scoreFormat = scoreFormat,
-                    ),
-                )
-            },
             modifier = Modifier.fillMaxSize(),
+            onClick = {},
         )
 
         Box(
@@ -231,19 +249,10 @@ private fun ConnectionPoster(
                     ),
         )
 
-        Box(
-            modifier =
-                Modifier
-                    .align(Alignment.TopStart)
-                    .padding(10.dp),
-        ) {
-            topStart()
-        }
-
         MediaRating(
             media = media,
             scoreFormat = scoreFormat,
-            modifier = Modifier.align(Alignment.BottomStart).padding(10.dp),
+            modifier = Modifier.align(Alignment.BottomStart).padding(8.dp),
         )
     }
 }
@@ -532,30 +541,29 @@ private fun previewMedia(
     title: String = "Cowboy Bebop: The Movie",
     isFavourite: Boolean,
     episodes: Int = 1,
-) =
-    Media.Core.empty().copy(
-        title =
-            MediaTitle(
-                userPreferred = title,
-                english = title,
-                romaji = "Cowboy Bebop: Tengoku no Tobira",
-                native = "カウボーイビバップ 天国の扉",
-            ),
-        status = MediaStatus.FINISHED,
-        image = MediaImage.empty().copy(color = "#5B6FD8"),
-        startDate = FuzzyDate.empty().copy(2001),
-        format = MediaFormat.MOVIE,
-        category =
-            Media.Category.Anime
-                .empty()
-                .copy(episodes),
-        score =
-            MediaScore(
-                average = 82,
-                mean = 84,
-                personal = null,
-                popularity = 150000,
-                trending = 0,
-            ),
-        isFavourite = isFavourite,
-    )
+) = Media.Core.empty().copy(
+    title =
+        MediaTitle(
+            userPreferred = title,
+            english = title,
+            romaji = "Cowboy Bebop: Tengoku no Tobira",
+            native = "カウボーイビバップ 天国の扉",
+        ),
+    status = MediaStatus.FINISHED,
+    image = MediaImage.empty().copy(color = "#5B6FD8"),
+    startDate = FuzzyDate.empty().copy(2001),
+    format = MediaFormat.MOVIE,
+    category =
+        Media.Category.Anime
+            .empty()
+            .copy(episodes),
+    score =
+        MediaScore(
+            average = 82,
+            mean = 84,
+            personal = null,
+            popularity = 150000,
+            trending = 0,
+        ),
+    isFavourite = isFavourite,
+)

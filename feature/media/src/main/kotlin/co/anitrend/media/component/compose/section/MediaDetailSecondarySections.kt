@@ -42,36 +42,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.paging.PagedList
 import co.anitrend.android.core.extensions.toHumanReadableQuantity
-import co.anitrend.android.core.helpers.date.AniTrendDateHelper
 import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.entity.MediaStats
 import co.anitrend.domain.media.entity.MediaStudioEntry
-import co.anitrend.domain.media.enums.MediaSeason
-import co.anitrend.domain.media.enums.MediaStatus
-import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.media.R
 import co.anitrend.media.component.compose.people.previewCandidates
 import co.anitrend.media.component.compose.people.selectStaffPreview
 import co.anitrend.navigation.StudioRouter
 import java.util.Locale
-import org.koin.compose.koinInject
-import org.threeten.bp.LocalDate
-import org.threeten.bp.format.DateTimeFormatter
 import co.anitrend.common.media.ui.R as MediaUiR
 
 private const val PRODUCTION_STAFF_PREVIEW_COUNT = 10
 private const val PRODUCTION_STUDIO_PREVIEW_COUNT = 6
 private const val DETAIL_TOKEN_LIMIT = 4
-
-private enum class DatePrecision {
-    NONE,
-    YEAR,
-    MONTH_YEAR,
-    FULL,
-}
 
 private enum class ProductionGroupType(
     @param:StringRes val titleRes: Int,
@@ -93,11 +78,6 @@ private data class ProductionCredit(
     val subtitle: String? = null,
     val badge: String? = null,
     val onClick: (() -> Unit)? = null,
-)
-
-private data class ReleaseTimelineDetail(
-    val label: String,
-    val value: String,
 )
 
 private data class MediaMetric(
@@ -177,34 +157,6 @@ private fun groupProductionStaff(staff: List<MediaPerson.Staff>): List<Productio
         }
     }
 }
-
-private fun FuzzyDate.precision(): DatePrecision =
-    when {
-        isDateNotSet() -> DatePrecision.NONE
-        year > 0 && month > 0 && day > 0 -> DatePrecision.FULL
-        year > 0 && month > 0 -> DatePrecision.MONTH_YEAR
-        year > 0 -> DatePrecision.YEAR
-        else -> DatePrecision.NONE
-    }
-
-private fun FuzzyDate.localizedTimelineDate(dateHelper: AniTrendDateHelper): String? =
-    when (precision()) {
-        DatePrecision.FULL -> dateHelper.convertToTextDate(this)?.toString()
-        DatePrecision.MONTH_YEAR ->
-            DateTimeFormatter.ofPattern("MMM yyyy", Locale.getDefault())
-                .format(LocalDate.of(year, month, 1))
-        DatePrecision.YEAR -> year.takeIf { it > 0 }?.toString()
-        DatePrecision.NONE -> null
-    }
-
-@Composable
-private fun MediaSeason.localizedSeasonLabel(): String =
-    when (this) {
-        MediaSeason.FALL -> stringResource(R.string.label_media_release_timeline_season_fall)
-        MediaSeason.SPRING -> stringResource(R.string.label_media_release_timeline_season_spring)
-        MediaSeason.SUMMER -> stringResource(R.string.label_media_release_timeline_season_summer)
-        MediaSeason.WINTER -> stringResource(R.string.label_media_release_timeline_season_winter)
-    }
 
 @Composable
 private fun MediaPerson.Staff.displayName(): String =
@@ -532,152 +484,6 @@ private fun ProductionGroupBlock(
 }
 
 @Composable
-internal fun MediaReleaseTimelineSection(
-    media: Media.Extended,
-    modifier: Modifier = Modifier,
-) {
-    val dateHelper: AniTrendDateHelper = koinInject()
-    val seasonLabel = media.season?.localizedSeasonLabel()
-    val seasonYearLabel =
-        seasonLabel?.let { label ->
-            media.startDate.year.takeIf { it > 0 }?.let { year -> "$label $year" }
-                ?: label
-        }
-    val startLabel = media.startDate.localizedTimelineDate(dateHelper)
-    val endLabel = media.endDate.localizedTimelineDate(dateHelper)
-    val startHeadlineLabel =
-        when {
-            media.startDate.precision() == DatePrecision.YEAR && seasonYearLabel != null -> seasonYearLabel
-            startLabel != null -> startLabel
-            else -> seasonYearLabel
-        }
-    val usesSeasonOnlyHeadline = startHeadlineLabel == seasonYearLabel && seasonYearLabel != null
-    val headline =
-        when (media.status) {
-            MediaStatus.NOT_YET_RELEASED ->
-                when {
-                    startHeadlineLabel != null -> stringResource(R.string.label_media_release_timeline_starts, startHeadlineLabel)
-                    seasonYearLabel != null -> stringResource(R.string.label_media_release_timeline_starts, seasonYearLabel)
-                    else -> stringResource(R.string.label_media_release_timeline_upcoming)
-                }
-
-            MediaStatus.RELEASING ->
-                when {
-                    startHeadlineLabel != null -> stringResource(R.string.label_media_release_timeline_started, startHeadlineLabel)
-                    seasonYearLabel != null -> stringResource(R.string.label_media_release_timeline_started, seasonYearLabel)
-                    else -> stringResource(R.string.label_media_release_timeline_releasing)
-                }
-
-            MediaStatus.FINISHED ->
-                when {
-                    startHeadlineLabel != null && endLabel != null -> {
-                        val verb =
-                            if (media.category.type == MediaType.ANIME) {
-                                R.string.label_media_release_timeline_aired_range
-                            } else {
-                                R.string.label_media_release_timeline_published_range
-                            }
-                        stringResource(verb, startHeadlineLabel, endLabel)
-                    }
-
-                    startHeadlineLabel != null ->
-                        stringResource(
-                            if (media.category.type == MediaType.ANIME) {
-                                R.string.label_media_release_timeline_aired
-                            } else {
-                                R.string.label_media_release_timeline_published
-                            },
-                            startHeadlineLabel,
-                        )
-
-                    endLabel != null -> stringResource(R.string.label_media_release_timeline_ended, endLabel)
-                    else -> stringResource(R.string.label_media_release_timeline_finished)
-                }
-
-            MediaStatus.CANCELLED ->
-                when {
-                    startHeadlineLabel != null -> stringResource(R.string.label_media_release_timeline_cancelled_after, startHeadlineLabel)
-                    seasonYearLabel != null -> stringResource(R.string.label_media_release_timeline_cancelled_after, seasonYearLabel)
-                    else -> stringResource(R.string.label_media_release_timeline_cancelled)
-                }
-
-            MediaStatus.HIATUS ->
-                when {
-                    startHeadlineLabel != null -> stringResource(R.string.label_media_release_timeline_hiatus_since, startHeadlineLabel)
-                    seasonYearLabel != null -> stringResource(R.string.label_media_release_timeline_hiatus_since, seasonYearLabel)
-                    else -> stringResource(R.string.label_media_release_timeline_hiatus)
-                }
-
-            null ->
-                when {
-                    startHeadlineLabel != null -> stringResource(R.string.label_media_release_timeline_started, startHeadlineLabel)
-                    seasonYearLabel != null -> stringResource(R.string.label_media_release_timeline_starts, seasonYearLabel)
-                    else -> null
-                }
-        }
-
-    val timelineDetails =
-        buildList {
-            if (seasonYearLabel != null && !usesSeasonOnlyHeadline) {
-                add(
-                    ReleaseTimelineDetail(
-                        label = stringResource(R.string.label_media_release_timeline_season),
-                        value = seasonYearLabel,
-                    ),
-                )
-            }
-
-            if (endLabel != null && media.status != MediaStatus.FINISHED) {
-                add(
-                    ReleaseTimelineDetail(
-                        label = stringResource(R.string.label_media_release_timeline_end),
-                        value = endLabel,
-                    ),
-                )
-            }
-        }
-
-    MediaHubSection(
-        title = stringResource(R.string.title_media_release_timeline_section),
-        subtitle = stringResource(R.string.subtitle_media_release_timeline_section),
-        modifier = modifier,
-    ) {
-        when {
-            headline != null -> {
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text(
-                        text = headline,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-
-                    if (timelineDetails.isNotEmpty()) {
-                        FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                        ) {
-                            timelineDetails.forEach { detail ->
-                                MediaCompactToken(
-                                    label = detail.label,
-                                    subtitle = detail.value,
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-
-            else -> {
-                MediaHubSectionEmptyState(
-                    title = stringResource(R.string.label_media_release_timeline_empty_title),
-                    message = stringResource(R.string.message_media_release_timeline_empty),
-                )
-            }
-        }
-    }
-}
-
-@Composable
 internal fun MediaStatsSection(
     media: Media.Extended,
     stats: MediaStats?,
@@ -687,6 +493,14 @@ internal fun MediaStatsSection(
 ) {
     val summaryMetrics =
         listOfNotNull(
+            media.score.mean
+                .takeIf { it > 0 }
+                ?.let {
+                    MediaMetric(
+                        label = stringResource(MediaUiR.string.label_media_score_section_community),
+                        value = it.toString(),
+                    )
+                },
             media.favourites.takeIf { it > 0 }?.let {
                 MediaMetric(
                     label = stringResource(R.string.label_media_stats_favourites),
@@ -729,9 +543,9 @@ internal fun MediaStatsSection(
         }
     val hasSummaryMetrics = summaryMetrics.isNotEmpty()
     val hasDistributionData = scoreDistribution.isNotEmpty() || statusDistribution.isNotEmpty()
-    val isLoading = (loadState == null || loadState is LoadState.Loading) && !hasSummaryMetrics && !hasDistributionData
-    val isError = loadState is LoadState.Error && !hasSummaryMetrics && !hasDistributionData
-    val hasNoContent = !hasSummaryMetrics && !hasDistributionData && !isLoading && !isError
+    val isDistributionLoading = (loadState == null || loadState is LoadState.Loading) && !hasDistributionData
+    val isDistributionError = loadState is LoadState.Error && !hasDistributionData
+    val hasNoContent = !hasSummaryMetrics && !hasDistributionData && !isDistributionLoading && !isDistributionError
 
     MediaHubSection(
         title = stringResource(R.string.title_media_stats_section),
@@ -753,65 +567,65 @@ internal fun MediaStatsSection(
             }
         }
 
-        if (hasSummaryMetrics && hasDistributionData) {
+        if (hasSummaryMetrics && (hasDistributionData || isDistributionLoading || isDistributionError)) {
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
         }
 
         when {
-            isLoading -> {
+            hasDistributionData -> {
+                if (scoreDistribution.isNotEmpty()) {
+                    DistributionBlock(
+                        title = stringResource(R.string.label_media_stats_score_distribution),
+                        entries =
+                            scoreDistribution.map { distribution ->
+                                MediaMetric(
+                                    label = distribution.score.toString(),
+                                    value = distribution.amount.toHumanReadableQuantity(0),
+                                )
+                            },
+                    )
+                }
+
+                if (scoreDistribution.isNotEmpty() && statusDistribution.isNotEmpty()) {
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
+                }
+
+                if (statusDistribution.isNotEmpty()) {
+                    DistributionBlock(
+                        title = stringResource(R.string.label_media_stats_status_distribution),
+                        entries =
+                            statusDistribution.map { distribution ->
+                                MediaMetric(
+                                    label =
+                                        distribution.status?.alias?.toString()
+                                            ?: stringResource(MediaUiR.string.label_media_status_unknown_value),
+                                    value = distribution.amount.toHumanReadableQuantity(0),
+                                )
+                            },
+                    )
+                }
+            }
+
+            isDistributionLoading -> {
                 MediaHubSectionLoadingState(
                     title = stringResource(R.string.label_media_stats_loading),
                     message = stringResource(R.string.message_media_stats_loading),
                 )
             }
 
-            isError -> {
+            isDistributionError -> {
                 SectionRetryState(
                     title = stringResource(R.string.label_media_stats_error_title),
                     onRetry = onRetry,
                 )
             }
-        }
 
-        if (hasDistributionData) {
-            if (scoreDistribution.isNotEmpty()) {
-                DistributionBlock(
-                    title = stringResource(R.string.label_media_stats_score_distribution),
-                    entries =
-                        scoreDistribution.map { distribution ->
-                            MediaMetric(
-                                label = distribution.score.toString(),
-                                value = distribution.amount.toHumanReadableQuantity(0),
-                            )
-                        },
+            hasNoContent -> {
+                MediaHubSectionEmptyState(
+                    title = stringResource(R.string.label_media_stats_empty_title),
+                    message = stringResource(R.string.message_media_stats_empty),
                 )
             }
-
-            if (scoreDistribution.isNotEmpty() && statusDistribution.isNotEmpty()) {
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
-            }
-
-            if (statusDistribution.isNotEmpty()) {
-                DistributionBlock(
-                    title = stringResource(R.string.label_media_stats_status_distribution),
-                    entries =
-                        statusDistribution.map { distribution ->
-                            MediaMetric(
-                                label =
-                                    distribution.status?.alias?.toString()
-                                        ?: stringResource(MediaUiR.string.label_media_status_unknown_value),
-                                value = distribution.amount.toHumanReadableQuantity(0),
-                            )
-                        },
-                )
-            }
-        }
-
-        if (hasNoContent) {
-            MediaHubSectionEmptyState(
-                title = stringResource(R.string.label_media_stats_empty_title),
-                message = stringResource(R.string.message_media_stats_empty),
-            )
         }
     }
 }

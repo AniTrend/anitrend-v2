@@ -21,10 +21,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.items as gridItems
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -45,8 +48,10 @@ import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.entity.MediaRelationEntry
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.R
+import co.anitrend.media.component.compose.section.MediaRelationBucket
+import co.anitrend.media.component.compose.section.MediaRelationGroup
+import co.anitrend.media.component.compose.section.groupRelationsByBucket
 import co.anitrend.media.component.compose.section.selectRecommendationPreview
-import co.anitrend.media.component.compose.section.selectRelationPreview
 import co.anitrend.media.component.viewmodel.MediaRecommendationsViewModel
 import co.anitrend.media.component.viewmodel.MediaRelationsViewModel
 import co.anitrend.navigation.model.common.IParam
@@ -76,8 +81,8 @@ fun MediaRelationsRoute(
     ) {
         when {
             !relations.isNullOrEmpty() -> {
-                RelationGrid(
-                    relations = selectRelationPreview(relations.orEmpty(), maxCount = relations.orEmpty().size),
+                RelationGroupedList(
+                    groups = groupRelationsByBucket(relations.orEmpty()),
                     scoreFormat = scoreFormat,
                     onMediaItemClick = onMediaItemClick,
                 )
@@ -213,25 +218,40 @@ private fun ConnectionScreenScaffold(
 }
 
 @Composable
-private fun RelationGrid(
-    relations: List<MediaRelationEntry>,
+private fun RelationGroupedList(
+    groups: List<MediaRelationGroup>,
     scoreFormat: ScoreFormat,
     onMediaItemClick: (IParam) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 176.dp),
+    LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 24.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        items(relations, key = MediaRelationEntry::id) { relation ->
-            RelatedMediaCard(
-                relation = relation,
-                scoreFormat = scoreFormat,
-                onMediaItemClick = onMediaItemClick,
-            )
+        groups.forEach { group ->
+            item(key = group.bucket.name) {
+                Text(
+                    text =
+                        when (group.bucket) {
+                            MediaRelationBucket.STORY_CONTINUITY -> stringResource(R.string.title_media_related_group_story_continuity)
+                            MediaRelationBucket.SOURCE_AND_ADAPTATION ->
+                                stringResource(R.string.title_media_related_group_source_adaptation)
+                            MediaRelationBucket.SIDE_PATHS -> stringResource(R.string.title_media_related_group_side_paths)
+                            MediaRelationBucket.SHARED_UNIVERSE -> stringResource(R.string.title_media_related_group_shared_universe)
+                        },
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
+            items(group.entries, key = MediaRelationEntry::id) { relation ->
+                RelatedMediaCard(
+                    relation = relation,
+                    scoreFormat = scoreFormat,
+                    onMediaItemClick = onMediaItemClick,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
         }
     }
 }
@@ -244,13 +264,13 @@ private fun RecommendationGrid(
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 176.dp),
+        columns = GridCells.Adaptive(minSize = 320.dp),
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 24.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        items(recommendations, key = MediaRecommendationEntry::id) { recommendation ->
+        gridItems(recommendations, key = MediaRecommendationEntry::id) { recommendation ->
             RecommendationMediaCard(
                 recommendation = recommendation,
                 scoreFormat = scoreFormat,

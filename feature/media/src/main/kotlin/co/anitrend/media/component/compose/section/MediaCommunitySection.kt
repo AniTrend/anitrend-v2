@@ -61,7 +61,7 @@ internal fun MediaCommunitySection(
             } else {
                 null
             },
-        onTrailingAction = if (canSeeAll) { { onSeeAllClick() } } else { null },
+        onTrailingAction = if (canSeeAll) ({ onSeeAllClick() }) else null,
         modifier = modifier,
     ) {
         if (isBlocked) {
