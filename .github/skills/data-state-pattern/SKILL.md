@@ -95,6 +95,31 @@ first and refresh from the network opportunistically.
   contract, as in `UserSource.Identifier`, `UserSource.Viewer`, `UserSource.Profile`, and
   `UserSource.Statistic`.
 
+### Fixed-size detail reads
+
+Non-paged child collections and aggregate detail reads should still follow the same Room-first
+contract.
+
+- Persist fixed-size collections in dedicated connection or detail tables keyed by the parent id.
+- Store a stable display order such as `sort_index` so every cached route renders consistently.
+- Keep the parent context needed for persistence inside the mapped response model. The source should
+  trigger refreshes, not rebuild local rows from remote models itself.
+- Clear parent-scoped rows from `clearDataSource()` before forcing the next refresh.
+- Do not use `MutableStateFlow` as the primary backing store when a Room table already exists for
+  the same read.
+- If the same parent resource is requested with materially different query shapes that change the
+  expected result size, use a variant cache key while continuing to read from the same local table.
+
+### Red flags
+
+- Mapper `persist(...)` methods left empty for a read that claims to be offline-first.
+- Source contracts that clear `MutableStateFlow` and fire the network on every `invoke(...)`.
+- Local tables without ordering columns for remote relationship collections.
+- Response models that omit parent identity and force mutable source or mapper request state to
+  rebuild persistence context.
+- Cache identities keyed too broadly for request variants that intentionally fetch different result
+  sizes.
+
 ### Contrast with mutation-only variants
 
 - Mutation sources such as `ReviewSource.Rate/Delete/Save` and

@@ -29,6 +29,7 @@ internal sealed class MediaConnectionModelContainer {
     ) {
         @Serializable
         data class Media(
+            @SerialName("id") val id: Long? = null,
             @SerialName("relations") val relations: MediaConnection.Relation? = null,
         )
     }
@@ -39,6 +40,7 @@ internal sealed class MediaConnectionModelContainer {
     ) {
         @Serializable
         data class Media(
+            @SerialName("id") val id: Long? = null,
             @SerialName("recommendations") val recommendations: RecommendationConnection? = null,
         )
     }

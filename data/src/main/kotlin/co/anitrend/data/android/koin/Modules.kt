@@ -60,6 +60,7 @@ import co.anitrend.data.rank.koin.rankModules
 import co.anitrend.data.review.koin.reviewModules
 import co.anitrend.data.status.model.StatusModel
 import co.anitrend.data.tag.koin.tagModules
+import co.anitrend.data.recommendation.koin.recommendationModules
 import co.anitrend.data.studio.koin.studioModules
 import co.anitrend.data.user.koin.userModules
 import com.chuckerteam.chucker.api.ChuckerCollector
@@ -254,6 +255,7 @@ val dataModules =
             customScoreModules,
             reviewModules,
             *studioModules.toTypedArray(),
+            *recommendationModules.toTypedArray(),
             edgeModules,
         )
     }

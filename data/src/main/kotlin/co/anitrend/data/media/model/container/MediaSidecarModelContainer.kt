@@ -30,6 +30,7 @@ internal sealed class MediaSidecarModelContainer {
     ) {
         @Serializable
         data class Media(
+            @SerialName("id") val id: Long? = null,
             @SerialName("studios") val studios: StudioConnection.Media? = null,
         )
     }

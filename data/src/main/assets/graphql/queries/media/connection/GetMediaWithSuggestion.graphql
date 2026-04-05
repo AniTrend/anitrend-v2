@@ -5,6 +5,7 @@ query GetMediaWithSuggestion(
     $sort: [RecommendationSort]
 ) {
     Media(id: $id) {
+        id
         recommendations(page: $page, perPage: $perPage, sort: $sort) {
             ... MediaSuggestionConnection
         }
