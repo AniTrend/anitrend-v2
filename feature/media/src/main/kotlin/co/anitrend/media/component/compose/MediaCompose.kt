@@ -840,6 +840,14 @@ fun MediaScreenContent(
     val recommendationsLoadState by recommendationsViewModel.loadState.observeAsState()
     val communityReviews by communityViewModel.model.observeAsState()
     val communityLoadState by communityViewModel.loadState.observeAsState()
+    val studiosForDisplay =
+        remember(studios) {
+            studios
+                ?.sortedWith(
+                    compareByDescending<MediaStudioEntry> { it.isMain }
+                        .thenBy { it.studio.name },
+                )
+        }
 
     val view = LocalView.current
 
@@ -902,7 +910,7 @@ fun MediaScreenContent(
             charactersLoadState = charactersLoadState,
             staff = staff,
             staffLoadState = staffLoadState,
-            studios = studios,
+            studios = studiosForDisplay,
             studiosLoadState = studiosLoadState,
             stats = stats,
             statsLoadState = statsLoadState,
