@@ -35,7 +35,7 @@ All versions are declared in `gradle/libs.versions.toml`.
 - **Retrofit + OkHttp** — HTTP client; shared configuration injected by `buildSrc`.
 - **`retrofit-graphql`** — AniTrend's custom Retrofit converter for GraphQL requests.
 - **Kotlinx Serialization** — JSON serialization; configured alongside Retrofit.
-- **Chucker** — Debug HTTP traffic inspector; only included in debug builds.
+- **Chucker** — Debug HTTP traffic inspector; only included in debug builds. When runtime evidence is needed, prefer inspecting recorded responses from the debug app sandbox before changing serializers, mappers, or UI assumptions.
 
 ## Image loading
 

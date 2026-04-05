@@ -78,6 +78,10 @@ detail in skill files to prevent context drift and duplication.
 - **Threading**: `support-arch` base classes already dispatch to `Dispatchers.IO`. Avoid extra
   `withContext` unless bypassing the provided base.
 - **Logging**: `Timber.d/e/w` only — never `Log.*` or `println`.
+- **Android runtime debugging**: on-device investigation should start by identifying the exact
+  installed package and using pid-scoped `adb logcat --pid` when the process is alive. Prefer
+  recorded debug traffic evidence such as Chucker before changing serializers, mappers, or UI
+  assumptions. See `.github/skills/android-runtime-investigation/SKILL.md`.
 - **Imports**: no wildcard imports except for `R` classes and nested static imports.
 - **Analytics**: gate Firebase Analytics calls behind a flavor check; use the analytics helper if
   available in `support-arch:analytics`.
