@@ -1,13 +1,17 @@
 package co.anitrend.media.component.compose.section
 
+import co.anitrend.android.core.helpers.date.AniTrendDateHelper
+import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.entity.MediaRelationEntry
 import co.anitrend.domain.media.entity.attribute.rank.MediaRank
+import co.anitrend.domain.media.entity.attribute.score.MediaScore
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaRelation
 import co.anitrend.domain.media.enums.MediaRankType
 import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.tag.entity.Tag
 import co.anitrend.domain.recommendation.enums.RecommendationRating
 import kotlin.test.Test
@@ -98,6 +102,97 @@ class MediaDetailSectionSupportTest {
     }
 
     @Test
+    fun `groupRelationsByBucket keeps bucket order and sends unknown relations to shared universe`() {
+        val groups =
+            groupRelationsByBucket(
+                listOf(
+                    relationEntry(id = 1L, relation = MediaRelation.SIDE_STORY, mediaId = 101L),
+                    relationEntry(id = 2L, relation = MediaRelation.ADAPTATION, mediaId = 102L),
+                    relationEntry(id = 3L, relation = MediaRelation.SEQUEL, mediaId = 103L),
+                    relationEntry(id = 4L, relation = null, mediaId = 104L),
+                    relationEntry(id = 5L, relation = MediaRelation.PREQUEL, mediaId = 105L),
+                    relationEntry(id = 6L, relation = MediaRelation.CHARACTER, mediaId = 106L),
+                    relationEntry(id = 7L, relation = MediaRelation.SOURCE, mediaId = 107L),
+                    relationEntry(id = 8L, relation = MediaRelation.COMPILATION, mediaId = 108L),
+                ),
+            )
+
+        assertEquals(
+            listOf(
+                MediaRelationBucket.STORY_CONTINUITY,
+                MediaRelationBucket.SOURCE_AND_ADAPTATION,
+                MediaRelationBucket.SIDE_PATHS,
+                MediaRelationBucket.SHARED_UNIVERSE,
+            ),
+            groups.map { it.bucket },
+        )
+        assertEquals(
+            listOf(
+                listOf(3L, 5L),
+                listOf(7L, 2L),
+                listOf(1L, 8L),
+                listOf(6L, 4L),
+            ),
+            groups.map { group -> group.entries.map { it.id } },
+        )
+    }
+
+    @Test
+    fun `buildReleaseMetadataEntries keeps premiere context and full dates`() {
+        val media =
+            extendedMedia(
+                season = MediaSeason.SPRING,
+                startDate = FuzzyDate(year = 2024, month = 4, day = 7),
+                endDate = FuzzyDate(year = 2024, month = 6, day = 30),
+            )
+
+        val entries =
+            buildReleaseMetadataEntries(
+                media = media,
+                dateHelper = AniTrendDateHelper(),
+                premieredLabel = "Premiered",
+                startedLabel = "Started",
+                endedLabel = "Ended",
+                seasonLabel = "Spring",
+            )
+
+        assertEquals(
+            listOf(
+                MetadataEntry("Premiered", "Spring 2024"),
+                MetadataEntry("Started", "Apr 07, 2024"),
+                MetadataEntry("Ended", "Jun 30, 2024"),
+            ),
+            entries,
+        )
+    }
+
+    @Test
+    fun `buildReleaseMetadataEntries omits duplicate started value for season only dates`() {
+        val media =
+            extendedMedia(
+                season = MediaSeason.FALL,
+                startDate = FuzzyDate(year = 2025, month = 0, day = 0),
+            )
+
+        val entries =
+            buildReleaseMetadataEntries(
+                media = media,
+                dateHelper = AniTrendDateHelper(),
+                premieredLabel = "Premiered",
+                startedLabel = "Started",
+                endedLabel = "Ended",
+                seasonLabel = "Fall",
+            )
+
+        assertEquals(
+            listOf(
+                MetadataEntry("Premiered", "Fall 2025"),
+            ),
+            entries,
+        )
+    }
+
+    @Test
     fun `partitionMediaTags groups spoiler levels and counts correctly`() {
         val tags =
             listOf(
@@ -146,7 +241,7 @@ class MediaDetailSectionSupportTest {
 
     private fun relationEntry(
         id: Long,
-        relation: MediaRelation,
+        relation: MediaRelation?,
         mediaId: Long,
     ) =
         MediaRelationEntry(
@@ -168,4 +263,17 @@ class MediaDetailSectionSupportTest {
         )
 
     private fun mediaItem(id: Long) = Media.Core.empty().copy(id = id)
+
+    private fun extendedMedia(
+        season: MediaSeason? = null,
+        startDate: FuzzyDate = FuzzyDate.empty(),
+        endDate: FuzzyDate = FuzzyDate.empty(),
+    ) = Media.Extended.empty().copy(
+        id = 1L,
+        status = MediaStatus.RELEASING,
+        score = MediaScore.empty(),
+        season = season,
+        startDate = startDate,
+        endDate = endDate,
+    )
 }

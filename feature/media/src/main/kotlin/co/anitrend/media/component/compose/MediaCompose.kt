@@ -33,9 +33,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookmarkAdd
 import androidx.compose.material.icons.rounded.BookmarkAdded
@@ -71,7 +71,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.paging.PagedList
-import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.android.core.compose.AniTrendDimensions
 import co.anitrend.android.core.compose.design.BackIconButton
 import co.anitrend.android.core.compose.design.image.AniTrendImage
@@ -79,6 +78,7 @@ import co.anitrend.android.core.extensions.format
 import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.common.media.ui.compose.component.IconScoreContent
 import co.anitrend.common.media.ui.compose.component.score.MediaScoreSection
 import co.anitrend.common.media.ui.compose.component.status.MediaStatusSection
@@ -94,16 +94,13 @@ import co.anitrend.domain.media.entity.attribute.score.IMediaRating
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.R
-import co.anitrend.media.component.compose.people.MediaPeopleSection
 import co.anitrend.media.component.compose.section.MediaCommunitySection
-import co.anitrend.media.component.compose.section.MediaProductionSection
-import co.anitrend.media.component.compose.section.MediaReleaseTimelineSection
+import co.anitrend.media.component.compose.section.ContributorsSection
+import co.anitrend.media.component.compose.section.MediaConnectionsBrowserSection
 import co.anitrend.media.component.compose.section.MediaExtendedMetadataSection
 import co.anitrend.media.component.compose.section.MediaGenrePreviewSection
 import co.anitrend.media.component.compose.section.MediaStatsSection
-import co.anitrend.media.component.compose.section.MediaRecommendationsPreviewSection
 import co.anitrend.media.component.compose.section.MediaRankPreviewSection
-import co.anitrend.media.component.compose.section.MediaRelatedPreviewSection
 import co.anitrend.media.component.compose.section.MediaSynopsisPreviewSection
 import co.anitrend.media.component.compose.section.MediaTagSection
 import co.anitrend.media.component.schedule.MediaScheduleSheet
@@ -585,106 +582,127 @@ private fun MediaDetailContent(
 ) {
     var showScheduleSheet by remember { mutableStateOf(false) }
     val mediaTitle = media.displayTitle()
-    val defaultPeopleSection = resolvePeopleInitialSection(characters = characters, staff = staff)
     val hasUserState = media.hasVisibleUserState(scoreFormat)
 
-    Column(modifier = modifier) {
-        MediaHeroHeader(
-            media = media,
-            onImageClick = onImageClick,
-        )
+    LazyColumn(
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(bottom = 32.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        item {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                MediaHeroHeader(
+                    media = media,
+                    onImageClick = onImageClick,
+                )
+                Spacer(modifier = Modifier.height(60.dp))
+                Column(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    MediaScoreSection(
+                        mediaScore = media.score,
+                        scoreFormat = scoreFormat,
+                        compact = true,
+                        supportingContent =
+                            if (hasUserState) {
+                                {
+                                    MediaUserStateSummary(
+                                        media = media,
+                                        scoreFormat = scoreFormat,
+                                        compact = true,
+                                    )
+                                }
+                            } else {
+                                null
+                            },
+                    )
 
-        Spacer(modifier = Modifier.size(48.dp))
+                    MediaPrimaryActionDock(
+                        media = media,
+                        onManageListClick = onManageListClick,
+                        onFavouriteClick = onFavouriteClick,
+                        onMyAnimeListClick = onMyAnimeListButtonClick,
+                    )
 
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            MediaScoreSection(
-                mediaScore = media.score,
-                scoreFormat = scoreFormat,
-                compact = true,
-                supportingContent =
-                    if (hasUserState) {
-                        {
-                            MediaUserStateSummary(
-                                media = media,
-                                scoreFormat = scoreFormat,
-                                compact = true,
-                            )
-                        }
-                    } else {
-                        null
-                    },
-            )
+                    MediaStatusSection(
+                        media = media,
+                        onShowSchedule = {
+                            showScheduleSheet = media.category is Media.Category.Anime
+                        },
+                    )
+                }
+            }
+        }
 
-            MediaPrimaryActionDock(
-                media = media,
-                onManageListClick = onManageListClick,
-                onFavouriteClick = onFavouriteClick,
-                onMyAnimeListClick = onMyAnimeListButtonClick,
-            )
-
-            MediaStatusSection(
-                media = media,
-                onShowSchedule = {
-                    showScheduleSheet = media.category is Media.Category.Anime
-                },
-            )
-
+        item {
             MediaSynopsisPreviewSection(
                 synopsis = media,
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
+        }
 
-            if (media.rankings.isNotEmpty()) {
-                MediaRankPreviewSection(
-                    ranks = media.rankings.toList(),
-                    onClick = { rank, sorting ->
-                        onMediaDiscoverableItemClick(
-                            MediaDiscoverRouter.MediaDiscoverParam(
-                                type = media.category.type,
-                                format = media.format,
-                                season = media.season,
-                                seasonYear = if (rank.allTime != true && media.category is Media.Category.Anime) rank.year else null,
-                                startDate_like = if (rank.allTime != true && media.category is Media.Category.Manga) "${rank.year}%" else null,
-                                sort = sorting,
-                            ),
-                        )
-                    },
-                )
-            }
-
-            if (media.genres.isNotEmpty()) {
+        if (media.genres.isNotEmpty()) {
+            item {
                 MediaGenrePreviewSection(
                     genres = media.genres,
                     onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
+        }
 
-            if (media.tags.isNotEmpty()) {
+        if (media.tags.isNotEmpty()) {
+            item {
                 MediaTagSection(
                     tags = media.tags,
                     onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
+        }
 
-            MediaPeopleSection(
+        item {
+            MediaConnectionsBrowserSection(
+                relations = relations,
+                relationsLoadState = relationsLoadState,
+                recommendations = recommendations.takeUnless { media.isRecommendationBlocked },
+                recommendationsLoadState = recommendationsLoadState,
+                scoreFormat = scoreFormat,
+                onMediaItemClick = onMediaConnectionItemClick,
+                onSeeAllRelated = {
+                    onRelatedClick(
+                        MediaRelationsRouter.MediaRelationsParam(
+                            mediaId = media.id,
+                            mediaTitle = mediaTitle,
+                        ),
+                    )
+                },
+                onSeeAllRecommendations = {
+                    onRecommendationsClick(
+                        MediaRecommendationsRouter.MediaRecommendationsParam(
+                            mediaId = media.id,
+                            mediaTitle = mediaTitle,
+                        ),
+                    )
+                },
+                onRetryRelations = onRetryRelations,
+                onRetryRecommendations = onRetryRecommendations,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+        }
+
+        item {
+            ContributorsSection(
                 characters = characters,
                 charactersLoadState = charactersLoadState,
                 staff = staff,
                 staffLoadState = staffLoadState,
-                onSeeAllClick = {
-                    onPeopleClick(
-                        MediaPeopleRouter.MediaPeopleParam(
-                            mediaId = media.id,
-                            mediaTitle = mediaTitle,
-                            initialSection = defaultPeopleSection,
-                        ),
-                    )
-                },
+                studios = studios,
+                studiosLoadState = studiosLoadState,
+                onStudioClick = onStudioClick,
                 onCharacterClick = {
                     onPeopleClick(
                         MediaPeopleRouter.MediaPeopleParam(
@@ -705,70 +723,43 @@ private fun MediaDetailContent(
                 },
                 onRetryCharacters = onRetryCharacters,
                 onRetryStaff = onRetryStaff,
-            )
-
-            MediaProductionSection(
-                staff = staff,
-                staffLoadState = staffLoadState,
-                studios = studios,
-                studiosLoadState = studiosLoadState,
-                onStaffClick = {
-                    onPeopleClick(
-                        MediaPeopleRouter.MediaPeopleParam(
-                            mediaId = media.id,
-                            mediaTitle = mediaTitle,
-                            initialSection = MediaPeopleRouter.Section.STAFF,
-                        ),
-                    )
-                },
-                onStudioClick = onStudioClick,
-                onRetryStaff = onRetryStaff,
                 onRetryStudios = onRetryStudios,
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
+        }
 
-            MediaReleaseTimelineSection(media = media)
+        if (media.rankings.isNotEmpty()) {
+            item {
+                MediaRankPreviewSection(
+                    ranks = media.rankings.toList(),
+                    onClick = { rank, sorting ->
+                        onMediaDiscoverableItemClick(
+                            MediaDiscoverRouter.MediaDiscoverParam(
+                                type = media.category.type,
+                                format = media.format,
+                                season = media.season,
+                                seasonYear = if (rank.allTime != true && media.category is Media.Category.Anime) rank.year else null,
+                                startDate_like = if (rank.allTime != true && media.category is Media.Category.Manga) "${rank.year}%" else null,
+                                sort = sorting,
+                            ),
+                        )
+                    },
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+            }
+        }
 
+        item {
             MediaStatsSection(
                 media = media,
                 stats = stats,
                 loadState = statsLoadState,
                 onRetry = onRetryStats,
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
+        }
 
-            MediaRelatedPreviewSection(
-                relations = relations,
-                loadState = relationsLoadState,
-                scoreFormat = scoreFormat,
-                onMediaItemClick = onMediaConnectionItemClick,
-                onSeeAllClick = {
-                    onRelatedClick(
-                        MediaRelationsRouter.MediaRelationsParam(
-                            mediaId = media.id,
-                            mediaTitle = mediaTitle,
-                        ),
-                    )
-                },
-                onRetry = onRetryRelations,
-            )
-
-            if (!media.isRecommendationBlocked) {
-                MediaRecommendationsPreviewSection(
-                    recommendations = recommendations,
-                    loadState = recommendationsLoadState,
-                    scoreFormat = scoreFormat,
-                    onMediaItemClick = onMediaConnectionItemClick,
-                    onSeeAllClick = {
-                        onRecommendationsClick(
-                            MediaRecommendationsRouter.MediaRecommendationsParam(
-                                mediaId = media.id,
-                                mediaTitle = mediaTitle,
-                            ),
-                        )
-                    },
-                    onRetry = onRetryRecommendations,
-                )
-            }
-
+        item {
             MediaCommunitySection(
                 reviews = communityReviews,
                 loadState = communityLoadState,
@@ -783,13 +774,16 @@ private fun MediaDetailContent(
                     )
                 },
                 onRetry = onRetryCommunity,
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
+        }
 
+        item {
             MediaExtendedMetadataSection(
                 media = media,
                 themes = media.themes,
-                showExternalIdentifiers = true,
                 onExternalLinkClick = onExternalLinkClick,
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
     }
@@ -932,8 +926,7 @@ fun MediaScreenContent(
             onRetryCommunity = { communityViewModel(media.id, media.category.type, scoreFormat) },
             modifier =
                 Modifier
-                    .padding(innerPadding)
-                    .verticalScroll(rememberScrollState()),
+                    .padding(innerPadding),
         )
     }
 }
@@ -955,7 +948,7 @@ private fun MediaDetailComponentPreview(
             onImageClick = {},
             onMediaConnectionItemClick = {},
             onExternalLinkClick = {},
-            modifier = Modifier.verticalScroll(rememberScrollState()),
+            modifier = Modifier,
         )
     }
 }
