@@ -16,14 +16,31 @@
  */
 package co.anitrend.data.recommendation.koin
 
+import co.anitrend.data.core.extensions.store
+import co.anitrend.data.media.converter.MediaConverter
+import co.anitrend.data.recommendation.converter.MediaRecommendationConnectionEntityConverter
+import co.anitrend.data.recommendation.mapper.MediaRecommendationMapper
 import org.koin.dsl.module
 
 private val sourceModule =
     module {
     }
 
+private val converterModule =
+    module {
+        factory {
+            MediaRecommendationConnectionEntityConverter()
+        }
+    }
+
 private val mapperModule =
     module {
+        factory {
+            MediaRecommendationMapper(
+                localSource = store().mediaRecommendationConnectionDao(),
+                converter = get<MediaConverter>(),
+            )
+        }
     }
 
 private val useCaseModule =
@@ -37,6 +54,7 @@ private val repositoryModule =
 internal val recommendationModules =
     listOf(
         sourceModule,
+        converterModule,
         mapperModule,
         useCaseModule,
         repositoryModule,

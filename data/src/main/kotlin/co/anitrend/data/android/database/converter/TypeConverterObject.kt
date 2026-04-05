@@ -20,6 +20,7 @@ import androidx.room.TypeConverter
 import co.anitrend.data.android.database.extensions.fromCommaSeparatedValues
 import co.anitrend.data.android.database.extensions.toCommaSeparatedValues
 import co.anitrend.data.core.extensions.koinOf
+import co.anitrend.data.media.entity.MediaStatsEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.model.statistics.UserStatisticModel
 import kotlinx.serialization.builtins.ListSerializer
@@ -80,6 +81,26 @@ internal class TypeConverterObject {
 
     @TypeConverter fun toStatisticManga(value: String): UserStatisticModel.Manga {
         val serializer = UserStatisticModel.Manga.serializer()
+        return koinOf<Json>().decodeFromString(serializer, value)
+    }
+
+    @TypeConverter fun fromMediaStatsScoreDistributionList(value: List<MediaStatsEntity.ScoreDistribution>): String {
+        val serializer = ListSerializer(MediaStatsEntity.ScoreDistribution.serializer())
+        return koinOf<Json>().encodeToString(serializer, value)
+    }
+
+    @TypeConverter fun toMediaStatsScoreDistributionList(value: String): List<MediaStatsEntity.ScoreDistribution> {
+        val serializer = ListSerializer(MediaStatsEntity.ScoreDistribution.serializer())
+        return koinOf<Json>().decodeFromString(serializer, value)
+    }
+
+    @TypeConverter fun fromMediaStatsStatusDistributionList(value: List<MediaStatsEntity.StatusDistribution>): String {
+        val serializer = ListSerializer(MediaStatsEntity.StatusDistribution.serializer())
+        return koinOf<Json>().encodeToString(serializer, value)
+    }
+
+    @TypeConverter fun toMediaStatsStatusDistributionList(value: String): List<MediaStatsEntity.StatusDistribution> {
+        val serializer = ListSerializer(MediaStatsEntity.StatusDistribution.serializer())
         return koinOf<Json>().decodeFromString(serializer, value)
     }
 }

@@ -38,4 +38,8 @@ enum class CacheRequest(
     EPISODE("episode"),
     CONFIG("config"),
     EDGE_MEDIA("edge_media"),
+    MEDIA_STUDIOS("media_studios"),
+    MEDIA_STATS("media_stats"),
+    MEDIA_RELATIONS("media_relations"),
+    MEDIA_RECOMMENDATIONS("media_recommendations"),
 }

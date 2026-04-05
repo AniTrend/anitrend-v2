@@ -16,6 +16,7 @@
  */
 package co.anitrend.data.media.koin
 
+import co.anitrend.data.android.cache.model.CacheRequest
 import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.android.extensions.offline
@@ -43,15 +44,17 @@ import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.converter.MediaCharacterConnectionEntityConverter
 import co.anitrend.data.media.converter.MediaCharacterEdgeConverter
 import co.anitrend.data.media.converter.MediaConverter
+import co.anitrend.data.media.converter.MediaRelationConnectionEntityConverter
 import co.anitrend.data.media.converter.MediaStaffConnectionEntityConverter
 import co.anitrend.data.media.converter.MediaStaffEdgeConverter
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.converter.MediaModelConverter
+import co.anitrend.data.media.converter.MediaStatsEntityConverter
 import co.anitrend.data.media.entity.filter.MediaQueryFilter
-import co.anitrend.data.media.mapper.MediaConnectionMapper
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.media.mapper.MediaPeopleMapper
-import co.anitrend.data.media.mapper.MediaSidecarMapper
+import co.anitrend.data.media.mapper.MediaRelationMapper
+import co.anitrend.data.media.mapper.MediaStatsMapper
 import co.anitrend.data.media.repository.MediaRepository
 import co.anitrend.data.media.source.MediaConnectionSourceImpl
 import co.anitrend.data.media.source.MediaPeopleSourceImpl
@@ -61,6 +64,10 @@ import co.anitrend.data.media.source.MediaSourceImpl
 import co.anitrend.data.media.source.contract.MediaSource
 import co.anitrend.data.media.source.factory.MediaSourceFactory
 import co.anitrend.data.media.usecase.MediaInteractor
+import co.anitrend.data.recommendation.converter.MediaRecommendationConnectionEntityConverter
+import co.anitrend.data.recommendation.mapper.MediaRecommendationMapper
+import co.anitrend.data.studio.converter.MediaStudioConnectionEntityConverter
+import co.anitrend.data.studio.mapper.MediaStudioMapper
 import org.koin.dsl.module
 
 private val sourceModule =
@@ -82,42 +89,86 @@ private val sourceModule =
             )
         }
         factory<MediaConnectionSource.Relations> {
+            val mapper = get<MediaRelationMapper>()
+
             MediaConnectionSourceImpl.Relations(
                 remoteSource = aniListApi(),
+                localSource = store().mediaRelationConnectionDao(),
                 controller =
                     graphQLController(
-                        mapper = get<MediaConnectionMapper.Relations>(),
+                        mapper = mapper,
+                        strategy = offline(),
                     ),
+                mapper = mapper,
+                converter = get(),
+                clearDataHelper = get(),
+                cachePolicy = MediaCache(
+                    localSource = cacheLocalSource(),
+                    request = CacheRequest.MEDIA_RELATIONS,
+                ),
                 dispatcher = get(),
             )
         }
         factory<MediaConnectionSource.Recommendations> {
+            val mapper = get<MediaRecommendationMapper>()
+
             MediaConnectionSourceImpl.Recommendations(
                 remoteSource = aniListApi(),
+                localSource = store().mediaRecommendationConnectionDao(),
                 controller =
                     graphQLController(
-                        mapper = get<MediaConnectionMapper.Recommendations>(),
+                        mapper = mapper,
+                        strategy = offline(),
+                    ),
+                mapper = mapper,
+                converter = get(),
+                clearDataHelper = get(),
+                cachePolicy = MediaCache(
+                    localSource = cacheLocalSource(),
+                    request = CacheRequest.MEDIA_RECOMMENDATIONS,
                 ),
                 dispatcher = get(),
             )
         }
         factory<MediaSource.Studios> {
+            val mapper = get<MediaStudioMapper>()
+
             MediaSourceImpl.Studios(
                 remoteSource = aniListApi(),
+                localSource = store().mediaStudioConnectionDao(),
                 controller =
                     graphQLController(
-                        mapper = get<MediaSidecarMapper.Studios>(),
+                        mapper = mapper,
+                        strategy = offline(),
                     ),
+                mapper = mapper,
+                converter = get(),
+                clearDataHelper = get(),
+                cachePolicy = MediaCache(
+                    localSource = cacheLocalSource(),
+                    request = CacheRequest.MEDIA_STUDIOS,
+                ),
                 dispatcher = get(),
             )
         }
         factory<MediaSource.Stats> {
+            val mapper = get<MediaStatsMapper>()
+
             MediaSourceImpl.Stats(
                 remoteSource = aniListApi(),
+                localSource = store().mediaStatsDao(),
                 controller =
                     graphQLController(
-                        mapper = get<MediaSidecarMapper.Stats>(),
+                        mapper = mapper,
+                        strategy = offline(),
                     ),
+                mapper = mapper,
+                converter = get(),
+                clearDataHelper = get(),
+                cachePolicy = MediaCache(
+                    localSource = cacheLocalSource(),
+                    request = CacheRequest.MEDIA_STATS,
+                ),
                 dispatcher = get(),
             )
         }
@@ -224,6 +275,12 @@ private val converterModule =
         factory {
             MediaStaffConnectionEntityConverter()
         }
+        factory {
+            MediaRelationConnectionEntityConverter()
+        }
+        factory {
+            MediaStatsEntityConverter()
+        }
     }
 
 private val mapperModule =
@@ -241,12 +298,8 @@ private val mapperModule =
             )
         }
         factory {
-            MediaConnectionMapper.Relations(
-                converter = get(),
-            )
-        }
-        factory {
-            MediaConnectionMapper.Recommendations(
+            MediaRelationMapper(
+                localSource = store().mediaRelationConnectionDao(),
                 converter = get(),
             )
         }
@@ -280,12 +333,9 @@ private val mapperModule =
             )
         }
         factory {
-            MediaSidecarMapper.Studios(
-                converter = get(),
+            MediaStatsMapper(
+                localSource = store().mediaStatsDao(),
             )
-        }
-        factory {
-            MediaSidecarMapper.Stats()
         }
         factory {
             MediaMapper.Embed(

@@ -33,6 +33,7 @@ import co.anitrend.data.media.datasource.local.IMediaStore
 import co.anitrend.data.medialist.datasource.local.IMediaListStore
 import co.anitrend.data.rank.datasource.IRankStore
 import co.anitrend.data.review.datasource.local.IReviewStore
+import co.anitrend.data.recommendation.datasource.local.IRecommendationStore
 import co.anitrend.data.staff.datasource.local.IStaffStore
 import co.anitrend.data.studio.datasource.local.IStudioStore
 import co.anitrend.data.tag.datasource.local.ITagStore
@@ -53,6 +54,7 @@ internal interface IAniTrendStore :
     ICharacterStore,
     IStaffStore,
     IStudioStore,
+    IRecommendationStore,
     ILinkStore,
     IRankStore,
     ICustomListStore,
@@ -77,6 +79,7 @@ internal interface IAniTrendStore :
                 ICharacterStore::class,
                 IStaffStore::class,
                 IStudioStore::class,
+                IRecommendationStore::class,
                 ILinkStore::class,
                 IRankStore::class,
                 ICustomListStore::class,

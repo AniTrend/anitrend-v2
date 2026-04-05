@@ -20,12 +20,16 @@ import androidx.paging.PagedList
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.entity.MediaStatsEntity
 import co.anitrend.data.media.entity.connection.MediaCharacterConnectionEntity
+import co.anitrend.data.media.entity.connection.MediaRelationConnectionEntity
 import co.anitrend.data.media.entity.connection.MediaStaffConnectionEntity
 import co.anitrend.data.media.model.container.MediaConnectionModelContainer
 import co.anitrend.data.media.model.container.MediaModelContainer
 import co.anitrend.data.media.model.container.MediaPeopleModelContainer
 import co.anitrend.data.media.model.container.MediaSidecarModelContainer
+import co.anitrend.data.recommendation.entity.connection.MediaRecommendationConnectionEntity
+import co.anitrend.data.studio.entity.connection.MediaStudioConnectionEntity
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.entity.MediaRelationEntry
@@ -39,11 +43,11 @@ internal typealias MediaDetailController = GraphQLController<MediaModelContainer
 internal typealias MediaCharactersController = GraphQLController<MediaPeopleModelContainer.Characters, List<MediaCharacterConnectionEntity>>
 internal typealias MediaPagedController = GraphQLController<MediaModelContainer.Paged, List<MediaEntity>>
 internal typealias MediaNetworkController = GraphQLController<MediaModelContainer.Paged, List<Media>>
-internal typealias MediaRelationsController = GraphQLController<MediaConnectionModelContainer.Relations, List<MediaRelationEntry>>
-internal typealias MediaRecommendationsController = GraphQLController<MediaConnectionModelContainer.Recommendations, List<MediaRecommendationEntry>>
+internal typealias MediaRelationsController = GraphQLController<MediaConnectionModelContainer.Relations, List<MediaRelationConnectionEntity>>
+internal typealias MediaRecommendationsController = GraphQLController<MediaConnectionModelContainer.Recommendations, List<MediaRecommendationConnectionEntity>>
 internal typealias MediaStaffController = GraphQLController<MediaPeopleModelContainer.Staff, List<MediaStaffConnectionEntity>>
-internal typealias MediaStudiosController = GraphQLController<MediaSidecarModelContainer.Studios, List<MediaStudioEntry>>
-internal typealias MediaStatsController = GraphQLController<MediaSidecarModelContainer.Stats, MediaStats>
+internal typealias MediaStudiosController = GraphQLController<MediaSidecarModelContainer.Studios, List<MediaStudioConnectionEntity>>
+internal typealias MediaStatsController = GraphQLController<MediaSidecarModelContainer.Stats, MediaStatsEntity?>
 
 internal typealias MediaDetailRepository = IMediaRepository.Detail<DataState<Media>>
 internal typealias MediaCharactersRepository = IMediaRepository.Characters<DataState<PagedList<MediaPerson.Character>>>

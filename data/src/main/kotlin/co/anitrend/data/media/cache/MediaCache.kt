@@ -57,6 +57,41 @@ internal class MediaCache(
             override val key: String = "media_staff",
         ) : Identity()
 
+        class Studios(
+            val param: MediaParam.Studios,
+            override val id: Long = param.id,
+            override val key: String = "media_studios",
+        ) : Identity()
+
+        class Stats(
+            val param: MediaParam.Stats,
+            override val id: Long = param.id,
+            override val key: String = "media_stats",
+        ) : Identity()
+
+        class Relations(
+            val param: MediaParam.Relations,
+            override val id: Long = param.id,
+            override val key: String = "media_relations",
+        ) : Identity()
+
+        class Recommendations(
+            val param: MediaParam.Recommendations,
+            override val id: Long = param.id,
+            override val key: String = buildString {
+                append("media_recommendations")
+                append('_')
+                append(param.perPage)
+                param.sort
+                    ?.takeIf(List<*>::isNotEmpty)
+                    ?.joinToString(separator = "_")
+                    ?.let { sortKey ->
+                        append('_')
+                        append(sortKey.lowercase())
+                    }
+            },
+        ) : Identity()
+
         class Paged(
             override val id: Long = 0,
             override val key: String = "media_paged",

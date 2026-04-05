@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 AniTrend
+ * Copyright (C) 2026 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,10 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.media.datasource.local
+package co.anitrend.data.recommendation.datasource.local
 
-import co.anitrend.data.media.datasource.local.connection.MediaRelationConnectionLocalSource
+import co.anitrend.data.recommendation.datasource.local.connection.MediaRecommendationConnectionLocalSource
 
-internal interface IMediaStore {
-    fun mediaDao(): MediaLocalSource
-
-    fun mediaRelationConnectionDao(): MediaRelationConnectionLocalSource
-
-    fun mediaStatsDao(): MediaStatsLocalSource
+internal interface IRecommendationStore {
+    fun mediaRecommendationConnectionDao(): MediaRecommendationConnectionLocalSource
 }
