@@ -45,15 +45,6 @@
 				"$gradle"
 			],
 			"group": "test"
-		},
-		{
-			"label": "gradle: install debug",
-			"type": "shell",
-			"command": "./gradlew --no-daemon installDebug",
-			"problemMatcher": [
-				"$gradle"
-			],
-			"group": "build"
 		}
 	]
 }
