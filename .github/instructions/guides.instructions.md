@@ -61,6 +61,12 @@ detail in skill files to prevent context drift and duplication.
   `UserSource.Identifier`, `Viewer`, `Profile`, and `Statistic` are the clearest reference.
 - **GraphQL networking**: use `GraphQLController` and the `retrofit-graphql` adapter. See
   `.github/skills/graphql-query-pattern/SKILL.md`.
+  - Keep query/mutation payloads composed from reusable fragments under
+    `data/src/main/assets/graphql/fragments/**` instead of inlining duplicated field sets.
+  - Keep remote models aligned to fragment composition (smaller, shareable models) to support
+    composition-first reuse and controlled inheritance where appropriate.
+  - If a task requires deviating from this fragment-first convention (for example inlining fields
+    or redefining model boundaries), stop and open a discussion before implementing the change.
 - **New module**: register in `Modules.kt`, add Koin wiring, follow the full checklist in
   `.github/skills/new-module-checklist/SKILL.md`.
 
