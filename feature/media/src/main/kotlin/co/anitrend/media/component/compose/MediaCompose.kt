@@ -101,6 +101,7 @@ import co.anitrend.media.component.compose.section.MediaExtendedMetadataSection
 import co.anitrend.media.component.compose.section.MediaGenrePreviewSection
 import co.anitrend.media.component.compose.section.MediaStatsSection
 import co.anitrend.media.component.compose.section.MediaRankPreviewSection
+import co.anitrend.media.component.compose.section.MediaStudiosPreviewSection
 import co.anitrend.media.component.compose.section.MediaSynopsisPreviewSection
 import co.anitrend.media.component.compose.section.MediaTagSection
 import co.anitrend.media.component.schedule.MediaScheduleSheet
@@ -119,6 +120,7 @@ import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.MediaPeopleRouter
 import co.anitrend.navigation.MediaRecommendationsRouter
 import co.anitrend.navigation.MediaRelationsRouter
+import co.anitrend.navigation.MediaStudiosRouter
 import co.anitrend.navigation.ReviewDiscoverRouter
 import co.anitrend.navigation.StudioRouter
 import co.anitrend.navigation.model.common.IParam
@@ -568,6 +570,7 @@ private fun MediaDetailContent(
     communityLoadState: LoadState? = null,
     onPeopleClick: (MediaPeopleRouter.MediaPeopleParam) -> Unit = {},
     onStudioClick: (StudioRouter.StudioParam) -> Unit = {},
+    onSeeAllStudiosClick: (MediaStudiosRouter.MediaStudiosParam) -> Unit = {},
     onRelatedClick: (MediaRelationsRouter.MediaRelationsParam) -> Unit = {},
     onRecommendationsClick: (MediaRecommendationsRouter.MediaRecommendationsParam) -> Unit = {},
     onCommunityClick: (ReviewDiscoverRouter.ReviewDiscoverParam) -> Unit = {},
@@ -700,9 +703,6 @@ private fun MediaDetailContent(
                 charactersLoadState = charactersLoadState,
                 staff = staff,
                 staffLoadState = staffLoadState,
-                studios = studios,
-                studiosLoadState = studiosLoadState,
-                onStudioClick = onStudioClick,
                 onCharacterClick = {
                     onPeopleClick(
                         MediaPeopleRouter.MediaPeopleParam(
@@ -723,7 +723,24 @@ private fun MediaDetailContent(
                 },
                 onRetryCharacters = onRetryCharacters,
                 onRetryStaff = onRetryStaff,
-                onRetryStudios = onRetryStudios,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+        }
+
+        item {
+            MediaStudiosPreviewSection(
+                studios = studios,
+                studiosLoadState = studiosLoadState,
+                onStudioClick = onStudioClick,
+                onSeeAllClick = {
+                    onSeeAllStudiosClick(
+                        MediaStudiosRouter.MediaStudiosParam(
+                            mediaId = media.id,
+                            mediaTitle = mediaTitle,
+                        ),
+                    )
+                },
+                onRetry = onRetryStudios,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
@@ -811,6 +828,7 @@ fun MediaScreenContent(
     onMediaConnectionItemClick: (IParam) -> Unit,
     onPeopleClick: (MediaPeopleRouter.MediaPeopleParam) -> Unit,
     onStudioClick: (StudioRouter.StudioParam) -> Unit,
+    onSeeAllStudiosClick: (MediaStudiosRouter.MediaStudiosParam) -> Unit,
     onRelatedClick: (MediaRelationsRouter.MediaRelationsParam) -> Unit,
     onRecommendationsClick: (MediaRecommendationsRouter.MediaRecommendationsParam) -> Unit,
     onCommunityClick: (ReviewDiscoverRouter.ReviewDiscoverParam) -> Unit,
@@ -840,14 +858,6 @@ fun MediaScreenContent(
     val recommendationsLoadState by recommendationsViewModel.loadState.observeAsState()
     val communityReviews by communityViewModel.model.observeAsState()
     val communityLoadState by communityViewModel.loadState.observeAsState()
-    val studiosForDisplay =
-        remember(studios) {
-            studios
-                ?.sortedWith(
-                    compareByDescending<MediaStudioEntry> { it.isMain }
-                        .thenBy { it.studio.name },
-                )
-        }
 
     val view = LocalView.current
 
@@ -910,7 +920,7 @@ fun MediaScreenContent(
             charactersLoadState = charactersLoadState,
             staff = staff,
             staffLoadState = staffLoadState,
-            studios = studiosForDisplay,
+            studios = studios,
             studiosLoadState = studiosLoadState,
             stats = stats,
             statsLoadState = statsLoadState,
@@ -922,6 +932,7 @@ fun MediaScreenContent(
             communityLoadState = communityLoadState,
             onPeopleClick = onPeopleClick,
             onStudioClick = onStudioClick,
+            onSeeAllStudiosClick = onSeeAllStudiosClick,
             onRelatedClick = onRelatedClick,
             onRecommendationsClick = onRecommendationsClick,
             onCommunityClick = onCommunityClick,
@@ -957,6 +968,7 @@ private fun MediaDetailComponentPreview(
             onMediaConnectionItemClick = {},
             onExternalLinkClick = {},
             modifier = Modifier,
+            onSeeAllStudiosClick = {},
         )
     }
 }

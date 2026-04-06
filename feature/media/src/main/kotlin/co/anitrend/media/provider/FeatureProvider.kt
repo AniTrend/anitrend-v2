@@ -22,10 +22,12 @@ import co.anitrend.media.component.screen.MediaPeopleScreen
 import co.anitrend.media.component.screen.MediaRecommendationsScreen
 import co.anitrend.media.component.screen.MediaRelationsScreen
 import co.anitrend.media.component.screen.MediaScreen
+import co.anitrend.media.component.screen.MediaStudiosScreen
 import co.anitrend.navigation.MediaPeopleRouter
 import co.anitrend.navigation.MediaRecommendationsRouter
 import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.MediaStudiosRouter
 
 class FeatureProvider : MediaRouter.Provider {
     override fun activity(context: Context?) = Intent(context, MediaScreen::class.java)
@@ -41,4 +43,8 @@ class RelationsFeatureProvider : MediaRelationsRouter.Provider {
 
 class RecommendationsFeatureProvider : MediaRecommendationsRouter.Provider {
     override fun activity(context: Context?) = Intent(context, MediaRecommendationsScreen::class.java)
+}
+
+class StudiosFeatureProvider : MediaStudiosRouter.Provider {
+    override fun activity(context: Context?) = Intent(context, MediaStudiosScreen::class.java)
 }
