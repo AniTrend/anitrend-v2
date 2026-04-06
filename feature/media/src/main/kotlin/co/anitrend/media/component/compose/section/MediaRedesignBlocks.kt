@@ -16,12 +16,9 @@
  */
 package co.anitrend.media.component.compose.section
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -39,7 +36,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -54,9 +50,14 @@ import co.anitrend.media.R
 import co.anitrend.media.component.compose.connection.ConnectionRailCardWidth
 import co.anitrend.media.component.compose.connection.RecommendationMediaCard
 import co.anitrend.media.component.compose.connection.RelatedMediaCard
-import co.anitrend.media.component.compose.people.CharacterPreviewRail
+import co.anitrend.media.component.compose.people.CharacterPreviewList
 import co.anitrend.media.component.compose.people.StaffPreviewList
+import co.anitrend.media.component.compose.people.curatedCharacterPreview
+import co.anitrend.media.component.compose.people.curatedStaffPreview
+import co.anitrend.navigation.MediaPeopleRouter
 import co.anitrend.navigation.model.common.IParam
+
+private const val ContributorPreviewCount = 3
 
 private enum class ConnectionsTab {
     RELATED,
@@ -112,8 +113,13 @@ internal fun MediaConnectionsBrowserSection(
             },
         modifier = modifier,
     ) {
-        ConnectionsSegmentedControl(
-            selectedTab = selectedTab,
+        MediaSectionSegmentedControl(
+            selected = selectedTab,
+            options =
+                listOf(
+                    ConnectionsTab.RELATED to stringResource(R.string.title_media_related_section),
+                    ConnectionsTab.RECOMMENDED to stringResource(R.string.title_media_recommendations_section),
+                ),
             onSelect = { selectedTab = it },
         )
 
@@ -192,62 +198,6 @@ internal fun MediaConnectionsBrowserSection(
 }
 
 @Composable
-private fun ConnectionsSegmentedControl(
-    selectedTab: ConnectionsTab,
-    onSelect: (ConnectionsTab) -> Unit,
-) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f),
-        shape = RoundedCornerShape(24.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.32f)),
-    ) {
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            listOf(
-                ConnectionsTab.RELATED to stringResource(R.string.title_media_related_section),
-                ConnectionsTab.RECOMMENDED to stringResource(R.string.title_media_recommendations_section),
-            ).forEach { (tab, label) ->
-                val selected = tab == selectedTab
-                Surface(
-                    modifier = Modifier.weight(1f),
-                    color =
-                        if (selected) {
-                            MaterialTheme.colorScheme.primaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.surface.copy(alpha = 0f)
-                        },
-                    contentColor =
-                        if (selected) {
-                            MaterialTheme.colorScheme.onPrimaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                        },
-                    shape = RoundedCornerShape(20.dp),
-                    onClick = { onSelect(tab) },
-                ) {
-                    Box(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 12.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = label,
-                            style = MaterialTheme.typography.labelLarge,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
 private fun ConnectionRail(content: androidx.compose.foundation.lazy.LazyListScope.() -> Unit) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -262,89 +212,128 @@ internal fun ContributorsSection(
     charactersLoadState: LoadState?,
     staff: PagedList<MediaPerson.Staff>?,
     staffLoadState: LoadState?,
+    onSeeAllCharacters: () -> Unit,
+    onSeeAllStaff: () -> Unit,
     onCharacterClick: (MediaPerson.Character) -> Unit,
     onStaffClick: (MediaPerson.Staff) -> Unit,
     onRetryCharacters: () -> Unit,
     onRetryStaff: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val characterPreview = characters?.take(6).orEmpty()
-    val staffPreview = staff?.take(4).orEmpty()
+    val characterPreview = characters?.curatedCharacterPreview(ContributorPreviewCount).orEmpty()
+    val staffPreview = staff?.curatedStaffPreview(ContributorPreviewCount).orEmpty()
+    var selectedSection by rememberSaveable(characters == null, staff == null) {
+        mutableStateOf(
+            preferredContributorSection(
+                characterPreview = characterPreview,
+                staffPreview = staffPreview,
+            ),
+        )
+    }
 
     MediaHubSection(
         title = stringResource(R.string.title_media_contributors_section),
         subtitle = stringResource(R.string.subtitle_media_contributors_section),
+        trailingActionLabel =
+            when (selectedSection) {
+                MediaPeopleRouter.Section.CHARACTERS ->
+                    characterPreview.takeIf(List<MediaPerson.Character>::isNotEmpty)?.let {
+                        stringResource(R.string.action_media_people_section_see_all)
+                    }
+
+                MediaPeopleRouter.Section.STAFF ->
+                    staffPreview.takeIf(List<MediaPerson.Staff>::isNotEmpty)?.let {
+                        stringResource(R.string.action_media_people_section_see_all)
+                    }
+            },
+        onTrailingAction =
+            when (selectedSection) {
+                MediaPeopleRouter.Section.CHARACTERS ->
+                    characterPreview.takeIf(List<MediaPerson.Character>::isNotEmpty)?.let { { onSeeAllCharacters() } }
+
+                MediaPeopleRouter.Section.STAFF ->
+                    staffPreview.takeIf(List<MediaPerson.Staff>::isNotEmpty)?.let { { onSeeAllStaff() } }
+            },
         modifier = modifier,
     ) {
-        Text(
-            text = stringResource(R.string.label_media_people_characters_heading),
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        MediaSectionSegmentedControl(
+            selected = selectedSection,
+            options =
+                listOf(
+                    MediaPeopleRouter.Section.CHARACTERS to stringResource(R.string.label_media_people_characters_heading),
+                    MediaPeopleRouter.Section.STAFF to stringResource(R.string.label_media_people_staff_heading),
+                ),
+            onSelect = { selectedSection = it },
         )
 
-        when {
-            characterPreview.isNotEmpty() -> {
-                CharacterPreviewRail(
-                    items = characterPreview,
-                    onItemClick = onCharacterClick,
-                )
-            }
+        when (selectedSection) {
+            MediaPeopleRouter.Section.CHARACTERS ->
+                when {
+                    characterPreview.isNotEmpty() -> {
+                        CharacterPreviewList(
+                            items = characterPreview,
+                            onItemClick = onCharacterClick,
+                        )
+                    }
 
-            charactersLoadState is LoadState.Loading || (characters == null && charactersLoadState !is LoadState.Error) -> {
-                LoadingSkeletonRail()
-            }
+                    charactersLoadState is LoadState.Loading || (characters == null && charactersLoadState !is LoadState.Error) -> {
+                        LoadingSkeletonContributorRows()
+                    }
 
-            charactersLoadState is LoadState.Error -> {
-                RetryStateBlock(
-                    title = stringResource(R.string.label_media_people_characters_error_title),
-                    onRetry = onRetryCharacters,
-                )
-            }
+                    charactersLoadState is LoadState.Error -> {
+                        RetryStateBlock(
+                            title = stringResource(R.string.label_media_people_characters_error_title),
+                            onRetry = onRetryCharacters,
+                        )
+                    }
 
-            else -> {
-                EmptyStateBlock(
-                    title = stringResource(R.string.label_media_people_characters_empty_title),
-                    message = stringResource(R.string.message_media_people_characters_empty),
-                )
-            }
-        }
+                    else -> {
+                        EmptyStateBlock(
+                            title = stringResource(R.string.label_media_people_characters_empty_title),
+                            message = stringResource(R.string.message_media_people_characters_empty),
+                        )
+                    }
+                }
 
-        Text(
-            text = stringResource(R.string.label_media_people_staff_heading),
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+            MediaPeopleRouter.Section.STAFF ->
+                when {
+                    staffPreview.isNotEmpty() -> {
+                        StaffPreviewList(
+                            items = staffPreview,
+                            onItemClick = onStaffClick,
+                        )
+                    }
 
-        when {
-            staffPreview.isNotEmpty() -> {
-                StaffPreviewList(
-                    items = staffPreview,
-                    onItemClick = onStaffClick,
-                )
-            }
+                    staffLoadState is LoadState.Loading || (staff == null && staffLoadState !is LoadState.Error) -> {
+                        LoadingSkeletonContributorRows()
+                    }
 
-            staffLoadState is LoadState.Loading || (staff == null && staffLoadState !is LoadState.Error) -> {
-                LoadingSkeletonContributorRows()
-            }
+                    staffLoadState is LoadState.Error -> {
+                        RetryStateBlock(
+                            title = stringResource(R.string.label_media_people_staff_error_title),
+                            onRetry = onRetryStaff,
+                        )
+                    }
 
-            staffLoadState is LoadState.Error -> {
-                RetryStateBlock(
-                    title = stringResource(R.string.label_media_people_staff_error_title),
-                    onRetry = onRetryStaff,
-                )
-            }
-
-            else -> {
-                EmptyStateBlock(
-                    title = stringResource(R.string.label_media_people_staff_empty_title),
-                    message = stringResource(R.string.message_media_people_staff_empty),
-                )
-            }
+                    else -> {
+                        EmptyStateBlock(
+                            title = stringResource(R.string.label_media_people_staff_empty_title),
+                            message = stringResource(R.string.message_media_people_staff_empty),
+                        )
+                    }
+                }
         }
     }
 }
+
+private fun preferredContributorSection(
+    characterPreview: List<MediaPerson.Character>,
+    staffPreview: List<MediaPerson.Staff>,
+): MediaPeopleRouter.Section =
+    when {
+        staffPreview.isNotEmpty() && characterPreview.isEmpty() -> MediaPeopleRouter.Section.STAFF
+        else -> MediaPeopleRouter.Section.CHARACTERS
+    }
 
 @Composable
 internal fun EmptyStateBlock(

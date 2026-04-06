@@ -36,12 +36,14 @@ import co.anitrend.media.component.compose.MediaScreenContent
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
+import co.anitrend.navigation.MediaCharactersRouter
 import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.MediaListEditorRouter
 import co.anitrend.navigation.MediaPeopleRouter
 import co.anitrend.navigation.MediaRecommendationsRouter
 import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.MediaStaffRouter
 import co.anitrend.navigation.MediaStatsRouter
 import co.anitrend.navigation.MediaStudiosRouter
 import co.anitrend.navigation.ReviewDiscoverRouter
@@ -125,10 +127,27 @@ class MediaScreen : AniTrendScreen() {
                             }
                         },
                         onPeopleClick = { param ->
-                            MediaPeopleRouter.startActivity(
-                                context = this@MediaScreen,
-                                navPayload = param.asNavPayload(),
-                            )
+                            when (param.initialSection) {
+                                MediaPeopleRouter.Section.CHARACTERS ->
+                                    MediaCharactersRouter.startActivity(
+                                        context = this@MediaScreen,
+                                        navPayload =
+                                            MediaCharactersRouter.MediaCharactersParam(
+                                                mediaId = param.mediaId,
+                                                mediaTitle = param.mediaTitle,
+                                            ).asNavPayload(),
+                                    )
+
+                                MediaPeopleRouter.Section.STAFF ->
+                                    MediaStaffRouter.startActivity(
+                                        context = this@MediaScreen,
+                                        navPayload =
+                                            MediaStaffRouter.MediaStaffParam(
+                                                mediaId = param.mediaId,
+                                                mediaTitle = param.mediaTitle,
+                                            ).asNavPayload(),
+                                    )
+                            }
                         },
                         onStudioClick = { param ->
                             StudioRouter.startActivity(

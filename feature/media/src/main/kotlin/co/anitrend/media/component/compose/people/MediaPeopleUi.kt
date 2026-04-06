@@ -328,6 +328,121 @@ fun StaffPreviewList(
 }
 
 @Composable
+fun CharacterPreviewList(
+    items: List<MediaPerson.Character>,
+    onItemClick: (MediaPerson.Character) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        items.forEach { item ->
+            CharacterPreviewListItem(
+                item = item,
+                onClick = { onItemClick(item) },
+            )
+        }
+    }
+}
+
+@Composable
+internal fun CharacterPreviewListItem(
+    item: MediaPerson.Character,
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+) {
+    val displayName =
+        item.name?.userPreferred
+            ?: item.name?.full
+            ?: item.mediaRoleName
+            ?: stringResource(R.string.label_media_people_character_name_unknown)
+    val roleLabel = item.role?.alias?.toString()
+
+    Surface(
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .then(
+                    if (onClick != null) {
+                        Modifier.clickable(onClick = onClick)
+                    } else {
+                        Modifier
+                    },
+                ),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f),
+        shape = RoundedCornerShape(22.dp),
+        border =
+            androidx.compose.foundation.BorderStroke(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
+            ),
+        tonalElevation = 0.dp,
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            AsyncImage(
+                model = item.image?.large ?: item.image?.medium,
+                contentDescription = displayName,
+                contentScale = ContentScale.Crop,
+                modifier =
+                    Modifier
+                        .size(46.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.35f)),
+            )
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(3.dp),
+            ) {
+                Text(
+                    text = displayName,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                if (!roleLabel.isNullOrBlank()) {
+                    Text(
+                        text = roleLabel,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun StaffPreviewRail(
+    items: List<MediaPerson.Staff>,
+    onItemClick: (MediaPerson.Staff) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyRow(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(end = 4.dp),
+    ) {
+        items(
+            count = items.size,
+            key = { index -> items[index].id },
+        ) { index ->
+            StaffPreviewCard(
+                item = items[index],
+                onClick = { onItemClick(items[index]) },
+            )
+        }
+    }
+}
+
+@Composable
 internal fun CharacterPreviewCard(
     item: MediaPerson.Character,
     modifier: Modifier = Modifier,
@@ -414,6 +529,73 @@ internal fun CharacterPreviewCard(
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+internal fun StaffPreviewCard(
+    item: MediaPerson.Staff,
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+) {
+    val displayName =
+        item.name?.userPreferred
+            ?: item.name?.full
+            ?: stringResource(R.string.label_media_people_staff_name_unknown)
+    val roleLabel = item.role ?: stringResource(R.string.label_media_people_staff_role_unknown)
+
+    Surface(
+        modifier =
+            modifier
+                .width(138.dp)
+                .then(
+                    if (onClick != null) {
+                        Modifier.clickable(onClick = onClick)
+                    } else {
+                        Modifier
+                    },
+                ),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f),
+        tonalElevation = 0.dp,
+        shape = RoundedCornerShape(24.dp),
+        border =
+            androidx.compose.foundation.BorderStroke(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.45f),
+            ),
+    ) {
+        Column(
+            modifier = Modifier.padding(10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            AsyncImage(
+                model = item.image?.large ?: item.image?.medium,
+                contentDescription = displayName,
+                contentScale = ContentScale.Crop,
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(0.84f)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.35f)),
+            )
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = roleLabel,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = displayName,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
         }
     }
@@ -519,6 +701,18 @@ private fun CharacterPreviewCardPreview(
 
 @AniTrendPreview.Default
 @Composable
+private fun CharacterPreviewListItemPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            CharacterPreviewListItem(item = PreviewCharacters.first())
+        }
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
 private fun StaffPreviewListItemPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
@@ -528,6 +722,18 @@ private fun StaffPreviewListItemPreview(
                 item = PreviewStaff.first(),
                 showLanguage = true,
             )
+        }
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun StaffPreviewCardPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            StaffPreviewCard(item = PreviewStaff.first())
         }
     }
 }
@@ -548,11 +754,39 @@ private fun CharacterPreviewRailPreview(
 
 @AniTrendPreview.Default
 @Composable
+private fun CharacterPreviewListPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        CharacterPreviewList(
+            items = PreviewCharacters,
+            onItemClick = {},
+            modifier = Modifier.padding(16.dp),
+        )
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
 private fun StaffPreviewListPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
         StaffPreviewList(
+            items = PreviewStaff,
+            onItemClick = {},
+            modifier = Modifier.padding(16.dp),
+        )
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun StaffPreviewRailPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        StaffPreviewRail(
             items = PreviewStaff,
             onItemClick = {},
             modifier = Modifier.padding(16.dp),

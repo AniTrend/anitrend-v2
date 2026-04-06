@@ -22,8 +22,12 @@ import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.media.component.compose.people.MediaPeopleRoute
+import co.anitrend.navigation.MediaCharactersRouter
 import co.anitrend.navigation.MediaPeopleRouter
+import co.anitrend.navigation.MediaStaffRouter
+import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.nameOf
+import co.anitrend.navigation.extensions.startActivity
 
 class MediaPeopleScreen : AniTrendScreen() {
     private val param by extra<MediaPeopleRouter.MediaPeopleParam>(
@@ -38,7 +42,31 @@ class MediaPeopleScreen : AniTrendScreen() {
                 MediaPeopleRoute(
                     mediaId = peopleParam.mediaId,
                     mediaTitle = peopleParam.mediaTitle,
-                    initialSection = peopleParam.initialSection,
+                    selectedSection = peopleParam.initialSection,
+                    onSelectSection = { section ->
+                        when (section) {
+                            MediaPeopleRouter.Section.CHARACTERS ->
+                                MediaCharactersRouter.startActivity(
+                                    context = this@MediaPeopleScreen,
+                                    navPayload =
+                                        MediaCharactersRouter.MediaCharactersParam(
+                                            mediaId = peopleParam.mediaId,
+                                            mediaTitle = peopleParam.mediaTitle,
+                                        ).asNavPayload(),
+                                )
+
+                            MediaPeopleRouter.Section.STAFF ->
+                                MediaStaffRouter.startActivity(
+                                    context = this@MediaPeopleScreen,
+                                    navPayload =
+                                        MediaStaffRouter.MediaStaffParam(
+                                            mediaId = peopleParam.mediaId,
+                                            mediaTitle = peopleParam.mediaTitle,
+                                        ).asNavPayload(),
+                                )
+                        }
+                        finish()
+                    },
                     onBackPress = onBackPressedDispatcher::onBackPressed,
                 )
             }
