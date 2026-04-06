@@ -265,6 +265,20 @@ private fun PeopleSubsectionTitle(
 }
 
 @Composable
+internal fun PeopleRoleSectionHeader(
+    title: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.titleSmall,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = modifier.padding(top = 4.dp),
+    )
+}
+
+@Composable
 private fun PeopleSubsectionErrorState(
     title: String,
     onRetry: () -> Unit,
@@ -791,5 +805,19 @@ private fun StaffPreviewRailPreview(
             onItemClick = {},
             modifier = Modifier.padding(16.dp),
         )
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun PeopleRoleSectionHeaderPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            PeopleRoleSectionHeader(
+                title = stringResource(R.string.label_media_people_characters_group_main),
+            )
+        }
     }
 }
