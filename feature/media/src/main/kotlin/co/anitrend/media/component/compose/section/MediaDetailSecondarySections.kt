@@ -16,7 +16,6 @@
  */
 package co.anitrend.media.component.compose.section
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -55,100 +54,12 @@ private const val PRODUCTION_STAFF_PREVIEW_COUNT = 10
 private const val PRODUCTION_STUDIO_PREVIEW_COUNT = 6
 private const val DETAIL_TOKEN_LIMIT = 4
 
-private enum class ProductionGroupType(
-    @param:StringRes val titleRes: Int,
-) {
-    ORIGINAL_CREATOR(R.string.label_media_production_original_creator),
-    DIRECTOR(R.string.label_media_production_directors),
-    WRITER(R.string.label_media_production_writers),
-    PRODUCER(R.string.label_media_production_producers),
-    OTHER(R.string.label_media_production_additional_credits),
-}
-
-private data class ProductionStaffGroup(
-    val type: ProductionGroupType,
-    val staff: List<MediaPerson.Staff>,
-)
-
 private data class ProductionCredit(
     val label: String,
     val subtitle: String? = null,
     val badge: String? = null,
     val onClick: (() -> Unit)? = null,
 )
-
-private fun String?.normalizedRole(): String =
-    this
-        .orEmpty()
-        .lowercase(Locale.getDefault())
-        .replace(Regex("[^a-z0-9]+"), " ")
-        .trim()
-
-private fun MediaPerson.Staff.productionGroup(): ProductionGroupType {
-    val normalized = role.normalizedRole()
-
-    return when {
-        normalized.contains("original creator") ||
-            normalized.contains("original story") ||
-            normalized.contains("original work") ||
-            normalized.contains("creator") ||
-            normalized.contains("manga") ||
-            normalized.contains("light novel") ||
-            normalized.contains("web novel") ||
-            normalized.contains("novel") ||
-            normalized.contains("comic") -> {
-            ProductionGroupType.ORIGINAL_CREATOR
-        }
-
-        normalized.contains("director") -> ProductionGroupType.DIRECTOR
-        normalized.contains("writer") ||
-            normalized.contains("screenplay") ||
-            normalized.contains("script") ||
-            normalized.contains("composition") ||
-            normalized.contains("story") -> {
-            ProductionGroupType.WRITER
-        }
-
-        normalized.contains("producer") ||
-            normalized.contains("animation production") -> {
-            ProductionGroupType.PRODUCER
-        }
-
-        else -> ProductionGroupType.OTHER
-    }
-}
-
-private fun groupProductionStaff(staff: List<MediaPerson.Staff>): List<ProductionStaffGroup> {
-    if (staff.isEmpty()) {
-        return emptyList()
-    }
-
-    val grouped = linkedMapOf<ProductionGroupType, MutableList<MediaPerson.Staff>>()
-
-    staff.forEach { item ->
-        grouped.getOrPut(item.productionGroup()) { mutableListOf() }.add(item)
-    }
-
-    return buildList {
-        listOf(
-            ProductionGroupType.ORIGINAL_CREATOR,
-            ProductionGroupType.DIRECTOR,
-            ProductionGroupType.WRITER,
-            ProductionGroupType.PRODUCER,
-            ProductionGroupType.OTHER,
-        ).forEach { groupType ->
-            val items = grouped[groupType].orEmpty()
-            if (items.isNotEmpty()) {
-                add(
-                    ProductionStaffGroup(
-                        type = groupType,
-                        staff = items,
-                    ),
-                )
-            }
-        }
-    }
-}
 
 @Composable
 private fun MediaPerson.Staff.displayName(): String =
@@ -283,7 +194,7 @@ internal fun MediaProductionSection(
                 .orEmpty()
                 .let { selectStaffPreview(it, maxCount = PRODUCTION_STAFF_PREVIEW_COUNT) }
         }
-    val staffGroups = remember(staffPreview) { groupProductionStaff(staffPreview) }
+    val staffGroups = remember(staffPreview) { groupStaffByRoleBucket(staffPreview) }
     val studioCredits =
         remember(studios) {
             studios
@@ -356,7 +267,7 @@ internal fun MediaProductionSection(
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     staffGroups.forEach { group ->
                         ProductionGroupBlock(
-                            title = stringResource(group.type.titleRes),
+                            title = stringResource(group.group.titleRes),
                             credits =
                                 group.staff.map { staffItem ->
                                     ProductionCredit(

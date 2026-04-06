@@ -22,8 +22,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
@@ -48,6 +50,7 @@ import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.media.R
 import co.anitrend.media.component.compose.section.MediaSectionSegmentedControl
+import co.anitrend.media.component.compose.section.groupStaffByRoleBucket
 import co.anitrend.media.component.viewmodel.MediaCharactersViewModel
 import co.anitrend.media.component.viewmodel.MediaStaffViewModel
 import co.anitrend.navigation.MediaPeopleRouter
@@ -215,6 +218,8 @@ private fun CharacterGrid(
     characters: PagedList<MediaPerson.Character>,
     modifier: Modifier = Modifier,
 ) {
+    val sections = characters.groupedCharacterSections()
+
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 148.dp),
         modifier = modifier.fillMaxSize(),
@@ -222,15 +227,26 @@ private fun CharacterGrid(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        items(
-            count = characters.size,
-            key = { index -> characters[index]?.id ?: "character-$index" },
-        ) { index ->
-            val item = characters[index] ?: return@items
-            CharacterPreviewCard(
-                item = item,
-                showVoiceActor = true,
-            )
+        sections.forEach { section ->
+            item(
+                key = section.titleRes,
+                span = { GridItemSpan(maxLineSpan) },
+            ) {
+                PeopleRoleSectionHeader(
+                    title = stringResource(section.titleRes),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+
+            items(
+                count = section.characters.size,
+                key = { index -> section.characters[index].id },
+            ) { index ->
+                CharacterPreviewCard(
+                    item = section.characters[index],
+                    showVoiceActor = true,
+                )
+            }
         }
     }
 }
@@ -240,20 +256,30 @@ private fun StaffList(
     staff: PagedList<MediaPerson.Staff>,
     modifier: Modifier = Modifier,
 ) {
+    val sections = groupStaffByRoleBucket(staff.loadedItems())
+
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        items(
-            count = staff.size,
-            key = { index -> staff[index]?.id ?: "staff-$index" },
-        ) { index ->
-            val item = staff[index] ?: return@items
-            StaffPreviewListItem(
-                item = item,
-                showLanguage = true,
-            )
+        sections.forEach { section ->
+            item(key = section.group.name) {
+                PeopleRoleSectionHeader(
+                    title = stringResource(section.group.titleRes),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+
+            items(
+                count = section.staff.size,
+                key = { index -> section.staff[index].id },
+            ) { index ->
+                StaffPreviewListItem(
+                    item = section.staff[index],
+                    showLanguage = true,
+                )
+            }
         }
     }
 }
