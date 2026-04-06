@@ -37,6 +37,7 @@ dependencies {
 
     implementation(libs.jetbrains.kotlinx.serialization.json)
     implementation(libs.androidx.startup.runtime)
+    implementation(libs.androidx.room.paging)
 
     implementation(libs.anitrend.sync)
     implementation(libs.cash.copper)

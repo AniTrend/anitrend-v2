@@ -70,7 +70,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.paging.PagedList
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import co.anitrend.android.core.compose.AniTrendDimensions
 import co.anitrend.android.core.compose.design.BackIconButton
 import co.anitrend.android.core.compose.design.image.AniTrendImage
@@ -181,11 +182,11 @@ private fun Media.Extended.displayTitle(): String? =
             .firstOrNull()
 
 private fun resolvePeopleInitialSection(
-    characters: PagedList<MediaPerson.Character>?,
-    staff: PagedList<MediaPerson.Staff>?,
+    characters: List<MediaPerson.Character>,
+    staff: List<MediaPerson.Staff>,
 ): MediaPeopleRouter.Section =
     when {
-        staff?.isNotEmpty() == true && characters?.isEmpty() != false -> MediaPeopleRouter.Section.STAFF
+        staff.isNotEmpty() && characters.isEmpty() -> MediaPeopleRouter.Section.STAFF
         else -> MediaPeopleRouter.Section.CHARACTERS
     }
 
@@ -555,10 +556,8 @@ private fun MediaDetailContent(
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     onMediaConnectionItemClick: (IParam) -> Unit,
     onExternalLinkClick: (String) -> Unit,
-    characters: PagedList<MediaPerson.Character>? = null,
-    charactersLoadState: LoadState? = null,
-    staff: PagedList<MediaPerson.Staff>? = null,
-    staffLoadState: LoadState? = null,
+    characters: LazyPagingItems<MediaPerson.Character>? = null,
+    staff: LazyPagingItems<MediaPerson.Staff>? = null,
     studios: List<MediaStudioEntry>? = null,
     studiosLoadState: LoadState? = null,
     stats: MediaStats? = null,
@@ -702,9 +701,7 @@ private fun MediaDetailContent(
         item {
             ContributorsSection(
                 characters = characters,
-                charactersLoadState = charactersLoadState,
                 staff = staff,
-                staffLoadState = staffLoadState,
                 onSeeAllCharacters = {
                     onPeopleClick(
                         MediaPeopleRouter.MediaPeopleParam(
@@ -877,10 +874,6 @@ fun MediaScreenContent(
     val relationsViewModel: MediaRelationsViewModel = koinViewModel()
     val recommendationsViewModel: MediaRecommendationsViewModel = koinViewModel()
     val communityViewModel: MediaCommunityViewModel = koinViewModel()
-    val characters by charactersViewModel.model.observeAsState()
-    val charactersLoadState by charactersViewModel.loadState.observeAsState()
-    val staff by staffViewModel.model.observeAsState()
-    val staffLoadState by staffViewModel.loadState.observeAsState()
     val studios by studiosViewModel.model.observeAsState()
     val studiosLoadState by studiosViewModel.loadState.observeAsState()
     val stats by statsViewModel.model.observeAsState()
@@ -891,12 +884,12 @@ fun MediaScreenContent(
     val recommendationsLoadState by recommendationsViewModel.loadState.observeAsState()
     val communityReviews by communityViewModel.model.observeAsState()
     val communityLoadState by communityViewModel.loadState.observeAsState()
+    val characters = remember(media.id) { charactersViewModel.characters(media.id) }.collectAsLazyPagingItems()
+    val staff = remember(media.id) { staffViewModel.staff(media.id) }.collectAsLazyPagingItems()
 
     val view = LocalView.current
 
     LaunchedEffect(media.id) {
-        charactersViewModel(media.id)
-        staffViewModel(media.id)
         studiosViewModel(media.id)
         statsViewModel(media.id)
         relationsViewModel(media.id)
@@ -950,9 +943,7 @@ fun MediaScreenContent(
             onMediaConnectionItemClick = onMediaConnectionItemClick,
             onExternalLinkClick = onExternalLinkClick,
             characters = characters,
-            charactersLoadState = charactersLoadState,
             staff = staff,
-            staffLoadState = staffLoadState,
             studios = studios,
             studiosLoadState = studiosLoadState,
             stats = stats,
@@ -970,8 +961,8 @@ fun MediaScreenContent(
             onRelatedClick = onRelatedClick,
             onRecommendationsClick = onRecommendationsClick,
             onCommunityClick = onCommunityClick,
-            onRetryCharacters = { charactersViewModel(media.id) },
-            onRetryStaff = { staffViewModel(media.id) },
+            onRetryCharacters = characters::retry,
+            onRetryStaff = staff::retry,
             onRetryStudios = { studiosViewModel(media.id) },
             onRetryStats = { statsViewModel(media.id) },
             onRetryRelations = { relationsViewModel(media.id) },

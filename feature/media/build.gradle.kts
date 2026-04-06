@@ -32,6 +32,7 @@ dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.markdown))
 
     implementation(libs.androidx.browser)
+    implementation(libs.androidx.paging.compose)
 }
 
 android {

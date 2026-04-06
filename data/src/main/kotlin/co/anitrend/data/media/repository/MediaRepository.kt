@@ -17,6 +17,7 @@
 package co.anitrend.data.media.repository
 
 import androidx.paging.PagedList
+import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
@@ -41,6 +42,7 @@ import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.entity.MediaStats
 import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.media.model.MediaParam
+import kotlinx.coroutines.flow.Flow
 
 internal sealed class MediaRepository {
     class Detail(
@@ -75,14 +77,14 @@ internal sealed class MediaRepository {
         private val source: MediaPeopleSource.Characters,
     ) : MediaRepository(),
         MediaCharactersRepository {
-        override fun getCharacters(param: MediaParam.Characters): DataState<PagedList<MediaPerson.Character>> = source create source(param)
+        override fun getCharacters(param: MediaParam.Characters): Flow<PagingData<MediaPerson.Character>> = source(param)
     }
 
     class Staff(
         private val source: MediaPeopleSource.Staff,
     ) : MediaRepository(),
         MediaStaffRepository {
-        override fun getStaff(param: MediaParam.Staff): DataState<PagedList<MediaPerson.Staff>> = source create source(param)
+        override fun getStaff(param: MediaParam.Staff): Flow<PagingData<MediaPerson.Staff>> = source(param)
     }
 
     class Studios(

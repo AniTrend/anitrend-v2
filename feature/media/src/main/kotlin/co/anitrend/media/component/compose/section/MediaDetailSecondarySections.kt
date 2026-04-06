@@ -39,7 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.paging.PagedList
+import androidx.paging.compose.LazyPagingItems
 import co.anitrend.android.core.extensions.toHumanReadableQuantity
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.domain.media.entity.MediaPerson
@@ -177,8 +177,7 @@ private fun SectionRetryState(
 
 @Composable
 internal fun MediaProductionSection(
-    staff: PagedList<MediaPerson.Staff>?,
-    staffLoadState: LoadState?,
+    staff: LazyPagingItems<MediaPerson.Staff>?,
     studios: List<MediaStudioEntry>?,
     studiosLoadState: LoadState?,
     onStaffClick: () -> Unit,
@@ -187,11 +186,11 @@ internal fun MediaProductionSection(
     onRetryStudios: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val staffItems = staff?.itemSnapshotList?.items.orEmpty()
     val staffPreview =
-        remember(staff) {
-            staff
-                ?.previewCandidates(maxCount = PRODUCTION_STAFF_PREVIEW_COUNT)
-                .orEmpty()
+        remember(staffItems) {
+            staffItems
+                .previewCandidates(maxCount = PRODUCTION_STAFF_PREVIEW_COUNT)
                 .let { selectStaffPreview(it, maxCount = PRODUCTION_STAFF_PREVIEW_COUNT) }
         }
     val staffGroups = remember(staffPreview) { groupStaffByRoleBucket(staffPreview) }
@@ -206,10 +205,11 @@ internal fun MediaProductionSection(
         }
     val hasStudios = studioCredits.isNotEmpty()
     val hasStaff = staffGroups.isNotEmpty()
+    val staffRefreshState = staff?.loadState?.refresh
     val showStudiosLoading = !hasStudios && (studiosLoadState == null || studiosLoadState is LoadState.Loading)
     val showStudiosError = !hasStudios && studiosLoadState is LoadState.Error
-    val showStaffLoading = !hasStaff && (staffLoadState == null || staffLoadState is LoadState.Loading)
-    val showStaffError = !hasStaff && staffLoadState is LoadState.Error
+    val showStaffLoading = !hasStaff && (staffRefreshState == null || staffRefreshState is androidx.paging.LoadState.Loading)
+    val showStaffError = !hasStaff && staffRefreshState is androidx.paging.LoadState.Error
 
     MediaHubSection(
         title = stringResource(R.string.title_media_production_section),

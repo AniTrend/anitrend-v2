@@ -17,7 +17,6 @@
 package co.anitrend.media.component.compose.people
 
 import androidx.annotation.StringRes
-import androidx.paging.PagedList
 import co.anitrend.domain.character.enums.CharacterRole
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.media.R
@@ -27,8 +26,7 @@ internal data class MediaCharacterRoleSection(
     val characters: List<MediaPerson.Character>,
 )
 
-internal fun PagedList<MediaPerson.Character>.groupedCharacterSections(): List<MediaCharacterRoleSection> {
-    val characters = loadedItems()
+internal fun List<MediaPerson.Character>.groupedCharacterSections(): List<MediaCharacterRoleSection> {
     if (characters.isEmpty()) {
         return emptyList()
     }
@@ -55,7 +53,3 @@ internal fun PagedList<MediaPerson.Character>.groupedCharacterSections(): List<M
             )
         }
     }
-}
-
-internal fun <T : Any> PagedList<T>.loadedItems(): List<T> =
-    (0 until size).mapNotNull(::get)

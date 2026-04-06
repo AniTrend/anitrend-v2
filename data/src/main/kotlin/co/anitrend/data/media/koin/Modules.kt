@@ -211,7 +211,11 @@ private val sourceModule =
                     ),
                 mapper = mapper,
                 converter = get(),
-                cachePolicy = get<MediaCache>(),
+                cachePolicy =
+                    MediaCache(
+                        localSource = cacheLocalSource(),
+                        request = CacheRequest.MEDIA_CHARACTERS,
+                    ),
                 dispatcher = get(),
             )
         }
@@ -228,7 +232,11 @@ private val sourceModule =
                     ),
                 mapper = mapper,
                 converter = get(),
-                cachePolicy = get<MediaCache>(),
+                cachePolicy =
+                    MediaCache(
+                        localSource = cacheLocalSource(),
+                        request = CacheRequest.MEDIA_STAFF,
+                    ),
                 dispatcher = get(),
             )
         }

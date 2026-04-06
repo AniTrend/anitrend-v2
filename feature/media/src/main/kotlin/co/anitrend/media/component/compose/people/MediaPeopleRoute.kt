@@ -31,21 +31,18 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.paging.PagedList
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
-import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.media.R
@@ -54,7 +51,6 @@ import co.anitrend.media.component.compose.section.groupStaffByRoleBucket
 import co.anitrend.media.component.viewmodel.MediaCharactersViewModel
 import co.anitrend.media.component.viewmodel.MediaStaffViewModel
 import co.anitrend.navigation.MediaPeopleRouter
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -68,17 +64,8 @@ fun MediaPeopleRoute(
     charactersViewModel: MediaCharactersViewModel = koinViewModel(),
     staffViewModel: MediaStaffViewModel = koinViewModel(),
 ) {
-    val characters by charactersViewModel.model.observeAsState()
-    val charactersLoadState by charactersViewModel.loadState.observeAsState()
-    val staff by staffViewModel.model.observeAsState()
-    val staffLoadState by staffViewModel.loadState.observeAsState()
-
-    val coroutineScope = rememberCoroutineScope()
-
-    LaunchedEffect(mediaId) {
-        charactersViewModel(mediaId)
-        staffViewModel(mediaId)
-    }
+    val characters = remember(mediaId) { charactersViewModel.characters(mediaId) }.collectAsLazyPagingItems()
+    val staff = remember(mediaId) { staffViewModel.staff(mediaId) }.collectAsLazyPagingItems()
 
     DefaultScaffold(onBackPress = onBackPress) { padding ->
         Column(
@@ -134,15 +121,13 @@ fun MediaPeopleRoute(
                     MediaPeopleRouter.Section.CHARACTERS ->
                         CharactersPane(
                             characters = characters,
-                            loadState = charactersLoadState,
-                            onRetry = { coroutineScope.launch { charactersViewModel.retry() } },
+                            onRetry = characters::retry,
                         )
 
                     MediaPeopleRouter.Section.STAFF ->
                         StaffPane(
                             staff = staff,
-                            loadState = staffLoadState,
-                            onRetry = { coroutineScope.launch { staffViewModel.retry() } },
+                            onRetry = staff::retry,
                         )
                 }
             }
@@ -152,21 +137,23 @@ fun MediaPeopleRoute(
 
 @Composable
 private fun CharactersPane(
-    characters: PagedList<MediaPerson.Character>?,
-    loadState: LoadState?,
+    characters: LazyPagingItems<MediaPerson.Character>,
     onRetry: () -> Unit,
 ) {
+    val loadedItems = characters.itemSnapshotList.items
+    val refreshState = characters.loadState.refresh
+
     when {
-        characters != null && characters.size > 0 -> {
-            CharacterGrid(characters = characters)
+        loadedItems.isNotEmpty() -> {
+            CharacterGrid(characters = loadedItems)
         }
-        loadState is LoadState.Loading || (characters == null && loadState !is LoadState.Error) -> {
+        refreshState is androidx.paging.LoadState.Loading -> {
             CenteredPeopleState(
                 title = stringResource(R.string.label_media_people_characters_loading),
                 subtitle = stringResource(R.string.message_media_people_characters_loading),
             )
         }
-        loadState is LoadState.Error -> {
+        refreshState is androidx.paging.LoadState.Error -> {
             RetryPeopleState(
                 title = stringResource(R.string.label_media_people_characters_error_title),
                 onRetry = onRetry,
@@ -183,21 +170,23 @@ private fun CharactersPane(
 
 @Composable
 private fun StaffPane(
-    staff: PagedList<MediaPerson.Staff>?,
-    loadState: LoadState?,
+    staff: LazyPagingItems<MediaPerson.Staff>,
     onRetry: () -> Unit,
 ) {
+    val loadedItems = staff.itemSnapshotList.items
+    val refreshState = staff.loadState.refresh
+
     when {
-        staff != null && staff.size > 0 -> {
-            StaffList(staff = staff)
+        loadedItems.isNotEmpty() -> {
+            StaffList(staff = loadedItems)
         }
-        loadState is LoadState.Loading || (staff == null && loadState !is LoadState.Error) -> {
+        refreshState is androidx.paging.LoadState.Loading -> {
             CenteredPeopleState(
                 title = stringResource(R.string.label_media_people_staff_loading),
                 subtitle = stringResource(R.string.message_media_people_staff_loading),
             )
         }
-        loadState is LoadState.Error -> {
+        refreshState is androidx.paging.LoadState.Error -> {
             RetryPeopleState(
                 title = stringResource(R.string.label_media_people_staff_error_title),
                 onRetry = onRetry,
@@ -215,7 +204,7 @@ private fun StaffPane(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterGrid(
-    characters: PagedList<MediaPerson.Character>,
+    characters: List<MediaPerson.Character>,
     modifier: Modifier = Modifier,
 ) {
     val sections = characters.groupedCharacterSections()
@@ -253,10 +242,10 @@ private fun CharacterGrid(
 
 @Composable
 private fun StaffList(
-    staff: PagedList<MediaPerson.Staff>,
+    staff: List<MediaPerson.Staff>,
     modifier: Modifier = Modifier,
 ) {
-    val sections = groupStaffByRoleBucket(staff.loadedItems())
+    val sections = groupStaffByRoleBucket(staff)
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),

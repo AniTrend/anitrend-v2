@@ -40,7 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.paging.PagedList
+import androidx.paging.compose.LazyPagingItems
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
@@ -208,10 +208,8 @@ private fun ConnectionRail(content: androidx.compose.foundation.lazy.LazyListSco
 
 @Composable
 internal fun ContributorsSection(
-    characters: PagedList<MediaPerson.Character>?,
-    charactersLoadState: LoadState?,
-    staff: PagedList<MediaPerson.Staff>?,
-    staffLoadState: LoadState?,
+    characters: LazyPagingItems<MediaPerson.Character>?,
+    staff: LazyPagingItems<MediaPerson.Staff>?,
     onSeeAllCharacters: () -> Unit,
     onSeeAllStaff: () -> Unit,
     onCharacterClick: (MediaPerson.Character) -> Unit,
@@ -220,9 +218,11 @@ internal fun ContributorsSection(
     onRetryStaff: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val characterPreview = characters?.curatedCharacterPreview(ContributorPreviewCount).orEmpty()
-    val staffPreview = staff?.curatedStaffPreview(ContributorPreviewCount).orEmpty()
-    var selectedSection by rememberSaveable(characters == null, staff == null) {
+    val characterPreview = characters?.itemSnapshotList?.items.orEmpty().curatedCharacterPreview(ContributorPreviewCount)
+    val staffPreview = staff?.itemSnapshotList?.items.orEmpty().curatedStaffPreview(ContributorPreviewCount)
+    val characterRefreshState = characters?.loadState?.refresh
+    val staffRefreshState = staff?.loadState?.refresh
+    var selectedSection by rememberSaveable(characterPreview.size, staffPreview.size) {
         mutableStateOf(
             preferredContributorSection(
                 characterPreview = characterPreview,
@@ -276,11 +276,11 @@ internal fun ContributorsSection(
                         )
                     }
 
-                    charactersLoadState is LoadState.Loading || (characters == null && charactersLoadState !is LoadState.Error) -> {
+                    characterRefreshState == null || characterRefreshState is androidx.paging.LoadState.Loading -> {
                         LoadingSkeletonContributorRows()
                     }
 
-                    charactersLoadState is LoadState.Error -> {
+                    characterRefreshState is androidx.paging.LoadState.Error -> {
                         RetryStateBlock(
                             title = stringResource(R.string.label_media_people_characters_error_title),
                             onRetry = onRetryCharacters,
@@ -304,11 +304,11 @@ internal fun ContributorsSection(
                         )
                     }
 
-                    staffLoadState is LoadState.Loading || (staff == null && staffLoadState !is LoadState.Error) -> {
+                    staffRefreshState == null || staffRefreshState is androidx.paging.LoadState.Loading -> {
                         LoadingSkeletonContributorRows()
                     }
 
-                    staffLoadState is LoadState.Error -> {
+                    staffRefreshState is androidx.paging.LoadState.Error -> {
                         RetryStateBlock(
                             title = stringResource(R.string.label_media_people_staff_error_title),
                             onRetry = onRetryStaff,
