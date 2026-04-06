@@ -53,6 +53,7 @@ internal typealias MediaStatsController = GraphQLController<MediaSidecarModelCon
 
 internal typealias MediaDetailRepository = IMediaRepository.Detail<DataState<Media>>
 internal typealias MediaCharactersRepository = IMediaRepository.Characters<Flow<PagingData<MediaPerson.Character>>>
+internal typealias MediaPagingRepository = IMediaRepository.Paged<Flow<PagingData<Media>>>
 internal typealias MediaPagedRepository = IMediaRepository.Paged<DataState<PagedList<Media>>>
 internal typealias MediaNetworkRepository = IMediaRepository.Network<DataState<PagedList<Media>>>
 internal typealias MediaRelationsRepository = IMediaRepository.Relations<DataState<List<MediaRelationEntry>>>
@@ -63,6 +64,7 @@ internal typealias MediaStatsRepository = IMediaRepository.Stats<DataState<Media
 
 typealias GetDetailMediaInteractor = MediaUseCase.GetDetail<DataState<Media>>
 typealias GetMediaCharactersInteractor = MediaUseCase.GetCharacters<Flow<PagingData<MediaPerson.Character>>>
+typealias GetPagingMediaInteractor = MediaUseCase.GetPaged<Flow<PagingData<Media>>>
 typealias GetPagedMediaInteractor = MediaUseCase.GetPaged<DataState<PagedList<Media>>>
 typealias GetNetworkMediaInteractor = MediaUseCase.GetByNetwork<DataState<PagedList<Media>>>
 typealias GetMediaRelationsInteractor = MediaUseCase.GetRelations<DataState<List<MediaRelationEntry>>>

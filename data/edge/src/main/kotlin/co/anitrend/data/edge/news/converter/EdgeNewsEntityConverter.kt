@@ -31,7 +31,7 @@ internal class EdgeNewsEntityConverter(
             author = source.source ?: "",
             subTitle = source.description?.take(140) ?: "",
             description = source.description,
-            content = source.description ?: "",
+            content = source.content ?: source.description ?: "",
             publishedOn = source.publishedAt,
         )
     },

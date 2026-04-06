@@ -21,10 +21,12 @@ import co.anitrend.data.medialist.DeleteCustomMediaListRepository
 import co.anitrend.data.medialist.DeleteMediaListEntryInteractor
 import co.anitrend.data.medialist.GetCollectionMediaListInteractor
 import co.anitrend.data.medialist.GetMediaListEntryInteractor
+import co.anitrend.data.medialist.GetPagingMediaListInteractor
 import co.anitrend.data.medialist.GetPagedMediaListInteractor
 import co.anitrend.data.medialist.MediaListCollectionRepository
 import co.anitrend.data.medialist.MediaListDeleteEntryRepository
 import co.anitrend.data.medialist.MediaListEntryRepository
+import co.anitrend.data.medialist.MediaListPagingRepository
 import co.anitrend.data.medialist.MediaListPagedRepository
 import co.anitrend.data.medialist.MediaListSaveEntriesRepository
 import co.anitrend.data.medialist.MediaListSaveEntryRepository
@@ -41,6 +43,10 @@ internal interface MediaListInteractor {
     class Entry(
         repository: MediaListEntryRepository,
     ) : GetMediaListEntryInteractor(repository)
+
+    class Paging(
+        repository: MediaListPagingRepository,
+    ) : GetPagingMediaListInteractor(repository)
 
     class Collection(
         repository: MediaListCollectionRepository,

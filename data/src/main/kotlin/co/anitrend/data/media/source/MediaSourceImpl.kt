@@ -16,8 +16,12 @@
  */
 package co.anitrend.data.media.source
 
+import androidx.paging.Pager
 import androidx.paging.PagedList
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
 import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.request.callback.RequestCallback
@@ -247,6 +251,47 @@ internal class MediaSourceImpl {
             clearDataHelper(context) {
                 localSource.clear()
             }
+        }
+    }
+
+    class Paging(
+        private val remoteSource: MediaRemoteSource,
+        private val localSource: MediaLocalSource,
+        private val carouselSource: CarouselSource,
+        private val controller: MediaPagedController,
+        private val converter: MediaEntityViewConverter,
+        private val clearDataHelper: IClearDataHelper,
+        private val filter: MediaQueryFilter.Paged,
+        private val dispatcher: ISupportDispatcher,
+    ) : MediaSource.Paging() {
+        override fun invoke(param: MediaParam.Find): Flow<PagingData<Media>> {
+            assignQuery(param)
+
+            val source =
+                MediaPagingSource(
+                    cacheIdentity = MediaCache.Identity.Paged(param),
+                    remoteSource = remoteSource,
+                    localSource = localSource,
+                    carouselSource = carouselSource,
+                    controller = controller,
+                    converter = converter,
+                    clearDataHelper = clearDataHelper,
+                    filter = filter,
+                    query = MediaQuery.Find(param),
+                    dispatcher = dispatcher,
+                )
+
+            return Pager(
+                config =
+                    PagingConfig(
+                        pageSize = DEFAULT_PAGE_SIZE,
+                        initialLoadSize = DEFAULT_PAGE_SIZE,
+                        prefetchDistance = DEFAULT_PAGE_SIZE,
+                        enablePlaceholders = false,
+                    ),
+                remoteMediator = source,
+                pagingSourceFactory = source.pagingSourceFactory(),
+            ).flow
         }
     }
 

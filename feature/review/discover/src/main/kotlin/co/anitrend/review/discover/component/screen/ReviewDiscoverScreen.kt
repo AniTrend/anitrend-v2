@@ -18,30 +18,16 @@ package co.anitrend.review.discover.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
-import co.anitrend.common.shared.ui.compose.DefaultScaffold
-import co.anitrend.common.shared.ui.compose.FragmentItemHost
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
-import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.navigation.ReviewDiscoverRouter
+import co.anitrend.review.discover.component.compose.ReviewDiscoverRoute
 
 class ReviewDiscoverScreen : AniTrendScreen() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AniTrendTheme3 {
-                DefaultScaffold(onBackPress = onBackPressedDispatcher::onBackPressed) {
-                    FragmentItemHost(
-                        modifier = Modifier.padding(it),
-                        fragmentItem =
-                            FragmentItem(
-                                fragment = ReviewDiscoverRouter.forFragment(),
-                                parameter = intent.extras,
-                            ),
-                    )
-                }
+                ReviewDiscoverRoute(onBackPress = onBackPressedDispatcher::onBackPressed)
             }
         }
     }

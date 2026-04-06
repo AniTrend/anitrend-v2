@@ -40,8 +40,6 @@ import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.first
 
 internal class AiringSchedulePagingSource(
@@ -56,12 +54,11 @@ internal class AiringSchedulePagingSource(
     private val query: AiringScheduleQuery,
     override val dispatcher: ISupportDispatcher,
 ) : AbstractPagingMediator<Int, Media>() {
-    fun observable(): Flow<PagingSource<Int, Media>> =
+    fun pagingSourceFactory(): () -> PagingSource<Int, Media> =
         mediaLocalSource
             .rawFactory(filter.build(query.param))
             .map(converter::convertFrom)
             .asPagingSourceFactory()
-            .asFlow()
 
     private suspend fun getAiringSchedule(requestCallback: RequestCallback) {
         val deferred =

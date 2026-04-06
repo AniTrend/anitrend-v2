@@ -16,29 +16,52 @@
  */
 package co.anitrend.airing.component.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.paging.PagedList
-import co.anitrend.arch.extension.ext.extra
-import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
-import co.anitrend.data.airing.GetPagedAiringScheduleInteractor
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import co.anitrend.data.airing.GetPagingAiringScheduleInteractor
 import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.navigation.AiringRouter
 import co.anitrend.navigation.extensions.nameOf
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 
 class AiringViewModel(
-    stateHandle: SavedStateHandle,
-    private val interactor: GetPagedAiringScheduleInteractor,
-) : AniTrendViewModelState<PagedList<Media>>() {
-    val param by stateHandle.extra<AiringRouter.AiringParam>(
-        key = nameOf<AiringRouter.AiringParam>(),
-    )
+    private val stateHandle: SavedStateHandle,
+    private val interactor: GetPagingAiringScheduleInteractor,
+) : ViewModel() {
+    val initialParam =
+        requireNotNull(
+            stateHandle.get<AiringRouter.AiringParam>(
+                nameOf<AiringRouter.AiringParam>(),
+            ),
+        )
 
-    val filter = MutableLiveData<AiringRouter.AiringParam>(param)
+    val filter: StateFlow<AiringRouter.AiringParam> =
+        stateHandle.getStateFlow(
+            key = FILTER_STATE_KEY,
+            initialValue = initialParam,
+        )
 
-    operator fun invoke(param: AiringRouter.AiringParam) {
-        val query =
+    val schedule: Flow<PagingData<Media>> =
+        filter
+            .flatMapLatest(::query)
+            .cachedIn(viewModelScope)
+
+    fun resetFilter() {
+        setFilter(initialParam)
+    }
+
+    fun setFilter(param: AiringRouter.AiringParam) {
+        stateHandle[FILTER_STATE_KEY] = param
+    }
+
+    private fun query(param: AiringRouter.AiringParam): Flow<PagingData<Media>> =
+        interactor(
             AiringParam.Find(
                 id = param.id,
                 mediaId = param.mediaId,
@@ -59,8 +82,10 @@ class AiringViewModel(
                 airingAt_greater = param.airingAt_greater,
                 airingAt_lesser = param.airingAt_lesser,
                 sort = param.sort,
-            )
-        val result = interactor(query)
-        state.postValue(result)
+            ),
+        )
+
+    companion object {
+        private const val FILTER_STATE_KEY = "airing_filter_state"
     }
 }

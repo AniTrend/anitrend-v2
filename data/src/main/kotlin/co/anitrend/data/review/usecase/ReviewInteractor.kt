@@ -17,12 +17,12 @@
 package co.anitrend.data.review.usecase
 
 import co.anitrend.data.review.DeleteReviewInteractor
+import co.anitrend.data.review.GetPagingReviewInteractor
 import co.anitrend.data.review.GetReviewInteractor
-import co.anitrend.data.review.GetReviewPagedInteractor
 import co.anitrend.data.review.RateReviewInteractor
 import co.anitrend.data.review.ReviewDeleteRepository
 import co.anitrend.data.review.ReviewEntryRepository
-import co.anitrend.data.review.ReviewPagedRepository
+import co.anitrend.data.review.ReviewPagingRepository
 import co.anitrend.data.review.ReviewRateRepository
 import co.anitrend.data.review.ReviewSaveRepository
 import co.anitrend.data.review.SaveReviewInteractor
@@ -44,7 +44,7 @@ internal interface ReviewInteractor {
         repository: ReviewSaveRepository,
     ) : SaveReviewInteractor(repository)
 
-    class Paged(
-        repository: ReviewPagedRepository,
-    ) : GetReviewPagedInteractor(repository)
+    class Paging(
+        repository: ReviewPagingRepository,
+    ) : GetPagingReviewInteractor(repository)
 }

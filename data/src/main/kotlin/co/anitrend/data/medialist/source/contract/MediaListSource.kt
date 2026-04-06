@@ -17,6 +17,7 @@
 package co.anitrend.data.medialist.source.contract
 
 import androidx.paging.PagedList
+import androidx.paging.PagingData
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
@@ -132,6 +133,16 @@ internal class MediaListSource {
                 requestHelper = requestHelper,
                 block = ::getMediaList,
             )
+        }
+    }
+
+    abstract class Paging {
+        protected lateinit var query: MediaListQuery.Paged
+
+        abstract operator fun invoke(param: MediaListParam.Paged): Flow<PagingData<Media>>
+
+        protected fun assignQuery(param: MediaListParam.Paged) {
+            query = MediaListQuery.Paged(param)
         }
     }
 

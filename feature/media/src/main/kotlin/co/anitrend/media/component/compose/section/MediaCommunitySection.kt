@@ -33,23 +33,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.paging.PagedList
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
 import co.anitrend.android.core.asPrettyTime
-import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.domain.review.entity.Review
 import co.anitrend.media.R
 import org.threeten.bp.Instant
 
 @Composable
 internal fun MediaCommunitySection(
-    reviews: PagedList<Review>?,
-    loadState: LoadState?,
+    reviews: LazyPagingItems<Review>?,
     isBlocked: Boolean,
     onSeeAllClick: () -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val previewItems = remember(reviews) { reviews?.previewItems(maxCount = 3).orEmpty() }
+    val previewItems = remember(reviews?.itemSnapshotList) { reviews?.itemSnapshotList?.items.orEmpty().take(3) }
+    val refreshState = reviews?.loadState?.refresh
     val canSeeAll = !isBlocked && previewItems.isNotEmpty()
 
     MediaHubSection(
@@ -83,14 +83,14 @@ internal fun MediaCommunitySection(
                 }
             }
 
-            loadState is LoadState.Loading || (reviews == null && loadState !is LoadState.Error) -> {
+            refreshState is LoadState.Loading || reviews == null -> {
                 MediaHubSectionLoadingState(
                     title = stringResource(R.string.label_media_community_loading),
                     message = stringResource(R.string.message_media_community_loading),
                 )
             }
 
-            loadState is LoadState.Error -> {
+            refreshState is LoadState.Error -> {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
@@ -165,10 +165,3 @@ private fun CommunityReviewCard(
         }
     }
 }
-
-private fun PagedList<Review>.previewItems(maxCount: Int): List<Review> =
-    buildList {
-        repeat(minOf(size, maxCount)) { index ->
-            this@previewItems[index]?.let(::add)
-        }
-    }

@@ -22,13 +22,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.android.core.views.compose.composable
 import co.anitrend.arch.extension.ext.argument
+import co.anitrend.common.episode.ui.compose.EpisodeSheetScreen
 import co.anitrend.core.component.sheet.compose.AniTrendSheetComposition
 import co.anitrend.core.extensions.handleViewIntent
 import co.anitrend.domain.episode.model.EpisodeParam
-import co.anitrend.episode.component.content.compose.EpisodeSheetScreen
 import co.anitrend.episode.component.sheet.viewmodel.EpisodeSheetViewModel
 import co.anitrend.navigation.EpisodeRouter
 import co.anitrend.navigation.extensions.nameOf
@@ -86,15 +88,17 @@ class EpisodeSheet : AniTrendSheetComposition() {
     ): View =
         composable(requireActivity()) {
             AniTrendTheme3 {
+                val model by viewModel.model.observeAsState()
+
                 LaunchedEffect(param) {
                     param?.id?.also { viewModel(param = EpisodeParam.Detail(it)) }
                         ?: Timber.e("Episode param is null when it should not be")
                 }
                 EpisodeSheetScreen(
+                    episode = model,
                     onPlayClick = {
                         view?.handleViewIntent(it)
                     },
-                    viewModel = viewModel,
                     onPublisherClick = {
                         Toast.makeText(context, "Open search to find studio", Toast.LENGTH_LONG).show()
                     },

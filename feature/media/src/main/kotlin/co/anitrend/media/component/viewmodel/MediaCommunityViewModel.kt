@@ -16,9 +16,11 @@
  */
 package co.anitrend.media.component.viewmodel
 
-import androidx.paging.PagedList
-import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
-import co.anitrend.data.review.GetReviewPagedInteractor
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import co.anitrend.data.review.GetPagingReviewInteractor
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.ScoreFormat
@@ -26,28 +28,26 @@ import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.review.enums.ReviewSort
 import co.anitrend.domain.review.model.ReviewParam
 import co.anitrend.navigation.model.sorting.Sorting
+import kotlinx.coroutines.flow.Flow
 
 class MediaCommunityViewModel(
-    private val interactor: GetReviewPagedInteractor,
-) : AniTrendViewModelState<PagedList<Review>>() {
-    operator fun invoke(
+    private val interactor: GetPagingReviewInteractor,
+) : ViewModel() {
+    fun reviews(
         mediaId: Long,
         mediaType: MediaType,
         scoreFormat: ScoreFormat,
-    ) {
-        val result =
-            interactor(
-                ReviewParam.Paged(
-                    mediaId = mediaId,
-                    mediaType = mediaType,
-                    scoreFormat = scoreFormat,
-                    sort =
-                        listOf(
-                            Sorting(ReviewSort.RATING, SortOrder.DESC),
-                            Sorting(ReviewSort.CREATED_AT, SortOrder.DESC),
-                        ),
-                ),
+    ): Flow<PagingData<Review>> =
+        interactor(
+            ReviewParam.Paged(
+                mediaId = mediaId,
+                mediaType = mediaType,
+                scoreFormat = scoreFormat,
+                sort =
+                    listOf(
+                        Sorting(ReviewSort.RATING, SortOrder.DESC),
+                        Sorting(ReviewSort.CREATED_AT, SortOrder.DESC),
+                    ),
             )
-        state.postValue(result)
-    }
+        ).cachedIn(viewModelScope)
 }

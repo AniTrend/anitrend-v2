@@ -17,6 +17,7 @@
 package co.anitrend.task.news.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.data.edge.news.NewsSyncInteractor
 import co.anitrend.navigation.NewsTaskRouter
 import co.anitrend.task.news.component.NewsWorker
 import co.anitrend.task.news.provider.FeatureProvider
@@ -30,7 +31,7 @@ private val workManagerModule =
             NewsWorker(
                 context = androidContext(),
                 parameters = params.get(),
-                interactor = get(),
+                interactor = get<NewsSyncInteractor>(),
                 settings = get(),
             )
         }

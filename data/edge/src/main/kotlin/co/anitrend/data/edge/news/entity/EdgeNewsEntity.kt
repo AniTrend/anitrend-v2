@@ -37,5 +37,6 @@ data class EdgeNewsEntity(
     @ColumnInfo(name = "source") val source: String?,
     @ColumnInfo(name = "published_at") val publishedAt: Long?,
     @ColumnInfo(name = "description") val description: String?,
+    @ColumnInfo(name = "content") val content: String?,
     @PrimaryKey(autoGenerate = true) override val id: Long? = null,
 ) : IEntityId<Long?>

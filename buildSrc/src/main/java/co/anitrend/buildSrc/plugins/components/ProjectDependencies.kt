@@ -52,8 +52,16 @@ private fun Project.applyFeatureModuleGroupDependencies() {
     dependencies.implementation(libs.anitrend.arch.theme)
     dependencies.implementation(libs.anitrend.arch.domain)
     dependencies.implementation(libs.anitrend.arch.recycler)
-    dependencies.implementation(libs.anitrend.arch.recycler.paging.legacy)
-    dependencies.implementation(libs.anitrend.arch.paging.legacy)
+    if (
+        path != Modules.Feature.Media.path &&
+        path != Modules.Feature.Airing.path &&
+        path != Modules.Feature.ReviewDiscover.path &&
+        path != Modules.Feature.MediaDiscover.path &&
+        path != Modules.Feature.MediaList.path
+    ) {
+        dependencies.implementation(libs.anitrend.arch.recycler.paging.legacy)
+        dependencies.implementation(libs.anitrend.arch.paging.legacy)
+    }
     dependencies.implementation(libs.anitrend.arch.analytics)
 
     dependencies.implementation(libs.androidx.core.ktx)

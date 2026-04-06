@@ -23,7 +23,7 @@ plugins {
 
 dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.shared))
-    implementation(project(Libraries.AniTrend.CommonUi.review))
+    implementation(libs.androidx.paging.compose)
     implementation(libs.sheets.core)
 }
 

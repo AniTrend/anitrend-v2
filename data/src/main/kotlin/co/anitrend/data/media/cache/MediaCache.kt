@@ -93,7 +93,8 @@ internal class MediaCache(
         ) : Identity()
 
         class Paged(
-            override val id: Long = 0,
+            val param: MediaParam.Find? = null,
+            override val id: Long = param.cacheIdentityValue(),
             override val key: String = "media_paged",
         ) : Identity()
 
@@ -103,3 +104,10 @@ internal class MediaCache(
         ) : Identity()
     }
 }
+
+private fun MediaParam.Find?.cacheIdentityValue(): Long =
+    this
+        ?.toString()
+        ?.hashCode()
+        ?.toLong()
+        ?: 0L

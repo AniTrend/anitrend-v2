@@ -17,6 +17,7 @@
 package co.anitrend.data.medialist
 
 import androidx.paging.PagedList
+import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.medialist.entity.MediaListEntity
@@ -24,6 +25,7 @@ import co.anitrend.data.medialist.model.container.MediaListContainerModel
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.medialist.interactor.MediaListUseCase
 import co.anitrend.domain.medialist.repository.IMediaListRepository
+import kotlinx.coroutines.flow.Flow
 
 internal typealias MediaListEntryController = GraphQLController<MediaListContainerModel.Entry, MediaListEntity>
 internal typealias MediaListPagedController = GraphQLController<MediaListContainerModel.Paged, List<MediaListEntity>>
@@ -36,6 +38,7 @@ internal typealias DeleteCustomListController = GraphQLController<MediaListConta
 internal typealias MediaListSyncRepository = IMediaListRepository.Sync<DataState<Boolean>>
 internal typealias MediaListEntryRepository = IMediaListRepository.Entry<DataState<Media>>
 internal typealias MediaListCollectionRepository = IMediaListRepository.Collection<DataState<PagedList<Media>>>
+internal typealias MediaListPagingRepository = IMediaListRepository.Paged<Flow<PagingData<Media>>>
 internal typealias MediaListPagedRepository = IMediaListRepository.Paged<DataState<PagedList<Media>>>
 internal typealias MediaListSaveEntryRepository = IMediaListRepository.SaveEntry<DataState<Boolean>>
 internal typealias MediaListSaveEntriesRepository = IMediaListRepository.SaveEntries<DataState<Boolean>>
@@ -44,6 +47,7 @@ internal typealias DeleteCustomMediaListRepository = IMediaListRepository.Delete
 
 typealias SyncMediaListEntryInteractor = MediaListUseCase.Sync<DataState<Boolean>>
 typealias GetMediaListEntryInteractor = MediaListUseCase.GetEntry<DataState<Media>>
+typealias GetPagingMediaListInteractor = MediaListUseCase.GetPaged<Flow<PagingData<Media>>>
 typealias GetPagedMediaListInteractor = MediaListUseCase.GetPaged<DataState<PagedList<Media>>>
 typealias GetCollectionMediaListInteractor = MediaListUseCase.GetCollection<DataState<PagedList<Media>>>
 typealias SaveMediaListEntryInteractor = MediaListUseCase.SaveEntry<DataState<Boolean>>

@@ -566,8 +566,7 @@ private fun MediaDetailContent(
     relationsLoadState: LoadState? = null,
     recommendations: List<MediaRecommendationEntry>? = null,
     recommendationsLoadState: LoadState? = null,
-    communityReviews: PagedList<Review>? = null,
-    communityLoadState: LoadState? = null,
+    communityReviews: LazyPagingItems<Review>? = null,
     onPeopleClick: (MediaPeopleRouter.MediaPeopleParam) -> Unit = {},
     onStudioClick: (StudioRouter.StudioParam) -> Unit = {},
     onSeeAllStudiosClick: (MediaStudiosRouter.MediaStudiosParam) -> Unit = {},
@@ -808,7 +807,6 @@ private fun MediaDetailContent(
         item {
             MediaCommunitySection(
                 reviews = communityReviews,
-                loadState = communityLoadState,
                 isBlocked = media.isReviewBlocked,
                 onSeeAllClick = {
                     onCommunityClick(
@@ -882,10 +880,20 @@ fun MediaScreenContent(
     val relationsLoadState by relationsViewModel.loadState.observeAsState()
     val recommendations by recommendationsViewModel.model.observeAsState()
     val recommendationsLoadState by recommendationsViewModel.loadState.observeAsState()
-    val communityReviews by communityViewModel.model.observeAsState()
-    val communityLoadState by communityViewModel.loadState.observeAsState()
     val characters = remember(media.id) { charactersViewModel.characters(media.id) }.collectAsLazyPagingItems()
     val staff = remember(media.id) { staffViewModel.staff(media.id) }.collectAsLazyPagingItems()
+    val communityReviews =
+        if (media.isReviewBlocked) {
+            null
+        } else {
+            remember(media.id, media.category.type, scoreFormat) {
+                communityViewModel.reviews(
+                    mediaId = media.id,
+                    mediaType = media.category.type,
+                    scoreFormat = scoreFormat,
+                )
+            }.collectAsLazyPagingItems()
+        }
 
     val view = LocalView.current
 
@@ -895,12 +903,6 @@ fun MediaScreenContent(
         relationsViewModel(media.id)
         if (!media.isRecommendationBlocked) {
             recommendationsViewModel(media.id)
-        }
-    }
-
-    LaunchedEffect(media.id, scoreFormat) {
-        if (!media.isReviewBlocked) {
-            communityViewModel(media.id, media.category.type, scoreFormat)
         }
     }
 
@@ -953,7 +955,6 @@ fun MediaScreenContent(
             recommendations = recommendations,
             recommendationsLoadState = recommendationsLoadState,
             communityReviews = communityReviews,
-            communityLoadState = communityLoadState,
             onPeopleClick = onPeopleClick,
             onStudioClick = onStudioClick,
             onSeeAllStudiosClick = onSeeAllStudiosClick,
@@ -967,7 +968,7 @@ fun MediaScreenContent(
             onRetryStats = { statsViewModel(media.id) },
             onRetryRelations = { relationsViewModel(media.id) },
             onRetryRecommendations = { recommendationsViewModel(media.id) },
-            onRetryCommunity = { communityViewModel(media.id, media.category.type, scoreFormat) },
+            onRetryCommunity = { communityReviews?.retry() },
             modifier =
                 Modifier
                     .padding(innerPadding),

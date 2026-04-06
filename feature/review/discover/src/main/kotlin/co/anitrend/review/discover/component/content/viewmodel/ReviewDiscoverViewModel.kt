@@ -17,10 +17,12 @@
 package co.anitrend.review.discover.component.content.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.paging.PagedList
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import co.anitrend.arch.extension.ext.extra
-import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
-import co.anitrend.data.review.GetReviewPagedInteractor
+import co.anitrend.data.review.GetPagingReviewInteractor
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaType
@@ -30,13 +32,18 @@ import co.anitrend.domain.review.model.ReviewParam
 import co.anitrend.navigation.ReviewDiscoverRouter
 import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.navigation.model.sorting.Sorting
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 
 class ReviewDiscoverViewModel(
-    private val interactor: GetReviewPagedInteractor,
+    private val interactor: GetPagingReviewInteractor,
     settings: IUserSettings,
     savedStateHandle: SavedStateHandle,
-) : AniTrendViewModelState<PagedList<Review>>() {
-    val default by savedStateHandle.extra(
+) : ViewModel() {
+    private val default by savedStateHandle.extra(
         key = nameOf<ReviewDiscoverRouter.ReviewDiscoverParam>(),
         default = {
             ReviewDiscoverRouter.ReviewDiscoverParam(
@@ -53,16 +60,20 @@ class ReviewDiscoverViewModel(
         },
     )
 
-    operator fun invoke(param: ReviewDiscoverRouter.ReviewDiscoverParam) {
-        val query =
+    private val mutableParams = MutableStateFlow(default)
+
+    val params: StateFlow<ReviewDiscoverRouter.ReviewDiscoverParam> = mutableParams.asStateFlow()
+
+    val reviews: Flow<PagingData<Review>> = params.flatMapLatest(::query).cachedIn(viewModelScope)
+
+    private fun query(param: ReviewDiscoverRouter.ReviewDiscoverParam): Flow<PagingData<Review>> =
+        interactor(
             ReviewParam.Paged(
                 mediaId = param.mediaId,
                 userId = param.userId,
                 mediaType = param.mediaType,
                 sort = param.sort,
                 scoreFormat = param.scoreFormat,
-            )
-        val result = interactor(query)
-        state.postValue(result)
-    }
+            ),
+        )
 }

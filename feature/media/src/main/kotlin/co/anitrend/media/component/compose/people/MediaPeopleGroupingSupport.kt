@@ -27,7 +27,7 @@ internal data class MediaCharacterRoleSection(
 )
 
 internal fun List<MediaPerson.Character>.groupedCharacterSections(): List<MediaCharacterRoleSection> {
-    if (characters.isEmpty()) {
+    if (isEmpty()) {
         return emptyList()
     }
 
@@ -37,13 +37,13 @@ internal fun List<MediaPerson.Character>.groupedCharacterSections(): List<MediaC
             CharacterRole.SUPPORTING to R.string.label_media_people_characters_group_supporting,
             CharacterRole.BACKGROUND to R.string.label_media_people_characters_group_background,
         ).forEach { (role, titleRes) ->
-            val items = characters.filter { it.role == role }
+            val items = this@groupedCharacterSections.filter { character -> character.role == role }
             if (items.isNotEmpty()) {
                 add(MediaCharacterRoleSection(titleRes = titleRes, characters = items))
             }
         }
 
-        val unclassified = characters.filter { it.role == null }
+        val unclassified = this@groupedCharacterSections.filter { character -> character.role == null }
         if (unclassified.isNotEmpty()) {
             add(
                 MediaCharacterRoleSection(
@@ -53,3 +53,4 @@ internal fun List<MediaPerson.Character>.groupedCharacterSections(): List<MediaC
             )
         }
     }
+}

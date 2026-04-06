@@ -258,6 +258,14 @@
     <string name="label_media_stats_loading">Loading stats</string>
     <!-- Supporting loading copy for the media-detail stats sidecar fetch -->
     <string name="message_media_stats_loading">Fetching score and status distribution snapshots for this title.</string>
+    <!-- Title shown at the top of the media schedule bottom sheet -->
+    <string name="title_media_schedule_sheet">Upcoming episodes</string>
+    <!-- Loading copy shown while the media schedule bottom sheet fetches paging data -->
+    <string name="message_media_schedule_loading">Loading upcoming episodes.</string>
+    <!-- Empty-state copy shown when no upcoming schedule items are available -->
+    <string name="message_media_schedule_empty">No upcoming episodes are scheduled yet.</string>
+    <!-- Error-state title shown when the media schedule bottom sheet fails to load -->
+    <string name="label_media_schedule_error_title">Schedule unavailable</string>
     <!-- Error-state title for failed media-detail stats fetches -->
     <string name="label_media_stats_error_title">Stats unavailable</string>
     <!-- Empty-state title for media-detail stats -->

@@ -20,18 +20,12 @@ import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.defaultController
 import co.anitrend.data.feed.extensions.newsLocalSource
 import co.anitrend.data.feed.extensions.remoteSource
-import co.anitrend.data.feed.news.NewsPagedInteractor
-import co.anitrend.data.feed.news.NewsPagedRepository
-import co.anitrend.data.feed.news.NewsSyncInteractor
-import co.anitrend.data.feed.news.NewsSyncRepository
 import co.anitrend.data.feed.news.cache.NewsCache
 import co.anitrend.data.feed.news.converter.NewsEntityConverter
 import co.anitrend.data.feed.news.converter.NewsModelConverter
 import co.anitrend.data.feed.news.mapper.NewsMapper
-import co.anitrend.data.feed.news.repository.NewsRepository
 import co.anitrend.data.feed.news.source.NewsSourceImpl
 import co.anitrend.data.feed.news.source.contract.NewsSource
-import co.anitrend.data.feed.news.usecase.NewsInteractor
 import org.koin.dsl.module
 
 private val sourceModule =
@@ -81,34 +75,6 @@ private val mapperModule =
         }
     }
 
-private val useCaseModule =
-    module {
-        factory<NewsPagedInteractor> {
-            NewsInteractor.Paged(
-                repository = get(),
-            )
-        }
-        factory<NewsSyncInteractor> {
-            NewsInteractor.Sync(
-                repository = get(),
-            )
-        }
-    }
-
-private val repositoryModule =
-    module {
-        factory<NewsPagedRepository> {
-            NewsRepository.Paged(
-                source = get(),
-            )
-        }
-        factory<NewsSyncRepository> {
-            NewsRepository.Sync(
-                source = get(),
-            )
-        }
-    }
-
 internal val newsModules =
     module {
         includes(
@@ -116,7 +82,5 @@ internal val newsModules =
             cacheModule,
             converterModule,
             mapperModule,
-            useCaseModule,
-            repositoryModule,
         )
     }

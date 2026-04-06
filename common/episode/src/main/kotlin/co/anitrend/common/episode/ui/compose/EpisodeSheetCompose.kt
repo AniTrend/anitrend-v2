@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 AniTrend
+ * Copyright (C) 2026 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.episode.component.content.compose
+package co.anitrend.common.episode.ui.compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -42,8 +42,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -56,19 +54,20 @@ import co.anitrend.android.core.koin.MarkdownFlavour
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.common.episode.R
 import co.anitrend.common.markdown.ui.compose.MarkdownText
 import co.anitrend.domain.episode.entity.Episode
-import co.anitrend.episode.component.sheet.viewmodel.EpisodeSheetViewModel
 
 @Composable
-private fun EpisodeSheetContent(
-    modifier: Modifier = Modifier,
+fun EpisodeSheetContent(
     episode: Episode,
-    onPlayClick: (String) -> Unit = {},
-    onPublisherClick: () -> Unit = {},
-    onDownloadClick: () -> Unit = {},
+    onPlayClick: (String) -> Unit,
+    onPublisherClick: () -> Unit,
+    onDownloadClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberScrollState()
+
     Column(
         modifier =
             modifier
@@ -88,7 +87,6 @@ private fun EpisodeSheetContent(
                 onClick = { onPlayClick(episode.guid) },
             )
 
-            // Duration badge
             Row(
                 modifier =
                     Modifier
@@ -113,7 +111,6 @@ private fun EpisodeSheetContent(
                 )
             }
 
-            // Play button
             Icon(
                 imageVector = Icons.Default.PlayCircle,
                 contentDescription = null,
@@ -142,28 +139,23 @@ private fun EpisodeSheetContent(
 
         Spacer(modifier = Modifier.size(8.dp))
 
-        // Publisher chip
-        AssistChip(
-            onClick = onPublisherClick,
-            label = {
-                Text(text = episode.series.seriesPublisher ?: "")
-            },
-            modifier =
-                Modifier
-                    .padding(horizontal = 16.dp),
-        )
+        episode.series.seriesPublisher?.takeIf(String::isNotBlank)?.also { publisher ->
+            AssistChip(
+                onClick = onPublisherClick,
+                label = { Text(text = publisher) },
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
 
-        Spacer(modifier = Modifier.size(8.dp))
-        // Episode description
+            Spacer(modifier = Modifier.size(8.dp))
+        }
+
         MarkdownText(
             content =
                 if (episode.description.isNullOrBlank()) {
-                    episode.about.episodeTitle?.let {
-                        stringResource(
-                            co.anitrend.episode.R.string.label_episode_has_no_summary,
-                            it,
-                        )
-                    }
+                    stringResource(
+                        R.string.message_episode_no_summary,
+                        episode.about.episodeTitle ?: episode.title,
+                    )
                 } else {
                     episode.description
                 },
@@ -176,8 +168,6 @@ private fun EpisodeSheetContent(
 
         Spacer(modifier = Modifier.size(8.dp))
 
-        // Download button
-
         Button(
             onClick = onDownloadClick,
             modifier =
@@ -185,7 +175,7 @@ private fun EpisodeSheetContent(
                     .padding(horizontal = 16.dp)
                     .align(Alignment.End),
         ) {
-            Text(text = stringResource(id = co.anitrend.episode.R.string.label_download))
+            Text(text = stringResource(R.string.action_episode_download))
         }
     }
 }
@@ -193,15 +183,14 @@ private fun EpisodeSheetContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EpisodeSheetScreen(
-    viewModel: EpisodeSheetViewModel,
-    onPlayClick: (String) -> Unit = {},
-    onPublisherClick: () -> Unit = {},
-    onDownloadClick: () -> Unit = {},
+    episode: Episode?,
+    onPlayClick: (String) -> Unit,
+    onPublisherClick: () -> Unit,
+    onDownloadClick: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     AniTrendSheet(onDismiss = onDismiss, dragHandle = null) {
-        val model by viewModel.model.observeAsState()
-        when (val episode = model) {
+        when (episode) {
             null ->
                 Box(modifier = Modifier.fillMaxWidth()) {
                     CircularProgressIndicator(
@@ -209,7 +198,7 @@ fun EpisodeSheetScreen(
                             Modifier
                                 .size(24.dp)
                                 .padding(16.dp)
-                                .align(alignment = Alignment.Center),
+                                .align(Alignment.Center),
                     )
                 }
 

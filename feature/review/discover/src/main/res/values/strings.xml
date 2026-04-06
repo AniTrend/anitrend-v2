@@ -16,5 +16,32 @@
   -->
 
 <resources>
-
+  <!-- Review discover screen title -->
+  <string name="title_review_discover">Reviews</string>
+  <!-- Review discover default subtitle -->
+  <string name="message_review_discover_default">Browse the latest community reviews.</string>
+  <!-- Review discover subtitle when scoped to a media title -->
+  <string name="message_review_discover_media_scope">Community reviews for this title.</string>
+  <!-- Review discover subtitle when scoped to a user -->
+  <string name="message_review_discover_user_scope">Reviews written by this user.</string>
+  <!-- Review discover subtitle when scoped to anime reviews -->
+  <string name="message_review_discover_anime_scope">Browse recent anime reviews.</string>
+  <!-- Review discover subtitle when scoped to manga reviews -->
+  <string name="message_review_discover_manga_scope">Browse recent manga reviews.</string>
+  <!-- Review discover loading heading -->
+  <string name="label_review_discover_loading_title">Loading reviews</string>
+  <!-- Review discover loading message -->
+  <string name="message_review_discover_loading">Pulling the latest review entries.</string>
+  <!-- Review discover empty-state heading -->
+  <string name="label_review_discover_empty_title">No reviews found</string>
+  <!-- Review discover empty-state message -->
+  <string name="message_review_discover_empty">Try again later or broaden the filter.</string>
+  <!-- Review discover error heading -->
+  <string name="label_review_discover_error_title">Unable to load reviews</string>
+  <!-- Review discover append loading message -->
+  <string name="message_review_discover_loading_more">Loading more reviews...</string>
+  <!-- Review discover fallback author label -->
+  <string name="label_review_discover_unknown_author">Unknown user</string>
+  <!-- Review discover review score label -->
+  <string name="label_review_discover_score">Score %1$d</string>
 </resources>

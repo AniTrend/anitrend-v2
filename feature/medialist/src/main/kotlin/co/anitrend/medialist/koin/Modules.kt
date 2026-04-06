@@ -16,17 +16,14 @@
  */
 package co.anitrend.medialist.koin
 
-import androidx.recyclerview.widget.RecyclerView
-import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
 import co.anitrend.android.core.settings.Settings
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.data.medialist.GetPagingMediaListInteractor
 import co.anitrend.medialist.component.container.MediaListContainer
 import co.anitrend.medialist.component.container.viewmodel.UserViewModel
-import co.anitrend.medialist.component.content.MediaListContent
 import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
 import co.anitrend.medialist.provider.FeatureProvider
 import co.anitrend.navigation.MediaListRouter
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -35,21 +32,7 @@ private val fragmentModule =
     module {
         fragment {
             MediaListContainer(
-                stateConfig = get(),
-            )
-        }
-        fragment {
-            val settings = get<Settings>()
-            MediaListContent(
-                settings = settings,
-                stateConfig = get(),
-                supportViewAdapter =
-                    MediaPagedAdapter(
-                        settings = settings,
-                        viewPool = RecyclerView.RecycledViewPool(),
-                        resources = androidContext().resources,
-                        stateConfiguration = get(),
-                    ),
+                settings = get<Settings>(),
             )
         }
     }
@@ -58,7 +41,7 @@ private val viewModelModule =
     module {
         viewModel { scope ->
             MediaListViewModel(
-                interactor = get(),
+                interactor = get<GetPagingMediaListInteractor>(),
                 settings = get(),
                 savedStateHandle = scope.get(),
             )

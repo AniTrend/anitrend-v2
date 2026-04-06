@@ -17,6 +17,7 @@
 package co.anitrend.data.media.source.contract
 
 import androidx.paging.PagedList
+import androidx.paging.PagingData
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Default
 import co.anitrend.arch.paging.legacy.source.live.SupportPagingLiveDataSource
@@ -169,6 +170,16 @@ internal class MediaSource {
                 requestHelper = requestHelper,
                 block = ::getMedia,
             )
+        }
+    }
+
+    abstract class Paging {
+        protected lateinit var query: MediaQuery.Find
+
+        abstract operator fun invoke(param: MediaParam.Find): Flow<PagingData<Media>>
+
+        protected fun assignQuery(param: MediaParam.Find) {
+            query = MediaQuery.Find(param)
         }
     }
 

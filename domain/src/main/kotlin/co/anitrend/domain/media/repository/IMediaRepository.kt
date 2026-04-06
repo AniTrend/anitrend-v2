@@ -48,7 +48,7 @@ interface IMediaRepository {
         fun getStats(param: MediaParam.Stats): State
     }
 
-    interface Paged<State : UiState<*>> : IMediaRepository {
+    interface Paged<State> : IMediaRepository {
         fun getPaged(param: MediaParam.Find): State
     }
 

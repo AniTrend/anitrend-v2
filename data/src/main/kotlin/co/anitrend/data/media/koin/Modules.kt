@@ -24,6 +24,7 @@ import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.media.GetMediaCharactersInteractor
+import co.anitrend.data.media.GetPagingMediaInteractor
 import co.anitrend.data.media.GetMediaStatsInteractor
 import co.anitrend.data.media.GetMediaStudiosInteractor
 import co.anitrend.data.media.GetNetworkMediaInteractor
@@ -34,6 +35,7 @@ import co.anitrend.data.media.GetMediaStaffInteractor
 import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaNetworkRepository
+import co.anitrend.data.media.MediaPagingRepository
 import co.anitrend.data.media.MediaPagedRepository
 import co.anitrend.data.media.MediaRecommendationsRepository
 import co.anitrend.data.media.MediaRelationsRepository
@@ -174,6 +176,22 @@ private val sourceModule =
         }
         factory<MediaSource.Paged> {
             MediaSourceImpl.Paged(
+                remoteSource = aniListApi(),
+                localSource = store().mediaDao(),
+                carouselSource = get(),
+                controller =
+                    graphQLController(
+                        mapper = get<MediaMapper.Paged>(),
+                        strategy = offline(),
+                    ),
+                clearDataHelper = get(),
+                converter = get(),
+                filter = get(),
+                dispatcher = get(),
+            )
+        }
+        factory<MediaSource.Paging> {
+            MediaSourceImpl.Paging(
                 remoteSource = aniListApi(),
                 localSource = store().mediaDao(),
                 carouselSource = get(),
@@ -412,6 +430,11 @@ private val useCaseModule =
                 repository = get(),
             )
         }
+        factory<GetPagingMediaInteractor> {
+            MediaInteractor.Paging(
+                repository = get(),
+            )
+        }
         factory<GetMediaCharactersInteractor> {
             MediaInteractor.Characters(
                 repository = get(),
@@ -458,6 +481,11 @@ private val repositoryModule =
         }
         factory<MediaPagedRepository> {
             MediaRepository.Paged(
+                source = get(),
+            )
+        }
+        factory<MediaPagingRepository> {
+            MediaRepository.Paging(
                 source = get(),
             )
         }

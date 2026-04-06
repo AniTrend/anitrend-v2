@@ -25,6 +25,7 @@ import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaNetworkRepository
+import co.anitrend.data.media.MediaPagingRepository
 import co.anitrend.data.media.MediaPagedRepository
 import co.anitrend.data.media.MediaRecommendationsRepository
 import co.anitrend.data.media.MediaRelationsRepository
@@ -71,6 +72,13 @@ internal sealed class MediaRepository {
     ) : MediaRepository(),
         MediaPagedRepository {
         override fun getPaged(param: MediaParam.Find) = source create source(param)
+    }
+
+    class Paging(
+        private val source: MediaSource.Paging,
+    ) : MediaRepository(),
+        MediaPagingRepository {
+        override fun getPaged(param: MediaParam.Find): Flow<PagingData<Media>> = source(param)
     }
 
     class Characters(
