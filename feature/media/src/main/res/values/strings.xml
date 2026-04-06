@@ -229,17 +229,25 @@
     <!-- Section title for media-detail stats -->
     <string name="title_media_stats_section">Stats</string>
     <!-- Supporting copy for the media-detail stats section -->
-    <string name="subtitle_media_stats_section">Title-level signals and distribution snapshots without the noise.</string>
+    <string name="subtitle_media_stats_section">Community snapshot at a glance</string>
+    <!-- Action label to open the dedicated stats destination -->
+    <string name="action_media_stats_section_see_more">See more</string>
+    <!-- Metric label for the community mean score -->
+    <string name="label_media_stats_average_score">Average score</string>
     <!-- Metric label for favourites -->
     <string name="label_media_stats_favourites">Favourites</string>
     <!-- Metric label for popularity -->
     <string name="label_media_stats_popularity">Popularity</string>
     <!-- Metric label for trending -->
-    <string name="label_media_stats_trending">Trending</string>
+    <string name="label_media_stats_trending">Trend rank</string>
     <!-- Subheading for score distribution snapshots -->
     <string name="label_media_stats_score_distribution">Score distribution</string>
     <!-- Subheading for status distribution snapshots -->
     <string name="label_media_stats_status_distribution">Status distribution</string>
+    <!-- Accessibility description for one score distribution bar; %1$d is the score bucket and %2$s is the number of ratings -->
+    <string name="description_media_stats_score_distribution_bar" formatted="true">Score %1$d with %2$s ratings</string>
+    <!-- Accessibility description for one status distribution segment; %1$s is the status label and %2$s is the list-entry count -->
+    <string name="description_media_stats_status_distribution_segment" formatted="true">%1$s with %2$s list entries</string>
     <!-- Loading label for the media-detail stats sidecar fetch -->
     <string name="label_media_stats_loading">Loading stats</string>
     <!-- Supporting loading copy for the media-detail stats sidecar fetch -->
@@ -250,6 +258,8 @@
     <string name="label_media_stats_empty_title">No stats yet</string>
     <!-- Empty-state copy for media-detail stats -->
     <string name="message_media_stats_empty">No secondary stats are exposed for this title yet.</string>
+    <!-- Compact copy shown when summary metrics exist but no distribution breakdown is exposed -->
+    <string name="message_media_stats_distribution_empty">Detailed distribution data is not available for this title yet.</string>
     <!-- Section title for related titles shown on the media detail hub -->
     <string name="title_media_related_section">Related</string>
     <!-- Supporting copy for the related titles hub section -->
@@ -349,6 +359,10 @@
     <string name="title_media_recommendations_screen">Recommendations</string>
     <!-- Supporting copy for the dedicated recommendations destination -->
     <string name="subtitle_media_recommendations_screen">Follow the community’s strongest recommendation trails from this title.</string>
+    <!-- Screen title for the dedicated stats destination -->
+    <string name="title_media_stats_screen">Stats</string>
+    <!-- Supporting copy for the dedicated stats destination -->
+    <string name="subtitle_media_stats_screen">See how the community scores and tracks this title in detail.</string>
     <!-- Heading for official and third-party links in the extended metadata section -->
     <string name="label_media_extended_details_links">External links</string>
     <!-- Section title for the unified related and recommendation browser -->

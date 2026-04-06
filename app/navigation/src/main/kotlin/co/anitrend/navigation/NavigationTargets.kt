@@ -280,6 +280,22 @@ object MediaStudiosRouter : NavigationRouter() {
     ) : IParam
 }
 
+object MediaStatsRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class MediaStatsParam(
+        val mediaId: Long,
+        val mediaTitle: String? = null,
+        val averageScore: Int? = null,
+        val favourites: Int? = null,
+        val popularity: Int? = null,
+        val trendRank: Int? = null,
+    ) : IParam
+}
+
 object MediaDiscoverRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
