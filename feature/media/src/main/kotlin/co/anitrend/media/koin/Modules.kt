@@ -30,10 +30,12 @@ import co.anitrend.media.provider.FeatureProvider
 import co.anitrend.media.provider.PeopleFeatureProvider
 import co.anitrend.media.provider.RecommendationsFeatureProvider
 import co.anitrend.media.provider.RelationsFeatureProvider
+import co.anitrend.media.provider.StudiosFeatureProvider
 import co.anitrend.navigation.MediaPeopleRouter
 import co.anitrend.navigation.MediaRecommendationsRouter
 import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.MediaStudiosRouter
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -100,6 +102,9 @@ private val featureModule =
         }
         factory<MediaRecommendationsRouter.Provider> {
             RecommendationsFeatureProvider()
+        }
+        factory<MediaStudiosRouter.Provider> {
+            StudiosFeatureProvider()
         }
     }
 

@@ -358,9 +358,33 @@
     <!-- Section title for the flattened contributor band -->
     <string name="title_media_contributors_section">Contributors</string>
     <!-- Supporting copy for the flattened contributor band -->
-    <string name="subtitle_media_contributors_section">Characters first, then the staff and studios most likely to matter.</string>
-    <!-- Secondary label for non-primary studio rows -->
-    <string name="label_media_contributors_studio_secondary">Supporting studio</string>
+    <string name="subtitle_media_contributors_section">Characters first, then the staff roles most likely to matter.</string>
+    <!-- Section title for the dedicated studios preview module -->
+    <string name="title_media_studios_section">Studios</string>
+    <!-- Supporting copy for the dedicated studios preview module -->
+    <string name="subtitle_media_studios_section">Lead production credit first, then the supporting studios behind this title.</string>
+    <!-- Action label to open the full studios destination -->
+    <string name="action_media_studios_section_see_all">See all</string>
+    <!-- Badge label for a studio credited as an animation studio -->
+    <string name="label_media_studios_animation_badge">Animation studio</string>
+    <!-- Loading label for studio preview and list content -->
+    <string name="label_media_studios_loading">Loading studios</string>
+    <!-- Supporting loading copy for studio preview and list content -->
+    <string name="message_media_studios_loading">Fetching credited studios for this title.</string>
+    <!-- Error-state title for failed studio requests -->
+    <string name="label_media_studios_error_title">Studios unavailable</string>
+    <!-- Empty-state title for titles without credited studios -->
+    <string name="label_media_studios_empty_title">No studios listed</string>
+    <!-- Empty-state copy for titles without credited studios -->
+    <string name="message_media_studios_empty">Studio credits are not exposed for this title yet.</string>
+    <!-- Compact summary for a studio's favourites count -->
+    <string name="label_media_studios_favourites_value">%1$s favourites</string>
+    <!-- Screen title for the dedicated studios destination -->
+    <string name="title_media_studios_screen">Studios</string>
+    <!-- Supporting copy for the dedicated studios destination -->
+    <string name="subtitle_media_studios_screen">Browse every credited studio for this title without leaving the media flow.</string>
+    <!-- Secondary action label for opening a studio's external site -->
+    <string name="action_media_studios_external_site">Open site</string>
     <!-- Group title for continuity-first related entries -->
     <string name="title_media_related_group_story_continuity">Story continuity</string>
     <!-- Group title for source and adaptation related entries -->
