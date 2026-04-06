@@ -49,7 +49,6 @@ import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.entity.MediaRelationEntry
-import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.R
 import co.anitrend.media.component.compose.connection.ConnectionRailCardWidth
@@ -57,7 +56,6 @@ import co.anitrend.media.component.compose.connection.RecommendationMediaCard
 import co.anitrend.media.component.compose.connection.RelatedMediaCard
 import co.anitrend.media.component.compose.people.CharacterPreviewRail
 import co.anitrend.media.component.compose.people.StaffPreviewList
-import co.anitrend.navigation.StudioRouter
 import co.anitrend.navigation.model.common.IParam
 
 private enum class ConnectionsTab {
@@ -264,19 +262,14 @@ internal fun ContributorsSection(
     charactersLoadState: LoadState?,
     staff: PagedList<MediaPerson.Staff>?,
     staffLoadState: LoadState?,
-    studios: List<MediaStudioEntry>?,
-    studiosLoadState: LoadState?,
-    onStudioClick: (StudioRouter.StudioParam) -> Unit,
     onCharacterClick: (MediaPerson.Character) -> Unit,
     onStaffClick: (MediaPerson.Staff) -> Unit,
     onRetryCharacters: () -> Unit,
     onRetryStaff: () -> Unit,
-    onRetryStudios: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val characterPreview = characters?.take(6).orEmpty()
     val staffPreview = staff?.take(4).orEmpty()
-    val studioPreview = studios.orEmpty().take(4)
 
     MediaHubSection(
         title = stringResource(R.string.title_media_contributors_section),
@@ -349,90 +342,6 @@ internal fun ContributorsSection(
                     message = stringResource(R.string.message_media_people_staff_empty),
                 )
             }
-        }
-
-        Text(
-            text = stringResource(R.string.label_media_production_studios_heading),
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-
-        when {
-            studioPreview.isNotEmpty() -> {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                ) {
-                    studioPreview.forEach { entry ->
-                        ContributorRowCard(
-                            title = entry.studio.name,
-                            subtitle =
-                                if (entry.isMain) {
-                                    stringResource(R.string.label_media_production_studio_main_badge)
-                                } else {
-                                    stringResource(R.string.label_media_contributors_studio_secondary)
-                                },
-                            onClick = {
-                                onStudioClick(
-                                    StudioRouter.StudioParam(
-                                        id = entry.studio.id,
-                                        name = entry.studio.name,
-                                    ),
-                                )
-                            },
-                        )
-                    }
-                }
-            }
-
-            studiosLoadState is LoadState.Loading || (studios == null && studiosLoadState !is LoadState.Error) -> {
-                LoadingSkeletonContributorRows()
-            }
-
-            studiosLoadState is LoadState.Error -> {
-                RetryStateBlock(
-                    title = stringResource(R.string.label_media_production_studios_error_title),
-                    onRetry = onRetryStudios,
-                )
-            }
-
-            else -> {
-                EmptyStateBlock(
-                    title = stringResource(R.string.label_media_production_empty_title),
-                    message = stringResource(R.string.message_media_production_empty),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ContributorRowCard(
-    title: String,
-    subtitle: String,
-    onClick: () -> Unit,
-) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.72f),
-        shape = RoundedCornerShape(20.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.24f)),
-        onClick = onClick,
-    ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Medium,
-            )
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
         }
     }
 }
