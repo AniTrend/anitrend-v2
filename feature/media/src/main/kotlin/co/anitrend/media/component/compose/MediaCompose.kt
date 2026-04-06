@@ -99,11 +99,11 @@ import co.anitrend.media.component.compose.section.ContributorsSection
 import co.anitrend.media.component.compose.section.MediaConnectionsBrowserSection
 import co.anitrend.media.component.compose.section.MediaExtendedMetadataSection
 import co.anitrend.media.component.compose.section.MediaGenrePreviewSection
-import co.anitrend.media.component.compose.section.MediaStatsSection
 import co.anitrend.media.component.compose.section.MediaRankPreviewSection
 import co.anitrend.media.component.compose.section.MediaStudiosPreviewSection
 import co.anitrend.media.component.compose.section.MediaSynopsisPreviewSection
 import co.anitrend.media.component.compose.section.MediaTagSection
+import co.anitrend.media.component.compose.stats.MediaStatsSection
 import co.anitrend.media.component.schedule.MediaScheduleSheet
 import co.anitrend.media.component.viewmodel.MediaCommunityViewModel
 import co.anitrend.media.component.viewmodel.MediaCharactersViewModel
@@ -120,6 +120,7 @@ import co.anitrend.navigation.MediaDiscoverRouter
 import co.anitrend.navigation.MediaPeopleRouter
 import co.anitrend.navigation.MediaRecommendationsRouter
 import co.anitrend.navigation.MediaRelationsRouter
+import co.anitrend.navigation.MediaStatsRouter
 import co.anitrend.navigation.MediaStudiosRouter
 import co.anitrend.navigation.ReviewDiscoverRouter
 import co.anitrend.navigation.StudioRouter
@@ -571,6 +572,7 @@ private fun MediaDetailContent(
     onPeopleClick: (MediaPeopleRouter.MediaPeopleParam) -> Unit = {},
     onStudioClick: (StudioRouter.StudioParam) -> Unit = {},
     onSeeAllStudiosClick: (MediaStudiosRouter.MediaStudiosParam) -> Unit = {},
+    onSeeAllStatsClick: (MediaStatsRouter.MediaStatsParam) -> Unit = {},
     onRelatedClick: (MediaRelationsRouter.MediaRelationsParam) -> Unit = {},
     onRecommendationsClick: (MediaRecommendationsRouter.MediaRecommendationsParam) -> Unit = {},
     onCommunityClick: (ReviewDiscoverRouter.ReviewDiscoverParam) -> Unit = {},
@@ -772,6 +774,18 @@ private fun MediaDetailContent(
                 stats = stats,
                 loadState = statsLoadState,
                 onRetry = onRetryStats,
+                onSeeAllClick = {
+                    onSeeAllStatsClick(
+                        MediaStatsRouter.MediaStatsParam(
+                            mediaId = media.id,
+                            mediaTitle = mediaTitle,
+                            averageScore = media.score.mean.takeIf { it > 0 },
+                            favourites = media.favourites.takeIf { it > 0 },
+                            popularity = media.score.popularity?.takeIf { it > 0 },
+                            trendRank = media.score.trending?.takeIf { it > 0 },
+                        ),
+                    )
+                },
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
@@ -829,6 +843,7 @@ fun MediaScreenContent(
     onPeopleClick: (MediaPeopleRouter.MediaPeopleParam) -> Unit,
     onStudioClick: (StudioRouter.StudioParam) -> Unit,
     onSeeAllStudiosClick: (MediaStudiosRouter.MediaStudiosParam) -> Unit,
+    onSeeAllStatsClick: (MediaStatsRouter.MediaStatsParam) -> Unit,
     onRelatedClick: (MediaRelationsRouter.MediaRelationsParam) -> Unit,
     onRecommendationsClick: (MediaRecommendationsRouter.MediaRecommendationsParam) -> Unit,
     onCommunityClick: (ReviewDiscoverRouter.ReviewDiscoverParam) -> Unit,
@@ -933,6 +948,7 @@ fun MediaScreenContent(
             onPeopleClick = onPeopleClick,
             onStudioClick = onStudioClick,
             onSeeAllStudiosClick = onSeeAllStudiosClick,
+            onSeeAllStatsClick = onSeeAllStatsClick,
             onRelatedClick = onRelatedClick,
             onRecommendationsClick = onRecommendationsClick,
             onCommunityClick = onCommunityClick,

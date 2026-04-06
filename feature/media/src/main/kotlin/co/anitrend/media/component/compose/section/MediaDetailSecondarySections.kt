@@ -43,16 +43,13 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.PagedList
 import co.anitrend.android.core.extensions.toHumanReadableQuantity
 import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaPerson
-import co.anitrend.domain.media.entity.MediaStats
 import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.media.R
 import co.anitrend.media.component.compose.people.previewCandidates
 import co.anitrend.media.component.compose.people.selectStaffPreview
 import co.anitrend.navigation.StudioRouter
 import java.util.Locale
-import co.anitrend.common.media.ui.R as MediaUiR
 
 private const val PRODUCTION_STAFF_PREVIEW_COUNT = 10
 private const val PRODUCTION_STUDIO_PREVIEW_COUNT = 6
@@ -78,11 +75,6 @@ private data class ProductionCredit(
     val subtitle: String? = null,
     val badge: String? = null,
     val onClick: (() -> Unit)? = null,
-)
-
-private data class MediaMetric(
-    val label: String,
-    val value: String,
 )
 
 private fun String?.normalizedRole(): String =
@@ -249,41 +241,6 @@ private fun MediaTokenBadge(
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
         )
-    }
-}
-
-@Composable
-private fun MediaMetricCard(
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier = modifier,
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.72f),
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        shape = RoundedCornerShape(20.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.38f)),
-    ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Text(
-                text = value,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
     }
 }
 
@@ -483,179 +440,3 @@ private fun ProductionGroupBlock(
     }
 }
 
-@Composable
-internal fun MediaStatsSection(
-    media: Media.Extended,
-    stats: MediaStats?,
-    loadState: LoadState?,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val summaryMetrics =
-        listOfNotNull(
-            media.score.mean
-                .takeIf { it > 0 }
-                ?.let {
-                    MediaMetric(
-                        label = stringResource(MediaUiR.string.label_media_score_section_community),
-                        value = it.toString(),
-                    )
-                },
-            media.favourites.takeIf { it > 0 }?.let {
-                MediaMetric(
-                    label = stringResource(R.string.label_media_stats_favourites),
-                    value = it.toHumanReadableQuantity(0),
-                )
-            },
-            media.score.popularity?.takeIf { it > 0 }?.let {
-                MediaMetric(
-                    label = stringResource(R.string.label_media_stats_popularity),
-                    value = it.toHumanReadableQuantity(0),
-                )
-            },
-            media.score.trending?.takeIf { it > 0 }?.let {
-                MediaMetric(
-                    label = stringResource(R.string.label_media_stats_trending),
-                    value = it.toHumanReadableQuantity(0),
-                )
-            },
-        )
-
-    val scoreDistribution =
-        remember(stats) {
-            stats
-                ?.scoreDistribution
-                .orEmpty()
-                .sortedWith(
-                    compareByDescending<MediaStats.ScoreDistribution> { it.amount }
-                        .thenByDescending { it.score },
-                ).take(DETAIL_TOKEN_LIMIT)
-        }
-    val statusDistribution =
-        remember(stats) {
-            stats
-                ?.statusDistribution
-                .orEmpty()
-                .sortedWith(
-                    compareByDescending<MediaStats.StatusDistribution> { it.amount }
-                        .thenBy { it.status?.ordinal ?: Int.MAX_VALUE },
-                ).take(DETAIL_TOKEN_LIMIT)
-        }
-    val hasSummaryMetrics = summaryMetrics.isNotEmpty()
-    val hasDistributionData = scoreDistribution.isNotEmpty() || statusDistribution.isNotEmpty()
-    val isDistributionLoading = (loadState == null || loadState is LoadState.Loading) && !hasDistributionData
-    val isDistributionError = loadState is LoadState.Error && !hasDistributionData
-    val hasNoContent = !hasSummaryMetrics && !hasDistributionData && !isDistributionLoading && !isDistributionError
-
-    MediaHubSection(
-        title = stringResource(R.string.title_media_stats_section),
-        subtitle = stringResource(R.string.subtitle_media_stats_section),
-        modifier = modifier,
-    ) {
-        if (hasSummaryMetrics) {
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                summaryMetrics.forEach { metric ->
-                    MediaMetricCard(
-                        label = metric.label,
-                        value = metric.value,
-                        modifier = Modifier.widthIn(min = 112.dp, max = 160.dp),
-                    )
-                }
-            }
-        }
-
-        if (hasSummaryMetrics && (hasDistributionData || isDistributionLoading || isDistributionError)) {
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
-        }
-
-        when {
-            hasDistributionData -> {
-                if (scoreDistribution.isNotEmpty()) {
-                    DistributionBlock(
-                        title = stringResource(R.string.label_media_stats_score_distribution),
-                        entries =
-                            scoreDistribution.map { distribution ->
-                                MediaMetric(
-                                    label = distribution.score.toString(),
-                                    value = distribution.amount.toHumanReadableQuantity(0),
-                                )
-                            },
-                    )
-                }
-
-                if (scoreDistribution.isNotEmpty() && statusDistribution.isNotEmpty()) {
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
-                }
-
-                if (statusDistribution.isNotEmpty()) {
-                    DistributionBlock(
-                        title = stringResource(R.string.label_media_stats_status_distribution),
-                        entries =
-                            statusDistribution.map { distribution ->
-                                MediaMetric(
-                                    label =
-                                        distribution.status?.alias?.toString()
-                                            ?: stringResource(MediaUiR.string.label_media_status_unknown_value),
-                                    value = distribution.amount.toHumanReadableQuantity(0),
-                                )
-                            },
-                    )
-                }
-            }
-
-            isDistributionLoading -> {
-                MediaHubSectionLoadingState(
-                    title = stringResource(R.string.label_media_stats_loading),
-                    message = stringResource(R.string.message_media_stats_loading),
-                )
-            }
-
-            isDistributionError -> {
-                SectionRetryState(
-                    title = stringResource(R.string.label_media_stats_error_title),
-                    onRetry = onRetry,
-                )
-            }
-
-            hasNoContent -> {
-                MediaHubSectionEmptyState(
-                    title = stringResource(R.string.label_media_stats_empty_title),
-                    message = stringResource(R.string.message_media_stats_empty),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun DistributionBlock(
-    title: String,
-    entries: List<MediaMetric>,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            fontWeight = FontWeight.SemiBold,
-        )
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            entries.forEach { entry ->
-                MediaCompactToken(
-                    label = entry.label,
-                    subtitle = entry.value,
-                )
-            }
-        }
-    }
-}
