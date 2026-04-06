@@ -705,6 +705,24 @@ private fun MediaDetailContent(
                 charactersLoadState = charactersLoadState,
                 staff = staff,
                 staffLoadState = staffLoadState,
+                onSeeAllCharacters = {
+                    onPeopleClick(
+                        MediaPeopleRouter.MediaPeopleParam(
+                            mediaId = media.id,
+                            mediaTitle = mediaTitle,
+                            initialSection = MediaPeopleRouter.Section.CHARACTERS,
+                        ),
+                    )
+                },
+                onSeeAllStaff = {
+                    onPeopleClick(
+                        MediaPeopleRouter.MediaPeopleParam(
+                            mediaId = media.id,
+                            mediaTitle = mediaTitle,
+                            initialSection = MediaPeopleRouter.Section.STAFF,
+                        ),
+                    )
+                },
                 onCharacterClick = {
                     onPeopleClick(
                         MediaPeopleRouter.MediaPeopleParam(

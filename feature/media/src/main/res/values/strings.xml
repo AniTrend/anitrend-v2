@@ -147,7 +147,7 @@
     <!-- Supporting copy for the media detail people preview module -->
     <string name="subtitle_media_people_section">Key characters and core creators, previewed without leaving the hub.</string>
     <!-- Trailing action label for the media detail people section -->
-    <string name="action_media_people_section_see_all">See all</string>
+    <string name="action_media_people_section_see_all">See selected</string>
     <!-- Subheading for the character preview inside the media detail people section -->
     <string name="label_media_people_characters_heading">Characters</string>
     <!-- Subheading for the staff preview inside the media detail people section and segmented control -->
@@ -265,7 +265,7 @@
     <!-- Supporting copy for the related titles hub section -->
     <string name="subtitle_media_related_section">Sequels, prequels, adaptations, and adjacent entries worth opening next.</string>
     <!-- Action label to open the full related titles destination -->
-    <string name="action_media_related_section_see_all">See all related</string>
+    <string name="action_media_related_section_see_all">See selected</string>
     <!-- Loading label for the related titles preview section -->
     <string name="label_media_related_loading">Loading related titles</string>
     <!-- Supporting loading copy for the related titles preview section -->
@@ -281,7 +281,7 @@
     <!-- Supporting copy for the recommendation preview module -->
     <string name="subtitle_media_recommendations_section">Community-backed pairings that usually travel with this title.</string>
     <!-- Action label to open the full recommendations destination -->
-    <string name="action_media_recommendations_section_see_all">See all recommendations</string>
+    <string name="action_media_recommendations_section_see_all">See selected</string>
     <!-- Loading label for recommendation preview content -->
     <string name="label_media_recommendations_loading">Loading recommendations</string>
     <!-- Supporting loading copy for recommendation preview content -->
@@ -372,7 +372,7 @@
     <!-- Section title for the flattened contributor band -->
     <string name="title_media_contributors_section">Contributors</string>
     <!-- Supporting copy for the flattened contributor band -->
-    <string name="subtitle_media_contributors_section">Characters first, then the staff roles most likely to matter.</string>
+    <string name="subtitle_media_contributors_section">Switch between cast recognition and creator credits without scanning parallel lists.</string>
     <!-- Section title for the dedicated studios preview module -->
     <string name="title_media_studios_section">Studios</string>
     <!-- Supporting copy for the dedicated studios preview module -->

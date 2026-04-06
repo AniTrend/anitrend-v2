@@ -23,6 +23,10 @@
             android:exported="true" />
         <activity android:name=".component.screen.MediaPeopleScreen"
             android:exported="true" />
+        <activity android:name=".component.screen.MediaCharactersScreen"
+            android:exported="true" />
+        <activity android:name=".component.screen.MediaStaffScreen"
+            android:exported="true" />
         <activity android:name=".component.screen.MediaRelationsScreen"
             android:exported="true" />
         <activity android:name=".component.screen.MediaRecommendationsScreen"

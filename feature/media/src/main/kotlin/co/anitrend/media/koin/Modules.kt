@@ -26,16 +26,20 @@ import co.anitrend.media.component.viewmodel.MediaStaffViewModel
 import co.anitrend.media.component.viewmodel.MediaStudiosViewModel
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
+import co.anitrend.media.provider.CharactersFeatureProvider
 import co.anitrend.media.provider.FeatureProvider
 import co.anitrend.media.provider.PeopleFeatureProvider
 import co.anitrend.media.provider.RecommendationsFeatureProvider
 import co.anitrend.media.provider.RelationsFeatureProvider
+import co.anitrend.media.provider.StaffFeatureProvider
 import co.anitrend.media.provider.StatsFeatureProvider
 import co.anitrend.media.provider.StudiosFeatureProvider
+import co.anitrend.navigation.MediaCharactersRouter
 import co.anitrend.navigation.MediaPeopleRouter
 import co.anitrend.navigation.MediaRecommendationsRouter
 import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.MediaStaffRouter
 import co.anitrend.navigation.MediaStatsRouter
 import co.anitrend.navigation.MediaStudiosRouter
 import org.koin.core.module.dsl.viewModel
@@ -98,6 +102,12 @@ private val featureModule =
         }
         factory<MediaPeopleRouter.Provider> {
             PeopleFeatureProvider()
+        }
+        factory<MediaCharactersRouter.Provider> {
+            CharactersFeatureProvider()
+        }
+        factory<MediaStaffRouter.Provider> {
+            StaffFeatureProvider()
         }
         factory<MediaRelationsRouter.Provider> {
             RelationsFeatureProvider()

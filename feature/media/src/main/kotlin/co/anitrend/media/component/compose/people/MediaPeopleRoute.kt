@@ -16,30 +16,23 @@
  */
 package co.anitrend.media.component.compose.people
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -54,6 +47,7 @@ import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.media.R
+import co.anitrend.media.component.compose.section.MediaSectionSegmentedControl
 import co.anitrend.media.component.viewmodel.MediaCharactersViewModel
 import co.anitrend.media.component.viewmodel.MediaStaffViewModel
 import co.anitrend.navigation.MediaPeopleRouter
@@ -64,8 +58,10 @@ import org.koin.androidx.compose.koinViewModel
 fun MediaPeopleRoute(
     mediaId: Long,
     mediaTitle: String?,
-    initialSection: MediaPeopleRouter.Section,
+    selectedSection: MediaPeopleRouter.Section,
     onBackPress: () -> Unit,
+    onSelectSection: ((MediaPeopleRouter.Section) -> Unit)? = null,
+    showSegmentedControl: Boolean = onSelectSection != null,
     charactersViewModel: MediaCharactersViewModel = koinViewModel(),
     staffViewModel: MediaStaffViewModel = koinViewModel(),
 ) {
@@ -74,7 +70,6 @@ fun MediaPeopleRoute(
     val staff by staffViewModel.model.observeAsState()
     val staffLoadState by staffViewModel.loadState.observeAsState()
 
-    var selectedSection by rememberSaveable(mediaId) { mutableStateOf(initialSection) }
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(mediaId) {
@@ -93,7 +88,11 @@ fun MediaPeopleRoute(
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
-                    text = stringResource(R.string.title_media_people_screen),
+                    text =
+                        when (selectedSection) {
+                            MediaPeopleRouter.Section.CHARACTERS -> stringResource(R.string.label_media_people_characters_heading)
+                            MediaPeopleRouter.Section.STAFF -> stringResource(R.string.label_media_people_staff_heading)
+                        },
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.SemiBold,
                 )
@@ -111,10 +110,21 @@ fun MediaPeopleRoute(
                 )
             }
 
-            MediaPeopleSegmentedControl(
-                selected = selectedSection,
-                onSelect = { selectedSection = it },
-            )
+            if (showSegmentedControl && onSelectSection != null) {
+                MediaSectionSegmentedControl(
+                    selected = selectedSection,
+                    options =
+                        listOf(
+                            MediaPeopleRouter.Section.CHARACTERS to stringResource(R.string.label_media_people_characters_heading),
+                            MediaPeopleRouter.Section.STAFF to stringResource(R.string.label_media_people_staff_heading),
+                        ),
+                    onSelect = { section ->
+                        if (section != selectedSection) {
+                            onSelectSection(section)
+                        }
+                    },
+                )
+            }
 
             Box(modifier = Modifier.weight(1f)) {
                 when (selectedSection) {
@@ -131,66 +141,6 @@ fun MediaPeopleRoute(
                             loadState = staffLoadState,
                             onRetry = { coroutineScope.launch { staffViewModel.retry() } },
                         )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun MediaPeopleSegmentedControl(
-    selected: MediaPeopleRouter.Section,
-    onSelect: (MediaPeopleRouter.Section) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f),
-        shape =
-            androidx.compose.foundation.shape
-                .RoundedCornerShape(24.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.45f)),
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(4.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            listOf(
-                MediaPeopleRouter.Section.CHARACTERS to stringResource(R.string.label_media_people_characters_heading),
-                MediaPeopleRouter.Section.STAFF to stringResource(R.string.label_media_people_staff_heading),
-            ).forEach { (section, label) ->
-                val isSelected = section == selected
-                Surface(
-                    modifier = Modifier.weight(1f),
-                    color =
-                        if (isSelected) {
-                            MaterialTheme.colorScheme.primaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.surface.copy(alpha = 0f)
-                        },
-                    contentColor =
-                        if (isSelected) {
-                            MaterialTheme.colorScheme.onPrimaryContainer
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                        },
-                    shape =
-                        androidx.compose.foundation.shape
-                            .RoundedCornerShape(20.dp),
-                    tonalElevation = 0.dp,
-                    shadowElevation = 0.dp,
-                    onClick = { onSelect(section) },
-                ) {
-                    Box(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 12.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = label,
-                            style = MaterialTheme.typography.labelLarge,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    }
                 }
             }
         }
