@@ -176,6 +176,12 @@
     <string name="title_media_people_screen">People</string>
     <!-- Supporting copy for the dedicated people destination -->
     <string name="subtitle_media_people_screen">Switch between cast recognition and creator credits without leaving the media flow.</string>
+    <!-- Group heading for the primary cast section on the dedicated characters screen -->
+    <string name="label_media_people_characters_group_main">Main cast</string>
+    <!-- Group heading for the supporting cast section on the dedicated characters screen -->
+    <string name="label_media_people_characters_group_supporting">Supporting cast</string>
+    <!-- Group heading for the background character section on the dedicated characters screen -->
+    <string name="label_media_people_characters_group_background">Background</string>
     <!-- Supporting loading copy for the dedicated characters pane -->
     <string name="message_media_people_characters_loading">Fetching the most relevant cast for this title.</string>
     <!-- Supporting loading copy for the dedicated staff pane -->
