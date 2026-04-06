@@ -12,8 +12,6 @@ You are planning changes for `AniTrend/anitrend-v2`.
 
 Your job is not to immediately code. Your job is to produce a high-quality implementation plan that is realistic for the existing codebase, aligned with the AniTrend product direction, and small enough to execute safely in iterative PRs.
 
-This planning mode must work well across LLMs such as Copilot, Codex, Claude, and similar agents.
-
 The plan must be:
 - grounded in the existing repository structure and patterns
 - biased toward small, scoped changes
