@@ -29,6 +29,8 @@
             android:exported="true" />
         <activity android:name=".component.screen.MediaStudiosScreen"
             android:exported="true" />
+        <activity android:name=".component.screen.MediaStatsScreen"
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"
