@@ -1,7 +1,7 @@
 # This file was generated. Do not edit manually.
 
 schema {
-    query: Query
+  query: Query
 }
 
 directive @enum(subgraph: String, value: String) repeatable on ENUM_VALUE
@@ -17,308 +17,386 @@ directive @oneOf on INPUT_OBJECT
 
 directive @transport(headers: [[String]], kind: String, location: String, queryParams: [[String]], queryStringOptions: ObjMap, subgraph: String) repeatable on SCHEMA
 
+"Fictional character metadata resolved from Jikan (MAL), including media and voice-actor relations"
+type Character {
+  about: String
+  anime: [query_character_anime_items]
+  expiresAt: Float!
+  favorites: Float
+  fetchedAt: Float!
+  imageUrl: String
+  malId: Int!
+  manga: [query_character_manga_items]
+  name: String!
+  nameKanji: String
+  nicknames: [String]
+  voices: [query_character_voices_items]
+}
+
 "Client configuration"
 type Config {
-    genres: [query_config_genres_items]
-    id: String!
-    image: query_config_image!
-    navigation: [query_config_navigation_items]
-    settings: query_config_settings!
+  genres: [query_config_genres_items]
+  id: String!
+  image: query_config_image!
+  navigation: [query_config_navigation_items]
+  settings: query_config_settings!
 }
 
 "Paginated episode listing with cursor navigation"
 type Episodes {
-    count: Float!
-    data: [query_episodes_data_items]!
-    first: String
-    last: String
-    total: Float!
+  count: Float!
+  data: [query_episodes_data_items]!
+  first: String
+  last: String
+  total: Float!
 }
 
 "Schema representing a news document."
 type News {
-    area: String
-    category: String
-    content: String!
-    description: String!
-    genre: String
-    id: String!
-    image: URL
-    lang: String
-    link: URL!
-    publishedOn: Float!
-    title: String!
+  area: String
+  category: String
+  content: String!
+  description: String!
+  genre: String
+  id: String!
+  image: URL
+  lang: String
+  link: URL!
+  publishedOn: Float!
+  title: String!
 }
 
 "Paged response for news documents."
 type NewsPaging {
-    count: NonNegativeFloat!
-    data: [query_news_data_items]!
-    first: String
-    last: String
+  count: NonNegativeFloat!
+  data: [query_news_data_items]!
+  first: String
+  last: String
+}
+
+"Anime staff or voice actor metadata resolved from Jikan (MAL)"
+type Person {
+  about: String
+  alternateNames: [String]
+  birthday: Float
+  expiresAt: Float!
+  familyName: String
+  favorites: Float
+  fetchedAt: Float!
+  givenName: String
+  imageUrl: String
+  malId: Int!
+  name: String!
+  websiteUrl: String
 }
 
 type Query {
-    config: Config
-    episodes(after: String, before: String, end: Int, includeOrphans: Boolean, kind: queryInput_episodes_kind, limit: PositiveInt = 25, malId: Int!, specialsOnly: Boolean, start: Int): Episodes
-    index: JSON
-    news(after: String, before: String, limit: PositiveFloat = 15): NewsPaging
-    newsFeed(
-        "Locale for the news feed, e.g., en-GB, de-DE, fr-FR."
-        locale: queryInput_newsFeed_locale
-    ): [News]
-    series(anilist: Int, mal: Int, notify: NonEmptyString, slug: NonEmptyString, tmdb: Int, trakt: Int, tvdb: Int): Series
+  character(malId: Int, name: NonEmptyString): Character
+  config: Config
+  episodes(after: String, before: String, end: Int, includeOrphans: Boolean, kind: queryInput_episodes_kind, limit: PositiveInt = 25, malId: Int!, specialsOnly: Boolean, start: Int): Episodes
+  index: JSON
+  news(after: String, before: String, limit: PositiveFloat = 15): NewsPaging
+  newsFeed(
+    "Locale for the news feed, e.g., en-GB, de-DE, fr-FR."
+    locale: queryInput_newsFeed_locale
+  ): [News]
+  person(malId: Int, name: NonEmptyString): Person
+  series(anilist: Int, mal: Int, notify: NonEmptyString, slug: NonEmptyString, tmdb: Int, trakt: Int, tvdb: Int): Series
+  studio(malId: Int, name: NonEmptyString): Studio
 }
 
 "Aggregated of media entities from multiple sources"
 type Series {
-    ageRating: String
-    airedEpisodes: Float
-    banner: String
-    broadcast: String
-    chapters: Float
-    classification: JSON
-    cover: query_series_cover!
-    description: String
-    duration: Float
-    fanart: String
-    format: JSON
-    homepage: String
-    images: [query_series_images_items]!
-    isAdult: Boolean
-    kind: query_series_kind!
-    mediaId: query_series_mediaId!
-    moreInfo: String
-    networks: [query_series_networks_items]!
-    publishedFrom: Float
-    publishedTo: Float
-    schedule: query_series_schedule
-    source: JSON
-    status: JSON
-    themeSongs: [JSON]!
-    title: query_series_title!
-    trailers: [query_series_trailers_items]!
-    updatedAt: Float!
-    volumes: Float
+  ageRating: String
+  airedEpisodes: Float
+  banner: String
+  broadcast: String
+  chapters: Float
+  classification: JSON
+  cover: query_series_cover!
+  description: String
+  duration: Float
+  fanart: String
+  format: JSON
+  homepage: String
+  images: [query_series_images_items]!
+  isAdult: Boolean
+  kind: query_series_kind!
+  mediaId: query_series_mediaId!
+  moreInfo: String
+  networks: [query_series_networks_items]!
+  publishedFrom: Float
+  publishedTo: Float
+  schedule: query_series_schedule
+  source: JSON
+  status: JSON
+  themeSongs: [JSON]!
+  title: query_series_title!
+  trailers: [query_series_trailers_items]!
+  updatedAt: Float!
+  volumes: Float
+}
+
+"Animation studio metadata resolved from Jikan (MAL)"
+type Studio {
+  about: String
+  animeCount: Float
+  established: Float
+  expiresAt: Float!
+  favorites: Float
+  fetchedAt: Float!
+  imageUrl: String
+  malId: Int!
+  name: String!
+  titles: [query_studio_titles_items]
+}
+
+type query_character_anime_items {
+  imageUrl: String
+  malId: Int!
+  role: String
+  title: String!
+  url: String!
+}
+
+type query_character_manga_items {
+  imageUrl: String
+  malId: Int!
+  role: String
+  title: String!
+  url: String!
+}
+
+type query_character_voices_items {
+  imageUrl: String
+  language: String
+  malId: Int!
+  name: String!
+  url: String!
 }
 
 type query_config_genres_items {
-    mediaId: PositiveFloat!
-    name: String!
+  mediaId: PositiveFloat!
+  name: String!
 }
 
 type query_config_image {
-    banner: URL!
-    default: URL!
-    error: URL!
-    info: URL!
-    loading: URL!
-    poster: URL!
+  banner: URL!
+  default: URL!
+  error: URL!
+  info: URL!
+  loading: URL!
+  poster: URL!
 }
 
 type query_config_navigation_items {
-    criteria: String!
-    destination: String!
-    group: query_config_navigation_items_group!
-    i18n: String!
-    icon: String!
+  criteria: String!
+  destination: String!
+  group: query_config_navigation_items_group!
+  i18n: String!
+  icon: String!
 }
 
 type query_config_navigation_items_group {
-    authenticated: Boolean!
-    i18n: String!
+  authenticated: Boolean!
+  i18n: String!
 }
 
 type query_config_settings {
-    analyticsEnabled: Boolean!
-    platformSource: URL
+  analyticsEnabled: Boolean!
+  platformSource: URL
 }
 
 type query_episodes_data_items {
-    absoluteEpisodeNumber: Float
-    aired: Float
-    airedAfterEpisodeNumber: Float
-    airedAfterSeasonNumber: Float
-    airedBeforeEpisodeNumber: Float
-    airedBeforeSeasonNumber: Float
-    duration: Float
-    episodeNumber: Float
-    id: Float!
-    image: String
-    kind: query_episodes_data_items_kind
-    number: Float
-    poster: String
-    score: Float
-    seasonNumber: Float
-    synopsis: String
-    themes: query_episodes_data_items_themes
-    title: query_episodes_data_items_title
-    tmdbId: Float
-    tvdbId: Float
-    tvdbShowId: Float
-    url: String
+  absoluteEpisodeNumber: Float
+  aired: Float
+  airedAfterEpisodeNumber: Float
+  airedAfterSeasonNumber: Float
+  airedBeforeEpisodeNumber: Float
+  airedBeforeSeasonNumber: Float
+  duration: Float
+  episodeNumber: Float
+  id: Float!
+  image: String
+  kind: query_episodes_data_items_kind
+  number: Float
+  poster: String
+  score: Float
+  seasonNumber: Float
+  synopsis: String
+  themes: query_episodes_data_items_themes
+  title: query_episodes_data_items_title
+  tmdbId: Float
+  tvdbId: Float
+  tvdbShowId: Float
+  url: String
 }
 
 type query_episodes_data_items_themes {
-    endings: [String]
-    openings: [String]
+  endings: [String]
+  openings: [String]
 }
 
 type query_episodes_data_items_title {
-    english: String
-    native: String
-    romanji: String
+  english: String
+  native: String
+  romanji: String
 }
 
 type query_news_data_items {
-    area: String
-    category: String
-    content: String!
-    description: String!
-    genre: String
-    id: String!
-    image: URL
-    lang: String
-    link: URL!
-    publishedOn: Float!
-    title: String!
+  area: String
+  category: String
+  content: String!
+  description: String!
+  genre: String
+  id: String!
+  image: URL
+  lang: String
+  link: URL!
+  publishedOn: Float!
+  title: String!
 }
 
 type query_series_cover {
-    color: String
-    extraLarge: String
-    large: String
-    medium: String
+  color: String
+  extraLarge: String
+  large: String
+  medium: String
 }
 
 type query_series_images_items {
-    height: Float!
-    locale: String
-    type: query_series_images_items_type!
-    url: String!
-    width: Float!
+  height: Float!
+  locale: String
+  type: query_series_images_items_type!
+  url: String!
+  width: Float!
 }
 
 type query_series_mediaId {
-    anidb: Float
-    anilist: Float
-    animePlanet: String
-    anisearch: Float
-    imdb: String
-    kitsu: Float
-    livechart: Float
-    myanimelist: Float
-    notify: String
-    shoboi: Float
-    slug: String
-    themoviedb: Float
-    trakt: Float
-    tvMazeId: Float
-    tvdb: Float
-    tvrage: String
+  anidb: Float
+  anilist: Float
+  animePlanet: String
+  anisearch: Float
+  imdb: String
+  kitsu: Float
+  livechart: Float
+  myanimelist: Float
+  notify: String
+  shoboi: Float
+  slug: String
+  themoviedb: Float
+  trakt: Float
+  tvMazeId: Float
+  tvdb: Float
+  tvrage: String
 }
 
 type query_series_networks_items {
-    category: query_series_networks_items_category!
-    id: Float!
-    isPrimary: Boolean!
-    logoPath: String
-    name: String!
-    originCountry: String!
+  category: query_series_networks_items_category!
+  id: Float!
+  isPrimary: Boolean!
+  logoPath: String
+  name: String!
+  originCountry: String!
 }
 
 type query_series_schedule {
-    firstAirDate: Float
-    lastAirDate: Float
-    lastAiredEpisode: query_series_schedule_lastAiredEpisode
-    nextEpisodeToAir: query_series_schedule_nextEpisodeToAir
+  firstAirDate: Float
+  lastAirDate: Float
+  lastAiredEpisode: query_series_schedule_lastAiredEpisode
+  nextEpisodeToAir: query_series_schedule_nextEpisodeToAir
 }
 
 type query_series_schedule_lastAiredEpisode {
-    airDate: Float
-    episodeNumber: Float
-    id: Float!
-    image: String
-    name: String!
-    overview: String
-    productionCode: String
-    runtime: Float
-    seasonNumber: Float
-    tmdbId: Float
+  airDate: Float
+  episodeNumber: Float
+  id: Float!
+  image: String
+  name: String!
+  overview: String
+  productionCode: String
+  runtime: Float
+  seasonNumber: Float
+  tmdbId: Float
 }
 
 type query_series_schedule_nextEpisodeToAir {
-    airDate: Float
-    episodeNumber: Float
-    id: Float!
-    image: String
-    name: String!
-    overview: String
-    productionCode: String
-    runtime: Float
-    seasonNumber: Float
-    tmdbId: Float
+  airDate: Float
+  episodeNumber: Float
+  id: Float!
+  image: String
+  name: String!
+  overview: String
+  productionCode: String
+  runtime: Float
+  seasonNumber: Float
+  tmdbId: Float
 }
 
 type query_series_title {
-    canonical: String
-    english: String
-    harigana: String
-    japanese: String
-    romaji: String
-    synonyms: [String]
+  canonical: String
+  english: String
+  harigana: String
+  japanese: String
+  romaji: String
+  synonyms: [String]
 }
 
 type query_series_trailers_items {
-    id: String!
-    site: String!
-    thumbnail: String
+  id: String!
+  site: String!
+  thumbnail: String
+}
+
+type query_studio_titles_items {
+  title: String
+  type: String
 }
 
 enum HTTPMethod {
-    CONNECT
-    DELETE
-    GET
-    HEAD
-    OPTIONS
-    PATCH
-    POST
-    PUT
-    TRACE
+  CONNECT
+  DELETE
+  GET
+  HEAD
+  OPTIONS
+  PATCH
+  POST
+  PUT
+  TRACE
 }
 
 enum queryInput_episodes_kind {
-    filler
-    main
-    ona
-    ova
-    recap
-    special
+  filler
+  main
+  ona
+  ova
+  recap
+  special
 }
 
 enum query_episodes_data_items_kind {
-    filler
-    main
-    ona
-    ova
-    recap
-    special
+  filler
+  main
+  ona
+  ova
+  recap
+  special
 }
 
 enum query_series_images_items_type {
-    BACKDROP
-    LOGO
-    POSTER
+  BACKDROP
+  LOGO
+  POSTER
 }
 
 enum query_series_kind {
-    ANIME
-    MANGA
+  ANIME
+  MANGA
 }
 
 enum query_series_networks_items_category {
-    DISTRIBUTION
-    PRODUCTION
+  DISTRIBUTION
+  PRODUCTION
 }
 
 "The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."

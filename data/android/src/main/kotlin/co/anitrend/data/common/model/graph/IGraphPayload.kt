@@ -17,11 +17,11 @@
 package co.anitrend.data.common.model.graph
 
 /**
- * Model query or mutation contract, enforces implementation of map conversion
+ * Model query or mutation contract, enforces implementation of map conversion.
  */
-internal interface IGraphPayload {
+interface IGraphPayload {
     /**
-     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
+     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API.
      */
     fun toMap(): Map<String, Any?>
 }

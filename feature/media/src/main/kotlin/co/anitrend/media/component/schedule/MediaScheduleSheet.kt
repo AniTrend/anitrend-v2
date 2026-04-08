@@ -21,9 +21,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -51,8 +51,7 @@ private fun ScheduleList(
         modifier = modifier,
     ) {
         items(count = list.itemCount) { index ->
-            val media = list[index]
-            if (media == null) return@items
+            val media = list[index] ?: return@items
             Column(modifier = Modifier.fillMaxWidth().padding(vertical = itemSpacing.dp)) {
                 // Title: Episode X • in Y time
                 AiringScheduleText(

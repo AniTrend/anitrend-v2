@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 AniTrend
+ * Copyright (C) 2026 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,23 +14,22 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.edge.news.model.query
+package co.anitrend.data.common.model.graph
 
-import co.anitrend.data.common.model.graph.IGraphPayload
+import io.github.wax911.library.model.request.QueryContainerBuilder
 
 /**
- * Edge news connection query. Cursor keys (after/before) and limits are
- * provided by the paging mediator when building the query variables.
+ * Builds a query container from a constrained graph payload contract.
  */
-internal data class NewsConnectionQuery(
-    val after: String? = null,
-    val before: String? = null,
-    val limit: Int? = null,
-) : IGraphPayload {
-    override fun toMap() =
-        mapOf(
-            "after" to after,
-            "before" to before,
-            "limit" to limit,
-        )
+fun IGraphPayload.toQueryContainerBuilder(ignoreNulls: Boolean = false): QueryContainerBuilder {
+    val variables =
+        if (ignoreNulls) {
+            toMap().filterValues { it != null }
+        } else {
+            toMap()
+        }
+
+    return QueryContainerBuilder().apply {
+        putVariables(variables)
+    }
 }

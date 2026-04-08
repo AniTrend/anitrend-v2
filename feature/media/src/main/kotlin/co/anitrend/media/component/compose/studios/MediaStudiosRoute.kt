@@ -121,7 +121,7 @@ private fun MediaStudiosScreenContent(
                 }
             }
 
-            loadState is LoadState.Loading || (studios.isEmpty() && loadState !is LoadState.Error) -> {
+            loadState is LoadState.Loading -> {
                 CenteredStudiosState(
                     title = stringResource(R.string.label_media_studios_loading),
                     subtitle = stringResource(R.string.message_media_studios_loading),
