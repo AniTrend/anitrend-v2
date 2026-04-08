@@ -37,6 +37,7 @@ import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.common.media.ui.compose.extensions.metaLine
 import co.anitrend.core.extensions.CHARACTER_SEPARATOR
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.Media
@@ -142,7 +143,7 @@ fun MediaSubTitleText(
     val styledSubTitle = media.annotatedSubTitle(color)
 
     Text(
-        text = styledSubTitle,
+        text = media.metaLine(),
         overflow = TextOverflow.Ellipsis,
         style = style,
         maxLines = 1,
