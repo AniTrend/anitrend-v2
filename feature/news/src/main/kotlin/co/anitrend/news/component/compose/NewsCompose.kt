@@ -127,6 +127,7 @@ private fun NewsFeed(
         items(
             items = newsItems,
             key = News::guid,
+            contentType = { "news_card" },
         ) { news ->
             NewsCard(
                 news = news,
@@ -136,7 +137,10 @@ private fun NewsFeed(
 
         when (appendState) {
             is LoadState.Loading -> {
-                item {
+                item(
+                    key = "news_append_loading",
+                    contentType = "news_append_loading",
+                ) {
                     Text(
                         text = stringResource(R.string.message_news_loading_more),
                         style = MaterialTheme.typography.bodyMedium,
@@ -147,7 +151,10 @@ private fun NewsFeed(
             }
 
             is LoadState.Error -> {
-                item {
+                item(
+                    key = "news_append_error",
+                    contentType = "news_append_error",
+                ) {
                     NewsRetryState(
                         title = stringResource(R.string.label_news_error_title),
                         actionLabel = stringResource(R.string.action_news_retry),

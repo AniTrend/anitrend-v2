@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleText
 import co.anitrend.common.shared.ui.compose.sheet.ListBottomSheet
 import co.anitrend.domain.media.entity.Media
@@ -50,7 +52,11 @@ private fun ScheduleList(
         contentPadding = contentPadding,
         modifier = modifier,
     ) {
-        items(count = list.itemCount) { index ->
+        items(
+            count = list.itemCount,
+            key = list.itemKey { media -> media.id },
+            contentType = list.itemContentType { "media_schedule_entry" },
+        ) { index ->
             val media = list[index] ?: return@items
             Column(modifier = Modifier.fillMaxWidth().padding(vertical = itemSpacing.dp)) {
                 // Title: Episode X • in Y time

@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -53,8 +52,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.media.ui.compose.component.IconScoreContent
 import co.anitrend.domain.media.entity.attribute.score.IMediaRating
@@ -210,21 +209,10 @@ internal fun FormatAwareScoreControl(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.label_media_list_editor_your_score),
-                    style = MaterialTheme.typography.titleMedium,
-                )
-                Text(
-                    text = scoreFormat.alias.toString(),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-
+            Text(
+                text = stringResource(R.string.label_media_list_editor_your_score),
+                style = MaterialTheme.typography.titleMedium,
+            )
             if (scoreText.isNotBlank()) {
                 TextButton(onClick = onClearScore) {
                     Text(stringResource(R.string.action_media_list_editor_clear_score))

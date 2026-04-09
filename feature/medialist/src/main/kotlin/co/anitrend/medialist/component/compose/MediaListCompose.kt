@@ -58,13 +58,15 @@ import androidx.paging.PagingData
 import androidx.paging.LoadState as PagingLoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.common.media.ui.compose.component.MediaRating
 import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
 import co.anitrend.common.media.ui.compose.item.MediaCompactItem
 import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleText
-import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
+import co.anitrend.common.media.ui.compose.widget.title.MediaMetaLineText
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.data.user.settings.IUserSettings
@@ -183,7 +185,11 @@ private fun MediaListSectionRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         contentPadding = PaddingValues(end = 4.dp),
     ) {
-        items(count = sections.size, key = { index -> sections[index].sectionKey() }) { index ->
+        items(
+            count = sections.size,
+            key = { index -> sections[index].sectionKey() },
+            contentType = { "media_list_section_chip" },
+        ) { index ->
             val section = sections[index]
             val isSelected = section.sectionKey() == selectedSection.sectionKey()
 
@@ -264,7 +270,11 @@ private fun MediaListGrid(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        items(count = mediaItems.itemCount) { index ->
+        items(
+            count = mediaItems.itemCount,
+            key = mediaItems.itemKey { media -> media.id },
+            contentType = mediaItems.itemContentType { "media_list_grid_item" },
+        ) { index ->
             val media = mediaItems[index] ?: return@items
 
             MediaCompactItem(
@@ -282,7 +292,11 @@ private fun MediaListGrid(
 
         when (mediaItems.loadState.append) {
             is PagingLoadState.Loading -> {
-                item(span = { GridItemSpan(maxLineSpan) }) {
+                item(
+                    key = "media_list_grid_append_loading",
+                    span = { GridItemSpan(maxLineSpan) },
+                    contentType = "media_list_grid_append_loading",
+                ) {
                     Text(
                         text = stringResource(R.string.message_media_list_loading_more),
                         style = MaterialTheme.typography.bodyMedium,
@@ -293,7 +307,11 @@ private fun MediaListGrid(
             }
 
             is PagingLoadState.Error -> {
-                item(span = { GridItemSpan(maxLineSpan) }) {
+                item(
+                    key = "media_list_grid_append_error",
+                    span = { GridItemSpan(maxLineSpan) },
+                    contentType = "media_list_grid_append_error",
+                ) {
                     MediaListRetryState(
                         title = stringResource(R.string.label_media_list_error_title),
                         onRetry = mediaItems::retry,
@@ -319,7 +337,17 @@ private fun MediaListList(
         contentPadding = PaddingValues(bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        items(count = mediaItems.itemCount) { index ->
+        items(
+            count = mediaItems.itemCount,
+            key = mediaItems.itemKey { media -> media.id },
+            contentType =
+                mediaItems.itemContentType {
+                    when (preferredViewMode) {
+                        PreferredViewMode.SUMMARY -> "media_list_summary_item"
+                        else -> "media_list_detailed_item"
+                    }
+                },
+        ) { index ->
             val media = mediaItems[index] ?: return@items
 
             when (preferredViewMode) {
@@ -341,7 +369,10 @@ private fun MediaListList(
 
         when (mediaItems.loadState.append) {
             is PagingLoadState.Loading -> {
-                item {
+                item(
+                    key = "media_list_list_append_loading",
+                    contentType = "media_list_list_append_loading",
+                ) {
                     Text(
                         text = stringResource(R.string.message_media_list_loading_more),
                         style = MaterialTheme.typography.bodyMedium,
@@ -352,7 +383,10 @@ private fun MediaListList(
             }
 
             is PagingLoadState.Error -> {
-                item {
+                item(
+                    key = "media_list_list_append_error",
+                    contentType = "media_list_list_append_error",
+                ) {
                     MediaListRetryState(
                         title = stringResource(R.string.label_media_list_error_title),
                         onRetry = mediaItems::retry,
@@ -484,7 +518,7 @@ private fun MediaListListItem(
                     )
                 }
 
-                MediaSubTitleText(
+                MediaMetaLineText(
                     media = media,
                     style = MaterialTheme.typography.bodyMedium,
                 )

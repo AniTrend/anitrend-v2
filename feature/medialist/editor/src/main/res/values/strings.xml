@@ -22,10 +22,6 @@
     <string name="media_list_editor_label_progress">Progress</string>
     <string name="media_list_editor_label_status">Status</string>
 
-    <!-- Screen title shown at top of media list editor sheet -->
-    <string name="title_media_list_editor_add_to_library">Add to Library</string>
-    <!-- Compact editor title shown when updating an existing entry -->
-    <string name="title_media_list_editor_quick_edit">Quick Edit</string>
     <!-- Subtitle shown below title, %1$s will be replaced with media title -->
     <string name="subtitle_media_list_editor_manage_media" formatted="true">Manage \"%1$s\" in your library</string>
     <!-- Supporting copy for the redesigned quick-edit editor -->
@@ -116,9 +112,9 @@
     <!-- Button text to save changes -->
     <string name="action_media_list_editor_save">Save</string>
     <!-- Primary action text used by the redesigned header -->
-    <string name="action_media_list_editor_save_changes">Save changes</string>
+    <string name="action_media_list_editor_save_changes">Save</string>
     <!-- Destructive action text used by the redesigned header -->
-    <string name="action_media_list_editor_delete_entry">Delete entry</string>
+    <string name="action_media_list_editor_delete_entry">Delete</string>
     <!-- Content description for close button -->
     <string name="action_media_list_editor_close">Close</string>
     <!-- Content description for calendar icon to select date -->

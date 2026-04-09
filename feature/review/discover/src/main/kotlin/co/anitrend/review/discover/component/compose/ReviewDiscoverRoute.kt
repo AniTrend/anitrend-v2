@@ -41,6 +41,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import co.anitrend.android.core.asPrettyTime
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.domain.media.entity.Media
@@ -120,14 +122,21 @@ private fun ReviewDiscoverList(
         contentPadding = PaddingValues(bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        items(count = reviews.itemCount) { index ->
+        items(
+            count = reviews.itemCount,
+            key = reviews.itemKey { review -> review.id },
+            contentType = reviews.itemContentType { "review_discover_card" },
+        ) { index ->
             val review = reviews[index] ?: return@items
             ReviewDiscoverCard(review = review)
         }
 
         when (reviews.loadState.append) {
             is LoadState.Loading -> {
-                item {
+                item(
+                    key = "review_discover_append_loading",
+                    contentType = "review_discover_append_loading",
+                ) {
                     Text(
                         text = stringResource(R.string.message_review_discover_loading_more),
                         style = MaterialTheme.typography.bodyMedium,
@@ -138,7 +147,10 @@ private fun ReviewDiscoverList(
             }
 
             is LoadState.Error -> {
-                item {
+                item(
+                    key = "review_discover_append_error",
+                    contentType = "review_discover_append_error",
+                ) {
                     ReviewDiscoverRetryState(
                         title = stringResource(R.string.label_review_discover_error_title),
                         onRetry = reviews::retry,

@@ -41,7 +41,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -266,27 +265,6 @@ private fun MediaThemeDetailSheet(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 theme.meta
-                    ?.type
-                    ?.trim()
-                    ?.takeIf(String::isNotBlank)
-                    ?.let { type ->
-                        MediaThemeInfoRow(
-                            label = stringResource(R.string.label_media_theme_sheet_type),
-                            value = type.uppercase(),
-                        )
-                    }
-
-                theme.meta
-                    ?.number
-                    ?.takeIf { it > 0 }
-                    ?.let { number ->
-                        MediaThemeInfoRow(
-                            label = stringResource(R.string.label_media_theme_sheet_number),
-                            value = number.toString(),
-                        )
-                    }
-
-                theme.meta
                     ?.version
                     ?.takeIf { it > 1 }
                     ?.let { version ->
@@ -295,30 +273,6 @@ private fun MediaThemeDetailSheet(
                             value = "v$version",
                         )
                     }
-
-                MediaThemeInfoRow(
-                    label = stringResource(R.string.label_media_theme_sheet_audio),
-                    value =
-                        stringResource(
-                            if (hasAudio) {
-                                R.string.label_media_theme_sheet_available
-                            } else {
-                                R.string.label_media_theme_sheet_not_available
-                            },
-                        ),
-                )
-
-                MediaThemeInfoRow(
-                    label = stringResource(R.string.label_media_theme_sheet_video),
-                    value =
-                        stringResource(
-                            if (hasVideo) {
-                                R.string.label_media_theme_sheet_available
-                            } else {
-                                R.string.label_media_theme_sheet_not_available
-                            },
-                        ),
-                )
             }
 
             HorizontalDivider()
@@ -369,51 +323,14 @@ private fun MediaThemeDetailSheet(
 internal fun MediaThemePreviewBlock(
     themes: List<MediaTheme>,
     modifier: Modifier = Modifier,
-    title: String? = null,
-    collapsedCount: Int = THEME_PREVIEW_COUNT,
 ) {
-    if (themes.isEmpty()) {
-        return
-    }
-
-    var showAll by rememberSaveable(themes.size) { mutableStateOf(false) }
     var selectedTheme by remember(themes) { mutableStateOf<MediaTheme?>(null) }
-    val canExpand = themes.size > collapsedCount
-    val visibleThemes = if (canExpand && !showAll) themes.take(collapsedCount) else themes
 
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        if (!title.isNullOrBlank()) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                if (canExpand) {
-                    TextButton(onClick = { showAll = !showAll }) {
-                        Text(
-                            text =
-                                stringResource(
-                                    if (showAll) {
-                                        R.string.action_media_theme_section_show_less
-                                    } else {
-                                        R.string.action_media_theme_section_show_all
-                                    },
-                                ),
-                        )
-                    }
-                }
-            }
-        }
-
-        visibleThemes.forEach { theme ->
+        themes.forEach { theme ->
             MediaThemeItem(
                 theme = theme,
                 onClick = { selectedTheme = theme },
@@ -433,16 +350,33 @@ internal fun MediaThemePreviewBlock(
 fun MediaThemeSection(
     themes: List<MediaTheme>,
     modifier: Modifier = Modifier,
+    collapsedCount: Int = THEME_PREVIEW_COUNT,
 ) {
     if (themes.isEmpty()) {
         return
     }
 
+    var showAll by rememberSaveable(themes.size) { mutableStateOf(false) }
+    val canExpand = themes.size > collapsedCount
+    val visibleThemes = if (canExpand && !showAll) themes.take(collapsedCount) else themes
+
     MediaHubSection(
         title = stringResource(R.string.label_media_extended_details_themes),
         subtitle = stringResource(R.string.subtitle_media_theme_section),
+        trailingActionLabel = if (canExpand) {
+            stringResource(
+                if (showAll) {
+                    R.string.action_media_theme_section_show_less
+                } else {
+                    R.string.action_media_theme_section_show_all
+                },
+            )
+        } else null,
+        onTrailingAction = { showAll = !showAll },
         modifier = modifier,
     ) {
-        MediaThemePreviewBlock(themes = themes)
+        MediaThemePreviewBlock(
+            themes = visibleThemes,
+        )
     }
 }

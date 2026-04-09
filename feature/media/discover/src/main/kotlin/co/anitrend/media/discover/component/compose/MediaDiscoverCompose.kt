@@ -58,14 +58,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import co.anitrend.android.core.compose.design.BackIconButton
 import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.common.media.ui.compose.component.MediaRating
 import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
+import co.anitrend.common.media.ui.compose.extensions.displayTitle
+import co.anitrend.common.media.ui.compose.extensions.secondaryTitle
 import co.anitrend.common.media.ui.compose.item.MediaCompactItem
 import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleText
-import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
+import co.anitrend.common.media.ui.compose.widget.title.MediaMetaLineText
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.data.user.settings.IUserSettings
@@ -210,7 +214,11 @@ private fun MediaDiscoverGrid(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        items(count = mediaItems.itemCount) { index ->
+        items(
+            count = mediaItems.itemCount,
+            key = mediaItems.itemKey { media -> media.id },
+            contentType = mediaItems.itemContentType { "media_discover_grid_item" },
+        ) { index ->
             val media = mediaItems[index] ?: return@items
 
             MediaCompactItem(
@@ -232,7 +240,11 @@ private fun MediaDiscoverGrid(
 
         when (mediaItems.loadState.append) {
             is LoadState.Loading -> {
-                item(span = { GridItemSpan(maxLineSpan) }) {
+                item(
+                    key = "media_discover_grid_append_loading",
+                    span = { GridItemSpan(maxLineSpan) },
+                    contentType = "media_discover_grid_append_loading",
+                ) {
                     Text(
                         text = stringResource(R.string.message_media_discover_loading_more),
                         style = MaterialTheme.typography.bodyMedium,
@@ -243,7 +255,11 @@ private fun MediaDiscoverGrid(
             }
 
             is LoadState.Error -> {
-                item(span = { GridItemSpan(maxLineSpan) }) {
+                item(
+                    key = "media_discover_grid_append_error",
+                    span = { GridItemSpan(maxLineSpan) },
+                    contentType = "media_discover_grid_append_error",
+                ) {
                     MediaDiscoverRetryState(
                         title = stringResource(R.string.label_media_discover_error_title),
                         onRetry = mediaItems::retry,
@@ -269,7 +285,17 @@ private fun MediaDiscoverList(
         contentPadding = PaddingValues(bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        items(count = mediaItems.itemCount) { index ->
+        items(
+            count = mediaItems.itemCount,
+            key = mediaItems.itemKey { media -> media.id },
+            contentType =
+                mediaItems.itemContentType {
+                    when (preferredViewMode) {
+                        PreferredViewMode.SUMMARY -> "media_discover_summary_item"
+                        else -> "media_discover_detailed_item"
+                    }
+                },
+        ) { index ->
             val media = mediaItems[index] ?: return@items
 
             when (preferredViewMode) {
@@ -291,7 +317,10 @@ private fun MediaDiscoverList(
 
         when (mediaItems.loadState.append) {
             is LoadState.Loading -> {
-                item {
+                item(
+                    key = "media_discover_list_append_loading",
+                    contentType = "media_discover_list_append_loading",
+                ) {
                     Text(
                         text = stringResource(R.string.message_media_discover_loading_more),
                         style = MaterialTheme.typography.bodyMedium,
@@ -302,7 +331,10 @@ private fun MediaDiscoverList(
             }
 
             is LoadState.Error -> {
-                item {
+                item(
+                    key = "media_discover_list_append_error",
+                    contentType = "media_discover_list_append_error",
+                ) {
                     MediaDiscoverRetryState(
                         title = stringResource(R.string.label_media_discover_error_title),
                         onRetry = mediaItems::retry,
@@ -429,19 +461,12 @@ private fun MediaDiscoverListItem(
                     )
                 }
 
-                media.metaLine()?.also { metadata ->
-                    Text(
-                        text = metadata,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-
-                MediaSubTitleText(
+                MediaMetaLineText(
                     media = media,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
 
                 AiringScheduleText(
@@ -451,10 +476,10 @@ private fun MediaDiscoverListItem(
 
                 if (showGenres && media.genres.isNotEmpty()) {
                     Text(
-                        text = media.genres.joinToString(separator = " • "),
+                        text = media.genres.joinToString(separator = " • ") { "${it.emoji} ${it.name}" },
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 2,
+                        maxLines = 3,
                         overflow = TextOverflow.Ellipsis,
                     )
                 }
@@ -528,27 +553,3 @@ private fun PreferredViewMode.gridColumns(): Int =
         PreferredViewMode.SUMMARY,
         -> 1
     }
-
-private fun Media.displayTitle(): String? =
-    title.userPreferred
-        ?.toString()
-        ?.trim()
-        ?.takeIf(String::isNotBlank)
-        ?: listOf(title.english, title.romaji, title.native)
-            .mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
-            .firstOrNull()
-
-private fun Media.secondaryTitle(): String? {
-    val preferred = title.userPreferred?.toString()?.trim()
-
-    return listOf(title.english, title.romaji, title.native)
-        .mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
-        .firstOrNull { it != preferred }
-}
-
-private fun Media.metaLine(): String? =
-    buildList {
-        format?.alias?.toString()?.takeIf(String::isNotBlank)?.let(::add)
-        season?.alias?.toString()?.takeIf(String::isNotBlank)?.let(::add)
-        startDate?.year?.takeIf { it > 0 }?.toString()?.let(::add)
-    }.takeIf(List<String>::isNotEmpty)?.joinToString(separator = " • ")

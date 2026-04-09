@@ -80,7 +80,7 @@ class MediaScreen : AniTrendScreen() {
                         onMyAnimeListButtonClick = { url ->
                             startViewIntent(url.toUri())
                         },
-                        onBookmarkButtonClick = { view, media ->
+                        onManageListButtonClick = { view, media ->
                             view.openMediaListSheetFor(media, settings)
                         },
                         onFavouriteButtonClick = { view, params ->

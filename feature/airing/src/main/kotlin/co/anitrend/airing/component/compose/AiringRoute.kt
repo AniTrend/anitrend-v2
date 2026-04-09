@@ -48,6 +48,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import co.anitrend.airing.R
 import co.anitrend.airing.component.viewmodel.AiringViewModel
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
@@ -189,7 +191,11 @@ private fun AiringGrid(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        items(count = airings.itemCount) { index ->
+        items(
+            count = airings.itemCount,
+            key = airings.itemKey { media -> media.id },
+            contentType = airings.itemContentType { "airing_grid_item" },
+        ) { index ->
             val media = airings[index] ?: return@items
 
             Box(
@@ -216,7 +222,11 @@ private fun AiringGrid(
 
         when (airings.loadState.append) {
             is LoadState.Loading -> {
-                item(span = { GridItemSpan(maxLineSpan) }) {
+                item(
+                    key = "airing_append_loading",
+                    span = { GridItemSpan(maxLineSpan) },
+                    contentType = "airing_append_loading",
+                ) {
                     Text(
                         text = stringResource(R.string.message_airing_loading_more),
                         style = MaterialTheme.typography.bodyMedium,
@@ -227,7 +237,11 @@ private fun AiringGrid(
             }
 
             is LoadState.Error -> {
-                item(span = { GridItemSpan(maxLineSpan) }) {
+                item(
+                    key = "airing_append_error",
+                    span = { GridItemSpan(maxLineSpan) },
+                    contentType = "airing_append_error",
+                ) {
                     RetryAiringState(
                         title = stringResource(R.string.label_airing_error_title),
                         onRetry = airings::retry,

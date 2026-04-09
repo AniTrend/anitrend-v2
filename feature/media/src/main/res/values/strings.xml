@@ -20,7 +20,7 @@
     <!-- Section title for additional metadata shown on the media detail screen -->
     <string name="label_media_extended_details_section_title">More details</string>
     <!-- Supporting copy for the quieter metadata overflow module on media detail -->
-    <string name="subtitle_media_extended_details_section">Alternative titles, theme previews, and quieter metadata.</string>
+    <string name="subtitle_media_extended_details_section">Alternative titles, and quieter metadata.</string>
     <!-- Label for the age rating row shown on the media detail screen -->
     <string name="label_media_extended_details_age_rating">Age rating</string>
     <!-- Label for the source material row shown on the media detail screen -->

@@ -16,8 +16,8 @@
  */
 package co.anitrend.medialist.editor.component.compose
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,7 +48,6 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -139,16 +138,6 @@ private fun EditorHero(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-                Text(
-                    text =
-                        if (canDelete) {
-                            stringResource(R.string.title_media_list_editor_quick_edit)
-                        } else {
-                            stringResource(R.string.title_media_list_editor_add_to_library)
-                        },
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                )
                 Text(
                     text = state.mediaTitle.ifBlank { stringResource(R.string.placeholder_media_list_editor_media_title) },
                     style = MaterialTheme.typography.headlineSmall,
@@ -379,28 +368,6 @@ private fun ProgressSection(state: MediaListEditorState) {
             supportingText = stringResource(R.string.label_media_list_editor_progress_auto_complete_hint),
             canDecrement = state.currentProgress > 0,
             canIncrement = state.totalUnits?.let { state.currentProgress < it } ?: true,
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = stringResource(R.string.label_media_list_editor_progress_percentage, (progressFraction * 100).toInt()),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            state.totalUnits?.let {
-                Text(
-                    text = "${state.currentProgress} / $it",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-        LinearProgressIndicator(
-            progress = { progressFraction },
-            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
@@ -812,15 +779,15 @@ private fun mediaQuickFacts(state: MediaListEditorState): String {
 
     when (val category = media.category) {
         is Media.Category.Anime -> {
-            category.episodes?.takeIf { it > 0 }?.let {
+            category.episodes.takeIf { it > 0 }?.let {
                 parts += stringResource(R.string.label_media_list_editor_episode_count, it)
             }
         }
         is Media.Category.Manga -> {
-            category.chapters?.takeIf { it > 0 }?.let {
+            category.chapters.takeIf { it > 0 }?.let {
                 parts += stringResource(R.string.label_media_list_editor_chapter_count, it)
             }
-            category.volumes?.takeIf { it > 0 }?.let {
+            category.volumes.takeIf { it > 0 }?.let {
                 parts += stringResource(R.string.label_media_list_editor_volume_count, it)
             }
         }
