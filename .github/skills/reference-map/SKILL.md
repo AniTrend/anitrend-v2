@@ -15,11 +15,17 @@ This repository moved from monolithic instruction files to a split model:
 The goal is to reduce documentation drift and avoid brittle SHA-pinned GitHub links.
 Use repo-relative paths only, then run `.github/scripts/audit-instruction-refs.sh`.
 
+The concrete example inventory lives in
+[layer-example-matrix.md](./references/layer-example-matrix.md). Use it when you need stable file
+anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, and `buildSrc`.
+
 ## How to use the split
 
 1. Start from the instruction file that matches your scope (`.github/instructions/*.instructions.md`).
 2. Jump to the linked skill file for implementation details.
-3. Validate references and formatting before opening a PR.
+3. Open [layer-example-matrix.md](./references/layer-example-matrix.md) when you need concrete
+   cross-layer examples or stable file anchors.
+4. Validate references and formatting before opening a PR.
 
 ## Legacy topic to new location map
 
@@ -28,6 +34,7 @@ Use repo-relative paths only, then run `.github/scripts/audit-instruction-refs.s
 | Architecture boundaries | `.github/instructions/context.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
 | Layered module plumbing | `.github/instructions/context.instructions.md` | `.github/skills/layered-module-patterns/SKILL.md` |
 | UI navigation architecture | `.github/instructions/context.instructions.md` | `.github/skills/navigation-architecture/SKILL.md` |
+| Android platform/helper reuse | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
 | Build system conventions | `.github/instructions/build-system.instructions.md` | `.github/skills/new-module-checklist/SKILL.md` |
 | DataState / UiState behavior | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
 | Koin DI wiring | `.github/instructions/context.instructions.md` | `.github/skills/koin-module-wiring/SKILL.md` |
@@ -45,6 +52,10 @@ Use repo-relative paths only, then run `.github/scripts/audit-instruction-refs.s
 | Add a new feature module | `.github/instructions/context.instructions.md` | `.github/skills/new-module-checklist/SKILL.md` |
 | Evaluate or add domain/data/feature/task plumbing | `.github/instructions/context.instructions.md` | `.github/skills/layered-module-patterns/SKILL.md` |
 | Trace or add screen navigation | `.github/instructions/context.instructions.md` | `.github/skills/navigation-architecture/SKILL.md` |
+| Reuse or extend an internal Android helper API | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
+| Work on deep-link entry or parser registration | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
+| Work on drawer or app-shell navigation helpers | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
+| Work on theme, configuration, notification, context, or fragment helpers | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
 | Add a new repository or source | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
 | Convert a fixed-size detail read to offline-first | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
 | Add DI bindings | `.github/instructions/context.instructions.md` | `.github/skills/koin-module-wiring/SKILL.md` |
@@ -75,8 +86,18 @@ Use them alongside the `.github` instructions and skills when the task is broade
 
 ## Canonical code anchors
 
-Use these as concrete implementation references:
+Use these as concrete implementation references. For the curated cross-layer list, open
+[layer-example-matrix.md](./references/layer-example-matrix.md).
 
+- `android/core/src/main/kotlin/co/anitrend/android/core/koin/Modules.kt`
+- `android/core/src/main/kotlin/co/anitrend/android/core/settings/helper/config/ConfigurationHelper.kt`
+- `android/core/src/main/kotlin/co/anitrend/android/core/extensions/ContextExtensions.kt`
+- `android/core/src/main/kotlin/co/anitrend/android/core/helpers/notification/NotificationExtensions.kt`
+- `android/core/src/main/kotlin/co/anitrend/android/core/ui/theme/Theme.kt`
+- `android/navigation/src/main/kotlin/co/anitrend/android/navigation/drawer/koin/Modules.kt`
+- `android/navigation/src/main/kotlin/co/anitrend/android/navigation/drawer/provider/FeatureProvider.kt`
+- `android/deeplink/src/main/kotlin/co/anitrend/android/deeplink/koin/Modules.kt`
+- `android/deeplink/src/main/kotlin/co/anitrend/android/deeplink/component/screen/DeepLinkScreen.kt`
 - `domain/src/main/kotlin/co/anitrend/domain/tag/`
 - `data/src/main/kotlin/co/anitrend/data/tag/`
 - `domain/src/main/kotlin/co/anitrend/domain/media/`
@@ -91,7 +112,9 @@ Use these as concrete implementation references:
 - `task/review/src/main/kotlin/co/anitrend/task/review/`
 - `task/favourite/src/main/kotlin/co/anitrend/task/favourite/`
 - `data/android/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
+- `app/src/main/kotlin/co/anitrend/component/screen/MainScreen.kt`
 - `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt`
+- `app/core/src/main/kotlin/co/anitrend/core/ui/UiExtensions.kt`
 - `buildSrc/src/main/java/co/anitrend/buildSrc/module/Modules.kt`
 - `buildSrc/src/main/java/co/anitrend/buildSrc/plugins/components/ProjectDependencies.kt`
 - `data/schemas/`
@@ -100,6 +123,8 @@ Use these as concrete implementation references:
 
 - Keep architecture intent in instruction files.
 - Keep implementation detail in skill files.
+- Prefer adding concrete examples to [layer-example-matrix.md](./references/layer-example-matrix.md)
+  instead of repeating large file inventories across multiple skills.
 - Prefer adding links to this map instead of duplicating long prose.
 - Never add SHA-pinned `github.com/.../blob/<sha>/...#L..` links.
 - Run `.github/scripts/audit-instruction-refs.sh` before merging.

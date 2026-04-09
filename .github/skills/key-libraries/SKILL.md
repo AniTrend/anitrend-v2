@@ -11,6 +11,10 @@ AniTrend v2 uses a combination of standard Android Jetpack libraries and in-hous
 libraries. All versions are centrally managed in `gradle/libs.versions.toml`; use the generated
 `libs.*` accessors rather than hardcoded coordinates.
 
+For AniTrend's repo-specific Android wrappers around system services, theme/configuration helpers,
+notifications, deep links, and app-shell behavior, read
+`.github/skills/android-platform-patterns/SKILL.md` before adding a new helper API.
+
 ## Jetpack components
 
 - **Lifecycle + ViewModel** — lifecycle-aware holders for UI state.
@@ -49,6 +53,8 @@ All versions are declared in `gradle/libs.versions.toml`.
   typography.
 - **support-arch theme** — `AniTrendTheme3` and `PreviewTheme` wrappers; apply them in
   composables and previews.
+- **AniTrend Android core UI** — `:android:core` owns repo-specific theme, configuration, helper,
+  and Compose utility surfaces consumed by the app shell and feature modules.
 - **android-emojify** — Emoji parsing/rendering exposed as `EmojiManager` singleton via Koin;
   registered in `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt`.
 
