@@ -20,6 +20,9 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.navigation.ReviewRouter
+import co.anitrend.navigation.extensions.asNavPayload
+import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.review.discover.component.compose.ReviewDiscoverRoute
 
 class ReviewDiscoverScreen : AniTrendScreen() {
@@ -27,7 +30,15 @@ class ReviewDiscoverScreen : AniTrendScreen() {
         super.onCreate(savedInstanceState)
         setContent {
             AniTrendTheme3 {
-                ReviewDiscoverRoute(onBackPress = onBackPressedDispatcher::onBackPressed)
+                ReviewDiscoverRoute(
+                    onBackPress = onBackPressedDispatcher::onBackPressed,
+                    onReviewClick = { reviewId ->
+                        ReviewRouter.startActivity(
+                            context = this@ReviewDiscoverScreen,
+                            navPayload = ReviewRouter.ReviewParam(id = reviewId).asNavPayload(),
+                        )
+                    },
+                )
             }
         }
     }

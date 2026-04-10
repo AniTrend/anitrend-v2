@@ -46,8 +46,9 @@ internal data class MediaComposePreviewProvider(
                         romaji = "Boku no Hero Academia 3",
                         native = "僕のヒーローアカデミア 3",
                     ),
-                extraInfo = "Mangaka Kouhei Horikoshi has noted that American superhero comics are the inspiration " +
-                    "for the series, and has based character pages on logos for Marvel and DC comic characters.",
+                extraInfo =
+                    "Mangaka Kouhei Horikoshi has noted that American superhero comics are the inspiration " +
+                        "for the series, and has based character pages on logos for Marvel and DC comic characters.",
                 status = MediaStatus.FINISHED,
                 image = MediaImage.empty().copy(color = "#e4a15d"),
                 startDate = FuzzyDate.empty().copy(2018),

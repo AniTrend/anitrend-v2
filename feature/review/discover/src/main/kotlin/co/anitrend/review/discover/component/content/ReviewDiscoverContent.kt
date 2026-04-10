@@ -24,6 +24,9 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.navigation.ReviewRouter
+import co.anitrend.navigation.extensions.asNavPayload
+import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.review.discover.component.compose.ReviewDiscoverRoute
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,6 +45,12 @@ class ReviewDiscoverContent : Fragment() {
                 AniTrendTheme3 {
                     ReviewDiscoverRoute(
                         onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
+                        onReviewClick = { reviewId ->
+                            ReviewRouter.startActivity(
+                                context = requireContext(),
+                                navPayload = ReviewRouter.ReviewParam(id = reviewId).asNavPayload(),
+                            )
+                        },
                         viewModel = viewModel,
                     )
                 }

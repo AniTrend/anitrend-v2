@@ -33,14 +33,23 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import co.anitrend.domain.media.enums.MediaFormat
 
-
 private fun Media.metaLine(): String? =
     buildList {
-        format?.alias?.toString()?.takeIf(String::isNotBlank)?.let(::add)
-        season?.alias?.toString()?.takeIf(String::isNotBlank)?.let(::add)
-        startDate.year.takeIf { it > 0 }?.toString()?.let(::add)
+        format
+            ?.alias
+            ?.toString()
+            ?.takeIf(String::isNotBlank)
+            ?.let(::add)
+        season
+            ?.alias
+            ?.toString()
+            ?.takeIf(String::isNotBlank)
+            ?.let(::add)
+        startDate.year
+            .takeIf { it > 0 }
+            ?.toString()
+            ?.let(::add)
     }.takeIf(List<String>::isNotEmpty)?.joinToString(separator = " • ")
-
 
 /**
  * Displays subtitle text in the following format for anime and manga respectively

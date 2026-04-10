@@ -18,37 +18,42 @@ package co.anitrend.media.component.compose.section
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import co.anitrend.android.core.asPrettyTime
+import co.anitrend.common.review.ui.compose.ReviewBrowseCard
+import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.review.entity.Review
+import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.media.R
-import org.threeten.bp.Instant
 
 @Composable
 internal fun MediaCommunitySection(
     reviews: LazyPagingItems<Review>?,
     isBlocked: Boolean,
+    authenticatedUserId: Long,
     onSeeAllClick: () -> Unit,
     onRetry: () -> Unit,
+    onReviewClick: (Long) -> Unit,
+    isVotePending: (Long) -> Boolean,
+    onVoteRequested: (Review, ReviewRating) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val previewItems = remember(reviews?.itemSnapshotList) { reviews?.itemSnapshotList?.items.orEmpty().take(3) }
+    val previewItems =
+        remember(reviews?.itemSnapshotList) {
+            reviews
+                ?.itemSnapshotList
+                ?.items
+                .orEmpty()
+                .take(3)
+        }
     val refreshState = reviews?.loadState?.refresh
     val canSeeAll = !isBlocked && previewItems.isNotEmpty()
 
@@ -78,7 +83,15 @@ internal fun MediaCommunitySection(
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     previewItems.forEach { review ->
-                        CommunityReviewCard(review = review)
+                        ReviewBrowseCard(
+                            review = review,
+                            showMediaContext = false,
+                            summaryMaxLines = 4,
+                            canVote = !review.isOwnedBy(authenticatedUserId),
+                            isVotePending = isVotePending(review.id),
+                            onOpen = { onReviewClick(review.id) },
+                            onVoteRequested = { rating -> onVoteRequested(review, rating) },
+                        )
                     }
                 }
             }
@@ -116,52 +129,5 @@ internal fun MediaCommunitySection(
     }
 }
 
-@Composable
-private fun CommunityReviewCard(
-    review: Review,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.76f),
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        shape = RoundedCornerShape(22.dp),
-    ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 14.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Text(
-                    text =
-                        review.user.name.toString().ifBlank {
-                            stringResource(R.string.label_media_community_review_by_unknown)
-                        },
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                )
-                Text(
-                    text = stringResource(R.string.label_media_community_review_score, review.score),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
-
-            Text(
-                text = review.summary,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-
-            Text(
-                text = Instant.ofEpochSecond(review.createdAt).asPrettyTime(),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-    }
-}
+private fun Review.isOwnedBy(authenticatedUserId: Long): Boolean =
+    authenticatedUserId != IAuthenticationSettings.INVALID_USER_ID && authenticatedUserId == userId

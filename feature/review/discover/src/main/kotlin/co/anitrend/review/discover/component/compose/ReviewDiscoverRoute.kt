@@ -20,48 +20,65 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import co.anitrend.android.core.asPrettyTime
+import co.anitrend.common.review.ui.compose.ReviewBrowseCard
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
-import co.anitrend.domain.media.entity.Media
+import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.review.entity.Review
+import co.anitrend.domain.review.enums.ReviewRating
+import co.anitrend.navigation.ReviewTaskRouter
 import co.anitrend.navigation.ReviewDiscoverRouter
+import co.anitrend.navigation.extensions.toDataBuilder
 import co.anitrend.review.discover.R
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 import org.koin.androidx.compose.koinViewModel
-import org.threeten.bp.Instant
 
 @Composable
 fun ReviewDiscoverRoute(
     onBackPress: () -> Unit,
+    onReviewClick: (Long) -> Unit,
     viewModel: ReviewDiscoverViewModel = koinViewModel(),
 ) {
+    val context = LocalContext.current
+    val authenticationSettings: IAuthenticationSettings = koinInject()
+    val workManager = remember(context) { WorkManager.getInstance(context) }
+    val scope = rememberCoroutineScope()
+    val pendingVotes = remember { mutableStateMapOf<Long, Boolean>() }
     val params by viewModel.params.collectAsStateWithLifecycle()
     val reviews = viewModel.reviews.collectAsLazyPagingItems()
     val refreshState = reviews.loadState.refresh
+    val authenticatedUserId = authenticationSettings.authenticatedUserId.value
 
     DefaultScaffold(onBackPress = onBackPress) { padding ->
         Column(
@@ -87,7 +104,34 @@ fun ReviewDiscoverRoute(
 
             Box(modifier = Modifier.weight(1f)) {
                 when {
-                    reviews.itemCount > 0 -> ReviewDiscoverList(reviews = reviews)
+                    reviews.itemCount > 0 ->
+                        ReviewDiscoverList(
+                            reviews = reviews,
+                            authenticatedUserId = authenticatedUserId,
+                            isVotePending = { reviewId -> pendingVotes[reviewId] == true },
+                            onReviewClick = onReviewClick,
+                            onVoteRequested = { review, rating ->
+                                if (pendingVotes[review.id] != true) {
+                                    scope.launch {
+                                        pendingVotes[review.id] = true
+                                        try {
+                                            val terminalState =
+                                                submitReviewVote(
+                                                    workManager = workManager,
+                                                    reviewId = review.id,
+                                                    rating = rating,
+                                                )
+
+                                            if (terminalState == WorkInfo.State.SUCCEEDED) {
+                                                reviews.refresh()
+                                            }
+                                        } finally {
+                                            pendingVotes.remove(review.id)
+                                        }
+                                    }
+                                }
+                            },
+                        )
 
                     refreshState is LoadState.Loading ->
                         ReviewDiscoverState(
@@ -115,6 +159,10 @@ fun ReviewDiscoverRoute(
 @Composable
 private fun ReviewDiscoverList(
     reviews: LazyPagingItems<Review>,
+    authenticatedUserId: Long,
+    isVotePending: (Long) -> Boolean,
+    onReviewClick: (Long) -> Unit,
+    onVoteRequested: (Review, ReviewRating) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -128,7 +176,15 @@ private fun ReviewDiscoverList(
             contentType = reviews.itemContentType { "review_discover_card" },
         ) { index ->
             val review = reviews[index] ?: return@items
-            ReviewDiscoverCard(review = review)
+            ReviewBrowseCard(
+                review = review,
+                showMediaContext = true,
+                summaryMaxLines = 5,
+                canVote = !review.isOwnedBy(authenticatedUserId),
+                isVotePending = isVotePending(review.id),
+                onOpen = { onReviewClick(review.id) },
+                onVoteRequested = { rating -> onVoteRequested(review, rating) },
+            )
         }
 
         when (reviews.loadState.append) {
@@ -159,64 +215,6 @@ private fun ReviewDiscoverList(
             }
 
             else -> Unit
-        }
-    }
-}
-
-@Composable
-private fun ReviewDiscoverCard(
-    review: Review,
-    modifier: Modifier = Modifier,
-) {
-    val mediaTitle = (review as? Review.Extended)?.media?.displayTitle()
-
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.16f),
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp),
-    ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = review.user.name.toString().ifBlank { stringResource(R.string.label_review_discover_unknown_author) },
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                )
-                Text(
-                    text = stringResource(R.string.label_review_discover_score, review.score),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
-
-            if (!mediaTitle.isNullOrBlank()) {
-                Text(
-                    text = mediaTitle,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.secondary,
-                )
-            }
-
-            Text(
-                text = review.summary,
-                maxLines = 5,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-
-            Text(
-                text = Instant.ofEpochSecond(review.createdAt).asPrettyTime(),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
         }
     }
 }
@@ -287,11 +285,30 @@ private fun subtitleFor(param: ReviewDiscoverRouter.ReviewDiscoverParam): String
         },
     )
 
-private fun Media.displayTitle(): String? =
-    title.userPreferred
-        ?.toString()
-        ?.trim()
-        ?.takeIf(String::isNotBlank)
-        ?: listOf(title.english, title.romaji, title.native)
-            .mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
-            .firstOrNull()
+private suspend fun submitReviewVote(
+    workManager: WorkManager,
+    reviewId: Long,
+    rating: ReviewRating,
+): WorkInfo.State {
+    val params =
+        ReviewTaskRouter.Param.RateEntry(
+            id = reviewId,
+            rating = rating,
+        )
+    val request =
+        OneTimeWorkRequest
+            .Builder(ReviewTaskRouter.forReviewRateWorker())
+            .setInputData(params.toDataBuilder().build())
+            .build()
+
+    workManager.enqueue(request)
+
+    return workManager
+        .getWorkInfoByIdFlow(request.id)
+        .filterNotNull()
+        .first { it.state.isFinished }
+        .state
+}
+
+private fun Review.isOwnedBy(authenticatedUserId: Long): Boolean =
+    authenticatedUserId != IAuthenticationSettings.INVALID_USER_ID && authenticatedUserId == userId

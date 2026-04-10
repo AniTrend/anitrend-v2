@@ -363,15 +363,18 @@ fun MediaThemeSection(
     MediaHubSection(
         title = stringResource(R.string.label_media_extended_details_themes),
         subtitle = stringResource(R.string.subtitle_media_theme_section),
-        trailingActionLabel = if (canExpand) {
-            stringResource(
-                if (showAll) {
-                    R.string.action_media_theme_section_show_less
-                } else {
-                    R.string.action_media_theme_section_show_all
-                },
-            )
-        } else null,
+        trailingActionLabel =
+            if (canExpand) {
+                stringResource(
+                    if (showAll) {
+                        R.string.action_media_theme_section_show_less
+                    } else {
+                        R.string.action_media_theme_section_show_all
+                    },
+                )
+            } else {
+                null
+            },
         onTrailingAction = { showAll = !showAll },
         modifier = modifier,
     ) {

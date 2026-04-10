@@ -33,6 +33,14 @@ import kotlinx.coroutines.flow.Flow
 class MediaCommunityViewModel(
     private val interactor: GetPagingReviewInteractor,
 ) : ViewModel() {
+    companion object {
+        val previewSort: List<Sorting<ReviewSort>> =
+            listOf(
+                Sorting(ReviewSort.RATING, SortOrder.DESC),
+                Sorting(ReviewSort.CREATED_AT, SortOrder.DESC),
+            )
+    }
+
     fun reviews(
         mediaId: Long,
         mediaType: MediaType,
@@ -43,11 +51,7 @@ class MediaCommunityViewModel(
                 mediaId = mediaId,
                 mediaType = mediaType,
                 scoreFormat = scoreFormat,
-                sort =
-                    listOf(
-                        Sorting(ReviewSort.RATING, SortOrder.DESC),
-                        Sorting(ReviewSort.CREATED_AT, SortOrder.DESC),
-                    ),
-            )
+                sort = previewSort,
+            ),
         ).cachedIn(viewModelScope)
 }

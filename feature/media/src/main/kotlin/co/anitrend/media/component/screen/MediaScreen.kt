@@ -46,6 +46,7 @@ import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.MediaStaffRouter
 import co.anitrend.navigation.MediaStatsRouter
 import co.anitrend.navigation.MediaStudiosRouter
+import co.anitrend.navigation.ReviewRouter
 import co.anitrend.navigation.ReviewDiscoverRouter
 import co.anitrend.navigation.StudioRouter
 import co.anitrend.navigation.extensions.asNavPayload
@@ -132,20 +133,22 @@ class MediaScreen : AniTrendScreen() {
                                     MediaCharactersRouter.startActivity(
                                         context = this@MediaScreen,
                                         navPayload =
-                                            MediaCharactersRouter.MediaCharactersParam(
-                                                mediaId = param.mediaId,
-                                                mediaTitle = param.mediaTitle,
-                                            ).asNavPayload(),
+                                            MediaCharactersRouter
+                                                .MediaCharactersParam(
+                                                    mediaId = param.mediaId,
+                                                    mediaTitle = param.mediaTitle,
+                                                ).asNavPayload(),
                                     )
 
                                 MediaPeopleRouter.Section.STAFF ->
                                     MediaStaffRouter.startActivity(
                                         context = this@MediaScreen,
                                         navPayload =
-                                            MediaStaffRouter.MediaStaffParam(
-                                                mediaId = param.mediaId,
-                                                mediaTitle = param.mediaTitle,
-                                            ).asNavPayload(),
+                                            MediaStaffRouter
+                                                .MediaStaffParam(
+                                                    mediaId = param.mediaId,
+                                                    mediaTitle = param.mediaTitle,
+                                                ).asNavPayload(),
                                     )
                             }
                         },
@@ -181,6 +184,12 @@ class MediaScreen : AniTrendScreen() {
                         },
                         onCommunityClick = { param ->
                             ReviewDiscoverRouter.startActivity(
+                                context = this@MediaScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onReviewClick = { param ->
+                            ReviewRouter.startActivity(
                                 context = this@MediaScreen,
                                 navPayload = param.asNavPayload(),
                             )

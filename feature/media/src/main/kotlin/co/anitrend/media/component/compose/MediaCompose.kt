@@ -62,19 +62,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import co.anitrend.android.core.compose.AniTrendDimensions
@@ -88,6 +94,7 @@ import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.common.media.ui.compose.component.score.MediaScoreSection
 import co.anitrend.common.media.ui.compose.component.status.MediaStatusSection
 import co.anitrend.common.media.ui.compose.widget.title.MediaMetaLineText
+import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
@@ -98,6 +105,7 @@ import co.anitrend.domain.media.entity.attribute.score.IMediaRating
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.review.entity.Review
+import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.media.R
 import co.anitrend.media.component.compose.section.ContributorsSection
 import co.anitrend.media.component.compose.section.MediaCommunitySection
@@ -128,10 +136,17 @@ import co.anitrend.navigation.MediaRecommendationsRouter
 import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.MediaStatsRouter
 import co.anitrend.navigation.MediaStudiosRouter
+import co.anitrend.navigation.ReviewTaskRouter
+import co.anitrend.navigation.ReviewRouter
 import co.anitrend.navigation.ReviewDiscoverRouter
 import co.anitrend.navigation.StudioRouter
+import co.anitrend.navigation.extensions.toDataBuilder
 import co.anitrend.navigation.model.common.IParam
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 private fun Float.asDisplayRating(scoreFormat: ScoreFormat): IMediaRating =
     when (scoreFormat) {
@@ -457,6 +472,7 @@ private fun MediaPrimaryActionDock(
 private fun MediaDetailContent(
     media: Media.Extended,
     scoreFormat: ScoreFormat,
+    authenticatedUserId: Long,
     onManageListClick: () -> Unit,
     onFavouriteClick: () -> Unit,
     onMyAnimeListButtonClick: (String) -> Unit,
@@ -483,6 +499,9 @@ private fun MediaDetailContent(
     onRelatedClick: (MediaRelationsRouter.MediaRelationsParam) -> Unit = {},
     onRecommendationsClick: (MediaRecommendationsRouter.MediaRecommendationsParam) -> Unit = {},
     onCommunityClick: (ReviewDiscoverRouter.ReviewDiscoverParam) -> Unit = {},
+    onReviewClick: (ReviewRouter.ReviewParam) -> Unit = {},
+    isCommunityVotePending: (Long) -> Boolean = { false },
+    onCommunityVoteRequested: (Review, ReviewRating) -> Unit = { _, _ -> },
     onRetryCharacters: () -> Unit = {},
     onRetryStaff: () -> Unit = {},
     onRetryStudios: () -> Unit = {},
@@ -593,15 +612,13 @@ private fun MediaDetailContent(
             }
         }
 
-
         if (media.themes.isNotEmpty()) {
             item {
                 MediaThemeSection(
-                    themes = media.themes
+                    themes = media.themes,
                 )
             }
         }
-
 
         item {
             MediaConnectionsBrowserSection(
@@ -722,16 +739,27 @@ private fun MediaDetailContent(
             MediaCommunitySection(
                 reviews = communityReviews,
                 isBlocked = media.isReviewBlocked,
+                authenticatedUserId = authenticatedUserId,
                 onSeeAllClick = {
                     onCommunityClick(
                         ReviewDiscoverRouter.ReviewDiscoverParam(
                             mediaId = media.id,
                             mediaType = media.category.type,
+                            sort = MediaCommunityViewModel.previewSort,
                             scoreFormat = scoreFormat,
                         ),
                     )
                 },
                 onRetry = onRetryCommunity,
+                onReviewClick = { reviewId ->
+                    onReviewClick(
+                        ReviewRouter.ReviewParam(
+                            id = reviewId,
+                        ),
+                    )
+                },
+                isVotePending = isCommunityVotePending,
+                onVoteRequested = onCommunityVoteRequested,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
@@ -765,9 +793,15 @@ fun MediaScreenContent(
     onRelatedClick: (MediaRelationsRouter.MediaRelationsParam) -> Unit,
     onRecommendationsClick: (MediaRecommendationsRouter.MediaRecommendationsParam) -> Unit,
     onCommunityClick: (ReviewDiscoverRouter.ReviewDiscoverParam) -> Unit,
+    onReviewClick: (ReviewRouter.ReviewParam) -> Unit,
     onExternalLinkClick: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val authenticationSettings: IAuthenticationSettings = koinInject()
+    val workManager = remember(context) { WorkManager.getInstance(context) }
+    val scope = rememberCoroutineScope()
+    val pendingCommunityVotes = remember { mutableStateMapOf<Long, Boolean>() }
     val state by mediaState.model.observeAsState()
     val media = state as? Media.Extended ?: return
     val charactersViewModel: MediaCharactersViewModel = koinViewModel()
@@ -801,6 +835,7 @@ fun MediaScreenContent(
         }
 
     val view = LocalView.current
+    val authenticatedUserId = authenticationSettings.authenticatedUserId.value
 
     LaunchedEffect(media.id) {
         studiosViewModel(media.id)
@@ -835,6 +870,7 @@ fun MediaScreenContent(
         MediaDetailContent(
             media = media,
             scoreFormat = scoreFormat,
+            authenticatedUserId = authenticatedUserId,
             onManageListClick = { onManageListButtonClick(view, media) },
             onFavouriteClick = {
                 val param =
@@ -867,6 +903,29 @@ fun MediaScreenContent(
             onRelatedClick = onRelatedClick,
             onRecommendationsClick = onRecommendationsClick,
             onCommunityClick = onCommunityClick,
+            onReviewClick = onReviewClick,
+            isCommunityVotePending = { reviewId -> pendingCommunityVotes[reviewId] == true },
+            onCommunityVoteRequested = { review, rating ->
+                if (pendingCommunityVotes[review.id] != true) {
+                    scope.launch {
+                        pendingCommunityVotes[review.id] = true
+                        try {
+                            val terminalState =
+                                submitReviewVote(
+                                    workManager = workManager,
+                                    reviewId = review.id,
+                                    rating = rating,
+                                )
+
+                            if (terminalState == WorkInfo.State.SUCCEEDED) {
+                                communityReviews?.refresh()
+                            }
+                        } finally {
+                            pendingCommunityVotes.remove(review.id)
+                        }
+                    }
+                }
+            },
             onRetryCharacters = characters::retry,
             onRetryStaff = staff::retry,
             onRetryStudios = { studiosViewModel(media.id) },
@@ -881,6 +940,31 @@ fun MediaScreenContent(
     }
 }
 
+private suspend fun submitReviewVote(
+    workManager: WorkManager,
+    reviewId: Long,
+    rating: ReviewRating,
+): WorkInfo.State {
+    val params =
+        ReviewTaskRouter.Param.RateEntry(
+            id = reviewId,
+            rating = rating,
+        )
+    val request =
+        OneTimeWorkRequest
+            .Builder(ReviewTaskRouter.forReviewRateWorker())
+            .setInputData(params.toDataBuilder().build())
+            .build()
+
+    workManager.enqueue(request)
+
+    return workManager
+        .getWorkInfoByIdFlow(request.id)
+        .filterNotNull()
+        .first { it.state.isFinished }
+        .state
+}
+
 @AniTrendPreview.Light
 @AniTrendPreview.Dark
 @Composable
@@ -891,6 +975,7 @@ private fun MediaDetailComponentPreview(
         MediaDetailContent(
             media = media,
             scoreFormat = ScoreFormat.POINT_10_DECIMAL,
+            authenticatedUserId = IAuthenticationSettings.INVALID_USER_ID,
             onManageListClick = {},
             onFavouriteClick = {},
             onMyAnimeListButtonClick = {},

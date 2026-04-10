@@ -413,7 +413,9 @@ private fun MediaDiscoverListItem(
                 ),
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f),
         contentColor = MaterialTheme.colorScheme.onSurface,
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp),
+        shape =
+            androidx.compose.foundation.shape
+                .RoundedCornerShape(24.dp),
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
@@ -429,7 +431,11 @@ private fun MediaDiscoverListItem(
                 AniTrendImage(
                     image = media.image,
                     imageType = RequestImage.Media.ImageType.POSTER,
-                    modifier = Modifier.fillMaxSize().clip(androidx.compose.foundation.shape.RoundedCornerShape(18.dp)),
+                    modifier =
+                        Modifier.fillMaxSize().clip(
+                            androidx.compose.foundation.shape
+                                .RoundedCornerShape(18.dp),
+                        ),
                     onClick = {},
                 )
                 MediaRating(
@@ -542,8 +548,7 @@ private fun MediaDiscoverRetryState(
     }
 }
 
-private fun PreferredViewMode.isListLayout(): Boolean =
-    this == PreferredViewMode.DETAILED || this == PreferredViewMode.SUMMARY
+private fun PreferredViewMode.isListLayout(): Boolean = this == PreferredViewMode.DETAILED || this == PreferredViewMode.SUMMARY
 
 private fun PreferredViewMode.gridColumns(): Int =
     when (this) {
