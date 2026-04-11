@@ -48,6 +48,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import co.anitrend.common.review.ui.compose.ReviewBrowseCard
+import co.anitrend.common.review.ui.compose.ReviewCardVariant
+import co.anitrend.common.review.ui.compose.ReviewLoadingCard
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.media.enums.MediaType
@@ -134,14 +136,12 @@ fun ReviewDiscoverRoute(
                         )
 
                     refreshState is LoadState.Loading ->
-                        ReviewDiscoverState(
-                            title = stringResource(R.string.label_review_discover_loading_title),
-                            subtitle = stringResource(R.string.message_review_discover_loading),
-                        )
+                        ReviewDiscoverLoadingState()
 
                     refreshState is LoadState.Error ->
                         ReviewDiscoverRetryState(
                             title = stringResource(R.string.label_review_discover_error_title),
+                            subtitle = stringResource(R.string.message_review_discover_error),
                             onRetry = reviews::retry,
                         )
 
@@ -178,8 +178,7 @@ private fun ReviewDiscoverList(
             val review = reviews[index] ?: return@items
             ReviewBrowseCard(
                 review = review,
-                showMediaContext = true,
-                summaryMaxLines = 5,
+                variant = ReviewCardVariant.Discover,
                 canVote = !review.isOwnedBy(authenticatedUserId),
                 isVotePending = isVotePending(review.id),
                 onOpen = { onReviewClick(review.id) },
@@ -193,11 +192,8 @@ private fun ReviewDiscoverList(
                     key = "review_discover_append_loading",
                     contentType = "review_discover_append_loading",
                 ) {
-                    Text(
-                        text = stringResource(R.string.message_review_discover_loading_more),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(vertical = 12.dp),
+                    ReviewLoadingCard(
+                        variant = ReviewCardVariant.Discover,
                     )
                 }
             }
@@ -209,12 +205,27 @@ private fun ReviewDiscoverList(
                 ) {
                     ReviewDiscoverRetryState(
                         title = stringResource(R.string.label_review_discover_error_title),
+                        subtitle = stringResource(R.string.message_review_discover_error),
                         onRetry = reviews::retry,
                     )
                 }
             }
 
             else -> Unit
+        }
+    }
+}
+
+@Composable
+private fun ReviewDiscoverLoadingState(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(14.dp),
+    ) {
+        repeat(3) {
+            ReviewLoadingCard(
+                variant = ReviewCardVariant.Discover,
+            )
         }
     }
 }
@@ -250,6 +261,7 @@ private fun ReviewDiscoverState(
 @Composable
 private fun ReviewDiscoverRetryState(
     title: String,
+    subtitle: String,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -265,6 +277,11 @@ private fun ReviewDiscoverRetryState(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
+            )
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             OutlinedButton(onClick = onRetry) {
                 Text(text = stringResource(co.anitrend.core.R.string.label_text_action_retry))

@@ -24,7 +24,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.domain.entities.LoadState
@@ -35,7 +34,6 @@ import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.extensions.isEmpty
-import co.anitrend.arch.recycler.paging.legacy.adapter.SupportPagedListAdapter
 import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
 import co.anitrend.arch.ui.fragment.list.contract.ISupportFragmentList
 import co.anitrend.android.core.recycler.decorator.DefaultSpacingDecorator
@@ -107,13 +105,7 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
      * @param model list holding data
      */
     protected open fun onPostModelChange(model: Collection<M>?) {
-        /** Since pagedList is a type of list we check it first */
         when (model) {
-            is PagedList -> {
-                with(supportViewAdapter as SupportPagedListAdapter) {
-                    submitList(model)
-                }
-            }
             is List -> {
                 with(supportViewAdapter as SupportListAdapter) {
                     submitList(model)

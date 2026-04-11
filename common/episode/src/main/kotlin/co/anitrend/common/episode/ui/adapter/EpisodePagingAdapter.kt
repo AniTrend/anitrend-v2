@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 AniTrend
+ * Copyright (C) 2025 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
+import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
-import co.anitrend.arch.recycler.paging.legacy.adapter.SupportPagedListAdapter
 import co.anitrend.arch.theme.animator.ScaleAnimator
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import co.anitrend.common.episode.ui.controller.helpers.EpisodeDiffUtil
@@ -30,13 +30,13 @@ import co.anitrend.common.episode.ui.controller.model.EpisodeItem
 import co.anitrend.common.episode.ui.controller.model.EpisodeItem.Companion.createViewHolder
 import co.anitrend.domain.episode.entity.Episode
 
-class EpisodePagedAdapter(
+class EpisodePagingAdapter(
     override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
-    override val customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
+    override var customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
     override val mapper: (Episode) -> IRecyclerItem = { EpisodeItem(it) },
     override val supportAction: ISupportSelectionMode<Long>? = null,
-) : SupportPagedListAdapter<Episode>(EpisodeDiffUtil) {
+) : SupportListAdapter<Episode>(EpisodeDiffUtil) {
     /**
      * Should provide the required view holder, this function is a substitute for
      * [androidx.recyclerview.widget.RecyclerView.Adapter.onCreateViewHolder] which now

@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.staff.datasource.local
 
-import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
@@ -62,23 +61,4 @@ internal abstract class StaffLocalSource : AbstractLocalSource<StaffEntity>() {
     """,
     )
     abstract fun staffByIdFlow(id: Long): Flow<StaffEntity?>
-
-    @Query(
-        """
-        select * from staff
-    """,
-    )
-    abstract fun allStaffFactory(): DataSource.Factory<Int, StaffEntity>
-
-    @Query(
-        """
-        select * from staff
-        where name_first match :term
-        or name_full match :term
-        or name_last match :term
-        or name_original match :term
-        or name_alternative match :term
-    """,
-    )
-    abstract fun searchStaffFactory(term: String): DataSource.Factory<Int, StaffEntity>
 }

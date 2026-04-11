@@ -24,10 +24,8 @@ import co.anitrend.data.core.extensions.store
 import co.anitrend.data.medialist.DeleteCustomMediaListInteractor
 import co.anitrend.data.medialist.DeleteCustomMediaListRepository
 import co.anitrend.data.medialist.DeleteMediaListEntryInteractor
-import co.anitrend.data.medialist.GetCollectionMediaListInteractor
 import co.anitrend.data.medialist.GetMediaListEntryInteractor
 import co.anitrend.data.medialist.GetPagingMediaListInteractor
-import co.anitrend.data.medialist.MediaListCollectionRepository
 import co.anitrend.data.medialist.MediaListDeleteEntryRepository
 import co.anitrend.data.medialist.MediaListEntryRepository
 import co.anitrend.data.medialist.MediaListPagingRepository
@@ -57,43 +55,6 @@ private val sourceModule =
                     graphQLController(
                         mapper = get<MediaListMapper.Collection>(),
                     ),
-                dispatcher = get(),
-            )
-        }
-        factory<MediaListSource.Collection> {
-            MediaListSourceImpl.Collection(
-                remoteSource = aniListApi(),
-                localSource = store().mediaListDao(),
-                mediaLocalSource = store().mediaDao(),
-                clearDataHelper = get(),
-                controller =
-                    graphQLController(
-                        mapper = get<MediaListMapper.Collection>(),
-                    ),
-                filter =
-                    MediaListQueryFilter.Collection(
-                        authentication = get(),
-                    ),
-                converter = get(),
-                dispatcher = get(),
-            )
-        }
-        factory<MediaListSource.Paged> {
-            MediaListSourceImpl.Paged(
-                remoteSource = aniListApi(),
-                localSource = store().mediaListDao(),
-                mediaLocalSource = store().mediaDao(),
-                clearDataHelper = get(),
-                controller =
-                    graphQLController(
-                        mapper = get<MediaListMapper.Paged>(),
-                        strategy = offline(),
-                    ),
-                filter =
-                    MediaListQueryFilter.Paged(
-                        authentication = get(),
-                    ),
-                converter = get(),
                 dispatcher = get(),
             )
         }
@@ -295,9 +256,6 @@ private val useCaseModule =
         factory<GetPagingMediaListInteractor> {
             MediaListInteractor.Paging(repository = get())
         }
-        factory<GetCollectionMediaListInteractor> {
-            MediaListInteractor.Collection(repository = get())
-        }
         factory<SaveMediaListEntryInteractor> {
             MediaListInteractor.SaveEntry(repository = get())
         }
@@ -326,11 +284,6 @@ private val repositoryModule =
         }
         factory<MediaListPagingRepository> {
             MediaListRepository.Paging(
-                source = get(),
-            )
-        }
-        factory<MediaListCollectionRepository> {
-            MediaListRepository.Collection(
                 source = get(),
             )
         }

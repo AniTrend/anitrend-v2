@@ -20,6 +20,8 @@
   <string name="action_read_more">Read More</string>
   <!-- Fallback author label when a review entry is missing a usable display name -->
   <string name="label_review_unknown_author">Unknown reviewer</string>
+  <!-- Discover and reader byline; %1$s is the review author -->
+  <string name="label_review_by_author" formatted="true">By %1$s</string>
   <!-- Compact score label for review cards and reader metadata; %1$d is the AniList review score -->
   <string name="label_review_score" formatted="true">Score %1$d</string>
   <!-- Compact vote count label for review metadata; %1$s is the localized vote count -->

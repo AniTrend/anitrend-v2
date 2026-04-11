@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.media.datasource.local
 
-import androidx.paging.DataSource
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
@@ -77,9 +76,8 @@ internal abstract class MediaLocalSource : AbstractLocalSource<MediaEntity>() {
     @RawQuery(observedEntities = [MediaEntity::class, MediaListEntity::class, AiringScheduleEntity::class])
     abstract fun rawFlow(query: SupportSQLiteQuery): Flow<MediaEntityView.Core?>
 
-    @Transaction
     @RawQuery(observedEntities = [MediaEntity::class, MediaListEntity::class, AiringScheduleEntity::class])
-    abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, MediaEntityView.Core>
+    abstract fun rawPagingSource(query: SupportSQLiteQuery): PagingSource<Int, MediaEntityView.Core>
 
     @Query(
         """

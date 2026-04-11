@@ -19,6 +19,7 @@ package co.anitrend.data.review.source
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.callback.RequestCallback
@@ -198,7 +199,6 @@ internal sealed class ReviewSourceImpl {
                     localSource = localSource,
                     controller = controller,
                     filter = filter,
-                    converter = converter,
                     clearDataHelper = clearDataHelper,
                     query = ReviewQuery.Paged(param),
                     dispatcher = dispatcher,
@@ -214,7 +214,7 @@ internal sealed class ReviewSourceImpl {
                     ),
                 remoteMediator = source,
                 pagingSourceFactory = source.pagingSourceFactory(),
-            ).flow
+            ).flow.map { pagingData -> pagingData.map { entity -> converter.convertFrom(entity) } }
         }
     }
 }

@@ -16,10 +16,7 @@
  */
 package co.anitrend.data.user.source
 
-import androidx.paging.PagedList
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
-import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
@@ -28,7 +25,6 @@ import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.user.UserAuthController
 import co.anitrend.data.user.UserController
-import co.anitrend.data.user.UserPagedController
 import co.anitrend.data.user.UserProfileController
 import co.anitrend.data.user.UserProfileStatisticController
 import co.anitrend.data.user.converter.UserEntityConverter
@@ -137,58 +133,6 @@ internal class UserSourceImpl {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
                 localSource.clearById(requireNotNull(query.param.id))
-            }
-        }
-    }
-
-    class Search(
-        private val remoteSource: UserRemoteSource,
-        private val localSource: UserLocalSource,
-        private val clearDataHelper: IClearDataHelper,
-        private val controller: UserPagedController,
-        private val converter: UserEntityConverter,
-        override val dispatcher: ISupportDispatcher,
-    ) : UserSource.Search() {
-        override fun observable(): Flow<PagedList<User>> {
-            val dataSourceFactory =
-                localSource
-                    .entrySearchFactory(query.param.search)
-                    .map(converter::convertFrom)
-
-            return FlowPagedListBuilder(
-                dataSourceFactory,
-                PAGING_CONFIGURATION,
-                null,
-                this,
-            ).buildFlow()
-        }
-
-        override suspend fun getUsers(callback: RequestCallback) {
-            val deferred =
-                deferred {
-                    val queryBuilder =
-                        query.toQueryContainerBuilder(
-                            supportPagingHelper,
-                        )
-                    remoteSource.getUserPaged(queryBuilder)
-                }
-
-            controller(deferred, callback) {
-                supportPagingHelper.from(it.page)
-                it
-            }
-        }
-
-        /**
-         * Clears data sources (databases, preferences, e.t.c)
-         *
-         * @param context Dispatcher context to run in
-         */
-        override suspend fun clearDataSource(context: CoroutineDispatcher) {
-            clearDataHelper(context) {
-                localSource.clearByMatch(
-                    query.param.search,
-                )
             }
         }
     }

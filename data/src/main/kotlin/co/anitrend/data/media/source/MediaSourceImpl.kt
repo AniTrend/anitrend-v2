@@ -17,13 +17,11 @@
 package co.anitrend.data.media.source
 
 import androidx.paging.Pager
-import androidx.paging.PagedList
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
-import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
-import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
@@ -32,7 +30,6 @@ import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.edge.media.source.contract.EdgeMediaSource
 import co.anitrend.data.media.MediaDetailController
-import co.anitrend.data.media.MediaNetworkController
 import co.anitrend.data.media.MediaPagedController
 import co.anitrend.data.media.MediaStatsController
 import co.anitrend.data.media.MediaStudiosController
@@ -198,62 +195,6 @@ internal class MediaSourceImpl {
         }
     }
 
-    class Paged(
-        private val remoteSource: MediaRemoteSource,
-        private val localSource: MediaLocalSource,
-        private val carouselSource: CarouselSource,
-        private val controller: MediaPagedController,
-        private val converter: MediaEntityViewConverter,
-        private val clearDataHelper: IClearDataHelper,
-        private val filter: MediaQueryFilter.Paged,
-        override val dispatcher: ISupportDispatcher,
-    ) : MediaSource.Paged() {
-        override val cacheIdentity = MediaCache.Identity.Paged()
-
-        override fun observable(): Flow<PagedList<Media>> {
-            val dataSourceFactory =
-                localSource
-                    .rawFactory(filter.build(query.param))
-                    .map(converter::convertFrom)
-
-            return FlowPagedListBuilder(
-                dataSourceFactory,
-                PAGING_CONFIGURATION,
-                null,
-                this,
-            ).buildFlow()
-        }
-
-        override suspend fun getMedia(requestCallback: RequestCallback) {
-            val deferred =
-                deferred {
-                    val queryBuilder =
-                        query.toQueryContainerBuilder(
-                            supportPagingHelper,
-                        )
-                    remoteSource.getMediaPaged(queryBuilder)
-                }
-
-            controller(deferred, requestCallback) {
-                supportPagingHelper.from(it.page)
-                it
-            }
-        }
-
-        /**
-         * Clears data sources (databases, preferences, e.t.c)
-         *
-         * @param context Dispatcher context to run in
-         */
-        override suspend fun clearDataSource(context: CoroutineDispatcher) {
-            // Since carousel entities are media entities as well
-            carouselSource.clearDataSource(context)
-            clearDataHelper(context) {
-                localSource.clear()
-            }
-        }
-    }
-
     class Paging(
         private val remoteSource: MediaRemoteSource,
         private val localSource: MediaLocalSource,
@@ -274,7 +215,6 @@ internal class MediaSourceImpl {
                     localSource = localSource,
                     carouselSource = carouselSource,
                     controller = controller,
-                    converter = converter,
                     clearDataHelper = clearDataHelper,
                     filter = filter,
                     query = MediaQuery.Find(param),
@@ -291,36 +231,7 @@ internal class MediaSourceImpl {
                     ),
                 remoteMediator = source,
                 pagingSourceFactory = source.pagingSourceFactory(),
-            ).flow
-        }
-    }
-
-    class Network(
-        private val remoteSource: MediaRemoteSource,
-        private val controller: MediaNetworkController,
-        override val initialKey: MediaParam.Find,
-        override val dispatcher: ISupportDispatcher,
-    ) : MediaSource.Network() {
-        override val cacheIdentity = MediaCache.Identity.Network()
-
-        override suspend fun getMedia(
-            param: MediaParam.Find,
-            callback: RequestCallback,
-        ): List<Media> {
-            val query = MediaQuery.Find(initialKey)
-            val deferred =
-                deferred {
-                    val builder =
-                        query.toQueryContainerBuilder(
-                            supportPagingHelper,
-                        )
-                    remoteSource.getMediaPaged(builder)
-                }
-
-            return controller(deferred, callback) {
-                supportPagingHelper.from(it.page)
-                it
-            }.orEmpty()
+            ).flow.map { pagingData -> pagingData.map { entity -> converter.convertFrom(entity) } }
         }
     }
 }

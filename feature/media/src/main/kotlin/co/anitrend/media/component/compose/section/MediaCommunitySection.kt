@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import co.anitrend.common.review.ui.compose.ReviewBrowseCard
+import co.anitrend.common.review.ui.compose.ReviewCardVariant
+import co.anitrend.common.review.ui.compose.ReviewLoadingCard
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.review.enums.ReviewRating
@@ -85,8 +87,7 @@ internal fun MediaCommunitySection(
                     previewItems.forEach { review ->
                         ReviewBrowseCard(
                             review = review,
-                            showMediaContext = false,
-                            summaryMaxLines = 4,
+                            variant = ReviewCardVariant.InlineCommunity,
                             canVote = !review.isOwnedBy(authenticatedUserId),
                             isVotePending = isVotePending(review.id),
                             onOpen = { onReviewClick(review.id) },
@@ -97,10 +98,15 @@ internal fun MediaCommunitySection(
             }
 
             refreshState is LoadState.Loading || reviews == null -> {
-                MediaHubSectionLoadingState(
-                    title = stringResource(R.string.label_media_community_loading),
-                    message = stringResource(R.string.message_media_community_loading),
-                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    repeat(3) {
+                        ReviewLoadingCard(
+                            variant = ReviewCardVariant.InlineCommunity,
+                        )
+                    }
+                }
             }
 
             refreshState is LoadState.Error -> {
@@ -109,6 +115,7 @@ internal fun MediaCommunitySection(
                 ) {
                     MediaHubSectionErrorState(
                         title = stringResource(R.string.label_media_community_error_title),
+                        message = stringResource(R.string.message_media_community_error),
                     )
                     OutlinedButton(
                         onClick = onRetry,

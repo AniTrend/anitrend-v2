@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.media
 
-import androidx.paging.PagedList
 import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.android.controller.graphql.GraphQLController
@@ -44,9 +43,9 @@ import kotlinx.coroutines.flow.Flow
 internal typealias MediaDetailController = GraphQLController<MediaModelContainer.Detail, MediaEntity>
 internal typealias MediaCharactersController = GraphQLController<MediaPeopleModelContainer.Characters, List<MediaCharacterConnectionEntity>>
 internal typealias MediaPagedController = GraphQLController<MediaModelContainer.Paged, List<MediaEntity>>
-internal typealias MediaNetworkController = GraphQLController<MediaModelContainer.Paged, List<Media>>
 internal typealias MediaRelationsController = GraphQLController<MediaConnectionModelContainer.Relations, List<MediaRelationConnectionEntity>>
-internal typealias MediaRecommendationsController = GraphQLController<MediaConnectionModelContainer.Recommendations, List<MediaRecommendationConnectionEntity>>
+internal typealias MediaRecommendationsController =
+    GraphQLController<MediaConnectionModelContainer.Recommendations, List<MediaRecommendationConnectionEntity>>
 internal typealias MediaStaffController = GraphQLController<MediaPeopleModelContainer.Staff, List<MediaStaffConnectionEntity>>
 internal typealias MediaStudiosController = GraphQLController<MediaSidecarModelContainer.Studios, List<MediaStudioConnectionEntity>>
 internal typealias MediaStatsController = GraphQLController<MediaSidecarModelContainer.Stats, MediaStatsEntity?>
@@ -54,8 +53,6 @@ internal typealias MediaStatsController = GraphQLController<MediaSidecarModelCon
 internal typealias MediaDetailRepository = IMediaRepository.Detail<DataState<Media>>
 internal typealias MediaCharactersRepository = IMediaRepository.Characters<Flow<PagingData<MediaPerson.Character>>>
 internal typealias MediaPagingRepository = IMediaRepository.Paged<Flow<PagingData<Media>>>
-internal typealias MediaPagedRepository = IMediaRepository.Paged<DataState<PagedList<Media>>>
-internal typealias MediaNetworkRepository = IMediaRepository.Network<DataState<PagedList<Media>>>
 internal typealias MediaRelationsRepository = IMediaRepository.Relations<DataState<List<MediaRelationEntry>>>
 internal typealias MediaRecommendationsRepository = IMediaRepository.Recommendations<DataState<List<MediaRecommendationEntry>>>
 internal typealias MediaStaffRepository = IMediaRepository.Staff<Flow<PagingData<MediaPerson.Staff>>>
@@ -65,8 +62,6 @@ internal typealias MediaStatsRepository = IMediaRepository.Stats<DataState<Media
 typealias GetDetailMediaInteractor = MediaUseCase.GetDetail<DataState<Media>>
 typealias GetMediaCharactersInteractor = MediaUseCase.GetCharacters<Flow<PagingData<MediaPerson.Character>>>
 typealias GetPagingMediaInteractor = MediaUseCase.GetPaged<Flow<PagingData<Media>>>
-typealias GetPagedMediaInteractor = MediaUseCase.GetPaged<DataState<PagedList<Media>>>
-typealias GetNetworkMediaInteractor = MediaUseCase.GetByNetwork<DataState<PagedList<Media>>>
 typealias GetMediaRelationsInteractor = MediaUseCase.GetRelations<DataState<List<MediaRelationEntry>>>
 typealias GetMediaRecommendationsInteractor = MediaUseCase.GetRecommendations<DataState<List<MediaRecommendationEntry>>>
 typealias GetMediaStaffInteractor = MediaUseCase.GetStaff<Flow<PagingData<MediaPerson.Staff>>>

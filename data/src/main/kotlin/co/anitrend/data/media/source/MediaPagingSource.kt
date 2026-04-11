@@ -34,13 +34,12 @@ import co.anitrend.data.android.paging.AbstractPagingMediator
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.media.MediaPagedController
-import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.media.entity.filter.MediaQueryFilter
+import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
-import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -50,17 +49,15 @@ internal class MediaPagingSource(
     private val localSource: MediaLocalSource,
     private val carouselSource: CarouselSource,
     private val controller: MediaPagedController,
-    private val converter: MediaEntityViewConverter,
     private val clearDataHelper: IClearDataHelper,
     private val filter: MediaQueryFilter.Paged,
     private val query: MediaQuery.Find,
     override val dispatcher: ISupportDispatcher,
-) : AbstractPagingMediator<Int, Media>() {
-    fun pagingSourceFactory(): () -> PagingSource<Int, Media> =
-        localSource
-            .rawFactory(filter.build(query.param))
-            .map(converter::convertFrom)
-            .asPagingSourceFactory()
+) : AbstractPagingMediator<Int, MediaEntityView.Core>() {
+    fun pagingSourceFactory(): () -> PagingSource<Int, MediaEntityView.Core> =
+        {
+            localSource.rawPagingSource(filter.build(query.param))
+        }
 
     private suspend fun getMedia(requestCallback: RequestCallback) {
         val deferred =
@@ -117,7 +114,7 @@ internal class MediaPagingSource(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, Media>,
+        state: PagingState<Int, MediaEntityView.Core>,
     ): MediatorResult =
         when (loadType) {
             REFRESH -> {

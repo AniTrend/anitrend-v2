@@ -16,7 +16,7 @@
  */
 package co.anitrend.episode.koin
 
-import co.anitrend.common.episode.ui.adapter.EpisodePagedAdapter
+import co.anitrend.common.episode.ui.adapter.EpisodePagingAdapter
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.episode.component.content.EpisodeContent
 import co.anitrend.episode.component.content.viewmodel.EpisodeContentViewModel
@@ -37,7 +37,7 @@ private val fragmentModule =
                 settings = get(),
                 stateConfig = get(),
                 supportViewAdapter =
-                    EpisodePagedAdapter(
+                    EpisodePagingAdapter(
                         resources = androidContext().resources,
                         stateConfiguration = get(),
                     ),

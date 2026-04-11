@@ -19,6 +19,7 @@ package co.anitrend.data.airing.source
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.data.airing.AiringSchedulePagedController
@@ -34,6 +35,7 @@ import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 internal class AiringScheduleSourceImpl {
     class Paging(
@@ -54,7 +56,6 @@ internal class AiringScheduleSourceImpl {
                     localSource = localSource,
                     mediaLocalSource = mediaLocalSource,
                     controller = controller,
-                    converter = converter,
                     clearDataHelper = clearDataHelper,
                     filter = filter,
                     query = AiringScheduleQuery(param),
@@ -71,7 +72,7 @@ internal class AiringScheduleSourceImpl {
                     ),
                 remoteMediator = source,
                 pagingSourceFactory = source.pagingSourceFactory(),
-            ).flow
+            ).flow.map { pagingData -> pagingData.map { entity -> converter.convertFrom(entity) } }
         }
     }
 }

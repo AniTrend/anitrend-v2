@@ -18,9 +18,7 @@ package co.anitrend.data.media.usecase
 
 import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.media.GetMediaCharactersInteractor
-import co.anitrend.data.media.GetNetworkMediaInteractor
 import co.anitrend.data.media.GetPagingMediaInteractor
-import co.anitrend.data.media.GetPagedMediaInteractor
 import co.anitrend.data.media.GetMediaRecommendationsInteractor
 import co.anitrend.data.media.GetMediaRelationsInteractor
 import co.anitrend.data.media.GetMediaStaffInteractor
@@ -28,9 +26,7 @@ import co.anitrend.data.media.GetMediaStatsInteractor
 import co.anitrend.data.media.GetMediaStudiosInteractor
 import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
-import co.anitrend.data.media.MediaNetworkRepository
 import co.anitrend.data.media.MediaPagingRepository
-import co.anitrend.data.media.MediaPagedRepository
 import co.anitrend.data.media.MediaRecommendationsRepository
 import co.anitrend.data.media.MediaRelationsRepository
 import co.anitrend.data.media.MediaStaffRepository
@@ -49,10 +45,6 @@ internal interface MediaInteractor {
     class Recommendations(
         repository: MediaRecommendationsRepository,
     ) : GetMediaRecommendationsInteractor(repository)
-
-    class Paged(
-        repository: MediaPagedRepository,
-    ) : GetPagedMediaInteractor(repository)
 
     class Paging(
         repository: MediaPagingRepository,
@@ -73,8 +65,4 @@ internal interface MediaInteractor {
     class Stats(
         repository: MediaStatsRepository,
     ) : GetMediaStatsInteractor(repository)
-
-    class Network(
-        repository: MediaNetworkRepository,
-    ) : GetNetworkMediaInteractor(repository)
 }

@@ -16,15 +16,12 @@
  */
 package co.anitrend.data.medialist.source.contract
 
-import androidx.paging.PagedList
 import androidx.paging.PagingData
 import co.anitrend.arch.request.callback.RequestCallback
-import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.invoke
-import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.medialist.cache.MediaListCache
 import co.anitrend.data.medialist.model.mutation.MediaListMutation
@@ -73,69 +70,6 @@ internal class MediaListSource {
         }
     }
 
-    abstract class Paged : AbstractPagingSource<Media>() {
-        protected lateinit var query: MediaListQuery.Paged
-
-        protected abstract val cacheIdentity: CacheIdentity
-
-        protected abstract fun observable(): Flow<PagedList<Media>>
-
-        protected abstract suspend fun getMediaList(requestCallback: RequestCallback)
-
-        operator fun invoke(param: MediaListParam.Paged): Flow<PagedList<Media>> {
-            query = MediaListQuery.Paged(param)
-            return observable()
-        }
-
-        /**
-         * Called when the item at the end of the PagedList has been loaded, and access has
-         * occurred within [Config.prefetchDistance] of it.
-         *
-         * No more data will be appended to the PagedList after this item.
-         *
-         * @param itemAtEnd The first item of PagedList
-         */
-        override fun onItemAtEndLoaded(itemAtEnd: Media) {
-            cacheIdentity(
-                scope = scope,
-                paging = supportPagingHelper,
-                requestHelper = requestHelper,
-                requestType = Request.Type.AFTER,
-                block = ::getMediaList,
-            )
-        }
-
-        /**
-         * Called when the item at the front of the PagedList has been loaded, and access has
-         * occurred within [Config.prefetchDistance] of it.
-         *
-         * No more data will be prepended to the PagedList before this item.
-         *
-         * @param itemAtFront The first item of PagedList
-         */
-        override fun onItemAtFrontLoaded(itemAtFront: Media) {
-            /*cacheIdentity(
-                scope = scope,
-                paging = supportPagingHelper,
-                requestHelper = requestHelper,
-                requestType = Request.Type.BEFORE,
-                block = ::getMediaList
-            )*/
-        }
-
-        /**
-         * Called when zero items are returned from an initial load of the PagedList's data source.
-         */
-        override fun onZeroItemsLoaded() {
-            cacheIdentity(
-                scope = scope,
-                paging = supportPagingHelper,
-                requestHelper = requestHelper,
-                block = ::getMediaList,
-            )
-        }
-    }
-
     abstract class Paging {
         protected lateinit var query: MediaListQuery.Paged
 
@@ -143,69 +77,6 @@ internal class MediaListSource {
 
         protected fun assignQuery(param: MediaListParam.Paged) {
             query = MediaListQuery.Paged(param)
-        }
-    }
-
-    abstract class Collection : AbstractPagingSource<Media>() {
-        protected lateinit var query: MediaListQuery.Collection
-
-        protected abstract val cacheIdentity: CacheIdentity
-
-        protected abstract fun observable(): Flow<PagedList<Media>>
-
-        protected abstract suspend fun getMediaList(requestCallback: RequestCallback)
-
-        operator fun invoke(param: MediaListParam.Collection): Flow<PagedList<Media>> {
-            query = MediaListQuery.Collection(param)
-            return observable()
-        }
-
-        /**
-         * Called when the item at the end of the PagedList has been loaded, and access has
-         * occurred within [Config.prefetchDistance] of it.
-         *
-         * No more data will be appended to the PagedList after this item.
-         *
-         * @param itemAtEnd The first item of PagedList
-         */
-        override fun onItemAtEndLoaded(itemAtEnd: Media) {
-            cacheIdentity(
-                scope = scope,
-                paging = supportPagingHelper,
-                requestHelper = requestHelper,
-                requestType = Request.Type.AFTER,
-                block = ::getMediaList,
-            )
-        }
-
-        /**
-         * Called when the item at the front of the PagedList has been loaded, and access has
-         * occurred within [Config.prefetchDistance] of it.
-         *
-         * No more data will be prepended to the PagedList before this item.
-         *
-         * @param itemAtFront The first item of PagedList
-         */
-        override fun onItemAtFrontLoaded(itemAtFront: Media) {
-            /*cacheIdentity(
-                scope = scope,
-                paging = supportPagingHelper,
-                requestHelper = requestHelper,
-                requestType = Request.Type.BEFORE,
-                block = ::getMediaList
-            )*/
-        }
-
-        /**
-         * Called when zero items are returned from an initial load of the PagedList's data source.
-         */
-        override fun onZeroItemsLoaded() {
-            cacheIdentity(
-                scope = scope,
-                paging = supportPagingHelper,
-                requestHelper = requestHelper,
-                block = ::getMediaList,
-            )
         }
     }
 

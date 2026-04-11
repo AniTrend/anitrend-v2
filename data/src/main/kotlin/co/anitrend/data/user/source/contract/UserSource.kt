@@ -16,14 +16,12 @@
  */
 package co.anitrend.data.user.source.contract
 
-import androidx.paging.PagedList
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.invoke
-import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.user.cache.UserCache
@@ -92,61 +90,6 @@ internal class UserSource {
                 )
             }
             return observable()
-        }
-    }
-
-    abstract class Search : AbstractPagingSource<User>() {
-        protected lateinit var query: UserQuery.Search
-
-        protected abstract fun observable(): Flow<PagedList<User>>
-
-        protected abstract suspend fun getUsers(callback: RequestCallback)
-
-        operator fun invoke(param: UserParam.Search): Flow<PagedList<User>> {
-            query = UserQuery.Search(param)
-            return observable()
-        }
-
-        /**
-         * Called when the item at the end of the PagedList has been loaded, and access has
-         * occurred within [Config.prefetchDistance] of it.
-         *
-         * No more data will be appended to the PagedList after this item.
-         *
-         * @param itemAtEnd The first item of PagedList
-         */
-        override fun onItemAtEndLoaded(itemAtEnd: User) {
-            invoke(
-                paging = supportPagingHelper,
-                requestType = Request.Type.AFTER,
-                block = ::getUsers,
-            )
-        }
-
-        /**
-         * Called when the item at the front of the PagedList has been loaded, and access has
-         * occurred within [Config.prefetchDistance] of it.
-         *
-         * No more data will be prepended to the PagedList before this item.
-         *
-         * @param itemAtFront The first item of PagedList
-         */
-        override fun onItemAtFrontLoaded(itemAtFront: User) {
-            /*invoke(
-                paging = supportPagingHelper,
-                requestType = Request.Type.BEFORE,
-                block = ::getUsers
-            )*/
-        }
-
-        /**
-         * Called when zero items are returned from an initial load of the PagedList's data source.
-         */
-        override fun onZeroItemsLoaded() {
-            invoke(
-                paging = supportPagingHelper,
-                block = ::getUsers,
-            )
         }
     }
 

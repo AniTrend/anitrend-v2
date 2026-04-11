@@ -16,7 +16,7 @@
  */
 package co.anitrend.episode.component.content.viewmodel
 
-import androidx.paging.PagedList
+import androidx.paging.PagingData
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.data.feed.episode.EpisodePagedInteractor
 import co.anitrend.domain.episode.entity.Episode
@@ -24,7 +24,7 @@ import co.anitrend.domain.episode.model.EpisodeParam
 
 class EpisodeContentViewModel(
     private val interactor: EpisodePagedInteractor,
-) : AniTrendViewModelState<PagedList<Episode>>() {
+) : AniTrendViewModelState<PagingData<Episode>>() {
     operator fun invoke(param: EpisodeParam.Paged) {
         val result = interactor(param)
         state.postValue(result)

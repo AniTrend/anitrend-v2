@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.medialist.datasource.local
 
-import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.RawQuery
@@ -87,8 +86,4 @@ internal abstract class MediaListLocalSource : AbstractLocalSource<MediaListEnti
         mediaId: Long,
         userId: Long,
     )
-
-    @Transaction
-    @RawQuery(observedEntities = [MediaListEntity::class, MediaEntity::class, UserEntity::class])
-    abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, MediaListEntityView.WithMedia>
 }

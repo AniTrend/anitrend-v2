@@ -100,9 +100,10 @@ fun MediaListCompose(
         initialValue = IUserSettings.DEFAULT_SCORE_FORMAT,
     )
     val resolvedSections = remember(sections, currentParam.type) { sections.ifEmpty { fallbackSections(currentParam.type) } }
-    val sectionItems = remember(resolvedSections) {
-        resolvedSections.filter { !it.isCustomList } + resolvedSections.filter(MediaListInfo::isCustomList)
-    }
+    val sectionItems =
+        remember(resolvedSections) {
+            resolvedSections.filter { !it.isCustomList } + resolvedSections.filter(MediaListInfo::isCustomList)
+        }
     val selectedSection = remember(sectionItems, currentParam) { sectionItems.selectedSectionFor(currentParam) }
 
     Column(
@@ -637,8 +638,7 @@ private fun MediaListInfo.displayLabel(): String =
         MediaListStatus.valueOf(name).alias.toString()
     }
 
-private fun PreferredViewMode.isListLayout(): Boolean =
-    this == PreferredViewMode.DETAILED || this == PreferredViewMode.SUMMARY
+private fun PreferredViewMode.isListLayout(): Boolean = this == PreferredViewMode.DETAILED || this == PreferredViewMode.SUMMARY
 
 private fun PreferredViewMode.gridColumns(): Int =
     when (this) {
@@ -668,7 +668,15 @@ private fun Media.secondaryTitle(): String? {
 
 private fun Media.metaLine(): String? =
     buildList {
-        format?.alias?.toString()?.takeIf(String::isNotBlank)?.let(::add)
+        format
+            ?.alias
+            ?.toString()
+            ?.takeIf(String::isNotBlank)
+            ?.let(::add)
         status?.let { add(it.name.lowercase().replaceFirstChar(Char::uppercaseChar)) }
-        startDate?.year?.takeIf { it > 0 }?.toString()?.let(::add)
+        startDate
+            ?.year
+            ?.takeIf { it > 0 }
+            ?.toString()
+            ?.let(::add)
     }.takeIf(List<String>::isNotEmpty)?.joinToString(separator = " • ")

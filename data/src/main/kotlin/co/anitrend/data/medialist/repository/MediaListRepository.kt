@@ -19,11 +19,9 @@ package co.anitrend.data.medialist.repository
 import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.medialist.DeleteCustomMediaListRepository
-import co.anitrend.data.medialist.MediaListCollectionRepository
 import co.anitrend.data.medialist.MediaListDeleteEntryRepository
 import co.anitrend.data.medialist.MediaListEntryRepository
 import co.anitrend.data.medialist.MediaListPagingRepository
-import co.anitrend.data.medialist.MediaListPagedRepository
 import co.anitrend.data.medialist.MediaListSaveEntriesRepository
 import co.anitrend.data.medialist.MediaListSaveEntryRepository
 import co.anitrend.data.medialist.MediaListSyncRepository
@@ -44,20 +42,6 @@ internal sealed class MediaListRepository {
     ) : MediaListRepository(),
         MediaListEntryRepository {
         override fun getEntry(param: MediaListParam.Entry) = source create source(param)
-    }
-
-    class Collection(
-        private val source: MediaListSource.Collection,
-    ) : MediaListRepository(),
-        MediaListCollectionRepository {
-        override fun getCollection(param: MediaListParam.Collection) = source create source(param)
-    }
-
-    class Paged(
-        private val source: MediaListSource.Paged,
-    ) : MediaListRepository(),
-        MediaListPagedRepository {
-        override fun getPaged(param: MediaListParam.Paged) = source create source(param)
     }
 
     class Paging(

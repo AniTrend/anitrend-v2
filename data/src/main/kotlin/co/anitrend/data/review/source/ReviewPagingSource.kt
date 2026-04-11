@@ -33,13 +33,12 @@ import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.review.ReviewPagedController
-import co.anitrend.data.review.converter.ReviewEntityViewConverter
 import co.anitrend.data.review.datasource.local.ReviewLocalSource
 import co.anitrend.data.review.datasource.remote.ReviewRemoteSource
 import co.anitrend.data.review.entity.filter.ReviewQueryFilter
+import co.anitrend.data.review.entity.view.ReviewEntityView
 import co.anitrend.data.review.model.query.ReviewQuery
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
-import co.anitrend.domain.review.entity.Review
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -49,16 +48,14 @@ internal class ReviewPagingSource(
     private val localSource: ReviewLocalSource,
     private val controller: ReviewPagedController,
     private val filter: ReviewQueryFilter.Paged,
-    private val converter: ReviewEntityViewConverter,
     private val clearDataHelper: IClearDataHelper,
     private val query: ReviewQuery.Paged,
     override val dispatcher: ISupportDispatcher,
-) : AbstractPagingMediator<Int, Review>() {
-    fun pagingSourceFactory(): () -> PagingSource<Int, Review> =
-        localSource
-            .rawFactory(filter.build(query.param))
-            .map(converter::convertFrom)
-            .asPagingSourceFactory()
+) : AbstractPagingMediator<Int, ReviewEntityView.Core>() {
+    fun pagingSourceFactory(): () -> PagingSource<Int, ReviewEntityView.Core> =
+        {
+            localSource.rawPagingSource(filter.build(query.param))
+        }
 
     private suspend fun getReview(requestCallback: RequestCallback) {
         val deferred =
@@ -114,7 +111,7 @@ internal class ReviewPagingSource(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, Review>,
+        state: PagingState<Int, ReviewEntityView.Core>,
     ): MediatorResult =
         when (loadType) {
             REFRESH -> {

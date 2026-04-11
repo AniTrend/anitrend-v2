@@ -317,9 +317,10 @@ private fun Long?.relativeTimeLabel(): String? {
         return null
     }
 
-    return DateUtils.getRelativeTimeSpanString(
-        this,
-        System.currentTimeMillis(),
-        DateUtils.MINUTE_IN_MILLIS,
-    ).toString()
+    return DateUtils
+        .getRelativeTimeSpanString(
+            this,
+            System.currentTimeMillis(),
+            DateUtils.MINUTE_IN_MILLIS,
+        ).toString()
 }

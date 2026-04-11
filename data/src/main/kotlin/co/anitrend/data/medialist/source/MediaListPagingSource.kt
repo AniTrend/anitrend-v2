@@ -32,15 +32,14 @@ import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
 import co.anitrend.data.common.extension.from
-import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
+import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.medialist.MediaListPagedController
 import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
 import co.anitrend.data.medialist.datasource.remote.MediaListRemoteSource
 import co.anitrend.data.medialist.entity.filter.MediaListQueryFilter
 import co.anitrend.data.medialist.model.query.MediaListQuery
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
-import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -50,17 +49,15 @@ internal class MediaListPagingSource(
     private val localSource: MediaListLocalSource,
     private val mediaLocalSource: MediaLocalSource,
     private val controller: MediaListPagedController,
-    private val converter: MediaEntityViewConverter,
     private val filter: MediaListQueryFilter.Paged,
     private val clearDataHelper: IClearDataHelper,
     private val query: MediaListQuery.Paged,
     override val dispatcher: ISupportDispatcher,
-) : AbstractPagingMediator<Int, Media>() {
-    fun pagingSourceFactory(): () -> PagingSource<Int, Media> =
-        mediaLocalSource
-            .rawFactory(filter.build(query.param))
-            .map(converter::convertFrom)
-            .asPagingSourceFactory()
+) : AbstractPagingMediator<Int, MediaEntityView.Core>() {
+    fun pagingSourceFactory(): () -> PagingSource<Int, MediaEntityView.Core> =
+        {
+            mediaLocalSource.rawPagingSource(filter.build(query.param))
+        }
 
     private suspend fun getMediaList(requestCallback: RequestCallback) {
         val deferred =
@@ -124,7 +121,7 @@ internal class MediaListPagingSource(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, Media>,
+        state: PagingState<Int, MediaEntityView.Core>,
     ): MediatorResult =
         when (loadType) {
             REFRESH -> {

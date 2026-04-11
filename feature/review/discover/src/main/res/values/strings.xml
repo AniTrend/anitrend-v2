@@ -19,25 +19,27 @@
   <!-- Review discover screen title -->
   <string name="title_review_discover">Reviews</string>
   <!-- Review discover default subtitle -->
-  <string name="message_review_discover_default">Browse the latest community reviews.</string>
+  <string name="message_review_discover_default">Recent community reviews.</string>
   <!-- Review discover subtitle when scoped to a media title -->
   <string name="message_review_discover_media_scope">Community reviews for this title.</string>
   <!-- Review discover subtitle when scoped to a user -->
-  <string name="message_review_discover_user_scope">Reviews written by this user.</string>
+  <string name="message_review_discover_user_scope">Reviews from this user.</string>
   <!-- Review discover subtitle when scoped to anime reviews -->
-  <string name="message_review_discover_anime_scope">Browse recent anime reviews.</string>
+  <string name="message_review_discover_anime_scope">Recent anime reviews.</string>
   <!-- Review discover subtitle when scoped to manga reviews -->
-  <string name="message_review_discover_manga_scope">Browse recent manga reviews.</string>
+  <string name="message_review_discover_manga_scope">Recent manga reviews.</string>
   <!-- Review discover loading heading -->
   <string name="label_review_discover_loading_title">Loading reviews</string>
   <!-- Review discover loading message -->
-  <string name="message_review_discover_loading">Pulling the latest review entries.</string>
+  <string name="message_review_discover_loading">Fetching recent reviews.</string>
   <!-- Review discover empty-state heading -->
   <string name="label_review_discover_empty_title">No reviews found</string>
   <!-- Review discover empty-state message -->
-  <string name="message_review_discover_empty">Try again later or broaden the filter.</string>
+  <string name="message_review_discover_empty">Try another filter or check back later.</string>
   <!-- Review discover error heading -->
-  <string name="label_review_discover_error_title">Unable to load reviews</string>
+  <string name="label_review_discover_error_title">Couldn't load reviews</string>
+  <!-- Review discover error message -->
+  <string name="message_review_discover_error">Retry to refresh the list.</string>
   <!-- Review discover append loading message -->
   <string name="message_review_discover_loading_more">Loading more reviews...</string>
   <!-- Review discover fallback author label -->

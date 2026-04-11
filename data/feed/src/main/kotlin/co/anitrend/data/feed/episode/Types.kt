@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.feed.episode
 
-import androidx.paging.PagedList
+import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.android.controller.core.DefaultController
 import co.anitrend.data.feed.episode.entity.EpisodeEntity
@@ -26,10 +26,10 @@ import co.anitrend.domain.episode.interactor.EpisodeUseCase
 import co.anitrend.domain.episode.repository.IEpisodeRepository
 
 internal typealias EpisodePagedController = DefaultController<EpisodePageModel, List<EpisodeEntity>>
-internal typealias EpisodePagedRepository = IEpisodeRepository.Paged<DataState<PagedList<Episode>>>
+internal typealias EpisodePagedRepository = IEpisodeRepository.Paged<DataState<PagingData<Episode>>>
 internal typealias EpisodeDetailRepository = IEpisodeRepository.Detail<DataState<Episode>>
 internal typealias EpisodeSyncRepository = IEpisodeRepository.Sync<DataState<Boolean>>
 
-typealias EpisodePagedInteractor = EpisodeUseCase.Paged<DataState<PagedList<Episode>>>
+typealias EpisodePagedInteractor = EpisodeUseCase.Paged<DataState<PagingData<Episode>>>
 typealias EpisodeDetailInteractor = EpisodeUseCase.Detail<DataState<Episode>>
 typealias EpisodeSyncInteractor = EpisodeUseCase.Sync<DataState<Boolean>>

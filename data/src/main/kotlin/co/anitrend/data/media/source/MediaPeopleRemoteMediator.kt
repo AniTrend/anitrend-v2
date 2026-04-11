@@ -50,7 +50,10 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
     protected suspend fun shouldRefresh(hasLocalData: Boolean): Boolean =
         !hasLocalData || cachePolicy.shouldRefresh(cacheIdentity, cacheIdentity.expiresAt)
 
-    protected suspend fun awaitResult(requestType: Request.Type, block: suspend (RequestCallback) -> Unit): MediatorResult {
+    protected suspend fun awaitResult(
+        requestType: Request.Type,
+        block: suspend (RequestCallback) -> Unit,
+    ): MediatorResult {
         cacheIdentity.invoke(
             paging = supportPagingHelper,
             requestHelper = requestHelper,
