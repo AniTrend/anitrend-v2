@@ -148,11 +148,12 @@ private fun ApplicationExtension.applyAdditionalConfiguration(project: Project) 
 
 private fun LibraryExtension.applyAdditionalConfiguration(project: Project) {
     defaultConfig {
-        project.file("consumer-rules.pro").takeIf { it.exists() }?.also {
-            consumerProguardFiles.add(it)
-        }
-        if (!project.matchesAppModule() && !project.matchesTaskModule()) {
-            project.logger.lifecycle("Applying vector drawables configuration for module -> ${project.path}")
+        consumerProguardFiles.add(File("consumer-rules.pro"))
+    }
+
+    if (!project.matchesAppModule() && !project.matchesTaskModule()) {
+        project.logger.lifecycle("Applying vector drawables configuration for module -> ${project.path}")
+        defaultConfig {
             vectorDrawables.useSupportLibrary = true
         }
     }
