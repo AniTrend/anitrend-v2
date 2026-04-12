@@ -17,8 +17,8 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.extensions.baseAppExtension
-import co.anitrend.buildSrc.extensions.baseExtension
+import co.anitrend.buildSrc.extensions.applicationExtension
+import co.anitrend.buildSrc.extensions.commonExtension
 import co.anitrend.buildSrc.extensions.hasComposeSupport
 import co.anitrend.buildSrc.extensions.hasCoroutineSupport
 import co.anitrend.buildSrc.extensions.isAppModule
@@ -27,8 +27,9 @@ import co.anitrend.buildSrc.extensions.libraryExtension
 import co.anitrend.buildSrc.extensions.matchesAppModule
 import co.anitrend.buildSrc.extensions.matchesTaskModule
 import co.anitrend.buildSrc.extensions.props
-import com.android.build.gradle.internal.api.BaseVariantOutputImpl
-import com.android.build.gradle.internal.dsl.DefaultConfig
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
@@ -39,7 +40,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import java.io.File
 
 private fun Project.configureBuildFlavours() {
-    baseAppExtension().run {
+    applicationExtension().run {
         flavorDimensions.add("default")
         productFlavors {
             create("google") {
@@ -51,68 +52,17 @@ private fun Project.configureBuildFlavours() {
                 versionNameSuffix = "-github"
             }
         }
-        applicationVariants.all {
-            outputs.map { it as BaseVariantOutputImpl }.forEach { output ->
-                val original = output.outputFileName
-                output.outputFileName = original
-            }
-        }
     }
 }
 
-private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
-    if (project.isAppModule()) {
-        applicationId = "co.anitrend"
-        project.baseAppExtension().run {
-            buildFeatures {
-                viewBinding = true
-                compose = true
-            }
-        }
-    }
-    else
-        consumerProguardFiles.add(File("consumer-rules.pro"))
-
-    if (!project.matchesAppModule() && !project.matchesTaskModule()) {
-        // checking app module again since the group for app modules is
-        // `:app:` while the main app is just `:app`
-        if (!project.isAppModule() && project.hasComposeSupport()) {
-            project.logger.lifecycle("Applying view binding and compose build features for module -> ${project.path}")
-            project.libraryExtension().buildFeatures {
-                viewBinding = true
-                if (project.hasComposeSupport())
-                    compose = true
-            }
-        }
-
-        project.logger.lifecycle("Applying vector drawables configuration for module -> ${project.path}")
-        vectorDrawables.useSupportLibrary = true
-    }
-}
-
-private fun Project.configureLint() = baseAppExtension().run {
-    lint {
-        abortOnError = false
-        ignoreWarnings = false
-        ignoreTestSources = true
-    }
-}
-
-internal fun Project.configureAndroid(): Unit = baseExtension().run {
-    compileSdkVersion(36)
+private fun CommonExtension<*, *, *, *, *, *>.configureBaseAndroid(project: Project) {
+    compileSdk = 36
     defaultConfig {
         minSdk = 24
         targetSdk = 36
-        versionCode = props[PropertyTypes.CODE].toInt()
-        versionName = props[PropertyTypes.VERSION]
+        versionCode = project.props[PropertyTypes.CODE].toInt()
+        versionName = project.props[PropertyTypes.VERSION]
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        applyAdditionalConfiguration(project)
-    }
-
-    if (isAppModule()) {
-        configureLint()
-        configureBuildFlavours()
-        createSigningConfiguration(this)
     }
 
     buildTypes {
@@ -127,8 +77,6 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                 projectDir.resolve("proguard-rules.pro"),
                 rootDir.resolve("proguard-common.pro"),
             )
-            if (project.file(".config/keystore.properties").exists())
-                signingConfig = signingConfigs.getByName("release")
         }
 
         getByName("debug") {
@@ -146,19 +94,17 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         }
     }
 
-    packagingOptions {
-        resources.excludes.add("META-INF/NOTICE.*")
-        resources.excludes.add("META-INF/LICENSE*")
-        // Exclude potential duplicate kotlin_module files
-        resources.excludes.add("META-INF/*kotlin_module")
-        // Exclude consumer proguard files
-        resources.excludes.add("META-INF/proguard/*")
-        // Exclude AndroidX version files
-        resources.excludes.add("META-INF/*.version")
-        // Exclude the Firebase/Fabric/other random properties files
-        resources.excludes.add("META-INF/*.properties")
-        resources.excludes.add("/*.properties")
-        resources.excludes.add("fabric/*.properties")
+    packaging {
+        resources {
+            excludes.add("META-INF/NOTICE.*")
+            excludes.add("META-INF/LICENSE*")
+            excludes.add("META-INF/*kotlin_module")
+            excludes.add("META-INF/proguard/*")
+            excludes.add("META-INF/*.version")
+            excludes.add("META-INF/*.properties")
+            excludes.add("/*.properties")
+            excludes.add("fabric/*.properties")
+        }
     }
 
     sourceSets {
@@ -179,6 +125,63 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
+    }
+}
+
+private fun ApplicationExtension.applyAdditionalConfiguration(project: Project) {
+    defaultConfig {
+        applicationId = "co.anitrend"
+    }
+
+    buildFeatures {
+        viewBinding = true
+        compose = true
+    }
+
+    buildTypes {
+        getByName("release") {
+            if (project.file(".config/keystore.properties").exists())
+                signingConfig = signingConfigs.getByName("release")
+        }
+    }
+}
+
+private fun LibraryExtension.applyAdditionalConfiguration(project: Project) {
+    defaultConfig {
+        consumerProguardFiles(File("consumer-rules.pro"))
+        if (!project.matchesAppModule() && !project.matchesTaskModule()) {
+            project.logger.lifecycle("Applying vector drawables configuration for module -> ${project.path}")
+            vectorDrawables.useSupportLibrary = true
+        }
+    }
+
+    if (!project.matchesAppModule() && !project.matchesTaskModule() && project.hasComposeSupport()) {
+        project.logger.lifecycle("Applying view binding and compose build features for module -> ${project.path}")
+        buildFeatures {
+            viewBinding = true
+            compose = true
+        }
+    }
+}
+
+private fun Project.configureLint() = applicationExtension().run {
+    lint {
+        abortOnError = false
+        ignoreWarnings = false
+        ignoreTestSources = true
+    }
+}
+
+internal fun Project.configureAndroid(): Unit = commonExtension().run {
+    configureBaseAndroid(project)
+    if (isAppModule()) {
+        applicationExtension().applyAdditionalConfiguration(project)
+        configureLint()
+        configureBuildFlavours()
+        createSigningConfiguration(applicationExtension())
+    }
+    else {
+        libraryExtension().applyAdditionalConfiguration(project)
     }
 
     tasks.withType(KotlinJvmCompile::class.java) {

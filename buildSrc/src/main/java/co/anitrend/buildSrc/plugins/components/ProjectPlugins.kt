@@ -30,8 +30,7 @@ private fun addAndroidPlugin(project: Project, pluginContainer: PluginContainer)
     else pluginContainer.apply("com.android.library")
 }
 
-private fun addKotlinAndroidPlugin(pluginContainer: PluginContainer) {
-    pluginContainer.apply("kotlin-android")
+private fun addKotlinPlugin(pluginContainer: PluginContainer) {
     pluginContainer.apply("com.diffplug.spotless")
 }
 
@@ -47,7 +46,7 @@ private fun addKotlinAndroidExtensions(project: Project, pluginContainer: Plugin
 
 internal fun Project.configurePlugins() {
     addAndroidPlugin(project, plugins)
-    addKotlinAndroidPlugin(plugins)
+    addKotlinPlugin(plugins)
     addKotlinAndroidExtensions(project, plugins)
     addAnnotationProcessor(project, plugins)
 

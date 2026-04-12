@@ -19,13 +19,11 @@ package co.anitrend.buildSrc.extensions
 
 import co.anitrend.buildSrc.module.Modules
 import co.anitrend.buildSrc.plugins.components.PropertiesReader
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
-import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.LibraryPlugin
-import com.android.build.gradle.TestPlugin
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
@@ -94,11 +92,12 @@ internal val Project.props: PropertiesReader
 internal val Project.libs: LibrariesForLibs get() =
     extensions.getByType<LibrariesForLibs>()
 
-internal fun Project.baseExtension() =
-    extensions.getByType<BaseExtension>()
+internal fun Project.commonExtension(): CommonExtension<*, *, *, *, *, *> =
+    extensions.findByType(ApplicationExtension::class.java)
+        ?: extensions.getByType<LibraryExtension>()
 
-internal fun Project.baseAppExtension() =
-    extensions.getByType<BaseAppModuleExtension>()
+internal fun Project.applicationExtension() =
+    extensions.getByType<ApplicationExtension>()
 
 internal fun Project.libraryExtension() =
     extensions.getByType<LibraryExtension>()
@@ -134,26 +133,20 @@ internal fun Project.libraryAndroidComponents() =
     extensions.getByType<LibraryAndroidComponentsExtension>()
 
 internal fun Project.containsAndroidPlugin(): Boolean {
-    return project.plugins.toList().any { plugin ->
-        plugin is BaseAppModuleExtension
-    }
+    return pluginManager.hasPlugin("com.android.application")
 }
 
 internal fun Project.containsLibraryPlugin(): Boolean {
-    return project.plugins.toList().any { plugin ->
-        plugin is LibraryPlugin
-    }
+    return pluginManager.hasPlugin("com.android.library")
 }
 
 internal fun Project.containsTestPlugin(): Boolean {
-    return project.plugins.toList().any { plugin ->
-        plugin is TestPlugin
-    }
+    return pluginManager.hasPlugin("com.android.test")
 }
 
-internal fun Project.runIfAppModule(body: BaseAppModuleExtension.() -> Unit) {
+internal fun Project.runIfAppModule(body: ApplicationExtension.() -> Unit) {
     if (containsAndroidPlugin())
-        body(baseAppExtension())
+        body(applicationExtension())
 }
 
 internal fun Project.runIfLibraryModule(body: LibraryExtension.() -> Unit) {
