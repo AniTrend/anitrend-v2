@@ -62,6 +62,7 @@ import co.anitrend.media.component.compose.section.MediaHubSection
 import co.anitrend.media.component.compose.section.MediaHubSectionEmptyState
 import co.anitrend.media.component.compose.section.MediaHubSectionErrorState
 import co.anitrend.media.component.compose.section.MediaHubSectionLoadingState
+import co.anitrend.media.component.compose.section.MediaHubSectionRetryState
 
 private const val CHARACTER_PREVIEW_COUNT = 6
 private const val STAFF_PREVIEW_COUNT = 4
@@ -281,19 +282,11 @@ private fun PeopleSubsectionErrorState(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        MediaHubSectionErrorState(title = title)
-        OutlinedButton(
-            onClick = onRetry,
-            shape = RoundedCornerShape(18.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        ) {
-            Text(text = stringResource(co.anitrend.core.R.string.label_text_action_retry))
-        }
-    }
+    MediaHubSectionRetryState(
+        title = title,
+        onRetry = onRetry,
+        modifier = modifier,
+    )
 }
 
 @Composable

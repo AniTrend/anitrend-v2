@@ -31,13 +31,18 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -50,6 +55,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
+import androidx.compose.material3.rememberDatePickerState
 import co.anitrend.airing.R
 import co.anitrend.airing.component.viewmodel.AiringViewModel
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
@@ -62,8 +68,6 @@ import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.navigation.model.common.IParam
-import com.maxkeppeler.sheets.calendar.CalendarSheet
-import com.maxkeppeler.sheets.calendar.SelectionMode
 import org.koin.androidx.compose.koinViewModel
 import org.threeten.bp.Instant
 
@@ -86,7 +90,45 @@ fun AiringRoute(
     val airings = viewModel.schedule.collectAsLazyPagingItems()
     val refreshState = airings.loadState.refresh
     val context = LocalContext.current
+    var showDatePicker by rememberSaveable { mutableStateOf(false) }
     val selectedDateLabel = remember(filter.airingAt_greater) { formatAiringDate(filter.airingAt_greater, dateHelper) }
+    val selectedDateMillis =
+        remember(filter.airingAt_greater) {
+            filter.airingAt_greater?.toDatePickerInitialMillis(dateHelper)
+        }
+
+    if (showDatePicker) {
+        val datePickerState = rememberDatePickerState(initialSelectedDateMillis = selectedDateMillis)
+
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        datePickerState.selectedDateMillis
+                            ?.toAiringFilterEpochSecond(dateHelper)
+                            ?.let { epochSecond ->
+                                viewModel.setFilter(
+                                    filter.copy(
+                                        airingAt_greater = epochSecond,
+                                    ),
+                                )
+                            }
+                        showDatePicker = false
+                    },
+                ) {
+                    Text(text = stringResource(android.R.string.ok))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDatePicker = false }) {
+                    Text(text = stringResource(android.R.string.cancel))
+                }
+            },
+        ) {
+            DatePicker(state = datePickerState)
+        }
+    }
 
     DefaultScaffold(onBackPress = onBackPress) { padding ->
         Column(
@@ -113,22 +155,7 @@ fun AiringRoute(
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     OutlinedButton(
-                        onClick = {
-                            CalendarSheet().show(context) {
-                                title(R.string.label_calendar_airing_select_date)
-                                selectionMode(SelectionMode.DATE)
-                                filter.airingAt_greater?.let { epochSecond ->
-                                    setSelectedDate(dateHelper.convertToCalendar(epochSecond.toLong()))
-                                }
-                                onPositive { dateStart, _ ->
-                                    viewModel.setFilter(
-                                        filter.copy(
-                                            airingAt_greater = Instant.ofEpochMilli(dateStart.timeInMillis).epochSecond.toInt(),
-                                        ),
-                                    )
-                                }
-                            }
-                        },
+                        onClick = { showDatePicker = true },
                     ) {
                         Text(text = stringResource(R.string.action_airing_pick_date))
                     }
@@ -332,3 +359,17 @@ private fun formatAiringDate(
             ),
         )?.toString()
 }
+
+private fun Int.toDatePickerInitialMillis(dateHelper: AniTrendDateHelper): Long =
+    dateHelper.convertToUnixTimeStamp(
+        dateHelper.convertToFuzzyDate(
+            unixTimeStamp = Instant.ofEpochSecond(toLong()).toEpochMilli(),
+        ),
+    )
+
+private fun Long.toAiringFilterEpochSecond(dateHelper: AniTrendDateHelper): Int =
+    dateHelper
+        .convertToUnixTimeStamp(
+            dateHelper.convertToFuzzyDate(unixTimeStamp = this),
+        ).div(1000)
+        .toInt()

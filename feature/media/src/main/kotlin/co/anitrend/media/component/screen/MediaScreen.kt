@@ -114,18 +114,7 @@ class MediaScreen : AniTrendScreen() {
                             )
                         },
                         onMediaConnectionItemClick = { param ->
-                            when (param) {
-                                is MediaRouter.MediaParam ->
-                                    MediaRouter.startActivity(
-                                        context = this@MediaScreen,
-                                        navPayload = param.asNavPayload(),
-                                    )
-
-                                is MediaListEditorRouter.MediaListEditorParam ->
-                                    window.decorView.openMediaListSheetFor(param, settings)
-
-                                else -> Unit
-                            }
+                            handleMediaItemNavigation(param, settings)
                         },
                         onPeopleClick = { param ->
                             when (param.initialSection) {

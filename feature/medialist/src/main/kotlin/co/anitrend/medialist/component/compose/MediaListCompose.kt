@@ -39,6 +39,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -67,6 +68,7 @@ import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
 import co.anitrend.common.media.ui.compose.item.MediaCompactItem
 import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleText
 import co.anitrend.common.media.ui.compose.widget.title.MediaMetaLineText
+import co.anitrend.common.shared.ui.compose.DefaultBottomAppBar
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.data.user.settings.IUserSettings
@@ -90,6 +92,8 @@ fun MediaListCompose(
     mediaViewModel: MediaListViewModel,
     onMediaItemClick: (IParam) -> Unit,
     modifier: Modifier = Modifier,
+    onBackPress: (() -> Unit)? = null,
+    showBottomBar: Boolean = true,
 ) {
     val sections by userViewModel.sectionListInfo.observeAsState(emptyList())
     val currentParam by mediaViewModel.params.collectAsStateWithLifecycle()
@@ -106,27 +110,40 @@ fun MediaListCompose(
         }
     val selectedSection = remember(sectionItems, currentParam) { sectionItems.selectedSectionFor(currentParam) }
 
-    Column(
-        modifier = modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        if (sectionItems.isNotEmpty()) {
-            MediaListSectionRow(
-                sections = sectionItems,
-                selectedSection = selectedSection,
-                onSectionClick = mediaViewModel::selectSection,
-            )
-        }
+    Scaffold(
+        modifier = modifier,
+        bottomBar = {
+            if (showBottomBar && onBackPress != null) {
+                DefaultBottomAppBar(onBackPress = onBackPress)
+            }
+        },
+    ) { padding ->
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            if (sectionItems.isNotEmpty()) {
+                MediaListSectionRow(
+                    sections = sectionItems,
+                    selectedSection = selectedSection,
+                    onSectionClick = mediaViewModel::selectSection,
+                )
+            }
 
-        key(currentParam.sectionKey() ?: selectedSection.sectionKey()) {
-            MediaListPagingContent(
-                mediaFlow = mediaViewModel.media,
-                preferredViewMode = preferredViewMode,
-                scoreFormat = scoreFormat,
-                selectedSection = selectedSection,
-                onMediaItemClick = onMediaItemClick,
-                modifier = Modifier.weight(1f),
-            )
+            key(currentParam.sectionKey() ?: selectedSection.sectionKey()) {
+                MediaListPagingContent(
+                    mediaFlow = mediaViewModel.media,
+                    preferredViewMode = preferredViewMode,
+                    scoreFormat = scoreFormat,
+                    selectedSection = selectedSection,
+                    onMediaItemClick = onMediaItemClick,
+                    modifier = Modifier.weight(1f),
+                )
+            }
         }
     }
 }

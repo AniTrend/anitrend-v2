@@ -71,6 +71,7 @@ import co.anitrend.media.component.compose.MediaComposePreviewProvider
 import co.anitrend.media.component.compose.section.MediaHubSection
 import co.anitrend.media.component.compose.section.MediaHubSectionEmptyState
 import co.anitrend.media.component.compose.section.MediaHubSectionErrorState
+import co.anitrend.media.component.compose.section.MediaHubSectionRetryState
 import co.anitrend.common.media.ui.R as MediaUiR
 
 private data class StatsMetricItem(
@@ -640,18 +641,11 @@ private fun MediaStatsRetryState(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        MediaHubSectionErrorState(title = title)
-        OutlinedButton(
-            onClick = onRetry,
-            shape = RoundedCornerShape(20.dp),
-        ) {
-            Text(text = stringResource(co.anitrend.core.R.string.label_text_action_retry))
-        }
-    }
+    MediaHubSectionRetryState(
+        title = title,
+        onRetry = onRetry,
+        modifier = modifier,
+    )
 }
 
 @Composable

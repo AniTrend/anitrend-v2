@@ -28,11 +28,7 @@ import co.anitrend.airing.component.viewmodel.AiringViewModel
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
 import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
-import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
-import co.anitrend.navigation.MediaListEditorRouter
-import co.anitrend.navigation.MediaRouter
-import co.anitrend.navigation.extensions.asNavPayload
-import co.anitrend.navigation.extensions.startActivity
+import co.anitrend.common.media.ui.controller.extensions.handleMediaItemNavigation
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,20 +51,7 @@ class AiringContent : Fragment() {
                         userSettings = settings,
                         dateHelper = dateHelper,
                         onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
-                        onMediaItemClick = { param ->
-                            when (param) {
-                                is MediaRouter.MediaParam ->
-                                    MediaRouter.startActivity(
-                                        context = requireContext(),
-                                        navPayload = param.asNavPayload(),
-                                    )
-
-                                is MediaListEditorRouter.MediaListEditorParam ->
-                                    requireActivity().window.decorView.openMediaListSheetFor(param, settings)
-
-                                else -> Unit
-                            }
-                        },
+                        onMediaItemClick = { param -> requireActivity().handleMediaItemNavigation(param, settings) },
                         viewModel = viewModel,
                     )
                 }

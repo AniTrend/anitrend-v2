@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 AniTrend
+ * Copyright (C) 2026 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,23 +14,19 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package co.anitrend.media.component.screen
 
-import co.anitrend.buildSrc.Libraries
+import co.anitrend.common.media.ui.controller.extensions.handleMediaItemNavigation
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.data.user.settings.IUserSettings
+import co.anitrend.navigation.model.common.IParam
 
-plugins {
-    id("co.anitrend.plugin")
-}
-
-dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.shared))
-    implementation(project(Libraries.AniTrend.CommonUi.genre))
-    implementation(project(Libraries.AniTrend.CommonUi.tag))
-
-    implementation(project(Libraries.AniTrend.CommonUi.media))
-
-    implementation(libs.androidx.paging.compose)
-}
-
-android {
-    namespace = "co.anitrend.airing"
+internal fun AniTrendScreen.handleMediaItemNavigation(
+    param: IParam,
+    settings: IUserSettings,
+) {
+    handleMediaItemNavigation(
+        param = param,
+        settings = settings,
+    )
 }

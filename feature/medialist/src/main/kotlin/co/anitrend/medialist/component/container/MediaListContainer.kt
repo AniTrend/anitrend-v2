@@ -23,15 +23,11 @@ import android.view.ViewGroup
 import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.android.core.views.compose.composable
-import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
+import co.anitrend.common.media.ui.controller.extensions.handleMediaItemNavigation
 import co.anitrend.core.component.content.compose.AniTrendComposition
 import co.anitrend.medialist.component.compose.MediaListCompose
 import co.anitrend.medialist.component.container.viewmodel.UserViewModel
 import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
-import co.anitrend.navigation.MediaListEditorRouter
-import co.anitrend.navigation.MediaRouter
-import co.anitrend.navigation.extensions.asNavPayload
-import co.anitrend.navigation.extensions.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaListContainer(
@@ -52,23 +48,7 @@ class MediaListContainer(
                     userSettings = settings,
                     userViewModel = userViewModel,
                     mediaViewModel = mediaViewModel,
-                    onMediaItemClick = { param ->
-                        when (param) {
-                            is MediaRouter.MediaParam ->
-                                MediaRouter.startActivity(
-                                    context = requireContext(),
-                                    navPayload = param.asNavPayload(),
-                                )
-
-                            is MediaListEditorRouter.MediaListEditorParam ->
-                                view?.openMediaListSheetFor(
-                                    mediaListParam = param,
-                                    settings = settings,
-                                )
-
-                            else -> Unit
-                        }
-                    },
+                    onMediaItemClick = { param -> requireActivity().handleMediaItemNavigation(param, settings) },
                 )
             }
         }

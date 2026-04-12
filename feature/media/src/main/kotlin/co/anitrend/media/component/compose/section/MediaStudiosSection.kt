@@ -297,17 +297,10 @@ private fun StudioRetryState(
     title: String,
     onRetry: () -> Unit,
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        MediaHubSectionErrorState(title = title)
-        OutlinedButton(
-            onClick = onRetry,
-            shape = RoundedCornerShape(18.dp),
-        ) {
-            Text(text = stringResource(co.anitrend.core.R.string.label_text_action_retry))
-        }
-    }
+    MediaHubSectionRetryState(
+        title = title,
+        onRetry = onRetry,
+    )
 }
 
 private val PreviewStudios =
