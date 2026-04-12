@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.common.media.ui.compose.component.MediaRating
 import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
+import co.anitrend.common.media.ui.compose.extensions.displayTitle
 import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleText
 import co.anitrend.common.media.ui.compose.widget.title.MediaMetaLineText
 import co.anitrend.android.core.R
@@ -49,7 +50,6 @@ import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
-import co.anitrend.domain.media.entity.attribute.title.IMediaTitle
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaStatus
@@ -60,7 +60,7 @@ import co.anitrend.navigation.model.common.IParam
 
 @Composable
 private fun MediaTitleItem(
-    mediaTitle: IMediaTitle,
+    title: String,
     mediaStatus: MediaStatus?,
     modifier: Modifier = Modifier,
 ) {
@@ -85,15 +85,15 @@ private fun MediaTitleItem(
                             },
                         ),
             )
-            Text(
-                text = mediaTitle.userPreferred?.toString().orEmpty(),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.padding(4.dp),
-            )
         }
+        Text(
+            text = title,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.padding(4.dp),
+        )
     }
 }
 
@@ -146,7 +146,7 @@ fun MediaCompactItem(
             )
         }
         MediaTitleItem(
-            mediaTitle = media.title,
+            title = media.displayTitle().orEmpty(),
             mediaStatus = media.status,
         )
         MediaMetaLineText(

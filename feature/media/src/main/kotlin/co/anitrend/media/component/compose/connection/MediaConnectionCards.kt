@@ -56,6 +56,7 @@ import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.common.media.ui.compose.component.MediaRating
+import co.anitrend.common.media.ui.compose.extensions.displayTitle
 import co.anitrend.common.media.ui.compose.extensions.rememberAccentColor
 import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleText
 import co.anitrend.domain.common.entity.contract.IMediaCover
@@ -263,11 +264,7 @@ private fun ConnectionTitle(
     modifier: Modifier = Modifier,
 ) {
     Text(
-        text =
-            listOf(media.title.userPreferred, media.title.english, media.title.romaji, media.title.native)
-                .mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
-                .firstOrNull()
-                .orEmpty(),
+        text = media.displayTitle().orEmpty(),
         maxLines = 2,
         overflow = TextOverflow.Ellipsis,
         style = MaterialTheme.typography.titleSmall,

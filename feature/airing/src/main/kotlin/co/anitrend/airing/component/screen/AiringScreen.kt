@@ -22,13 +22,9 @@ import co.anitrend.airing.component.compose.AiringRoute
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
 import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
-import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
+import co.anitrend.common.media.ui.controller.extensions.handleMediaItemNavigation
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
-import co.anitrend.navigation.MediaListEditorRouter
-import co.anitrend.navigation.MediaRouter
-import co.anitrend.navigation.extensions.asNavPayload
-import co.anitrend.navigation.extensions.startActivity
 
 class AiringScreen : AniTrendScreen() {
     private val settings by inject<Settings>()
@@ -43,20 +39,7 @@ class AiringScreen : AniTrendScreen() {
                     userSettings = settings,
                     dateHelper = dateHelper,
                     onBackPress = onBackPressedDispatcher::onBackPressed,
-                    onMediaItemClick = { param ->
-                        when (param) {
-                            is MediaRouter.MediaParam ->
-                                MediaRouter.startActivity(
-                                    context = this@AiringScreen,
-                                    navPayload = param.asNavPayload(),
-                                )
-
-                            is MediaListEditorRouter.MediaListEditorParam ->
-                                window.decorView.openMediaListSheetFor(param, settings)
-
-                            else -> Unit
-                        }
-                    },
+                    onMediaItemClick = { param -> handleMediaItemNavigation(param, settings) },
                 )
             }
         }

@@ -18,20 +18,13 @@ package co.anitrend.medialist.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
 import co.anitrend.android.core.settings.Settings
-import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
-import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
+import co.anitrend.common.media.ui.controller.extensions.handleMediaItemNavigation
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.medialist.component.compose.MediaListCompose
 import co.anitrend.medialist.component.container.viewmodel.UserViewModel
 import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
-import co.anitrend.navigation.MediaListEditorRouter
-import co.anitrend.navigation.MediaRouter
-import co.anitrend.navigation.extensions.asNavPayload
-import co.anitrend.navigation.extensions.startActivity
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -44,32 +37,14 @@ class MediaListScreen : AniTrendScreen() {
         super.onCreate(savedInstanceState)
         setContent {
             AniTrendTheme3 {
-                DefaultScaffold(onBackPress = onBackPressedDispatcher::onBackPressed) { padding ->
-                    MediaListCompose(
-                        settings = settings,
-                        userSettings = settings,
-                        userViewModel = userViewModel,
-                        mediaViewModel = mediaViewModel,
-                        modifier = Modifier.padding(padding),
-                        onMediaItemClick = { param ->
-                            when (param) {
-                                is MediaRouter.MediaParam ->
-                                    MediaRouter.startActivity(
-                                        context = this@MediaListScreen,
-                                        navPayload = param.asNavPayload(),
-                                    )
-
-                                is MediaListEditorRouter.MediaListEditorParam ->
-                                    window.decorView.openMediaListSheetFor(
-                                        mediaListParam = param,
-                                        settings = settings,
-                                    )
-
-                                else -> Unit
-                            }
-                        },
-                    )
-                }
+                MediaListCompose(
+                    settings = settings,
+                    userSettings = settings,
+                    userViewModel = userViewModel,
+                    mediaViewModel = mediaViewModel,
+                    onBackPress = onBackPressedDispatcher::onBackPressed,
+                    onMediaItemClick = { param -> handleMediaItemNavigation(param, settings) },
+                )
             }
         }
     }

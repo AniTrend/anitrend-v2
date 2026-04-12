@@ -161,18 +161,11 @@ private fun SectionRetryState(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        MediaHubSectionErrorState(title = title)
-        OutlinedButton(
-            onClick = onRetry,
-            shape = RoundedCornerShape(20.dp),
-        ) {
-            Text(text = stringResource(co.anitrend.core.R.string.label_text_action_retry))
-        }
-    }
+    MediaHubSectionRetryState(
+        title = title,
+        onRetry = onRetry,
+        modifier = modifier,
+    )
 }
 
 @Composable

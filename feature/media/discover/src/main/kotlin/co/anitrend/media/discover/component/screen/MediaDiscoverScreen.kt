@@ -20,7 +20,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
-import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
+import co.anitrend.common.media.ui.controller.extensions.handleMediaItemNavigation
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.model.FragmentItem
@@ -29,12 +29,8 @@ import co.anitrend.media.discover.component.compose.MediaDiscoverCompose
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
 import co.anitrend.navigation.MediaDiscoverFilterRouter
 import co.anitrend.navigation.MediaDiscoverRouter
-import co.anitrend.navigation.MediaListEditorRouter
-import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.extensions.asBundle
-import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.fromBundle
-import co.anitrend.navigation.extensions.startActivity
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -75,23 +71,7 @@ class MediaDiscoverScreen : AniTrendScreen() {
                     onBackPress = onBackPressedDispatcher::onBackPressed,
                     onFilterClick = ::openMediaFilterDialog,
                     onViewModeClick = ::cycleViewMode,
-                    onMediaItemClick = { param ->
-                        when (param) {
-                            is MediaRouter.MediaParam ->
-                                MediaRouter.startActivity(
-                                    context = this@MediaDiscoverScreen,
-                                    navPayload = param.asNavPayload(),
-                                )
-
-                            is MediaListEditorRouter.MediaListEditorParam ->
-                                window.decorView.openMediaListSheetFor(
-                                    mediaListParam = param,
-                                    settings = settings,
-                                )
-
-                            else -> Unit
-                        }
-                    },
+                    onMediaItemClick = { param -> handleMediaItemNavigation(param, settings) },
                     viewModel = viewModel,
                 )
             }

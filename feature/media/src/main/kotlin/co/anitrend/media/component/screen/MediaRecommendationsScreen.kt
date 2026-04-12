@@ -28,12 +28,8 @@ import co.anitrend.core.ui.inject
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.component.compose.connection.MediaRecommendationsRoute
-import co.anitrend.navigation.MediaListEditorRouter
-import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.MediaRecommendationsRouter
-import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.nameOf
-import co.anitrend.navigation.extensions.startActivity
 
 class MediaRecommendationsScreen : AniTrendScreen() {
     private val param by extra<MediaRecommendationsRouter.MediaRecommendationsParam>(
@@ -53,20 +49,7 @@ class MediaRecommendationsScreen : AniTrendScreen() {
                     mediaTitle = recommendationsParam.mediaTitle,
                     scoreFormat = scoreFormat,
                     onBackPress = onBackPressedDispatcher::onBackPressed,
-                    onMediaItemClick = { param ->
-                        when (param) {
-                            is MediaRouter.MediaParam ->
-                                MediaRouter.startActivity(
-                                    context = this@MediaRecommendationsScreen,
-                                    navPayload = param.asNavPayload(),
-                                )
-
-                            is MediaListEditorRouter.MediaListEditorParam ->
-                                window.decorView.openMediaListSheetFor(param, settings)
-
-                            else -> Unit
-                        }
-                    },
+                    onMediaItemClick = { param -> handleMediaItemNavigation(param, settings) },
                 )
             }
         }
