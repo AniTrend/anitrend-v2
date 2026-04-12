@@ -55,13 +55,13 @@ private fun Project.configureBuildFlavours() {
     }
 }
 
-private fun CommonExtension<*, *, *, *, *, *>.configureBaseAndroid(project: Project) {
+private fun CommonExtension<*, *, *, *, *, *>.configureBaseAndroid(owningProject: Project) {
     compileSdk = 36
     defaultConfig {
         minSdk = 24
         targetSdk = 36
-        versionCode = project.props[PropertyTypes.CODE].toInt()
-        versionName = project.props[PropertyTypes.VERSION]
+        versionCode = owningProject.props[PropertyTypes.CODE].toInt()
+        versionName = owningProject.props[PropertyTypes.VERSION]
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

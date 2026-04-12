@@ -132,24 +132,24 @@ internal fun Project.androidComponents() =
 internal fun Project.libraryAndroidComponents() =
     extensions.getByType<LibraryAndroidComponentsExtension>()
 
-internal fun Project.containsApplicationPlugin(): Boolean {
+internal fun Project.hasApplicationPlugin(): Boolean {
     return pluginManager.hasPlugin("com.android.application")
 }
 
-internal fun Project.containsLibraryPlugin(): Boolean {
+internal fun Project.hasLibraryPlugin(): Boolean {
     return pluginManager.hasPlugin("com.android.library")
 }
 
-internal fun Project.containsTestPlugin(): Boolean {
+internal fun Project.hasTestPlugin(): Boolean {
     return pluginManager.hasPlugin("com.android.test")
 }
 
 internal fun Project.runIfAppModule(body: ApplicationExtension.() -> Unit) {
-    if (containsApplicationPlugin())
+    if (hasApplicationPlugin())
         body(applicationExtension())
 }
 
 internal fun Project.runIfLibraryModule(body: LibraryExtension.() -> Unit) {
-    if (containsLibraryPlugin())
+    if (hasLibraryPlugin())
         body(libraryExtension())
 }
