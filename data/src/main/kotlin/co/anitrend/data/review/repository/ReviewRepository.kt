@@ -16,14 +16,17 @@
  */
 package co.anitrend.data.review.repository
 
+import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.review.ReviewDeleteRepository
 import co.anitrend.data.review.ReviewEntryRepository
-import co.anitrend.data.review.ReviewPagedRepository
+import co.anitrend.data.review.ReviewPagingRepository
 import co.anitrend.data.review.ReviewRateRepository
 import co.anitrend.data.review.ReviewSaveRepository
 import co.anitrend.data.review.source.contract.ReviewSource
+import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.review.model.ReviewParam
+import kotlinx.coroutines.flow.Flow
 
 internal sealed class ReviewRepository {
     class Entry(
@@ -33,11 +36,11 @@ internal sealed class ReviewRepository {
         override fun getEntry(param: ReviewParam.Entry) = source create source(param)
     }
 
-    class Paged(
-        private val source: ReviewSource.Paged,
+    class Paging(
+        private val source: ReviewSource.Paging,
     ) : ReviewRepository(),
-        ReviewPagedRepository {
-        override fun getPaged(param: ReviewParam.Paged) = source create source(param)
+        ReviewPagingRepository {
+        override fun getPaged(param: ReviewParam.Paged): Flow<PagingData<Review>> = source(param)
     }
 
     class Rate(

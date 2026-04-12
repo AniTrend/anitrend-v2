@@ -16,10 +16,21 @@
  */
 package co.anitrend.data.edge.news.model.query
 
+import co.anitrend.data.common.model.graph.IGraphPayload
+
 /**
  * Edge news connection query. Cursor keys (after/before) and limits are
  * provided by the paging mediator when building the query variables.
  */
 internal data class NewsConnectionQuery(
-    val search: String? = null,
-)
+    val after: String? = null,
+    val before: String? = null,
+    val limit: Int? = null,
+) : IGraphPayload {
+    override fun toMap() =
+        mapOf(
+            "after" to after,
+            "before" to before,
+            "limit" to limit,
+        )
+}

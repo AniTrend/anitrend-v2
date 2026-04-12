@@ -16,10 +16,7 @@
  */
 package co.anitrend.common.media.ui.compose.component.status
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +25,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
@@ -44,8 +40,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -113,7 +107,7 @@ fun MediaStatusSection(
             MediaDetailsRow(media = media)
             ProgressDetails(media = media)
             if (showScheduleAction) {
-                ScheduleButton(mediaType = media.category.type, onClick = onShowSchedule)
+                EpisodeScheduleButton(mediaType = media.category.type, onClick = onShowSchedule)
             }
         }
     }
@@ -134,19 +128,6 @@ private fun StatusInfoRow(media: Media) {
             MediaStatus.HIATUS -> stringResource(R.string.label_media_status_chip_hiatus)
             null -> stringResource(R.string.label_media_status_unknown_value)
         }
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Box(
-            modifier =
-                Modifier
-                    .size(8.dp)
-                    .background(statusColorFor(media.status), CircleShape),
-        )
-        Text(text = statusText, style = MaterialTheme.typography.labelMedium)
-    }
 }
 
 @Composable
@@ -410,11 +391,10 @@ private fun ProgressDetails(media: Media) {
 }
 
 @Composable
-private fun ScheduleButton(
+private fun EpisodeScheduleButton(
     mediaType: MediaType,
     onClick: () -> Unit,
 ) {
-    // TODO: When we have episode data we should only show this episode schedule button when we have episodes to show
     if (mediaType == MediaType.ANIME) {
         Button(
             onClick = onClick,

@@ -16,6 +16,32 @@
  */
 package co.anitrend.review.component.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.review.GetReviewInteractor
+import co.anitrend.domain.review.entity.Review
+import co.anitrend.domain.review.model.ReviewParam
+import co.anitrend.navigation.ReviewRouter
+import co.anitrend.navigation.extensions.nameOf
 
-class ReviewViewModel : AniTrendViewModelState<Unit>()
+class ReviewViewModel(
+    private val interactor: GetReviewInteractor,
+    savedStateHandle: SavedStateHandle,
+) : AniTrendViewModelState<Review>() {
+    private val param =
+        requireNotNull(
+            savedStateHandle.get<ReviewRouter.ReviewParam>(nameOf<ReviewRouter.ReviewParam>()),
+        )
+
+    val reviewId: Long = requireNotNull(param.id)
+
+    operator fun invoke() {
+        state.postValue(
+            interactor(
+                ReviewParam.Entry(
+                    id = reviewId,
+                ),
+            ),
+        )
+    }
+}

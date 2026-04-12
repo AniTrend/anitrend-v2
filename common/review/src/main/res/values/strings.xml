@@ -16,5 +16,24 @@
   -->
 
 <resources>
-    <string name="action_read_more">Read More</string>
+  <!-- Action label used when a review card or preview should open the full reader -->
+  <string name="action_read_more">Read More</string>
+  <!-- Fallback author label when a review entry is missing a usable display name -->
+  <string name="label_review_unknown_author">Unknown reviewer</string>
+  <!-- Compact score label for review cards and reader metadata; %1$d is the AniList review score -->
+  <string name="label_review_score" formatted="true">Score %1$d</string>
+  <!-- Compact vote count label for review metadata; %1$s is the localized vote count -->
+  <string name="label_review_votes" formatted="true">Votes %1$s</string>
+  <!-- Inline vote action label; %1$s is the localized up-vote count -->
+  <string name="label_review_up_votes" formatted="true">%1$s up</string>
+  <!-- Inline vote action label; %1$s is the localized down-vote count -->
+  <string name="label_review_down_votes" formatted="true">%1$s down</string>
+  <!-- Lightweight inline action shown on compact review cards to open the full review reader -->
+  <string name="action_review_open">Read review</string>
+  <!-- Compact updated-time label for review metadata; %1$s is a relative time such as 2d -->
+  <string name="label_review_updated" formatted="true">Updated %1$s</string>
+  <!-- Heading shown when the full markdown body is unavailable and the summary is rendered instead -->
+  <string name="label_review_reader_summary_title">Summary</string>
+  <!-- Supporting copy shown when a review body is unavailable and the summary is used as a fallback -->
+  <string name="message_review_reader_summary_fallback">The full review body is unavailable right now, so this preview summary is shown instead.</string>
 </resources>

@@ -18,5 +18,27 @@
 
 <resources>
 
+  <!-- Screen title for the standalone airing schedule feature -->
+  <string name="title_airing_schedule">Airing schedule</string>
+  <!-- Subtitle shown when the airing screen is using the default upcoming schedule filter -->
+  <string name="message_airing_filter_default">Browse upcoming episodes and open any title for more detail.</string>
+  <!-- Subtitle shown when the airing screen is filtered from a selected calendar date; %1$s is the selected date -->
+  <string name="message_airing_filter_active" formatted="true">Showing scheduled releases from %1$s.</string>
+  <!-- Button text for opening the date picker filter on the airing screen -->
+  <string name="action_airing_pick_date">Pick date</string>
+  <!-- Button text for resetting the airing screen back to its initial filter -->
+  <string name="action_airing_reset_date">Reset</string>
     <string name="label_calendar_airing_select_date">Please pick a date</string>
+  <!-- Title shown while the airing screen is loading the first page of results -->
+  <string name="label_airing_loading_title">Loading schedule</string>
+  <!-- Supporting message shown while the airing screen loads the first page of results -->
+  <string name="message_airing_loading">Fetching upcoming episodes for this schedule.</string>
+  <!-- Title shown when the airing screen has no results for the current filter -->
+  <string name="label_airing_empty_title">No scheduled episodes</string>
+  <!-- Supporting message shown when the airing screen has no results for the current filter -->
+  <string name="message_airing_empty">Try another date range or check back later for newly announced releases.</string>
+  <!-- Title shown when the airing screen fails to load its schedule results -->
+  <string name="label_airing_error_title">Schedule unavailable</string>
+  <!-- Footer message shown while the airing screen is appending more results -->
+  <string name="message_airing_loading_more">Loading more scheduled releases.</string>
 </resources>

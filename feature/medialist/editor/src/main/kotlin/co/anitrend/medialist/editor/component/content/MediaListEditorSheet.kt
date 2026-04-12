@@ -71,13 +71,13 @@ class MediaListEditorSheet(
         savedInstanceState: Bundle?,
     ): View =
         composable(requireActivity()) {
+            val scoreFormat by settings.scoreFormat.flow.collectAsStateWithLifecycle(ScoreFormat.POINT_10_DECIMAL)
             AniTrendTheme3 {
                 LaunchedEffect(param) {
                     param?.also { viewModel(param = it) }
                         ?: Timber.e("MediaListEditor param is null when it should not be")
                 }
                 Surface {
-                    val scoreFormat by settings.scoreFormat.flow.collectAsStateWithLifecycle(ScoreFormat.POINT_100)
                     MediaListEditorSheetScreen(
                         viewModel = viewModel,
                         scoreFormat = scoreFormat,

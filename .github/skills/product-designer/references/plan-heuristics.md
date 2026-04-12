@@ -49,7 +49,14 @@ ASCII is especially useful for:
 - compare current vs proposed hierarchy
 
 Do not use large decorative diagrams.
-Use compact structure sketches only.
+Use compact high-fidelity structure sketches only.
+High-fidelity means the sketch should capture:
+- real section order
+- component labels
+- primary and secondary actions
+- control types
+- density and grouping
+- key state variants when relevant
 
 Good:
 
@@ -224,7 +231,25 @@ Always plan all primary states.
 
 ---
 
-## 9. Refactor Containment Heuristics
+## 9. Preview-First Quality Gate
+
+For UI-heavy work, require a preview validation matrix instead of treating previewability as optional.
+
+Default rules:
+- minimum preview matrix is `AniTrendPreview.Light` and `AniTrendPreview.Dark`
+- require `AniTrendPreview.Mobile` for full-screen surfaces and sheets
+- add `AniTrendPreview.Foldable` or `AniTrendPreview.Tablet` only when width changes hierarchy,
+  pane count, or sheet layout
+- prefer `PreviewTheme`, `DarkThemeProvider`, preview providers, or fake UI state over runtime-only validation
+- consider loading, empty, error, and populated states in the preview plan
+- include partial or disabled states when they materially change the UI
+
+Preview requirements should stay scoped.
+Do not recommend new screenshot or snapshot tooling unless the user explicitly asks for it.
+
+---
+
+## 10. Refactor Containment Heuristics
 
 A refactor is acceptable when it:
 - reduces local complexity
@@ -246,7 +271,7 @@ Prefer:
 
 ---
 
-## 10. Compose Feasibility Heuristics
+## 11. Compose Feasibility Heuristics
 
 Prefer solutions that naturally map to:
 - small composables
@@ -269,7 +294,7 @@ When motion is needed:
 
 ---
 
-## 11. Reviewability Heuristics
+## 12. Reviewability Heuristics
 
 A good plan step should answer:
 - what changes in this step?
@@ -282,13 +307,14 @@ If the answer is no, the step is probably too large.
 
 ---
 
-## 12. Prompting Heuristics for Other Coding Models
+## 13. Prompting Heuristics for Other Coding Models
 
 When producing a final execution prompt for Copilot, Codex, Claude, or similar:
 - state the exact feature and screen
 - state the intended UX outcome
 - list the states to support
 - name the reusable primitives to introduce
+- name the previews to add or preserve when UI is involved
 - explicitly say what not to touch
 - forbid broad refactors
 - keep the implementation order small and sequential
@@ -298,7 +324,7 @@ A bad execution prompt invites the model to redesign the whole app.
 
 ---
 
-## 13. Default Decision Biases
+## 14. Default Decision Biases
 
 If multiple solutions seem plausible, bias toward:
 - the smaller change
@@ -315,15 +341,17 @@ If still tied, choose the option that:
 
 ---
 
-## 14. Final Sanity Check
+## 15. Final Sanity Check
 
 Before finalizing a plan, ask:
 - Is this solving the user problem or just reorganizing code?
 - Is the plan smaller than the initial instinct?
 - Is the proposed control model visible and fast?
 - Does the hierarchy make the screen easier to scan?
+- Did I call out what good looks like and what bad UI to avoid?
 - Did I include enough state detail?
-- Did I use ASCII only where it improves clarity?
+- Did I use high-fidelity ASCII only where it improves clarity?
+- Did I define the preview matrix before runtime work starts?
 - Did I protect against scope creep?
 - Could this land in small PRs without destabilizing adjacent areas?
 

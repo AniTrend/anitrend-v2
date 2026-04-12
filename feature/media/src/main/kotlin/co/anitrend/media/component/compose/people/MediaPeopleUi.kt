@@ -47,7 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.paging.PagedList
+import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
@@ -55,7 +55,6 @@ import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.character.enums.CharacterRole
 import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.domain.common.entity.shared.CoverName
-import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.staff.enums.StaffLanguage
 import co.anitrend.media.R
@@ -159,16 +158,10 @@ private val PreviewStaff =
         ),
     )
 
-private fun LoadState?.isLoading() = this is LoadState.Loading
-
-private fun LoadState?.isError() = this is LoadState.Error
-
 @Composable
 fun MediaPeopleSection(
-    characters: PagedList<MediaPerson.Character>?,
-    charactersLoadState: LoadState?,
-    staff: PagedList<MediaPerson.Staff>?,
-    staffLoadState: LoadState?,
+    characters: LazyPagingItems<MediaPerson.Character>?,
+    staff: LazyPagingItems<MediaPerson.Staff>?,
     onSeeAllClick: () -> Unit,
     onCharacterClick: (MediaPerson.Character) -> Unit,
     onStaffClick: (MediaPerson.Staff) -> Unit,
@@ -176,8 +169,12 @@ fun MediaPeopleSection(
     onRetryStaff: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val previewCharacters = characters?.curatedCharacterPreview(CHARACTER_PREVIEW_COUNT).orEmpty()
-    val previewStaff = staff?.curatedStaffPreview(STAFF_PREVIEW_COUNT).orEmpty()
+    val characterItems = characters?.itemSnapshotList?.items.orEmpty()
+    val staffItems = staff?.itemSnapshotList?.items.orEmpty()
+    val previewCharacters = characterItems.curatedCharacterPreview(CHARACTER_PREVIEW_COUNT)
+    val previewStaff = staffItems.curatedStaffPreview(STAFF_PREVIEW_COUNT)
+    val charactersRefreshState = characters?.loadState?.refresh
+    val staffRefreshState = staff?.loadState?.refresh
 
     MediaHubSection(
         title = stringResource(R.string.title_media_people_section),
@@ -197,12 +194,12 @@ fun MediaPeopleSection(
                     onItemClick = onCharacterClick,
                 )
             }
-            charactersLoadState.isLoading() || (characters == null && !charactersLoadState.isError()) -> {
+            charactersRefreshState == null || charactersRefreshState is androidx.paging.LoadState.Loading -> {
                 MediaHubSectionLoadingState(
                     title = stringResource(R.string.label_media_people_characters_loading),
                 )
             }
-            charactersLoadState.isError() -> {
+            charactersRefreshState is androidx.paging.LoadState.Error -> {
                 PeopleSubsectionErrorState(
                     title = stringResource(R.string.label_media_people_characters_error_title),
                     onRetry = onRetryCharacters,
@@ -229,12 +226,12 @@ fun MediaPeopleSection(
                     onItemClick = onStaffClick,
                 )
             }
-            staffLoadState.isLoading() || (staff == null && !staffLoadState.isError()) -> {
+            staffRefreshState == null || staffRefreshState is androidx.paging.LoadState.Loading -> {
                 MediaHubSectionLoadingState(
                     title = stringResource(R.string.label_media_people_staff_loading),
                 )
             }
-            staffLoadState.isError() -> {
+            staffRefreshState is androidx.paging.LoadState.Error -> {
                 PeopleSubsectionErrorState(
                     title = stringResource(R.string.label_media_people_staff_error_title),
                     onRetry = onRetryStaff,

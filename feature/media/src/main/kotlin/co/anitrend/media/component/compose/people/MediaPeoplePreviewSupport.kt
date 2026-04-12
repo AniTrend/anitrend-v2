@@ -16,7 +16,6 @@
  */
 package co.anitrend.media.component.compose.people
 
-import androidx.paging.PagedList
 import co.anitrend.domain.character.enums.CharacterRole
 import co.anitrend.domain.media.entity.MediaPerson
 import kotlin.math.min
@@ -64,10 +63,10 @@ private val STAFF_ROLE_PRIORITY_GROUPS =
         ),
     )
 
-internal fun PagedList<MediaPerson.Character>.curatedCharacterPreview(maxCount: Int): List<MediaPerson.Character> =
+internal fun List<MediaPerson.Character>.curatedCharacterPreview(maxCount: Int): List<MediaPerson.Character> =
     selectCharacterPreview(previewCandidates(maxCount), maxCount)
 
-internal fun PagedList<MediaPerson.Staff>.curatedStaffPreview(maxCount: Int): List<MediaPerson.Staff> =
+internal fun List<MediaPerson.Staff>.curatedStaffPreview(maxCount: Int): List<MediaPerson.Staff> =
     selectStaffPreview(previewCandidates(maxCount), maxCount)
 
 internal fun selectCharacterPreview(
@@ -108,16 +107,16 @@ internal fun selectStaffPreview(
         .take(maxCount)
 }
 
-internal fun <T : Any> PagedList<T>.previewCandidates(
+internal fun <T : Any> List<T>.previewCandidates(
     maxCount: Int,
     scanMultiplier: Int = PREVIEW_SCAN_MULTIPLIER,
 ): List<T> {
-    if (maxCount <= 0 || size <= 0) {
+    if (maxCount <= 0 || isEmpty()) {
         return emptyList()
     }
 
     val scanLimit = min(size, maxCount * scanMultiplier)
-    return (0 until scanLimit).mapNotNull(::get)
+    return take(scanLimit)
 }
 
 private fun MediaPerson.Character.characterRolePriority(): Int =

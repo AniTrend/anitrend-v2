@@ -77,4 +77,30 @@ class UserConvertersTest {
 
         assertTrue(result.notificationOption.isEmpty())
     }
+
+    @Test
+    fun `given submission update notification type when mapping options then type is preserved`() {
+        val source =
+            UserModel.Viewer(
+                name = "viewer",
+                siteUrl = "https://anilist.co/user/viewer",
+                id = 1L,
+                options =
+                    UserOptionsModel.Viewer(
+                        notificationOptions =
+                            listOf(
+                                UserOptionsModel.NotificationOptions(
+                                    enabled = true,
+                                    notificationType = NotificationType.CHARACTER_SUBMISSION_UPDATE,
+                                ),
+                            ),
+                    ),
+            )
+
+        val result = UserGeneralOptionModelConverter().convertFrom(source)
+
+        assertEquals(1, result.notificationOption.size)
+        assertEquals(NotificationType.CHARACTER_SUBMISSION_UPDATE, result.notificationOption.first().notificationType)
+        assertTrue(result.notificationOption.first().enabled)
+    }
 }

@@ -16,61 +16,13 @@
  */
 package co.anitrend.data.airing.source.contract
 
-import androidx.paging.PagedList
-import co.anitrend.arch.request.callback.RequestCallback
-import co.anitrend.arch.request.model.Request
-import co.anitrend.data.airing.model.query.AiringScheduleQuery
-import co.anitrend.data.android.cache.extensions.invoke
-import co.anitrend.data.android.cache.model.CacheIdentity
-import co.anitrend.data.android.paging.AbstractPagingSource
+import androidx.paging.PagingData
 import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.media.entity.Media
 import kotlinx.coroutines.flow.Flow
 
 internal class AiringScheduleSource {
-    abstract class Paged : AbstractPagingSource<Media>() {
-        protected lateinit var query: AiringScheduleQuery
-
-        protected abstract val cacheIdentity: CacheIdentity
-
-        protected abstract fun observable(): Flow<PagedList<Media>>
-
-        protected abstract suspend fun getAiringSchedule(requestCallback: RequestCallback)
-
-        operator fun invoke(param: AiringParam.Find): Flow<PagedList<Media>> {
-            query = AiringScheduleQuery(param)
-            return observable()
-        }
-
-        /**
-         * Called when the item at the end of the PagedList has been loaded, and access has
-         * occurred within [Config.prefetchDistance] of it.
-         *
-         * No more data will be appended to the PagedList after this item.
-         *
-         * @param itemAtEnd The first item of PagedList
-         */
-        override fun onItemAtEndLoaded(itemAtEnd: Media) {
-            cacheIdentity(
-                scope = scope,
-                paging = supportPagingHelper,
-                requestHelper = requestHelper,
-                requestType = Request.Type.AFTER,
-                block = ::getAiringSchedule,
-            )
-        }
-
-        /**
-         * Called when zero items are returned from an initial load of the PagedList's data source.
-         */
-        override fun onZeroItemsLoaded() {
-            cacheIdentity(
-                scope = scope,
-                paging = supportPagingHelper,
-                requestHelper = requestHelper,
-                requestType = Request.Type.INITIAL,
-                block = ::getAiringSchedule,
-            )
-        }
+    abstract class Paging {
+        abstract operator fun invoke(param: AiringParam.Find): Flow<PagingData<Media>>
     }
 }

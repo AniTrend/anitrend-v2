@@ -16,51 +16,50 @@
  */
 package co.anitrend.episode.component.content
 
-import co.anitrend.arch.recycler.adapter.SupportAdapter
-import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import co.anitrend.android.core.settings.common.locale.ILocaleSettings
-import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale.Companion.asLocaleString
-import co.anitrend.core.component.content.list.AniTrendListContent
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.views.compose.composable
+import co.anitrend.core.component.content.compose.AniTrendComposition
+import co.anitrend.core.ui.fragmentByTagOrNew
+import co.anitrend.core.ui.model.FragmentItem
 import co.anitrend.domain.episode.entity.Episode
-import co.anitrend.domain.episode.model.EpisodeParam
+import co.anitrend.episode.component.compose.EpisodeCompose
 import co.anitrend.episode.component.content.viewmodel.EpisodeContentViewModel
+import co.anitrend.navigation.EpisodeRouter
+import co.anitrend.navigation.extensions.asBundle
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class EpisodeContent(
-    private val settings: ILocaleSettings,
-    override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: SupportAdapter<Episode>,
-    override val defaultSpanSize: Int = co.anitrend.android.core.R.integer.column_x1,
-) : AniTrendListContent<Episode>() {
+class EpisodeContent : AniTrendComposition() {
+    private val settings by inject<ILocaleSettings>()
     private val viewModel by viewModel<EpisodeContentViewModel>()
 
-    /**
-     * Stub to trigger the loading of data, by default this is only called
-     * when [supportViewAdapter] has no data in its underlying source.
-     *
-     * This is called when the fragment reaches it's [onResume] state
-     *
-     * @see initializeComponents
-     */
-    override fun onFetchDataInitialize() {
-        val locale = settings.locale.value.asLocaleString()
-        viewModel.invoke(
-            EpisodeParam.Paged(locale),
-        )
+    private fun openEpisodeSheet(episode: Episode) {
+        val fragmentItem =
+            FragmentItem(
+                fragment = EpisodeRouter.forSheet(),
+                parameter = EpisodeRouter.EpisodeParam(id = episode.id).asBundle(),
+            )
+        val dialog = fragmentItem.fragmentByTagOrNew(requireActivity())
+        dialog.show(requireActivity().supportFragmentManager, fragmentItem.tag())
     }
 
-    /**
-     * Invoke view model observer to watch for changes, this will be called
-     * called in [onViewCreated]
-     */
-    override fun setUpViewModelObserver() {
-        viewModel.model.observe(viewLifecycleOwner) {
-            onPostModelChange(it)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View =
+        composable(requireActivity()) {
+            AniTrendTheme3 {
+                EpisodeCompose(
+                    settings = settings,
+                    viewModel = viewModel,
+                    onEpisodeClick = ::openEpisodeSheet,
+                )
+            }
         }
-    }
-
-    /**
-     * Proxy for a view model state if one exists
-     */
-    override fun viewModelState() = viewModel
 }

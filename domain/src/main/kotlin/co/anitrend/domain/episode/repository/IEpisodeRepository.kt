@@ -24,7 +24,7 @@ interface IEpisodeRepository {
         fun getEpisode(param: EpisodeParam.Detail): State
     }
 
-    interface Paged<State : UiState<*>> : IEpisodeRepository {
+    interface Paged<State> : IEpisodeRepository {
         fun getPagedEpisode(param: EpisodeParam.Paged): State
     }
 

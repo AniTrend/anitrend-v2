@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.review.datasource.local
 
-import androidx.paging.DataSource
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.RawQuery
@@ -57,7 +57,6 @@ internal abstract class ReviewLocalSource : AbstractLocalSource<ReviewEntity>() 
     @RawQuery(observedEntities = [MediaEntity::class, UserEntity::class, ReviewEntity::class])
     abstract fun rawFlow(query: SupportSQLiteQuery): Flow<ReviewEntityView.Core?>
 
-    @Transaction
     @RawQuery(observedEntities = [MediaEntity::class, UserEntity::class, ReviewEntity::class])
-    abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, ReviewEntityView.Core>
+    abstract fun rawPagingSource(query: SupportSQLiteQuery): PagingSource<Int, ReviewEntityView.Core>
 }

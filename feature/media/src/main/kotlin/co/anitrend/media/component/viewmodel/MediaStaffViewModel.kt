@@ -16,30 +16,30 @@
  */
 package co.anitrend.media.component.viewmodel
 
-import androidx.paging.PagedList
-import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import co.anitrend.data.media.GetMediaStaffInteractor
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.domain.staff.enums.StaffSort
 import co.anitrend.navigation.model.sorting.Sorting
+import kotlinx.coroutines.flow.Flow
 
 class MediaStaffViewModel(
     private val interactor: GetMediaStaffInteractor,
-) : AniTrendViewModelState<PagedList<MediaPerson.Staff>>() {
-    operator fun invoke(mediaId: Long) {
-        val result =
-            interactor(
-                MediaParam.Staff(
-                    id = mediaId,
-                    sort =
-                        listOf(
-                            Sorting(StaffSort.RELEVANCE, SortOrder.DESC),
-                            Sorting(StaffSort.ROLE, SortOrder.ASC),
-                        ),
-                ),
-            )
-        state.postValue(result)
-    }
+) : ViewModel() {
+    fun staff(mediaId: Long): Flow<PagingData<MediaPerson.Staff>> =
+        interactor(
+            MediaParam.Staff(
+                id = mediaId,
+                sort =
+                    listOf(
+                        Sorting(StaffSort.RELEVANCE, SortOrder.DESC),
+                        Sorting(StaffSort.ROLE, SortOrder.ASC),
+                    ),
+            ),
+        ).cachedIn(viewModelScope)
 }

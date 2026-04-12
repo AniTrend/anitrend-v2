@@ -16,17 +16,17 @@
  */
 package co.anitrend.data.airing
 
-import androidx.paging.PagedList
-import co.anitrend.arch.data.state.DataState
+import androidx.paging.PagingData
 import co.anitrend.data.airing.entity.AiringScheduleEntity
 import co.anitrend.data.airing.model.container.AiringScheduleModelContainer
 import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.domain.airing.interactor.AiringScheduleUseCase
 import co.anitrend.domain.airing.repository.IAiringScheduleRepository
 import co.anitrend.domain.media.entity.Media
+import kotlinx.coroutines.flow.Flow
 
 internal typealias AiringSchedulePagedController = GraphQLController<AiringScheduleModelContainer.Paged, List<AiringScheduleEntity>>
 
-internal typealias AiringSchedulePagedRepository = IAiringScheduleRepository.Paged<DataState<PagedList<Media>>>
+internal typealias AiringSchedulePagingRepository = IAiringScheduleRepository.Paged<Flow<PagingData<Media>>>
 
-typealias GetPagedAiringScheduleInteractor = AiringScheduleUseCase.GetPaged<DataState<PagedList<Media>>>
+typealias GetPagingAiringScheduleInteractor = AiringScheduleUseCase.GetPaged<Flow<PagingData<Media>>>

@@ -93,7 +93,6 @@ import co.anitrend.android.core.ui.color.md_theme_light_tertiary
 import co.anitrend.android.core.ui.color.md_theme_light_tertiaryContainer
 import co.anitrend.android.core.ui.typography.AniTrendTypography
 import com.google.android.material.color.MaterialColors
-import org.koin.androidx.compose.KoinAndroidContext
 import org.koin.compose.koinInject
 
 private val LightColorScheme =
@@ -202,12 +201,10 @@ fun AniTrendTheme3(
             themeHelper.applyDynamicNightModeFromTheme()
         }
     }
-    KoinAndroidContext {
-        MaterialTheme(
-            colorScheme = colorScheme,
-            shapes = AniTrendShapes,
-            typography = AniTrendTypography,
-            content = content,
-        )
-    }
+    MaterialTheme(
+        colorScheme = colorScheme,
+        shapes = AniTrendShapes,
+        typography = AniTrendTypography,
+        content = content,
+    )
 }

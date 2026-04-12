@@ -12,7 +12,7 @@ union ActivityUnion = ListActivity | MessageActivity | TextActivity
 union LikeableUnion = ActivityReply | ListActivity | MessageActivity | TextActivity | Thread | ThreadComment
 
 "Notification union type"
-union NotificationUnion = ActivityLikeNotification | ActivityMentionNotification | ActivityMessageNotification | ActivityReplyLikeNotification | ActivityReplyNotification | ActivityReplySubscribedNotification | AiringNotification | FollowingNotification | MediaDataChangeNotification | MediaDeletionNotification | MediaMergeNotification | RelatedMediaAdditionNotification | ThreadCommentLikeNotification | ThreadCommentMentionNotification | ThreadCommentReplyNotification | ThreadCommentSubscribedNotification | ThreadLikeNotification
+union NotificationUnion = ActivityLikeNotification | ActivityMentionNotification | ActivityMessageNotification | ActivityReplyLikeNotification | ActivityReplyNotification | ActivityReplySubscribedNotification | AiringNotification | CharacterSubmissionUpdateNotification | FollowingNotification | MediaDataChangeNotification | MediaDeletionNotification | MediaMergeNotification | MediaSubmissionUpdateNotification | RelatedMediaAdditionNotification | StaffSubmissionUpdateNotification | ThreadCommentLikeNotification | ThreadCommentMentionNotification | ThreadCommentReplyNotification | ThreadCommentSubscribedNotification | ThreadLikeNotification
 
 "Notification for when a activity is liked"
 type ActivityLikeNotification {
@@ -358,6 +358,24 @@ type CharacterSubmissionEdge {
   submittedVoiceActors: [StaffSubmission]
   "The voice actors of the character"
   voiceActors: [Staff]
+}
+
+"Notification for when a character submission is accepted, partially accepted, or rejected"
+type CharacterSubmissionUpdateNotification {
+  "The character that was modified."
+  character: Character
+  "The notification context text"
+  contexts: [String]
+  "The time the notification was created at"
+  createdAt: Int
+  "The id of the Notification"
+  id: Int!
+  "The notes of the submission"
+  notes: String
+  "The status of the submission"
+  status: String
+  "The type of notification"
+  type: NotificationType
 }
 
 "Deleted data type"
@@ -1544,6 +1562,26 @@ type MediaSubmissionEdge {
   voiceActorSubmission: Staff
 }
 
+"Notification for when a media submission is accepted, partially accepted, or rejected"
+type MediaSubmissionUpdateNotification {
+  "The notification context text"
+  contexts: [String]
+  "The time the notification was created at"
+  createdAt: Int
+  "The id of the Notification"
+  id: Int!
+  "The media that was created or modified. If this submission was to create a new media and it was rejected, this will be null."
+  media: Media
+  "The notes of the submission"
+  notes: String
+  "The status of the submission"
+  status: String
+  "The title of the media that was submitted. If this submission was to edit an existing media, this will be null."
+  submittedTitle: String
+  "The type of notification"
+  type: NotificationType
+}
+
 "A tag that describes a theme or element of the media"
 type MediaTag {
   "The categories of tags this tag belongs to"
@@ -2655,14 +2693,14 @@ type Query {
     mediaType: ExternalLinkMediaType,
     type: ExternalLinkType
   ): [MediaExternalLink]
-  "Follow query"
+  "Follower query"
   Follower(
     "The order the results will be returned in"
     sort: [UserSort],
     "User id of the follower/followed"
     userId: Int!
   ): User
-  "Follow query"
+  "Following query"
   Following(
     "The order the results will be returned in"
     sort: [UserSort],
@@ -3482,6 +3520,24 @@ type StaffSubmission {
   submission: Staff
   "Submitter for the submission"
   submitter: User
+}
+
+"Notification for when a staff submission is accepted, partially accepted, or rejected"
+type StaffSubmissionUpdateNotification {
+  "The notification context text"
+  contexts: [String]
+  "The time the notification was created at"
+  createdAt: Int
+  "The id of the Notification"
+  id: Int!
+  "The notes of the submission"
+  notes: String
+  "The staff that was modified."
+  staff: Staff
+  "The status of the submission"
+  status: String
+  "The type of notification"
+  type: NotificationType
 }
 
 "The distribution of the watching/reading status of media or a user's list"
@@ -4455,6 +4511,8 @@ enum NotificationType {
   ACTIVITY_REPLY_SUBSCRIBED
   "An anime you are currently watching has aired"
   AIRING
+  "A user's character submission has been accepted, partially accepted, or rejected"
+  CHARACTER_SUBMISSION_UPDATE
   "A user has followed you"
   FOLLOWING
   "An anime or manga has had a data change that affects how a user may track it in their lists"
@@ -4463,8 +4521,12 @@ enum NotificationType {
   MEDIA_DELETION
   "Anime or manga entries on the user's list have been merged into a single entry"
   MEDIA_MERGE
+  "A user's submission has been accepted, partially accepted, or rejected"
+  MEDIA_SUBMISSION_UPDATE
   "A new anime or manga has been added to the site where its related media is on the user's list"
   RELATED_MEDIA_ADDITION
+  "A user's staff submission has been accepted, partially accepted, or rejected"
+  STAFF_SUBMISSION_UPDATE
   "A user has liked your forum comment"
   THREAD_COMMENT_LIKE
   "A user has mentioned you in a forum comment"

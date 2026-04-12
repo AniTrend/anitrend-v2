@@ -28,7 +28,7 @@ class AppInfo(
     override val locale: String
         get() = Locale.getDefault().toLanguageTag()
     override val version: String = versionName(context)
-    override val build: String = BuildConfig.versionCode.toString()
+    override val build: String = Build.ID
     override val source: String = installationSource(context)
     override val code: String = versionCode(context)
     override val label: String = applicationLabel(context)

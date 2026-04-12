@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import co.anitrend.common.media.ui.compose.component.MediaRating
 import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
 import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleText
-import co.anitrend.common.media.ui.compose.widget.title.MediaSubTitleText
+import co.anitrend.common.media.ui.compose.widget.title.MediaMetaLineText
 import co.anitrend.android.core.R
 import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.helpers.image.model.RequestImage
@@ -149,7 +149,7 @@ fun MediaCompactItem(
             mediaTitle = media.title,
             mediaStatus = media.status,
         )
-        MediaSubTitleText(
+        MediaMetaLineText(
             media = media,
             modifier = Modifier.padding(start = 4.dp, end = 4.dp),
             style = MaterialTheme.typography.bodySmall,

@@ -45,10 +45,10 @@ import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.theme.MediaTheme
 import co.anitrend.domain.media.enums.MediaSeason
 import co.anitrend.media.R
-import java.util.Locale
 import org.koin.compose.koinInject
 import org.threeten.bp.LocalDate
 import org.threeten.bp.format.DateTimeFormatter
+import java.util.Locale
 import co.anitrend.common.media.ui.R as MediaUiR
 
 internal data class MetadataEntry(
@@ -393,13 +393,6 @@ fun MediaExtendedMetadataSection(
                 title = stringResource(R.string.label_media_extended_details_synonyms),
                 values = synonyms,
                 collapsedCount = 2,
-            )
-        }
-
-        if (themes.isNotEmpty()) {
-            MediaThemePreviewBlock(
-                themes = themes,
-                title = stringResource(R.string.label_media_extended_details_themes),
             )
         }
 

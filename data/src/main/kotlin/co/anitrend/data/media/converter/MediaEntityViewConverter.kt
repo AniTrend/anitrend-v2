@@ -293,7 +293,6 @@ internal class MediaEntityViewConverter(
                 is MediaEntityView.Extended ->
                     source.createMedia().let { media ->
                         val edge = source.edge
-
                         Media.Extended(
                             sourceId =
                                 edge
@@ -322,7 +321,7 @@ internal class MediaEntityViewConverter(
                                         )
                                     }.orEmpty(),
                             countryCode = media.countryCode,
-                            description = media.description,
+                            description = media.description ?: edge?.media?.description,
                             externalLinks = media.externalLinks,
                             favourites = media.favourites,
                             genres = media.genres,

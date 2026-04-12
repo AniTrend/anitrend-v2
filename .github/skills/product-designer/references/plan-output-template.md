@@ -93,7 +93,7 @@ Example:
 
 ---
 
-# 5. ASCII Layout or Flow Sketch
+# 5. ASCII High-Fidelity Mock
 
 If the work affects UI, include at least one ASCII sketch.
 
@@ -104,8 +104,14 @@ Use ASCII to show:
 - card anatomy
 - editor grouping
 - section sequencing
+- component labels
+- control types
+- primary and secondary actions
+- density and grouping
+- key state variants when they materially affect the layout
 
 Keep it compact and readable.
+This is a high-fidelity planning mock, not a decorative pseudo-wireframe.
 
 Examples:
 
@@ -163,7 +169,42 @@ Use this section to make the plan opinionated and useful.
 
 ---
 
-# 7. Component Breakdown
+# 7. Design Quality Gates
+
+This section is required for UI and editor work.
+For non-UI refactors, mark it as not applicable.
+
+Use this exact format:
+
+## Good looks like
+State the intended hierarchy, density, Material3 surface behavior, and readability outcome.
+
+## Avoid this
+Call out the bad UI patterns this plan must reject early.
+Examples:
+- low contrast on dark surfaces
+- hard-coded colors instead of theme roles
+- walls of equally weighted chips
+- hidden frequent actions
+- keyboard-first editors where direct controls are better
+- icon-only actions without semantic labeling expectations
+
+## Contrast and readability risks
+Call out where hierarchy, accent usage, or supporting text could become weak.
+
+## Accessibility handoff notes
+Cover:
+- semantics expectations
+- content description expectations where relevant
+- touch targets
+- text scaling
+- state clarity
+
+This section should make the quality bar explicit before implementation starts.
+
+---
+
+# 8. Component Breakdown
 
 Separate components into three groups.
 
@@ -193,7 +234,7 @@ Example:
 
 ---
 
-# 8. State Matrix
+# 9. State Matrix
 
 This section is mandatory.
 
@@ -235,7 +276,41 @@ Example:
 
 ---
 
-# 9. Data and Model Impact
+# 10. Preview Validation Matrix
+
+This section is mandatory for UI and editor work.
+For non-UI refactors, mark it as not applicable.
+
+Name the preview variants and state samples that should exist before implementation is considered complete.
+
+Use this format:
+
+## Required preview variants
+- minimum `AniTrendPreview.Light`
+- minimum `AniTrendPreview.Dark`
+- `AniTrendPreview.Mobile` when the work touches a full-screen surface or sheet
+- `AniTrendPreview.Foldable` or `AniTrendPreview.Tablet` only when width changes hierarchy,
+  pane count, section order, or sheet layout
+
+## Preview wrapper or provider expectations
+- whether `PreviewTheme` should wrap the preview
+- whether `DarkThemeProvider` is appropriate
+- whether preview providers or fake UI state are needed
+
+## State samples
+- loading
+- empty
+- error
+- populated
+- partial data when relevant
+- disabled interaction when relevant
+
+Do not leave this vague.
+If a variant is unnecessary, say why.
+
+---
+
+# 11. Data and Model Impact
 
 Explain the data implications precisely.
 
@@ -260,7 +335,7 @@ Use this format:
 
 ---
 
-# 10. Implementation Plan
+# 12. Implementation Plan
 
 This section is mandatory.
 
@@ -305,7 +380,7 @@ Bad step characteristics:
 
 ---
 
-# 11. Risks
+# 13. Risks
 
 This section is mandatory.
 
@@ -333,7 +408,7 @@ Example:
 
 ---
 
-# 12. Acceptance Criteria
+# 14. Acceptance Criteria
 
 This section is mandatory.
 
@@ -350,7 +425,7 @@ Examples:
 
 ---
 
-# 13. Compose Implementation Notes
+# 15. Compose Implementation Notes
 
 This section is mandatory for UI work.
 For non-UI refactors, mark it as not applicable.
@@ -359,6 +434,9 @@ Cover:
 - likely composable boundaries
 - state hoisting expectations
 - previewability
+- likely preview functions to add or preserve
+- which `AniTrendPreview` variants apply
+- whether `PreviewTheme`, `DarkThemeProvider`, preview providers, or fake UI state are needed
 - where `LazyColumn`, `LazyRow`, `FlowRow`, or custom layout use is appropriate
 - whether animations should be avoided or kept subtle
 - accessibility implications such as touch targets, text scaling, and semantics
@@ -367,7 +445,7 @@ Keep it implementation-aware, not code-heavy.
 
 ---
 
-# 14. Do Not Touch
+# 16. Do Not Touch
 
 This section is mandatory.
 
@@ -383,7 +461,7 @@ Examples:
 
 ---
 
-# 15. Copilot or Codex Execution Prompt
+# 17. Copilot or Codex Execution Prompt
 
 End with a ready-to-copy prompt for a coding model.
 
@@ -396,6 +474,7 @@ The prompt must:
 - avoid massive refactors
 - preserve existing architecture where possible
 - mention states to support
+- require the named preview variants or preview strategy for UI work
 - mention reusable primitives to introduce if applicable
 
 Use this exact structure:
@@ -418,6 +497,9 @@ Implementation constraints:
 - preserve existing architecture unless a small local abstraction is clearly needed
 - support loading, empty, error, and populated states
 - prefer reusable Compose primitives
+- use existing `PreviewTheme` and `AniTrendPreview` patterns when UI changes need preview validation
+- do not introduce new screenshot or snapshot tooling unless explicitly required
+- do not perform broad design-system churn
 - do not touch: [explicit exclusions]
 
 Suggested implementation order:
@@ -428,7 +510,7 @@ Suggested implementation order:
 Deliverables:
 - updated composables
 - any supporting UI model or mapper changes that are strictly necessary
-- previews if appropriate
+- previews covering the named validation matrix when UI is involved
 - concise implementation notes where behavior is non-obvious
 
 ---
@@ -439,8 +521,10 @@ Before returning the plan, verify:
 
 - Is the scope tight?
 - Is the hierarchy clear?
-- Did I include ASCII where UI structure changes?
+- Did I include ASCII high-fidelity mock(s) where UI structure changes?
+- Did I make the design quality gates explicit?
 - Did I cover all key states?
+- Did I define the preview validation matrix?
 - Did I resist broad refactors?
 - Is the implementation plan realistically split into small steps?
 - Did I clearly say what not to touch?

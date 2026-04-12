@@ -21,7 +21,7 @@ import co.anitrend.domain.news.model.NewsParam
 import co.anitrend.domain.news.repository.INewsRepository
 
 sealed class NewsUseCase {
-    abstract class GetPaged<State : UiState<*>>(
+    abstract class GetPaged<State>(
         protected val repository: INewsRepository.Paged<State>,
     ) : NewsUseCase() {
         operator fun invoke(param: NewsParam) = repository.getPagedNews(param)

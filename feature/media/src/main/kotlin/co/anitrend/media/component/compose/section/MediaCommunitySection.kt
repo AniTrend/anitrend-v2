@@ -18,38 +18,45 @@ package co.anitrend.media.component.compose.section
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.paging.PagedList
-import co.anitrend.android.core.asPrettyTime
-import co.anitrend.arch.domain.entities.LoadState
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import co.anitrend.common.review.ui.compose.ReviewBrowseCard
+import co.anitrend.common.review.ui.compose.ReviewCardVariant
+import co.anitrend.common.review.ui.compose.ReviewLoadingCard
+import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.domain.review.entity.Review
+import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.media.R
-import org.threeten.bp.Instant
 
 @Composable
 internal fun MediaCommunitySection(
-    reviews: PagedList<Review>?,
-    loadState: LoadState?,
+    reviews: LazyPagingItems<Review>?,
     isBlocked: Boolean,
+    authenticatedUserId: Long,
     onSeeAllClick: () -> Unit,
     onRetry: () -> Unit,
+    onReviewClick: (Long) -> Unit,
+    isVotePending: (Long) -> Boolean,
+    onVoteRequested: (Review, ReviewRating) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val previewItems = remember(reviews) { reviews?.previewItems(maxCount = 3).orEmpty() }
+    val previewItems =
+        remember(reviews?.itemSnapshotList) {
+            reviews
+                ?.itemSnapshotList
+                ?.items
+                .orEmpty()
+                .take(2)
+        }
+    val refreshState = reviews?.loadState?.refresh
     val canSeeAll = !isBlocked && previewItems.isNotEmpty()
 
     MediaHubSection(
@@ -75,27 +82,40 @@ internal fun MediaCommunitySection(
         when {
             previewItems.isNotEmpty() -> {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     previewItems.forEach { review ->
-                        CommunityReviewCard(review = review)
+                        ReviewBrowseCard(
+                            review = review,
+                            variant = ReviewCardVariant.InlineCommunity,
+                            canVote = !review.isOwnedBy(authenticatedUserId),
+                            isVotePending = isVotePending(review.id),
+                            onOpen = { onReviewClick(review.id) },
+                            onVoteRequested = { rating -> onVoteRequested(review, rating) },
+                        )
                     }
                 }
             }
 
-            loadState is LoadState.Loading || (reviews == null && loadState !is LoadState.Error) -> {
-                MediaHubSectionLoadingState(
-                    title = stringResource(R.string.label_media_community_loading),
-                    message = stringResource(R.string.message_media_community_loading),
-                )
+            refreshState is LoadState.Loading || reviews == null -> {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    repeat(2) {
+                        ReviewLoadingCard(
+                            variant = ReviewCardVariant.InlineCommunity,
+                        )
+                    }
+                }
             }
 
-            loadState is LoadState.Error -> {
+            refreshState is LoadState.Error -> {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     MediaHubSectionErrorState(
                         title = stringResource(R.string.label_media_community_error_title),
+                        message = stringResource(R.string.message_media_community_error),
                     )
                     OutlinedButton(
                         onClick = onRetry,
@@ -116,59 +136,5 @@ internal fun MediaCommunitySection(
     }
 }
 
-@Composable
-private fun CommunityReviewCard(
-    review: Review,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.76f),
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        shape = RoundedCornerShape(22.dp),
-    ) {
-        Column(
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 14.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Text(
-                    text =
-                        review.user.name.toString().ifBlank {
-                            stringResource(R.string.label_media_community_review_by_unknown)
-                        },
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                )
-                Text(
-                    text = stringResource(R.string.label_media_community_review_score, review.score),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
-
-            Text(
-                text = review.summary,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-
-            Text(
-                text = Instant.ofEpochSecond(review.createdAt).asPrettyTime(),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-    }
-}
-
-private fun PagedList<Review>.previewItems(maxCount: Int): List<Review> =
-    buildList {
-        repeat(minOf(size, maxCount)) { index ->
-            this@previewItems[index]?.let(::add)
-        }
-    }
+private fun Review.isOwnedBy(authenticatedUserId: Long): Boolean =
+    authenticatedUserId != IAuthenticationSettings.INVALID_USER_ID && authenticatedUserId == userId

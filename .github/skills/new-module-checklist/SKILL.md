@@ -11,6 +11,10 @@ The build system is convention-driven: naming a module correctly causes `buildSr
 automatically apply the right plugins, dependencies, and Room options. Follow this checklist when
 adding any new Gradle module.
 
+Before creating a new module, confirm the work does not belong in an existing `:android:*` or
+`:app:core` helper surface. Theme/configuration, notification, deep-link, drawer, and general
+Android utility work often extends those modules rather than introducing a new module.
+
 ## Key files to read
 
 - `buildSrc/src/main/java/co/anitrend/buildSrc/module/Modules.kt` — central registry of all
@@ -22,6 +26,11 @@ adding any new Gradle module.
 - `settings.gradle.kts` — where the `include(":your:new:module")` declaration lives
 
 ## Step-by-step checklist
+
+### 0. Placement decision
+- [ ] If the change is a platform/helper concern, inspect `:android:*`, `:app:core`, and
+  `.github/skills/android-platform-patterns/SKILL.md` first.
+- [ ] Only create a new module when an existing module cannot own the change cleanly.
 
 ### 1. File system
 - [ ] Create the module directory following the existing layout (`feature/`, `data/`, `common/`, etc.).
@@ -36,7 +45,8 @@ adding any new Gradle module.
 ### 3. Dependency injection (Koin)
 - [ ] Create `<module>/src/main/kotlin/.../koin/Modules.kt` (see `.github/skills/koin-module-wiring/SKILL.md`).
 - [ ] Add the module loader to the nearest aggregator (or to
-  `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt` for top-level modules).
+  `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt` for top-level modules, including
+  `:android:*` modules).
 
 ### 4. Domain / Data wiring (if a data or feature module)
 - [ ] Choose the nearest reference pattern first: `tag` for simple query-only, `media` for

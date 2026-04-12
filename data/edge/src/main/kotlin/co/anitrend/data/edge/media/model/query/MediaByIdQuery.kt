@@ -16,6 +16,13 @@
  */
 package co.anitrend.data.edge.media.model.query
 
+import co.anitrend.data.common.model.graph.IGraphPayload
+
 internal data class MediaByIdQuery(
     val id: Int,
-)
+) : IGraphPayload {
+    override fun toMap() =
+        mapOf(
+            "id" to id,
+        )
+}

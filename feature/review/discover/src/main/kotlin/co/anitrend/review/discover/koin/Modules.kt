@@ -16,33 +16,12 @@
  */
 package co.anitrend.review.discover.koin
 
-import co.anitrend.common.review.ui.adapter.ReviewPagedAdapter
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.navigation.ReviewDiscoverRouter
-import co.anitrend.review.discover.component.content.ReviewDiscoverContent
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
 import co.anitrend.review.discover.provider.FeatureProvider
-import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-
-private val fragmentModule =
-    module {
-        fragment {
-            ReviewDiscoverContent(
-                stateConfig = get(),
-                supportViewAdapter =
-                    ReviewPagedAdapter(
-                        settings = get(),
-                        preferredViewMode = PreferredViewMode.DETAILED,
-                        resources = androidContext().resources,
-                        stateConfiguration = get(),
-                    ),
-            )
-        }
-    }
 
 private val viewModelModule =
     module {
@@ -64,5 +43,5 @@ private val featureModule =
 
 internal val moduleHelper =
     DynamicFeatureModuleHelper(
-        listOf(fragmentModule, viewModelModule, featureModule),
+        listOf(viewModelModule, featureModule),
     )

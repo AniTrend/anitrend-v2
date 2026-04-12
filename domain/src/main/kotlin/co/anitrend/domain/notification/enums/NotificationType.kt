@@ -45,6 +45,9 @@ enum class NotificationType(
     /** An anime you are currently watching has aired */
     AIRING("Airing"),
 
+    /** A user's character submission has been accepted, partially accepted, or rejected */
+    CHARACTER_SUBMISSION_UPDATE("Character submission update"),
+
     /** A user has followed you */
     FOLLOWING("Following"),
 
@@ -57,8 +60,14 @@ enum class NotificationType(
     /** Anime or manga entries on the user's list have been merged into a single entry */
     MEDIA_MERGE("Media merge"),
 
+    /** A user's submission has been accepted, partially accepted, or rejected */
+    MEDIA_SUBMISSION_UPDATE("Media submission update"),
+
     /** A new anime or manga has been added to the site where its related media is on the user's list */
     RELATED_MEDIA_ADDITION("Related media addition"),
+
+    /** A user's staff submission has been accepted, partially accepted, or rejected */
+    STAFF_SUBMISSION_UPDATE("Staff submission update"),
 
     /** A user has liked your forum comment */
     THREAD_COMMENT_LIKE("Thread comment like"),

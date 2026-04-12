@@ -38,7 +38,10 @@ private val fragmentModule =
 private val viewModelModule =
     module {
         viewModel {
-            ReviewViewModel()
+            ReviewViewModel(
+                interactor = get(),
+                savedStateHandle = get(),
+            )
         }
     }
 

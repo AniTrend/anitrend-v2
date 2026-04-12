@@ -31,8 +31,7 @@ internal data class MediaStatsSummarySnapshot(
     val popularity: Int? = null,
     val trendRank: Int? = null,
 ) {
-    fun hasAnyValue(): Boolean =
-        averageScore != null || favourites != null || popularity != null || trendRank != null
+    fun hasAnyValue(): Boolean = averageScore != null || favourites != null || popularity != null || trendRank != null
 }
 
 internal data class ScoreDistributionChartEntry(

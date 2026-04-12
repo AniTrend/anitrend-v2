@@ -20,7 +20,7 @@
     <!-- Section title for additional metadata shown on the media detail screen -->
     <string name="label_media_extended_details_section_title">More details</string>
     <!-- Supporting copy for the quieter metadata overflow module on media detail -->
-    <string name="subtitle_media_extended_details_section">Alternative titles, theme previews, and quieter metadata.</string>
+    <string name="subtitle_media_extended_details_section">Alternative titles, and quieter metadata.</string>
     <!-- Label for the age rating row shown on the media detail screen -->
     <string name="label_media_extended_details_age_rating">Age rating</string>
     <!-- Label for the source material row shown on the media detail screen -->
@@ -258,6 +258,14 @@
     <string name="label_media_stats_loading">Loading stats</string>
     <!-- Supporting loading copy for the media-detail stats sidecar fetch -->
     <string name="message_media_stats_loading">Fetching score and status distribution snapshots for this title.</string>
+    <!-- Title shown at the top of the media schedule bottom sheet -->
+    <string name="title_media_schedule_sheet">Upcoming episodes</string>
+    <!-- Loading copy shown while the media schedule bottom sheet fetches paging data -->
+    <string name="message_media_schedule_loading">Loading upcoming episodes.</string>
+    <!-- Empty-state copy shown when no upcoming schedule items are available -->
+    <string name="message_media_schedule_empty">No upcoming episodes are scheduled yet.</string>
+    <!-- Error-state title shown when the media schedule bottom sheet fails to load -->
+    <string name="label_media_schedule_error_title">Schedule unavailable</string>
     <!-- Error-state title for failed media-detail stats fetches -->
     <string name="label_media_stats_error_title">Stats unavailable</string>
     <!-- Empty-state title for media-detail stats -->
@@ -336,19 +344,21 @@
     <!-- Section title for community activity shown on the media detail hub -->
     <string name="title_media_community_section">Community</string>
     <!-- Supporting copy for the community preview section -->
-    <string name="subtitle_media_community_section">High-signal reviews without forcing a full context switch.</string>
+    <string name="subtitle_media_community_section">Recent community reviews.</string>
     <!-- Action label to open the full review discover surface -->
     <string name="action_media_community_section_see_all">See all</string>
     <!-- Loading label for community preview content -->
     <string name="label_media_community_loading">Loading community notes</string>
     <!-- Supporting loading copy for community preview content -->
-    <string name="message_media_community_loading">Pulling the strongest recent reviews for this title.</string>
+    <string name="message_media_community_loading">Fetching reviews.</string>
     <!-- Empty-state title when no reviews are available for the media -->
-    <string name="label_media_community_empty_title">No community notes yet</string>
+    <string name="label_media_community_empty_title">No reviews yet</string>
     <!-- Empty-state copy when no reviews are available for the media -->
-    <string name="message_media_community_empty">Reviews have not been published for this title yet.</string>
+    <string name="message_media_community_empty">Community reviews have not been published for this title yet.</string>
     <!-- Error-state title for failed community requests -->
-    <string name="label_media_community_error_title">Community unavailable</string>
+    <string name="label_media_community_error_title">Could not load reviews</string>
+    <!-- Error-state message for failed community requests -->
+    <string name="message_media_community_error">Retry to refresh this section.</string>
     <!-- Fallback author label when a review author is missing -->
     <string name="label_media_community_review_by_unknown">Unknown reviewer</string>
     <!-- Compact score label for review preview cards -->

@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import co.anitrend.android.core.helpers.color.asColorInt
 import co.anitrend.domain.common.entity.contract.IMediaCover
+import co.anitrend.domain.media.entity.Media
 
 @Composable
 fun IMediaCover.rememberAccentColor(): Color {
@@ -36,4 +37,20 @@ fun IMediaCover.rememberAccentColor(): Color {
                 ?: defaultColor
         }
     return accent
+}
+
+fun Media.displayTitle(): String? =
+    title.userPreferred
+        ?.toString()
+        ?.trim()
+        ?.takeIf(String::isNotBlank)
+        ?: listOf(title.english, title.romaji, title.native)
+            .firstNotNullOfOrNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
+
+fun Media.secondaryTitle(): String? {
+    val preferred = title.userPreferred?.toString()?.trim()
+
+    return listOf(title.english, title.romaji, title.native)
+        .mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
+        .firstOrNull { it != preferred }
 }

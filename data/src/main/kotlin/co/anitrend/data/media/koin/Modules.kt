@@ -24,17 +24,15 @@ import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.media.GetMediaCharactersInteractor
+import co.anitrend.data.media.GetPagingMediaInteractor
 import co.anitrend.data.media.GetMediaStatsInteractor
 import co.anitrend.data.media.GetMediaStudiosInteractor
-import co.anitrend.data.media.GetNetworkMediaInteractor
-import co.anitrend.data.media.GetPagedMediaInteractor
 import co.anitrend.data.media.GetMediaRecommendationsInteractor
 import co.anitrend.data.media.GetMediaRelationsInteractor
 import co.anitrend.data.media.GetMediaStaffInteractor
 import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
-import co.anitrend.data.media.MediaNetworkRepository
-import co.anitrend.data.media.MediaPagedRepository
+import co.anitrend.data.media.MediaPagingRepository
 import co.anitrend.data.media.MediaRecommendationsRepository
 import co.anitrend.data.media.MediaRelationsRepository
 import co.anitrend.data.media.MediaStaffRepository
@@ -62,7 +60,6 @@ import co.anitrend.data.media.source.contract.MediaConnectionSource
 import co.anitrend.data.media.source.contract.MediaPeopleSource
 import co.anitrend.data.media.source.MediaSourceImpl
 import co.anitrend.data.media.source.contract.MediaSource
-import co.anitrend.data.media.source.factory.MediaSourceFactory
 import co.anitrend.data.media.usecase.MediaInteractor
 import co.anitrend.data.recommendation.converter.MediaRecommendationConnectionEntityConverter
 import co.anitrend.data.recommendation.mapper.MediaRecommendationMapper
@@ -102,10 +99,11 @@ private val sourceModule =
                 mapper = mapper,
                 converter = get(),
                 clearDataHelper = get(),
-                cachePolicy = MediaCache(
-                    localSource = cacheLocalSource(),
-                    request = CacheRequest.MEDIA_RELATIONS,
-                ),
+                cachePolicy =
+                    MediaCache(
+                        localSource = cacheLocalSource(),
+                        request = CacheRequest.MEDIA_RELATIONS,
+                    ),
                 dispatcher = get(),
             )
         }
@@ -123,10 +121,11 @@ private val sourceModule =
                 mapper = mapper,
                 converter = get(),
                 clearDataHelper = get(),
-                cachePolicy = MediaCache(
-                    localSource = cacheLocalSource(),
-                    request = CacheRequest.MEDIA_RECOMMENDATIONS,
-                ),
+                cachePolicy =
+                    MediaCache(
+                        localSource = cacheLocalSource(),
+                        request = CacheRequest.MEDIA_RECOMMENDATIONS,
+                    ),
                 dispatcher = get(),
             )
         }
@@ -144,10 +143,11 @@ private val sourceModule =
                 mapper = mapper,
                 converter = get(),
                 clearDataHelper = get(),
-                cachePolicy = MediaCache(
-                    localSource = cacheLocalSource(),
-                    request = CacheRequest.MEDIA_STUDIOS,
-                ),
+                cachePolicy =
+                    MediaCache(
+                        localSource = cacheLocalSource(),
+                        request = CacheRequest.MEDIA_STUDIOS,
+                    ),
                 dispatcher = get(),
             )
         }
@@ -165,15 +165,16 @@ private val sourceModule =
                 mapper = mapper,
                 converter = get(),
                 clearDataHelper = get(),
-                cachePolicy = MediaCache(
-                    localSource = cacheLocalSource(),
-                    request = CacheRequest.MEDIA_STATS,
-                ),
+                cachePolicy =
+                    MediaCache(
+                        localSource = cacheLocalSource(),
+                        request = CacheRequest.MEDIA_STATS,
+                    ),
                 dispatcher = get(),
             )
         }
-        factory<MediaSource.Paged> {
-            MediaSourceImpl.Paged(
+        factory<MediaSource.Paging> {
+            MediaSourceImpl.Paging(
                 remoteSource = aniListApi(),
                 localSource = store().mediaDao(),
                 carouselSource = get(),
@@ -185,16 +186,6 @@ private val sourceModule =
                 clearDataHelper = get(),
                 converter = get(),
                 filter = get(),
-                dispatcher = get(),
-            )
-        }
-        factory {
-            MediaSourceFactory.Network(
-                remoteSource = aniListApi(),
-                controller =
-                    graphQLController(
-                        mapper = get<MediaMapper.Network>(),
-                    ),
                 dispatcher = get(),
             )
         }
@@ -211,7 +202,11 @@ private val sourceModule =
                     ),
                 mapper = mapper,
                 converter = get(),
-                cachePolicy = get<MediaCache>(),
+                cachePolicy =
+                    MediaCache(
+                        localSource = cacheLocalSource(),
+                        request = CacheRequest.MEDIA_CHARACTERS,
+                    ),
                 dispatcher = get(),
             )
         }
@@ -228,7 +223,11 @@ private val sourceModule =
                     ),
                 mapper = mapper,
                 converter = get(),
-                cachePolicy = get<MediaCache>(),
+                cachePolicy =
+                    MediaCache(
+                        localSource = cacheLocalSource(),
+                        request = CacheRequest.MEDIA_STAFF,
+                    ),
                 dispatcher = get(),
             )
         }
@@ -316,11 +315,6 @@ private val mapperModule =
             )
         }
         factory {
-            MediaMapper.Network(
-                converter = get(),
-            )
-        }
-        factory {
             MediaPeopleMapper.Characters(
                 localSource = store().mediaDao(),
                 converter = get(),
@@ -399,8 +393,8 @@ private val useCaseModule =
                 repository = get(),
             )
         }
-        factory<GetPagedMediaInteractor> {
-            MediaInteractor.Paged(
+        factory<GetPagingMediaInteractor> {
+            MediaInteractor.Paging(
                 repository = get(),
             )
         }
@@ -411,11 +405,6 @@ private val useCaseModule =
         }
         factory<GetMediaStaffInteractor> {
             MediaInteractor.Staff(
-                repository = get(),
-            )
-        }
-        factory<GetNetworkMediaInteractor> {
-            MediaInteractor.Network(
                 repository = get(),
             )
         }
@@ -448,8 +437,8 @@ private val repositoryModule =
                 source = get(),
             )
         }
-        factory<MediaPagedRepository> {
-            MediaRepository.Paged(
+        factory<MediaPagingRepository> {
+            MediaRepository.Paging(
                 source = get(),
             )
         }
@@ -460,11 +449,6 @@ private val repositoryModule =
         }
         factory<MediaStaffRepository> {
             MediaRepository.Staff(
-                source = get(),
-            )
-        }
-        factory<MediaNetworkRepository> {
-            MediaRepository.Network(
                 source = get(),
             )
         }

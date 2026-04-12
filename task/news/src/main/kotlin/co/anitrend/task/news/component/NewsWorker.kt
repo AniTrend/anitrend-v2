@@ -22,7 +22,7 @@ import co.anitrend.arch.core.worker.SupportCoroutineWorker
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.android.core.settings.common.locale.ILocaleSettings
 import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale.Companion.asLocaleString
-import co.anitrend.data.feed.news.NewsSyncInteractor
+import co.anitrend.data.edge.news.NewsSyncInteractor
 import co.anitrend.domain.news.model.NewsParam
 import kotlinx.coroutines.flow.first
 

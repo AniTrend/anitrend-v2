@@ -100,7 +100,6 @@ internal class DependencyStrategy(private val project: Project) {
             }
             Modules.App.Core.path -> {
                 implementation(project.libs.anitrend.arch.analytics)
-                implementation(project.libs.anitrend.arch.recycler.paging.legacy)
                 implementation(project.libs.anitrend.arch.recycler)
                 implementation(project.libs.anitrend.arch.domain)
                 implementation(project.libs.anitrend.arch.theme)
@@ -114,7 +113,6 @@ internal class DependencyStrategy(private val project: Project) {
                 implementation(project.libs.anitrend.arch.domain)
                 implementation(project.libs.anitrend.arch.data)
                 implementation(project.libs.anitrend.arch.request)
-                implementation(project.libs.anitrend.arch.paging.legacy)
                 implementation(project.libs.anitrend.arch.extension)
             }
         }

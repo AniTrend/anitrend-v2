@@ -16,16 +16,15 @@
  */
 package co.anitrend.data.airing.repository
 
-import co.anitrend.arch.data.state.DataState.Companion.create
-import co.anitrend.data.airing.AiringSchedulePagedRepository
+import androidx.paging.PagingData
+import co.anitrend.data.airing.AiringSchedulePagingRepository
 import co.anitrend.data.airing.source.contract.AiringScheduleSource
 import co.anitrend.domain.airing.model.AiringParam
+import co.anitrend.domain.media.entity.Media
+import kotlinx.coroutines.flow.Flow
 
-internal sealed class AiringScheduleRepository {
-    class Paged(
-        private val source: AiringScheduleSource.Paged,
-    ) : AiringScheduleRepository(),
-        AiringSchedulePagedRepository {
-        override fun getPaged(param: AiringParam.Find) = source create source(param)
-    }
+internal class AiringScheduleRepository(
+    private val source: AiringScheduleSource.Paging,
+) : AiringSchedulePagingRepository {
+    override fun getPaged(param: AiringParam.Find): Flow<PagingData<Media>> = source(param)
 }

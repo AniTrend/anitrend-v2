@@ -199,10 +199,11 @@ internal fun StudioFeaturedCard(
                 .takeIf { it > 0 }
                 ?.let {
                     Text(
-                        text = stringResource(
-                            R.string.label_media_studios_favourites_value,
-                            it.toHumanReadableQuantity(),
-                        ),
+                        text =
+                            stringResource(
+                                R.string.label_media_studios_favourites_value,
+                                it.toHumanReadableQuantity(),
+                            ),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -332,22 +333,21 @@ private fun previewStudio(
     isAnimationStudio: Boolean = false,
     favourites: Int = 0,
     siteUrl: String? = null,
-) =
-    MediaStudioEntry(
-        studio =
-            Studio.Core(
-                favourites = favourites,
-                isFavourite = false,
-                isFavouriteBlocked = false,
-                name = name,
-                image = null,
-                isAnimationStudio = isAnimationStudio,
-                siteUrl = siteUrl,
-                id = id,
-            ),
-        isMain = isMain,
-        id = id,
-    )
+) = MediaStudioEntry(
+    studio =
+        Studio.Core(
+            favourites = favourites,
+            isFavourite = false,
+            isFavouriteBlocked = false,
+            name = name,
+            image = null,
+            isAnimationStudio = isAnimationStudio,
+            siteUrl = siteUrl,
+            id = id,
+        ),
+    isMain = isMain,
+    id = id,
+)
 
 @AniTrendPreview.Default
 @Composable

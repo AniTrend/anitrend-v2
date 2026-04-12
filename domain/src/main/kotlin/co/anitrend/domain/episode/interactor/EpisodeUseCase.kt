@@ -27,7 +27,7 @@ sealed class EpisodeUseCase {
         operator fun invoke(param: EpisodeParam.Detail) = repository.getEpisode(param)
     }
 
-    abstract class Paged<State : UiState<*>>(
+    abstract class Paged<State>(
         protected val repository: IEpisodeRepository.Paged<State>,
     ) : EpisodeUseCase() {
         operator fun invoke(param: EpisodeParam.Paged) = repository.getPagedEpisode(param)

@@ -16,17 +16,17 @@
  */
 package co.anitrend.news.component.content.viewmodel
 
-import androidx.paging.PagedList
-import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
-import co.anitrend.data.feed.news.NewsPagedInteractor
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import co.anitrend.data.edge.news.NewsPagedInteractor
 import co.anitrend.domain.news.entity.News
 import co.anitrend.domain.news.model.NewsParam
+import kotlinx.coroutines.flow.Flow
 
 class NewsContentViewModel(
     private val interactor: NewsPagedInteractor,
-) : AniTrendViewModelState<PagedList<News>>() {
-    operator fun invoke(param: NewsParam) {
-        val result = interactor(param)
-        state.postValue(result)
-    }
+) : ViewModel() {
+    fun news(param: NewsParam): Flow<PagingData<News>> = interactor(param).cachedIn(viewModelScope)
 }

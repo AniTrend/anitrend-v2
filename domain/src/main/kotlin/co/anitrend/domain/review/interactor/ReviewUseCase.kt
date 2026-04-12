@@ -27,7 +27,7 @@ sealed class ReviewUseCase {
         operator fun invoke(param: ReviewParam.Entry): State = repository.getEntry(param)
     }
 
-    abstract class GetPaged<State : UiState<*>>(
+    abstract class GetPaged<State>(
         protected val repository: IReviewRepository.Paged<State>,
     ) : ReviewUseCase() {
         operator fun invoke(param: ReviewParam.Paged): State = repository.getPaged(param)
