@@ -34,6 +34,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -51,9 +52,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -85,11 +88,11 @@ enum class ReviewCardVariant(
     InlineCommunity(defaultExcerptMaxLines = 3),
 }
 
-private val DiscoverCardShape = RoundedCornerShape(22.dp)
-private val InlineCommunityCardShape = RoundedCornerShape(18.dp)
-private val ReaderCardShape = RoundedCornerShape(24.dp)
-private val ReviewPosterShape = RoundedCornerShape(16.dp)
-private val ReviewVoteShape = RoundedCornerShape(14.dp)
+private val DiscoverCardShape = RoundedCornerShape(18.dp)
+private val InlineCommunityCardShape = RoundedCornerShape(14.dp)
+private val ReaderCardShape = RoundedCornerShape(20.dp)
+private val ReviewPosterShape = RoundedCornerShape(14.dp)
+private val ReviewVoteSegmentShape = RoundedCornerShape(10.dp)
 
 @Composable
 fun ReviewBrowseCard(
@@ -155,19 +158,26 @@ fun ReviewLoadingCard(
                     )
                     Column(
                         modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        ReviewSkeletonLine(widthFraction = 0.66f, height = 18.dp)
-                        ReviewSkeletonLine(widthFraction = 0.38f, height = 12.dp)
-                        ReviewSkeletonLine(widthFraction = 0.94f, height = 14.dp)
-                        ReviewSkeletonLine(widthFraction = 0.86f, height = 14.dp)
-                        ReviewSkeletonLine(widthFraction = 0.52f, height = 14.dp)
+                        ReviewSkeletonLine(widthFraction = 0.72f, height = 18.dp)
+                        ReviewSkeletonLine(widthFraction = 0.94f, height = 15.dp)
+                        ReviewSkeletonLine(widthFraction = 0.82f, height = 15.dp)
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            ReviewSkeletonCircle(size = 26.dp)
+                            ReviewSkeletonLine(width = 84.dp, height = 12.dp)
+                            Spacer(modifier = Modifier.weight(1f))
+                            ReviewSkeletonLine(width = 24.dp, height = 12.dp)
+                        }
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(10.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            ReviewSkeletonBlock(width = 122.dp, height = 36.dp)
-                            ReviewSkeletonLine(width = 72.dp, height = 10.dp)
+                            ReviewSkeletonBlock(width = 86.dp, height = 30.dp)
+                            ReviewSkeletonLine(width = 62.dp, height = 10.dp)
                         }
                     }
                 }
@@ -178,10 +188,10 @@ fun ReviewLoadingCard(
                         Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 14.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Row(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         ReviewSkeletonLine(
@@ -189,13 +199,19 @@ fun ReviewLoadingCard(
                             widthFraction = 1f,
                             height = 16.dp,
                         )
-                        ReviewSkeletonLine(width = 52.dp, height = 12.dp)
-                        ReviewSkeletonLine(width = 66.dp, height = 12.dp)
+                        ReviewSkeletonLine(width = 44.dp, height = 12.dp)
+                        ReviewSkeletonLine(width = 58.dp, height = 12.dp)
                     }
-                    ReviewSkeletonLine(widthFraction = 0.96f, height = 14.dp)
-                    ReviewSkeletonLine(widthFraction = 0.84f, height = 14.dp)
-                    ReviewSkeletonLine(widthFraction = 0.58f, height = 14.dp)
-                    ReviewSkeletonBlock(width = 122.dp, height = 34.dp)
+                    ReviewSkeletonLine(widthFraction = 0.9f, height = 14.dp)
+                    ReviewSkeletonLine(widthFraction = 0.74f, height = 14.dp)
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        ReviewSkeletonBlock(width = 82.dp, height = 30.dp)
+                        Spacer(modifier = Modifier.weight(1f))
+                        ReviewSkeletonLine(width = 72.dp, height = 12.dp)
+                    }
                 }
         }
     }
@@ -209,42 +225,49 @@ fun ReviewVoteActionRow(
     onVoteRequested: (ReviewRating) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        modifier = modifier.heightIn(min = 38.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.58f),
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        shape = ReviewVoteShape,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.26f)),
-    ) {
+    if (!canVote) {
         Row(
+            modifier = modifier.heightIn(min = 24.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            ReviewVoteSegment(
+            ReviewPassiveVoteMetric(
                 icon = ReviewR.drawable.ic_thumb_up,
-                label = review.upVoteLabel(),
-                selected = canVote && review.userRating == ReviewRating.UP_VOTE,
-                accentColor = MaterialTheme.colorScheme.primary,
-                enabled = canVote && !isPending,
-                onClick = { onVoteRequested(review.toggleUpVoteTarget()) },
-                shape = RoundedCornerShape(topStart = 14.dp, bottomStart = 14.dp),
+                label = review.upVoteCount(),
+                accessibilityLabel = review.upVoteLabel(),
             )
-            Box(
-                modifier =
-                    Modifier
-                        .width(1.dp)
-                        .height(18.dp)
-                        .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.22f)),
-            )
-            ReviewVoteSegment(
+            ReviewPassiveVoteMetric(
                 icon = ReviewR.drawable.ic_thumb_down,
-                label = review.downVoteLabel(),
-                selected = canVote && review.userRating == ReviewRating.DOWN_VOTE,
-                accentColor = MaterialTheme.colorScheme.tertiary,
-                enabled = canVote && !isPending,
-                onClick = { onVoteRequested(review.toggleDownVoteTarget()) },
-                shape = RoundedCornerShape(topEnd = 14.dp, bottomEnd = 14.dp),
+                label = review.downVoteCount(),
+                accessibilityLabel = review.downVoteLabel(),
             )
         }
+        return
+    }
+
+    Row(
+        modifier = modifier.heightIn(min = 40.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        ReviewVoteSegment(
+            icon = ReviewR.drawable.ic_thumb_up,
+            label = review.upVoteCount(),
+            accessibilityLabel = review.upVoteLabel(),
+            selected = canVote && review.userRating == ReviewRating.UP_VOTE,
+            accentColor = MaterialTheme.colorScheme.primary,
+            enabled = canVote && !isPending,
+            onClick = { onVoteRequested(review.toggleUpVoteTarget()) },
+        )
+        ReviewVoteSegment(
+            icon = ReviewR.drawable.ic_thumb_down,
+            label = review.downVoteCount(),
+            accessibilityLabel = review.downVoteLabel(),
+            selected = canVote && review.userRating == ReviewRating.DOWN_VOTE,
+            accentColor = MaterialTheme.colorScheme.tertiary,
+            enabled = canVote && !isPending,
+            onClick = { onVoteRequested(review.toggleDownVoteTarget()) },
+        )
     }
 }
 
@@ -278,7 +301,7 @@ fun ReviewReaderContent(
             modifier = Modifier.fillMaxWidth(),
             shape = ReaderCardShape,
             color = MaterialTheme.colorScheme.surfaceContainerLow,
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.28f)),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.22f)),
         ) {
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
@@ -293,9 +316,7 @@ fun ReviewReaderContent(
                 )
 
                 if (description.isBlank()) {
-                    ReviewSummaryFallback(
-                        summary = summary,
-                    )
+                    ReviewSummaryFallback(summary = summary)
                 } else {
                     MarkdownText(content = description)
                 }
@@ -333,50 +354,33 @@ private fun ReviewDiscoverCardContent(
 
         Column(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.Top,
-            ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    Text(
-                        text = mediaTitle ?: review.authorName(),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    Text(
-                        text = review.authorByline(),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-
-                ReviewScoreLabel(
-                    score = review.score,
-                    prominent = false,
-                )
-            }
-
-            ReviewSummaryText(
-                text = review.summaryText(),
-                maxLines = excerptMaxLines,
-                style = MaterialTheme.typography.bodyLarge,
+            ReviewMediaContext(
+                title = mediaTitle ?: review.authorName(),
             )
 
-            ReviewSentimentRow(
+            ReviewExcerpt(
+                text = review.summaryText(),
+                maxLines = excerptMaxLines,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+            )
+
+            ReviewAuthorRow(
+                name = review.authorName(),
+                avatar = review.user.avatar,
+                showAvatar = true,
+                trailingContent = {
+                    ReviewScoreToken(
+                        score = review.score,
+                    )
+                },
+            )
+
+            ReviewDiscoverFooter(
                 review = review,
                 canVote = canVote,
                 isVotePending = isVotePending,
-                showTimeLabel = true,
                 onVoteRequested = onVoteRequested,
             )
         }
@@ -391,110 +395,86 @@ private fun ReviewInlineCommunityCardContent(
     isVotePending: Boolean,
     onVoteRequested: (ReviewRating) -> Unit,
 ) {
-    Row(
+    Column(
         modifier =
             Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 14.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = review.authorName(),
-                    modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                ReviewMetaText(
-                    text = review.timeLabel(),
-                    maxLines = 1,
-                )
-                ReviewScoreLabel(
-                    score = review.score,
-                    prominent = false,
-                )
-            }
+        ReviewAuthorRow(
+            name = review.authorName(),
+            showAvatar = false,
+            trailingContent = {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    ReviewMetaText(
+                        text = review.timeLabel(),
+                        maxLines = 1,
+                    )
+                    ReviewScoreToken(
+                        score = review.score,
+                    )
+                }
+            },
+        )
 
-            ReviewSummaryText(
-                text = review.summaryText(),
-                maxLines = excerptMaxLines,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+        ReviewExcerpt(
+            text = review.summaryText(),
+            maxLines = excerptMaxLines,
+            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+        )
 
-            ReviewSentimentRow(
-                review = review,
-                canVote = canVote,
-                isVotePending = isVotePending,
-                showTimeLabel = false,
-                onVoteRequested = onVoteRequested,
-            )
-        }
+        ReviewInlineCommunityFooter(
+            review = review,
+            canVote = canVote,
+            isVotePending = isVotePending,
+            onVoteRequested = onVoteRequested,
+        )
     }
 }
 
 @Composable
 private fun ReviewReaderHeader(review: Review) {
-    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         review
             .mediaTitle()
             ?.takeIf(String::isNotBlank)
             ?.let { title ->
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                ReviewMediaContext(title = title)
             }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.Top,
-        ) {
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                Text(
-                    text = review.authorName(),
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                ReviewMetaText(
-                    text = review.timeLabel(),
-                    maxLines = 1,
-                )
-            }
-
-            ReviewScoreLabel(
-                score = review.score,
-                prominent = true,
-            )
-        }
+        ReviewAuthorRow(
+            name = review.authorName(),
+            avatar = review.user.avatar,
+            showAvatar = true,
+            trailingContent = {
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    ReviewScoreToken(
+                        score = review.score,
+                        emphasized = true,
+                    )
+                    ReviewMetaText(
+                        text = review.timeLabel(),
+                        maxLines = 1,
+                    )
+                }
+            },
+        )
     }
 }
 
 @Composable
 private fun ReviewSummaryFallback(summary: String) {
     Surface(
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(16.dp),
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.24f)),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.22f)),
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 14.dp),
@@ -510,7 +490,7 @@ private fun ReviewSummaryFallback(summary: String) {
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            ReviewSummaryText(
+            ReviewExcerpt(
                 text = summary,
                 maxLines = Int.MAX_VALUE,
                 style = MaterialTheme.typography.bodyLarge,
@@ -520,16 +500,15 @@ private fun ReviewSummaryFallback(summary: String) {
 }
 
 @Composable
-private fun ReviewSentimentRow(
+private fun ReviewDiscoverFooter(
     review: Review,
     canVote: Boolean,
     isVotePending: Boolean,
-    showTimeLabel: Boolean,
     onVoteRequested: (ReviewRating) -> Unit,
 ) {
     FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         ReviewVoteActionRow(
             review = review,
@@ -537,14 +516,38 @@ private fun ReviewSentimentRow(
             isPending = isVotePending,
             onVoteRequested = onVoteRequested,
         )
+        ReviewMetaText(
+            text = review.timeLabel(),
+            maxLines = 1,
+            modifier = Modifier.padding(vertical = 8.dp),
+        )
+    }
+}
 
-        if (showTimeLabel) {
-            ReviewMetaText(
-                text = review.timeLabel(),
-                maxLines = 1,
-                modifier = Modifier.padding(vertical = 8.dp),
-            )
-        }
+@Composable
+private fun ReviewInlineCommunityFooter(
+    review: Review,
+    canVote: Boolean,
+    isVotePending: Boolean,
+    onVoteRequested: (ReviewRating) -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        ReviewVoteActionRow(
+            review = review,
+            canVote = canVote,
+            isPending = isVotePending,
+            onVoteRequested = onVoteRequested,
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = stringResource(ReviewR.string.action_review_open),
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.primary,
+        )
     }
 }
 
@@ -552,11 +555,11 @@ private fun ReviewSentimentRow(
 private fun ReviewVoteSegment(
     icon: Int,
     label: String,
+    accessibilityLabel: String,
     selected: Boolean,
     accentColor: Color,
     enabled: Boolean,
     onClick: () -> Unit,
-    shape: Shape,
 ) {
     val contentColor =
         if (selected) {
@@ -574,21 +577,22 @@ private fun ReviewVoteSegment(
     Row(
         modifier =
             Modifier
-                .clip(shape)
+                .clip(ReviewVoteSegmentShape)
                 .background(backgroundColor)
                 .then(
                     if (enabled) {
-                        Modifier
-                            .clickable(onClick = onClick)
-                            .semantics {
-                                role = Role.Button
-                                this.selected = selected
-                            }
+                        Modifier.clickable(onClick = onClick)
                     } else {
                         Modifier
                     },
-                ).defaultMinSize(minWidth = 58.dp, minHeight = 38.dp)
-                .padding(horizontal = 12.dp, vertical = 8.dp)
+                ).semantics {
+                    contentDescription = accessibilityLabel
+                    this.selected = selected
+                    if (enabled) {
+                        role = Role.Button
+                    }
+                }.defaultMinSize(minWidth = 44.dp, minHeight = 40.dp)
+                .padding(horizontal = 8.dp, vertical = 8.dp)
                 .alpha(if (enabled || !selected) 1f else 0.74f),
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -611,6 +615,38 @@ private fun ReviewVoteSegment(
 }
 
 @Composable
+private fun ReviewPassiveVoteMetric(
+    icon: Int,
+    label: String,
+    accessibilityLabel: String,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier =
+            modifier.semantics {
+                contentDescription = accessibilityLabel
+            },
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            painter = painterResource(icon),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(14.dp),
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.Medium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
+}
+
+@Composable
 private fun ReviewCardSurface(
     variant: ReviewCardVariant,
     modifier: Modifier = Modifier,
@@ -621,6 +657,16 @@ private fun ReviewCardSurface(
         when (variant) {
             ReviewCardVariant.Discover -> DiscoverCardShape
             ReviewCardVariant.InlineCommunity -> InlineCommunityCardShape
+        }
+    val containerColor =
+        when (variant) {
+            ReviewCardVariant.Discover -> MaterialTheme.colorScheme.surfaceContainerLow
+            ReviewCardVariant.InlineCommunity -> MaterialTheme.colorScheme.surfaceContainerLowest
+        }
+    val borderAlpha =
+        when (variant) {
+            ReviewCardVariant.Discover -> 0.2f
+            ReviewCardVariant.InlineCommunity -> 0.14f
         }
 
     Surface(
@@ -635,10 +681,10 @@ private fun ReviewCardSurface(
                         Modifier
                     },
                 ),
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        color = containerColor,
         contentColor = MaterialTheme.colorScheme.onSurface,
         shape = shape,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.26f)),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = borderAlpha)),
     ) {
         content()
     }
@@ -682,7 +728,7 @@ private fun ReviewPosterThumbnail(
         modifier = modifier,
         shape = ReviewPosterShape,
         color = MaterialTheme.colorScheme.surfaceContainerHigh,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.24f)),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.18f)),
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -717,34 +763,141 @@ private fun ReviewPosterThumbnail(
 }
 
 @Composable
-private fun ReviewScoreLabel(
-    score: Int,
-    prominent: Boolean,
+private fun ReviewMediaContext(
+    title: String,
     modifier: Modifier = Modifier,
 ) {
-    val contentColor =
-        if (prominent) {
+    Text(
+        text = title,
+        modifier = modifier,
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.SemiBold,
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis,
+    )
+}
+
+@Composable
+private fun ReviewAuthorRow(
+    name: String,
+    modifier: Modifier = Modifier,
+    avatar: UserImage? = null,
+    showAvatar: Boolean,
+    trailingContent: (@Composable () -> Unit)? = null,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        if (showAvatar && avatar != null) {
+            ReviewAvatar(
+                name = name,
+                avatar = avatar,
+                size = 26.dp,
+            )
+        }
+
+        Text(
+            text = name,
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Medium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+
+        trailingContent?.invoke()
+    }
+}
+
+@Composable
+private fun ReviewAvatar(
+    name: String,
+    avatar: UserImage,
+    size: Dp,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    val avatarUrl =
+        avatar.large
+            ?.toString()
+            ?.trim()
+            ?.takeUnless { it.isBlank() }
+            ?: avatar.medium
+                ?.toString()
+                ?.trim()
+                ?.takeUnless { it.isBlank() }
+
+    Surface(
+        modifier = modifier.size(size),
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+    ) {
+        if (avatarUrl != null) {
+            val requestBuilder =
+                rememberRequestImage(
+                    image = avatar,
+                    type = RequestImage.Media.ImageType.POSTER,
+                ) {
+                    toRequestBuilder(context)
+                }
+
+            AsyncImage(
+                model = requestBuilder.build(),
+                contentDescription = name,
+                contentScale = ContentScale.Crop,
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .clip(CircleShape),
+            )
+        } else {
+            Box(contentAlignment = Alignment.Center) {
+                Text(
+                    text = name.firstOrNull()?.uppercase() ?: "?",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ReviewScoreToken(
+    score: Int,
+    modifier: Modifier = Modifier,
+    emphasized: Boolean = false,
+) {
+    val scoreContentDescription = stringResource(ReviewR.string.label_review_score, score)
+    val textColor =
+        if (emphasized) {
             MaterialTheme.colorScheme.onSurface
         } else {
             MaterialTheme.colorScheme.onSurfaceVariant
         }
 
     Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        modifier =
+            modifier.semantics {
+                contentDescription = scoreContentDescription
+            },
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             painter = painterResource(ReviewR.drawable.ic_star),
             contentDescription = null,
             tint = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier.size(if (prominent) 18.dp else 16.dp),
+            modifier = Modifier.size(if (emphasized) 16.dp else 14.dp),
         )
         Text(
-            text = stringResource(ReviewR.string.label_review_score, score),
-            style = if (prominent) MaterialTheme.typography.titleSmall else MaterialTheme.typography.labelLarge,
-            fontWeight = if (prominent) FontWeight.SemiBold else FontWeight.Medium,
-            color = contentColor,
+            text = score.toString(),
+            style = if (emphasized) MaterialTheme.typography.titleSmall else MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = textColor,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
@@ -768,16 +921,29 @@ private fun ReviewMetaText(
 }
 
 @Composable
-private fun ReviewSummaryText(
+private fun ReviewExcerpt(
     text: String,
     maxLines: Int,
-    style: androidx.compose.ui.text.TextStyle,
+    style: TextStyle,
 ) {
     Text(
         text = text,
         maxLines = maxLines,
         overflow = if (maxLines == Int.MAX_VALUE) TextOverflow.Clip else TextOverflow.Ellipsis,
         style = style,
+    )
+}
+
+@Composable
+private fun ReviewSkeletonCircle(
+    size: Dp,
+    modifier: Modifier = Modifier,
+) {
+    ReviewSkeletonBlock(
+        modifier = modifier.size(size),
+        width = 0.dp,
+        height = 0.dp,
+        shape = CircleShape,
     )
 }
 
@@ -836,9 +1002,6 @@ private fun Review.authorName(): String =
         .toString()
         .trim()
         .ifBlank { stringResource(ReviewR.string.label_review_unknown_author) }
-
-@Composable
-private fun Review.authorByline(): String = stringResource(ReviewR.string.label_review_by_author, authorName())
 
 @Composable
 private fun Review.upVoteLabel(): String = stringResource(ReviewR.string.label_review_up_votes, upVoteCount())

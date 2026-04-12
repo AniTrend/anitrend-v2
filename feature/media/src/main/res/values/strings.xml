@@ -344,13 +344,13 @@
     <!-- Section title for community activity shown on the media detail hub -->
     <string name="title_media_community_section">Community</string>
     <!-- Supporting copy for the community preview section -->
-    <string name="subtitle_media_community_section">Recent community reviews for this title.</string>
+    <string name="subtitle_media_community_section">Recent community reviews.</string>
     <!-- Action label to open the full review discover surface -->
     <string name="action_media_community_section_see_all">See all</string>
     <!-- Loading label for community preview content -->
     <string name="label_media_community_loading">Loading community notes</string>
     <!-- Supporting loading copy for community preview content -->
-    <string name="message_media_community_loading">Fetching recent community reviews.</string>
+    <string name="message_media_community_loading">Fetching reviews.</string>
     <!-- Empty-state title when no reviews are available for the media -->
     <string name="label_media_community_empty_title">No reviews yet</string>
     <!-- Empty-state copy when no reviews are available for the media -->

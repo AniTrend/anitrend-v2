@@ -54,7 +54,7 @@ internal fun MediaCommunitySection(
                 ?.itemSnapshotList
                 ?.items
                 .orEmpty()
-                .take(3)
+                .take(2)
         }
     val refreshState = reviews?.loadState?.refresh
     val canSeeAll = !isBlocked && previewItems.isNotEmpty()
@@ -82,7 +82,7 @@ internal fun MediaCommunitySection(
         when {
             previewItems.isNotEmpty() -> {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     previewItems.forEach { review ->
                         ReviewBrowseCard(
@@ -99,9 +99,9 @@ internal fun MediaCommunitySection(
 
             refreshState is LoadState.Loading || reviews == null -> {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    repeat(3) {
+                    repeat(2) {
                         ReviewLoadingCard(
                             variant = ReviewCardVariant.InlineCommunity,
                         )
