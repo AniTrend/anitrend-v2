@@ -16,22 +16,12 @@
  */
 package co.anitrend.data.feed.episode.source.contract
 
-import androidx.paging.PagedList
-import co.anitrend.arch.request.callback.RequestCallback
-import co.anitrend.arch.request.model.Request
-import co.anitrend.data.android.cache.extensions.invoke
-import co.anitrend.data.android.cache.model.CacheIdentity
-import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
-import co.anitrend.data.android.paging.AbstractPagingSource
+import androidx.paging.PagingData
 import co.anitrend.data.android.source.AbstractCoreDataSource
-import co.anitrend.data.feed.episode.cache.EpisodeCache
 import co.anitrend.data.feed.episode.model.query.EpisodeQuery
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
 
 internal sealed class EpisodeSource {
     internal abstract class Detail : AbstractCoreDataSource() {
@@ -40,69 +30,11 @@ internal sealed class EpisodeSource {
         operator fun invoke(param: EpisodeParam.Detail) = observable(param)
     }
 
-    internal abstract class Paged : AbstractPagingSource<Episode>() {
+    internal abstract class Paging : AbstractCoreDataSource() {
         protected lateinit var query: EpisodeQuery
 
-        protected val cacheIdentity: CacheIdentity = EpisodeCache.Identity.EPISODE
+        abstract operator fun invoke(param: EpisodeParam.Paged): Flow<PagingData<Episode>>
 
-        protected abstract val cachePolicy: ICacheStorePolicy
-
-        protected abstract fun observable(): Flow<PagedList<Episode>>
-
-        protected abstract suspend fun getEpisodes(requestCallback: RequestCallback): Boolean
-
-        operator fun invoke(param: EpisodeParam.Paged): Flow<PagedList<Episode>> {
-            query = EpisodeQuery(param)
-            return observable()
-        }
-
-        fun sync(param: EpisodeParam.Paged): Flow<Boolean> =
-            flow {
-                query = EpisodeQuery(param)
-                val resultFlow = MutableSharedFlow<Boolean>()
-                cachePolicy(
-                    scope = scope,
-                    requestHelper = requestHelper,
-                    cacheIdentity = cacheIdentity,
-                    block = {
-                        val result = getEpisodes(it)
-                        resultFlow.emit(result)
-                        result
-                    },
-                )
-                emitAll(resultFlow)
-            }
-
-        /**
-         * Called when the item at the front of the PagedList has been loaded, and access has
-         * occurred within [Config.prefetchDistance] of it.
-         *
-         * No more data will be prepended to the PagedList before this item.
-         *
-         * @param itemAtFront The first item of PagedList
-         */
-        override fun onItemAtFrontLoaded(itemAtFront: Episode) {
-            if (supportPagingHelper.isFirstPage()) {
-                cachePolicy(
-                    scope = scope,
-                    requestHelper = requestHelper,
-                    cacheIdentity = cacheIdentity,
-                    requestType = Request.Type.BEFORE,
-                    block = ::getEpisodes,
-                )
-            }
-        }
-
-        /**
-         * Called when zero items are returned from an initial load of the PagedList's data source.
-         */
-        override fun onZeroItemsLoaded() {
-            cachePolicy(
-                scope = scope,
-                requestHelper = requestHelper,
-                cacheIdentity = cacheIdentity,
-                block = ::getEpisodes,
-            )
-        }
+        abstract fun sync(param: EpisodeParam.Paged): Flow<Boolean>
     }
 }

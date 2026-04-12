@@ -45,8 +45,8 @@ private val sourceModule =
                 dispatcher = get(),
             )
         }
-        factory<EpisodeSource.Paged> {
-            EpisodeSourceImpl.Paged(
+        factory<EpisodeSource.Paging> {
+            EpisodeSourceImpl.Paging(
                 remoteSource = remoteSource(),
                 localSource = episodeLocalSource(),
                 clearDataHelper = get(),
@@ -55,7 +55,6 @@ private val sourceModule =
                         mapper = get<EpisodeMapper>(),
                     ),
                 converter = get(),
-                cachePolicy = get<EpisodeCache>(),
                 dispatcher = get(),
             )
         }

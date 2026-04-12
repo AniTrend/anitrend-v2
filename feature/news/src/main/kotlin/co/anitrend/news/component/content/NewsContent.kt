@@ -16,53 +16,45 @@
  */
 package co.anitrend.news.component.content
 
-import co.anitrend.arch.recycler.adapter.SupportAdapter
-import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale.Companion.asLocaleString
-import co.anitrend.core.component.content.list.AniTrendListContent
-import co.anitrend.domain.news.entity.News
-import co.anitrend.domain.news.model.NewsParam
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import co.anitrend.android.core.settings.Settings
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.views.compose.composable
+import co.anitrend.core.component.content.compose.AniTrendComposition
+import co.anitrend.navigation.NewsRouter
+import co.anitrend.navigation.extensions.asNavPayload
+import co.anitrend.navigation.extensions.startActivity
+import co.anitrend.news.component.compose.NewsCompose
 import co.anitrend.news.component.content.viewmodel.NewsContentViewModel
-import co.anitrend.news.presenter.NewsPresenter
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewsContent(
-    private val presenter: NewsPresenter,
-    override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: SupportAdapter<News>,
-    override val defaultSpanSize: Int = co.anitrend.android.core.R.integer.column_x1,
-) : AniTrendListContent<News>() {
+class NewsContent : AniTrendComposition() {
+    private val settings by inject<Settings>()
     private val viewModel by viewModel<NewsContentViewModel>()
 
-    /**
-     * Stub to trigger the loading of data, by default this is only called
-     * when [supportViewAdapter] has no data in its underlying source.
-     *
-     * This is called when the fragment reaches it's [onResume] state
-     *
-     * @see initializeComponents
-     */
-    override fun onFetchDataInitialize() {
-        val locale =
-            presenter.settings.locale.value
-                .asLocaleString()
-        viewModel.invoke(
-            NewsParam(locale),
-        )
-    }
-
-    /**
-     * Invoke view model observer to watch for changes, this will be called
-     * called in [onViewCreated]
-     */
-    override fun setUpViewModelObserver() {
-        viewModel.model.observe(viewLifecycleOwner) {
-            onPostModelChange(it)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View =
+        composable(requireActivity()) {
+            AniTrendTheme3 {
+                NewsCompose(
+                    settings = settings,
+                    viewModel = viewModel,
+                    onNewsClick = { param ->
+                        NewsRouter.startActivity(
+                            context = requireContext(),
+                            navPayload = param.asNavPayload(),
+                        )
+                    },
+                )
+            }
         }
-    }
 
-    /**
-     * Proxy for a view model state if one exists
-     */
-    override fun viewModelState() = viewModel
+    override fun viewModelState() = null
 }

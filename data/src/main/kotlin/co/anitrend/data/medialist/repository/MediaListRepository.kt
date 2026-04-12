@@ -16,17 +16,18 @@
  */
 package co.anitrend.data.medialist.repository
 
+import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.medialist.DeleteCustomMediaListRepository
-import co.anitrend.data.medialist.MediaListCollectionRepository
 import co.anitrend.data.medialist.MediaListDeleteEntryRepository
 import co.anitrend.data.medialist.MediaListEntryRepository
-import co.anitrend.data.medialist.MediaListPagedRepository
+import co.anitrend.data.medialist.MediaListPagingRepository
 import co.anitrend.data.medialist.MediaListSaveEntriesRepository
 import co.anitrend.data.medialist.MediaListSaveEntryRepository
 import co.anitrend.data.medialist.MediaListSyncRepository
 import co.anitrend.data.medialist.source.contract.MediaListSource
 import co.anitrend.domain.medialist.model.MediaListParam
+import kotlinx.coroutines.flow.Flow
 
 internal sealed class MediaListRepository {
     class Sync(
@@ -43,18 +44,11 @@ internal sealed class MediaListRepository {
         override fun getEntry(param: MediaListParam.Entry) = source create source(param)
     }
 
-    class Collection(
-        private val source: MediaListSource.Collection,
+    class Paging(
+        private val source: MediaListSource.Paging,
     ) : MediaListRepository(),
-        MediaListCollectionRepository {
-        override fun getCollection(param: MediaListParam.Collection) = source create source(param)
-    }
-
-    class Paged(
-        private val source: MediaListSource.Paged,
-    ) : MediaListRepository(),
-        MediaListPagedRepository {
-        override fun getPaged(param: MediaListParam.Paged) = source create source(param)
+        MediaListPagingRepository {
+        override fun getPaged(param: MediaListParam.Paged): Flow<PagingData<co.anitrend.domain.media.entity.Media>> = source(param)
     }
 
     class SaveEntry(

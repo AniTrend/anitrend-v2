@@ -19,4 +19,25 @@
 <resources>
     <!-- Form of action button to open something in the browser -->
     <string name="action_title_open_in_browser">Open in browser</string>
+
+  <!-- Title shown while the news feed is loading articles from the edge service -->
+  <string name="label_news_loading_title">Fetching news</string>
+
+  <!-- Message shown while the news feed is loading the latest articles -->
+  <string name="message_news_loading">Pulling in the latest anime and manga headlines.</string>
+
+  <!-- Title shown when the news feed has no articles to display -->
+  <string name="label_news_empty_title">No news yet</string>
+
+  <!-- Message shown when the news feed returns no articles for the current locale -->
+  <string name="message_news_empty">There are no headlines available right now. Check back in a bit.</string>
+
+  <!-- Title shown when loading the news feed fails -->
+  <string name="label_news_error_title">Couldn’t load news</string>
+
+  <!-- Button label that retries loading the news feed -->
+  <string name="action_news_retry">Try again</string>
+
+  <!-- Message shown when the list is fetching the next page of articles -->
+  <string name="message_news_loading_more">Loading more headlines…</string>
 </resources>

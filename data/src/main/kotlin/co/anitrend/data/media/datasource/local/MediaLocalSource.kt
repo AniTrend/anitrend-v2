@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.media.datasource.local
 
-import androidx.paging.DataSource
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -76,9 +76,8 @@ internal abstract class MediaLocalSource : AbstractLocalSource<MediaEntity>() {
     @RawQuery(observedEntities = [MediaEntity::class, MediaListEntity::class, AiringScheduleEntity::class])
     abstract fun rawFlow(query: SupportSQLiteQuery): Flow<MediaEntityView.Core?>
 
-    @Transaction
     @RawQuery(observedEntities = [MediaEntity::class, MediaListEntity::class, AiringScheduleEntity::class])
-    abstract fun rawFactory(query: SupportSQLiteQuery): DataSource.Factory<Int, MediaEntityView.Core>
+    abstract fun rawPagingSource(query: SupportSQLiteQuery): PagingSource<Int, MediaEntityView.Core>
 
     @Query(
         """
@@ -87,21 +86,7 @@ internal abstract class MediaLocalSource : AbstractLocalSource<MediaEntity>() {
         order by sort_index asc
     """,
     )
-    abstract fun mediaCharactersFactory(mediaId: Long): DataSource.Factory<Int, MediaCharacterConnectionEntity>
-
-    @Query(
-        """
-        select * from media_character_connection
-        where media_id = :mediaId
-        order by sort_index asc
-        limit :limit offset :offset
-    """,
-    )
-    abstract suspend fun mediaCharactersByPage(
-        mediaId: Long,
-        limit: Int,
-        offset: Int,
-    ): List<MediaCharacterConnectionEntity>
+    abstract fun mediaCharactersPagingSource(mediaId: Long): PagingSource<Int, MediaCharacterConnectionEntity>
 
     @Query(
         """
@@ -110,21 +95,7 @@ internal abstract class MediaLocalSource : AbstractLocalSource<MediaEntity>() {
         order by sort_index asc
     """,
     )
-    abstract fun mediaStaffFactory(mediaId: Long): DataSource.Factory<Int, MediaStaffConnectionEntity>
-
-    @Query(
-        """
-        select * from media_staff_connection
-        where media_id = :mediaId
-        order by sort_index asc
-        limit :limit offset :offset
-    """,
-    )
-    abstract suspend fun mediaStaffByPage(
-        mediaId: Long,
-        limit: Int,
-        offset: Int,
-    ): List<MediaStaffConnectionEntity>
+    abstract fun mediaStaffPagingSource(mediaId: Long): PagingSource<Int, MediaStaffConnectionEntity>
 
     @Query(
         """

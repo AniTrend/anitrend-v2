@@ -78,22 +78,24 @@ internal class MediaCache(
         class Recommendations(
             val param: MediaParam.Recommendations,
             override val id: Long = param.id,
-            override val key: String = buildString {
-                append("media_recommendations")
-                append('_')
-                append(param.perPage)
-                param.sort
-                    ?.takeIf(List<*>::isNotEmpty)
-                    ?.joinToString(separator = "_")
-                    ?.let { sortKey ->
-                        append('_')
-                        append(sortKey.lowercase())
-                    }
-            },
+            override val key: String =
+                buildString {
+                    append("media_recommendations")
+                    append('_')
+                    append(param.perPage)
+                    param.sort
+                        ?.takeIf(List<*>::isNotEmpty)
+                        ?.joinToString(separator = "_")
+                        ?.let { sortKey ->
+                            append('_')
+                            append(sortKey.lowercase())
+                        }
+                },
         ) : Identity()
 
         class Paged(
-            override val id: Long = 0,
+            val param: MediaParam.Find? = null,
+            override val id: Long = param.cacheIdentityValue(),
             override val key: String = "media_paged",
         ) : Identity()
 
@@ -103,3 +105,10 @@ internal class MediaCache(
         ) : Identity()
     }
 }
+
+private fun MediaParam.Find?.cacheIdentityValue(): Long =
+    this
+        ?.toString()
+        ?.hashCode()
+        ?.toLong()
+        ?: 0L

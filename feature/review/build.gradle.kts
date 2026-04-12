@@ -21,6 +21,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(Libraries.AniTrend.CommonUi.review))
     implementation(project(Libraries.AniTrend.CommonUi.shared))
 }
 

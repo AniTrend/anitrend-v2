@@ -16,11 +16,11 @@
  */
 package co.anitrend.data.airing.usecase
 
-import co.anitrend.data.airing.AiringSchedulePagedRepository
-import co.anitrend.data.airing.GetPagedAiringScheduleInteractor
+import co.anitrend.data.airing.AiringSchedulePagingRepository
+import co.anitrend.data.airing.GetPagingAiringScheduleInteractor
 
 internal interface AiringScheduleInteractor {
-    class Paged(
-        repository: AiringSchedulePagedRepository,
-    ) : GetPagedAiringScheduleInteractor(repository)
+    class Paging(
+        repository: AiringSchedulePagingRepository,
+    ) : GetPagingAiringScheduleInteractor(repository)
 }

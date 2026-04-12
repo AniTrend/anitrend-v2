@@ -164,6 +164,7 @@ androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version
 androidx-recyclerview-selection = { module = "androidx.recyclerview:recyclerview-selection", version.ref = "androidx-recycler" }
 
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "androidx-room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx-room" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "androidx-room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }

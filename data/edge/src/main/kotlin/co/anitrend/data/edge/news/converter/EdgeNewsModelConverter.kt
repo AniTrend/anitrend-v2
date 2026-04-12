@@ -32,6 +32,7 @@ internal class EdgeNewsModelConverter(
                 source = item.category ?: item.area ?: item.genre ?: item.language,
                 publishedAt = item.publishedOn?.toLong(),
                 description = item.description.ifBlank { item.content },
+                content = item.content.ifBlank { item.description },
             )
         }
     },

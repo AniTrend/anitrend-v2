@@ -16,16 +16,16 @@
  */
 package co.anitrend.data.review.source
 
-import androidx.paging.PagedList
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
+import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
-import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
 import co.anitrend.arch.request.callback.RequestCallback
-import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
-import co.anitrend.data.common.extension.from
 import co.anitrend.data.review.ReviewDeleteController
 import co.anitrend.data.review.ReviewEntryController
 import co.anitrend.data.review.ReviewPagedController
@@ -36,6 +36,7 @@ import co.anitrend.data.review.converter.ReviewEntityViewConverter
 import co.anitrend.data.review.datasource.local.ReviewLocalSource
 import co.anitrend.data.review.datasource.remote.ReviewRemoteSource
 import co.anitrend.data.review.entity.filter.ReviewQueryFilter
+import co.anitrend.data.review.model.query.ReviewQuery
 import co.anitrend.data.review.source.contract.ReviewSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.review.entity.Review
@@ -179,56 +180,41 @@ internal sealed class ReviewSourceImpl {
         }
     }
 
-    class Paged(
+    class Paging(
         private val remoteSource: ReviewRemoteSource,
         private val localSource: ReviewLocalSource,
         private val controller: ReviewPagedController,
         private val filter: ReviewQueryFilter.Paged,
         private val converter: ReviewEntityViewConverter,
         private val clearDataHelper: IClearDataHelper,
-        override val dispatcher: ISupportDispatcher,
-    ) : ReviewSource.Paged() {
-        override val cacheIdentity: CacheIdentity = ReviewCache.Identity.Paged()
+        private val dispatcher: ISupportDispatcher,
+    ) : ReviewSource.Paging() {
+        override fun invoke(param: co.anitrend.domain.review.model.ReviewParam.Paged): Flow<PagingData<Review>> {
+            assignQuery(param)
 
-        override fun observable(): Flow<PagedList<Review>> {
-            val dataSourceFactory =
-                localSource
-                    .rawFactory(filter.build(query.param))
-                    .map(converter::convertFrom)
+            val source =
+                ReviewPagingSource(
+                    cacheIdentity = ReviewCache.Identity.Paged(param),
+                    remoteSource = remoteSource,
+                    localSource = localSource,
+                    controller = controller,
+                    filter = filter,
+                    clearDataHelper = clearDataHelper,
+                    query = ReviewQuery.Paged(param),
+                    dispatcher = dispatcher,
+                )
 
-            return FlowPagedListBuilder(
-                dataSourceFactory,
-                PAGING_CONFIGURATION,
-                null,
-                this,
-            ).buildFlow()
-        }
-
-        override suspend fun getReview(requestCallback: RequestCallback) {
-            val deferred =
-                deferred {
-                    val queryBuilder =
-                        query.toQueryContainerBuilder(
-                            supportPagingHelper,
-                        )
-                    remoteSource.getReviewPaged(queryBuilder)
-                }
-
-            controller(deferred, requestCallback) {
-                supportPagingHelper.from(it.page)
-                it
-            }
-        }
-
-        /**
-         * Clears data sources (databases, preferences, e.t.c)
-         *
-         * @param context Dispatcher context to run in
-         */
-        override suspend fun clearDataSource(context: CoroutineDispatcher) {
-            clearDataHelper(context) {
-                localSource.clear()
-            }
+            return Pager(
+                config =
+                    PagingConfig(
+                        pageSize = DEFAULT_PAGE_SIZE,
+                        initialLoadSize = DEFAULT_PAGE_SIZE,
+                        prefetchDistance = DEFAULT_PAGE_SIZE,
+                        enablePlaceholders = false,
+                    ),
+                remoteMediator = source,
+                pagingSourceFactory = source.pagingSourceFactory(),
+            ).flow.map { pagingData -> pagingData.map { entity -> converter.convertFrom(entity) } }
         }
     }
 }

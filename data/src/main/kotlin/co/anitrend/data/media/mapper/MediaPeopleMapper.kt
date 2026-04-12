@@ -46,8 +46,11 @@ internal sealed class MediaPeopleMapper<S, D> : DefaultMapper<S, D>() {
         }
 
         override suspend fun persist(data: List<MediaCharacterConnectionEntity>) {
-            if (sortIndexOffset == 0 && data.isEmpty()) {
+            if (sortIndexOffset == 0) {
                 localSource.clearMediaCharactersByMediaId(mediaId)
+            }
+
+            if (data.isEmpty()) {
                 return
             }
 
@@ -109,8 +112,11 @@ internal sealed class MediaPeopleMapper<S, D> : DefaultMapper<S, D>() {
         }
 
         override suspend fun persist(data: List<MediaStaffConnectionEntity>) {
-            if (sortIndexOffset == 0 && data.isEmpty()) {
+            if (sortIndexOffset == 0) {
                 localSource.clearMediaStaffByMediaId(mediaId)
+            }
+
+            if (data.isEmpty()) {
                 return
             }
 

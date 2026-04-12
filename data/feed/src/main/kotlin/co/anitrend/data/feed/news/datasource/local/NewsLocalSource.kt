@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.feed.news.datasource.local
 
-import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
@@ -38,23 +37,4 @@ abstract class NewsLocalSource : AbstractLocalSource<NewsEntity>() {
     """,
     )
     abstract override suspend fun clear()
-
-    @Query(
-        """
-        select *
-        from news
-        order by published_on desc
-        """,
-    )
-    abstract fun entryFactory(): DataSource.Factory<Int, NewsEntity>
-
-    @Query(
-        """
-        select *
-        from news
-        where title match :searchTerm or description match :searchTerm or sub_title match :searchTerm
-        order by published_on desc
-        """,
-    )
-    abstract fun entrySearchFactory(searchTerm: String): DataSource.Factory<Int, NewsEntity>
 }

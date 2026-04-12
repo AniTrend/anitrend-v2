@@ -28,7 +28,7 @@ interface IMediaListRepository {
         fun getEntry(param: MediaListParam.Entry): State
     }
 
-    interface Paged<State : UiState<*>> : IMediaListRepository {
+    interface Paged<State> : IMediaListRepository {
         fun getPaged(param: MediaListParam.Paged): State
     }
 

@@ -22,7 +22,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(Libraries.AniTrend.Data.feed))
+    implementation(project(Libraries.AniTrend.Data.edge))
 }
 
 android {

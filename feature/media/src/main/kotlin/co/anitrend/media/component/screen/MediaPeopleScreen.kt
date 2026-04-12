@@ -49,20 +49,22 @@ class MediaPeopleScreen : AniTrendScreen() {
                                 MediaCharactersRouter.startActivity(
                                     context = this@MediaPeopleScreen,
                                     navPayload =
-                                        MediaCharactersRouter.MediaCharactersParam(
-                                            mediaId = peopleParam.mediaId,
-                                            mediaTitle = peopleParam.mediaTitle,
-                                        ).asNavPayload(),
+                                        MediaCharactersRouter
+                                            .MediaCharactersParam(
+                                                mediaId = peopleParam.mediaId,
+                                                mediaTitle = peopleParam.mediaTitle,
+                                            ).asNavPayload(),
                                 )
 
                             MediaPeopleRouter.Section.STAFF ->
                                 MediaStaffRouter.startActivity(
                                     context = this@MediaPeopleScreen,
                                     navPayload =
-                                        MediaStaffRouter.MediaStaffParam(
-                                            mediaId = peopleParam.mediaId,
-                                            mediaTitle = peopleParam.mediaTitle,
-                                        ).asNavPayload(),
+                                        MediaStaffRouter
+                                            .MediaStaffParam(
+                                                mediaId = peopleParam.mediaId,
+                                                mediaTitle = peopleParam.mediaTitle,
+                                            ).asNavPayload(),
                                 )
                         }
                         finish()

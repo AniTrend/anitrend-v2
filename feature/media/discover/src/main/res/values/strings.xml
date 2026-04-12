@@ -18,6 +18,16 @@
 
 <resources>
 
+  <string name="title_media_discover">Discover</string>
+  <string name="action_media_discover_filter">Filter</string>
+  <string name="action_media_discover_change_view">View mode</string>
+  <string name="label_media_discover_loading_title">Loading media</string>
+  <string name="message_media_discover_loading">Fetching the latest media results.</string>
+  <string name="label_media_discover_empty_title">No media found</string>
+  <string name="message_media_discover_empty">Try adjusting the active filters or search criteria.</string>
+  <string name="label_media_discover_error_title">Unable to load media</string>
+  <string name="message_media_discover_loading_more">Loading more media...</string>
+
     <!-- Filter content headers -->
     <string-array name="titles_filter_pages">
         <item>General</item>

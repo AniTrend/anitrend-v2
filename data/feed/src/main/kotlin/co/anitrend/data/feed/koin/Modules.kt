@@ -19,7 +19,6 @@ package co.anitrend.data.feed.koin
 import co.anitrend.data.feed.api.FeedApiFactory
 import co.anitrend.data.feed.api.factory.IFeedFactory
 import co.anitrend.data.feed.episode.koin.episodeModules
-import co.anitrend.data.feed.news.koin.newsModules
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -32,5 +31,5 @@ private val coreModule =
 
 val feedModules =
     module {
-        includes(coreModule, episodeModules, newsModules)
+        includes(coreModule, episodeModules)
     }

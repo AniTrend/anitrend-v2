@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.user.datasource.local
 
-import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
@@ -138,35 +137,4 @@ internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
     )
     @Transaction
     abstract fun userByIdWithStatisticFlow(id: Long): Flow<UserEntityView.WithStatistic?>
-
-    @Query(
-        """
-        select * from user
-        where user_is_following = :following
-    """,
-    )
-    abstract fun userFollowing(following: Boolean = true): DataSource.Factory<Int, UserEntity>
-
-    @Query(
-        """
-        select * from user
-        where user_is_follower = :follower
-    """,
-    )
-    abstract fun userFollowers(follower: Boolean = true): DataSource.Factory<Int, UserEntity>
-
-    @Query(
-        """
-        select * from user
-    """,
-    )
-    abstract fun entryFactory(): DataSource.Factory<Int, UserEntity>
-
-    @Query(
-        """
-        select * from user
-        where user_name match :searchTerm
-    """,
-    )
-    abstract fun entrySearchFactory(searchTerm: String): DataSource.Factory<Int, UserEntity>
 }

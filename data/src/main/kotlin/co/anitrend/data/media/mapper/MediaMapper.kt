@@ -22,7 +22,6 @@ import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.genre.mapper.GenreMapper
 import co.anitrend.data.link.mapper.LinkMapper
-import co.anitrend.data.media.converter.MediaConverter
 import co.anitrend.data.media.converter.MediaModelConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.entity.MediaEntity
@@ -38,24 +37,6 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
     protected abstract val converter: MediaModelConverter
     protected abstract val linkMapper: LinkMapper.Embed
     protected abstract val rankMapper: RankMapper.Embed
-
-    class Network(
-        private val converter: MediaConverter,
-    ) : DefaultMapper<MediaModelContainer.Paged, List<Media>>() {
-        /**
-         * Save [data] into your desired local source
-         */
-        override suspend fun persist(data: List<Media>) {
-        }
-
-        /**
-         * Creates mapped objects and handles the database operations which may be required to map various objects,
-         *
-         * @param source the incoming data source type
-         * @return mapped object that will be consumed by [onResponseDatabaseInsert]
-         */
-        override suspend fun onResponseMapFrom(source: MediaModelContainer.Paged) = converter.convertFrom(source.page.media)
-    }
 
     class Paged(
         private val mediaListMapper: MediaListMapper.Embed,

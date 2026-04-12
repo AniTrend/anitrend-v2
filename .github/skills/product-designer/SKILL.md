@@ -4,11 +4,9 @@ description: 'Create scoped implementation plans for AniTrend UI, UX, and produc
 argument-hint: 'Describe the screen, product problem, desired UX outcome, and any constraints or non-goals.'
 ---
 
-# AniTrend v2 Planning Skill
+# Product Planning Skill
 
 ## Purpose
-
-You are planning changes for `AniTrend/anitrend-v2`.
 
 Your job is not to immediately code. Your job is to produce a high-quality implementation plan that is realistic for the existing codebase, aligned with the AniTrend product direction, and small enough to execute safely in iterative PRs.
 
@@ -17,8 +15,9 @@ The plan must be:
 - biased toward small, scoped changes
 - Android-native and Jetpack Compose feasible
 - specific enough that an engineer can implement without rethinking the whole feature
-- explicit about risks, states, and component boundaries
+- explicit about risks, states, component boundaries, and design quality gates
 - willing to use ASCII diagrams when they improve clarity
+- preview-first for UI-heavy work so the hierarchy can be reviewed before the app is run
 
 Do not produce vague redesign language.
 Do not propose massive rewrites unless the current architecture makes smaller work impossible.
@@ -36,6 +35,7 @@ Use this skill when the user needs a scoped plan for:
 - acceptance criteria and execution prompts for another coding model
 
 Use the [planning heuristics](./references/plan-heuristics.md) whenever the request risks expanding beyond a small, reviewable change.
+Use the [Compose/Material3 accessibility handoff reference](./references/compose-material3-accessibility-handoff.md) for UI-heavy plans that need stronger preview, Material3, and accessibility guidance.
 
 ---
 
@@ -125,19 +125,26 @@ Avoid architectural churn when a localized refactor solves the problem.
 
 Every plan must explain why the proposal is realistic in Jetpack Compose and how it maps to composables, state, and data flow.
 
-### 5. Use ASCII when it helps
+### 5. Use high-fidelity ASCII when UI structure changes
 
-If the plan affects layout, hierarchy, spacing, or interaction zones, include compact ASCII diagrams.
+If the plan affects layout, hierarchy, spacing, interaction zones, control choice, or state presentation, include at least one ASCII high-fidelity mock.
 
-ASCII should clarify:
+High-fidelity ASCII should clarify:
 - section order
 - visual hierarchy
+- component labels
 - component grouping
+- primary and secondary actions
+- density and grouping
+- control types
 - collapsed vs expanded behavior
 - editor layouts
 - card or list composition
+- key state variants when relevant
 
-ASCII is not decoration. Use it only when it improves precision.
+ASCII is not decoration.
+Do not produce fake pixel art or giant decorative boxes.
+Use it only when it improves precision and handoff quality.
 
 ### 6. Keep refactors reviewable
 
@@ -159,6 +166,9 @@ Favor:
 - lazy lists or grids where appropriate
 - small surface-area migrations
 - patterns that are previewable and testable
+- `MaterialTheme` token usage over hard-coded values
+- surface layering that works with `AniTrendTheme3`
+- existing repo preview primitives such as `PreviewTheme`, `DarkThemeProvider`, and `AniTrendPreview`
 
 Avoid:
 - web-looking layouts
@@ -167,14 +177,55 @@ Avoid:
 - bespoke interactions with weak product value
 - controls that are visually impressive but difficult to maintain
 - hidden interaction cost for common actions
+- hard-coded colors that bypass Material3 tokens
+- low-contrast accents or text on dark surfaces
+- plans that require running the app before basic hierarchy can be reviewed
 
 When making recommendations, always account for:
 - dark theme
 - readability
+- surface layering
+- contrast
 - thumb reach
+- semantics
+- touch targets
+- text scaling
+- previewability before coding starts
 - visual density
 - state transitions
 - loading and offline implications when relevant
+
+---
+
+## Design Quality Gates
+
+For UI-heavy plans, explicitly state:
+- what good looks like for hierarchy, density, and Material3 surface usage
+- what bad UI should be rejected early
+- contrast and readability risks
+- accessibility handoff notes
+- preview requirements before implementation starts
+
+The plan must make it obvious how the proposed UI avoids:
+- low contrast on dark surfaces
+- hard-coded colors or ad-hoc theming
+- flat or muddy layering
+- walls of equally weighted chips
+- hidden frequent actions
+- keyboard-first editors when direct controls are better
+- icon-only actions without semantic labeling
+
+Default to the repo's existing preview path before suggesting new tooling:
+- `PreviewTheme`
+- `DarkThemeProvider`
+- `AniTrendPreview.Light`
+- `AniTrendPreview.Dark`
+- `AniTrendPreview.Mobile`
+- `AniTrendPreview.Foldable`
+- `AniTrendPreview.Tablet`
+- `AniTrendTheme3`
+
+Do not assume the UI can only be judged after launching the app.
 
 ---
 
@@ -288,6 +339,7 @@ Before outputting the plan, inspect as much of the following as available:
 - navigation destinations
 - UI state containers
 - design tokens or theme utilities
+- existing previews, preview providers, and fake state inputs when present
 - relevant GraphQL or domain models
 - existing loading, error, and empty patterns
 - existing editor patterns and shared controls
@@ -354,14 +406,19 @@ Do not stall with unnecessary clarification requests unless completely blocked.
 
 Avoid plans that:
 - optimize for visual novelty over usability
+- accept low contrast as a styling tradeoff
+- hard-code colors instead of planning with Material3 tokens
 - hide frequent actions in menus by default
 - rely on dropdowns for small fixed choices
+- default to keyboard-first editors when stepper, segmented, chip, or direct controls are more appropriate
 - create too many equally weighted chips
+- leave icon-only controls without semantic labeling or content description expectations
 - replace dense but useful layouts with sparse, scroll-heavy layouts
 - ignore loading and empty states
 - introduce multiple concerns in one PR
 - assume desktop or web spacing on mobile
 - treat Compose like XML views with direct 1:1 translation
+- require runtime app launch to validate basic layout and theme decisions
 - propose architecture changes without tying them to product value
 
 ---
@@ -374,6 +431,11 @@ You must follow the response structure defined in:
 Do not invent a new response format unless the user explicitly asks for one.
 
 Always keep the output ordered and clearly sectioned.
+For UI-heavy work, the required output now includes:
+- `ASCII High-Fidelity Mock`
+- `Design Quality Gates`
+- `Preview Validation Matrix`
+- `Compose Implementation Notes`
 
 ---
 
@@ -382,10 +444,23 @@ Always keep the output ordered and clearly sectioned.
 ### If the task is UI-heavy
 
 You must include:
-- at least one ASCII layout sketch
+- at least one ASCII high-fidelity mock
 - component decomposition
 - state matrix
+- design quality gates
+- preview validation matrix
 - Compose implementation notes
+
+### Preview-first requirement for UI-heavy work
+
+For UI-heavy plans:
+- minimum preview matrix is `AniTrendPreview.Light` and `AniTrendPreview.Dark`
+- require `AniTrendPreview.Mobile` for full-screen or sheet work
+- require `AniTrendPreview.Foldable` or `AniTrendPreview.Tablet` only when width changes hierarchy, pane count, or sheet layout
+- prefer `PreviewTheme`, `DarkThemeProvider`, and preview providers or fake UI state over runtime-only validation
+- account for loading, empty, error, and populated states in the preview plan
+- include partial or disabled states when they materially affect the UI
+- do not suggest new screenshot or snapshot tooling unless the user explicitly asks for it
 
 ### If the task is refactor-heavy
 
@@ -420,7 +495,9 @@ A good plan should let an experienced Android engineer say:
 - this will improve the feature without unnecessary churn
 - I can implement this in small PRs
 - I know what the target UI structure is
+- I know what good and bad UI look like for this change
 - I know what states I need to support
+- I know what previews I need before I run the app
 - I know what not to touch
 
 If the plan does not meet that bar, revise it before answering.
@@ -437,7 +514,7 @@ Produce a plan that is:
 - consistent with AniTrend’s product direction
 - conservative about refactor size
 - strong on hierarchy, states, and component design
+- explicit about design quality gates, accessibility, and preview validation
 
 When UI is involved, use ASCII sketches wherever they meaningfully reduce ambiguity.
 When refactors are involved, keep them incremental and locally contained.
-

@@ -121,7 +121,7 @@ private fun MediaStudiosScreenContent(
                 }
             }
 
-            loadState is LoadState.Loading || (studios.isEmpty() && loadState !is LoadState.Error) -> {
+            loadState is LoadState.Loading -> {
                 CenteredStudiosState(
                     title = stringResource(R.string.label_media_studios_loading),
                     subtitle = stringResource(R.string.message_media_studios_loading),
@@ -230,10 +230,11 @@ internal fun StudioListRow(
                     .takeIf { it > 0 }
                     ?.let {
                         Text(
-                            text = stringResource(
-                                R.string.label_media_studios_favourites_value,
-                                it.toHumanReadableQuantity(),
-                            ),
+                            text =
+                                stringResource(
+                                    R.string.label_media_studios_favourites_value,
+                                    it.toHumanReadableQuantity(),
+                                ),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )

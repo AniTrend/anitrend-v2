@@ -16,26 +16,27 @@
  */
 package co.anitrend.data.media.source
 
-import androidx.paging.PagedList
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
-import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
-import co.anitrend.arch.request.callback.RequestCallback
+import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
-import co.anitrend.data.android.extensions.deferred
-import co.anitrend.data.common.extension.from
 import co.anitrend.data.media.MediaCharactersController
 import co.anitrend.data.media.MediaStaffController
+import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.converter.MediaCharacterConnectionEntityConverter
 import co.anitrend.data.media.converter.MediaStaffConnectionEntityConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.media.mapper.MediaPeopleMapper
+import co.anitrend.data.media.model.query.MediaPeopleQuery
 import co.anitrend.data.media.source.contract.MediaPeopleSource
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.media.entity.MediaPerson
-import kotlinx.coroutines.CoroutineDispatcher
+import co.anitrend.domain.media.model.MediaParam
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 internal class MediaPeopleSourceImpl {
     class Characters(
@@ -44,48 +45,37 @@ internal class MediaPeopleSourceImpl {
         private val controller: MediaCharactersController,
         private val mapper: MediaPeopleMapper.Characters,
         private val converter: MediaCharacterConnectionEntityConverter,
-        override val cachePolicy: ICacheStorePolicy,
-        override val dispatcher: ISupportDispatcher,
+        private val cachePolicy: ICacheStorePolicy,
+        private val dispatcher: ISupportDispatcher,
     ) : MediaPeopleSource.Characters() {
-        override fun observable(): Flow<PagedList<MediaPerson.Character>> {
-            val dataSourceFactory =
-                localSource
-                    .mediaCharactersFactory(query.param.id)
-                    .map(converter::convertFrom)
+        override fun invoke(param: MediaParam.Characters): Flow<PagingData<MediaPerson.Character>> {
+            val query = MediaPeopleQuery.Characters(param)
+            val cacheIdentity = MediaCache.Identity.Characters(param)
 
-            return FlowPagedListBuilder(
-                dataSourceFactory,
-                PAGING_CONFIGURATION,
-                null,
-                this,
-            ).buildFlow()
+            return Pager(
+                config =
+                    PagingConfig(
+                        pageSize = DEFAULT_PAGE_SIZE,
+                        initialLoadSize = DEFAULT_PAGE_SIZE,
+                        prefetchDistance = DEFAULT_PAGE_SIZE,
+                        enablePlaceholders = false,
+                    ),
+                remoteMediator =
+                    MediaPeopleRemoteMediator.Characters(
+                        cacheIdentity = cacheIdentity,
+                        cachePolicy = cachePolicy,
+                        query = query,
+                        remoteSource = remoteSource,
+                        localSource = localSource,
+                        controller = controller,
+                        mapper = mapper,
+                        dispatcher = dispatcher,
+                    ),
+                pagingSourceFactory = { localSource.mediaCharactersPagingSource(param.id) },
+            ).flow.map { pagingData ->
+                pagingData.map(converter::convertFrom)
+            }
         }
-
-        override suspend fun refreshCharacters(requestCallback: RequestCallback): Boolean {
-            mapper.onRequest(
-                mediaId = query.param.id,
-                page = supportPagingHelper.page,
-            )
-
-            val deferred =
-                deferred {
-                    val queryBuilder =
-                        query.toQueryContainerBuilder(
-                            supportPagingHelper,
-                        )
-                    remoteSource.getMediaCharacters(queryBuilder)
-                }
-
-            val result =
-                controller(deferred, requestCallback) {
-                    supportPagingHelper.from(it.media?.characters)
-                    it
-                }
-
-            return result != null
-        }
-
-        override suspend fun clearDataSource(context: CoroutineDispatcher) = Unit
     }
 
     class Staff(
@@ -94,47 +84,36 @@ internal class MediaPeopleSourceImpl {
         private val controller: MediaStaffController,
         private val mapper: MediaPeopleMapper.Staff,
         private val converter: MediaStaffConnectionEntityConverter,
-        override val cachePolicy: ICacheStorePolicy,
-        override val dispatcher: ISupportDispatcher,
+        private val cachePolicy: ICacheStorePolicy,
+        private val dispatcher: ISupportDispatcher,
     ) : MediaPeopleSource.Staff() {
-        override fun observable(): Flow<PagedList<MediaPerson.Staff>> {
-            val dataSourceFactory =
-                localSource
-                    .mediaStaffFactory(query.param.id)
-                    .map(converter::convertFrom)
+        override fun invoke(param: MediaParam.Staff): Flow<PagingData<MediaPerson.Staff>> {
+            val query = MediaPeopleQuery.Staff(param)
+            val cacheIdentity = MediaCache.Identity.Staff(param)
 
-            return FlowPagedListBuilder(
-                dataSourceFactory,
-                PAGING_CONFIGURATION,
-                null,
-                this,
-            ).buildFlow()
+            return Pager(
+                config =
+                    PagingConfig(
+                        pageSize = DEFAULT_PAGE_SIZE,
+                        initialLoadSize = DEFAULT_PAGE_SIZE,
+                        prefetchDistance = DEFAULT_PAGE_SIZE,
+                        enablePlaceholders = false,
+                    ),
+                remoteMediator =
+                    MediaPeopleRemoteMediator.Staff(
+                        cacheIdentity = cacheIdentity,
+                        cachePolicy = cachePolicy,
+                        query = query,
+                        remoteSource = remoteSource,
+                        localSource = localSource,
+                        controller = controller,
+                        mapper = mapper,
+                        dispatcher = dispatcher,
+                    ),
+                pagingSourceFactory = { localSource.mediaStaffPagingSource(param.id) },
+            ).flow.map { pagingData ->
+                pagingData.map(converter::convertFrom)
+            }
         }
-
-        override suspend fun refreshStaff(requestCallback: RequestCallback): Boolean {
-            mapper.onRequest(
-                mediaId = query.param.id,
-                page = supportPagingHelper.page,
-            )
-
-            val deferred =
-                deferred {
-                    val queryBuilder =
-                        query.toQueryContainerBuilder(
-                            supportPagingHelper,
-                        )
-                    remoteSource.getMediaStaff(queryBuilder)
-                }
-
-            val result =
-                controller(deferred, requestCallback) {
-                    supportPagingHelper.from(it.media?.staff)
-                    it
-                }
-
-            return result != null
-        }
-
-        override suspend fun clearDataSource(context: CoroutineDispatcher) = Unit
     }
 }

@@ -16,10 +16,12 @@
  */
 package co.anitrend.data.medialist.source
 
-import androidx.paging.PagedList
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
-import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
+import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
@@ -45,6 +47,7 @@ import co.anitrend.data.medialist.source.contract.MediaListSource
 import co.anitrend.data.user.source.contract.UserSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -131,7 +134,7 @@ internal class MediaListSourceImpl {
         }
     }
 
-    class Paged(
+    class Paging(
         private val remoteSource: MediaListRemoteSource,
         private val localSource: MediaListLocalSource,
         private val mediaLocalSource: MediaLocalSource,
@@ -139,116 +142,35 @@ internal class MediaListSourceImpl {
         private val converter: MediaEntityViewConverter,
         private val filter: MediaListQueryFilter.Paged,
         private val clearDataHelper: IClearDataHelper,
-        override val dispatcher: ISupportDispatcher,
-    ) : MediaListSource.Paged() {
-        override val cacheIdentity: CacheIdentity = MediaListCache.Identity.Paged()
+        private val dispatcher: ISupportDispatcher,
+    ) : MediaListSource.Paging() {
+        override fun invoke(param: MediaListParam.Paged): Flow<PagingData<Media>> {
+            assignQuery(param)
 
-        override fun observable(): Flow<PagedList<Media>> {
-            val dataSourceFactory =
-                mediaLocalSource
-                    .rawFactory(filter.build(query.param))
-                    .map(converter::convertFrom)
+            val source =
+                MediaListPagingSource(
+                    cacheIdentity = MediaListCache.Identity.Paged(param),
+                    remoteSource = remoteSource,
+                    localSource = localSource,
+                    mediaLocalSource = mediaLocalSource,
+                    controller = controller,
+                    filter = filter,
+                    clearDataHelper = clearDataHelper,
+                    query = query,
+                    dispatcher = dispatcher,
+                )
 
-            return FlowPagedListBuilder(
-                dataSourceFactory,
-                PAGING_CONFIGURATION,
-                null,
-                this,
-            ).buildFlow()
-        }
-
-        override suspend fun getMediaList(requestCallback: RequestCallback) {
-            val deferred =
-                deferred {
-                    val queryBuilder =
-                        query.toQueryContainerBuilder(
-                            supportPagingHelper,
-                        )
-                    remoteSource.getMediaListPaged(queryBuilder)
-                }
-
-            controller(deferred, requestCallback) {
-                supportPagingHelper.from(it.page)
-                it
-            }
-        }
-
-        /**
-         * Clears data sources (databases, preferences, e.t.c)
-         *
-         * @param context Dispatcher context to run in
-         */
-        override suspend fun clearDataSource(context: CoroutineDispatcher) {
-            clearDataHelper(context) {
-                if (query.param.userId != null) {
-                    localSource.clearByUserId(
-                        requireNotNull(query.param.userId),
-                    )
-                } else if (query.param.userName != null) {
-                    localSource.clearByUserName(
-                        requireNotNull(query.param.userName),
-                    )
-                }
-            }
-        }
-    }
-
-    class Collection(
-        private val remoteSource: MediaListRemoteSource,
-        private val localSource: MediaListLocalSource,
-        private val mediaLocalSource: MediaLocalSource,
-        private val controller: MediaListCollectionController,
-        private val converter: MediaEntityViewConverter,
-        private val filter: MediaListQueryFilter.Collection,
-        private val clearDataHelper: IClearDataHelper,
-        override val dispatcher: ISupportDispatcher,
-    ) : MediaListSource.Collection() {
-        override val cacheIdentity: CacheIdentity = MediaListCache.Identity.Collection()
-
-        override fun observable(): Flow<PagedList<Media>> {
-            val dataSourceFactory =
-                mediaLocalSource
-                    .rawFactory(filter.build(query.param))
-                    .map(converter::convertFrom)
-
-            return FlowPagedListBuilder(
-                dataSourceFactory,
-                PAGING_CONFIGURATION,
-                null,
-                this,
-            ).buildFlow()
-        }
-
-        override suspend fun getMediaList(requestCallback: RequestCallback) {
-            val deferred =
-                deferred {
-                    val queryBuilder =
-                        query.toQueryContainerBuilder(
-                            supportPagingHelper,
-                        )
-                    remoteSource.getMediaListCollection(queryBuilder)
-                }
-
-            controller(deferred, requestCallback)
-        }
-
-        /**
-         * Clears data sources (databases, preferences, e.t.c)
-         *
-         * @param context Dispatcher context to run in
-         */
-        override suspend fun clearDataSource(context: CoroutineDispatcher) {
-            clearDataHelper(context) {
-                if (query.param.userId != null) {
-                    localSource.clearByUserId(
-                        requireNotNull(query.param.userId),
-                    )
-                } else if (query.param.userName != null) {
-                    localSource.clearByUserName(
-                        requireNotNull(query.param.userName),
-                    )
-                }
-            }
+            return Pager(
+                config =
+                    PagingConfig(
+                        pageSize = DEFAULT_PAGE_SIZE,
+                        initialLoadSize = DEFAULT_PAGE_SIZE,
+                        prefetchDistance = DEFAULT_PAGE_SIZE,
+                        enablePlaceholders = false,
+                    ),
+                remoteMediator = source,
+                pagingSourceFactory = source.pagingSourceFactory(),
+            ).flow.map { pagingData -> pagingData.map { entity -> converter.convertFrom(entity) } }
         }
     }
 

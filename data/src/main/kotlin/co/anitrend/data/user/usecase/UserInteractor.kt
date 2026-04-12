@@ -20,7 +20,6 @@ import co.anitrend.data.user.GetAuthenticatedInteractor
 import co.anitrend.data.user.GetProfileInteractor
 import co.anitrend.data.user.GetProfileStatisticInteractor
 import co.anitrend.data.user.GetUserInteractor
-import co.anitrend.data.user.GetUserPagedInteractor
 import co.anitrend.data.user.ToggleFollowInteractor
 import co.anitrend.data.user.UpdateProfileInteractor
 import co.anitrend.data.user.UserAuthenticatedRepository
@@ -28,17 +27,12 @@ import co.anitrend.data.user.UserFollowRepository
 import co.anitrend.data.user.UserIdentifierRepository
 import co.anitrend.data.user.UserProfileRepository
 import co.anitrend.data.user.UserProfileStatisticRepository
-import co.anitrend.data.user.UserSearchRepository
 import co.anitrend.data.user.UserUpdateRepository
 
 internal interface UserInteractor {
     class Identifier(
         repository: UserIdentifierRepository,
     ) : GetUserInteractor(repository)
-
-    class Paged(
-        repository: UserSearchRepository,
-    ) : GetUserPagedInteractor(repository)
 
     class Profile(
         repository: UserProfileRepository,

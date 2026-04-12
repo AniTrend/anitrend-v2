@@ -32,11 +32,11 @@ interface IMediaRepository {
         fun getRecommendations(param: MediaParam.Recommendations): State
     }
 
-    interface Characters<State : UiState<*>> : IMediaRepository {
+    interface Characters<State> : IMediaRepository {
         fun getCharacters(param: MediaParam.Characters): State
     }
 
-    interface Staff<State : UiState<*>> : IMediaRepository {
+    interface Staff<State> : IMediaRepository {
         fun getStaff(param: MediaParam.Staff): State
     }
 
@@ -48,7 +48,7 @@ interface IMediaRepository {
         fun getStats(param: MediaParam.Stats): State
     }
 
-    interface Paged<State : UiState<*>> : IMediaRepository {
+    interface Paged<State> : IMediaRepository {
         fun getPaged(param: MediaParam.Find): State
     }
 

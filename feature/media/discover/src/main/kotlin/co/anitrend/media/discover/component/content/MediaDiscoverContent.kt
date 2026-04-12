@@ -16,50 +16,47 @@
  */
 package co.anitrend.media.discover.component.content
 
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
-import androidx.annotation.IntegerRes
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import co.anitrend.arch.recycler.adapter.SupportAdapter
-import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.android.core.assureParamNotMissing
-import co.anitrend.android.core.settings.extensions.flowUpdating
-import co.anitrend.core.component.content.list.AniTrendListContent
+import android.view.View
+import android.view.ViewGroup
+import co.anitrend.android.core.settings.Settings
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.views.compose.composable
+import co.anitrend.common.media.ui.controller.extensions.openMediaListSheetFor
+import co.anitrend.core.component.content.compose.AniTrendComposition
 import co.anitrend.core.ui.fragmentByTagOrNew
 import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.data.settings.customize.ICustomizationSettings
-import co.anitrend.data.settings.customize.common.PreferredViewMode
-import co.anitrend.domain.media.entity.Media
+import co.anitrend.media.discover.component.compose.MediaDiscoverCompose
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
 import co.anitrend.navigation.MediaDiscoverFilterRouter
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.MediaListEditorRouter
+import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.extensions.asBundle
+import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.fromBundle
-import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import co.anitrend.navigation.extensions.startActivity
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class MediaDiscoverContent(
-    private val settings: ICustomizationSettings,
-    override val inflateMenu: Int = co.anitrend.android.core.R.menu.discover_menu,
-    override val stateConfig: StateLayoutConfig,
-    override val supportViewAdapter: SupportAdapter<Media>,
-) : AniTrendListContent<Media>() {
-    private val viewModel by activityViewModel<MediaDiscoverViewModel>()
+class MediaDiscoverContent : AniTrendComposition() {
+    private val settings by inject<Settings>()
+    private val viewModel by viewModel<MediaDiscoverViewModel>()
 
-    override val defaultSpanSize: Int
-        get() =
-            getSpanSizeByPreference(
-                settings.preferredViewMode.value,
+    override val inflateMenu: Int = co.anitrend.android.core.R.menu.discover_menu
+
+    private fun openMediaFilterDialog() {
+        val fragmentItem =
+            FragmentItem(
+                fragment = MediaDiscoverFilterRouter.forSheet(),
+                parameter = viewModel.getParam().asBundle(),
             )
-
-    @IntegerRes private fun getSpanSizeByPreference(viewMode: PreferredViewMode) =
-        when (viewMode) {
-            PreferredViewMode.COMPACT -> co.anitrend.android.core.R.integer.column_x3
-            PreferredViewMode.COMFORTABLE -> co.anitrend.android.core.R.integer.column_x2
-            else -> co.anitrend.android.core.R.integer.column_x1
-        }
+        val dialog = fragmentItem.fragmentByTagOrNew(requireActivity())
+        dialog.show(requireActivity().supportFragmentManager, fragmentItem.tag())
+    }
 
     /**
      * This hook is called whenever an item in your options menu is selected.
@@ -79,43 +76,55 @@ class MediaDiscoverContent(
      *
      * @see .onCreateOptionsMenu
      */
+    @Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
             co.anitrend.android.core.R.id.action_filter -> {
-                val fragmentItem =
-                    FragmentItem(
-                        fragment = MediaDiscoverFilterRouter.forSheet(),
-                        parameter = viewModel.getParam().asBundle(),
-                    )
-                val dialog = fragmentItem.fragmentByTagOrNew(requireActivity())
-                dialog.show(requireActivity().supportFragmentManager, fragmentItem.tag())
+                openMediaFilterDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
 
-    /**
-     * Stub to trigger the loading of data, by default this is only called
-     * when [supportViewAdapter] has no data in its underlying source.
-     *
-     * This is called when the fragment reaches it's [onStart] state
-     *
-     * @see initializeComponents
-     */
-    override fun onFetchDataInitialize() {
-        listPresenter.stateLayout.assureParamNotMissing(viewModel.default) {
-            viewModel.invoke(
-                viewModel.default,
-            )
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                settings.preferredViewMode.flowUpdating(
-                    listPresenter.recyclerView,
-                    ::getSpanSizeByPreference,
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View =
+        composable(requireActivity()) {
+            AniTrendTheme3 {
+                MediaDiscoverCompose(
+                    settings = settings,
+                    userSettings = settings,
+                    onFilterClick = { openMediaFilterDialog() },
+                    onMediaItemClick = { param ->
+                        when (param) {
+                            is MediaRouter.MediaParam ->
+                                MediaRouter.startActivity(
+                                    context = requireContext(),
+                                    navPayload = param.asNavPayload(),
+                                )
+
+                            is MediaListEditorRouter.MediaListEditorParam ->
+                                view?.openMediaListSheetFor(
+                                    mediaListParam = param,
+                                    settings = settings,
+                                )
+
+                            else -> Unit
+                        }
+                    },
+                    viewModel = viewModel,
+                    showBottomBar = false,
                 )
             }
         }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
         requireActivity().supportFragmentManager.setFragmentResultListener(
             MediaDiscoverFilterRouter.RESULT_LISTENER_KEY,
             viewLifecycleOwner,
@@ -127,17 +136,7 @@ class MediaDiscoverContent(
     }
 
     /**
-     * Invoke view model observer to watch for changes, this will be called
-     * called in [onViewCreated]
-     */
-    override fun setUpViewModelObserver() {
-        viewModel.model.observe(viewLifecycleOwner) {
-            onPostModelChange(it)
-        }
-    }
-
-    /**
      * Proxy for a view model state if one exists
      */
-    override fun viewModelState() = viewModel
+    override fun viewModelState() = null
 }

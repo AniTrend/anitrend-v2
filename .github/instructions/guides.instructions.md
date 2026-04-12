@@ -14,6 +14,7 @@ This file is the high-level contributor playbook. For deep implementation specif
 - `.github/skills/room-entity-pattern/SKILL.md`
 - `.github/skills/graphql-query-pattern/SKILL.md`
 - `.github/skills/string-resources-convention/SKILL.md`
+- `.github/skills/string-resource-inline-comments/SKILL.md`
 - `.github/skills/testing-guidelines/SKILL.md`
 - `.github/skills/reference-map/SKILL.md`
 
@@ -103,7 +104,16 @@ detail in skill files to prevent context drift and duplication.
 
 String resources follow a strict semantic prefix pattern. For the complete convention, examples,
 migration guide, and POEditor translator comment requirements, see
-`.github/skills/string-resources-convention/SKILL.md`.
+`.github/skills/string-resources-convention/SKILL.md` and
+`.github/skills/string-resource-inline-comments/SKILL.md`.
+
+For Android platform-level behavior such as escaping, formatting, plurals, arrays, and styled
+text handling, also consult
+`.github/skills/string-resources-convention/references/android-string-resource-best-practices.md`.
+
+Every resource block in `strings.xml` must have an XML comment immediately above it. Those
+comments are surfaced to POEditor translators and should explain context, placeholders,
+tone, and any UI constraints.
 
 **Pattern**: `{prefix}_{module_or_context}_{specific_identifier}`
 

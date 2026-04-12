@@ -16,17 +16,19 @@
  */
 package co.anitrend.data.review.koin
 
+import co.anitrend.data.android.cache.model.CacheRequest
 import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.android.extensions.offline
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.review.DeleteReviewInteractor
+import co.anitrend.data.review.GetPagingReviewInteractor
 import co.anitrend.data.review.GetReviewInteractor
-import co.anitrend.data.review.GetReviewPagedInteractor
 import co.anitrend.data.review.RateReviewInteractor
 import co.anitrend.data.review.ReviewDeleteRepository
 import co.anitrend.data.review.ReviewEntryRepository
-import co.anitrend.data.review.ReviewPagedRepository
+import co.anitrend.data.review.ReviewPagingRepository
 import co.anitrend.data.review.ReviewRateRepository
 import co.anitrend.data.review.ReviewSaveRepository
 import co.anitrend.data.review.SaveReviewInteractor
@@ -90,13 +92,14 @@ private val sourceModule =
                 dispatcher = get(),
             )
         }
-        factory<ReviewSource.Paged> {
-            ReviewSourceImpl.Paged(
+        factory<ReviewSource.Paging> {
+            ReviewSourceImpl.Paging(
                 remoteSource = aniListApi(),
                 localSource = store().reviewDao(),
                 controller =
                     graphQLController(
                         mapper = get<ReviewMapper.Paged>(),
+                        strategy = offline(),
                     ),
                 filter = ReviewQueryFilter.Paged(),
                 converter = get(),
@@ -111,6 +114,7 @@ private val cacheModule =
         factory {
             ReviewCache(
                 localSource = cacheLocalSource(),
+                request = CacheRequest.REVIEW,
             )
         }
     }
@@ -184,8 +188,8 @@ private val useCaseModule =
                 repository = get(),
             )
         }
-        factory<GetReviewPagedInteractor> {
-            ReviewInteractor.Paged(
+        factory<GetPagingReviewInteractor> {
+            ReviewInteractor.Paging(
                 repository = get(),
             )
         }
@@ -198,8 +202,8 @@ private val repositoryModule =
                 source = get(),
             )
         }
-        factory<ReviewPagedRepository> {
-            ReviewRepository.Paged(
+        factory<ReviewPagingRepository> {
+            ReviewRepository.Paging(
                 source = get(),
             )
         }

@@ -16,9 +16,9 @@
  */
 package co.anitrend.news.koin
 
-import co.anitrend.common.news.ui.adapter.NewsPagedAdapter
 import co.anitrend.android.core.koin.MarkdownFlavour
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.data.edge.news.NewsPagedInteractor
 import co.anitrend.navigation.NewsRouter
 import co.anitrend.news.component.content.NewsContent
 import co.anitrend.news.component.content.viewmodel.NewsContentViewModel
@@ -65,15 +65,7 @@ private val coreModule =
 private val fragmentModule =
     module {
         fragment {
-            NewsContent(
-                presenter = get(),
-                stateConfig = get(),
-                supportViewAdapter =
-                    NewsPagedAdapter(
-                        resources = androidContext().resources,
-                        stateConfiguration = get(),
-                    ),
-            )
+            NewsContent()
         }
     }
 
@@ -81,7 +73,7 @@ private val viewModelModule =
     module {
         viewModel {
             NewsContentViewModel(
-                interactor = get(),
+                interactor = get<NewsPagedInteractor>(),
             )
         }
         viewModel {

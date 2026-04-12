@@ -59,15 +59,4 @@ abstract class EpisodeLocalSource : AbstractLocalSource<EpisodeEntity>() {
         """,
     )
     abstract fun entryFactory(): DataSource.Factory<Int, EpisodeEntity>
-
-    @Query(
-        """
-        select *
-        from episode
-        where title match :searchTerm or series_title match :searchTerm or description match :searchTerm
-        order by available_premium_time desc, series_title desc,
-        length(info_episode_number), info_episode_number
-        """,
-    )
-    abstract fun entrySearchFactory(searchTerm: String): DataSource.Factory<Int, EpisodeEntity>
 }

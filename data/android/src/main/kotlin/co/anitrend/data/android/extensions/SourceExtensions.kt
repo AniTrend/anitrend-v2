@@ -17,49 +17,10 @@
 package co.anitrend.data.android.extensions
 
 import co.anitrend.arch.extension.ext.empty
-import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
-import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import kotlinx.coroutines.launch
-
-/**
- * Wrapper for handling request dispatching from an paging source
- *
- * @param key A key to identify the request with
- * @param paging Paging helper to managing paging tracking
- * @param requestType Type of request that is being run
- * @param block Unit of work to execute
- */
-operator fun AbstractPagingSource<*>.invoke(
-    key: String = String.empty(),
-    paging: SupportPagingHelper,
-    requestType: Request.Type = Request.Type.INITIAL,
-    block: suspend (RequestCallback) -> Unit,
-) {
-    scope.launch {
-        requestHelper.runIfNotRunning(
-            Request.Default(key, requestType),
-        ) { requestCallback ->
-            when (requestType) {
-                Request.Type.BEFORE -> {
-                    if (!paging.isFirstPage()) {
-                        paging.onPagePrevious()
-                        block(requestCallback)
-                    } else {
-                        requestCallback.recordSuccess()
-                    }
-                }
-                Request.Type.AFTER -> {
-                    paging.onPageNext()
-                    block(requestCallback)
-                }
-                else -> block(requestCallback)
-            }
-        }
-    }
-}
 
 /**
  * Wrapper for handling request dispatching from a data source

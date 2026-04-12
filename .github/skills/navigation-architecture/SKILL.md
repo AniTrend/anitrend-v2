@@ -24,6 +24,11 @@ This matters because the repo is still in a staged migration. The app is not mov
 Compose-only navigation stack yet. Respect the existing `Activity -> Fragment` boundaries and
 only use local Compose navigation where the feature already does so.
 
+For concrete deep-link, drawer, app-shell, and `review` route anchors, use the
+[layer example matrix](../reference-map/references/layer-example-matrix.md). If the work may
+reuse an existing Android-side helper or shell API, pair this skill with
+[android-platform-patterns](../android-platform-patterns/SKILL.md).
+
 ## When to Use
 
 - Trace how a URI or button click reaches a screen.
@@ -158,6 +163,9 @@ Examples:
 - Compose navigation changes stay local unless the task explicitly changes shared navigation.
 
 ## Canonical Files
+
+For a curated cross-layer list, including Android shell and deep-link anchors, use the
+[layer example matrix](../reference-map/references/layer-example-matrix.md).
 
 - `app/navigation/src/main/kotlin/co/anitrend/navigation/NavigationTargets.kt`
 - `app/navigation/src/main/kotlin/co/anitrend/navigation/router/NavigationRouter.kt`

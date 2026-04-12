@@ -12,6 +12,8 @@ boundaries and contract shapes; the concrete wiring varies by whether the module
 mutation-only, or hybrid.
 
 Use this skill to choose the closest existing pattern before adding or documenting a new module.
+For the concrete `review` spine and Android helper anchors, use the
+[layer example matrix](../reference-map/references/layer-example-matrix.md).
 
 ## Pattern matrix
 
@@ -22,6 +24,7 @@ Use this skill to choose the closest existing pattern before adding or documenti
 | Hybrid query + mutation | `domain/medialist` + `data/medialist` + `task/medialist` | Fetch plus save/delete/sync for the same concept | Nested contracts per operation | Separate source/repository/interactor classes per operation | Feature/common code reads directly, mutations usually enqueue task workers |
 | Hybrid fetch + action | `domain/review` + `data/review` + `task/review` | Paged/detail reads plus vote/save/delete writes | Nested contracts per read/write action | Separate read and mutation sources, repositories, and interactors | Review UI fetches via feature ViewModel; voting/deleting routes through task workers |
 | Mutation-only | `domain/favourite` + `data/favourite` + `task/favourite` | A focused toggle/save/delete operation with no local read screen | Small sealed param + single repository contract | Lean `Types.kt`, single repository, single interactor bridge | UI/common code creates task params; worker runs the mutation interactor |
+| Android/platform support | `android/core` + `android/navigation` + `android/deeplink` | Shared platform helpers, shell navigation, deep-link entry, or internal Android API reuse | N/A | Koin-backed helpers, providers, controllers, and shell content | `app/core`, app shell, and entry layers consume the platform API |
 
 ## Key files to read
 
@@ -53,6 +56,10 @@ The public dependency surface that feature and task modules usually see is the i
 exported from the data module `Types.kt`. That alias resolves to a domain use case specialized
 with `DataState<T>`.
 
+If the entry-layer change depends on theme/configuration, deep links, drawer shell behavior, or
+other Android helper APIs, stop here and pair this matrix with
+[android-platform-patterns](../android-platform-patterns/SKILL.md).
+
 ## Rules
 
 - Keep params, repository contracts, and abstract use cases in `:domain`.
@@ -72,6 +79,8 @@ with `DataState<T>`.
 - Prefer task-backed mutation flows when the existing user flow already uses WorkManager or when
   the write should survive process transitions. `medialist`, `review`, and `favourite` are the
   current references.
+- Do not recreate reusable Android-side helpers in `:feature:*`, `:common:*`, or `:task:*` when
+  `:android:*` or `:app:core` already owns the platform abstraction.
 - Use `tag` as the smallest baseline only. Do not treat it as the canonical pattern for media,
   review, or other mutation-heavy modules.
 
@@ -114,3 +123,5 @@ with `DataState<T>`.
 - Copy `review` when the module fetches entities but actions such as vote/save/delete are separate
   mutation paths.
 - Copy `favourite` when the job is only a single toggle-style mutation.
+- Use `android-platform-patterns` when the work is really about reusing or extending Android shell,
+  configuration, theme, notification, or deep-link infrastructure.

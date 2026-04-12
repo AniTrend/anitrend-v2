@@ -17,4 +17,11 @@
 
 <resources>
 
+  <string name="label_media_list_loading_title">Loading your library</string>
+  <string name="message_media_list_loading">Fetching the latest list entries for %1$s.</string>
+  <string name="label_media_list_empty_title">No list entries found</string>
+  <string name="message_media_list_empty">No entries in %1$s yet.</string>
+  <string name="label_media_list_error_title">Unable to load library</string>
+  <string name="message_media_list_loading_more">Loading more entries...</string>
+
 </resources>

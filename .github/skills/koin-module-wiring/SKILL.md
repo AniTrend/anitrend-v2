@@ -11,12 +11,23 @@ Koin is the dependency injection framework used throughout AniTrend v2. Every fe
 module exposes its bindings through a local `Modules.kt` file. Those local modules are collected
 by the app-level aggregator and loaded at startup via `InjectorInitializer`.
 
+For cross-layer Koin anchors, including Android platform modules, use the
+[layer example matrix](../reference-map/references/layer-example-matrix.md). Pair Android helper
+work with [android-platform-patterns](../android-platform-patterns/SKILL.md).
+
 ## Key files to read
 
 - `app/core/src/main/kotlin/co/anitrend/core/initializer/injector/InjectorInitializer.kt` —
   AndroidX Startup initializer that bootstraps Koin with all collected modules
 - `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt` — app-level Koin module
   aggregator; registers core singletons (Coil, Emoji, StateLayoutConfig, dispatchers, etc.)
+- `android/core/src/main/kotlin/co/anitrend/android/core/koin/Modules.kt` — Android platform
+  helpers such as settings, configuration, theme, notification, storage, shortcut, and power
+  controllers
+- `android/navigation/src/main/kotlin/co/anitrend/android/navigation/drawer/koin/Modules.kt` —
+  app-shell drawer presenter/viewmodel/fragment/provider composition
+- `android/deeplink/src/main/kotlin/co/anitrend/android/deeplink/koin/Modules.kt` — deep-link
+  parser, presenter, viewmodel, and provider composition
 - `data/src/main/kotlin/co/anitrend/data/tag/koin/` — simple query-only example using
   `TagUseCaseImpl`
 - `data/src/main/kotlin/co/anitrend/data/medialist/koin/Modules.kt` — mutation-heavy example
@@ -38,6 +49,8 @@ by the app-level aggregator and loaded at startup via `InjectorInitializer`.
 3. Add feature or task entry bindings as needed:
    - `viewModel { XxxViewModel(interactor = get(), ...) }`
    - `worker { scope -> XxxWorker(context = androidContext(), parameters = scope.get(), interactor = get()) }`
+   - Android platform helpers: bind controllers, helpers, providers, or shell fragments in the
+     owning `:android:*` module instead of a feature module
 4. Add the local module to the nearest feature / data aggregator so it gets loaded transitively.
 5. If the module is a new `:data:*` or `:feature:*` top-level module, also add its loader to
    `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt`.
@@ -50,6 +63,8 @@ by the app-level aggregator and loaded at startup via `InjectorInitializer`.
   surrounding module instead of forcing `single`.
 - Use `get()` to resolve transitive dependencies; never import concrete data-layer classes into a
   feature or task module's Koin file except for the worker or ViewModel class being declared.
+- When binding reusable Android-side helpers, keep the binding in `:android:*` and let
+  `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt` include the Android aggregator.
 - When a binding depends on a generic contract such as `graphQLController(mapper = ...)`, prefer
   explicit typed lookup like `get<ConcreteMapper>()` instead of bare `get()` so Koin does not have
   to infer an ambiguous generic mapper.
