@@ -35,7 +35,7 @@ internal sealed class EpisodeRepository {
         private val source: EpisodeSource.Paging,
     ) : EpisodeRepository(),
         EpisodePagedRepository {
-        override fun getPagedEpisode(param: EpisodeParam.Paged) = source create source(param)
+        override fun getPagedEpisode(param: EpisodeParam.Paged) = source(param)
     }
 
     class Sync(

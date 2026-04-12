@@ -18,4 +18,12 @@
 <resources>
     <string name="label_download">Download</string>
     <string name="label_episode_has_no_summary">No summary available is available for `%s` at this time.</string>
+  <string name="action_episode_retry">Retry</string>
+  <string name="label_episode_loading_title">Loading episodes</string>
+  <string name="message_episode_loading">Fetching the latest episode releases.</string>
+  <string name="label_episode_error_title">Could not load episodes</string>
+  <string name="message_episode_error">Try again to refresh the release list.</string>
+  <string name="label_episode_empty_title">No episodes found</string>
+  <string name="message_episode_empty">No episode releases are available right now.</string>
+  <string name="message_episode_loading_more">Loading more episodes</string>
 </resources>

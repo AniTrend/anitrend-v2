@@ -24,12 +24,13 @@ import co.anitrend.data.feed.episode.model.page.EpisodePageModel
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.interactor.EpisodeUseCase
 import co.anitrend.domain.episode.repository.IEpisodeRepository
+import kotlinx.coroutines.flow.Flow
 
 internal typealias EpisodePagedController = DefaultController<EpisodePageModel, List<EpisodeEntity>>
-internal typealias EpisodePagedRepository = IEpisodeRepository.Paged<DataState<PagingData<Episode>>>
+internal typealias EpisodePagedRepository = IEpisodeRepository.Paged<Flow<PagingData<Episode>>>
 internal typealias EpisodeDetailRepository = IEpisodeRepository.Detail<DataState<Episode>>
 internal typealias EpisodeSyncRepository = IEpisodeRepository.Sync<DataState<Boolean>>
 
-typealias EpisodePagedInteractor = EpisodeUseCase.Paged<DataState<PagingData<Episode>>>
+typealias EpisodePagedInteractor = EpisodeUseCase.Paged<Flow<PagingData<Episode>>>
 typealias EpisodeDetailInteractor = EpisodeUseCase.Detail<DataState<Episode>>
 typealias EpisodeSyncInteractor = EpisodeUseCase.Sync<DataState<Boolean>>

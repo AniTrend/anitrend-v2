@@ -16,17 +16,17 @@
  */
 package co.anitrend.episode.component.content.viewmodel
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import androidx.paging.cachedIn
 import co.anitrend.data.feed.episode.EpisodePagedInteractor
 import co.anitrend.domain.episode.entity.Episode
 import co.anitrend.domain.episode.model.EpisodeParam
+import kotlinx.coroutines.flow.Flow
 
 class EpisodeContentViewModel(
     private val interactor: EpisodePagedInteractor,
-) : AniTrendViewModelState<PagingData<Episode>>() {
-    operator fun invoke(param: EpisodeParam.Paged) {
-        val result = interactor(param)
-        state.postValue(result)
-    }
+) : ViewModel() {
+    fun episodes(param: EpisodeParam.Paged): Flow<PagingData<Episode>> = interactor(param).cachedIn(viewModelScope)
 }
