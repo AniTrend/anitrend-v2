@@ -37,7 +37,7 @@
   <!-- Review discover empty-state message -->
   <string name="message_review_discover_empty">Try another filter or check back later.</string>
   <!-- Review discover error heading -->
-  <string name="label_review_discover_error_title">Couldn't load reviews</string>
+  <string name="label_review_discover_error_title">Could not load reviews</string>
   <!-- Review discover error message -->
   <string name="message_review_discover_error">Retry to refresh the list.</string>
   <!-- Review discover append loading message -->
