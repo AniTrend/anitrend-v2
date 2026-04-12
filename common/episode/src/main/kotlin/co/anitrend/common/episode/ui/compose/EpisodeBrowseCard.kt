@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2026 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.common.episode.ui.compose
 
 import androidx.compose.foundation.background
@@ -135,7 +151,7 @@ private fun Episode.summaryLabel(): String {
     val season = series.seriesSeason.orEmpty().padNumericToken(defaultValue = "--")
     val episodeNumber = about.episodeNumber.orEmpty().padNumericToken(defaultValue = "00")
     val episodeTitle = about.episodeTitle?.takeIf(String::isNotBlank) ?: title
-    return "S${season}E${episodeNumber} • $episodeTitle"
+    return "S${season}E$episodeNumber • $episodeTitle"
 }
 
 private fun String.padNumericToken(defaultValue: String): String {
