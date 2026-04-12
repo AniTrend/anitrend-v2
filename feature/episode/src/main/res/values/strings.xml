@@ -16,14 +16,24 @@
   -->
 
 <resources>
+    <!-- Legacy label for the episode download action on the old episode surface -->
     <string name="label_download">Download</string>
-    <string name="label_episode_has_no_summary">No summary available is available for `%s` at this time.</string>
-  <string name="action_episode_retry">Retry</string>
-  <string name="label_episode_loading_title">Loading episodes</string>
-  <string name="message_episode_loading">Fetching the latest episode releases.</string>
-  <string name="label_episode_error_title">Could not load episodes</string>
-  <string name="message_episode_error">Try again to refresh the release list.</string>
-  <string name="label_episode_empty_title">No episodes found</string>
-  <string name="message_episode_empty">No episode releases are available right now.</string>
-  <string name="message_episode_loading_more">Loading more episodes</string>
+    <!-- Legacy fallback shown when an episode summary is unavailable; %s is the episode title -->
+    <string name="label_episode_has_no_summary" formatted="true">No summary available is available for `%s` at this time.</string>
+    <!-- Action button label for retrying the episode feed request -->
+    <string name="action_episode_retry">Retry</string>
+    <!-- Heading shown while the episode browse screen is loading releases -->
+    <string name="label_episode_loading_title">Loading episodes</string>
+    <!-- Supporting copy shown while the episode browse screen fetches releases -->
+    <string name="message_episode_loading">Fetching the latest episode releases.</string>
+    <!-- Heading shown when the episode browse screen fails to load -->
+    <string name="label_episode_error_title">Could not load episodes</string>
+    <!-- Supporting copy shown when the episode browse screen fails to load -->
+    <string name="message_episode_error">Try again to refresh the release list.</string>
+    <!-- Heading shown when no episode releases are available -->
+    <string name="label_episode_empty_title">No episodes found</string>
+    <!-- Supporting copy shown when no episode releases are available -->
+    <string name="message_episode_empty">No episode releases are available right now.</string>
+    <!-- Status label shown while the list is appending more episode releases -->
+    <string name="message_episode_loading_more">Loading more episodes</string>
 </resources>

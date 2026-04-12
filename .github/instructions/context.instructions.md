@@ -16,6 +16,7 @@ follow these companion skills:
 - `.github/skills/navigation-architecture/SKILL.md`
 - `.github/skills/koin-module-wiring/SKILL.md`
 - `.github/skills/new-module-checklist/SKILL.md`
+- `.github/skills/string-resource-inline-comments/SKILL.md`
 - `.github/skills/string-resources-convention/SKILL.md`
 - `.github/skills/reference-map/SKILL.md`
 
@@ -44,8 +45,12 @@ through feature, common, and task entry points:
   `:task:*` WorkManager modules. They consume interactors and routers, then observe `DataState`
   outputs or terminal worker states.
 
-**String resources** follow semantic prefix conventions (`label_`, `title_`, `action_`, etc.).
-See `.github/skills/string-resources-convention/SKILL.md` for the full convention.
+**String resources** follow semantic prefix conventions (`label_`, `title_`, `action_`, etc.),
+and every resource block in `strings.xml` must have an XML comment immediately above it so
+POEditor translators receive clear context. See `.github/skills/string-resources-convention/SKILL.md`,
+`.github/skills/string-resource-inline-comments/SKILL.md`, and
+`.github/skills/string-resources-convention/references/android-string-resource-best-practices.md`
+for naming, audit workflow, and Android platform behavior.
 
 ## Module Organization and Naming
 
