@@ -37,22 +37,24 @@ class ReviewDiscoverContent : AniTrendComposition() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View = composable(requireActivity()) {
-        AniTrendTheme3 {
-            ReviewDiscoverRoute(
-                onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
-                onReviewClick = { reviewId, scoreFormat ->
-                    ReviewRouter.startActivity(
-                        context = requireContext(),
-                        navPayload =
-                            ReviewRouter.ReviewParam(
-                                id = reviewId,
-                                scoreFormat = scoreFormat,
-                            ).asNavPayload(),
-                    )
-                },
-                viewModel = viewModel,
-            )
+    ): View =
+        composable(requireActivity()) {
+            AniTrendTheme3 {
+                ReviewDiscoverRoute(
+                    onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
+                    onReviewClick = { reviewId, scoreFormat ->
+                        ReviewRouter.startActivity(
+                            context = requireContext(),
+                            navPayload =
+                                ReviewRouter
+                                    .ReviewParam(
+                                        id = reviewId,
+                                        scoreFormat = scoreFormat,
+                                    ).asNavPayload(),
+                        )
+                    },
+                    viewModel = viewModel,
+                )
+            }
         }
-    }
 }

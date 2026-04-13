@@ -68,10 +68,12 @@ sealed class MediaParam {
 
     data class Relations(
         val id: Long,
+        val scoreFormat: ScoreFormat,
     ) : MediaParam()
 
     data class Recommendations(
         val id: Long,
+        val scoreFormat: ScoreFormat,
         val perPage: Int = 18,
         val sort: List<RecommendationSort>? = null,
     ) : MediaParam()

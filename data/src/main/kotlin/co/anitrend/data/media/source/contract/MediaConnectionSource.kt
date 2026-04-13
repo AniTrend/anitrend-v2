@@ -24,6 +24,7 @@ import co.anitrend.data.android.extensions.invoke
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.media.cache.MediaCache
 import co.anitrend.data.media.model.query.MediaConnectionQuery
+import androidx.paging.PagingData
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.entity.MediaRelationEntry
 import co.anitrend.domain.media.model.MediaParam
@@ -74,6 +75,22 @@ internal class MediaConnectionSource {
                 cacheIdentity = cacheIdentity,
                 block = ::refreshRecommendations,
             )
+            return observable()
+        }
+    }
+
+    abstract class RecommendationsPaged : AbstractCoreDataSource() {
+        protected lateinit var query: MediaConnectionQuery.RecommendationsPaged
+
+        protected lateinit var cacheIdentity: CacheIdentity
+
+        protected abstract val cachePolicy: ICacheStorePolicy
+
+        protected abstract fun observable(): Flow<PagingData<MediaRecommendationEntry>>
+
+        operator fun invoke(param: MediaParam.Recommendations): Flow<PagingData<MediaRecommendationEntry>> {
+            query = MediaConnectionQuery.RecommendationsPaged(param)
+            cacheIdentity = MediaCache.Identity.Recommendations(param)
             return observable()
         }
     }

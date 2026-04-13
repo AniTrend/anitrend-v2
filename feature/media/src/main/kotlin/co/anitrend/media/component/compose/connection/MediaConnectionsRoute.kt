@@ -26,8 +26,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items as gridItems
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -35,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,10 +52,13 @@ import co.anitrend.media.R
 import co.anitrend.media.component.compose.section.MediaRelationBucket
 import co.anitrend.media.component.compose.section.MediaRelationGroup
 import co.anitrend.media.component.compose.section.groupRelationsByBucket
-import co.anitrend.media.component.compose.section.selectRecommendationPreview
 import co.anitrend.media.component.viewmodel.MediaRecommendationsViewModel
 import co.anitrend.media.component.viewmodel.MediaRelationsViewModel
 import co.anitrend.navigation.model.common.IParam
+import androidx.paging.LoadState as PagingLoadState
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -69,8 +73,8 @@ fun MediaRelationsRoute(
     val relations by viewModel.model.observeAsState()
     val loadState by viewModel.loadState.observeAsState()
 
-    LaunchedEffect(mediaId) {
-        viewModel(mediaId)
+    LaunchedEffect(mediaId, scoreFormat) {
+        viewModel(mediaId, scoreFormat)
     }
 
     ConnectionScreenScaffold(
@@ -98,7 +102,7 @@ fun MediaRelationsRoute(
             loadState is LoadState.Error -> {
                 RetryConnectionState(
                     title = stringResource(R.string.label_media_related_error_title),
-                    onRetry = { viewModel(mediaId) },
+                    onRetry = { viewModel(mediaId, scoreFormat) },
                 )
             }
 
@@ -121,12 +125,15 @@ fun MediaRecommendationsRoute(
     onMediaItemClick: (IParam) -> Unit = {},
     viewModel: MediaRecommendationsViewModel = koinViewModel(),
 ) {
-    val recommendations by viewModel.model.observeAsState()
-    val loadState by viewModel.loadState.observeAsState()
-
-    LaunchedEffect(mediaId) {
-        viewModel(mediaId, perPage = 24)
-    }
+    val recommendations =
+        remember(mediaId, scoreFormat) {
+            viewModel.recommendations(
+                mediaId = mediaId,
+                perPage = 24,
+                scoreFormat = scoreFormat,
+            )
+        }.collectAsLazyPagingItems()
+    val refreshState = recommendations.loadState.refresh
 
     ConnectionScreenScaffold(
         title = stringResource(R.string.title_media_recommendations_screen),
@@ -135,29 +142,25 @@ fun MediaRecommendationsRoute(
         onBackPress = onBackPress,
     ) {
         when {
-            !recommendations.isNullOrEmpty() -> {
+            recommendations.itemCount > 0 -> {
                 RecommendationGrid(
-                    recommendations =
-                        selectRecommendationPreview(
-                            recommendations.orEmpty(),
-                            maxCount = recommendations.orEmpty().size,
-                        ),
+                    recommendations = recommendations,
                     scoreFormat = scoreFormat,
                     onMediaItemClick = onMediaItemClick,
                 )
             }
 
-            loadState is LoadState.Loading || (recommendations == null && loadState !is LoadState.Error) -> {
+            refreshState is PagingLoadState.Loading -> {
                 CenteredConnectionState(
                     title = stringResource(R.string.label_media_recommendations_loading),
                     subtitle = stringResource(R.string.message_media_recommendations_loading),
                 )
             }
 
-            loadState is LoadState.Error -> {
+            refreshState is PagingLoadState.Error -> {
                 RetryConnectionState(
                     title = stringResource(R.string.label_media_recommendations_error_title),
-                    onRetry = { viewModel(mediaId, perPage = 24) },
+                    onRetry = recommendations::retry,
                 )
             }
 
@@ -258,7 +261,7 @@ private fun RelationGroupedList(
 
 @Composable
 private fun RecommendationGrid(
-    recommendations: List<MediaRecommendationEntry>,
+    recommendations: androidx.paging.compose.LazyPagingItems<MediaRecommendationEntry>,
     scoreFormat: ScoreFormat,
     onMediaItemClick: (IParam) -> Unit,
     modifier: Modifier = Modifier,
@@ -270,12 +273,48 @@ private fun RecommendationGrid(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        gridItems(recommendations, key = MediaRecommendationEntry::id) { recommendation ->
+        items(
+            count = recommendations.itemCount,
+            key = recommendations.itemKey { recommendation -> recommendation.id },
+            contentType = recommendations.itemContentType { "media_recommendation_card" },
+        ) { index ->
+            val recommendation = recommendations[index] ?: return@items
             RecommendationMediaCard(
                 recommendation = recommendation,
                 scoreFormat = scoreFormat,
                 onMediaItemClick = onMediaItemClick,
             )
+        }
+
+        when (recommendations.loadState.append) {
+            is PagingLoadState.Loading -> {
+                item(
+                    key = "media_recommendations_append_loading",
+                    span = { GridItemSpan(maxLineSpan) },
+                    contentType = "media_recommendations_append_loading",
+                ) {
+                    Text(
+                        text = stringResource(R.string.message_media_recommendations_loading),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            is PagingLoadState.Error -> {
+                item(
+                    key = "media_recommendations_append_error",
+                    span = { GridItemSpan(maxLineSpan) },
+                    contentType = "media_recommendations_append_error",
+                ) {
+                    AppendRetryConnectionState(
+                        title = stringResource(R.string.label_media_recommendations_error_title),
+                        onRetry = recommendations::retry,
+                    )
+                }
+            }
+
+            else -> Unit
         }
     }
 }
@@ -316,6 +355,35 @@ private fun RetryConnectionState(
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+            )
+            OutlinedButton(
+                onClick = onRetry,
+                shape = RoundedCornerShape(20.dp),
+            ) {
+                Text(text = stringResource(co.anitrend.core.R.string.label_text_action_retry))
+            }
+        }
+    }
+}
+
+@Composable
+private fun AppendRetryConnectionState(
+    title: String,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center,
     ) {
         Column(

@@ -19,6 +19,7 @@ package co.anitrend.data.media.usecase
 import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.media.GetMediaCharactersInteractor
 import co.anitrend.data.media.GetPagingMediaInteractor
+import co.anitrend.data.media.GetMediaRecommendationsPagingInteractor
 import co.anitrend.data.media.GetMediaRecommendationsInteractor
 import co.anitrend.data.media.GetMediaRelationsInteractor
 import co.anitrend.data.media.GetMediaStaffInteractor
@@ -27,6 +28,7 @@ import co.anitrend.data.media.GetMediaStudiosInteractor
 import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaPagingRepository
+import co.anitrend.data.media.MediaRecommendationsPagingRepository
 import co.anitrend.data.media.MediaRecommendationsRepository
 import co.anitrend.data.media.MediaRelationsRepository
 import co.anitrend.data.media.MediaStaffRepository
@@ -45,6 +47,10 @@ internal interface MediaInteractor {
     class Recommendations(
         repository: MediaRecommendationsRepository,
     ) : GetMediaRecommendationsInteractor(repository)
+
+    class RecommendationsPaged(
+        repository: MediaRecommendationsPagingRepository,
+    ) : GetMediaRecommendationsPagingInteractor(repository)
 
     class Paging(
         repository: MediaPagingRepository,

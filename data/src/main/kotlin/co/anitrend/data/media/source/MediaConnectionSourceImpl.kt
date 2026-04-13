@@ -16,6 +16,10 @@
  */
 package co.anitrend.data.media.source
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
@@ -114,6 +118,46 @@ internal sealed class MediaConnectionSourceImpl {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
                 localSource.clearByMediaId(cacheIdentity.id)
             }
+        }
+    }
+
+    class RecommendationsPaged(
+        private val remoteSource: MediaRemoteSource,
+        private val localSource: MediaRecommendationConnectionLocalSource,
+        private val controller: MediaRecommendationsController,
+        private val mapper: MediaRecommendationMapper,
+        private val converter: MediaRecommendationConnectionEntityConverter,
+        override val cachePolicy: ICacheStorePolicy,
+        override val dispatcher: ISupportDispatcher,
+    ) : MediaConnectionSource.RecommendationsPaged() {
+        override fun observable(): Flow<PagingData<MediaRecommendationEntry>> =
+            Pager(
+                config =
+                    PagingConfig(
+                        pageSize = query.param.perPage,
+                        initialLoadSize = query.param.perPage,
+                        prefetchDistance = query.param.perPage,
+                        enablePlaceholders = false,
+                    ),
+                remoteMediator =
+                    MediaRecommendationsRemoteMediator(
+                        cacheIdentity = cacheIdentity,
+                        cachePolicy = cachePolicy,
+                        query = query,
+                        remoteSource = remoteSource,
+                        localSource = localSource,
+                        controller = controller,
+                        mapper = mapper,
+                        dispatcher = dispatcher,
+                    ),
+                pagingSourceFactory = { localSource.entriesByMediaIdPagingSource(query.param.id) },
+            ).flow.map { pagingData ->
+                pagingData.map(converter::convertFrom)
+            }
+
+        override suspend fun clearDataSource(context: CoroutineDispatcher) {
+            localSource.clearByMediaId(query.param.id)
+            cachePolicy.invalidateLastRequest(cacheIdentity)
         }
     }
 }

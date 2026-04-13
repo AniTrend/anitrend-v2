@@ -16,6 +16,7 @@
  */
 package co.anitrend.data.recommendation.datasource.local.connection
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -48,6 +49,23 @@ internal abstract class MediaRecommendationConnectionLocalSource : AbstractLocal
         """,
     )
     abstract fun entriesByMediaIdFlow(mediaId: Long): Flow<List<MediaRecommendationConnectionEntity>>
+
+    @Query(
+        """
+        select * from media_recommendation_connection
+        where media_id = :mediaId
+        order by sort_index asc
+        """,
+    )
+    abstract fun entriesByMediaIdPagingSource(mediaId: Long): PagingSource<Int, MediaRecommendationConnectionEntity>
+
+    @Query(
+        """
+        select count(id) from media_recommendation_connection
+        where media_id = :mediaId
+        """,
+    )
+    abstract suspend fun countByMediaId(mediaId: Long): Int
 
     @Query(
         """

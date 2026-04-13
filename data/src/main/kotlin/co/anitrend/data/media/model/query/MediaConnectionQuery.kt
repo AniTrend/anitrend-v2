@@ -26,6 +26,7 @@ internal sealed class MediaConnectionQuery : IGraphPayload {
         override fun toMap() =
             mapOf(
                 "id" to param.id,
+                "scoreFormat" to param.scoreFormat,
             )
     }
 
@@ -38,6 +39,18 @@ internal sealed class MediaConnectionQuery : IGraphPayload {
                 "perPage" to param.perPage,
                 "id" to param.id,
                 "sort" to param.sort,
+                "scoreFormat" to param.scoreFormat,
+            )
+    }
+
+    data class RecommendationsPaged(
+        val param: MediaParam.Recommendations,
+    ) : MediaConnectionQuery() {
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+                "sort" to param.sort,
+                "scoreFormat" to param.scoreFormat,
             )
     }
 }
