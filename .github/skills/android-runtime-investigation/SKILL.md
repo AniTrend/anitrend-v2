@@ -23,6 +23,13 @@ argument-hint: 'Describe the failing screen or behavior, installed variant, and 
 - AniTrend debug builds are installed and Chucker may contain the raw request and response that drove the bad UI state.
 - The app has multiple installed flavors and you need to target the right package before collecting logs.
 
+## Host Requirements
+
+- The helper scripts are compatible with stock macOS `/bin/bash` 3.2 and newer Bash versions.
+- `adb` is required for `export-chucker-db.sh`.
+- `sqlite3` is required for `query-chucker-db.sh` and is optional in `export-chucker-db.sh` for listing discovered tables after export.
+- `rg` is optional. It is used only in manual filtering examples below; use `grep -Ei` if ripgrep is not installed.
+
 ## Procedure
 
 1. Reproduce on a debug build and identify the installed AniTrend package.
@@ -59,6 +66,8 @@ Recommended filtering:
 adb logcat -d --pid="$pid" | rg -i "AndroidRuntime|FATAL EXCEPTION|Exception|GraphQL|serialization|JsonDecodingException|RequestError|anitrend"
 ```
 
+If `rg` is unavailable, use `grep -Ei` with the same pattern.
+
 Quality check:
 - The log sample should tell you whether the failure is a crash, silent request failure, empty-state rendering issue, or serializer mismatch.
 
@@ -86,6 +95,8 @@ adb shell dumpsys package <package-name> | rg -i "com.chuckerteam.chucker|debugg
 adb shell run-as <package-name> ls databases
 ```
 
+If `rg` is unavailable, use `grep -Ei` for the `dumpsys` filter.
+
 Decision point:
 - If `run-as` fails, you are likely not on a debuggable build or not targeting the right package.
 - If no Chucker database is present, continue with logs and app data relevant to the failing module.
@@ -109,6 +120,8 @@ First discover likely database names dynamically:
 ```bash
 adb shell run-as <package-name> ls databases | rg -i "chucker|http|traffic"
 ```
+
+If `rg` is unavailable, use `grep -Ei "chucker|http|traffic"`.
 
 Then copy the main database and sidecar files to the host:
 
