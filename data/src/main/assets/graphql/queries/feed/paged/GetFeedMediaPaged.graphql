@@ -18,7 +18,8 @@ query GetFeedMediaPaged(
     $userId: Int,
     $userId_in: [Int],
     $userId_not: Int,
-    $userId_not_in: [Int]
+    $userId_not_in: [Int],
+    $scoreFormat: ScoreFormat
 ) {
     Page(page: $page, perPage: $perPage) {
         pageInfo {

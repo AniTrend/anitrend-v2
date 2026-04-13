@@ -1,4 +1,4 @@
-mutation ToggleMangaFavourite($mangaId: Int) {
+mutation ToggleMangaFavourite($mangaId: Int, $scoreFormat: ScoreFormat) {
     ToggleFavourite(mangaId: $mangaId) {
         manga {
             edges {

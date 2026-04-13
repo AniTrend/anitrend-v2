@@ -40,6 +40,7 @@ private val viewModelModule =
         viewModel {
             ReviewViewModel(
                 interactor = get(),
+                settings = get(),
                 savedStateHandle = get(),
             )
         }

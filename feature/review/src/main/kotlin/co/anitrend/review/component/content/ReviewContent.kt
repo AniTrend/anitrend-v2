@@ -20,15 +20,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.fragment.app.Fragment
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.views.compose.composable
+import co.anitrend.core.component.content.compose.AniTrendComposition
 import co.anitrend.review.component.compose.ReviewRoute
 import co.anitrend.review.component.viewmodel.ReviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ReviewContent : Fragment() {
+class ReviewContent : AniTrendComposition() {
     private val viewModel by viewModel<ReviewViewModel>()
 
     override fun onCreateView(
@@ -36,15 +35,13 @@ class ReviewContent : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AniTrendTheme3 {
-                    ReviewRoute(
-                        onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
-                        viewModel = viewModel,
-                    )
-                }
+        composable(requireActivity()) {
+            AniTrendTheme3 {
+                ReviewRoute(
+                    viewModel = viewModel,
+                    onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
+                    showBottomBar = false,
+                )
             }
         }
 }

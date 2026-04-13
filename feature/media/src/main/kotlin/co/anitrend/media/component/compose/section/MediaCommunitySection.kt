@@ -32,6 +32,7 @@ import co.anitrend.common.review.ui.compose.ReviewBrowseCard
 import co.anitrend.common.review.ui.compose.ReviewCardVariant
 import co.anitrend.common.review.ui.compose.ReviewLoadingCard
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.media.R
@@ -39,6 +40,7 @@ import co.anitrend.media.R
 @Composable
 internal fun MediaCommunitySection(
     reviews: LazyPagingItems<Review>?,
+    scoreFormat: ScoreFormat,
     isBlocked: Boolean,
     authenticatedUserId: Long,
     onSeeAllClick: () -> Unit,
@@ -87,6 +89,7 @@ internal fun MediaCommunitySection(
                     previewItems.forEach { review ->
                         ReviewBrowseCard(
                             review = review,
+                            scoreFormat = scoreFormat,
                             variant = ReviewCardVariant.InlineCommunity,
                             canVote = !review.isOwnedBy(authenticatedUserId),
                             isVotePending = isVotePending(review.id),

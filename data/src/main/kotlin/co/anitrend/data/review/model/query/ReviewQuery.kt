@@ -29,6 +29,7 @@ internal sealed class ReviewQuery : IGraphPayload {
         override fun toMap() =
             mapOf(
                 "id" to param.id,
+                "scoreFormat" to param.scoreFormat,
             )
     }
 

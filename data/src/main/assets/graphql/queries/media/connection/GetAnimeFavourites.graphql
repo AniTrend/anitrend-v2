@@ -1,4 +1,4 @@
-query GetAnimeFavourites($id: Int!) {
+query GetAnimeFavourites($id: Int!, $scoreFormat: ScoreFormat) {
     User(id: $id) {
         favourites {
             anime {

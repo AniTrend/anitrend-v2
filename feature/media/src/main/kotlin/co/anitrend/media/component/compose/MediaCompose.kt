@@ -78,11 +78,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import co.anitrend.android.core.compose.AniTrendDimensions
 import co.anitrend.android.core.compose.design.BackIconButton
 import co.anitrend.android.core.compose.design.image.AniTrendImage
@@ -95,6 +96,7 @@ import co.anitrend.common.media.ui.compose.component.score.MediaScoreSection
 import co.anitrend.common.media.ui.compose.component.status.MediaStatusSection
 import co.anitrend.common.media.ui.compose.widget.title.MediaMetaLineText
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
@@ -136,9 +138,9 @@ import co.anitrend.navigation.MediaRecommendationsRouter
 import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.MediaStatsRouter
 import co.anitrend.navigation.MediaStudiosRouter
-import co.anitrend.navigation.ReviewTaskRouter
-import co.anitrend.navigation.ReviewRouter
 import co.anitrend.navigation.ReviewDiscoverRouter
+import co.anitrend.navigation.ReviewRouter
+import co.anitrend.navigation.ReviewTaskRouter
 import co.anitrend.navigation.StudioRouter
 import co.anitrend.navigation.extensions.toDataBuilder
 import co.anitrend.navigation.model.common.IParam
@@ -738,6 +740,7 @@ private fun MediaDetailContent(
         item {
             MediaCommunitySection(
                 reviews = communityReviews,
+                scoreFormat = scoreFormat,
                 isBlocked = media.isReviewBlocked,
                 authenticatedUserId = authenticatedUserId,
                 onSeeAllClick = {
@@ -778,7 +781,6 @@ private fun MediaDetailContent(
 @Composable
 fun MediaScreenContent(
     mediaState: MediaViewModel,
-    scoreFormat: ScoreFormat,
     onMyAnimeListButtonClick: (String) -> Unit,
     onManageListButtonClick: (View, Media) -> Unit,
     onFavouriteButtonClick: (View, FavouriteTaskRouter.Param) -> Unit,
@@ -797,13 +799,14 @@ fun MediaScreenContent(
     onExternalLinkClick: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
-    val context = LocalContext.current
-    val authenticationSettings: IAuthenticationSettings = koinInject()
-    val workManager = remember(context) { WorkManager.getInstance(context) }
-    val scope = rememberCoroutineScope()
-    val pendingCommunityVotes = remember { mutableStateMapOf<Long, Boolean>() }
     val state by mediaState.model.observeAsState()
     val media = state as? Media.Extended ?: return
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val pendingCommunityVotes = remember { mutableStateMapOf<Long, Boolean>() }
+    val workManager = remember(context) { WorkManager.getInstance(context) }
+
+    val userSettings: IUserSettings = koinInject()
     val charactersViewModel: MediaCharactersViewModel = koinViewModel()
     val staffViewModel: MediaStaffViewModel = koinViewModel()
     val studiosViewModel: MediaStudiosViewModel = koinViewModel()
@@ -819,8 +822,12 @@ fun MediaScreenContent(
     val relationsLoadState by relationsViewModel.loadState.observeAsState()
     val recommendations by recommendationsViewModel.model.observeAsState()
     val recommendationsLoadState by recommendationsViewModel.loadState.observeAsState()
+    val scoreFormat: ScoreFormat by userSettings.scoreFormat.flow.collectAsStateWithLifecycle(IUserSettings.DEFAULT_SCORE_FORMAT)
+    val authenticatedUserId: Long by userSettings.authenticatedUserId.flow.collectAsStateWithLifecycle(IAuthenticationSettings.INVALID_USER_ID)
+
     val characters = remember(media.id) { charactersViewModel.characters(media.id) }.collectAsLazyPagingItems()
     val staff = remember(media.id) { staffViewModel.staff(media.id) }.collectAsLazyPagingItems()
+
     val communityReviews =
         if (media.isReviewBlocked) {
             null
@@ -835,7 +842,6 @@ fun MediaScreenContent(
         }
 
     val view = LocalView.current
-    val authenticatedUserId = authenticationSettings.authenticatedUserId.value
 
     LaunchedEffect(media.id) {
         studiosViewModel(media.id)

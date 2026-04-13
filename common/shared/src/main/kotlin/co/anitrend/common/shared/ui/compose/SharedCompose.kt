@@ -18,6 +18,7 @@ package co.anitrend.common.shared.ui.compose
 
 import android.view.View
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -30,22 +31,40 @@ import co.anitrend.core.ui.commit
 import co.anitrend.core.ui.model.FragmentItem
 
 @Composable
-fun DefaultBottomAppBar(onBackPress: () -> Unit) {
+fun DefaultBottomAppBar(
+    onBackPress: (() -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit = {},
+) {
     BottomAppBar(
         actions = {
-            BackIconButton(onBackClick = onBackPress)
+            onBackPress?.also { BackIconButton(onBackClick = it) }
+            actions()
         },
     )
 }
 
 @Composable
 fun DefaultScaffold(
-    onBackPress: () -> Unit,
+    onBackPress: (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
+    showBottomBar: Boolean = true,
+    bottomBar: (@Composable () -> Unit)? = null,
+    bottomBarActions: (@Composable RowScope.() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
+        modifier = modifier,
         bottomBar = {
-            DefaultBottomAppBar(onBackPress)
+            if (showBottomBar) {
+                when {
+                    bottomBar != null -> bottomBar()
+                    onBackPress != null || bottomBarActions != null ->
+                        DefaultBottomAppBar(
+                            onBackPress = onBackPress,
+                            actions = bottomBarActions ?: {},
+                        )
+                }
+            }
         },
     ) { padding ->
         content(padding)

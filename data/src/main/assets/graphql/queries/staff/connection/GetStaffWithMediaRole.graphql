@@ -4,7 +4,8 @@ query GetStaffWithMediaRole(
     $perPage: Int!,
     $onList: Boolean,
     $sort: [MediaSort],
-    $type: MediaType
+    $type: MediaType,
+    $scoreFormat: ScoreFormat
 ) {
     Staff(id: $id) {
         staffMedia(

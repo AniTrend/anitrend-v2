@@ -548,6 +548,7 @@ object ReviewRouter : NavigationRouter() {
     @Parcelize
     data class ReviewParam(
         val id: Long? = null,
+        val scoreFormat: ScoreFormat? = null,
     ) : IParam
 }
 

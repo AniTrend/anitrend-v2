@@ -29,6 +29,7 @@ sealed class ReviewParam {
      */
     data class Entry(
         val id: Long,
+        val scoreFormat: ScoreFormat,
     ) : ReviewParam()
 
     /** [FindReview query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
@@ -43,7 +44,7 @@ sealed class ReviewParam {
         val userId: Long? = null,
         val mediaType: MediaType? = null,
         val sort: List<ISortWithOrder<ReviewSort>>? = null,
-        val scoreFormat: ScoreFormat = ScoreFormat.POINT_100,
+        val scoreFormat: ScoreFormat,
     ) : ReviewParam()
 
     /** [RateReview mutation](https://anilist.github.io/ApiV2-GraphQL-Docs/mutation.doc.html)

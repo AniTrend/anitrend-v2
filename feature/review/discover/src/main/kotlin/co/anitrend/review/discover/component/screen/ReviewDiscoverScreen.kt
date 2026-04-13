@@ -24,20 +24,29 @@ import co.anitrend.navigation.ReviewRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.review.discover.component.compose.ReviewDiscoverRoute
+import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReviewDiscoverScreen : AniTrendScreen() {
+    private val viewModel by viewModel<ReviewDiscoverViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AniTrendTheme3 {
                 ReviewDiscoverRoute(
                     onBackPress = onBackPressedDispatcher::onBackPressed,
-                    onReviewClick = { reviewId ->
+                    onReviewClick = { reviewId, scoreFormat ->
                         ReviewRouter.startActivity(
                             context = this@ReviewDiscoverScreen,
-                            navPayload = ReviewRouter.ReviewParam(id = reviewId).asNavPayload(),
+                            navPayload =
+                                ReviewRouter.ReviewParam(
+                                    id = reviewId,
+                                    scoreFormat = scoreFormat,
+                                ).asNavPayload(),
                         )
                     },
+                    viewModel = viewModel
                 )
             }
         }

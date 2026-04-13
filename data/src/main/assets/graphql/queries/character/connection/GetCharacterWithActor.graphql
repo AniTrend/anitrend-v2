@@ -4,7 +4,8 @@ query GetCharacterWithActor(
     $id: Int,
     $type: MediaType = ANIME,
     $sort: [StaffSort],
-    $language: StaffLanguage
+    $language: StaffLanguage,
+    $scoreFormat: ScoreFormat
 ) {
     Character(id: $id) {
         media(

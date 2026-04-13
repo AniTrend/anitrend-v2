@@ -1,5 +1,6 @@
 query GetMediaWithRelation(
-    $id: Int!
+    $id: Int!,
+    $scoreFormat: ScoreFormat
 ) {
     Media(id: $id) {
         id

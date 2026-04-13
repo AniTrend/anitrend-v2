@@ -70,7 +70,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.compose.AniTrendDimensions
+import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
+import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.media.entity.Media
@@ -80,7 +82,6 @@ import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.medialist.editor.R
 import co.anitrend.medialist.editor.component.compose.state.MediaListEditorState
 import co.anitrend.medialist.editor.component.compose.state.rememberMediaListEditorState
-import coil.compose.AsyncImage
 
 enum class OnMediaListEditorAction {
     SAVE,
@@ -209,8 +210,9 @@ private fun HeroPoster(
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.45f)),
     ) {
-        AsyncImage(
-            model = media.image.extraLarge ?: media.image.large ?: media.image.medium,
+        AniTrendImage(
+            image = media.image,
+            imageType = RequestImage.Media.ImageType.POSTER,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),
