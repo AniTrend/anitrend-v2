@@ -21,9 +21,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class PageInfo(
-    @SerialName("currentPage") override val currentPage: Int,
-    @SerialName("hasNextPage") override val hasNextPage: Boolean,
-    @SerialName("lastPage") override val lastPage: Int,
-    @SerialName("perPage") override val perPage: Int,
-    @SerialName("total") override val total: Int,
+    @SerialName("currentPage") override val currentPage: Int? = null,
+    @SerialName("hasNextPage") override val hasNextPage: Boolean? = null,
+    @SerialName("lastPage") override val lastPage: Int? = null,
+    @SerialName("perPage") override val perPage: Int? = null,
+    @SerialName("total") override val total: Int? = null,
 ) : IPageInfo

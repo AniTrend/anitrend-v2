@@ -28,6 +28,7 @@ import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
 import co.anitrend.data.common.extension.from
+import co.anitrend.data.common.extension.seedFromLocalCount
 import co.anitrend.data.media.MediaCharactersController
 import co.anitrend.data.media.MediaStaffController
 import co.anitrend.data.media.datasource.local.MediaLocalSource
@@ -49,6 +50,12 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
 ) : AbstractPagingMediator<Int, V>() {
     protected suspend fun shouldRefresh(hasLocalData: Boolean): Boolean =
         !hasLocalData || cachePolicy.shouldRefresh(cacheIdentity, cacheIdentity.expiresAt)
+
+    protected fun isCorruptPagingCache(
+        itemCount: Int,
+        maxSortIndex: Int?,
+    ): Boolean =
+        itemCount > 0 && maxSortIndex != itemCount - 1
 
     protected suspend fun awaitResult(
         requestType: Request.Type,
@@ -88,12 +95,24 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
             localSource = localSource,
             dispatcher = dispatcher,
         ) {
-        override suspend fun initialize(): InitializeAction =
-            if (shouldRefresh(localSource.mediaCharactersCount(query.param.id) > 0)) {
+        override suspend fun initialize(): InitializeAction {
+            var itemCount = localSource.mediaCharactersCount(query.param.id)
+            val maxSortIndex = localSource.mediaCharactersMaxSortIndex(query.param.id)
+
+            if (isCorruptPagingCache(itemCount, maxSortIndex)) {
+                localSource.clearMediaCharactersByMediaId(query.param.id)
+                cachePolicy.invalidateLastRequest(cacheIdentity)
+                itemCount = 0
+            } else {
+                supportPagingHelper.seedFromLocalCount(itemCount)
+            }
+
+            return if (shouldRefresh(itemCount > 0)) {
                 InitializeAction.LAUNCH_INITIAL_REFRESH
             } else {
                 InitializeAction.SKIP_INITIAL_REFRESH
             }
+        }
 
         private suspend fun refreshCharacters(requestCallback: RequestCallback) {
             mapper.onRequest(
@@ -152,12 +171,24 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
             localSource = localSource,
             dispatcher = dispatcher,
         ) {
-        override suspend fun initialize(): InitializeAction =
-            if (shouldRefresh(localSource.mediaStaffCount(query.param.id) > 0)) {
+        override suspend fun initialize(): InitializeAction {
+            var itemCount = localSource.mediaStaffCount(query.param.id)
+            val maxSortIndex = localSource.mediaStaffMaxSortIndex(query.param.id)
+
+            if (isCorruptPagingCache(itemCount, maxSortIndex)) {
+                localSource.clearMediaStaffByMediaId(query.param.id)
+                cachePolicy.invalidateLastRequest(cacheIdentity)
+                itemCount = 0
+            } else {
+                supportPagingHelper.seedFromLocalCount(itemCount)
+            }
+
+            return if (shouldRefresh(itemCount > 0)) {
                 InitializeAction.LAUNCH_INITIAL_REFRESH
             } else {
                 InitializeAction.SKIP_INITIAL_REFRESH
             }
+        }
 
         private suspend fun refreshStaff(requestCallback: RequestCallback) {
             mapper.onRequest(

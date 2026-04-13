@@ -25,9 +25,9 @@ package co.anitrend.domain.common.entity.contract
  * @property total The total number of items
  */
 interface IEntityPageInfo {
-    val currentPage: Int
-    val hasNextPage: Boolean
-    val lastPage: Int
-    val perPage: Int
-    val total: Int
+    val currentPage: Int?
+    val hasNextPage: Boolean?
+    val lastPage: Int?
+    val perPage: Int?
+    val total: Int?
 }

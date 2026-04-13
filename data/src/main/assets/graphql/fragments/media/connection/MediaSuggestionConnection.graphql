@@ -1,4 +1,7 @@
 fragment MediaSuggestionConnection on RecommendationConnection {
+    pageInfo {
+      ... PageInfo
+    }
     edges {
         node {
             ... Recommendation
