@@ -25,6 +25,7 @@ import co.anitrend.data.core.extensions.store
 import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.media.GetMediaCharactersInteractor
 import co.anitrend.data.media.GetPagingMediaInteractor
+import co.anitrend.data.media.GetMediaRecommendationsPagingInteractor
 import co.anitrend.data.media.GetMediaStatsInteractor
 import co.anitrend.data.media.GetMediaStudiosInteractor
 import co.anitrend.data.media.GetMediaRecommendationsInteractor
@@ -33,6 +34,7 @@ import co.anitrend.data.media.GetMediaStaffInteractor
 import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaPagingRepository
+import co.anitrend.data.media.MediaRecommendationsPagingRepository
 import co.anitrend.data.media.MediaRecommendationsRepository
 import co.anitrend.data.media.MediaRelationsRepository
 import co.anitrend.data.media.MediaStaffRepository
@@ -121,6 +123,27 @@ private val sourceModule =
                 mapper = mapper,
                 converter = get(),
                 clearDataHelper = get(),
+                cachePolicy =
+                    MediaCache(
+                        localSource = cacheLocalSource(),
+                        request = CacheRequest.MEDIA_RECOMMENDATIONS,
+                    ),
+                dispatcher = get(),
+            )
+        }
+        factory<MediaConnectionSource.RecommendationsPaged> {
+            val mapper = get<MediaRecommendationMapper>()
+
+            MediaConnectionSourceImpl.RecommendationsPaged(
+                remoteSource = aniListApi(),
+                localSource = store().mediaRecommendationConnectionDao(),
+                controller =
+                    graphQLController(
+                        mapper = mapper,
+                        strategy = offline(),
+                    ),
+                mapper = mapper,
+                converter = get(),
                 cachePolicy =
                     MediaCache(
                         localSource = cacheLocalSource(),
@@ -383,6 +406,11 @@ private val useCaseModule =
                 repository = get(),
             )
         }
+        factory<GetMediaRecommendationsPagingInteractor> {
+            MediaInteractor.RecommendationsPaged(
+                repository = get(),
+            )
+        }
         factory<GetMediaStatsInteractor> {
             MediaInteractor.Stats(
                 repository = get(),
@@ -424,6 +452,11 @@ private val repositoryModule =
         }
         factory<MediaRecommendationsRepository> {
             MediaRepository.Recommendations(
+                source = get(),
+            )
+        }
+        factory<MediaRecommendationsPagingRepository> {
+            MediaRepository.RecommendationsPaging(
                 source = get(),
             )
         }

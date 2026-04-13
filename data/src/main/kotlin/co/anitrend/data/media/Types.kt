@@ -55,6 +55,8 @@ internal typealias MediaCharactersRepository = IMediaRepository.Characters<Flow<
 internal typealias MediaPagingRepository = IMediaRepository.Paged<Flow<PagingData<Media>>>
 internal typealias MediaRelationsRepository = IMediaRepository.Relations<DataState<List<MediaRelationEntry>>>
 internal typealias MediaRecommendationsRepository = IMediaRepository.Recommendations<DataState<List<MediaRecommendationEntry>>>
+internal typealias MediaRecommendationsPagingRepository =
+    IMediaRepository.RecommendationsPaged<Flow<PagingData<MediaRecommendationEntry>>>
 internal typealias MediaStaffRepository = IMediaRepository.Staff<Flow<PagingData<MediaPerson.Staff>>>
 internal typealias MediaStudiosRepository = IMediaRepository.Studios<DataState<List<MediaStudioEntry>>>
 internal typealias MediaStatsRepository = IMediaRepository.Stats<DataState<MediaStats>>
@@ -64,6 +66,8 @@ typealias GetMediaCharactersInteractor = MediaUseCase.GetCharacters<Flow<PagingD
 typealias GetPagingMediaInteractor = MediaUseCase.GetPaged<Flow<PagingData<Media>>>
 typealias GetMediaRelationsInteractor = MediaUseCase.GetRelations<DataState<List<MediaRelationEntry>>>
 typealias GetMediaRecommendationsInteractor = MediaUseCase.GetRecommendations<DataState<List<MediaRecommendationEntry>>>
+typealias GetMediaRecommendationsPagingInteractor =
+    MediaUseCase.GetRecommendationsPaged<Flow<PagingData<MediaRecommendationEntry>>>
 typealias GetMediaStaffInteractor = MediaUseCase.GetStaff<Flow<PagingData<MediaPerson.Staff>>>
 typealias GetMediaStudiosInteractor = MediaUseCase.GetStudios<DataState<List<MediaStudioEntry>>>
 typealias GetMediaStatsInteractor = MediaUseCase.GetStats<DataState<MediaStats>>

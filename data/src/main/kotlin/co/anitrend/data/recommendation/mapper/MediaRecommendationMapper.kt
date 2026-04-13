@@ -27,7 +27,31 @@ internal class MediaRecommendationMapper(
     private val localSource: MediaRecommendationConnectionLocalSource,
     private val converter: MediaConverter,
 ) : DefaultMapper<MediaConnectionModelContainer.Recommendations, List<MediaRecommendationConnectionEntity>>() {
+    private var mediaId: Long = 0L
+    private var sortIndexOffset: Int = 0
+
+    suspend fun onRequest(
+        mediaId: Long,
+        page: Int,
+    ) {
+        this.mediaId = mediaId
+        sortIndexOffset =
+            if (page <= 1) {
+                0
+            } else {
+                localSource.countByMediaId(mediaId)
+            }
+    }
+
     override suspend fun persist(data: List<MediaRecommendationConnectionEntity>) {
+        if (sortIndexOffset == 0) {
+            localSource.clearByMediaId(mediaId)
+        }
+
+        if (data.isEmpty()) {
+            return
+        }
+
         localSource.upsertConnections(data)
     }
 
@@ -44,7 +68,7 @@ internal class MediaRecommendationMapper(
                 rating = recommendation.rating,
                 userName = recommendation.user?.name,
                 userRating = recommendation.userRating?.name,
-                sortIndex = index,
+                sortIndex = sortIndexOffset + index,
                 target = converter.convertFrom(media).toConnectionPreviewEntity(),
             )
         }

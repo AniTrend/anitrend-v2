@@ -17,6 +17,7 @@
 package co.anitrend.data.recommendation.model.connection
 
 import co.anitrend.data.common.entity.IEntityConnection
+import co.anitrend.data.common.model.paging.data.IPageModel
 import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.recommendation.model.RecommendationModel
 import co.anitrend.data.recommendation.model.edge.RecommendationEdge
@@ -33,4 +34,5 @@ internal class RecommendationConnection(
     @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
 ) : IEntityConnection,
     IEntityConnection.IEdge<RecommendationEdge>,
-    IEntityConnection.INode<RecommendationModel>
+    IEntityConnection.INode<RecommendationModel>,
+    IPageModel

@@ -22,6 +22,7 @@ import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
 import co.anitrend.data.media.MediaPagingRepository
+import co.anitrend.data.media.MediaRecommendationsPagingRepository
 import co.anitrend.data.media.MediaRecommendationsRepository
 import co.anitrend.data.media.MediaRelationsRepository
 import co.anitrend.data.media.MediaStaffRepository
@@ -59,6 +60,13 @@ internal sealed class MediaRepository {
     ) : MediaRepository(),
         MediaRecommendationsRepository {
         override fun getRecommendations(param: MediaParam.Recommendations): DataState<List<MediaRecommendationEntry>> = source create source(param)
+    }
+
+    class RecommendationsPaging(
+        private val source: MediaConnectionSource.RecommendationsPaged,
+    ) : MediaRepository(),
+        MediaRecommendationsPagingRepository {
+        override fun getRecommendationsPaged(param: MediaParam.Recommendations): Flow<PagingData<MediaRecommendationEntry>> = source(param)
     }
 
     class Paging(

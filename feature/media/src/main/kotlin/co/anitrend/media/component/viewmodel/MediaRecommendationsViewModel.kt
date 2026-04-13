@@ -16,18 +16,40 @@
  */
 package co.anitrend.media.component.viewmodel
 
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
+import co.anitrend.data.media.GetMediaRecommendationsPagingInteractor
 import co.anitrend.data.media.GetMediaRecommendationsInteractor
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.model.MediaParam
+import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.recommendation.enums.RecommendationSort
+import kotlinx.coroutines.flow.Flow
 
 class MediaRecommendationsViewModel(
     private val interactor: GetMediaRecommendationsInteractor,
+    private val pagingInteractor: GetMediaRecommendationsPagingInteractor,
 ) : AniTrendViewModelState<List<MediaRecommendationEntry>>() {
+    fun recommendations(
+        mediaId: Long,
+        perPage: Int = 24,
+        scoreFormat: ScoreFormat,
+    ): Flow<PagingData<MediaRecommendationEntry>> =
+        pagingInteractor(
+            MediaParam.Recommendations(
+                id = mediaId,
+                perPage = perPage,
+                sort = listOf(RecommendationSort.RATING),
+                scoreFormat = scoreFormat,
+            ),
+        ).cachedIn(viewModelScope)
+
     operator fun invoke(
         mediaId: Long,
         perPage: Int = 18,
+        scoreFormat: ScoreFormat,
     ) {
         val result =
             interactor(
@@ -35,6 +57,7 @@ class MediaRecommendationsViewModel(
                     id = mediaId,
                     perPage = perPage,
                     sort = listOf(RecommendationSort.RATING),
+                    scoreFormat = scoreFormat,
                 ),
             )
         state.postValue(result)

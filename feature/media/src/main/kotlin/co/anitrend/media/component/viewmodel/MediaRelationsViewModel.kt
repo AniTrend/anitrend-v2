@@ -20,12 +20,16 @@ import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.data.media.GetMediaRelationsInteractor
 import co.anitrend.domain.media.entity.MediaRelationEntry
 import co.anitrend.domain.media.model.MediaParam
+import co.anitrend.domain.medialist.enums.ScoreFormat
 
 class MediaRelationsViewModel(
     private val interactor: GetMediaRelationsInteractor,
 ) : AniTrendViewModelState<List<MediaRelationEntry>>() {
-    operator fun invoke(mediaId: Long) {
-        val result = interactor(MediaParam.Relations(id = mediaId))
+    operator fun invoke(
+        mediaId: Long,
+        scoreFormat: ScoreFormat,
+    ) {
+        val result = interactor(MediaParam.Relations(id = mediaId, scoreFormat = scoreFormat))
         state.postValue(result)
     }
 }

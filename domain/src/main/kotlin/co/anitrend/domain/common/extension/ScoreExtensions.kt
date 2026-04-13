@@ -33,4 +33,3 @@ fun Int.asFormattedScore(scoreFormat: ScoreFormat): String =
                 else -> "0/3"
             }
     }
-

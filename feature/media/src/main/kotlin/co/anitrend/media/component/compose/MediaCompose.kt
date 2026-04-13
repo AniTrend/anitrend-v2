@@ -843,12 +843,12 @@ fun MediaScreenContent(
 
     val view = LocalView.current
 
-    LaunchedEffect(media.id) {
+    LaunchedEffect(media.id, scoreFormat) {
         studiosViewModel(media.id)
         statsViewModel(media.id)
-        relationsViewModel(media.id)
+        relationsViewModel(media.id, scoreFormat)
         if (!media.isRecommendationBlocked) {
-            recommendationsViewModel(media.id)
+            recommendationsViewModel(media.id, scoreFormat = scoreFormat)
         }
     }
 
@@ -936,8 +936,8 @@ fun MediaScreenContent(
             onRetryStaff = staff::retry,
             onRetryStudios = { studiosViewModel(media.id) },
             onRetryStats = { statsViewModel(media.id) },
-            onRetryRelations = { relationsViewModel(media.id) },
-            onRetryRecommendations = { recommendationsViewModel(media.id) },
+            onRetryRelations = { relationsViewModel(media.id, scoreFormat) },
+            onRetryRecommendations = { recommendationsViewModel(media.id, scoreFormat = scoreFormat) },
             onRetryCommunity = { communityReviews?.retry() },
             modifier =
                 Modifier

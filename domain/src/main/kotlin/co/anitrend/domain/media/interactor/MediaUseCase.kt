@@ -39,6 +39,12 @@ sealed class MediaUseCase {
         operator fun invoke(param: MediaParam.Recommendations) = repository.getRecommendations(param)
     }
 
+    abstract class GetRecommendationsPaged<State>(
+        protected val repository: IMediaRepository.RecommendationsPaged<State>,
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Recommendations) = repository.getRecommendationsPaged(param)
+    }
+
     abstract class GetCharacters<State>(
         protected val repository: IMediaRepository.Characters<State>,
     ) : MediaUseCase() {

@@ -66,6 +66,7 @@ private val viewModelModule =
         viewModel {
             MediaRecommendationsViewModel(
                 interactor = get(),
+                pagingInteractor = get(),
             )
         }
         viewModel {

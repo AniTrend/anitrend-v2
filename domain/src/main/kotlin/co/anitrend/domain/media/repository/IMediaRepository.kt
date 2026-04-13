@@ -32,6 +32,10 @@ interface IMediaRepository {
         fun getRecommendations(param: MediaParam.Recommendations): State
     }
 
+    interface RecommendationsPaged<State> : IMediaRepository {
+        fun getRecommendationsPaged(param: MediaParam.Recommendations): State
+    }
+
     interface Characters<State> : IMediaRepository {
         fun getCharacters(param: MediaParam.Characters): State
     }

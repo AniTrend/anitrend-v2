@@ -410,9 +410,10 @@ private fun MediaListContentPreview(
 ) {
     PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
         Column(
-            modifier = Modifier
-                .padding(8.dp)
-                .height(620.dp),
+            modifier =
+                Modifier
+                    .padding(8.dp)
+                    .height(620.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             MediaListSectionRow(

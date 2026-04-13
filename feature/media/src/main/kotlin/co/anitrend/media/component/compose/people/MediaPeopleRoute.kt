@@ -16,6 +16,7 @@
  */
 package co.anitrend.media.component.compose.people
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState as PagingLoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import co.anitrend.android.core.ui.AniTrendPreview
@@ -140,20 +142,19 @@ private fun CharactersPane(
     characters: LazyPagingItems<MediaPerson.Character>,
     onRetry: () -> Unit,
 ) {
-    val loadedItems = characters.itemSnapshotList.items
     val refreshState = characters.loadState.refresh
 
     when {
-        loadedItems.isNotEmpty() -> {
-            CharacterGrid(characters = loadedItems)
+        characters.itemCount > 0 -> {
+            CharacterGrid(characters = characters)
         }
-        refreshState is androidx.paging.LoadState.Loading -> {
+        refreshState is PagingLoadState.Loading -> {
             CenteredPeopleState(
                 title = stringResource(R.string.label_media_people_characters_loading),
                 subtitle = stringResource(R.string.message_media_people_characters_loading),
             )
         }
-        refreshState is androidx.paging.LoadState.Error -> {
+        refreshState is PagingLoadState.Error -> {
             RetryPeopleState(
                 title = stringResource(R.string.label_media_people_characters_error_title),
                 onRetry = onRetry,
@@ -173,20 +174,19 @@ private fun StaffPane(
     staff: LazyPagingItems<MediaPerson.Staff>,
     onRetry: () -> Unit,
 ) {
-    val loadedItems = staff.itemSnapshotList.items
     val refreshState = staff.loadState.refresh
 
     when {
-        loadedItems.isNotEmpty() -> {
-            StaffList(staff = loadedItems)
+        staff.itemCount > 0 -> {
+            StaffList(staff = staff)
         }
-        refreshState is androidx.paging.LoadState.Loading -> {
+        refreshState is PagingLoadState.Loading -> {
             CenteredPeopleState(
                 title = stringResource(R.string.label_media_people_staff_loading),
                 subtitle = stringResource(R.string.message_media_people_staff_loading),
             )
         }
-        refreshState is androidx.paging.LoadState.Error -> {
+        refreshState is PagingLoadState.Error -> {
             RetryPeopleState(
                 title = stringResource(R.string.label_media_people_staff_error_title),
                 onRetry = onRetry,
@@ -204,10 +204,19 @@ private fun StaffPane(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CharacterGrid(
-    characters: List<MediaPerson.Character>,
+    characters: LazyPagingItems<MediaPerson.Character>,
     modifier: Modifier = Modifier,
 ) {
-    val sections = characters.groupedCharacterSections()
+    val sections =
+        characters
+            .itemSnapshotList
+            .items
+            .mapIndexed { index, item ->
+                IndexedCharacterEntry(
+                    pagingIndex = index,
+                    item = item,
+                )
+            }.groupedCharacterSections()
 
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 148.dp),
@@ -229,23 +238,64 @@ private fun CharacterGrid(
 
             items(
                 count = section.characters.size,
-                key = { index -> section.characters[index].id },
+                key = { index -> section.characters[index].item.id },
             ) { index ->
+                val entry = section.characters[index]
+                val item = characters[entry.pagingIndex] ?: entry.item
+
                 CharacterPreviewCard(
-                    item = section.characters[index],
+                    item = item,
                     showVoiceActor = true,
                 )
             }
+        }
+
+        when (characters.loadState.append) {
+            is PagingLoadState.Loading -> {
+                item(
+                    key = "media_people_characters_append_loading",
+                    span = { GridItemSpan(maxLineSpan) },
+                    contentType = "media_people_characters_append_loading",
+                ) {
+                    PeopleAppendLoadingText(
+                        text = stringResource(R.string.message_media_people_characters_loading),
+                    )
+                }
+            }
+
+            is PagingLoadState.Error -> {
+                item(
+                    key = "media_people_characters_append_error",
+                    span = { GridItemSpan(maxLineSpan) },
+                    contentType = "media_people_characters_append_error",
+                ) {
+                    AppendRetryPeopleState(
+                        title = stringResource(R.string.label_media_people_characters_error_title),
+                        onRetry = characters::retry,
+                    )
+                }
+            }
+
+            else -> Unit
         }
     }
 }
 
 @Composable
 private fun StaffList(
-    staff: List<MediaPerson.Staff>,
+    staff: LazyPagingItems<MediaPerson.Staff>,
     modifier: Modifier = Modifier,
 ) {
-    val sections = groupStaffByRoleBucket(staff)
+    val sections =
+        staff
+            .itemSnapshotList
+            .items
+            .mapIndexed { index, item ->
+                IndexedStaffEntry(
+                    pagingIndex = index,
+                    item = item,
+                )
+            }.groupStaffByRoleBucket()
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -262,12 +312,86 @@ private fun StaffList(
 
             items(
                 count = section.staff.size,
-                key = { index -> section.staff[index].id },
+                key = { index -> section.staff[index].item.id },
             ) { index ->
+                val entry = section.staff[index]
+                val item = staff[entry.pagingIndex] ?: entry.item
+
                 StaffPreviewListItem(
-                    item = section.staff[index],
+                    item = item,
                     showLanguage = true,
                 )
+            }
+        }
+
+        when (staff.loadState.append) {
+            is PagingLoadState.Loading -> {
+                item(
+                    key = "media_people_staff_append_loading",
+                    contentType = "media_people_staff_append_loading",
+                ) {
+                    PeopleAppendLoadingText(
+                        text = stringResource(R.string.message_media_people_staff_loading),
+                    )
+                }
+            }
+
+            is PagingLoadState.Error -> {
+                item(
+                    key = "media_people_staff_append_error",
+                    contentType = "media_people_staff_append_error",
+                ) {
+                    AppendRetryPeopleState(
+                        title = stringResource(R.string.label_media_people_staff_error_title),
+                        onRetry = staff::retry,
+                    )
+                }
+            }
+
+            else -> Unit
+        }
+    }
+}
+
+@Composable
+private fun PeopleAppendLoadingText(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = modifier.padding(vertical = 12.dp),
+    )
+}
+
+@Composable
+private fun AppendRetryPeopleState(
+    title: String,
+    onRetry: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+            )
+            androidx.compose.material3.OutlinedButton(
+                onClick = onRetry,
+                shape =
+                    androidx.compose.foundation.shape
+                        .RoundedCornerShape(20.dp),
+            ) {
+                Text(text = stringResource(co.anitrend.core.R.string.label_text_action_retry))
             }
         }
     }
@@ -357,3 +481,67 @@ private fun CenteredPeopleStatePreview(
         )
     }
 }
+
+private data class IndexedCharacterEntry(
+    val pagingIndex: Int,
+    val item: MediaPerson.Character,
+)
+
+private data class IndexedCharacterSection(
+    @param:StringRes val titleRes: Int,
+    val characters: List<IndexedCharacterEntry>,
+)
+
+private data class IndexedStaffEntry(
+    val pagingIndex: Int,
+    val item: MediaPerson.Staff,
+)
+
+private data class IndexedStaffSection(
+    val group: co.anitrend.media.component.compose.section.MediaStaffRoleGroup,
+    val staff: List<IndexedStaffEntry>,
+)
+
+private fun List<IndexedCharacterEntry>.groupedCharacterSections(): List<IndexedCharacterSection> {
+    if (isEmpty()) {
+        return emptyList()
+    }
+
+    return buildList {
+        listOf(
+            co.anitrend.domain.character.enums.CharacterRole.MAIN to R.string.label_media_people_characters_group_main,
+            co.anitrend.domain.character.enums.CharacterRole.SUPPORTING to R.string.label_media_people_characters_group_supporting,
+            co.anitrend.domain.character.enums.CharacterRole.BACKGROUND to R.string.label_media_people_characters_group_background,
+        ).forEach { (role, titleRes) ->
+            val items = this@groupedCharacterSections.filter { character -> character.item.role == role }
+            if (items.isNotEmpty()) {
+                add(IndexedCharacterSection(titleRes = titleRes, characters = items))
+            }
+        }
+
+        val unclassified = this@groupedCharacterSections.filter { character -> character.item.role == null }
+        if (unclassified.isNotEmpty()) {
+            add(
+                IndexedCharacterSection(
+                    titleRes = R.string.label_media_people_characters_group_background,
+                    characters = unclassified,
+                ),
+            )
+        }
+    }
+}
+
+private fun List<IndexedStaffEntry>.groupStaffByRoleBucket(): List<IndexedStaffSection> =
+    groupStaffByRoleBucket(
+        map(IndexedStaffEntry::item),
+    ).map { section ->
+        val sectionIds = section.staff.mapTo(linkedSetOf(), MediaPerson.Staff::id)
+
+        IndexedStaffSection(
+            group = section.group,
+            staff =
+                this.filter { entry ->
+                    entry.item.id in sectionIds
+                },
+        )
+    }
