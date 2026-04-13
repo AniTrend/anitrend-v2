@@ -48,9 +48,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -59,8 +61,14 @@ import androidx.compose.material3.rememberDatePickerState
 import co.anitrend.airing.R
 import co.anitrend.airing.component.viewmodel.AiringViewModel
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.common.media.ui.compose.extensions.MediaBrowseLayout
+import co.anitrend.common.media.ui.compose.extensions.gridColumns
 import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
 import co.anitrend.common.media.ui.compose.item.MediaCompactItem
+import co.anitrend.common.media.ui.compose.preview.mediaPreviewItems
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
@@ -68,6 +76,7 @@ import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.navigation.model.common.IParam
+import kotlinx.coroutines.flow.flowOf
 import org.koin.androidx.compose.koinViewModel
 import org.threeten.bp.Instant
 
@@ -172,7 +181,7 @@ fun AiringRoute(
                     airings.itemCount > 0 ->
                         AiringGrid(
                             airings = airings,
-                            preferredViewMode = preferredViewMode,
+                            browseLayout = preferredViewMode,
                             scoreFormat = scoreFormat,
                             onMediaItemClick = onMediaItemClick,
                         )
@@ -203,12 +212,12 @@ fun AiringRoute(
 @Composable
 private fun AiringGrid(
     airings: LazyPagingItems<Media>,
-    preferredViewMode: PreferredViewMode,
+    browseLayout: MediaBrowseLayout,
     scoreFormat: ScoreFormat,
     onMediaItemClick: (IParam) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val columns = preferredViewMode.gridColumns()
+    val columns = browseLayout.gridColumns()
     val mediaPreferenceData = remember(scoreFormat) { MediaPreferenceData(scoreFormat = scoreFormat) }
 
     LazyVerticalGrid(
@@ -335,15 +344,6 @@ private fun RetryAiringState(
     }
 }
 
-private fun PreferredViewMode.gridColumns(): Int =
-    when (this) {
-        PreferredViewMode.COMPACT -> 3
-        PreferredViewMode.COMFORTABLE -> 2
-        PreferredViewMode.SUMMARY,
-        PreferredViewMode.DETAILED,
-        -> 1
-    }
-
 private fun formatAiringDate(
     epochSecond: Int?,
     dateHelper: AniTrendDateHelper,
@@ -373,3 +373,35 @@ private fun Long.toAiringFilterEpochSecond(dateHelper: AniTrendDateHelper): Int 
             dateHelper.convertToFuzzyDate(unixTimeStamp = this),
         ).div(1000)
         .toInt()
+
+@AniTrendPreview.Default
+@Composable
+private fun AiringGridPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        val airings = flowOf(PagingData.from(mediaPreviewItems)).collectAsLazyPagingItems()
+
+        AiringGrid(
+            airings = airings,
+            browseLayout = PreferredViewMode.COMPACT,
+            scoreFormat = ScoreFormat.POINT_10_DECIMAL,
+            onMediaItemClick = {},
+            modifier = Modifier.padding(8.dp).height(540.dp),
+        )
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun AiringStatePreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        AiringState(
+            title = "Airing schedule",
+            subtitle = "Pick a date to load the next batch of episodes.",
+            modifier = Modifier.padding(24.dp),
+        )
+    }
+}

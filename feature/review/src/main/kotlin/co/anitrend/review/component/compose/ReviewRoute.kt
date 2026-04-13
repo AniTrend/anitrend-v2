@@ -41,6 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
@@ -48,6 +49,8 @@ import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.common.review.ui.compose.ReviewReaderContent
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.user.settings.IUserSettings
+import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.navigation.ReviewTaskRouter
@@ -57,28 +60,32 @@ import co.anitrend.review.component.viewmodel.ReviewViewModel
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 @Composable
 fun ReviewRoute(
-    onBackPress: () -> Unit,
-    viewModel: ReviewViewModel = koinViewModel(),
+    viewModel: ReviewViewModel,
+    onBackPress: (() -> Unit)? = null,
+    showBottomBar: Boolean = true,
 ) {
     val context = LocalContext.current
-    val authenticationSettings: IAuthenticationSettings = koinInject()
+    val userSettings: IUserSettings = koinInject()
     val workManager = remember(context) { WorkManager.getInstance(context) }
     val scope = rememberCoroutineScope()
     var isVotePending by remember { mutableStateOf(false) }
     val review by viewModel.model.observeAsState()
     val loadState by viewModel.loadState.observeAsState()
-    val authenticatedUserId = authenticationSettings.authenticatedUserId.value
+    val authenticatedUserId by userSettings.authenticatedUserId.flow.collectAsStateWithLifecycle(IAuthenticationSettings.INVALID_USER_ID)
+    val scoreFormat: ScoreFormat by userSettings.scoreFormat.flow.collectAsStateWithLifecycle(IUserSettings.DEFAULT_SCORE_FORMAT)
 
     LaunchedEffect(viewModel.reviewId) {
         viewModel()
     }
 
-    DefaultScaffold(onBackPress = onBackPress) { padding ->
+    DefaultScaffold(
+        onBackPress = onBackPress,
+        showBottomBar = showBottomBar,
+    ) { padding ->
         Column(
             modifier =
                 Modifier
@@ -113,6 +120,7 @@ fun ReviewRoute(
                         ) {
                             ReviewReaderContent(
                                 review = reviewEntry,
+                                scoreFormat = scoreFormat,
                                 canVote = !reviewEntry.isOwnedBy(authenticatedUserId),
                                 isVotePending = isVotePending,
                                 onVoteRequested = { rating ->

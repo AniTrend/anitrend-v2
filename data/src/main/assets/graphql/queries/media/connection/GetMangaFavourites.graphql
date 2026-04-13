@@ -1,4 +1,4 @@
-query GetMangaFavourites($id: Int!) {
+query GetMangaFavourites($id: Int!, $scoreFormat: ScoreFormat) {
     User(id: $id) {
         favourites {
             manga {

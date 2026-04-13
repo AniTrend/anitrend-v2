@@ -16,71 +16,55 @@
  */
 package co.anitrend.media.discover.component.compose
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.GridView
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemContentType
-import androidx.paging.compose.itemKey
-import co.anitrend.android.core.compose.design.BackIconButton
-import co.anitrend.android.core.compose.design.image.AniTrendImage
-import co.anitrend.android.core.helpers.image.model.RequestImage
-import co.anitrend.common.media.ui.compose.component.MediaRating
-import co.anitrend.common.media.ui.compose.entity.MediaPreferenceData
-import co.anitrend.common.media.ui.compose.extensions.displayTitle
-import co.anitrend.common.media.ui.compose.extensions.secondaryTitle
-import co.anitrend.common.media.ui.compose.item.MediaCompactItem
+import co.anitrend.android.core.ui.AniTrendPreview
+import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
+import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.common.media.ui.compose.extensions.MediaBrowseLayout
+import co.anitrend.common.media.ui.compose.extensions.MediaBrowseListVariant
+import co.anitrend.common.media.ui.compose.extensions.genreMetaLine
+import co.anitrend.common.media.ui.compose.item.MediaPagedBrowseContent
+import co.anitrend.common.media.ui.compose.item.MediaPagedBrowseKeys
+import co.anitrend.common.media.ui.compose.preview.mediaPreviewItems
+import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleText
 import co.anitrend.common.media.ui.compose.widget.title.MediaMetaLineText
 import co.anitrend.data.settings.customize.ICustomizationSettings
-import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
-import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.discover.R
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
 import co.anitrend.navigation.MediaDiscoverRouter
-import co.anitrend.navigation.MediaListEditorRouter
-import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.model.common.IParam
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun MediaDiscoverCompose(
@@ -104,29 +88,24 @@ fun MediaDiscoverCompose(
     val mediaItems = viewModel.media.collectAsLazyPagingItems()
     val refreshState = mediaItems.loadState.refresh
 
-    Scaffold(
+    DefaultScaffold(
+        onBackPress = onBackPress,
         modifier = modifier,
-        bottomBar = {
-            if (showBottomBar) {
-                BottomAppBar(
-                    actions = {
-                        onBackPress?.also { BackIconButton(onBackClick = it) }
-                        IconButton(onClick = { onFilterClick(params) }) {
-                            Icon(
-                                imageVector = Icons.Default.FilterList,
-                                contentDescription = stringResource(R.string.action_media_discover_filter),
-                            )
-                        }
-                        onViewModeClick?.also { action ->
-                            IconButton(onClick = action) {
-                                Icon(
-                                    imageVector = Icons.Default.GridView,
-                                    contentDescription = stringResource(R.string.action_media_discover_change_view),
-                                )
-                            }
-                        }
-                    },
+        showBottomBar = showBottomBar,
+        bottomBarActions = {
+            IconButton(onClick = { onFilterClick(params) }) {
+                Icon(
+                    imageVector = Icons.Default.FilterList,
+                    contentDescription = stringResource(R.string.action_media_discover_filter),
                 )
+            }
+            onViewModeClick?.also { action ->
+                IconButton(onClick = action) {
+                    Icon(
+                        imageVector = Icons.Default.GridView,
+                        contentDescription = stringResource(R.string.action_media_discover_change_view),
+                    )
+                }
             }
         },
     ) { padding ->
@@ -139,12 +118,20 @@ fun MediaDiscoverCompose(
         ) {
             when {
                 mediaItems.itemCount > 0 ->
-                    MediaDiscoverResults(
+                    MediaPagedBrowseContent(
                         mediaItems = mediaItems,
-                        preferredViewMode = preferredViewMode,
+                        browseLayout = preferredViewMode,
                         scoreFormat = scoreFormat,
                         onMediaItemClick = onMediaItemClick,
-                    )
+                        appendLoadingText = stringResource(R.string.message_media_discover_loading_more),
+                        appendErrorTitle = stringResource(R.string.label_media_discover_error_title),
+                        keys = MediaPagedBrowseKeys(prefix = "media_discover"),
+                    ) { media, variant ->
+                        MediaDiscoverSupportingContent(
+                            media = media,
+                            variant = variant,
+                        )
+                    }
 
                 refreshState is LoadState.Loading ->
                     MediaDiscoverState(
@@ -169,327 +156,32 @@ fun MediaDiscoverCompose(
 }
 
 @Composable
-private fun MediaDiscoverResults(
-    mediaItems: LazyPagingItems<Media>,
-    preferredViewMode: PreferredViewMode,
-    scoreFormat: ScoreFormat,
-    onMediaItemClick: (IParam) -> Unit,
-    modifier: Modifier = Modifier,
+private fun ColumnScope.MediaDiscoverSupportingContent(
+    media: Media,
+    variant: MediaBrowseListVariant,
 ) {
-    val mediaPreferenceData = remember(scoreFormat) { MediaPreferenceData(scoreFormat = scoreFormat) }
+    MediaMetaLineText(
+        media = media,
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.primary,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+    )
 
-    if (preferredViewMode.isListLayout()) {
-        MediaDiscoverList(
-            mediaItems = mediaItems,
-            preferredViewMode = preferredViewMode,
-            mediaPreferenceData = mediaPreferenceData,
-            onMediaItemClick = onMediaItemClick,
-            modifier = modifier,
-        )
-    } else {
-        MediaDiscoverGrid(
-            mediaItems = mediaItems,
-            preferredViewMode = preferredViewMode,
-            mediaPreferenceData = mediaPreferenceData,
-            onMediaItemClick = onMediaItemClick,
-            modifier = modifier,
-        )
-    }
-}
+    AiringScheduleText(
+        media = media,
+        style = MaterialTheme.typography.bodySmall,
+    )
 
-@Composable
-private fun MediaDiscoverGrid(
-    mediaItems: LazyPagingItems<Media>,
-    preferredViewMode: PreferredViewMode,
-    mediaPreferenceData: MediaPreferenceData,
-    onMediaItemClick: (IParam) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val columns = preferredViewMode.gridColumns()
-
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(columns),
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = 24.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        items(
-            count = mediaItems.itemCount,
-            key = mediaItems.itemKey { media -> media.id },
-            contentType = mediaItems.itemContentType { "media_discover_grid_item" },
-        ) { index ->
-            val media = mediaItems[index] ?: return@items
-
-            MediaCompactItem(
-                media = media,
-                mediaPreferenceData = mediaPreferenceData,
-                mediaItemClick = onMediaItemClick,
-                modifier =
-                    if (columns == 2) {
-                        Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(0.62f)
-                    } else {
-                        Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(0.55f)
-                    },
+    if (variant == MediaBrowseListVariant.SUMMARY) {
+        media.genreMetaLine()?.also { genres ->
+            Text(
+                text = genres,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
             )
-        }
-
-        when (mediaItems.loadState.append) {
-            is LoadState.Loading -> {
-                item(
-                    key = "media_discover_grid_append_loading",
-                    span = { GridItemSpan(maxLineSpan) },
-                    contentType = "media_discover_grid_append_loading",
-                ) {
-                    Text(
-                        text = stringResource(R.string.message_media_discover_loading_more),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(vertical = 12.dp),
-                    )
-                }
-            }
-
-            is LoadState.Error -> {
-                item(
-                    key = "media_discover_grid_append_error",
-                    span = { GridItemSpan(maxLineSpan) },
-                    contentType = "media_discover_grid_append_error",
-                ) {
-                    MediaDiscoverRetryState(
-                        title = stringResource(R.string.label_media_discover_error_title),
-                        onRetry = mediaItems::retry,
-                    )
-                }
-            }
-
-            else -> Unit
-        }
-    }
-}
-
-@Composable
-private fun MediaDiscoverList(
-    mediaItems: LazyPagingItems<Media>,
-    preferredViewMode: PreferredViewMode,
-    mediaPreferenceData: MediaPreferenceData,
-    onMediaItemClick: (IParam) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = 24.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp),
-    ) {
-        items(
-            count = mediaItems.itemCount,
-            key = mediaItems.itemKey { media -> media.id },
-            contentType =
-                mediaItems.itemContentType {
-                    when (preferredViewMode) {
-                        PreferredViewMode.SUMMARY -> "media_discover_summary_item"
-                        else -> "media_discover_detailed_item"
-                    }
-                },
-        ) { index ->
-            val media = mediaItems[index] ?: return@items
-
-            when (preferredViewMode) {
-                PreferredViewMode.SUMMARY ->
-                    MediaDiscoverSummaryItem(
-                        media = media,
-                        mediaPreferenceData = mediaPreferenceData,
-                        onMediaItemClick = onMediaItemClick,
-                    )
-
-                else ->
-                    MediaDiscoverDetailedItem(
-                        media = media,
-                        mediaPreferenceData = mediaPreferenceData,
-                        onMediaItemClick = onMediaItemClick,
-                    )
-            }
-        }
-
-        when (mediaItems.loadState.append) {
-            is LoadState.Loading -> {
-                item(
-                    key = "media_discover_list_append_loading",
-                    contentType = "media_discover_list_append_loading",
-                ) {
-                    Text(
-                        text = stringResource(R.string.message_media_discover_loading_more),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(vertical = 12.dp),
-                    )
-                }
-            }
-
-            is LoadState.Error -> {
-                item(
-                    key = "media_discover_list_append_error",
-                    contentType = "media_discover_list_append_error",
-                ) {
-                    MediaDiscoverRetryState(
-                        title = stringResource(R.string.label_media_discover_error_title),
-                        onRetry = mediaItems::retry,
-                    )
-                }
-            }
-
-            else -> Unit
-        }
-    }
-}
-
-@Composable
-private fun MediaDiscoverDetailedItem(
-    media: Media,
-    mediaPreferenceData: MediaPreferenceData,
-    onMediaItemClick: (IParam) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    MediaDiscoverListItem(
-        media = media,
-        mediaPreferenceData = mediaPreferenceData,
-        onMediaItemClick = onMediaItemClick,
-        modifier = modifier,
-        showGenres = false,
-    )
-}
-
-@Composable
-private fun MediaDiscoverSummaryItem(
-    media: Media,
-    mediaPreferenceData: MediaPreferenceData,
-    onMediaItemClick: (IParam) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    MediaDiscoverListItem(
-        media = media,
-        mediaPreferenceData = mediaPreferenceData,
-        onMediaItemClick = onMediaItemClick,
-        modifier = modifier,
-        showGenres = true,
-    )
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-private fun MediaDiscoverListItem(
-    media: Media,
-    mediaPreferenceData: MediaPreferenceData,
-    onMediaItemClick: (IParam) -> Unit,
-    modifier: Modifier = Modifier,
-    showGenres: Boolean,
-) {
-    Surface(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .combinedClickable(
-                    onClick = {
-                        onMediaItemClick(
-                            MediaRouter.MediaParam(
-                                id = media.id,
-                                type = media.category.type,
-                            ),
-                        )
-                    },
-                    onLongClick = {
-                        onMediaItemClick(
-                            MediaListEditorRouter.MediaListEditorParam(
-                                mediaId = media.id,
-                                mediaType = media.category.type,
-                                scoreFormat = mediaPreferenceData.scoreFormat,
-                            ),
-                        )
-                    },
-                ),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f),
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        shape =
-            androidx.compose.foundation.shape
-                .RoundedCornerShape(24.dp),
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.Top,
-        ) {
-            Box(
-                modifier =
-                    Modifier
-                        .width(112.dp)
-                        .height(160.dp),
-            ) {
-                AniTrendImage(
-                    image = media.image,
-                    imageType = RequestImage.Media.ImageType.POSTER,
-                    modifier =
-                        Modifier.fillMaxSize().clip(
-                            androidx.compose.foundation.shape
-                                .RoundedCornerShape(18.dp),
-                        ),
-                    onClick = {},
-                )
-                MediaRating(
-                    media = media,
-                    scoreFormat = mediaPreferenceData.scoreFormat,
-                    modifier = Modifier.padding(8.dp),
-                )
-            }
-
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                Text(
-                    text = media.displayTitle().orEmpty(),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-
-                media.secondaryTitle()?.also { secondaryTitle ->
-                    Text(
-                        text = secondaryTitle,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-
-                MediaMetaLineText(
-                    media = media,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-
-                AiringScheduleText(
-                    media = media,
-                    style = MaterialTheme.typography.bodySmall,
-                )
-
-                if (showGenres && media.genres.isNotEmpty()) {
-                    Text(
-                        text = media.genres.joinToString(separator = " • ") { "${it.emoji} ${it.name}" },
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 3,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-            }
         }
     }
 }
@@ -548,13 +240,42 @@ private fun MediaDiscoverRetryState(
     }
 }
 
-private fun PreferredViewMode.isListLayout(): Boolean = this == PreferredViewMode.DETAILED || this == PreferredViewMode.SUMMARY
+@AniTrendPreview.Default
+@Composable
+private fun MediaDiscoverContentPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        val mediaItems = flowOf(PagingData.from(mediaPreviewItems.take(3))).collectAsLazyPagingItems()
 
-private fun PreferredViewMode.gridColumns(): Int =
-    when (this) {
-        PreferredViewMode.COMFORTABLE -> 2
-        PreferredViewMode.COMPACT -> 3
-        PreferredViewMode.DETAILED,
-        PreferredViewMode.SUMMARY,
-        -> 1
+        MediaPagedBrowseContent(
+            mediaItems = mediaItems,
+            browseLayout = MediaBrowseLayout.SUMMARY,
+            scoreFormat = IUserSettings.DEFAULT_SCORE_FORMAT,
+            onMediaItemClick = {},
+            appendLoadingText = "Loading more discover results",
+            appendErrorTitle = "Could not load more results",
+            keys = MediaPagedBrowseKeys(prefix = "media_discover_preview"),
+            modifier = Modifier.padding(8.dp).height(540.dp),
+        ) { media, variant ->
+            MediaDiscoverSupportingContent(
+                media = media,
+                variant = variant,
+            )
+        }
     }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun MediaDiscoverStatePreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        MediaDiscoverState(
+            title = "No discover matches",
+            subtitle = "Adjust the filters to broaden the result set.",
+            modifier = Modifier.padding(24.dp),
+        )
+    }
+}

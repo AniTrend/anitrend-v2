@@ -48,7 +48,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -62,22 +61,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.asPrettyTime
-import co.anitrend.android.core.compose.design.image.rememberRequestImage
+import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.extensions.toHumanReadableQuantity
 import co.anitrend.android.core.helpers.image.model.RequestImage
-import co.anitrend.android.core.helpers.image.toRequestBuilder
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.common.markdown.ui.compose.MarkdownText
+import co.anitrend.domain.common.extension.asFormattedScore
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
+import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.domain.user.entity.User
 import co.anitrend.domain.user.entity.contract.UserImage
 import co.anitrend.domain.user.entity.contract.UserStatus
-import coil.compose.AsyncImage
 import org.threeten.bp.Instant
 import co.anitrend.common.review.R as ReviewR
 
@@ -97,6 +96,7 @@ private val ReviewVoteSegmentShape = RoundedCornerShape(10.dp)
 @Composable
 fun ReviewBrowseCard(
     review: Review,
+    scoreFormat: ScoreFormat,
     variant: ReviewCardVariant,
     canVote: Boolean,
     isVotePending: Boolean,
@@ -114,6 +114,7 @@ fun ReviewBrowseCard(
             ReviewCardVariant.Discover ->
                 ReviewDiscoverCardContent(
                     review = review,
+                    scoreFormat = scoreFormat,
                     excerptMaxLines = excerptMaxLines,
                     canVote = canVote,
                     isVotePending = isVotePending,
@@ -123,6 +124,7 @@ fun ReviewBrowseCard(
             ReviewCardVariant.InlineCommunity ->
                 ReviewInlineCommunityCardContent(
                     review = review,
+                    scoreFormat = scoreFormat,
                     excerptMaxLines = excerptMaxLines,
                     canVote = canVote,
                     isVotePending = isVotePending,
@@ -160,9 +162,6 @@ fun ReviewLoadingCard(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        ReviewSkeletonLine(widthFraction = 0.72f, height = 18.dp)
-                        ReviewSkeletonLine(widthFraction = 0.94f, height = 15.dp)
-                        ReviewSkeletonLine(widthFraction = 0.82f, height = 15.dp)
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically,
@@ -172,6 +171,9 @@ fun ReviewLoadingCard(
                             Spacer(modifier = Modifier.weight(1f))
                             ReviewSkeletonLine(width = 24.dp, height = 12.dp)
                         }
+                        ReviewSkeletonLine(widthFraction = 0.72f, height = 18.dp)
+                        ReviewSkeletonLine(widthFraction = 0.94f, height = 15.dp)
+                        ReviewSkeletonLine(widthFraction = 0.82f, height = 15.dp)
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(10.dp),
                             verticalAlignment = Alignment.CenterVertically,
@@ -274,6 +276,7 @@ fun ReviewVoteActionRow(
 @Composable
 fun ReviewReaderContent(
     review: Review,
+    scoreFormat: ScoreFormat,
     canVote: Boolean,
     isVotePending: Boolean,
     onVoteRequested: (ReviewRating) -> Unit,
@@ -307,7 +310,10 @@ fun ReviewReaderContent(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                ReviewReaderHeader(review = review)
+                ReviewReaderHeader(
+                    review = review,
+                    scoreFormat = scoreFormat,
+                )
                 ReviewVoteActionRow(
                     review = review,
                     canVote = canVote,
@@ -328,6 +334,7 @@ fun ReviewReaderContent(
 @Composable
 private fun ReviewDiscoverCardContent(
     review: Review,
+    scoreFormat: ScoreFormat,
     excerptMaxLines: Int,
     canVote: Boolean,
     isVotePending: Boolean,
@@ -356,6 +363,18 @@ private fun ReviewDiscoverCardContent(
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
+
+            ReviewAuthorRow(
+                name = review.authorName(),
+                avatar = review.user.avatar,
+                trailingContent = {
+                    ReviewScoreToken(
+                        score = review.score,
+                        scoreFormat = scoreFormat,
+                    )
+                },
+            )
+
             ReviewMediaContext(
                 title = mediaTitle ?: review.authorName(),
             )
@@ -364,17 +383,6 @@ private fun ReviewDiscoverCardContent(
                 text = review.summaryText(),
                 maxLines = excerptMaxLines,
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
-            )
-
-            ReviewAuthorRow(
-                name = review.authorName(),
-                avatar = review.user.avatar,
-                showAvatar = true,
-                trailingContent = {
-                    ReviewScoreToken(
-                        score = review.score,
-                    )
-                },
             )
 
             ReviewDiscoverFooter(
@@ -390,6 +398,7 @@ private fun ReviewDiscoverCardContent(
 @Composable
 private fun ReviewInlineCommunityCardContent(
     review: Review,
+    scoreFormat: ScoreFormat,
     excerptMaxLines: Int,
     canVote: Boolean,
     isVotePending: Boolean,
@@ -404,18 +413,15 @@ private fun ReviewInlineCommunityCardContent(
     ) {
         ReviewAuthorRow(
             name = review.authorName(),
-            showAvatar = false,
+            avatar = review.user.avatar,
             trailingContent = {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    ReviewMetaText(
-                        text = review.timeLabel(),
-                        maxLines = 1,
-                    )
                     ReviewScoreToken(
                         score = review.score,
+                        scoreFormat = scoreFormat,
                     )
                 }
             },
@@ -437,7 +443,10 @@ private fun ReviewInlineCommunityCardContent(
 }
 
 @Composable
-private fun ReviewReaderHeader(review: Review) {
+private fun ReviewReaderHeader(
+    review: Review,
+    scoreFormat: ScoreFormat,
+) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         review
             .mediaTitle()
@@ -449,7 +458,6 @@ private fun ReviewReaderHeader(review: Review) {
         ReviewAuthorRow(
             name = review.authorName(),
             avatar = review.user.avatar,
-            showAvatar = true,
             trailingContent = {
                 Column(
                     horizontalAlignment = Alignment.End,
@@ -457,6 +465,7 @@ private fun ReviewReaderHeader(review: Review) {
                 ) {
                     ReviewScoreToken(
                         score = review.score,
+                        scoreFormat = scoreFormat,
                         emphasized = true,
                     )
                     ReviewMetaText(
@@ -542,11 +551,9 @@ private fun ReviewInlineCommunityFooter(
             onVoteRequested = onVoteRequested,
         )
         Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = stringResource(ReviewR.string.action_review_open),
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.primary,
+        ReviewMetaText(
+            text = review.timeLabel(),
+            maxLines = 1,
         )
     }
 }
@@ -696,25 +703,23 @@ private fun ReviewBannerHeader(
     modifier: Modifier = Modifier,
     height: Dp = 96.dp,
 ) {
-    val context = LocalContext.current
-    val requestBuilder =
-        rememberRequestImage(
-            image = media.image,
-            type = RequestImage.Media.ImageType.BANNER,
-        ) {
-            toRequestBuilder(context)
-        }
-
-    AsyncImage(
-        model = requestBuilder.build(),
+    AniTrendImage(
+        image = media.image,
+        imageType = RequestImage.Media.ImageType.BANNER,
         contentDescription = media.displayTitle(),
         contentScale = ContentScale.Crop,
         modifier =
             modifier
                 .fillMaxWidth()
                 .height(height)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp, bottomStart = 18.dp, bottomEnd = 18.dp)),
+                .clip(
+                    shape = RoundedCornerShape(
+                        topStart = 24.dp,
+                        topEnd = 24.dp,
+                        bottomStart = 18.dp,
+                        bottomEnd = 18.dp
+                    )
+                ),
     )
 }
 
@@ -742,17 +747,9 @@ private fun ReviewPosterThumbnail(
             )
 
             media?.let {
-                val context = LocalContext.current
-                val requestBuilder =
-                    rememberRequestImage(
-                        image = it.image,
-                        type = RequestImage.Media.ImageType.POSTER,
-                    ) {
-                        toRequestBuilder(context)
-                    }
-
-                AsyncImage(
-                    model = requestBuilder.build(),
+                AniTrendImage(
+                    image = it.image,
+                    imageType = RequestImage.Media.ImageType.POSTER,
                     contentDescription = it.displayTitle(),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize(),
@@ -780,9 +777,8 @@ private fun ReviewMediaContext(
 @Composable
 private fun ReviewAuthorRow(
     name: String,
+    avatar: UserImage,
     modifier: Modifier = Modifier,
-    avatar: UserImage? = null,
-    showAvatar: Boolean,
     trailingContent: (@Composable () -> Unit)? = null,
 ) {
     Row(
@@ -790,13 +786,11 @@ private fun ReviewAuthorRow(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (showAvatar && avatar != null) {
-            ReviewAvatar(
-                name = name,
-                avatar = avatar,
-                size = 26.dp,
-            )
-        }
+        ReviewAvatar(
+            name = name,
+            avatar = avatar,
+            size = 26.dp,
+        )
 
         Text(
             text = name,
@@ -818,60 +812,33 @@ private fun ReviewAvatar(
     size: Dp,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-    val avatarUrl =
-        avatar.large
-            ?.toString()
-            ?.trim()
-            ?.takeUnless { it.isBlank() }
-            ?: avatar.medium
-                ?.toString()
-                ?.trim()
-                ?.takeUnless { it.isBlank() }
-
     Surface(
         modifier = modifier.size(size),
         shape = CircleShape,
         color = MaterialTheme.colorScheme.surfaceContainerHighest,
         contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
     ) {
-        if (avatarUrl != null) {
-            val requestBuilder =
-                rememberRequestImage(
-                    image = avatar,
-                    type = RequestImage.Media.ImageType.POSTER,
-                ) {
-                    toRequestBuilder(context)
-                }
-
-            AsyncImage(
-                model = requestBuilder.build(),
-                contentDescription = name,
-                contentScale = ContentScale.Crop,
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .clip(CircleShape),
-            )
-        } else {
-            Box(contentAlignment = Alignment.Center) {
-                Text(
-                    text = name.firstOrNull()?.uppercase() ?: "?",
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
-        }
+        AniTrendImage(
+            image = avatar,
+            imageType = RequestImage.Media.ImageType.POSTER,
+            contentDescription = name,
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .clip(CircleShape),
+        )
     }
 }
 
 @Composable
 private fun ReviewScoreToken(
     score: Int,
+    scoreFormat: ScoreFormat,
     modifier: Modifier = Modifier,
     emphasized: Boolean = false,
 ) {
-    val scoreContentDescription = stringResource(ReviewR.string.label_review_score, score)
+    val displayScore = score.asFormattedScore(scoreFormat)
+    val scoreContentDescription = stringResource(ReviewR.string.label_review_score, displayScore)
     val textColor =
         if (emphasized) {
             MaterialTheme.colorScheme.onSurface
@@ -894,7 +861,7 @@ private fun ReviewScoreToken(
             modifier = Modifier.size(if (emphasized) 16.dp else 14.dp),
         )
         Text(
-            text = score.toString(),
+            text = displayScore,
             style = if (emphasized) MaterialTheme.typography.titleSmall else MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
             color = textColor,
@@ -1110,6 +1077,7 @@ private fun ReviewBrowseDiscoverPreview() {
     PreviewTheme(wrapInSurface = true) {
         ReviewBrowseCard(
             review = previewReview(),
+            scoreFormat = ScoreFormat.POINT_10_DECIMAL,
             variant = ReviewCardVariant.Discover,
             canVote = true,
             isVotePending = false,
@@ -1130,6 +1098,7 @@ private fun ReviewBrowseCommunityPreview() {
                 previewReview(
                     summary = "The production is disciplined, the direction is sharp, and the quieter emotional beats land harder than expected.",
                 ),
+            scoreFormat = ScoreFormat.POINT_10_DECIMAL,
             variant = ReviewCardVariant.InlineCommunity,
             canVote = true,
             isVotePending = false,
@@ -1151,6 +1120,7 @@ private fun ReviewVoteStatesPreview() {
         ) {
             ReviewBrowseCard(
                 review = previewReview(userRating = ReviewRating.UP_VOTE),
+                scoreFormat = ScoreFormat.POINT_10_DECIMAL,
                 variant = ReviewCardVariant.Discover,
                 canVote = true,
                 isVotePending = false,
@@ -1159,6 +1129,7 @@ private fun ReviewVoteStatesPreview() {
             )
             ReviewBrowseCard(
                 review = previewReview(userRating = ReviewRating.DOWN_VOTE),
+                scoreFormat = ScoreFormat.POINT_10_DECIMAL,
                 variant = ReviewCardVariant.InlineCommunity,
                 canVote = true,
                 isVotePending = false,
@@ -1167,6 +1138,7 @@ private fun ReviewVoteStatesPreview() {
             )
             ReviewBrowseCard(
                 review = previewReview(),
+                scoreFormat = ScoreFormat.POINT_10_DECIMAL,
                 variant = ReviewCardVariant.InlineCommunity,
                 canVote = true,
                 isVotePending = true,
@@ -1175,6 +1147,7 @@ private fun ReviewVoteStatesPreview() {
             )
             ReviewBrowseCard(
                 review = previewReview(userId = 99L),
+                scoreFormat = ScoreFormat.POINT_10_DECIMAL,
                 variant = ReviewCardVariant.InlineCommunity,
                 canVote = false,
                 isVotePending = false,
@@ -1212,6 +1185,7 @@ private fun ReviewReaderContentPreview() {
     PreviewTheme(wrapInSurface = true) {
         ReviewReaderContent(
             review = previewReview(userRating = ReviewRating.UP_VOTE),
+            scoreFormat = ScoreFormat.POINT_10_DECIMAL,
             canVote = true,
             isVotePending = false,
             onVoteRequested = {},

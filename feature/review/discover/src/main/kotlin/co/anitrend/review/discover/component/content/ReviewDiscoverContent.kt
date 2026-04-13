@@ -20,10 +20,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.fragment.app.Fragment
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.views.compose.composable
+import co.anitrend.core.component.content.compose.AniTrendComposition
 import co.anitrend.navigation.ReviewRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
@@ -31,29 +30,29 @@ import co.anitrend.review.discover.component.compose.ReviewDiscoverRoute
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ReviewDiscoverContent : Fragment() {
+class ReviewDiscoverContent : AniTrendComposition() {
     private val viewModel by viewModel<ReviewDiscoverViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AniTrendTheme3 {
-                    ReviewDiscoverRoute(
-                        onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
-                        onReviewClick = { reviewId ->
-                            ReviewRouter.startActivity(
-                                context = requireContext(),
-                                navPayload = ReviewRouter.ReviewParam(id = reviewId).asNavPayload(),
-                            )
-                        },
-                        viewModel = viewModel,
+    ): View = composable(requireActivity()) {
+        AniTrendTheme3 {
+            ReviewDiscoverRoute(
+                onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
+                onReviewClick = { reviewId, scoreFormat ->
+                    ReviewRouter.startActivity(
+                        context = requireContext(),
+                        navPayload =
+                            ReviewRouter.ReviewParam(
+                                id = reviewId,
+                                scoreFormat = scoreFormat,
+                            ).asNavPayload(),
                     )
-                }
-            }
+                },
+                viewModel = viewModel,
+            )
         }
+    }
 }

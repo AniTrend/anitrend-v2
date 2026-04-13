@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 AniTrend
+ * Copyright (C) 2026 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,20 +14,26 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package co.anitrend.domain.common.extension
 
-import co.anitrend.buildSrc.Libraries
+import co.anitrend.domain.medialist.enums.ScoreFormat
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
-plugins {
-    id("co.anitrend.plugin")
+class ScoreExtensionsTest {
+    @Test
+    fun `formats score for point 10 decimal`() {
+        assertEquals("8.9/10", 89.asFormattedScore(ScoreFormat.POINT_10_DECIMAL))
+    }
+
+    @Test
+    fun `formats score for point 5`() {
+        assertEquals("4/5", 80.asFormattedScore(ScoreFormat.POINT_5))
+    }
+
+    @Test
+    fun `formats score for point 3`() {
+        assertEquals("2/3", 65.asFormattedScore(ScoreFormat.POINT_3))
+    }
 }
 
-dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.genre))
-    implementation(project(Libraries.AniTrend.CommonUi.shared))
-    implementation(project(Libraries.AniTrend.CommonUi.markdown))
-    implementation(libs.androidx.paging.compose)
-}
-
-android {
-    namespace = "co.anitrend.common.media.ui"
-}

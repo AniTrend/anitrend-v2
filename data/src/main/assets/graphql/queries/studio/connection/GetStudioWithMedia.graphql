@@ -4,7 +4,8 @@ query GetStudioWithMediaPaged(
     $id: Int,
     $isMain: Boolean,
     $onList: Boolean,
-    $sort: [MediaSort]
+    $sort: [MediaSort],
+    $scoreFormat: ScoreFormat
 ) {
     Studio(id: $id) {
         media(

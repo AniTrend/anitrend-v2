@@ -39,24 +39,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import co.anitrend.common.review.ui.compose.ReviewBrowseCard
 import co.anitrend.common.review.ui.compose.ReviewCardVariant
 import co.anitrend.common.review.ui.compose.ReviewLoadingCard
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.review.enums.ReviewRating
-import co.anitrend.navigation.ReviewTaskRouter
 import co.anitrend.navigation.ReviewDiscoverRouter
+import co.anitrend.navigation.ReviewTaskRouter
 import co.anitrend.navigation.extensions.toDataBuilder
 import co.anitrend.review.discover.R
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
@@ -64,23 +66,25 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ReviewDiscoverRoute(
     onBackPress: () -> Unit,
-    onReviewClick: (Long) -> Unit,
-    viewModel: ReviewDiscoverViewModel = koinViewModel(),
+    onReviewClick: (Long, ScoreFormat) -> Unit,
+    viewModel: ReviewDiscoverViewModel,
 ) {
     val context = LocalContext.current
-    val authenticationSettings: IAuthenticationSettings = koinInject()
     val workManager = remember(context) { WorkManager.getInstance(context) }
     val scope = rememberCoroutineScope()
     val pendingVotes = remember { mutableStateMapOf<Long, Boolean>() }
+
+    val userSettings: IUserSettings = koinInject()
     val params by viewModel.params.collectAsStateWithLifecycle()
+    val authenticatedUserId: Long by userSettings.authenticatedUserId.flow.collectAsStateWithLifecycle(IAuthenticationSettings.INVALID_USER_ID)
+    val scoreFormat: ScoreFormat by userSettings.scoreFormat.flow.collectAsStateWithLifecycle(IUserSettings.DEFAULT_SCORE_FORMAT)
+
     val reviews = viewModel.reviews.collectAsLazyPagingItems()
     val refreshState = reviews.loadState.refresh
-    val authenticatedUserId = authenticationSettings.authenticatedUserId.value
 
     DefaultScaffold(onBackPress = onBackPress) { padding ->
         Column(
@@ -109,6 +113,7 @@ fun ReviewDiscoverRoute(
                     reviews.itemCount > 0 ->
                         ReviewDiscoverList(
                             reviews = reviews,
+                            scoreFormat = scoreFormat,
                             authenticatedUserId = authenticatedUserId,
                             isVotePending = { reviewId -> pendingVotes[reviewId] == true },
                             onReviewClick = onReviewClick,
@@ -159,9 +164,10 @@ fun ReviewDiscoverRoute(
 @Composable
 private fun ReviewDiscoverList(
     reviews: LazyPagingItems<Review>,
+    scoreFormat: ScoreFormat,
     authenticatedUserId: Long,
     isVotePending: (Long) -> Boolean,
-    onReviewClick: (Long) -> Unit,
+    onReviewClick: (Long, ScoreFormat) -> Unit,
     onVoteRequested: (Review, ReviewRating) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -178,10 +184,11 @@ private fun ReviewDiscoverList(
             val review = reviews[index] ?: return@items
             ReviewBrowseCard(
                 review = review,
+                scoreFormat = scoreFormat,
                 variant = ReviewCardVariant.Discover,
                 canVote = !review.isOwnedBy(authenticatedUserId),
                 isVotePending = isVotePending(review.id),
-                onOpen = { onReviewClick(review.id) },
+                onOpen = { onReviewClick(review.id, scoreFormat) },
                 onVoteRequested = { rating -> onVoteRequested(review, rating) },
             )
         }

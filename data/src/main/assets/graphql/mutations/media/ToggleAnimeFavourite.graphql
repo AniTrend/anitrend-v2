@@ -1,4 +1,4 @@
-mutation ToggleAnimeFavourite($animeId: Int) {
+mutation ToggleAnimeFavourite($animeId: Int, $scoreFormat: ScoreFormat) {
     ToggleFavourite(animeId: $animeId) {
         anime {
             edges {

@@ -20,19 +20,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.fragment.app.Fragment
 import co.anitrend.airing.component.compose.AiringRoute
 import co.anitrend.airing.component.viewmodel.AiringViewModel
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
 import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.views.compose.composable
 import co.anitrend.common.media.ui.controller.extensions.handleMediaItemNavigation
+import co.anitrend.core.component.content.compose.AniTrendComposition
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AiringContent : Fragment() {
+class AiringContent : AniTrendComposition() {
     private val settings by inject<Settings>()
     private val dateHelper by inject<AniTrendDateHelper>()
     private val viewModel by viewModel<AiringViewModel>()
@@ -42,19 +41,16 @@ class AiringContent : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AniTrendTheme3 {
-                    AiringRoute(
-                        settings = settings,
-                        userSettings = settings,
-                        dateHelper = dateHelper,
-                        onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
-                        onMediaItemClick = { param -> requireActivity().handleMediaItemNavigation(param, settings) },
-                        viewModel = viewModel,
-                    )
-                }
+        composable(requireActivity()) {
+            AniTrendTheme3 {
+                AiringRoute(
+                    settings = settings,
+                    userSettings = settings,
+                    dateHelper = dateHelper,
+                    onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
+                    onMediaItemClick = { param -> requireActivity().handleMediaItemNavigation(param, settings) },
+                    viewModel = viewModel,
+                )
             }
         }
 }

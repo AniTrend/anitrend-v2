@@ -85,7 +85,6 @@ fun MediaScoreSection(
         modifier =
             modifier
                 .clip(shape)
-                // .background(MaterialTheme.colorScheme.surface, shape = shape)
                 .background(gradient, shape),
         shape = shape,
         color = Color.Transparent,

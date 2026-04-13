@@ -18,9 +18,7 @@ package co.anitrend.media.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.getValue
 import androidx.core.net.toUri
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.anitrend.android.core.compose.design.ContentWrapper
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.arch.extension.ext.extra
@@ -31,14 +29,12 @@ import co.anitrend.core.extensions.runIfAuthenticated
 import co.anitrend.core.extensions.startViewIntent
 import co.anitrend.core.ui.inject
 import co.anitrend.data.user.settings.IUserSettings
-import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.media.component.compose.MediaScreenContent
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaCharactersRouter
 import co.anitrend.navigation.MediaDiscoverRouter
-import co.anitrend.navigation.MediaListEditorRouter
 import co.anitrend.navigation.MediaPeopleRouter
 import co.anitrend.navigation.MediaRecommendationsRouter
 import co.anitrend.navigation.MediaRelationsRouter
@@ -46,8 +42,8 @@ import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.MediaStaffRouter
 import co.anitrend.navigation.MediaStatsRouter
 import co.anitrend.navigation.MediaStudiosRouter
-import co.anitrend.navigation.ReviewRouter
 import co.anitrend.navigation.ReviewDiscoverRouter
+import co.anitrend.navigation.ReviewRouter
 import co.anitrend.navigation.StudioRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
@@ -74,10 +70,8 @@ class MediaScreen : AniTrendScreen() {
                     onLoad = viewModel::invoke,
                     onClick = viewModel::retry,
                 ) {
-                    val scoreFormat by settings.scoreFormat.flow.collectAsStateWithLifecycle(ScoreFormat.POINT_100)
                     MediaScreenContent(
                         mediaState = viewModelState(),
-                        scoreFormat = scoreFormat,
                         onMyAnimeListButtonClick = { url ->
                             startViewIntent(url.toUri())
                         },

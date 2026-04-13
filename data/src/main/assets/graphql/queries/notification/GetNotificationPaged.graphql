@@ -3,7 +3,8 @@ query GetNotificationPaged(
     $perPage: Int,
     $type: NotificationType,
     $type_in: [NotificationType],
-    $resetNotificationCount: Boolean
+    $resetNotificationCount: Boolean,
+    $scoreFormat: ScoreFormat
 ) {
     Page(page: $page, perPage: $perPage) {
         pageInfo {
