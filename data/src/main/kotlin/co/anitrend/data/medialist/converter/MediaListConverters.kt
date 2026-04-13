@@ -59,7 +59,7 @@ internal class MediaListModelConverter(
                     )
                 is MediaListModel.Core ->
                     MediaListEntity(
-                        mediaType = source.category.type,
+                        mediaType = source.mediaCategory?.type ?: MediaType.ANIME,
                         completedAt = source.completedAt?.toFuzzyDateInt(),
                         createdAt = source.createdAt,
                         hiddenFromStatus = source.hiddenFromStatusLists ?: false,

@@ -69,6 +69,14 @@ internal abstract class MediaRecommendationConnectionLocalSource : AbstractLocal
 
     @Query(
         """
+        select max(sort_index) from media_recommendation_connection
+        where media_id = :mediaId
+        """,
+    )
+    abstract suspend fun maxSortIndexByMediaId(mediaId: Long): Int?
+
+    @Query(
+        """
         delete from media_recommendation_connection
         where media_id = :mediaId
         """,

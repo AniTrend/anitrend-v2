@@ -40,7 +40,7 @@ internal sealed class MediaListModel : IMediaListModel {
 
     @Serializable
     internal data class Core(
-        @SerialName("category") val category: Category,
+        @SerialName("mediaCategory") val mediaCategory: Category? = null,
         @SerialName("advancedScores") override val advancedScores: Map<String, Float>? = null,
         @SerialName("customLists") override val customLists: List<CustomList>? = null,
         @SerialName("completedAt") override val completedAt: FuzzyDateModel? = null,

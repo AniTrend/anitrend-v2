@@ -29,6 +29,7 @@ import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
 import co.anitrend.data.common.extension.from
+import co.anitrend.data.common.extension.seedFromLocalCount
 import co.anitrend.data.media.MediaRecommendationsController
 import co.anitrend.data.media.model.query.MediaConnectionQuery
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
@@ -58,6 +59,12 @@ internal class MediaRecommendationsRemoteMediator(
     private suspend fun shouldRefresh(hasLocalData: Boolean): Boolean =
         !hasLocalData || cachePolicy.shouldRefresh(cacheIdentity, cacheIdentity.expiresAt)
 
+    private fun isCorruptPagingCache(
+        itemCount: Int,
+        maxSortIndex: Int?,
+    ): Boolean =
+        itemCount > 0 && maxSortIndex != itemCount - 1
+
     private suspend fun awaitResult(
         requestType: Request.Type,
         block: suspend (RequestCallback) -> Unit,
@@ -81,12 +88,24 @@ internal class MediaRecommendationsRemoteMediator(
         }
     }
 
-    override suspend fun initialize(): InitializeAction =
-        if (shouldRefresh(localSource.countByMediaId(query.param.id) > 0)) {
+    override suspend fun initialize(): InitializeAction {
+        var itemCount = localSource.countByMediaId(query.param.id)
+        val maxSortIndex = localSource.maxSortIndexByMediaId(query.param.id)
+
+        if (isCorruptPagingCache(itemCount, maxSortIndex)) {
+            localSource.clearByMediaId(query.param.id)
+            cachePolicy.invalidateLastRequest(cacheIdentity)
+            itemCount = 0
+        } else {
+            supportPagingHelper.seedFromLocalCount(itemCount)
+        }
+
+        return if (shouldRefresh(itemCount > 0)) {
             InitializeAction.LAUNCH_INITIAL_REFRESH
         } else {
             InitializeAction.SKIP_INITIAL_REFRESH
         }
+    }
 
     private suspend fun refreshRecommendations(requestCallback: RequestCallback) {
         mapper.onRequest(

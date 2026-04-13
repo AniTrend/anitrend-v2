@@ -107,11 +107,27 @@ internal abstract class MediaLocalSource : AbstractLocalSource<MediaEntity>() {
 
     @Query(
         """
+        select max(sort_index) from media_character_connection
+        where media_id = :mediaId
+    """,
+    )
+    abstract suspend fun mediaCharactersMaxSortIndex(mediaId: Long): Int?
+
+    @Query(
+        """
         select count(id) from media_staff_connection
         where media_id = :mediaId
     """,
     )
     abstract suspend fun mediaStaffCount(mediaId: Long): Int
+
+    @Query(
+        """
+        select max(sort_index) from media_staff_connection
+        where media_id = :mediaId
+    """,
+    )
+    abstract suspend fun mediaStaffMaxSortIndex(mediaId: Long): Int?
 
     @Query(
         """
