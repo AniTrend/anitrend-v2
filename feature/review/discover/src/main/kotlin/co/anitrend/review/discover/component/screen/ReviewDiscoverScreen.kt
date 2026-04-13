@@ -40,13 +40,14 @@ class ReviewDiscoverScreen : AniTrendScreen() {
                         ReviewRouter.startActivity(
                             context = this@ReviewDiscoverScreen,
                             navPayload =
-                                ReviewRouter.ReviewParam(
-                                    id = reviewId,
-                                    scoreFormat = scoreFormat,
-                                ).asNavPayload(),
+                                ReviewRouter
+                                    .ReviewParam(
+                                        id = reviewId,
+                                        scoreFormat = scoreFormat,
+                                    ).asNavPayload(),
                         )
                     },
-                    viewModel = viewModel
+                    viewModel = viewModel,
                 )
             }
         }

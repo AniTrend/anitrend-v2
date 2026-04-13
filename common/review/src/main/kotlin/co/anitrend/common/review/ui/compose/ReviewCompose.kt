@@ -363,7 +363,6 @@ private fun ReviewDiscoverCardContent(
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-
             ReviewAuthorRow(
                 name = review.authorName(),
                 avatar = review.user.avatar,
@@ -713,12 +712,13 @@ private fun ReviewBannerHeader(
                 .fillMaxWidth()
                 .height(height)
                 .clip(
-                    shape = RoundedCornerShape(
-                        topStart = 24.dp,
-                        topEnd = 24.dp,
-                        bottomStart = 18.dp,
-                        bottomEnd = 18.dp
-                    )
+                    shape =
+                        RoundedCornerShape(
+                            topStart = 24.dp,
+                            topEnd = 24.dp,
+                            bottomStart = 18.dp,
+                            bottomEnd = 18.dp,
+                        ),
                 ),
     )
 }
