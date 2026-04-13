@@ -62,8 +62,7 @@ internal class MediaRecommendationsRemoteMediator(
     private fun isCorruptPagingCache(
         itemCount: Int,
         maxSortIndex: Int?,
-    ): Boolean =
-        itemCount > 0 && maxSortIndex != itemCount - 1
+    ): Boolean = itemCount > 0 && maxSortIndex != itemCount - 1
 
     private suspend fun awaitResult(
         requestType: Request.Type,
