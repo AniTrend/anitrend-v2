@@ -22,22 +22,37 @@ db_name=""
 output_dir=""
 serial=""
 
+require_option_value() {
+  local option_name="$1"
+  local option_value="${2-}"
+
+  if [[ -z "$option_value" || "$option_value" == --* ]]; then
+    printf 'Missing value for %s\n' "$option_name" >&2
+    usage >&2
+    exit 1
+  fi
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --package)
-      package_name="${2:-}"
+      require_option_value "$1" "${2-}"
+      package_name="$2"
       shift 2
       ;;
     --db-name)
-      db_name="${2:-}"
+      require_option_value "$1" "${2-}"
+      db_name="$2"
       shift 2
       ;;
     --output-dir)
-      output_dir="${2:-}"
+      require_option_value "$1" "${2-}"
+      output_dir="$2"
       shift 2
       ;;
     --serial)
-      serial="${2:-}"
+      require_option_value "$1" "${2-}"
+      serial="$2"
       shift 2
       ;;
     --help|-h)
@@ -53,7 +68,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$package_name" ]]; then
-  printf '--package is required\n' >&2
+  printf '%s\n' '--package is required' >&2
   usage >&2
   exit 1
 fi
@@ -68,15 +83,19 @@ if [[ -n "$serial" ]]; then
   adb_cmd+=( -s "$serial" )
 fi
 
-run_as_check="$(${adb_cmd[@]} shell run-as "$package_name" pwd 2>/dev/null | tr -d '\r')"
+run_as_check="$("${adb_cmd[@]}" shell run-as "$package_name" pwd 2>/dev/null | tr -d '\r')"
 if [[ -z "$run_as_check" ]]; then
   printf 'run-as failed for package %s. Ensure this is a debuggable build and the correct package.\n' "$package_name" >&2
   exit 1
 fi
 
 if [[ -z "$db_name" ]]; then
-  mapfile -t candidates < <(
-    ${adb_cmd[@]} shell run-as "$package_name" ls databases 2>/dev/null |
+  candidates=()
+  while IFS= read -r candidate; do
+    [[ -n "$candidate" ]] || continue
+    candidates+=("$candidate")
+  done < <(
+    "${adb_cmd[@]}" shell run-as "$package_name" ls databases 2>/dev/null |
       tr -d '\r' |
       grep -Ei 'chucker|http|traffic' || true
   )
@@ -84,7 +103,7 @@ if [[ -z "$db_name" ]]; then
   if [[ ${#candidates[@]} -eq 0 ]]; then
     printf 'No likely Chucker database names found for package %s.\n' "$package_name" >&2
     printf 'Available databases:\n' >&2
-    ${adb_cmd[@]} shell run-as "$package_name" ls databases 2>/dev/null | tr -d '\r' >&2 || true
+    "${adb_cmd[@]}" shell run-as "$package_name" ls databases 2>/dev/null | tr -d '\r' >&2 || true
     exit 1
   fi
 
@@ -109,7 +128,7 @@ for suffix in '' '-wal' '-shm'; do
   target_name="${db_name}${suffix}"
   target_path="$output_dir/$target_name"
 
-  if ${adb_cmd[@]} exec-out run-as "$package_name" cat "databases/$target_name" > "$target_path" 2>/dev/null; then
+  if "${adb_cmd[@]}" exec-out run-as "$package_name" cat "databases/$target_name" > "$target_path" 2>/dev/null; then
     if [[ -s "$target_path" ]]; then
       copied_any=1
     else

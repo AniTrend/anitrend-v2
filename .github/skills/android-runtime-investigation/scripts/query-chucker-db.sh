@@ -26,26 +26,42 @@ limit_rows=10
 table_name=""
 show_response=0
 
+require_option_value() {
+  local option_name="$1"
+  local option_value="${2-}"
+
+  if [[ -z "$option_value" || "$option_value" == --* ]]; then
+    printf 'Missing value for %s\n' "$option_name" >&2
+    usage >&2
+    exit 1
+  fi
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --db)
-      db_path="${2:-}"
+      require_option_value "$1" "${2-}"
+      db_path="$2"
       shift 2
       ;;
     --export-dir)
-      export_dir="${2:-}"
+      require_option_value "$1" "${2-}"
+      export_dir="$2"
       shift 2
       ;;
     --filter)
-      filter_text="${2:-}"
+      require_option_value "$1" "${2-}"
+      filter_text="$2"
       shift 2
       ;;
     --limit)
-      limit_rows="${2:-}"
+      require_option_value "$1" "${2-}"
+      limit_rows="$2"
       shift 2
       ;;
     --table)
-      table_name="${2:-}"
+      require_option_value "$1" "${2-}"
+      table_name="$2"
       shift 2
       ;;
     --show-response)
@@ -75,7 +91,11 @@ if [[ -z "$db_path" && -n "$export_dir" ]]; then
     exit 1
   fi
 
-  mapfile -t db_candidates < <(
+  db_candidates=()
+  while IFS= read -r db_candidate; do
+    [[ -n "$db_candidate" ]] || continue
+    db_candidates+=("$db_candidate")
+  done < <(
     find "$export_dir" -maxdepth 1 -type f ! -name '*.db-wal' ! -name '*.db-shm' ! -name '*-wal' ! -name '*-shm' | sort
   )
 
@@ -104,8 +124,8 @@ if [[ ! -f "$db_path" ]]; then
   exit 1
 fi
 
-if ! [[ "$limit_rows" =~ ^[0-9]+$ ]]; then
-  printf '--limit must be a positive integer\n' >&2
+if ! [[ "$limit_rows" =~ ^[1-9][0-9]*$ ]]; then
+  printf '%s\n' '--limit must be a positive integer' >&2
   exit 1
 fi
 
@@ -119,7 +139,11 @@ table_exists() {
 }
 
 if [[ -z "$table_name" ]]; then
-  mapfile -t table_candidates < <(
+  table_candidates=()
+  while IFS= read -r table_candidate; do
+    [[ -n "$table_candidate" ]] || continue
+    table_candidates+=("$table_candidate")
+  done < <(
     sqlite3 "$db_path" "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;" |
       grep -Ei 'transaction|request|response|http|network' || true
   )
@@ -146,7 +170,11 @@ if ! table_exists "$table_name"; then
   exit 1
 fi
 
-mapfile -t raw_columns < <(sqlite3 "$db_path" "PRAGMA table_info(\"$table_name\");")
+raw_columns=()
+while IFS= read -r raw_column; do
+  [[ -n "$raw_column" ]] || continue
+  raw_columns+=("$raw_column")
+done < <(sqlite3 "$db_path" "PRAGMA table_info(\"$table_name\");")
 if [[ ${#raw_columns[@]} -eq 0 ]]; then
   printf 'Could not inspect columns for table %s\n' "$table_name" >&2
   exit 1

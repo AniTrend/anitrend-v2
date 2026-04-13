@@ -3,7 +3,7 @@ fragment MediaRelationConnection on MediaConnection {
         id
         relationType
         node {
-            ... Media
+            ... MediaCore
         }
     }
 }
