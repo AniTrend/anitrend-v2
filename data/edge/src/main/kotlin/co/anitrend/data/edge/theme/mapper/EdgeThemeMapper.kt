@@ -26,5 +26,9 @@ internal class EdgeThemeMapper(
     override val localSource: EdgeThemeLocalSource,
     override val converter: EdgeThemeConverter,
 ) : EmbedMapper<EdgeThemeEmbedded, EdgeThemeEntity>() {
+    override suspend fun persist(data: List<EdgeThemeEntity>) {
+        localSource.upsert(data)
+    }
+
     override suspend fun onResponseMapFrom(source: List<EdgeThemeEmbedded>): List<EdgeThemeEntity> = source.map(converter::convertFrom)
 }

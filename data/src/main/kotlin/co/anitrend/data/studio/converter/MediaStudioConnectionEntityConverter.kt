@@ -31,13 +31,13 @@ internal class MediaStudioConnectionEntityConverter(
             MediaStudioEntry(
                 studio =
                     Studio.Core(
-                        favourites = 0,
+                        favourites = source.studioFavourites ?: 0,
                         isFavourite = false,
                         isFavouriteBlocked = false,
                         image = null,
-                        isAnimationStudio = false,
+                        isAnimationStudio = source.studioIsAnimationStudio ?: false,
                         name = source.studioName,
-                        siteUrl = null,
+                        siteUrl = source.studioSiteUrl,
                         id = source.studioId,
                     ),
                 isMain = source.isMain,

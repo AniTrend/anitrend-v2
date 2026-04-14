@@ -28,7 +28,4 @@ abstract class EdgeThemeLocalSource : AbstractLocalSource<EdgeThemeEntity>() {
 
     @Query("delete from edge_media_theme_song")
     abstract override suspend fun clear()
-
-    @Query("delete from edge_media_theme_song where media_id = :mediaId")
-    internal abstract suspend fun deleteByMediaId(mediaId: String)
 }

@@ -22,9 +22,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -38,11 +42,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.extensions.toHumanReadableQuantity
+import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.studio.entity.Studio
 import co.anitrend.media.R
@@ -58,6 +65,9 @@ internal data class MediaStudioItemUiModel(
     val isAnimationStudio: Boolean,
     val favourites: Int,
     val siteUrl: String?,
+    val image: CoverImage?,
+    val networkCategory: String?,
+    val networkOriginCountry: String?,
 )
 
 internal data class MediaStudiosPreviewUiState(
@@ -81,8 +91,19 @@ internal fun List<MediaStudioEntry>.toMediaStudioUiModels(): List<MediaStudioIte
             isAnimationStudio = entry.studio.isAnimationStudio,
             favourites = entry.studio.favourites,
             siteUrl = entry.studio.siteUrl,
+            image = entry.studio.image,
+            networkCategory = entry.networkMatch?.category?.asStudioChipLabel(),
+            networkOriginCountry = entry.networkMatch?.originCountry?.asCountryChipLabel(),
         )
     }.sortedWith(MediaStudioUiComparator)
+
+private fun String.asStudioChipLabel(): String? =
+    trim()
+        .takeIf(String::isNotBlank)
+        ?.replaceFirstChar { character -> character.titlecase() }
+
+private fun String.asCountryChipLabel(): String? =
+    trim().takeIf(String::isNotBlank)?.uppercase()
 
 internal fun List<MediaStudioItemUiModel>.toMediaStudiosPreviewUiState(): MediaStudiosPreviewUiState {
     val featuredStudio = firstOrNull(MediaStudioItemUiModel::isMain)
@@ -183,31 +204,45 @@ internal fun StudioFeaturedCard(
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.16f)),
         onClick = onClick,
     ) {
-        Column(
+        Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            Text(
-                text = item.name,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-            StudioBadgeRow(item = item)
-            item.favourites
-                .takeIf { it > 0 }
-                ?.let {
-                    Text(
-                        text =
-                            stringResource(
-                                R.string.label_media_studios_favourites_value,
-                                it.toHumanReadableQuantity(),
-                            ),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+            item.image?.let { image ->
+                StudioImageBadge(
+                    image = image,
+                    name = item.name,
+                    modifier = Modifier.size(56.dp),
+                )
+            }
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                Text(
+                    text = item.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                StudioBadgeRow(item = item)
+                item.favourites
+                    .takeIf { it > 0 }
+                    ?.let {
+                        Text(
+                            text =
+                                stringResource(
+                                    R.string.label_media_studios_favourites_value,
+                                    it.toHumanReadableQuantity(),
+                                ),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+            }
         }
     }
 }
@@ -231,6 +266,14 @@ internal fun StudioCompactRow(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            item.image?.let { image ->
+                StudioImageBadge(
+                    image = image,
+                    name = item.name,
+                    modifier = Modifier.size(42.dp),
+                )
+            }
+
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(6.dp),
@@ -243,7 +286,7 @@ internal fun StudioCompactRow(
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                if (item.isMain || item.isAnimationStudio) {
+                if (item.isMain || item.isAnimationStudio || item.networkCategory != null || item.networkOriginCountry != null) {
                     StudioBadgeRow(item = item)
                 }
             }
@@ -258,18 +301,51 @@ internal fun StudioBadgeRow(
     item: MediaStudioItemUiModel,
     modifier: Modifier = Modifier,
 ) {
+    val chips =
+        buildList {
+            if (item.isMain) {
+                add(stringResource(R.string.label_media_production_studio_main_badge))
+            }
+            if (item.isAnimationStudio) {
+                add(stringResource(R.string.label_media_studios_animation_badge))
+            }
+            item.networkCategory?.let(::add)
+            item.networkOriginCountry?.let(::add)
+        }
+
+    if (chips.isEmpty()) {
+        return
+    }
+
     FlowRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        if (item.isMain) {
-            StudioLabelChip(label = stringResource(R.string.label_media_production_studio_main_badge))
+        chips.forEach { label ->
+            StudioLabelChip(label = label)
         }
+    }
+}
 
-        if (item.isAnimationStudio) {
-            StudioLabelChip(label = stringResource(R.string.label_media_studios_animation_badge))
-        }
+@Composable
+internal fun StudioImageBadge(
+    image: CoverImage,
+    name: String,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier =
+            modifier
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f)),
+    ) {
+        AniTrendImage(
+            image = image,
+            imageType = RequestImage.Media.ImageType.POSTER,
+            contentDescription = name,
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
 
@@ -326,6 +402,8 @@ private fun previewStudio(
     isAnimationStudio: Boolean = false,
     favourites: Int = 0,
     siteUrl: String? = null,
+    image: CoverImage? = null,
+    networkMatch: MediaStudioEntry.StudioNetworkMatch? = null,
 ) = MediaStudioEntry(
     studio =
         Studio.Core(
@@ -333,12 +411,13 @@ private fun previewStudio(
             isFavourite = false,
             isFavouriteBlocked = false,
             name = name,
-            image = null,
+            image = image,
             isAnimationStudio = isAnimationStudio,
             siteUrl = siteUrl,
             id = id,
         ),
     isMain = isMain,
+    networkMatch = networkMatch,
     id = id,
 )
 

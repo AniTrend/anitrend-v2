@@ -108,4 +108,52 @@ class EdgeMediaModelTest {
         assertEquals("sample-series", entity.id)
         assertEquals(15125L, entity.externalIds.aniList)
     }
+
+    @Test
+    fun `series payload keeps multiple themes even when ids are missing`() {
+        val payload =
+            """
+            {
+              "series": {
+                "title": {
+                  "canonical": "Canonical Title"
+                },
+                "cover": {
+                  "medium": "medium.jpg"
+                },
+                "kind": "ANIME",
+                "mediaId": {
+                  "anilist": 15125,
+                  "notify": "notify-id"
+                },
+                "themeSongs": [
+                  {
+                    "name": "OP 1",
+                    "meta": {
+                      "number": 1,
+                      "type": "OP",
+                      "version": 1
+                    }
+                  },
+                  {
+                    "name": "ED 1",
+                    "meta": {
+                      "number": 1,
+                      "type": "ED",
+                      "version": 1
+                    }
+                  }
+                ],
+                "trailers": [],
+                "updatedAt": 1710000000
+              }
+            }
+            """.trimIndent()
+
+        val result = json.decodeFromString<EdgeMediaModel>(payload)
+        val series = assertNotNull(result.series)
+
+        assertEquals(2, series.themeSongs.size)
+        assertEquals(listOf("OP 1", "ED 1"), series.themeSongs.map { it.name })
+    }
 }

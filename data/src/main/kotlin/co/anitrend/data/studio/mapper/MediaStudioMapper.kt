@@ -25,7 +25,7 @@ internal class MediaStudioMapper(
     private val localSource: MediaStudioConnectionLocalSource,
 ) : DefaultMapper<MediaSidecarModelContainer.Studios, List<MediaStudioConnectionEntity>>() {
     override suspend fun persist(data: List<MediaStudioConnectionEntity>) {
-        localSource.upsertConnections(data)
+        localSource.upsert(data)
     }
 
     override suspend fun onResponseMapFrom(source: MediaSidecarModelContainer.Studios): List<MediaStudioConnectionEntity> {
@@ -39,6 +39,9 @@ internal class MediaStudioMapper(
                 entryId = edge.id,
                 studioId = studio.id,
                 studioName = studio.name,
+                studioFavourites = studio.favourites,
+                studioIsAnimationStudio = studio.isAnimationStudio,
+                studioSiteUrl = studio.siteUrl,
                 isMain = edge.isMain,
                 sortIndex = index,
             )

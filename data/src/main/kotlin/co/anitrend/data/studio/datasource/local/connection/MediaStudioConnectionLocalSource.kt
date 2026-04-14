@@ -17,8 +17,6 @@
 package co.anitrend.data.studio.datasource.local.connection
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.studio.entity.connection.MediaStudioConnectionEntity
@@ -56,7 +54,4 @@ internal abstract class MediaStudioConnectionLocalSource : AbstractLocalSource<M
         """,
     )
     abstract suspend fun clearByMediaId(mediaId: Long)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun upsertConnections(attribute: List<MediaStudioConnectionEntity>)
 }
