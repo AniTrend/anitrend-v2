@@ -200,11 +200,6 @@ private fun Media.Extended.displayTitle(): String? =
 
 private fun Media.Extended.heroFacts(): List<String> =
     buildList {
-        season
-            ?.alias
-            ?.toString()
-            ?.takeIf(String::isNotBlank)
-            ?.let(::add)
         status
             ?.alias
             ?.toString()
