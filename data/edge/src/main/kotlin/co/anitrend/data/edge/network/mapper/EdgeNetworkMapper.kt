@@ -26,5 +26,9 @@ internal class EdgeNetworkMapper(
     override val localSource: EdgeNetworkLocalSource,
     override val converter: EdgeNetworkConverter,
 ) : EmbedMapper<EdgeNetworkEmbedded, EdgeNetworkEntity>() {
+    override suspend fun persist(data: List<EdgeNetworkEntity>) {
+        localSource.upsert(data)
+    }
+
     override suspend fun onResponseMapFrom(source: List<EdgeNetworkEmbedded>): List<EdgeNetworkEntity> = source.map(converter::convertFrom)
 }

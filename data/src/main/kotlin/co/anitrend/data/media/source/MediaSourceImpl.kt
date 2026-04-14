@@ -28,6 +28,7 @@ import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.common.extension.from
+import co.anitrend.data.edge.media.datasource.local.EdgeMediaLocalSource
 import co.anitrend.data.edge.media.source.contract.EdgeMediaSource
 import co.anitrend.data.media.MediaDetailController
 import co.anitrend.data.media.MediaPagedController
@@ -44,6 +45,7 @@ import co.anitrend.data.media.mapper.MediaStatsMapper
 import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.data.media.source.contract.MediaSource
 import co.anitrend.data.studio.converter.MediaStudioConnectionEntityConverter
+import co.anitrend.data.studio.converter.MediaStudioEntryEnricher
 import co.anitrend.data.studio.datasource.local.connection.MediaStudioConnectionLocalSource
 import co.anitrend.data.studio.mapper.MediaStudioMapper
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
@@ -57,6 +59,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import timber.log.Timber
 
 internal class MediaSourceImpl {
@@ -114,23 +117,36 @@ internal class MediaSourceImpl {
     class Studios(
         private val remoteSource: MediaRemoteSource,
         private val localSource: MediaStudioConnectionLocalSource,
+        private val edgeLocalSource: EdgeMediaLocalSource,
         private val controller: MediaStudiosController,
         private val mapper: MediaStudioMapper,
         private val converter: MediaStudioConnectionEntityConverter,
+        private val enricher: MediaStudioEntryEnricher,
         private val clearDataHelper: IClearDataHelper,
+        private val edgeSource: EdgeMediaSource,
         override val cachePolicy: ICacheStorePolicy,
         override val dispatcher: ISupportDispatcher,
     ) : MediaSource.Studios() {
         override fun observable(): Flow<List<MediaStudioEntry>> =
-            localSource
-                .entriesByMediaIdFlow(query.param.id)
-                .flowOn(dispatcher.io)
-                .map { entries ->
-                    entries.map(converter::convertFrom)
-                }.distinctUntilChanged()
+            combine(
+                localSource.entriesByMediaIdFlow(query.param.id),
+                edgeLocalSource.mediaViewByIdFlow(query.param.id),
+            ) { entries, edge ->
+                enricher.enrich(
+                    entries = entries.map(converter::convertFrom),
+                    networks = edge?.networks.orEmpty(),
+                )
+            }.flowOn(dispatcher.io)
+                .distinctUntilChanged()
                 .flowOn(dispatcher.computation)
 
         override suspend fun refreshStudios(requestCallback: RequestCallback): Boolean {
+            runCatching {
+                edgeSource(id = query.param.id)
+            }.onFailure { throwable ->
+                Timber.w(throwable, "Unable to refresh edge media for studios id=%s", query.param.id)
+            }
+
             val deferred =
                 deferred {
                     val queryBuilder = query.toQueryContainerBuilder()

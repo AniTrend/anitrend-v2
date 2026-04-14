@@ -41,7 +41,7 @@ internal data class EdgeThemeModel(
     @SerialName("video") val video: String? = null,
 ) {
     val isPersistable: Boolean
-        get() = !id.isNullOrBlank() && !name.isNullOrBlank()
+        get() = !name.isNullOrBlank()
 
     /**
      * Metadata for a theme song.

@@ -22,5 +22,16 @@ import co.anitrend.domain.studio.entity.Studio
 data class MediaStudioEntry(
     val studio: Studio,
     val isMain: Boolean,
+    val networkMatch: StudioNetworkMatch? = null,
     override val id: Long,
-) : IEntity
+) : IEntity {
+    data class StudioNetworkMatch(
+        val networkId: Long,
+        val name: String,
+        val category: String,
+        val originCountry: String,
+        val logoPath: String?,
+        val isPrimary: Boolean,
+        val similarity: Float,
+    )
+}

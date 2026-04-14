@@ -18,6 +18,7 @@ package co.anitrend.data.studio.koin
 
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.studio.converter.MediaStudioConnectionEntityConverter
+import co.anitrend.data.studio.converter.MediaStudioEntryEnricher
 import co.anitrend.data.studio.converter.StudioConverter
 import co.anitrend.data.studio.converter.StudioEntityConverter
 import co.anitrend.data.studio.converter.StudioModelConverter
@@ -32,6 +33,9 @@ private val converterModule =
     module {
         factory {
             MediaStudioConnectionEntityConverter()
+        }
+        factory {
+            MediaStudioEntryEnricher()
         }
         factory {
             StudioConverter()

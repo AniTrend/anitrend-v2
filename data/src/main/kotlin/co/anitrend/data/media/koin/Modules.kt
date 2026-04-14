@@ -22,6 +22,7 @@ import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.android.extensions.offline
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
+import co.anitrend.data.edge.core.store.IEdgeStore
 import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.media.GetMediaCharactersInteractor
 import co.anitrend.data.media.GetPagingMediaInteractor
@@ -158,6 +159,7 @@ private val sourceModule =
             MediaSourceImpl.Studios(
                 remoteSource = aniListApi(),
                 localSource = store().mediaStudioConnectionDao(),
+                edgeLocalSource = get<IEdgeStore>().edgeMediaDao(),
                 controller =
                     graphQLController(
                         mapper = mapper,
@@ -165,7 +167,9 @@ private val sourceModule =
                     ),
                 mapper = mapper,
                 converter = get(),
+                enricher = get(),
                 clearDataHelper = get(),
+                edgeSource = get(),
                 cachePolicy =
                     MediaCache(
                         localSource = cacheLocalSource(),

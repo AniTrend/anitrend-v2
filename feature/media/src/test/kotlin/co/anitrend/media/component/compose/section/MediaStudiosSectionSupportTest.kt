@@ -1,5 +1,6 @@
 package co.anitrend.media.component.compose.section
 
+import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.studio.entity.Studio
 import kotlin.test.Test
@@ -59,12 +60,40 @@ class MediaStudiosSectionSupportTest {
         assertEquals(5, preview.totalCount)
     }
 
+    @Test
+    fun `toMediaStudioUiModels keeps network enrichment labels`() {
+        val preview =
+            listOf(
+                studio(
+                    id = 1L,
+                    name = "Bones",
+                    image = CoverImage(large = "https://cdn.example/logo.png", medium = "https://cdn.example/logo.png"),
+                    networkMatch =
+                        MediaStudioEntry.StudioNetworkMatch(
+                            networkId = 9L,
+                            name = "Bones",
+                            category = "network",
+                            originCountry = "jp",
+                            logoPath = null,
+                            isPrimary = true,
+                            similarity = 1f,
+                        ),
+                ),
+            ).toMediaStudioUiModels()
+
+        assertEquals("Network", preview.first().networkCategory)
+        assertEquals("JP", preview.first().networkOriginCountry)
+        assertEquals("https://cdn.example/logo.png", preview.first().image?.large)
+    }
+
     private fun studio(
         id: Long,
         name: String,
         isMain: Boolean = false,
         isAnimationStudio: Boolean = false,
         favourites: Int = 0,
+        image: CoverImage? = null,
+        networkMatch: MediaStudioEntry.StudioNetworkMatch? = null,
     ) =
         MediaStudioEntry(
             studio =
@@ -73,12 +102,13 @@ class MediaStudiosSectionSupportTest {
                     isFavourite = false,
                     isFavouriteBlocked = false,
                     name = name,
-                    image = null,
+                    image = image,
                     isAnimationStudio = isAnimationStudio,
                     siteUrl = null,
                     id = id,
                 ),
             isMain = isMain,
+            networkMatch = networkMatch,
             id = id,
         )
 }

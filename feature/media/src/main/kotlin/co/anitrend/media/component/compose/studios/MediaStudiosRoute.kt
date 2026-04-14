@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -51,9 +52,11 @@ import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
+import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.media.R
 import co.anitrend.media.component.compose.section.MediaStudioItemUiModel
 import co.anitrend.media.component.compose.section.StudioBadgeRow
+import co.anitrend.media.component.compose.section.StudioImageBadge
 import co.anitrend.media.component.compose.section.asStudioParam
 import co.anitrend.media.component.compose.section.toMediaStudioUiModels
 import co.anitrend.media.component.viewmodel.MediaStudiosViewModel
@@ -210,6 +213,14 @@ internal fun StudioListRow(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            item.image?.let { image ->
+                StudioImageBadge(
+                    image = image,
+                    name = item.name,
+                    modifier = Modifier.size(42.dp),
+                )
+            }
+
             Column(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -222,7 +233,7 @@ internal fun StudioListRow(
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                if (item.isMain || item.isAnimationStudio) {
+                if (item.isMain || item.isAnimationStudio || item.networkCategory != null || item.networkOriginCountry != null) {
                     StudioBadgeRow(item = item)
                 }
 
@@ -322,6 +333,9 @@ private val PreviewStudios =
             isAnimationStudio = true,
             favourites = 16_400,
             siteUrl = "https://www.bones.co.jp",
+            image = CoverImage(large = "https://image.tmdb.org/t/p/original/example-bones.png", medium = "https://image.tmdb.org/t/p/original/example-bones.png"),
+            networkCategory = "Network",
+            networkOriginCountry = "JP",
         ),
         MediaStudioItemUiModel(
             id = 2L,
@@ -330,6 +344,9 @@ private val PreviewStudios =
             isAnimationStudio = true,
             favourites = 12_100,
             siteUrl = "https://tohoanimation.com",
+            image = CoverImage(large = "https://image.tmdb.org/t/p/original/example-toho.png", medium = "https://image.tmdb.org/t/p/original/example-toho.png"),
+            networkCategory = "Company",
+            networkOriginCountry = "JP",
         ),
         MediaStudioItemUiModel(
             id = 3L,
@@ -338,6 +355,9 @@ private val PreviewStudios =
             isAnimationStudio = false,
             favourites = 8_400,
             siteUrl = null,
+            image = null,
+            networkCategory = null,
+            networkOriginCountry = null,
         ),
     )
 
