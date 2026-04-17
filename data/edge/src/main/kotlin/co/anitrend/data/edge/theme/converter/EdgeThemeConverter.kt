@@ -59,11 +59,16 @@ internal class EdgeThemeConverter : SupportConverter<EdgeThemeEmbedded, EdgeThem
                     }
                 }
             val themeMeta = model.meta
-            val type = themeMeta?.type.orEmpty().trim().lowercase()
+            val type =
+                themeMeta
+                    ?.type
+                    .orEmpty()
+                    .trim()
+                    .lowercase()
             val number = themeMeta?.number ?: 0
             val version = themeMeta?.version ?: 0
 
-            return listOf(normalizedName, type, number.toString(), version.toString()).joinToString(":" )
+            return listOf(normalizedName, type, number.toString(), version.toString()).joinToString(":")
         }
     }
 }

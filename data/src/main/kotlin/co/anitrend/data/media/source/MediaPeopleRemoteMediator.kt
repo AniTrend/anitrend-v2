@@ -54,8 +54,7 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
     protected fun isCorruptPagingCache(
         itemCount: Int,
         maxSortIndex: Int?,
-    ): Boolean =
-        itemCount > 0 && maxSortIndex != itemCount - 1
+    ): Boolean = itemCount > 0 && maxSortIndex != itemCount - 1
 
     protected suspend fun awaitResult(
         requestType: Request.Type,

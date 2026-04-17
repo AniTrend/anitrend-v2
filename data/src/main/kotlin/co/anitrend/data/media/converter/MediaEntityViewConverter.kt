@@ -125,9 +125,7 @@ internal class MediaEntityViewConverter(
                 thumbnail = thumbnail?.normalizedText(),
             )
 
-        private fun EdgeMediaEntityView.createTrailers(
-            mediaTrailer: MediaEntity.Trailer?,
-        ): List<MediaTrailer> {
+        private fun EdgeMediaEntityView.createTrailers(mediaTrailer: MediaEntity.Trailer?): List<MediaTrailer> {
             val preferredTrailer = mediaTrailer?.toDomainTrailer()
             return buildList {
                 preferredTrailer?.let(::add)
@@ -208,8 +206,10 @@ internal class MediaEntityViewConverter(
                 tmdbId = null,
             )
 
-        private fun EdgeMediaEntityView.createScheduleEpisodes(schedule: EdgeMediaEntity.Schedule?): List<Media.Category.Anime.ScheduleDetails.Episode> {
-            return buildList {
+        private fun EdgeMediaEntityView.createScheduleEpisodes(
+            schedule: EdgeMediaEntity.Schedule?,
+        ): List<Media.Category.Anime.ScheduleDetails.Episode> =
+            buildList {
                 addAll(episodes.map { it.toDomainEpisode() })
                 schedule?.lastEpisode?.toDomainEpisode()?.let(::add)
                 schedule?.nextEpisode?.toDomainEpisode()?.let(::add)
@@ -227,7 +227,6 @@ internal class MediaEntityViewConverter(
                     it.airDate ?: Long.MAX_VALUE
                 },
             )
-        }
 
         private fun MediaEntityView.createMedia(): Media.Core {
             val edge = edge()
@@ -444,8 +443,8 @@ internal class MediaEntityViewConverter(
                                                 ),
                                         )
                                     }.orEmpty(),
-                                trailers = edgeTrailers,
-                                gallery = edge?.createGallery().orEmpty(),
+                            trailers = edgeTrailers,
+                            gallery = edge?.createGallery().orEmpty(),
                             countryCode = media.countryCode,
                             description = media.description ?: edge?.media?.description,
                             externalLinks = media.externalLinks,
