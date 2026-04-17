@@ -39,14 +39,21 @@ import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.common.media.ui.compose.component.status.MediaEpisodeGuideUiState
+import co.anitrend.common.media.ui.compose.component.status.MediaEpisodeItemUiState
 import co.anitrend.common.media.ui.compose.component.status.MediaEpisodeListItemCard
 import co.anitrend.common.media.ui.compose.component.status.MediaEpisodeProgressRow
 import co.anitrend.common.media.ui.compose.component.status.MediaEpisodeSpotlightCard
+import co.anitrend.common.media.ui.compose.component.status.MediaEpisodeVisualState
 import co.anitrend.common.media.ui.compose.component.status.rememberMediaEpisodeGuideUiState
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.media.R
 import co.anitrend.media.component.compose.MediaComposePreviewProvider
+
+private data class EpisodeContentGroup(
+    val title: String,
+    val items: List<MediaEpisodeItemUiState>,
+)
 
 @Composable
 internal fun MediaEpisodeScreenContent(
@@ -56,6 +63,14 @@ internal fun MediaEpisodeScreenContent(
     onBackPress: () -> Unit,
     onRetry: () -> Unit,
 ) {
+    val episodeContentGroups =
+        buildEpisodeContentGroups(
+            guideUiState = guideUiState,
+            upcomingTitle = stringResource(R.string.label_media_episode_upcoming_heading),
+            recentTitle = stringResource(R.string.label_media_episode_recent_heading),
+            moreTitle = stringResource(R.string.label_media_episode_more_heading),
+        )
+
     EpisodeScreenScaffold(
         title = stringResource(R.string.title_media_episode_screen),
         subtitle = stringResource(R.string.subtitle_media_episode_screen),
@@ -69,22 +84,16 @@ internal fun MediaEpisodeScreenContent(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     guideUiState.spotlight?.let {
-                        MediaEpisodeSpotlightCard(episode = it)
+                        MediaEpisodeSpotlightCard(
+                            episode = it,
+                            overviewMaxLines = 3,
+                        )
                     }
                     guideUiState.progress?.let {
                         MediaEpisodeProgressRow(progress = it)
                     }
-                    if (guideUiState.items.isNotEmpty()) {
-                        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                            Text(
-                                text = stringResource(R.string.label_media_episode_list_heading),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.SemiBold,
-                            )
-                            guideUiState.items.forEach { item ->
-                                MediaEpisodeListItemCard(episode = item)
-                            }
-                        }
+                    episodeContentGroups.forEach { group ->
+                        EpisodeGroupSection(group = group)
                     }
                 }
             }
@@ -111,6 +120,65 @@ internal fun MediaEpisodeScreenContent(
                     subtitle = stringResource(R.string.message_media_episode_empty),
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun EpisodeGroupSection(group: EpisodeContentGroup) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text(
+            text = group.title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+        )
+        group.items.forEach { item ->
+            MediaEpisodeListItemCard(episode = item)
+        }
+    }
+}
+
+private fun buildEpisodeContentGroups(
+    guideUiState: MediaEpisodeGuideUiState?,
+    upcomingTitle: String,
+    recentTitle: String,
+    moreTitle: String,
+): List<EpisodeContentGroup> {
+    if (guideUiState == null) {
+        return emptyList()
+    }
+
+    val upcomingItems =
+        guideUiState.items
+            .filter { it.state == MediaEpisodeVisualState.UPCOMING }
+            .sortedWith(
+                compareBy<MediaEpisodeItemUiState>({ it.airDate ?: Long.MAX_VALUE })
+                    .thenBy { it.episodeNumber ?: Int.MAX_VALUE },
+            )
+    val recentItems =
+        guideUiState.items
+            .filter { it.state == MediaEpisodeVisualState.AIRED }
+            .sortedWith(
+                compareByDescending<MediaEpisodeItemUiState> { it.airDate ?: Long.MIN_VALUE }
+                    .thenByDescending { it.episodeNumber ?: Int.MIN_VALUE },
+            )
+    val moreItems =
+        guideUiState.items
+            .filter { it.state == MediaEpisodeVisualState.UNKNOWN }
+            .sortedWith(
+                compareByDescending<MediaEpisodeItemUiState> { it.episodeNumber ?: Int.MIN_VALUE }
+                    .thenByDescending { it.seasonNumber ?: Int.MIN_VALUE },
+            )
+
+    return buildList {
+        if (upcomingItems.isNotEmpty()) {
+            add(EpisodeContentGroup(title = upcomingTitle, items = upcomingItems))
+        }
+        if (recentItems.isNotEmpty()) {
+            add(EpisodeContentGroup(title = recentTitle, items = recentItems))
+        }
+        if (moreItems.isNotEmpty()) {
+            add(EpisodeContentGroup(title = moreTitle, items = moreItems))
         }
     }
 }
@@ -219,12 +287,14 @@ private fun EpisodeCenteredState(
     }
 }
 
-@AniTrendPreview.Default
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
+@AniTrendPreview.Mobile
 @Composable
 private fun MediaEpisodeScreenPreview(
     @PreviewParameter(MediaComposePreviewProvider::class) media: Media.Extended,
 ) {
-    val guideUiState = remember(media) { media }.let { rememberMediaEpisodeGuideUiState(it) }
+    val guideUiState = rememberMediaEpisodeGuideUiState(media)
 
     PreviewTheme(wrapInSurface = true) {
         MediaEpisodeScreenContent(
@@ -244,6 +314,34 @@ private fun MediaEpisodeScreenLoadingPreview() {
         MediaEpisodeScreenContent(
             guideUiState = null,
             loadState = LoadState.Loading(),
+            mediaTitle = "Seasonal Test",
+            onBackPress = {},
+            onRetry = {},
+        )
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun MediaEpisodeScreenErrorPreview() {
+    PreviewTheme(wrapInSurface = true) {
+        MediaEpisodeScreenContent(
+            guideUiState = null,
+            loadState = LoadState.Error(details = IllegalStateException("Episode timeline preview failed")),
+            mediaTitle = "Seasonal Test",
+            onBackPress = {},
+            onRetry = {},
+        )
+    }
+}
+
+@AniTrendPreview.Default
+@Composable
+private fun MediaEpisodeScreenEmptyPreview() {
+    PreviewTheme(wrapInSurface = true) {
+        MediaEpisodeScreenContent(
+            guideUiState = MediaEpisodeGuideUiState(spotlight = null, progress = null, items = emptyList()),
+            loadState = LoadState.Idle(),
             mediaTitle = "Seasonal Test",
             onBackPress = {},
             onRetry = {},

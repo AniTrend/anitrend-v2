@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -55,10 +56,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
+import co.anitrend.android.core.helpers.image.model.RequestImage
+import co.anitrend.android.core.helpers.image.toCoverImage
 import co.anitrend.common.media.ui.R
 import co.anitrend.domain.media.entity.Media
-import coil.compose.AsyncImage
 import org.koin.compose.koinInject
 
 private const val EpisodeDatePattern = "MMM dd, yyyy"
@@ -226,6 +229,8 @@ private fun Media.Category.Anime.ScheduleDetails.Episode.stableKey(): String =
 fun MediaEpisodeSpotlightCard(
     episode: MediaEpisodeItemUiState,
     modifier: Modifier = Modifier,
+    showOverview: Boolean = true,
+    overviewMaxLines: Int = 4,
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -255,14 +260,16 @@ fun MediaEpisodeSpotlightCard(
                     overflow = TextOverflow.Ellipsis,
                 )
                 MediaEpisodeSupportText(episode = episode)
-                episode.overview?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 4,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                if (showOverview) {
+                    episode.overview?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = overviewMaxLines,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                 }
             }
         }
@@ -321,6 +328,7 @@ fun MediaEpisodeProgressRow(
     progress: MediaEpisodeProgressUiState,
     modifier: Modifier = Modifier,
 ) {
+    val hasKnownTotal = progress.total?.let { it > 0 } == true
     val progressText =
         progress.total
             ?.takeIf { it > 0 }
@@ -356,15 +364,17 @@ fun MediaEpisodeProgressRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        LinearProgressIndicator(
-            progress = {
-                val total = progress.total?.takeIf { it > 0 } ?: return@LinearProgressIndicator 1f
-                (progress.current.toFloat() / total.toFloat()).coerceIn(0f, 1f)
-            },
-            modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(6.dp)),
-            color = MaterialTheme.colorScheme.primary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant,
-        )
+        if (hasKnownTotal) {
+            LinearProgressIndicator(
+                progress = {
+                    val total = progress.total ?: return@LinearProgressIndicator 0f
+                    (progress.current.toFloat() / total.toFloat()).coerceIn(0f, 1f)
+                },
+                modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(6.dp)),
+                color = MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            )
+        }
     }
 }
 
@@ -480,11 +490,12 @@ private fun MediaEpisodeArtwork(
         contentAlignment = Alignment.Center,
     ) {
         if (!imageUrl.isNullOrBlank()) {
-            AsyncImage(
-                model = imageUrl,
+            AniTrendImage(
+                image = imageUrl.toCoverImage(),
+                imageType = RequestImage.Media.ImageType.BANNER,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxWidth().aspectRatio(1.6f),
+                modifier = Modifier.fillMaxSize(),
             )
         } else {
             Icon(

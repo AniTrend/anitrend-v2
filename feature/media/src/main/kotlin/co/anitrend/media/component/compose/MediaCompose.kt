@@ -115,6 +115,7 @@ import co.anitrend.media.component.compose.section.MediaGallerySection
 import co.anitrend.media.component.compose.section.MediaGenrePreviewSection
 import co.anitrend.media.component.compose.section.MediaRankPreviewSection
 import co.anitrend.media.component.compose.section.MediaStudiosPreviewSection
+import co.anitrend.media.component.compose.section.MediaSupplementalInfoSection
 import co.anitrend.media.component.compose.section.MediaSynopsisPreviewSection
 import co.anitrend.media.component.compose.section.MediaTagSection
 import co.anitrend.media.component.compose.section.MediaTrailerSection
@@ -250,7 +251,6 @@ private fun MediaHeroHeader(
 ) {
     val secondaryTitle = media.secondaryTitle()
     val heroFacts = remember(media) { media.heroFacts() }
-    val extraInfo = media.extraInfo?.trim()?.takeIf(String::isNotBlank)
 
     Box(
         modifier = modifier.fillMaxWidth(),
@@ -353,14 +353,6 @@ private fun MediaHeroHeader(
                                 )
                             }
                         }
-                    }
-                    extraInfo?.let {
-                        Text(
-                            text = it,
-                            overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
                     }
                 }
             }
@@ -551,6 +543,10 @@ private fun MediaDetailContent(
                                 ),
                             )
                         },
+                    )
+
+                    MediaSupplementalInfoSection(
+                        extraInfo = media.extraInfo,
                     )
                 }
             }

@@ -170,6 +170,75 @@ data class MediaStatusSectionPreviewProvider(
                     ),
             ),
             Media.Extended.empty().copy(
+                status = MediaStatus.RELEASING,
+                category =
+                    Media.Category.Anime(
+                        episodes = 0,
+                        duration = 24,
+                        broadcast = "Sundays 21:00 (JST)",
+                        premiered = "Winter 2025",
+                        schedule = null,
+                        scheduleDetails =
+                            Media.Category.Anime.ScheduleDetails(
+                                airedEpisodes = 3,
+                                firstAirDate = Instant.now().minus(28, ChronoUnit.DAYS).epochSecond,
+                                lastAirDate = Instant.now().minus(4, ChronoUnit.DAYS).epochSecond,
+                                lastEpisode =
+                                    Media.Category.Anime.ScheduleDetails.Episode(
+                                        id = 3,
+                                        airDate = Instant.now().minus(4, ChronoUnit.DAYS).epochSecond,
+                                        episodeNumber = 3,
+                                        image = null,
+                                        name = "Signal Lost",
+                                        overview = null,
+                                        productionCode = null,
+                                        runtime = 24,
+                                        seasonNumber = 1,
+                                        tmdbId = null,
+                                    ),
+                                episodes =
+                                    listOf(
+                                        Media.Category.Anime.ScheduleDetails.Episode(
+                                            id = 1,
+                                            airDate = Instant.now().minus(18, ChronoUnit.DAYS).epochSecond,
+                                            episodeNumber = 1,
+                                            image = null,
+                                            name = "Wake",
+                                            overview = null,
+                                            productionCode = null,
+                                            runtime = 24,
+                                            seasonNumber = 1,
+                                            tmdbId = null,
+                                        ),
+                                        Media.Category.Anime.ScheduleDetails.Episode(
+                                            id = 2,
+                                            airDate = Instant.now().minus(11, ChronoUnit.DAYS).epochSecond,
+                                            episodeNumber = 2,
+                                            image = null,
+                                            name = "The Split",
+                                            overview = null,
+                                            productionCode = null,
+                                            runtime = 24,
+                                            seasonNumber = 1,
+                                            tmdbId = null,
+                                        ),
+                                        Media.Category.Anime.ScheduleDetails.Episode(
+                                            id = 3,
+                                            airDate = Instant.now().minus(4, ChronoUnit.DAYS).epochSecond,
+                                            episodeNumber = 3,
+                                            image = null,
+                                            name = "Signal Lost",
+                                            overview = null,
+                                            productionCode = null,
+                                            runtime = 24,
+                                            seasonNumber = 1,
+                                            tmdbId = null,
+                                        ),
+                                    ),
+                            ),
+                    ),
+            ),
+            Media.Extended.empty().copy(
                 status = MediaStatus.CANCELLED,
                 category =
                     Media.Category.Anime(

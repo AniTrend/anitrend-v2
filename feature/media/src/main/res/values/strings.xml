@@ -138,6 +138,14 @@
     <string name="subtitle_media_genre_section">Primary discovery signals for this title.</string>
     <!-- Supporting copy for the synopsis preview module -->
     <string name="subtitle_media_synopsis_section">Story overview with capped preview text.</string>
+    <!-- Section title for long-form upstream notes shown near the top of media detail -->
+    <string name="label_media_supplemental_info_section_title">Series notes</string>
+    <!-- Supporting copy for supplemental release or franchise context on media detail -->
+    <string name="subtitle_media_supplemental_info_section">Expanded release and franchise context when available.</string>
+    <!-- Action label to open the full supplemental note in a bottom sheet -->
+    <string name="action_media_supplemental_info_read_full">Read full note</string>
+    <!-- Action label to dismiss the supplemental note reader sheet -->
+    <string name="action_media_supplemental_info_close">Close</string>
     <!-- Empty-state title for a missing synopsis -->
     <string name="label_media_synopsis_empty_title">Synopsis unavailable</string>
     <!-- Empty-state copy for a missing synopsis -->
@@ -400,9 +408,15 @@
     <!-- Screen title for the dedicated episode guide destination -->
     <string name="title_media_episode_screen">Episodes</string>
     <!-- Supporting copy for the dedicated episode guide destination -->
-    <string name="subtitle_media_episode_screen">Follow the latest aired episode, upcoming stop, and episode-by-episode rollout for this title.</string>
+    <string name="subtitle_media_episode_screen">Follow the latest rollout and browse episode history for this title.</string>
     <!-- Section heading for the full episode list inside the episode guide destination -->
     <string name="label_media_episode_list_heading">Episode guide</string>
+    <!-- Section heading for the next scheduled episodes inside the episode guide destination -->
+    <string name="label_media_episode_upcoming_heading">Upcoming</string>
+    <!-- Section heading for the most recently aired episodes inside the episode guide destination -->
+    <string name="label_media_episode_recent_heading">Recent episodes</string>
+    <!-- Section heading for episodes that have incomplete scheduling metadata -->
+    <string name="label_media_episode_more_heading">More episodes</string>
     <!-- Loading title for the dedicated episode guide destination -->
     <string name="label_media_episode_loading">Loading episodes</string>
     <!-- Loading copy for the dedicated episode guide destination -->
