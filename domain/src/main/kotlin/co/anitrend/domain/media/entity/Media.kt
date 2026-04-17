@@ -21,6 +21,7 @@ import co.anitrend.domain.common.entity.contract.IMediaCover
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.common.extension.INVALID_ID
 import co.anitrend.domain.genre.entity.Genre
+import co.anitrend.domain.media.entity.attribute.image.MediaGalleryImage
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import co.anitrend.domain.media.entity.attribute.link.IMediaExternalLink
 import co.anitrend.domain.media.entity.attribute.origin.IMediaSourceId
@@ -80,7 +81,30 @@ sealed class Media : IMedia {
             val broadcast: String?,
             val premiered: String?,
             val schedule: AiringSchedule?,
+            val scheduleDetails: ScheduleDetails? = null,
         ) : Category(MediaType.ANIME, episodes) {
+            data class ScheduleDetails(
+                val airedEpisodes: Int?,
+                val firstAirDate: Long?,
+                val lastAirDate: Long?,
+                val nextEpisode: Episode? = null,
+                val lastEpisode: Episode? = null,
+                val episodes: List<Episode> = emptyList(),
+            ) {
+                data class Episode(
+                    val id: Long?,
+                    val airDate: Long?,
+                    val episodeNumber: Int?,
+                    val image: String?,
+                    val name: String?,
+                    val overview: String?,
+                    val productionCode: String?,
+                    val runtime: Int?,
+                    val seasonNumber: Int?,
+                    val tmdbId: Long?,
+                )
+            }
+
             companion object {
                 fun empty() =
                     Anime(
@@ -193,6 +217,8 @@ sealed class Media : IMedia {
         val extraInfo: String?,
         val themes: List<MediaTheme>,
         val sourceId: IMediaSourceId,
+        val trailers: List<IMediaTrailer> = emptyList(),
+        val gallery: List<MediaGalleryImage> = emptyList(),
         override val externalLinks: List<IMediaExternalLink>,
         override val rankings: List<IMediaRank>,
         override val trailer: IMediaTrailer?,
@@ -232,6 +258,8 @@ sealed class Media : IMedia {
                     extraInfo = null,
                     themes = emptyList(),
                     sourceId = MediaSourceId.empty(),
+                    trailers = emptyList(),
+                    gallery = emptyList(),
                     countryCode = null,
                     description = null,
                     externalLinks = emptyList(),

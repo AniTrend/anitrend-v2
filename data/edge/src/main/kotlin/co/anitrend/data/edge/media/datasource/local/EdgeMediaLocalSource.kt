@@ -23,6 +23,7 @@ import androidx.room.Transaction
 import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.edge.episode.entity.EdgeEpisodeEntity
+import co.anitrend.data.edge.image.entity.EdgeMediaImageEntity
 import co.anitrend.data.edge.media.entity.EdgeMediaEntity
 import co.anitrend.data.edge.media.entity.view.EdgeMediaEntityView
 import co.anitrend.data.edge.network.entity.EdgeNetworkEntity
@@ -53,6 +54,7 @@ abstract class EdgeMediaLocalSource : AbstractLocalSource<EdgeMediaEntity>() {
     @RawQuery(
         observedEntities = [
             EdgeMediaEntity::class,
+            EdgeMediaImageEntity::class,
             EdgeNetworkEntity::class,
             EdgeTrailerEntity::class,
             EdgeEpisodeEntity::class,

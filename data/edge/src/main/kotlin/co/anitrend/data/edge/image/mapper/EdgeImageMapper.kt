@@ -31,6 +31,7 @@ internal class EdgeImageMapper(
         mediaId: String,
         sources: List<EdgeImageModel>,
     ) {
+        localSource.deleteByMediaId(mediaId)
         super.onEmbedded(sources.map { mediaId to it })
     }
 

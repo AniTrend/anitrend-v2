@@ -35,6 +35,7 @@ import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaCharactersRouter
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.MediaEpisodeRouter
 import co.anitrend.navigation.MediaPeopleRouter
 import co.anitrend.navigation.MediaRecommendationsRouter
 import co.anitrend.navigation.MediaRelationsRouter
@@ -103,6 +104,12 @@ class MediaScreen : AniTrendScreen() {
                         },
                         onImageClick = { param ->
                             ImageViewerRouter.startActivity(
+                                context = this@MediaScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onEpisodeGuideClick = { param ->
+                            MediaEpisodeRouter.startActivity(
                                 context = this@MediaScreen,
                                 navPayload = param.asNavPayload(),
                             )

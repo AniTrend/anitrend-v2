@@ -16,6 +16,12 @@
   -->
 
 <resources>
+  <!-- Primary action for saving the currently visible gallery image locally -->
     <string name="action_title_download">Download</string>
+  <!-- Warning shown when the gallery viewer cannot save without storage permission -->
     <string name="warning_permission_for_storage_not_granted">Permission has not been granted for storage access</string>
+  <!-- Empty-state copy shown when the image viewer opens without a usable source -->
+  <string name="label_image_viewer_missing_image">No image source was provided for this viewer.</string>
+  <!-- Error-state copy shown when the current gallery item cannot be loaded -->
+  <string name="label_image_viewer_load_error">Unable to load this image.</string>
 </resources>

@@ -51,7 +51,7 @@ internal class EdgeMediaMapper(
         val entity = converter.convertFrom(model)
         imageMapper.onEmbedded(mediaId = entity.id, sources = model.images)
         networkMapper.onEmbedded(source = model.networks.map { entity.id to it })
-        trailerMapper.onEmbedded(source = model.trailers.map { entity.id to it })
+        trailerMapper.onEmbedded(mediaId = entity.id, sources = model.trailers)
         themeMapper.onEmbedded(source = model.themeSongs.filter(EdgeThemeModel::isPersistable).map { entity.id to it })
         return entity
     }

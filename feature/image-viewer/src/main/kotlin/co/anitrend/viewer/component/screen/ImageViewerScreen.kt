@@ -17,48 +17,34 @@
 package co.anitrend.viewer.component.screen
 
 import android.Manifest
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.graphics.drawable.toBitmap
-import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
-import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.android.core.helpers.image.toCoverImage
-import co.anitrend.android.core.helpers.image.using
-import co.anitrend.core.component.screen.AniTrendBoundScreen
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.viewer.R
 import co.anitrend.viewer.component.viewmodel.ImageViewerViewModel
-import co.anitrend.viewer.databinding.ImageViewerScreenBinding
-import coil.request.Disposable
-import coil.target.Target
-import com.davemorrissey.labs.subscaleview.ImageSource
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ImageViewerScreen : AniTrendBoundScreen<ImageViewerScreenBinding>() {
+class ImageViewerScreen : AniTrendScreen() {
     private val param by extra<ImageViewerRouter.ImageSourceParam>(
         key = nameOf<ImageViewerRouter.ImageSourceParam>(),
     )
 
     private val viewModel by viewModel<ImageViewerViewModel>()
-
-    private val stateLayoutConfig =
-        StateLayoutConfig(
-            loadingMessage = co.anitrend.core.R.string.label_text_loading,
-        )
+    private var pendingDownloadSource: String? = null
 
     private val permissionResult =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission(),
         ) { isAllowed: Boolean ->
             if (isAllowed) {
-                viewModel.downloadImage(param?.imageSrc)
+                viewModel.downloadImage(pendingDownloadSource)
             } else {
                 Toast
                     .makeText(
@@ -68,8 +54,6 @@ class ImageViewerScreen : AniTrendBoundScreen<ImageViewerScreenBinding>() {
                     ).show()
             }
         }
-
-    private var disposable: Disposable? = null
 
     /**
      * Can be used to configure custom theme styling as desired
@@ -81,78 +65,28 @@ class ImageViewerScreen : AniTrendBoundScreen<ImageViewerScreenBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ImageViewerScreenBinding.inflate(layoutInflater)
-        setContentView(requireBinding().root)
-    }
 
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
-    override fun initializeComponents(savedInstanceState: Bundle?) {
-        requireBinding().stateLayout.stateConfigFlow.value = stateLayoutConfig
-        val duration = resources.getInteger(co.anitrend.android.core.R.integer.motion_duration_long)
-        requireBinding().subSamplingImageView.setOnClickListener {
-            val transparency = requireBinding().downloadAction.alpha
-            requireBinding()
-                .downloadAction
-                .animate()
-                .alpha(if (transparency == VISIBLE) HIDDEN else VISIBLE)
-                .setDuration(duration.toLong())
-                .apply { interpolator = DecelerateInterpolator() }
-        }
-        requireBinding().downloadAction.setOnClickListener {
-            val transparency = requireBinding().downloadAction.alpha
-            val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-            if (transparency == VISIBLE) {
-                permissionResult.launch(permission)
+        val imageSources =
+            param
+                ?.imageSources
+                ?.map(String::trim)
+                ?.filter(String::isNotBlank)
+                ?.ifEmpty {
+                    listOf(param?.imageSrc?.toString().orEmpty())
+                }.orEmpty()
+        val initialIndex = param?.initialIndex?.coerceIn(0, imageSources.lastIndex.coerceAtLeast(0)) ?: 0
+
+        setContent {
+            AniTrendTheme3 {
+                ImageViewerContent(
+                    imageSources = imageSources,
+                    initialIndex = initialIndex,
+                    onDownloadClick = { source ->
+                        pendingDownloadSource = source
+                        permissionResult.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    },
+                )
             }
         }
-        setUpImagePreview()
-    }
-
-    private fun setUpImagePreview() {
-        disposable =
-            object : Target {
-                /**
-                 * Called when the request starts.
-                 */
-                override fun onStart(placeholder: Drawable?) {
-                    binding?.stateLayout?.loadStateFlow?.value = LoadState.Loading()
-                }
-
-                /**
-                 * Called if an error occurs while executing the request.
-                 */
-                override fun onError(error: Drawable?) {
-                    binding?.stateLayout?.loadStateFlow?.value =
-                        LoadState.Error(
-                            RequestError("Unable to load image"),
-                        )
-                }
-
-                /**
-                 * Called if the request completes successfully.
-                 */
-                override fun onSuccess(result: Drawable) {
-                    val source = ImageSource.bitmap(result.toBitmap())
-                    binding?.subSamplingImageView?.setImage(source)
-                    binding?.stateLayout?.loadStateFlow?.value = LoadState.Success()
-                }
-            }.using(param?.imageSrc.toCoverImage(), this)
-    }
-
-    override fun onDestroy() {
-        binding?.subSamplingImageView?.setOnClickListener(null)
-        disposable?.dispose()
-        disposable = null
-        super.onDestroy()
-    }
-
-    companion object {
-        const val VISIBLE = 1f
-        const val HIDDEN = 0f
     }
 }
