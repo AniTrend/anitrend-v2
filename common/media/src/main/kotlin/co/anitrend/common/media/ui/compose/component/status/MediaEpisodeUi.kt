@@ -381,6 +381,7 @@ fun MediaEpisodeProgressRow(
 @Composable
 fun MediaEpisodeGuideButton(
     onClick: () -> Unit,
+    hasContextNote: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     Button(
@@ -397,7 +398,14 @@ fun MediaEpisodeGuideButton(
         )
         Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
         Text(
-            text = stringResource(R.string.action_media_status_episode_guide),
+            text =
+                stringResource(
+                    if (hasContextNote) {
+                        R.string.action_media_status_episode_guide_with_context
+                    } else {
+                        R.string.action_media_status_episode_guide
+                    },
+                ),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
     }

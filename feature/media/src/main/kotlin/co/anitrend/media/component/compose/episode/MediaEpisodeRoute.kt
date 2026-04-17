@@ -50,6 +50,7 @@ fun MediaEpisodeRoute(
 
     MediaEpisodeScreenContent(
         guideUiState = guideUiState,
+        contextNote = (media as? Media.Extended)?.extraInfo,
         loadState = loadState,
         mediaTitle = mediaTitle,
         onBackPress = onBackPress,

@@ -16,6 +16,7 @@
  */
 package co.anitrend.common.media.ui.compose.component.status
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,6 +50,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
@@ -62,6 +64,9 @@ import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import org.koin.compose.koinInject
 
 private const val StatusDatePattern = "MMM dd, yyyy"
+private const val StatusContextCollapsedMaxLines = 4
+private const val StatusContextCharacterThreshold = 280
+private const val StatusContextLineBreakThreshold = 3
 
 @Composable
 fun MediaStatusSection(
@@ -71,6 +76,7 @@ fun MediaStatusSection(
     modifier: Modifier = Modifier,
 ) {
     val episodeUiState = rememberMediaStatusSectionUiState(media)
+    val contextNote = media.statusContextNote()
 
     OutlinedCard(
         colors =
@@ -110,9 +116,87 @@ fun MediaStatusSection(
                 }
             }
 
-            if (showEpisodeGuideAction && episodeUiState.showEpisodeGuideAction) {
-                MediaEpisodeGuideButton(onClick = onOpenEpisodeGuide)
+            contextNote?.let {
+                MediaStatusTimelineNoteCallout(note = it)
             }
+
+            if (showEpisodeGuideAction && episodeUiState.showEpisodeGuideAction) {
+                MediaEpisodeGuideButton(
+                    onClick = onOpenEpisodeGuide,
+                    hasContextNote = contextNote != null,
+                )
+            }
+        }
+    }
+}
+
+private fun Media.statusContextNote(): String? =
+    (this as? Media.Extended)
+        ?.takeIf { category is Media.Category.Anime }
+        ?.extraInfo
+        ?.trim()
+        ?.takeIf(String::isNotBlank)
+
+private fun String.shouldCollapseStatusContext(): Boolean =
+    length > StatusContextCharacterThreshold ||
+        count { it == '\n' } >= StatusContextLineBreakThreshold
+
+@Composable
+private fun MediaStatusTimelineNoteCallout(
+    note: String,
+    modifier: Modifier = Modifier,
+) {
+    val shouldCollapse = note.shouldCollapseStatusContext()
+
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.34f),
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        shape = RoundedCornerShape(20.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.28f)),
+    ) {
+        Column(
+            modifier = Modifier.padding(14.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Surface(
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.42f),
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    shape = RoundedCornerShape(12.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.SettingsInputAntenna,
+                        contentDescription = null,
+                        modifier = Modifier.padding(8.dp).size(16.dp),
+                    )
+                }
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.label_media_status_timeline_notes_title),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Text(
+                        text = stringResource(R.string.label_media_status_timeline_notes_subtitle),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+
+            Text(
+                text = note,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = if (shouldCollapse) StatusContextCollapsedMaxLines else Int.MAX_VALUE,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
     }
 }

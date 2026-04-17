@@ -188,6 +188,10 @@
     <string name="label_media_status_started">Started</string>
     <!-- Metadata label indicating how many episodes have aired so far -->
     <string name="label_media_status_aired_episodes">Aired episodes</string>
+    <!-- Title for the contextual release note shown inside the anime status surface -->
+    <string name="label_media_status_timeline_notes_title">Timeline notes</string>
+    <!-- Supporting copy for the contextual release note shown inside the anime status surface -->
+    <string name="label_media_status_timeline_notes_subtitle">Broadcast shifts, crossover context, and release notes.</string>
     <!-- Metadata label indicating the latest known aired episode -->
     <string name="label_media_status_latest_episode">Latest episode</string>
     <!-- Formatted episode progress: e.g., "8 / 12"; %1$d is the aired count and %2$d is the total count -->
@@ -200,6 +204,8 @@
     <string name="label_media_status_episode_with_date">%1$s • %2$s</string>
     <!-- Primary navigation CTA from the media status card into the dedicated episode guide -->
     <string name="action_media_status_episode_guide">Open episode timeline</string>
+    <!-- Primary navigation CTA when the episode destination also contains expanded timeline notes -->
+    <string name="action_media_status_episode_guide_with_context">Open timeline and notes</string>
     <!-- Small emphasis badge attached to the most recent aired episode -->
     <string name="label_media_episode_badge_latest">Latest</string>
     <!-- Small emphasis badge attached to the next upcoming episode -->

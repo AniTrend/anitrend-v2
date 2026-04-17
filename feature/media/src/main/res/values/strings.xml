@@ -417,6 +417,10 @@
     <string name="label_media_episode_recent_heading">Recent episodes</string>
     <!-- Section heading for episodes that have incomplete scheduling metadata -->
     <string name="label_media_episode_more_heading">More episodes</string>
+    <!-- Section title for expanded release and schedule context on the episode destination -->
+    <string name="title_media_episode_context_notes">Timeline notes</string>
+    <!-- Supporting copy for expanded release and schedule context on the episode destination -->
+    <string name="subtitle_media_episode_context_notes">Broadcast shifts, crossover blocks, and release context for this title.</string>
     <!-- Loading title for the dedicated episode guide destination -->
     <string name="label_media_episode_loading">Loading episodes</string>
     <!-- Loading copy for the dedicated episode guide destination -->

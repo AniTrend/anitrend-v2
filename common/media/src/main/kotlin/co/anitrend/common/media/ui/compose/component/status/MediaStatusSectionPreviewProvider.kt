@@ -37,6 +37,8 @@ data class MediaStatusSectionPreviewProvider(
             ),
             Media.Extended.empty().copy(
                 status = MediaStatus.RELEASING,
+                extraInfo =
+                    "Episode 10 follows the franchise crossover special that changed the timeslot for two consecutive weeks.",
                 category =
                     Media.Category.Anime(
                         episodes = 12,
@@ -126,6 +128,10 @@ data class MediaStatusSectionPreviewProvider(
             ),
             Media.Extended.empty().copy(
                 status = MediaStatus.HIATUS,
+                extraInfo =
+                    "Episode 7 ended on a production pause cliffhanger. The broadcast window shifted after the special crossover block, " +
+                        "and no replacement date has been locked yet. Earlier schedule notes indicate the release cadence was adjusted twice " +
+                        "to align with partner programming windows.",
                 category =
                     Media.Category.Anime(
                         episodes = 12,
