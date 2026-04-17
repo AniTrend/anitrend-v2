@@ -19,11 +19,13 @@ package co.anitrend.settings.component.compose
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.ColorLens
+import androidx.compose.material.icons.filled.DeveloperBoard
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material.icons.filled.WorkHistory
 import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale
 import co.anitrend.android.core.settings.helper.theme.model.AniTrendTheme
 import co.anitrend.settings.model.SettingItem
@@ -116,5 +118,58 @@ internal val PreviewData =
             summary = "Dial in the right level of privacy for you",
             icon = Icons.Default.PrivacyTip,
             onClick = { },
+        ),
+        SettingItem.CategoryHeader(
+            id = "advanced_category",
+            title = "Advanced",
+        ),
+        SettingItem.ClickableSetting(
+            id = "developer_options",
+            title = "Developer options",
+            summary = "Diagnostics and runtime behavior controls",
+            icon = Icons.Default.DeveloperBoard,
+            onClick = { },
+        ),
+    )
+
+internal val PreviewDeveloperData =
+    listOf(
+        SettingItem.CategoryHeader(
+            id = "developer_settings_diagnostics",
+            title = "Diagnostics",
+        ),
+        SettingItem.ClickableSetting(
+            id = "log_viewer",
+            title = "Manage logs",
+            summary = "Audit application logs",
+            icon = Icons.Default.DeveloperBoard,
+            onClick = { },
+        ),
+        SettingItem.ClickableSetting(
+            id = "work_manager_tasks",
+            title = "Work manager tasks",
+            summary = "Inspect and manage background tasks",
+            icon = Icons.Default.WorkHistory,
+            onClick = { },
+        ),
+        SettingItem.CategoryHeader(
+            id = "developer_settings_runtime_behavior",
+            title = "Runtime behavior",
+        ),
+        SettingItem.SwitchSetting(
+            id = "clear_on_refresh",
+            title = "Clear database on refresh",
+            summary = "Typically the database is cleared when you pull to refresh",
+            icon = Icons.Default.Refresh,
+            onClick = { false },
+            onValueChange = { },
+        ),
+        SettingItem.SwitchSetting(
+            id = "auto_heap_dump",
+            title = "Auto heap dump",
+            summary = "Dump heap automatically when leak is detected",
+            icon = Icons.Default.Memory,
+            onClick = { true },
+            onValueChange = { },
         ),
     )

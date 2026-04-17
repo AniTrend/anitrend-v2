@@ -133,6 +133,7 @@ object SettingsRouter : NavigationRouter() {
         NOTIFICATION,
         SYNCHRONIZATION,
         STORAGE,
+        DEVELOPER,
         LOGS,
         TASK,
     }

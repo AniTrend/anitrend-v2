@@ -53,7 +53,7 @@ class SettingsPresenter(
             category =
                 SettingItem.CategoryHeader(
                     id = "general_settings",
-                    title = "General Settings",
+                    title = context.getString(co.anitrend.settings.R.string.preference_category_title_general_settings),
                 ),
             entries =
                 listOf(
@@ -72,6 +72,27 @@ class SettingsPresenter(
                         onClick = { navigateTo(SettingsRouter.Destination.PRIVACY) },
                     ),
                 ),
+        )
+    }
+
+    private fun generateAdvanced(navigateTo: (SettingsRouter.Destination) -> Unit) {
+        preferenceBuilder.add(
+            category =
+                SettingItem.CategoryHeader(
+                    id = "advanced_settings",
+                    title = context.getString(co.anitrend.settings.R.string.preference_category_title_advanced_settings),
+                ),
+            entries =
+                listOf(
+                    SettingItem.ClickableSetting(
+                        id = "developer_options",
+                        title = context.getString(co.anitrend.settings.R.string.preference_title_developer_options),
+                        summary = context.getString(co.anitrend.settings.R.string.preference_summary_developer_options),
+                        icon = Icons.Outlined.DeveloperBoard,
+                        onClick = { navigateTo(SettingsRouter.Destination.DEVELOPER) },
+                    ),
+                ),
+            isVisible = BuildConfig.DEBUG,
         )
     }
 
@@ -182,66 +203,6 @@ class SettingsPresenter(
         )
     }
 
-    private fun generateDeveloperOptions(navigateTo: (SettingsRouter.Destination) -> Unit) {
-        preferenceBuilder.add(
-            category =
-                SettingItem.CategoryHeader(
-                    id = "developer_settings",
-                    title = context.getString(co.anitrend.settings.R.string.preference_group_title_developer_settings),
-                ),
-            entries =
-                listOf(
-                    SettingItem.ClickableSetting(
-                        id = "log_viewer",
-                        title = "Manage logs",
-                        summary = "Audit application logs",
-                        icon = Icons.Outlined.DeveloperBoard,
-                        onClick = { navigateTo(SettingsRouter.Destination.LOGS) },
-                    ),
-                    SettingItem.ClickableSetting(
-                        id = "work_manager_tasks",
-                        title = "Work Manager Tasks",
-                        summary = "Manage application background tasks",
-                        icon = Icons.Outlined.WorkHistory,
-                        onClick = { navigateTo(SettingsRouter.Destination.TASK) },
-                    ),
-                    SettingItem.SwitchSetting(
-                        id = "heap_dump",
-                        title = context.getString(co.anitrend.settings.R.string.preference_title_heap_dump),
-                        summary = context.getString(co.anitrend.settings.R.string.preference_summary_heap),
-                        icon = Icons.Outlined.Memory,
-                        onClick = { settings.automaticHeapDump.value },
-                        onValueChange = { newValue -> settings.automaticHeapDump.value = newValue },
-                    ),
-                    SettingItem.SwitchSetting(
-                        id = "show_leak_launcher",
-                        title = context.getString(co.anitrend.settings.R.string.preference_title_show_leak_launcher),
-                        summary = context.getString(co.anitrend.settings.R.string.preference_summary_show_leak_launcher),
-                        icon = Icons.Outlined.DeveloperBoard,
-                        onClick = { settings.showLeakLauncher.value },
-                        onValueChange = { newValue -> settings.showLeakLauncher.value = newValue },
-                    ),
-                    SettingItem.SwitchSetting(
-                        id = "experimental_compose_ui",
-                        title = context.getString(co.anitrend.settings.R.string.preference_title_experimental_compose_ui),
-                        summary = context.getString(co.anitrend.settings.R.string.preference_summary_experimental_compose_ui),
-                        icon = Icons.Outlined.DeveloperBoard,
-                        onClick = { settings.experimentalComposeUi.value },
-                        onValueChange = { newValue -> settings.experimentalComposeUi.value = newValue },
-                    ),
-                    SettingItem.SwitchSetting(
-                        id = "clear_db_on_refresh",
-                        title = context.getString(co.anitrend.settings.R.string.preference_title_refresh_behavior_config),
-                        summary = context.getString(co.anitrend.settings.R.string.preference_summary_refresh_behavior_config),
-                        icon = Icons.Outlined.LayersClear,
-                        onClick = { settings.clearDataOnSwipeRefresh.value },
-                        onValueChange = { newValue -> settings.clearDataOnSwipeRefresh.value = newValue },
-                    ),
-                ),
-            isVisible = BuildConfig.DEBUG,
-        )
-    }
-
     fun getSettingsItems(navigateTo: (SettingsRouter.Destination) -> Unit): List<SettingItem> {
         preferenceBuilder.clear()
         preferenceBuilder.add(
@@ -256,12 +217,83 @@ class SettingsPresenter(
                     ),
                 ),
         )
-        generateDeveloperOptions(navigateTo)
         generateGeneral(navigateTo)
         generateApplication(navigateTo)
         generateUserExperience(navigateTo)
         generateNotificationAndSync(navigateTo)
         generateUpdatesAndStorage(navigateTo)
+        generateAdvanced(navigateTo)
         return preferenceBuilder.build()
+    }
+
+    fun getDeveloperSettingsItems(navigateTo: (SettingsRouter.Destination) -> Unit): List<SettingItem> {
+        if (!BuildConfig.DEBUG) {
+            return listOf(
+                SettingItem.HintCard(
+                    id = "developer_settings_unavailable",
+                    title = context.getString(co.anitrend.settings.R.string.title_settings_developer_unavailable),
+                    description = context.getString(co.anitrend.settings.R.string.summary_settings_developer_unavailable),
+                    icon = Icons.Outlined.Interests,
+                    onClick = {},
+                ),
+            )
+        }
+
+        return listOf(
+            SettingItem.CategoryHeader(
+                id = "developer_settings_diagnostics",
+                title = context.getString(co.anitrend.settings.R.string.preference_category_title_developer_diagnostics),
+            ),
+            SettingItem.ClickableSetting(
+                id = "log_viewer",
+                title = context.getString(co.anitrend.settings.R.string.preference_title_manage_logs),
+                summary = context.getString(co.anitrend.settings.R.string.preference_summary_manage_logs),
+                icon = Icons.Outlined.DeveloperBoard,
+                onClick = { navigateTo(SettingsRouter.Destination.LOGS) },
+            ),
+            SettingItem.ClickableSetting(
+                id = "work_manager_tasks",
+                title = context.getString(co.anitrend.settings.R.string.preference_title_work_manager_tasks),
+                summary = context.getString(co.anitrend.settings.R.string.preference_summary_work_manager_tasks),
+                icon = Icons.Outlined.WorkHistory,
+                onClick = { navigateTo(SettingsRouter.Destination.TASK) },
+            ),
+            SettingItem.CategoryHeader(
+                id = "developer_settings_runtime_behavior",
+                title = context.getString(co.anitrend.settings.R.string.preference_category_title_developer_runtime_behavior),
+            ),
+            SettingItem.SwitchSetting(
+                id = "heap_dump",
+                title = context.getString(co.anitrend.settings.R.string.preference_title_heap_dump),
+                summary = context.getString(co.anitrend.settings.R.string.preference_summary_heap),
+                icon = Icons.Outlined.Memory,
+                onClick = { settings.automaticHeapDump.value },
+                onValueChange = { newValue -> settings.automaticHeapDump.value = newValue },
+            ),
+            SettingItem.SwitchSetting(
+                id = "show_leak_launcher",
+                title = context.getString(co.anitrend.settings.R.string.preference_title_show_leak_launcher),
+                summary = context.getString(co.anitrend.settings.R.string.preference_summary_show_leak_launcher),
+                icon = Icons.Outlined.DeveloperBoard,
+                onClick = { settings.showLeakLauncher.value },
+                onValueChange = { newValue -> settings.showLeakLauncher.value = newValue },
+            ),
+            SettingItem.SwitchSetting(
+                id = "experimental_compose_ui",
+                title = context.getString(co.anitrend.settings.R.string.preference_title_experimental_compose_ui),
+                summary = context.getString(co.anitrend.settings.R.string.preference_summary_experimental_compose_ui),
+                icon = Icons.Outlined.DeveloperBoard,
+                onClick = { settings.experimentalComposeUi.value },
+                onValueChange = { newValue -> settings.experimentalComposeUi.value = newValue },
+            ),
+            SettingItem.SwitchSetting(
+                id = "clear_db_on_refresh",
+                title = context.getString(co.anitrend.settings.R.string.preference_title_refresh_behavior_config),
+                summary = context.getString(co.anitrend.settings.R.string.preference_summary_refresh_behavior_config),
+                icon = Icons.Outlined.LayersClear,
+                onClick = { settings.clearDataOnSwipeRefresh.value },
+                onValueChange = { newValue -> settings.clearDataOnSwipeRefresh.value = newValue },
+            ),
+        )
     }
 }

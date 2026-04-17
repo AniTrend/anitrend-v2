@@ -53,9 +53,19 @@ class SettingsScreen : AniTrendScreen() {
                             )
                         }
                     }
+                    val developerSettingItems by remember {
+                        derivedStateOf {
+                            presenter.getDeveloperSettingsItems(
+                                navigateTo = {
+                                    navController.navigate(route = it.name)
+                                },
+                            )
+                        }
+                    }
                     SettingsContentScreen(
                         navigationController = navController,
                         settingsItems = settingItems,
+                        developerSettingsItems = developerSettingItems,
                         onBackPress = {
                             if (!navController.popBackStack()) {
                                 onBackPressedDispatcher.onBackPressed()

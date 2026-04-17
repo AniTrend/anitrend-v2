@@ -19,17 +19,15 @@ package co.anitrend.settings.component.compose
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
-import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
 import co.anitrend.android.core.ui.AniTrendPreview
-import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.navigation.SettingsRouter
 import co.anitrend.settings.component.content.account.AccountScreen
+import co.anitrend.settings.component.content.developer.DeveloperScreen
 import co.anitrend.settings.component.content.log.LogViewerScreen
 import co.anitrend.settings.component.content.task.TaskScreen
 import co.anitrend.settings.model.SettingItem
@@ -54,6 +52,7 @@ private fun SettingsContent(
 fun SettingsContentScreen(
     navigationController: NavHostController,
     settingsItems: List<SettingItem>,
+    developerSettingsItems: List<SettingItem>,
     onBackPress: () -> Unit,
 ) {
     DefaultScaffold(onBackPress = onBackPress) { padding ->
@@ -125,6 +124,12 @@ fun SettingsContentScreen(
                 },
             )
             composable(
+                route = SettingsRouter.Destination.DEVELOPER.name,
+                content = {
+                    DeveloperScreen(settingsItems = developerSettingsItems)
+                },
+            )
+            composable(
                 route = SettingsRouter.Destination.LOGS.name,
                 content = {
                     LogViewerScreen()
@@ -140,12 +145,13 @@ fun SettingsContentScreen(
     }
 }
 
-@AniTrendPreview.Default
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
+@AniTrendPreview.Mobile
 @Composable
 private fun SettingsScreenPreview(
-    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
-    PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
+    PreviewTheme(wrapInSurface = true) {
         SettingsContent(settingsItems = PreviewData)
     }
 }

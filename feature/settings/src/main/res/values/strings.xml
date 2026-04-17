@@ -20,10 +20,14 @@
 
     <!-- Preference Categories Titles -->
     <string name="preference_group_title_application_behavior">Application Behavior</string>
+    <string name="preference_category_title_general_settings">General Settings</string>
     <string name="preference_category_title_user_interface">User Experience</string>
     <string name="preference_category_title_updates_and_storage">Updates &amp; Storage</string>
     <string name="preference_category_title_notifications_and_sync_settings">Notifications &amp; Sync</string>
+    <string name="preference_category_title_advanced_settings">Advanced</string>
     <string name="preference_group_title_developer_settings">Developer Settings</string>
+    <string name="preference_category_title_developer_diagnostics">Diagnostics</string>
+    <string name="preference_category_title_developer_runtime_behavior">Runtime behavior</string>
 
     <!-- Preference Titles -->
     <string name="preference_title_accounts">Accounts</string>
@@ -39,6 +43,13 @@
     <string name="preference_title_storage">Storage</string>
     <string name="preference_title_heap_dump">Auto Heap Dump</string>
     <string name="preference_title_power_management">Power Management</string>
+
+    <!-- Entry on root settings screen that opens debug-only tooling and runtime controls -->
+    <string name="preference_title_developer_options">Developer options</string>
+    <!-- Primary diagnostics destination entry for raw app logs -->
+    <string name="preference_title_manage_logs">Manage logs</string>
+    <!-- Primary diagnostics destination entry for WorkManager overview -->
+    <string name="preference_title_work_manager_tasks">Work manager tasks</string>
 
     <!-- Preference Summaries -->
     <string name="preference_summary_accounts">Access information about your accounts</string>
@@ -73,6 +84,18 @@
     <string name="preference_summary_storage">Configure how the app should use storage space</string>
     <string name="preference_summary_heap">Dump heap automatically when leak is detected</string>
     <string name="preference_summary_power_management">Fine tune how the application uses your battery</string>
+
+    <!-- Summary for the root developer entry shown in debug builds -->
+    <string name="preference_summary_developer_options">Diagnostics and runtime behavior controls</string>
+    <!-- Summary for diagnostics logs entry in developer settings -->
+    <string name="preference_summary_manage_logs">Audit application logs</string>
+    <!-- Summary for WorkManager task entry in developer settings -->
+    <string name="preference_summary_work_manager_tasks">Inspect and manage background tasks</string>
+
+    <!-- Title shown when developer settings are opened in non-debug scenarios -->
+    <string name="title_settings_developer_unavailable">Developer options unavailable</string>
+    <!-- Message shown when debug-only developer options are not available -->
+    <string name="summary_settings_developer_unavailable">This page is only available in debug builds.</string>
 
     <!-- Developer settings (debug-only usage preferred) -->
     <!-- Toggle to display a launcher entry for LeakCanary or leak tools -->
