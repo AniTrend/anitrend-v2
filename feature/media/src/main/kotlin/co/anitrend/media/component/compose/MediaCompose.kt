@@ -783,7 +783,6 @@ private fun MediaDetailContent(
             )
         }
     }
-
 }
 
 @Composable

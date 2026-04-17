@@ -86,7 +86,12 @@ private fun TrailerCard(
         modifier = Modifier.width(TrailerCardWidth),
         shape = RoundedCornerShape(22.dp),
         color = androidx.compose.material3.MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, androidx.compose.material3.MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.28f)),
+        border =
+            BorderStroke(
+                1.dp,
+                androidx.compose.material3.MaterialTheme.colorScheme.outlineVariant
+                    .copy(alpha = 0.28f),
+            ),
     ) {
         Column(
             modifier = Modifier.clickable(onClick = onClick).padding(12.dp),
@@ -94,7 +99,9 @@ private fun TrailerCard(
         ) {
             Surface(
                 shape = RoundedCornerShape(18.dp),
-                color = androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.24f),
+                color =
+                    androidx.compose.material3.MaterialTheme.colorScheme.surfaceVariant
+                        .copy(alpha = 0.24f),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Box(
@@ -110,8 +117,15 @@ private fun TrailerCard(
                     Surface(
                         modifier = Modifier.padding(10.dp),
                         shape = RoundedCornerShape(999.dp),
-                        color = androidx.compose.material3.MaterialTheme.colorScheme.surface.copy(alpha = 0.84f),
-                        border = BorderStroke(1.dp, androidx.compose.material3.MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.28f)),
+                        color =
+                            androidx.compose.material3.MaterialTheme.colorScheme.surface
+                                .copy(alpha = 0.84f),
+                        border =
+                            BorderStroke(
+                                1.dp,
+                                androidx.compose.material3.MaterialTheme.colorScheme.outlineVariant
+                                    .copy(alpha = 0.28f),
+                            ),
                     ) {
                         Text(
                             text = trailer.source,
@@ -148,7 +162,8 @@ private fun TrailerCard(
                     imageVector = Icons.Rounded.PlayArrow,
                     contentDescription = null,
                 )
-                androidx.compose.foundation.layout.Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
+                androidx.compose.foundation.layout
+                    .Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
                 Text(text = stringResource(R.string.action_media_trailer_watch))
             }
         }
@@ -156,8 +171,16 @@ private fun TrailerCard(
 }
 
 internal fun resolveTrailerUrl(trailer: IMediaTrailer): String? {
-    val id = trailer.id?.toString()?.trim()?.takeIf(String::isNotBlank) ?: return null
-    val site = trailer.site?.toString()?.trim()?.lowercase()
+    val id =
+        trailer.id
+            ?.toString()
+            ?.trim()
+            ?.takeIf(String::isNotBlank) ?: return null
+    val site =
+        trailer.site
+            ?.toString()
+            ?.trim()
+            ?.lowercase()
 
     return when (site) {
         "youtube", "youtube music", "youtu.be" -> "https://youtube.com/watch?v=$id"
@@ -169,12 +192,21 @@ internal fun resolveTrailerUrl(trailer: IMediaTrailer): String? {
 
 private fun toPlayableTrailer(trailer: IMediaTrailer): PlayableTrailer? {
     val url = resolveTrailerUrl(trailer) ?: return null
-    val source = trailer.site?.toString()?.trim()?.takeIf(String::isNotBlank)?.replaceFirstChar(Char::titlecase) ?: "Trailer"
+    val source =
+        trailer.site
+            ?.toString()
+            ?.trim()
+            ?.takeIf(String::isNotBlank)
+            ?.replaceFirstChar(Char::titlecase) ?: "Trailer"
     return PlayableTrailer(
         key = "${source.lowercase()}:${trailer.id}",
         title = "$source trailer",
         source = source,
-        thumbnail = trailer.thumbnail?.toString()?.trim()?.takeIf(String::isNotBlank),
+        thumbnail =
+            trailer.thumbnail
+                ?.toString()
+                ?.trim()
+                ?.takeIf(String::isNotBlank),
         url = url,
     )
 }

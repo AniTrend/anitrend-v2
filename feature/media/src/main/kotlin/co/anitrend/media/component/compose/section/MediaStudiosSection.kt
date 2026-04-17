@@ -102,8 +102,7 @@ private fun String.asStudioChipLabel(): String? =
         .takeIf(String::isNotBlank)
         ?.replaceFirstChar { character -> character.titlecase() }
 
-private fun String.asCountryChipLabel(): String? =
-    trim().takeIf(String::isNotBlank)?.uppercase()
+private fun String.asCountryChipLabel(): String? = trim().takeIf(String::isNotBlank)?.uppercase()
 
 internal fun List<MediaStudioItemUiModel>.toMediaStudiosPreviewUiState(): MediaStudiosPreviewUiState {
     val featuredStudio = firstOrNull(MediaStudioItemUiModel::isMain)

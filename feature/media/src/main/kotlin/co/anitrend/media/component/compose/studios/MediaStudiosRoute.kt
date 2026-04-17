@@ -333,7 +333,11 @@ private val PreviewStudios =
             isAnimationStudio = true,
             favourites = 16_400,
             siteUrl = "https://www.bones.co.jp",
-            image = CoverImage(large = "https://image.tmdb.org/t/p/original/example-bones.png", medium = "https://image.tmdb.org/t/p/original/example-bones.png"),
+            image =
+                CoverImage(
+                    large = "https://image.tmdb.org/t/p/original/example-bones.png",
+                    medium = "https://image.tmdb.org/t/p/original/example-bones.png",
+                ),
             networkCategory = "Network",
             networkOriginCountry = "JP",
         ),
@@ -344,7 +348,11 @@ private val PreviewStudios =
             isAnimationStudio = true,
             favourites = 12_100,
             siteUrl = "https://tohoanimation.com",
-            image = CoverImage(large = "https://image.tmdb.org/t/p/original/example-toho.png", medium = "https://image.tmdb.org/t/p/original/example-toho.png"),
+            image =
+                CoverImage(
+                    large = "https://image.tmdb.org/t/p/original/example-toho.png",
+                    medium = "https://image.tmdb.org/t/p/original/example-toho.png",
+                ),
             networkCategory = "Company",
             networkOriginCountry = "JP",
         ),
