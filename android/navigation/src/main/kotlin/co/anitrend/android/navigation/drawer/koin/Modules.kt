@@ -23,16 +23,14 @@ import co.anitrend.android.navigation.drawer.action.provider.viewmodel.Notificat
 import co.anitrend.android.navigation.drawer.adapter.AccountAdapter
 import co.anitrend.android.navigation.drawer.adapter.NavigationAdapter
 import co.anitrend.android.navigation.drawer.component.content.BottomDrawerContent
-import co.anitrend.android.navigation.drawer.component.content.contract.INavigationDrawer
+import co.anitrend.android.navigation.drawer.component.content.NavigationDrawerHostFragment
 import co.anitrend.android.navigation.drawer.component.presenter.DrawerPresenter
-import co.anitrend.android.navigation.drawer.component.viewmodel.AccountViewModel
-import co.anitrend.android.navigation.drawer.component.viewmodel.NavigationViewModel
+import co.anitrend.android.navigation.drawer.component.viewmodel.DrawerViewModel
 import co.anitrend.android.navigation.drawer.component.viewmodel.mapper.UsersToAccountsMapper
 import co.anitrend.android.navigation.drawer.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
-import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val presenterModule =
@@ -50,17 +48,14 @@ private val presenterModule =
 private val viewModelModule =
     module {
         viewModel {
-            AccountViewModel(
-                mapper =
+            DrawerViewModel(
+                accountMapper =
                     UsersToAccountsMapper(
                         settings = get(),
                     ),
-                interactor = get(),
-            )
-        }
-        viewModel {
-            NavigationViewModel(
-                settings = get(),
+                accountInteractor = get(),
+                configInteractor = get(),
+                authSettings = get(),
                 savedStateHandle = get(),
             )
         }
@@ -69,9 +64,12 @@ private val viewModelModule =
         }
     }
 
-private val fragmentModule =
+internal val fragmentModule =
     module {
         scope(AppScope.BOTTOM_NAV_DRAWER.qualifier) {
+            fragment {
+                NavigationDrawerHostFragment()
+            }
             fragment {
                 BottomDrawerContent(
                     navigationAdapter =
@@ -85,14 +83,16 @@ private val fragmentModule =
                             stateConfiguration = get(),
                         ),
                 )
-            } bind INavigationDrawer::class
+            }
         }
     }
 
 private val featureModule =
     module {
         factory<NavigationDrawerRouter.Provider> {
-            FeatureProvider()
+            FeatureProvider(
+                fragment = NavigationDrawerHostFragment::class.java,
+            )
         }
     }
 
