@@ -199,7 +199,7 @@
     <!-- Formatted episode summary with date: e.g., "Episode 8 • Mar 12, 2025"; %1$s is the episode label and %2$s is the formatted date -->
     <string name="label_media_status_episode_with_date">%1$s • %2$s</string>
     <!-- Primary navigation CTA from the media status card into the dedicated episode guide -->
-    <string name="action_media_status_episode_guide">Open episode guide</string>
+    <string name="action_media_status_episode_guide">Open episode timeline</string>
     <!-- Small emphasis badge attached to the most recent aired episode -->
     <string name="label_media_episode_badge_latest">Latest</string>
     <!-- Small emphasis badge attached to the next upcoming episode -->

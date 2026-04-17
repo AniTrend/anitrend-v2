@@ -87,8 +87,13 @@ fun MediaStatusSection(
                     .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+            StatusSectionHeader(category = media.category)
+
             episodeUiState.spotlight?.let {
-                MediaEpisodeSpotlightCard(episode = it)
+                MediaEpisodeSpotlightCard(
+                    episode = it,
+                    showOverview = false,
+                )
             }
 
             if (media.status == MediaStatus.HIATUS) {
@@ -110,6 +115,21 @@ fun MediaStatusSection(
             }
         }
     }
+}
+
+@Composable
+private fun StatusSectionHeader(category: Media.Category) {
+    val titleRes =
+        when (category) {
+            is Media.Category.Anime -> R.string.label_media_status_airing_title
+            is Media.Category.Manga -> R.string.label_media_status_publishing_title
+        }
+
+    Text(
+        text = stringResource(titleRes),
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.SemiBold,
+    )
 }
 
 @Composable
