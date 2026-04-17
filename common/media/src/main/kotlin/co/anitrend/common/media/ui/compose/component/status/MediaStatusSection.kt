@@ -17,9 +17,7 @@
 package co.anitrend.common.media.ui.compose.component.status
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,25 +25,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.ErrorOutline
-import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.SettingsInputAntenna
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,30 +46,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.common.media.ui.R
-import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleText
-import co.anitrend.common.media.ui.compose.widget.airing.AiringScheduleTextFormat
 import co.anitrend.core.extensions.stackTrace
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.enums.MediaStatus
-import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.entity.contract.MediaListProgress
 import org.koin.compose.koinInject
+
+private const val StatusDatePattern = "MMM dd, yyyy"
+private const val StatusContextCollapsedMaxLines = 4
+private const val StatusContextCharacterThreshold = 280
+private const val StatusContextLineBreakThreshold = 3
 
 @Composable
 fun MediaStatusSection(
     media: Media,
-    onShowSchedule: () -> Unit,
+    onOpenEpisodeGuide: () -> Unit,
+    showEpisodeGuideAction: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
+    val episodeUiState = rememberMediaStatusSectionUiState(media)
+    val contextNote = media.statusContextNote()
+
     OutlinedCard(
         colors =
             CardDefaults.cardColors(
@@ -94,133 +93,127 @@ fun MediaStatusSection(
                     .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            // UI looks cleaner without the section title
-            // SectionTitleRow(mediaType = media.category.type)
-            StatusInfoRow(media = media)
+            StatusSectionHeader(category = media.category)
 
-            when (media.status) {
-                MediaStatus.RELEASING -> NextAiringPublicationCard(media = media)
-                MediaStatus.HIATUS -> HiatusInfoCard(category = media.category)
-                MediaStatus.FINISHED, MediaStatus.CANCELLED, MediaStatus.NOT_YET_RELEASED -> {
-                    // No special card for these states, status chip handles it
-                }
-                null -> {
-                    // Handled by status chip
-                }
+            episodeUiState.spotlight?.let {
+                MediaEpisodeSpotlightCard(
+                    episode = it,
+                    showOverview = false,
+                )
+            }
+
+            if (media.status == MediaStatus.HIATUS) {
+                HiatusInfoCard(category = media.category)
             }
 
             MediaDetailsRow(media = media)
-            ProgressDetails(media = media)
-            ScheduleButton(mediaType = media.category.type, onClick = onShowSchedule)
-        }
-    }
-}
 
-@Composable
-private fun StatusInfoRow(media: Media) {
-    val statusText =
-        when (media.status) {
-            MediaStatus.RELEASING ->
-                when (media.category.type) {
-                    MediaType.ANIME -> stringResource(R.string.label_media_status_chip_airing)
-                    else -> stringResource(R.string.label_media_status_chip_publishing)
+            episodeUiState.progress?.let {
+                MediaEpisodeProgressRow(progress = it)
+            } ?: run {
+                if (media.category is Media.Category.Manga) {
+                    ProgressDetails(media = media)
                 }
-            MediaStatus.FINISHED -> stringResource(R.string.label_media_status_chip_completed)
-            MediaStatus.NOT_YET_RELEASED -> stringResource(R.string.label_media_status_chip_not_yet_released)
-            MediaStatus.CANCELLED -> stringResource(R.string.label_media_status_chip_cancelled)
-            MediaStatus.HIATUS -> stringResource(R.string.label_media_status_chip_hiatus)
-            null -> stringResource(R.string.label_media_status_unknown_value)
-        }
+            }
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Box(
-            modifier =
-                Modifier
-                    .size(8.dp)
-                    .background(statusColorFor(media.status), CircleShape),
-        )
-        Text(text = statusText, style = MaterialTheme.typography.labelMedium)
+            contextNote?.let {
+                MediaStatusTimelineNoteCallout(note = it)
+            }
+
+            if (showEpisodeGuideAction && episodeUiState.showEpisodeGuideAction) {
+                MediaEpisodeGuideButton(
+                    onClick = onOpenEpisodeGuide,
+                    hasContextNote = contextNote != null,
+                )
+            }
+        }
     }
 }
 
+private fun Media.statusContextNote(): String? =
+    (this as? Media.Extended)
+        ?.takeIf { category is Media.Category.Anime }
+        ?.extraInfo
+        ?.trim()
+        ?.takeIf(String::isNotBlank)
+
+private fun String.shouldCollapseStatusContext(): Boolean =
+    length > StatusContextCharacterThreshold ||
+        count { it == '\n' } >= StatusContextLineBreakThreshold
+
 @Composable
-private fun NextAiringPublicationCard(
-    media: Media,
-    dateHelper: AniTrendDateHelper = koinInject(),
+private fun MediaStatusTimelineNoteCallout(
+    note: String,
+    modifier: Modifier = Modifier,
 ) {
-    val category = media.category
-    if (category !is Media.Category.Anime) {
-        return
-    }
+    val shouldCollapse = note.shouldCollapseStatusContext()
 
-    val schedule = category.schedule
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)),
-        elevation = CardDefaults.cardElevation(0.dp),
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.34f),
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+        shape = RoundedCornerShape(20.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.28f)),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(14.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(id = R.string.label_media_status_next_episode),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                if (schedule?.episode != null) {
-                    Surface(
-                        shape = RoundedCornerShape(6.dp),
-                        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                    ) {
-                        Text(
-                            text = stringResource(R.string.label_media_status_episode_number, schedule.episode),
-                            style = MaterialTheme.typography.labelMedium,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        )
-                    }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Surface(
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.42f),
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    shape = RoundedCornerShape(12.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.SettingsInputAntenna,
+                        contentDescription = null,
+                        modifier = Modifier.padding(8.dp).size(16.dp),
+                    )
+                }
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.label_media_status_timeline_notes_title),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Text(
+                        text = stringResource(R.string.label_media_status_timeline_notes_subtitle),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                 }
             }
 
-            if (schedule != null) {
-                AiringScheduleText(
-                    media = media,
-                    style =
-                        MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary,
-                        ),
-                    format = AiringScheduleTextFormat.WITHOUT_PREFIX,
-                )
-                Text(
-                    text =
-                        dateHelper.convertFromUnixTimeStamp(
-                            unixTimeStamp = schedule.airingAt * 1000L,
-                            outputDatePattern = AniTrendDateHelper.DATE_FORMAT_WITH_TIME_ZONE,
-                        ),
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            } else if (media.category is Media.Category.Manga) {
-                // Placeholder for Manga countdown if data becomes available
-                Text(
-                    text = stringResource(R.string.label_media_status_manga_next_chapter_placeholder), // e.g. "6d 22h 54m"
-                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary),
-                )
-                Text(
-                    text = stringResource(R.string.label_media_status_manga_next_chapter_date_placeholder), // e.g. "Tue, Sep 2, 02:50 AM GMT+9"
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
+            Text(
+                text = note,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = if (shouldCollapse) StatusContextCollapsedMaxLines else Int.MAX_VALUE,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
     }
+}
+
+@Composable
+private fun StatusSectionHeader(category: Media.Category) {
+    val titleRes =
+        when (category) {
+            is Media.Category.Anime -> R.string.label_media_status_airing_title
+            is Media.Category.Manga -> R.string.label_media_status_publishing_title
+        }
+
+    Text(
+        text = stringResource(titleRes),
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.SemiBold,
+    )
 }
 
 @Composable
@@ -270,70 +263,40 @@ private fun HiatusInfoCard(category: Media.Category) {
 }
 
 @Composable
-private fun MediaDetailsRow(media: Media) {
-    val broadcastOrPublicationStatus =
-        when (val category = media.category) {
-            is Media.Category.Anime -> {
-                category.broadcast?.let { it.ifBlank { stringResource(R.string.label_media_status_unknown_value) } }
-            }
-            is Media.Category.Manga -> {
-                // Assuming publishingInfo field
-                category.type.alias.let { it.ifBlank { stringResource(R.string.label_media_status_unknown_value) } }
-            }
-        }?.toString()
+private fun MediaDetailsRow(
+    media: Media,
+    dateHelper: AniTrendDateHelper = koinInject(),
+) {
+    val items = buildStatusMetadata(media = media, dateHelper = dateHelper)
 
-    Row(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(
-                text =
-                    if (media.category.type == MediaType.ANIME) {
-                        stringResource(R.string.label_media_status_broadcast)
-                    } else {
-                        stringResource(R.string.label_media_status_publication)
-                    },
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                val icon =
-                    when (media.category.type) {
-                        MediaType.ANIME -> Icons.Filled.SettingsInputAntenna
-                        else -> Icons.AutoMirrored.Filled.MenuBook
-                    }
-                Icon(imageVector = icon, contentDescription = null, modifier = Modifier.size(16.dp))
-                Text(
-                    text = broadcastOrPublicationStatus ?: stringResource(R.string.label_media_status_unknown_value),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
-        }
-        Spacer(modifier = Modifier.width(16.dp))
-        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(
-                text =
-                    when (media.category.type) {
-                        MediaType.ANIME -> stringResource(R.string.label_media_status_premiered)
-                        else -> stringResource(R.string.label_media_status_started)
-                    },
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                Icon(imageVector = Icons.Filled.CalendarToday, contentDescription = null, modifier = Modifier.size(16.dp))
-                Text(
-                    text = formatMediaStartDate(media),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold,
-                )
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        items.chunked(2).forEach { row ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                row.forEach { item ->
+                    StatusMetadataItem(
+                        item = item,
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+                if (row.size == 1) {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
             }
         }
     }
 }
 
 @Composable
-private fun formatMediaStartDate(media: Media): String {
-    val helper = AniTrendDateHelper()
+private fun formatMediaStartDate(
+    media: Media,
+    helper: AniTrendDateHelper,
+): String {
     val date =
         media.startDate.takeIf { !it.isDateNotSet() }?.let {
             runCatching {
@@ -341,14 +304,99 @@ private fun formatMediaStartDate(media: Media): String {
             }.stackTrace()
         }
     val season = media.season
+    val fallbackDate =
+        (media.category as? Media.Category.Anime)
+            ?.scheduleDetails
+            ?.firstAirDate
+            ?.let {
+                helper.convertFromUnixTimeStamp(
+                    unixTimeStamp = it * 1000L,
+                    outputDatePattern = StatusDatePattern,
+                )
+            }
     // This is a simplified formatter. You might have a more robust one in your domain/core layer.
     return when {
         season != null ->
             "${season.alias} ${media.startDate.year}"
 
-        else -> date ?: stringResource(R.string.label_media_status_unknown_value)
+        else -> date ?: fallbackDate ?: stringResource(R.string.label_media_status_unknown_value)
     }
 }
+
+@Composable
+private fun StatusMetadataItem(
+    item: StatusMetadata,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Text(
+            text = item.label,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Icon(
+                imageVector = item.icon,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
+            )
+            Text(
+                text = item.value,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
+    }
+}
+
+@Composable
+private fun buildStatusMetadata(
+    media: Media,
+    dateHelper: AniTrendDateHelper,
+): List<StatusMetadata> =
+    buildList {
+        when (val category = media.category) {
+            is Media.Category.Anime -> {
+                add(
+                    StatusMetadata(
+                        label = stringResource(R.string.label_media_status_broadcast),
+                        value = category.broadcast?.takeIf(String::isNotBlank) ?: stringResource(R.string.label_media_status_unknown_value),
+                        icon = Icons.Filled.SettingsInputAntenna,
+                    ),
+                )
+                add(
+                    StatusMetadata(
+                        label = stringResource(R.string.label_media_status_premiered),
+                        value = formatMediaStartDate(media = media, helper = dateHelper),
+                        icon = Icons.Filled.CalendarToday,
+                    ),
+                )
+            }
+
+            is Media.Category.Manga -> {
+                add(
+                    StatusMetadata(
+                        label = stringResource(R.string.label_media_status_publication),
+                        value = category.type.alias?.takeIf { it.isNotBlank() }?.toString() ?: stringResource(R.string.label_media_status_unknown_value),
+                        icon = Icons.AutoMirrored.Filled.MenuBook,
+                    ),
+                )
+                add(
+                    StatusMetadata(
+                        label = stringResource(R.string.label_media_status_started),
+                        value = formatMediaStartDate(media = media, helper = dateHelper),
+                        icon = Icons.Filled.CalendarToday,
+                    ),
+                )
+            }
+        }
+    }
 
 @Composable
 private fun ProgressDetails(media: Media) {
@@ -380,18 +428,7 @@ private fun ProgressDetails(media: Media) {
                 color = MaterialTheme.colorScheme.primary,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
-        } else if (total == 0 && progress > 0) { // Progress known, total unknown
-            LinearProgressIndicator(
-                progress = { 1f }, // Show as indeterminate or full if only progress known
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(8.dp)
-                        .clip(RoundedCornerShape(4.dp)),
-                color = MaterialTheme.colorScheme.primary,
-                trackColor = MaterialTheme.colorScheme.surfaceVariant,
-            )
-        } else if (media.status == MediaStatus.FINISHED && total > 0) { // Completed
+        } else if (total == 0 && progress > 0) {
             LinearProgressIndicator(
                 progress = { 1f },
                 modifier =
@@ -402,36 +439,16 @@ private fun ProgressDetails(media: Media) {
                 color = MaterialTheme.colorScheme.primary,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
-        }
-    }
-}
-
-@Composable
-private fun ScheduleButton(
-    mediaType: MediaType,
-    onClick: () -> Unit,
-) {
-    // TODO: When we have episode data we should only show this episode schedule button when we have episodes to show
-    if (mediaType == MediaType.ANIME) {
-        Button(
-            onClick = onClick,
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Schedule,
-                contentDescription = null,
-                modifier = Modifier.size(ButtonDefaults.IconSize),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            )
-            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            Text(
-                text =
-                    stringResource(
-                        id = R.string.label_media_status_episode_schedule_button,
-                    ),
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
+        } else if (media.status == MediaStatus.FINISHED && total > 0) {
+            LinearProgressIndicator(
+                progress = { 1f },
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(8.dp)
+                        .clip(RoundedCornerShape(4.dp)),
+                color = MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
         }
     }
@@ -470,6 +487,12 @@ data class Quadruple<A, B, C, D>(
     val fourth: D,
 )
 
+private data class StatusMetadata(
+    val label: String,
+    val value: String,
+    val icon: ImageVector,
+)
+
 @Composable
 @ReadOnlyComposable
 private fun statusColorFor(status: MediaStatus?): Color {
@@ -500,7 +523,7 @@ private fun MediaStatusSectionPreview(
     PreviewTheme(wrapInSurface = true) {
         MediaStatusSection(
             media = media,
-            onShowSchedule = {},
+            onOpenEpisodeGuide = {},
         )
     }
 }

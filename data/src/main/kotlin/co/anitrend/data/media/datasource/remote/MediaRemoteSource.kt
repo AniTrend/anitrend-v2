@@ -19,7 +19,10 @@ package co.anitrend.data.media.datasource.remote
 import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.data.media.model.container.MediaConnectionModelContainer
 import co.anitrend.data.media.model.container.MediaModelContainer
+import co.anitrend.data.media.model.container.MediaSidecarModelContainer
+import co.anitrend.data.media.model.container.MediaPeopleModelContainer
 import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import retrofit2.Response
@@ -40,4 +43,46 @@ internal interface MediaRemoteSource {
     suspend fun getMediaDetail(
         @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<MediaModelContainer.Detail>>
+
+    @GRAPHQL
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetMediaWithCharacter")
+    suspend fun getMediaCharacters(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<MediaPeopleModelContainer.Characters>>
+
+    @GRAPHQL
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetMediaWithStaff")
+    suspend fun getMediaStaff(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<MediaPeopleModelContainer.Staff>>
+
+    @GRAPHQL
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetMediaWithRelation")
+    suspend fun getMediaRelations(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<MediaConnectionModelContainer.Relations>>
+
+    @GRAPHQL
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetMediaWithSuggestion")
+    suspend fun getMediaRecommendations(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<MediaConnectionModelContainer.Recommendations>>
+
+    @GRAPHQL
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetMediaWithStudio")
+    suspend fun getMediaStudios(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<MediaSidecarModelContainer.Studios>>
+
+    @GRAPHQL
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetMediaStats")
+    suspend fun getMediaStats(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<MediaSidecarModelContainer.Stats>>
 }

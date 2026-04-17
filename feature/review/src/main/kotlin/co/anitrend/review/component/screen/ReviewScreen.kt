@@ -18,9 +18,6 @@ package co.anitrend.review.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
-import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.common.shared.ui.compose.FragmentItemHost
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
@@ -32,16 +29,13 @@ class ReviewScreen : AniTrendScreen() {
         super.onCreate(savedInstanceState)
         setContent {
             AniTrendTheme3 {
-                DefaultScaffold(onBackPress = onBackPressedDispatcher::onBackPressed) {
-                    FragmentItemHost(
-                        modifier = Modifier.padding(it),
-                        fragmentItem =
-                            FragmentItem(
-                                fragment = ReviewRouter.forFragment(),
-                                parameter = intent.extras,
-                            ),
-                    )
-                }
+                FragmentItemHost(
+                    fragmentItem =
+                        FragmentItem(
+                            fragment = ReviewRouter.forFragment(),
+                            parameter = intent.extras,
+                        ),
+                )
             }
         }
     }

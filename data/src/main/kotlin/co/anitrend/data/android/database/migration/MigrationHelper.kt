@@ -134,4 +134,58 @@ internal val MIGRATIONS =
             ALTER TABLE edge_media ADD COLUMN schedule_last_episode_detail_tmdb_id INTEGER;
             """.trimIndent()
         },
+        migrationOf(12, 13) {
+            """
+            CREATE TABLE IF NOT EXISTS `media_character_connection` (
+                `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+                `media_id` INTEGER NOT NULL,
+                `character_id` INTEGER NOT NULL,
+                `role` TEXT,
+                `media_role_name` TEXT,
+                `sort_index` INTEGER NOT NULL,
+                `image_large` TEXT,
+                `image_medium` TEXT,
+                `name_first` TEXT,
+                `name_full` TEXT,
+                `name_last` TEXT,
+                `name_middle` TEXT,
+                `name_native` TEXT,
+                `name_user_preferred` TEXT,
+                `name_alternative` TEXT NOT NULL,
+                `name_alternative_spoiler` TEXT NOT NULL,
+                `site_url` TEXT,
+                `voice_actor_id` INTEGER,
+                `voice_actor_name_full` TEXT,
+                `voice_actor_name_user_preferred` TEXT
+            );
+            CREATE UNIQUE INDEX IF NOT EXISTS `index_media_character_connection_media_id_character_id`
+            ON `media_character_connection` (`media_id`, `character_id`);
+            CREATE INDEX IF NOT EXISTS `index_media_character_connection_media_id_sort_index`
+            ON `media_character_connection` (`media_id`, `sort_index`);
+
+            CREATE TABLE IF NOT EXISTS `media_staff_connection` (
+                `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+                `media_id` INTEGER NOT NULL,
+                `staff_id` INTEGER NOT NULL,
+                `role` TEXT,
+                `language` TEXT,
+                `sort_index` INTEGER NOT NULL,
+                `image_large` TEXT,
+                `image_medium` TEXT,
+                `name_first` TEXT,
+                `name_full` TEXT,
+                `name_last` TEXT,
+                `name_middle` TEXT,
+                `name_native` TEXT,
+                `name_user_preferred` TEXT,
+                `name_alternative` TEXT NOT NULL,
+                `name_alternative_spoiler` TEXT NOT NULL,
+                `site_url` TEXT
+            );
+            CREATE UNIQUE INDEX IF NOT EXISTS `index_media_staff_connection_media_id_staff_id`
+            ON `media_staff_connection` (`media_id`, `staff_id`);
+            CREATE INDEX IF NOT EXISTS `index_media_staff_connection_media_id_sort_index`
+            ON `media_staff_connection` (`media_id`, `sort_index`);
+            """.trimIndent()
+        },
     )

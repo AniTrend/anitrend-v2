@@ -27,19 +27,48 @@ import co.anitrend.data.edge.theme.model.EdgeThemeModel
 internal class EdgeThemeConverter : SupportConverter<EdgeThemeEmbedded, EdgeThemeEntity>() {
     override val fromType: (EdgeThemeEmbedded) -> EdgeThemeEntity = { pair ->
         val (mediaId, model) = pair
+        val themeMeta = model.meta
         EdgeThemeEntity(
             mediaId = mediaId,
-            themeId = model.id.orEmpty(),
+            themeId = stableThemeId(model),
             name = model.name.orEmpty(),
             audio = model.audio,
             video = model.video.orEmpty(),
             meta =
                 EdgeThemeEntity.ThemeMeta(
-                    number = model.meta?.number ?: 0,
-                    type = model.meta?.type.orEmpty(),
-                    version = model.meta?.version ?: 0,
+                    number = themeMeta?.number ?: 0,
+                    type = themeMeta?.type.orEmpty(),
+                    version = themeMeta?.version ?: 0,
                 ),
         )
     }
     override val toType: (EdgeThemeEntity) -> EdgeThemeEmbedded = { throw NotImplementedError() }
+
+    private companion object {
+        fun stableThemeId(model: EdgeThemeModel): String {
+            model.id?.takeIf(String::isNotBlank)?.let {
+                return it
+            }
+
+            val normalizedName =
+                buildString {
+                    model.name.orEmpty().forEach { character ->
+                        if (character.isLetterOrDigit()) {
+                            append(character.lowercaseChar())
+                        }
+                    }
+                }
+            val themeMeta = model.meta
+            val type =
+                themeMeta
+                    ?.type
+                    .orEmpty()
+                    .trim()
+                    .lowercase()
+            val number = themeMeta?.number ?: 0
+            val version = themeMeta?.version ?: 0
+
+            return listOf(normalizedName, type, number.toString(), version.toString()).joinToString(":")
+        }
+    }
 }

@@ -48,11 +48,14 @@ object AniTrendImageDefaults {
  * see [co.anitrend.android.core.controller.power.contract.IPowerController]
  *
  * @param image Resource to load, if literal use [co.anitrend.android.core.helpers.image.toCoverImage]
- * @param modifier Default modifier that will have a default clickable modifier that invokes [onClick]
+ * @param modifier Default modifier for the image surface
  * @param imageType The type of image, this will make some behavioural changes
  * @param transformations Image transformations for Coil
  * @param contentScale [ContentScale] defaulted to [ContentScale.Crop]
- * @param onClick Callback with a receiver of [ImageViewerRouter.ImageSourceParam]
+ * @param contentDescription Accessibility label for the image
+ * @param onClick Optional callback with a receiver of [ImageViewerRouter.ImageSourceParam]
+ * @param onLongClick Optional long press callback
+ * @param onDoubleClick Optional double tap callback
  *
  * @see [co.anitrend.android.core.helpers.image]
  */
@@ -64,9 +67,10 @@ fun AniTrendImage(
     modifier: Modifier = Modifier,
     transformations: List<Transformation> = emptyList(),
     contentScale: ContentScale = ContentScale.Crop,
-    onClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
-    onLongClick: () -> Unit = {},
-    onDoubleClick: () -> Unit = {},
+    contentDescription: String? = "$imageType image",
+    onClick: ((ImageViewerRouter.ImageSourceParam) -> Unit)? = null,
+    onLongClick: (() -> Unit)? = null,
+    onDoubleClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val requestImageBuilder =
@@ -74,12 +78,8 @@ fun AniTrendImage(
             image = image,
             type = imageType,
         ) { toRequestBuilder(context, transformations) }
-
-    AsyncImage(
-        model = requestImageBuilder.build(),
-        contentDescription = "$imageType image",
-        contentScale = contentScale,
-        modifier =
+    val interactiveModifier =
+        if (onClick != null || onLongClick != null || onDoubleClick != null) {
             modifier.combinedClickable(
                 onClick = {
                     val source =
@@ -94,13 +94,22 @@ fun AniTrendImage(
                             else -> image.large ?: image.medium
                         } ?: return@combinedClickable
 
-                    onClick(
+                    onClick?.invoke(
                         ImageViewerRouter.ImageSourceParam(source),
                     )
                 },
                 onLongClick = onLongClick,
                 onDoubleClick = onDoubleClick,
-            ),
+            )
+        } else {
+            modifier
+        }
+
+    AsyncImage(
+        model = requestImageBuilder.build(),
+        contentDescription = contentDescription,
+        contentScale = contentScale,
+        modifier = interactiveModifier,
     )
 }
 

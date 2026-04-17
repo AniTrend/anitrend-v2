@@ -47,6 +47,11 @@ import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.navigation.ImageViewerRouter
 
+private fun IMediaTitle.defaultSupportingText(): String? =
+    listOf(native, english, romaji)
+        .mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
+        .firstOrNull()
+
 @Composable
 private fun MediaCover(
     cover: IMediaCover,
@@ -65,25 +70,31 @@ private fun MediaCover(
 private fun MediaTitle(
     title: IMediaTitle,
     modifier: Modifier = Modifier,
-    extraInfo: String? = null,
+    supportingText: String? = null,
+    compact: Boolean = false,
 ) {
+    val secondaryText = supportingText?.takeIf(String::isNotBlank) ?: title.defaultSupportingText()
+
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(if (compact) 2.dp else 8.dp),
     ) {
         Text(
-            text = title.userPreferred.toString(),
+            text = title.userPreferred?.toString().orEmpty(),
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.headlineSmall,
+            style = if (compact) MaterialTheme.typography.titleLarge else MaterialTheme.typography.headlineSmall,
         )
-        Text(
-            text = extraInfo ?: title.native.toString(),
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(start = 8.dp),
-            style = MaterialTheme.typography.bodySmall,
-        )
+        secondaryText?.let {
+            Text(
+                text = it,
+                maxLines = if (compact) 1 else 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(start = if (compact) 4.dp else 8.dp),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
     }
 }
 
@@ -92,9 +103,18 @@ fun MediaHeaderInfoSection(
     media: Media,
     onCoverClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
     modifier: Modifier = Modifier,
+    preferExtendedExtraInfo: Boolean = true,
+    compact: Boolean = false,
 ) {
+    val supportingText =
+        if (preferExtendedExtraInfo) {
+            (media as? Media.Extended)?.extraInfo?.takeIf(String::isNotBlank) ?: media.title.defaultSupportingText()
+        } else {
+            media.title.defaultSupportingText()
+        }
+
     Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(if (compact) 6.dp else 8.dp),
         modifier = modifier,
     ) {
         MediaCover(
@@ -106,12 +126,13 @@ fun MediaHeaderInfoSection(
             onCoverClick = onCoverClick,
         )
         Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.offset(y = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(if (compact) 4.dp else 8.dp),
+            modifier = Modifier.offset(y = if (compact) 10.dp else 24.dp),
         ) {
             MediaTitle(
                 title = media.title,
-                extraInfo = (media as Media.Extended).extraInfo,
+                supportingText = supportingText,
+                compact = compact,
             )
         }
     }

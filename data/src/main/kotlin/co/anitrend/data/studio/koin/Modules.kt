@@ -16,9 +16,13 @@
  */
 package co.anitrend.data.studio.koin
 
+import co.anitrend.data.core.extensions.store
+import co.anitrend.data.studio.converter.MediaStudioConnectionEntityConverter
+import co.anitrend.data.studio.converter.MediaStudioEntryEnricher
 import co.anitrend.data.studio.converter.StudioConverter
 import co.anitrend.data.studio.converter.StudioEntityConverter
 import co.anitrend.data.studio.converter.StudioModelConverter
+import co.anitrend.data.studio.mapper.MediaStudioMapper
 import org.koin.dsl.module
 
 private val sourceModule =
@@ -27,6 +31,12 @@ private val sourceModule =
 
 private val converterModule =
     module {
+        factory {
+            MediaStudioConnectionEntityConverter()
+        }
+        factory {
+            MediaStudioEntryEnricher()
+        }
         factory {
             StudioConverter()
         }
@@ -40,6 +50,11 @@ private val converterModule =
 
 private val mapperModule =
     module {
+        factory {
+            MediaStudioMapper(
+                localSource = store().mediaStudioConnectionDao(),
+            )
+        }
     }
 
 private val useCaseModule =

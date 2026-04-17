@@ -16,85 +16,45 @@
  */
 package co.anitrend.review.discover.component.content
 
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import co.anitrend.arch.recycler.adapter.SupportAdapter
-import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import co.anitrend.android.core.assureParamNotMissing
-import co.anitrend.core.component.content.list.AniTrendListContent
-import co.anitrend.domain.review.entity.Review
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.android.core.views.compose.composable
+import co.anitrend.core.component.content.compose.AniTrendComposition
+import co.anitrend.navigation.ReviewRouter
+import co.anitrend.navigation.extensions.asNavPayload
+import co.anitrend.navigation.extensions.startActivity
+import co.anitrend.review.discover.component.compose.ReviewDiscoverRoute
 import co.anitrend.review.discover.component.content.viewmodel.ReviewDiscoverViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ReviewDiscoverContent(
-    override val stateConfig: StateLayoutConfig,
-    override val inflateMenu: Int = co.anitrend.android.core.R.menu.discover_menu,
-    override val supportViewAdapter: SupportAdapter<Review>,
-    override val defaultSpanSize: Int = co.anitrend.android.core.R.integer.column_x1,
-) : AniTrendListContent<Review>() {
+class ReviewDiscoverContent : AniTrendComposition() {
     private val viewModel by viewModel<ReviewDiscoverViewModel>()
 
-    override fun onCreateOptionsMenu(
-        menu: Menu,
-        inflater: MenuInflater,
-    ) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.findItem(co.anitrend.android.core.R.id.action_list_style).isVisible = false
-    }
-
-    /**
-     * This hook is called whenever an item in your options menu is selected.
-     * The default implementation simply returns false to have the normal
-     * processing happen (calling the item's Runnable or sending a message to
-     * its Handler as appropriate).  You can use this method for any items
-     * for which you would like to do processing without those other
-     * facilities.
-     *
-     * Derived classes should call through to the base class for it to
-     * perform the default menu handling.
-     *
-     * @param item The menu item that was selected.
-     *
-     * @return boolean Return false to allow normal menu processing to
-     * proceed, true to consume it here.
-     *
-     * @see .onCreateOptionsMenu
-     */
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when (item.itemId) {
-            co.anitrend.android.core.R.id.action_filter -> {
-                true
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View =
+        composable(requireActivity()) {
+            AniTrendTheme3 {
+                ReviewDiscoverRoute(
+                    onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
+                    onReviewClick = { reviewId, scoreFormat ->
+                        ReviewRouter.startActivity(
+                            context = requireContext(),
+                            navPayload =
+                                ReviewRouter
+                                    .ReviewParam(
+                                        id = reviewId,
+                                        scoreFormat = scoreFormat,
+                                    ).asNavPayload(),
+                        )
+                    },
+                    viewModel = viewModel,
+                )
             }
-            else -> super.onOptionsItemSelected(item)
         }
-
-    /**
-     * Invoke view model observer to watch for changes, this will be called
-     * called in [onViewCreated]
-     */
-    override fun setUpViewModelObserver() {
-        viewModel.model.observe(viewLifecycleOwner) {
-            onPostModelChange(it)
-        }
-    }
-
-    /**
-     * Stub to trigger the loading of data, by default this is only called
-     * when [supportViewAdapter] has no data in its underlying source.
-     *
-     * This is called when the fragment reaches it's [onStart] state
-     *
-     * @see initializeComponents
-     */
-    override fun onFetchDataInitialize() {
-        listPresenter.stateLayout.assureParamNotMissing(viewModel.default) {
-            viewModel.invoke(viewModel.default)
-        }
-    }
-
-    /**
-     * Proxy for a view model state if one exists
-     */
-    override fun viewModelState() = viewModel
 }

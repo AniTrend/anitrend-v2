@@ -121,9 +121,17 @@
     <string name="label_media_rank_section_show_all_rankings">Show all rankings</string>
     <!-- Section title for rankings -->
     <string name="label_media_rank_section_title">Rankings</string>
+    <!-- Supporting copy for the rankings sheet explaining the insight-focused list -->
+    <string name="label_media_rank_sheet_subtitle">Popularity and score highlights for this title.</string>
+    <!-- Label used when a ranking applies across the full catalog history -->
+    <string name="label_media_rank_timeframe_all_time">All Time</string>
 
     <!-- Section title for synopsis/description -->
     <string name="label_media_synopsis_section_title">Synopsis</string>
+    <!-- Action to expand the synopsis preview and show the full description -->
+    <string name="action_media_synopsis_section_show_more">Show more</string>
+    <!-- Action to collapse the synopsis back to its preview height -->
+    <string name="action_media_synopsis_section_show_less">Show less</string>
 
     <!-- Media status section -->
     <!-- Section title for anime airing status -->
@@ -178,6 +186,38 @@
     <string name="label_media_status_premiered">Premiered</string>
     <!-- Metadata label indicating start date -->
     <string name="label_media_status_started">Started</string>
+    <!-- Metadata label indicating how many episodes have aired so far -->
+    <string name="label_media_status_aired_episodes">Aired episodes</string>
+    <!-- Title for the contextual release note shown inside the anime status surface -->
+    <string name="label_media_status_timeline_notes_title">Timeline notes</string>
+    <!-- Supporting copy for the contextual release note shown inside the anime status surface -->
+    <string name="label_media_status_timeline_notes_subtitle">Broadcast shifts, crossover context, and release notes.</string>
+    <!-- Metadata label indicating the latest known aired episode -->
+    <string name="label_media_status_latest_episode">Latest episode</string>
+    <!-- Formatted episode progress: e.g., "8 / 12"; %1$d is the aired count and %2$d is the total count -->
+    <string name="label_media_status_episode_progress">%1$d / %2$d</string>
+    <!-- Human-readable aired progress summary: e.g., "9 of 12 aired"; %1$d is the aired count and %2$d is the total count -->
+    <string name="label_media_status_episode_progress_summary">%1$d of %2$d aired</string>
+    <!-- Human-readable aired progress summary when the total episode count is unknown; %1$d is the aired count -->
+    <string name="label_media_status_episode_progress_summary_unknown_total">%1$d aired</string>
+    <!-- Formatted episode summary with date: e.g., "Episode 8 • Mar 12, 2025"; %1$s is the episode label and %2$s is the formatted date -->
+    <string name="label_media_status_episode_with_date">%1$s • %2$s</string>
+    <!-- Primary navigation CTA from the media status card into the dedicated episode guide -->
+    <string name="action_media_status_episode_guide">Open episode timeline</string>
+    <!-- Primary navigation CTA when the episode destination also contains expanded timeline notes -->
+    <string name="action_media_status_episode_guide_with_context">Open timeline and notes</string>
+    <!-- Small emphasis badge attached to the most recent aired episode -->
+    <string name="label_media_episode_badge_latest">Latest</string>
+    <!-- Small emphasis badge attached to the next upcoming episode -->
+    <string name="label_media_episode_badge_next">Next</string>
+    <!-- Episode state badge for already aired episodes -->
+    <string name="label_media_episode_state_aired">Aired</string>
+    <!-- Episode state badge for scheduled future episodes -->
+    <string name="label_media_episode_state_upcoming">Upcoming</string>
+    <!-- Episode state badge for episodes with incomplete scheduling metadata -->
+    <string name="label_media_episode_state_unknown">Unknown</string>
+    <!-- Fallback supporting text when an episode does not expose an air date -->
+    <string name="label_media_episode_air_date_unknown">Air date unknown</string>
     <!-- Button text to open full episode schedule -->
     <string name="label_media_status_episode_schedule_button">Episode Schedule</string>
     <!-- Button text to open full publication schedule -->

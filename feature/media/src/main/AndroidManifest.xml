@@ -21,6 +21,22 @@
     <application>
         <activity android:name=".component.screen.MediaScreen"
             android:exported="true" />
+        <activity android:name=".component.screen.MediaPeopleScreen"
+            android:exported="true" />
+        <activity android:name=".component.screen.MediaEpisodeScreen"
+            android:exported="true" />
+        <activity android:name=".component.screen.MediaCharactersScreen"
+            android:exported="true" />
+        <activity android:name=".component.screen.MediaStaffScreen"
+            android:exported="true" />
+        <activity android:name=".component.screen.MediaRelationsScreen"
+            android:exported="true" />
+        <activity android:name=".component.screen.MediaRecommendationsScreen"
+            android:exported="true" />
+        <activity android:name=".component.screen.MediaStudiosScreen"
+            android:exported="true" />
+        <activity android:name=".component.screen.MediaStatsScreen"
+            android:exported="true" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

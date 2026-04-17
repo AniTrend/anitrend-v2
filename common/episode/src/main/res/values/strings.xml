@@ -17,5 +17,9 @@
   -->
 
 <resources>
+  <!-- Button label for the episode sheet download action -->
+  <string name="action_episode_download">Download</string>
 
+  <!-- Shown in the episode sheet when an episode has no summary; %1$s is the episode title -->
+  <string name="message_episode_no_summary" formatted="true">No summary available is available for %1$s at this time.</string>
 </resources>

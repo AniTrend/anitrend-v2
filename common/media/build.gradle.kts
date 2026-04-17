@@ -25,6 +25,7 @@ dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.genre))
     implementation(project(Libraries.AniTrend.CommonUi.shared))
     implementation(project(Libraries.AniTrend.CommonUi.markdown))
+    implementation(libs.androidx.paging.compose)
 }
 
 android {

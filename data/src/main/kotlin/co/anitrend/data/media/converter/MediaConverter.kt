@@ -43,8 +43,11 @@ internal class MediaConverter(
     override val toType: (Media) -> MediaModel = { throw NotImplementedError() },
 ) : SupportConverter<MediaModel, Media>() {
     private companion object : ISupportTransformer<MediaModel, Media> {
-        private fun createMediaListProgress(source: MediaListModel.Core): MediaListProgress =
-            when (source.category.type) {
+        private fun createMediaListProgress(
+            source: MediaListModel.Core,
+            mediaType: MediaType,
+        ): MediaListProgress =
+            when (source.mediaCategory?.type ?: mediaType) {
                 MediaType.ANIME ->
                     MediaListProgress.Anime(
                         episodeProgress = source.progress ?: 0,
@@ -67,7 +70,10 @@ internal class MediaConverter(
                     },
             )
 
-        private fun convertMediaListEntry(model: MediaListModel.Core?): MediaList =
+        private fun convertMediaListEntry(
+            model: MediaListModel.Core?,
+            mediaType: MediaType,
+        ): MediaList =
             model?.let {
                 MediaList.Core(
                     advancedScores =
@@ -94,7 +100,7 @@ internal class MediaConverter(
                     mediaId = it.mediaId,
                     score = it.score ?: 0f,
                     status = it.status ?: MediaListStatus.PLANNING,
-                    progress = createMediaListProgress(it),
+                    progress = createMediaListProgress(it, mediaType),
                     privacy =
                         MediaListPrivacy(
                             isPrivate = it.private ?: false,
@@ -108,8 +114,8 @@ internal class MediaConverter(
         private fun MediaModel.createMediaList(): MediaList =
             when (this) {
                 is MediaModel.Media -> MediaList.Core.empty()
-                is MediaModel.Core -> convertMediaListEntry(mediaListEntry)
-                is MediaModel.Extended -> convertMediaListEntry(mediaListEntry)
+                is MediaModel.Core -> convertMediaListEntry(mediaListEntry, type)
+                is MediaModel.Extended -> convertMediaListEntry(mediaListEntry, type)
             }
 
         override fun transform(source: MediaModel) =
@@ -385,6 +391,16 @@ internal class MediaConverter(
                             MediaSourceId.empty().copy(
                                 myAnimeList = source.idMal,
                                 aniList = source.id,
+                            ),
+                        trailers =
+                            listOfNotNull(
+                                source.trailer?.let {
+                                    MediaTrailer(
+                                        id = it.id.orEmpty(),
+                                        site = it.site,
+                                        thumbnail = it.thumbnail,
+                                    )
+                                },
                             ),
                         countryCode = source.countryOfOrigin,
                         description = source.description,

@@ -3,7 +3,8 @@ query GetCharacterWithMedia(
     $perPage: Int,
     $id: Int,
     $onList: Boolean,
-    $sort: [MediaSort]
+    $sort: [MediaSort],
+    $scoreFormat: ScoreFormat
 ) {
     Character(id: $id) {
         media(

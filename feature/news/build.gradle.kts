@@ -22,11 +22,11 @@ plugins {
 }
 
 dependencies {
-    implementation(project(Libraries.AniTrend.Data.feed))
-	implementation(project(Libraries.AniTrend.CommonUi.news))
+	implementation(project(Libraries.AniTrend.Data.edge))
 	implementation(project(Libraries.AniTrend.CommonUi.markdown))
 	implementation(project(Libraries.AniTrend.CommonUi.shared))
 
+    implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.browser)
 
     implementation(libs.saket.betterlinkmovementmethod)

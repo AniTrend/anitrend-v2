@@ -23,7 +23,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal sealed class StudioEdge : IEntityEdge<StudioModel> {
+internal sealed class StudioEdge : IEntityEdge<StudioModel.Core> {
     /** [StudioEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/studioedge.doc.html)
      * Studio connection edge
      *
@@ -31,8 +31,8 @@ internal sealed class StudioEdge : IEntityEdge<StudioModel> {
      */
     @Serializable
     data class Favourite(
-        @SerialName("favouriteOrder") val favouriteOrder: Int?,
-        @SerialName("node") override val node: StudioModel?,
+        @SerialName("favouriteOrder") val favouriteOrder: Int? = null,
+        @SerialName("node") override val node: StudioModel.Core? = null,
         @SerialName("id") override val id: Long,
     ) : StudioEdge(),
         IEntityId<Long>
@@ -44,8 +44,8 @@ internal sealed class StudioEdge : IEntityEdge<StudioModel> {
      */
     @Serializable
     data class Media(
-        @SerialName("isMain") val isMain: Boolean,
-        @SerialName("node") override val node: StudioModel?,
+        @SerialName("isMain") val isMain: Boolean = false,
+        @SerialName("node") override val node: StudioModel.Core? = null,
         @SerialName("id") override val id: Long,
     ) : StudioEdge(),
         IEntityId<Long>

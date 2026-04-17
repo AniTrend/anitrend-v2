@@ -16,6 +16,8 @@
  */
 package co.anitrend.domain.media.model
 
+import co.anitrend.domain.character.enums.CharacterRole
+import co.anitrend.domain.character.enums.CharacterSort
 import co.anitrend.domain.common.DateInt
 import co.anitrend.domain.common.DateLike
 import co.anitrend.domain.common.sort.contract.ISortWithOrder
@@ -27,6 +29,9 @@ import co.anitrend.domain.media.enums.MediaSource
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.ScoreFormat
+import co.anitrend.domain.recommendation.enums.RecommendationSort
+import co.anitrend.domain.studio.enums.StudioSort
+import co.anitrend.domain.staff.enums.StaffSort
 
 sealed class MediaParam {
     /** [Media query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]
@@ -39,6 +44,38 @@ sealed class MediaParam {
         val id: Long,
         val type: MediaType,
         val scoreFormat: ScoreFormat = ScoreFormat.POINT_100,
+    ) : MediaParam()
+
+    data class Characters(
+        val id: Long,
+        val role: CharacterRole? = null,
+        val sort: List<ISortWithOrder<CharacterSort>>? = null,
+    ) : MediaParam()
+
+    data class Staff(
+        val id: Long,
+        val sort: List<ISortWithOrder<StaffSort>>? = null,
+    ) : MediaParam()
+
+    data class Studios(
+        val id: Long,
+        val sort: List<ISortWithOrder<StudioSort>>? = null,
+    ) : MediaParam()
+
+    data class Stats(
+        val id: Long,
+    ) : MediaParam()
+
+    data class Relations(
+        val id: Long,
+        val scoreFormat: ScoreFormat,
+    ) : MediaParam()
+
+    data class Recommendations(
+        val id: Long,
+        val scoreFormat: ScoreFormat,
+        val perPage: Int = 18,
+        val sort: List<RecommendationSort>? = null,
     ) : MediaParam()
 
     /** [Media query][https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html]

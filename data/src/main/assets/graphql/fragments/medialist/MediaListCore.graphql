@@ -1,5 +1,5 @@
 fragment MediaListCore on MediaList {
-    category: media {
+    mediaCategory: media {
         type
     }
     advancedScores

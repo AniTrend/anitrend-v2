@@ -17,22 +17,58 @@
 package co.anitrend.data.media.usecase
 
 import co.anitrend.data.media.GetDetailMediaInteractor
-import co.anitrend.data.media.GetNetworkMediaInteractor
-import co.anitrend.data.media.GetPagedMediaInteractor
+import co.anitrend.data.media.GetMediaCharactersInteractor
+import co.anitrend.data.media.GetPagingMediaInteractor
+import co.anitrend.data.media.GetMediaRecommendationsPagingInteractor
+import co.anitrend.data.media.GetMediaRecommendationsInteractor
+import co.anitrend.data.media.GetMediaRelationsInteractor
+import co.anitrend.data.media.GetMediaStaffInteractor
+import co.anitrend.data.media.GetMediaStatsInteractor
+import co.anitrend.data.media.GetMediaStudiosInteractor
+import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
-import co.anitrend.data.media.MediaNetworkRepository
-import co.anitrend.data.media.MediaPagedRepository
+import co.anitrend.data.media.MediaPagingRepository
+import co.anitrend.data.media.MediaRecommendationsPagingRepository
+import co.anitrend.data.media.MediaRecommendationsRepository
+import co.anitrend.data.media.MediaRelationsRepository
+import co.anitrend.data.media.MediaStaffRepository
+import co.anitrend.data.media.MediaStatsRepository
+import co.anitrend.data.media.MediaStudiosRepository
 
 internal interface MediaInteractor {
     class Detail(
         repository: MediaDetailRepository,
     ) : GetDetailMediaInteractor(repository)
 
-    class Paged(
-        repository: MediaPagedRepository,
-    ) : GetPagedMediaInteractor(repository)
+    class Relations(
+        repository: MediaRelationsRepository,
+    ) : GetMediaRelationsInteractor(repository)
 
-    class Network(
-        repository: MediaNetworkRepository,
-    ) : GetNetworkMediaInteractor(repository)
+    class Recommendations(
+        repository: MediaRecommendationsRepository,
+    ) : GetMediaRecommendationsInteractor(repository)
+
+    class RecommendationsPaged(
+        repository: MediaRecommendationsPagingRepository,
+    ) : GetMediaRecommendationsPagingInteractor(repository)
+
+    class Paging(
+        repository: MediaPagingRepository,
+    ) : GetPagingMediaInteractor(repository)
+
+    class Characters(
+        repository: MediaCharactersRepository,
+    ) : GetMediaCharactersInteractor(repository)
+
+    class Staff(
+        repository: MediaStaffRepository,
+    ) : GetMediaStaffInteractor(repository)
+
+    class Studios(
+        repository: MediaStudiosRepository,
+    ) : GetMediaStudiosInteractor(repository)
+
+    class Stats(
+        repository: MediaStatsRepository,
+    ) : GetMediaStatsInteractor(repository)
 }

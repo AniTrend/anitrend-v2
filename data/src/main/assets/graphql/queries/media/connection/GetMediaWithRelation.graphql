@@ -1,5 +1,9 @@
-query GetMediaWithRelation($id: Int!) {
+query GetMediaWithRelation(
+    $id: Int!,
+    $scoreFormat: ScoreFormat
+) {
     Media(id: $id) {
+        id
         relations {
             ... MediaRelationConnection
         }

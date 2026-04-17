@@ -15,3 +15,12 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 package co.anitrend.data.favourite
+
+import co.anitrend.arch.data.state.DataState
+import co.anitrend.data.android.controller.graphql.GraphQLController
+import co.anitrend.domain.favourite.interactor.FavouriteUseCase
+import co.anitrend.domain.favourite.repository.IFavouriteRepository
+
+internal typealias FavouriteToggleController = GraphQLController<Boolean, Boolean>
+internal typealias FavouriteToggleRepository = IFavouriteRepository.Toggle<DataState<Boolean>>
+typealias ToggleFavouriteInteractor = FavouriteUseCase.Toggle<DataState<Boolean>>

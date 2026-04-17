@@ -24,6 +24,7 @@ plugins {
 dependencies {
 	implementation(project(Libraries.AniTrend.CommonUi.shared))
 	implementation(project(Libraries.AniTrend.CommonUi.media))
+	implementation(libs.androidx.paging.compose)
 }
 
 android {

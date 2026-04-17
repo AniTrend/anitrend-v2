@@ -24,7 +24,7 @@ interface IReviewRepository {
         fun getEntry(param: ReviewParam.Entry): State
     }
 
-    interface Paged<State : UiState<*>> : IReviewRepository {
+    interface Paged<State> : IReviewRepository {
         fun getPaged(param: ReviewParam.Paged): State
     }
 

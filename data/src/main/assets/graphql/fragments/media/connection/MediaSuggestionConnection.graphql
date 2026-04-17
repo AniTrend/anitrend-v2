@@ -1,6 +1,6 @@
 fragment MediaSuggestionConnection on RecommendationConnection {
     pageInfo {
-        ... PageInfo
+      ... PageInfo
     }
     edges {
         node {

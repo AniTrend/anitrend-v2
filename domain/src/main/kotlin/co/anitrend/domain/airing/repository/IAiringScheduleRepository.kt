@@ -16,11 +16,10 @@
  */
 package co.anitrend.domain.airing.repository
 
-import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.airing.model.AiringParam
 
 interface IAiringScheduleRepository {
-    interface Paged<State : UiState<*>> : IAiringScheduleRepository {
+    interface Paged<State> : IAiringScheduleRepository {
         fun getPaged(param: AiringParam.Find): State
     }
 }

@@ -16,12 +16,11 @@
  */
 package co.anitrend.domain.airing.interactor
 
-import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.airing.repository.IAiringScheduleRepository
 
 sealed class AiringScheduleUseCase {
-    abstract class GetPaged<State : UiState<*>>(
+    abstract class GetPaged<State>(
         protected val repository: IAiringScheduleRepository.Paged<State>,
     ) : AiringScheduleUseCase() {
         operator fun invoke(param: AiringParam.Find) = repository.getPaged(param)

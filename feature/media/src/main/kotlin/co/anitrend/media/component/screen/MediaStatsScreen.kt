@@ -1,0 +1,50 @@
+/*
+ * Copyright (C) 2026 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+package co.anitrend.media.component.screen
+
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.arch.extension.ext.extra
+import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.media.component.compose.stats.MediaStatsRoute
+import co.anitrend.navigation.MediaStatsRouter
+import co.anitrend.navigation.extensions.nameOf
+
+class MediaStatsScreen : AniTrendScreen() {
+    private val param by extra<MediaStatsRouter.MediaStatsParam>(
+        key = nameOf<MediaStatsRouter.MediaStatsParam>(),
+    )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val statsParam = requireNotNull(param)
+        setContent {
+            AniTrendTheme3 {
+                MediaStatsRoute(
+                    mediaId = statsParam.mediaId,
+                    mediaTitle = statsParam.mediaTitle,
+                    averageScore = statsParam.averageScore,
+                    favourites = statsParam.favourites,
+                    popularity = statsParam.popularity,
+                    trendRank = statsParam.trendRank,
+                    onBackPress = onBackPressedDispatcher::onBackPressed,
+                )
+            }
+        }
+    }
+}

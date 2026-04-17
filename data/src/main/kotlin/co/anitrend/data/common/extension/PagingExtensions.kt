@@ -26,8 +26,30 @@ internal fun SupportPagingHelper.toPageQuery() = PageQuery(page, pageSize)
  * Update support paging helper based off of [pageModel]
  */
 internal fun SupportPagingHelper.from(pageModel: IPageModel?) {
-    val pageInfo = pageModel?.pageInfo
-    if (pageInfo != null) {
-        isPagingLimit = !pageInfo.hasNextPage
+    val pageInfo = pageModel?.pageInfo ?: return
+
+    pageInfo.currentPage?.let { currentPage ->
+        page = currentPage
+    }
+    pageInfo.hasNextPage?.let { hasNextPage ->
+        isPagingLimit = !hasNextPage
+    }
+}
+
+/**
+ * Restore paging state from already-persisted rows when a new paging session starts from cache.
+ *
+ * The sort index contract for AniTrend paging caches is a zero-based contiguous range per media.
+ */
+internal fun SupportPagingHelper.seedFromLocalCount(itemCount: Int) {
+    if (itemCount <= 0) {
+        return
+    }
+
+    page = ((itemCount - 1) / pageSize) + 1
+
+    // A partial last page implies there can be no following page.
+    if (itemCount % pageSize != 0) {
+        isPagingLimit = true
     }
 }

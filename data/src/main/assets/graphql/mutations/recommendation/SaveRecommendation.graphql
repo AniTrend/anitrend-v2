@@ -1,7 +1,8 @@
 mutation SaveRecommendation(
     $mediaId: Int,
     $mediaRecommendationId: Int,
-    $rating: RecommendationRating
+    $rating: RecommendationRating,
+    $scoreFormat: ScoreFormat
 ) {
     SaveRecommendation(
         mediaId: $mediaId,

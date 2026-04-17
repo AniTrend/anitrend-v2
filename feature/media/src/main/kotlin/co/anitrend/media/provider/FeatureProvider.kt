@@ -18,9 +18,57 @@ package co.anitrend.media.provider
 
 import android.content.Context
 import android.content.Intent
+import co.anitrend.media.component.screen.MediaCharactersScreen
+import co.anitrend.media.component.screen.MediaEpisodeScreen
+import co.anitrend.media.component.screen.MediaPeopleScreen
+import co.anitrend.media.component.screen.MediaRecommendationsScreen
+import co.anitrend.media.component.screen.MediaRelationsScreen
 import co.anitrend.media.component.screen.MediaScreen
+import co.anitrend.media.component.screen.MediaStaffScreen
+import co.anitrend.media.component.screen.MediaStatsScreen
+import co.anitrend.media.component.screen.MediaStudiosScreen
+import co.anitrend.navigation.MediaCharactersRouter
+import co.anitrend.navigation.MediaEpisodeRouter
+import co.anitrend.navigation.MediaPeopleRouter
+import co.anitrend.navigation.MediaRecommendationsRouter
+import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.MediaStaffRouter
+import co.anitrend.navigation.MediaStatsRouter
+import co.anitrend.navigation.MediaStudiosRouter
 
 class FeatureProvider : MediaRouter.Provider {
     override fun activity(context: Context?) = Intent(context, MediaScreen::class.java)
+}
+
+class PeopleFeatureProvider : MediaPeopleRouter.Provider {
+    override fun activity(context: Context?) = Intent(context, MediaPeopleScreen::class.java)
+}
+
+class EpisodeFeatureProvider : MediaEpisodeRouter.Provider {
+    override fun activity(context: Context?) = Intent(context, MediaEpisodeScreen::class.java)
+}
+
+class CharactersFeatureProvider : MediaCharactersRouter.Provider {
+    override fun activity(context: Context?) = Intent(context, MediaCharactersScreen::class.java)
+}
+
+class StaffFeatureProvider : MediaStaffRouter.Provider {
+    override fun activity(context: Context?) = Intent(context, MediaStaffScreen::class.java)
+}
+
+class RelationsFeatureProvider : MediaRelationsRouter.Provider {
+    override fun activity(context: Context?) = Intent(context, MediaRelationsScreen::class.java)
+}
+
+class RecommendationsFeatureProvider : MediaRecommendationsRouter.Provider {
+    override fun activity(context: Context?) = Intent(context, MediaRecommendationsScreen::class.java)
+}
+
+class StudiosFeatureProvider : MediaStudiosRouter.Provider {
+    override fun activity(context: Context?) = Intent(context, MediaStudiosScreen::class.java)
+}
+
+class StatsFeatureProvider : MediaStatsRouter.Provider {
+    override fun activity(context: Context?) = Intent(context, MediaStatsScreen::class.java)
 }

@@ -2,7 +2,8 @@ query GetMediaWithAiring(
     $id: Int!,
     $notYetAired: Boolean,
     $page: Int!,
-    $perPage: Int!
+    $perPage: Int!,
+    $scoreFormat: ScoreFormat
 ) {
     Media(id: $id) {
         airingSchedule(

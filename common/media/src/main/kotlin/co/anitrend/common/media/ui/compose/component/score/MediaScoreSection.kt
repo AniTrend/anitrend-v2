@@ -32,6 +32,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -64,6 +65,8 @@ fun MediaScoreSection(
     mediaScore: IMediaScore,
     scoreFormat: ScoreFormat,
     modifier: Modifier = Modifier,
+    compact: Boolean = false,
+    supportingContent: (@Composable () -> Unit)? = null,
 ) {
     val shape = RoundedCornerShape(20.dp)
     val gradient =
@@ -74,12 +77,14 @@ fun MediaScoreSection(
             ),
         )
     val outline = MaterialTheme.colorScheme.outlineVariantOnSurface()
+    val horizontalPadding = if (compact) 14.dp else 16.dp
+    val verticalPadding = if (compact) 10.dp else 12.dp
+    val footerPadding = if (compact) 8.dp else 10.dp
 
     Surface(
         modifier =
             modifier
                 .clip(shape)
-                // .background(MaterialTheme.colorScheme.surface, shape = shape)
                 .background(gradient, shape),
         shape = shape,
         color = Color.Transparent,
@@ -87,31 +92,59 @@ fun MediaScoreSection(
         tonalElevation = 0.dp,
         shadowElevation = 0.dp,
     ) {
-        Row(
-            modifier =
-                Modifier
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
-                    .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            StarBadge(
-                tint = MaterialTheme.colorScheme.primary,
-                showBorder = true,
-            )
-            Spacer(Modifier.width(12.dp))
-            StackRating(
-                label = stringResource(R.string.label_media_score_section_your_rating),
-                rating = mediaScore.asFormattedPersonal(scoreFormat),
-                showSuffix = false,
-            )
-            Spacer(Modifier.weight(1f))
-            StackRating(
-                label = stringResource(R.string.label_media_score_section_community),
-                footerSuffix = stringResource(R.string.label_media_score_section_popularity_footer_suffix),
-                rating = IMediaRating.Text(score = mediaScore.mean.toString()),
-                footer = mediaScore.popularity?.takeIf { it > 0 }?.toHumanReadableQuantity(0),
-                showSuffix = true,
-            )
+            Row(
+                modifier =
+                    Modifier
+                        .padding(horizontal = horizontalPadding, vertical = verticalPadding)
+                        .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                StarBadge(
+                    tint = MaterialTheme.colorScheme.primary,
+                    showBorder = true,
+                    compact = compact,
+                )
+                Spacer(Modifier.width(if (compact) 10.dp else 12.dp))
+                StackRating(
+                    label = stringResource(R.string.label_media_score_section_your_rating),
+                    rating = mediaScore.asFormattedPersonal(scoreFormat),
+                    showSuffix = false,
+                    compact = compact,
+                )
+                Spacer(Modifier.weight(1f))
+                StackRating(
+                    label = stringResource(R.string.label_media_score_section_community),
+                    footerSuffix = stringResource(R.string.label_media_score_section_popularity_footer_suffix),
+                    rating = IMediaRating.Text(score = mediaScore.mean.toString()),
+                    footer = mediaScore.popularity?.takeIf { it > 0 }?.toHumanReadableQuantity(0),
+                    showSuffix = true,
+                    compact = compact,
+                    horizontalAlignment = Alignment.End,
+                )
+            }
+
+            if (supportingContent != null) {
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = horizontalPadding),
+                    color = outline.copy(alpha = 0.8f),
+                )
+                Box(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = horizontalPadding,
+                                top = footerPadding,
+                                end = horizontalPadding,
+                                bottom = footerPadding,
+                            ),
+                ) {
+                    supportingContent()
+                }
+            }
         }
     }
 }
@@ -124,17 +157,22 @@ private fun StackRating(
     rating: IMediaRating?,
     showSuffix: Boolean,
     label: String,
+    compact: Boolean = false,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = horizontalAlignment,
+    ) {
         // Always show the label first
-        LabelText(text = label)
+        LabelText(text = label, compact = compact)
 
         when (rating) {
             is IMediaRating.Mood -> {
                 IconScoreContent(
                     rating = rating,
                     iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(if (compact) 20.dp else 24.dp),
                 )
             }
             is IMediaRating.Text -> {
@@ -144,11 +182,12 @@ private fun StackRating(
                     value = normalized,
                     showSuffix = showSuffix,
                     placeholder = stringResource(R.string.placeholder_media_score_section_rating),
+                    compact = compact,
                 )
                 footer?.let {
                     Text(
                         text = "$it $footerSuffix",
-                        style = MaterialTheme.typography.labelMedium,
+                        style = if (compact) MaterialTheme.typography.labelSmall else MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
@@ -160,6 +199,7 @@ private fun StackRating(
                     value = null,
                     showSuffix = showSuffix,
                     placeholder = stringResource(R.string.placeholder_media_score_section_rating),
+                    compact = compact,
                 )
             }
         }
@@ -167,21 +207,24 @@ private fun StackRating(
 }
 
 @Composable
-private fun LabelText(text: String) =
-    Text(
-        text = text,
-        style = MaterialTheme.typography.labelLarge,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-    )
+private fun LabelText(
+    text: String,
+    compact: Boolean,
+) = Text(
+    text = text,
+    style = if (compact) MaterialTheme.typography.labelMedium else MaterialTheme.typography.labelLarge,
+    color = MaterialTheme.colorScheme.onSurfaceVariant,
+)
 
 @Composable
 private fun ValueOutOf(
     value: String?,
     showSuffix: Boolean,
     placeholder: String,
+    compact: Boolean,
 ) {
-    val mainSize = 22.sp
-    val suffixSize = 16.sp
+    val mainSize = if (compact) 20.sp else 22.sp
+    val suffixSize = if (compact) 14.sp else 16.sp
     val mainColor = MaterialTheme.colorScheme.onSurface
     val hintColor = MaterialTheme.colorScheme.onSurfaceVariant
 
@@ -210,14 +253,17 @@ private fun ValueOutOf(
 private fun StarBadge(
     tint: Color,
     showBorder: Boolean,
+    compact: Boolean,
 ) {
     val bg = tint.copy(alpha = 0.12f)
     val border = tint.copy(alpha = 0.20f)
+    val badgeSize = if (compact) 40.dp else 44.dp
+    val iconSize = if (compact) 20.dp else 24.dp
 
     Box(
         modifier =
             Modifier
-                .size(44.dp)
+                .size(badgeSize)
                 .clip(CircleShape)
                 .background(bg)
                 .then(
@@ -234,7 +280,7 @@ private fun StarBadge(
             imageVector = Icons.Rounded.Star,
             contentDescription = null,
             tint = tint,
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(iconSize),
         )
     }
 }

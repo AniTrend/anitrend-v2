@@ -24,13 +24,11 @@ import co.anitrend.data.core.extensions.store
 import co.anitrend.data.medialist.DeleteCustomMediaListInteractor
 import co.anitrend.data.medialist.DeleteCustomMediaListRepository
 import co.anitrend.data.medialist.DeleteMediaListEntryInteractor
-import co.anitrend.data.medialist.GetCollectionMediaListInteractor
 import co.anitrend.data.medialist.GetMediaListEntryInteractor
-import co.anitrend.data.medialist.GetPagedMediaListInteractor
-import co.anitrend.data.medialist.MediaListCollectionRepository
+import co.anitrend.data.medialist.GetPagingMediaListInteractor
 import co.anitrend.data.medialist.MediaListDeleteEntryRepository
 import co.anitrend.data.medialist.MediaListEntryRepository
-import co.anitrend.data.medialist.MediaListPagedRepository
+import co.anitrend.data.medialist.MediaListPagingRepository
 import co.anitrend.data.medialist.MediaListSaveEntriesRepository
 import co.anitrend.data.medialist.MediaListSaveEntryRepository
 import co.anitrend.data.medialist.MediaListSyncRepository
@@ -60,26 +58,8 @@ private val sourceModule =
                 dispatcher = get(),
             )
         }
-        factory<MediaListSource.Collection> {
-            MediaListSourceImpl.Collection(
-                remoteSource = aniListApi(),
-                localSource = store().mediaListDao(),
-                mediaLocalSource = store().mediaDao(),
-                clearDataHelper = get(),
-                controller =
-                    graphQLController(
-                        mapper = get<MediaListMapper.Collection>(),
-                    ),
-                filter =
-                    MediaListQueryFilter.Collection(
-                        authentication = get(),
-                    ),
-                converter = get(),
-                dispatcher = get(),
-            )
-        }
-        factory<MediaListSource.Paged> {
-            MediaListSourceImpl.Paged(
+        factory<MediaListSource.Paging> {
+            MediaListSourceImpl.Paging(
                 remoteSource = aniListApi(),
                 localSource = store().mediaListDao(),
                 mediaLocalSource = store().mediaDao(),
@@ -273,11 +253,8 @@ private val useCaseModule =
         factory<GetMediaListEntryInteractor> {
             MediaListInteractor.Entry(repository = get())
         }
-        factory<GetPagedMediaListInteractor> {
-            MediaListInteractor.Paged(repository = get())
-        }
-        factory<GetCollectionMediaListInteractor> {
-            MediaListInteractor.Collection(repository = get())
+        factory<GetPagingMediaListInteractor> {
+            MediaListInteractor.Paging(repository = get())
         }
         factory<SaveMediaListEntryInteractor> {
             MediaListInteractor.SaveEntry(repository = get())
@@ -305,13 +282,8 @@ private val repositoryModule =
                 source = get(),
             )
         }
-        factory<MediaListCollectionRepository> {
-            MediaListRepository.Collection(
-                source = get(),
-            )
-        }
-        factory<MediaListPagedRepository> {
-            MediaListRepository.Paged(
+        factory<MediaListPagingRepository> {
+            MediaListRepository.Paging(
                 source = get(),
             )
         }

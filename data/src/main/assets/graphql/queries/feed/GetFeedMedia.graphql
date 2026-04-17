@@ -1,4 +1,4 @@
-query GetFeedMedia($id: Int!) {
+query GetFeedMedia($id: Int!, $scoreFormat: ScoreFormat) {
     Activity(id: $id, type: MEDIA_LIST) {
         ... FeedMedia
     }

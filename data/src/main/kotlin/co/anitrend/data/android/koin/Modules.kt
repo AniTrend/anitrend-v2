@@ -51,6 +51,7 @@ import co.anitrend.data.customscore.koin.customScoreModules
 import co.anitrend.data.edge.core.koin.edgeModules
 import co.anitrend.data.feed.api.factory.IFeedFactory
 import co.anitrend.data.feed.koin.feedModules
+import co.anitrend.data.favourite.koin.favouriteModules
 import co.anitrend.data.genre.koin.genreModules
 import co.anitrend.data.link.koin.linkModules
 import co.anitrend.data.media.koin.mediaModules
@@ -59,6 +60,8 @@ import co.anitrend.data.rank.koin.rankModules
 import co.anitrend.data.review.koin.reviewModules
 import co.anitrend.data.status.model.StatusModel
 import co.anitrend.data.tag.koin.tagModules
+import co.anitrend.data.recommendation.koin.recommendationModules
+import co.anitrend.data.studio.koin.studioModules
 import co.anitrend.data.user.koin.userModules
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -245,11 +248,14 @@ val dataModules =
             userModules,
             mediaListModules,
             feedModules,
+            favouriteModules,
             linkModules,
             rankModules,
             customListModules,
             customScoreModules,
             reviewModules,
+            *studioModules.toTypedArray(),
+            *recommendationModules.toTypedArray(),
             edgeModules,
         )
     }

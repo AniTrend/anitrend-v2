@@ -9,7 +9,8 @@ query GetRecommendationPaged(
     $rating_greater: Int,
     $rating_lesser: Int,
     $sort: [RecommendationSort],
-    $userId: Int
+    $userId: Int,
+    $scoreFormat: ScoreFormat
 ) {
     Page(page: $page, perPage: $perPage) {
         pageInfo {

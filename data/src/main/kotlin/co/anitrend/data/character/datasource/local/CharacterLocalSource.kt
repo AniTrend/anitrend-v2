@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.character.datasource.local
 
-import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
@@ -62,23 +61,4 @@ internal abstract class CharacterLocalSource : AbstractLocalSource<CharacterEnti
     """,
     )
     abstract fun characterByIdFlow(id: Long): Flow<CharacterEntity?>
-
-    @Query(
-        """
-        select * from character
-    """,
-    )
-    abstract fun allCharacterFactory(): DataSource.Factory<Int, CharacterEntity>
-
-    @Query(
-        """
-        select * from character
-        where name_first match :term
-        or name_full match :term
-        or name_last match :term
-        or name_original match :term
-        or name_alternative match :term
-    """,
-    )
-    abstract fun searchCharacterFactory(term: String): DataSource.Factory<Int, CharacterEntity>
 }

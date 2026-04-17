@@ -29,16 +29,14 @@ import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
+import co.anitrend.data.common.model.graph.toQueryContainerBuilder
 import co.anitrend.data.edge.news.EdgeNewsController
 import co.anitrend.data.edge.news.converter.EdgeNewsEntityConverter
 import co.anitrend.data.edge.news.datasource.local.EdgeNewsLocalSource
 import co.anitrend.data.edge.news.datasource.remote.EdgeNewsRemoteSource
 import co.anitrend.data.edge.news.model.query.NewsConnectionQuery
 import co.anitrend.domain.news.entity.News
-import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.first
 
 @OptIn(ExperimentalPagingApi::class)
@@ -54,32 +52,27 @@ internal class EdgeNewsPagingSource(
 ) : AbstractPagingMediator<Int, News>() {
     private var nextCursor: String? = null
 
-    fun observable(factoryQuery: androidx.sqlite.db.SupportSQLiteQuery): Flow<PagingSource<Int, News>> =
+    fun pagingSourceFactory(factoryQuery: androidx.sqlite.db.SupportSQLiteQuery): () -> PagingSource<Int, News> =
         localSource
             .rawFactory(factoryQuery)
             .map { entity -> converter.convertFrom(entity) }
             .asPagingSourceFactory()
-            .asFlow()
 
-    fun observable(): Flow<PagingSource<Int, News>> =
+    fun pagingSourceFactory(): () -> PagingSource<Int, News> =
         localSource
             .entryFactory()
             .map { entity -> converter.convertFrom(entity) }
             .asPagingSourceFactory()
-            .asFlow()
 
     private suspend fun getNews(requestCallback: RequestCallback) {
         val deferred =
             deferred {
                 val builder =
-                    QueryContainerBuilder()
-                        .apply {
-                            // Edge API expects: after/before and limit (we use 'first' for forward paging)
-                            nextCursor?.let { putVariable("after", it) }
-                            // Use supportPagingHelper.pageSize as first
-                            putVariable("first", supportPagingHelper.pageSize)
-                            query.search?.let { putVariable("query", it) }
-                        }
+                    query
+                        .copy(
+                            after = nextCursor,
+                            limit = supportPagingHelper.pageSize,
+                        ).toQueryContainerBuilder(ignoreNulls = true)
                 remoteSource.getNewsConnection(builder)
             }
         controller(deferred, requestCallback) {
@@ -122,7 +115,6 @@ internal class EdgeNewsPagingSource(
     ): MediatorResult =
         when (loadType) {
             LoadType.REFRESH -> {
-                // Reset any local state and trigger initial load
                 nextCursor = null
                 clearDataSource(dispatcher.io)
                 invoke(requestType = Request.Type.INITIAL)

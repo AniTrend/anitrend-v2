@@ -16,45 +16,42 @@
  */
 package co.anitrend.medialist.editor.component.compose
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Notes
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -62,17 +59,20 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import co.anitrend.android.core.compose.AniTrendDimensions
+import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.helpers.date.AniTrendDateHelper
+import co.anitrend.android.core.helpers.image.model.RequestImage
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.domain.media.entity.Media
@@ -82,8 +82,6 @@ import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.medialist.editor.R
 import co.anitrend.medialist.editor.component.compose.state.MediaListEditorState
 import co.anitrend.medialist.editor.component.compose.state.rememberMediaListEditorState
-import co.anitrend.medialist.editor.component.compose.util.filterDecimalInputOnePlace
-import co.anitrend.medialist.editor.component.compose.util.filterScoreInput
 
 enum class OnMediaListEditorAction {
     SAVE,
@@ -99,279 +97,344 @@ fun MediaListEditorScreen(
     Column(
         modifier =
             modifier
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        EditorHeader(
-            mediaTitle = state.mediaTitle,
-            canDelete = state.media.mediaList != null,
+        EditorHero(
+            state = state,
             onAction = onAction,
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        PrimaryEditGroup(state = state)
+        SecondaryEditGroup(state = state)
+        MoreOptionsSection(state = state)
+        Spacer(modifier = Modifier.height(24.dp))
+    }
+}
+
+@Composable
+private fun EditorHero(
+    state: MediaListEditorState,
+    onAction: (OnMediaListEditorAction) -> Unit,
+) {
+    val canDelete = state.media.mediaList != null
+    val quickFacts = mediaQuickFacts(state)
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(14.dp),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            verticalAlignment = Alignment.Top,
+        ) {
+            HeroPoster(
+                media = state.media,
+                modifier =
+                    Modifier
+                        .width(84.dp)
+                        .aspectRatio(AniTrendDimensions.series_image_aspect_ratio),
+            )
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                Text(
+                    text = state.mediaTitle.ifBlank { stringResource(R.string.placeholder_media_list_editor_media_title) },
+                    style = MaterialTheme.typography.headlineSmall,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Text(
+                    text = stringResource(R.string.subtitle_media_list_editor_quick_edit),
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                quickFacts.takeIf(String::isNotBlank)?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            if (canDelete) {
+                OutlinedButton(
+                    onClick = { onAction(OnMediaListEditorAction.DELETE) },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(18.dp),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.45f)),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = null,
+                    )
+                    Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
+                    Text(text = stringResource(R.string.action_media_list_editor_delete_entry))
+                }
+            }
+
+            Button(
+                onClick = { onAction(OnMediaListEditorAction.SAVE) },
+                modifier = Modifier.weight(if (canDelete) 1.15f else 1f),
+                shape = RoundedCornerShape(18.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Save,
+                    contentDescription = null,
+                )
+                Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
+                Text(text = stringResource(R.string.action_media_list_editor_save_changes))
+            }
+        }
+    }
+}
+
+@Composable
+private fun HeroPoster(
+    media: Media,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(22.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.45f)),
+    ) {
+        AniTrendImage(
+            image = media.image,
+            imageType = RequestImage.Media.ImageType.POSTER,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@Composable
+private fun PrimaryEditGroup(state: MediaListEditorState) {
+    EditorGroupCard {
+        WatchStatusSection(
+            selectedStatus = state.selectedStatus ?: MediaListStatus.PLANNING,
+            onStatusSelected = state::onStatusSelected,
+        )
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
+        ProgressSection(state = state)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
+        ScoreSection(state = state)
+    }
+}
+
+@Composable
+private fun SecondaryEditGroup(state: MediaListEditorState) {
+    EditorGroupCard {
+        VolumesAndRepeatSection(state = state)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
+        DateSelectionSection(state = state)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
         PrivacySection(
             isPrivate = state.isPrivate,
             onPrivacyChange = { state.isPrivate = it },
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        WatchStatusSection(
-            selectedStatus = state.selectedStatus,
-            onStatusSelected = state::onStatusSelected,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        ProgressSection(
-            mediaType = state.mediaType,
-            progressText = state.progressText,
-            onProgressChange = state::updateProgressText,
-            totalUnits = state.totalUnits,
-            currentProgress = state.progressText.toIntOrNull() ?: 0,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        VolumesAndRepeatSection(
-            mediaType = state.mediaType,
-            volumeProgress = state.volumeProgressText,
-            onVolumeChange = state::updateVolumeProgressText,
-            repeatCount = state.repeatText,
-            onRepeatChange = state::updateRepeatText,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        DateSelectionSection(state)
-        Spacer(modifier = Modifier.height(16.dp))
-        ScoreSection(
-            score = state.scoreText,
-            onScoreChange = state::updateScoreText,
-            maxScore = state.maxScore,
-            scoreFormat = state.scoreFormat,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        if (state.advancedScoresText.isNotEmpty()) {
-            AdvancedScoresSection(
-                values = state.advancedScoresText,
-                onValueChange = { name, value ->
-                    state.setAdvancedScore(name, value)
-                },
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-        CustomListsSection(
-            customLists = state.customLists,
-            onCustomListToggle = { listName, isSelected ->
-                state.toggleCustomList(listName, isSelected)
-            },
-            onCreateNewList = { /* TODO: Handle create new list */ },
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        NotesSection(
-            notes = state.notesText,
-            onNotesChange = { state.notesText = it },
-        )
-        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 
 @Composable
-private fun EditorHeader(
-    mediaTitle: String,
-    canDelete: Boolean,
-    onAction: (OnMediaListEditorAction) -> Unit,
+private fun EditorGroupCard(
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(28.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.14f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
+    ) {
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(18.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp),
+            content = content,
+        )
+    }
+}
+
+@Composable
+private fun SectionHeading(
+    title: String,
+    supportingText: String? = null,
+    trailingText: String? = null,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Top,
     ) {
-        Column(modifier = Modifier.weight(1f)) {
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
             Text(
-                text = stringResource(R.string.title_media_list_editor_add_to_library),
-                style = MaterialTheme.typography.titleLarge,
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
             )
+            if (!supportingText.isNullOrBlank()) {
+                Text(
+                    text = supportingText,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+        if (!trailingText.isNullOrBlank()) {
             Text(
-                text = stringResource(R.string.subtitle_media_list_editor_manage_media, mediaTitle),
-                style = MaterialTheme.typography.bodyMedium,
+                text = trailingText,
+                style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        IconButton(onClick = { onAction(OnMediaListEditorAction.SAVE) }) {
-            Icon(
-                Icons.Filled.Save,
-                contentDescription = stringResource(co.anitrend.common.medialist.ui.R.string.action_media_list_save),
-            )
-        }
-        if (canDelete) {
-            IconButton(onClick = { onAction(OnMediaListEditorAction.DELETE) }) {
-                Icon(
-                    Icons.Filled.Delete,
-                    contentDescription = stringResource(co.anitrend.common.medialist.ui.R.string.action_media_list_delete),
-                )
-            }
-        }
     }
 }
 
-@Composable
-private fun PrivacySection(
-    isPrivate: Boolean,
-    onPrivacyChange: (Boolean) -> Unit,
-) {
-    Column {
-        Card(
-            shape = RoundedCornerShape(8.dp),
-            colors =
-                CardDefaults.cardColors().copy(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                ),
-        ) {
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    Icons.Filled.VisibilityOff,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                )
-                Spacer(Modifier.width(8.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.label_media_list_editor_private_update), style = MaterialTheme.typography.bodyLarge)
-                    Text(
-                        stringResource(R.string.label_media_list_editor_private_update_description),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                Switch(checked = isPrivate, onCheckedChange = onPrivacyChange)
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun WatchStatusSection(
-    selectedStatus: MediaListStatus?,
+    selectedStatus: MediaListStatus,
     onStatusSelected: (MediaListStatus) -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(false) }
-    val items = MediaListStatus.entries
-
-    Column {
-        Text(
-            stringResource(R.string.label_media_list_editor_watch_status),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 8.dp),
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        SectionHeading(
+            title = stringResource(R.string.label_media_list_editor_watch_status),
+            trailingText = stringResource(R.string.label_media_list_editor_primary_state),
         )
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded },
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            OutlinedTextField(
-                value =
-                    selectedStatus?.alias?.toString() ?: stringResource(R.string.placeholder_media_list_editor_select_status),
-                onValueChange = {},
-                readOnly = true,
-                leadingIcon = {
-                    val resource =
-                        when (selectedStatus) {
-                            MediaListStatus.CURRENT -> co.anitrend.common.media.ui.R.drawable.ic_current
-                            MediaListStatus.COMPLETED -> co.anitrend.common.media.ui.R.drawable.ic_completed
-                            MediaListStatus.DROPPED -> co.anitrend.common.media.ui.R.drawable.ic_dropped
-                            MediaListStatus.PAUSED -> co.anitrend.common.media.ui.R.drawable.ic_paused
-                            MediaListStatus.REPEATING -> co.anitrend.common.media.ui.R.drawable.ic_repeat
-                            else -> co.anitrend.common.media.ui.R.drawable.ic_planning
-                        }
-                    Icon(painter = painterResource(resource), contentDescription = "")
-                },
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = true),
-            )
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-            ) {
-                items.forEach { status ->
-                    DropdownMenuItem(
-                        text = { Text(status.alias.toString()) },
-                        onClick = {
-                            onStatusSelected(status)
-                            expanded = false
-                        },
-                    )
-                }
+            MediaListStatus.entries.forEach { status ->
+                FilterChip(
+                    selected = selectedStatus == status,
+                    onClick = { onStatusSelected(status) },
+                    label = { Text(status.alias.toString()) },
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(statusIcon(status)),
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    },
+                )
             }
         }
     }
 }
 
 @Composable
-private fun ProgressSection(
-    mediaType: MediaType,
-    progressText: String,
-    onProgressChange: (String) -> Unit,
-    totalUnits: Int?,
-    currentProgress: Int,
-) {
+private fun ProgressSection(state: MediaListEditorState) {
     val label =
-        if (mediaType == MediaType.ANIME) {
+        if (state.mediaType == MediaType.ANIME) {
             stringResource(R.string.label_media_list_editor_episode_progress)
         } else {
             stringResource(R.string.label_media_list_editor_chapter_progress)
         }
-
-    Column {
-        Text(label, style = MaterialTheme.typography.titleMedium)
-        Spacer(Modifier.height(8.dp))
-        OutlinedTextField(
-            value = progressText,
-            onValueChange = { onProgressChange(it.filter { char -> char.isDigit() }) },
-            modifier = Modifier.fillMaxWidth(),
-            label = {
-                Text(
-                    stringResource(
-                        if (mediaType ==
-                            MediaType.ANIME
-                        ) {
-                            R.string.label_media_list_editor_current_episode
-                        } else {
-                            R.string.label_media_list_editor_current_chapter
-                        },
-                    ),
-                )
-            },
-            suffix = { totalUnits?.let { Text("/ $it") } },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        )
-        Spacer(Modifier.height(4.dp))
-        val progressFraction =
-            if (totalUnits != null && totalUnits > 0) {
-                (currentProgress.toFloat() / totalUnits.toFloat()).coerceIn(0f, 1f)
-            } else {
-                0f
-            }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                stringResource(R.string.label_media_list_editor_progress_percentage, (progressFraction * 100).toInt()),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+    val progressFraction =
+        if (state.totalUnits != null && state.totalUnits > 0) {
+            (state.currentProgress.toFloat() / state.totalUnits.toFloat()).coerceIn(0f, 1f)
+        } else {
+            0f
         }
-        LinearProgressIndicator(
-            progress = { progressFraction },
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        NumericStepperRow(
+            label = label,
+            value = state.progressText,
+            onValueChange = state::updateProgressText,
+            onDecrement = { state.adjustProgress(-1) },
+            onIncrement = { state.adjustProgress(1) },
+            valueSuffix = state.totalUnits?.toString(),
+            supportingText = stringResource(R.string.label_media_list_editor_progress_auto_complete_hint),
+            canDecrement = state.currentProgress > 0,
+            canIncrement = state.totalUnits?.let { state.currentProgress < it } ?: true,
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ScoreSection(state: MediaListEditorState) {
+    FormatAwareScoreControl(
+        scoreFormat = state.scoreFormat,
+        scoreText = state.scoreText,
+        maxScore = state.maxScore,
+        onScoreChange = state::updateScoreText,
+        onScoreIncrement = { state.adjustScore(1) },
+        onScoreDecrement = { state.adjustScore(-1) },
+        onClearScore = state::clearScore,
+        onDiscreteScoreSelected = state::setDiscreteScore,
+    )
+}
+
+@Composable
+private fun VolumesAndRepeatSection(state: MediaListEditorState) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        if (state.mediaType == MediaType.MANGA) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                NumericStepperRow(
+                    label = stringResource(R.string.media_list_editor_label_progress_volumes),
+                    value = state.volumeProgressText,
+                    onValueChange = state::updateVolumeProgressText,
+                    onDecrement = { state.adjustVolumeProgress(-1) },
+                    onIncrement = { state.adjustVolumeProgress(1) },
+                    modifier = Modifier.weight(1f),
+                    valueSuffix = state.totalVolumes?.toString(),
+                    canDecrement = state.currentVolumeProgress > 0,
+                    canIncrement = state.totalVolumes?.let { state.currentVolumeProgress < it } ?: true,
+                    compact = true,
+                )
+                NumericStepperRow(
+                    label = stringResource(R.string.media_list_editor_label_repeat_count),
+                    value = state.repeatText,
+                    onValueChange = state::updateRepeatText,
+                    onDecrement = { state.adjustRepeat(-1) },
+                    onIncrement = { state.adjustRepeat(1) },
+                    modifier = Modifier.weight(1f),
+                    canDecrement = state.currentRepeatCount > 0,
+                    compact = true,
+                )
+            }
+        } else {
+            NumericStepperRow(
+                label = stringResource(R.string.media_list_editor_label_repeat_count),
+                value = state.repeatText,
+                onValueChange = state::updateRepeatText,
+                onDecrement = { state.adjustRepeat(-1) },
+                onIncrement = { state.adjustRepeat(1) },
+                canDecrement = state.currentRepeatCount > 0,
+                compact = true,
+            )
+        }
+    }
+}
+
 @Composable
 private fun DateSelectionSection(state: MediaListEditorState) {
     if (state.showStartDatePicker) {
@@ -387,12 +450,12 @@ private fun DateSelectionSection(state: MediaListEditorState) {
                         state.onStartDateSelected(datePickerState.selectedDateMillis)
                     },
                 ) {
-                    Text("OK")
+                    Text(stringResource(android.R.string.ok))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { state.showStartDatePicker = false }) {
-                    Text("Cancel")
+                    Text(stringResource(android.R.string.cancel))
                 }
             },
         ) {
@@ -413,12 +476,12 @@ private fun DateSelectionSection(state: MediaListEditorState) {
                         state.onEndDateSelected(datePickerState.selectedDateMillis)
                     },
                 ) {
-                    Text("OK")
+                    Text(stringResource(android.R.string.ok))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { state.showEndDatePicker = false }) {
-                    Text("Cancel")
+                    Text(stringResource(android.R.string.cancel))
                 }
             },
         ) {
@@ -426,149 +489,199 @@ private fun DateSelectionSection(state: MediaListEditorState) {
         }
     }
 
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Column(Modifier.weight(1f)) {
-            OutlinedTextField(
-                value = state.startDateText,
-                onValueChange = {},
-                readOnly = true,
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable { state.showStartDatePicker = true },
-                label = { Text(stringResource(R.string.label_media_list_editor_start_date)) },
-                trailingIcon = {
-                    Icon(
-                        Icons.Filled.CalendarToday,
-                        contentDescription = stringResource(R.string.action_media_list_editor_select_date),
-                    )
-                },
-            )
-        }
-        Column(Modifier.weight(1f)) {
-            OutlinedTextField(
-                value = state.endDateText,
-                onValueChange = {},
-                readOnly = true,
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .clickable { state.showEndDatePicker = true },
-                label = { Text(stringResource(R.string.label_media_list_editor_end_date)) },
-                trailingIcon = {
-                    Icon(
-                        Icons.Filled.CalendarToday,
-                        contentDescription = stringResource(R.string.action_media_list_editor_select_date),
-                    )
-                },
-            )
-        }
-    }
-}
-
-@Composable
-private fun ScoreSection(
-    score: String,
-    onScoreChange: (String) -> Unit,
-    maxScore: String,
-    scoreFormat: ScoreFormat,
-) {
-    Column {
-        Text(
-            stringResource(R.string.label_media_list_editor_your_score),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 8.dp),
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        DateFieldCard(
+            label = stringResource(R.string.label_media_list_editor_start_date),
+            value = state.startDateText.ifBlank { stringResource(R.string.label_media_list_editor_not_set) },
+            modifier = Modifier.weight(1f),
+            onClick = { state.showStartDatePicker = true },
         )
-        OutlinedTextField(
-            value = score,
-            onValueChange = { value ->
-                val cleaned = filterScoreInput(value, scoreFormat)
-                onScoreChange(cleaned)
-            },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(R.string.label_media_list_editor_score)) },
-            suffix = { Text("/ $maxScore") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        DateFieldCard(
+            label = stringResource(R.string.label_media_list_editor_end_date),
+            value = state.endDateText.ifBlank { stringResource(R.string.label_media_list_editor_not_set) },
+            modifier = Modifier.weight(1f),
+            onClick = { state.showEndDatePicker = true },
         )
     }
 }
 
 @Composable
-private fun VolumesAndRepeatSection(
-    mediaType: MediaType,
-    volumeProgress: String,
-    onVolumeChange: (String) -> Unit,
-    repeatCount: String,
-    onRepeatChange: (String) -> Unit,
+private fun DateFieldCard(
+    label: String,
+    value: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column {
-        if (mediaType == MediaType.MANGA) {
-            Text(
-                stringResource(co.anitrend.medialist.editor.R.string.media_list_editor_label_progress_volumes),
-                style = MaterialTheme.typography.titleMedium,
-            )
-            Spacer(Modifier.height(8.dp))
-            OutlinedTextField(
-                value = volumeProgress,
-                onValueChange = { onVolumeChange(it.filter { ch -> ch.isDigit() }) },
+    Surface(
+        modifier = modifier.clickable(onClick = onClick),
+        shape = RoundedCornerShape(20.dp),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.65f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
+    ) {
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp, vertical = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(stringResource(co.anitrend.medialist.editor.R.string.media_list_editor_label_progress_volumes)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Icon(
+                    imageVector = Icons.Filled.CalendarToday,
+                    contentDescription = stringResource(R.string.action_media_list_editor_select_date),
+                    modifier = Modifier.size(18.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Text(
+                text = value,
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
-            Spacer(Modifier.height(12.dp))
         }
-        Text(stringResource(co.anitrend.medialist.editor.R.string.media_list_editor_label_repeat_count), style = MaterialTheme.typography.titleMedium)
-        Spacer(Modifier.height(8.dp))
-        OutlinedTextField(
-            value = repeatCount,
-            onValueChange = { onRepeatChange(it.filter { ch -> ch.isDigit() }) },
-            modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(co.anitrend.medialist.editor.R.string.media_list_editor_label_repeat_count)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+    }
+}
+
+@Composable
+private fun PrivacySection(
+    isPrivate: Boolean,
+    onPrivacyChange: (Boolean) -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Box(
+            modifier =
+                Modifier
+                    .size(42.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                shape = RoundedCornerShape(14.dp),
+                color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.6f),
+            ) {}
+            Icon(
+                imageVector = Icons.Filled.VisibilityOff,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSecondaryContainer,
+            )
+        }
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.label_media_list_editor_private_update),
+                style = MaterialTheme.typography.titleSmall,
+            )
+            Text(
+                text = stringResource(R.string.label_media_list_editor_private_update_description),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Switch(
+            checked = isPrivate,
+            onCheckedChange = onPrivacyChange,
         )
     }
 }
 
 @Composable
-private fun AdvancedScoresSection(
-    values: Map<String, String>,
-    onValueChange: (name: String, value: String) -> Unit,
-) {
+private fun MoreOptionsSection(state: MediaListEditorState) {
     var expanded by rememberSaveable { mutableStateOf(false) }
-    Column {
+
+    EditorGroupCard {
         Row(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .clickable { expanded = !expanded }
-                    .padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
+                    .clickable { expanded = !expanded },
             horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(stringResource(R.string.label_media_list_editor_advanced_scores, values.size), style = MaterialTheme.typography.titleMedium)
+            SectionHeading(
+                title = stringResource(R.string.label_media_list_editor_more_options),
+                supportingText =
+                    if (expanded) {
+                        stringResource(R.string.label_media_list_editor_optional)
+                    } else {
+                        stringResource(R.string.label_media_list_editor_collapsed_by_default)
+                    },
+            )
             Icon(
                 imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                contentDescription = if (expanded) "Collapse" else "Expand",
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+
         if (expanded) {
-            Spacer(Modifier.height(4.dp))
-            values.forEach { (name, value) ->
-                OutlinedTextField(
-                    value = value,
-                    onValueChange = { newValue ->
-                        val cleaned =
-                            filterDecimalInputOnePlace(newValue)
-                        onValueChange(name, cleaned)
+            if (state.advancedScoresText.isNotEmpty()) {
+                AdvancedScoresSection(state = state)
+            }
+
+            if (state.advancedScoresText.isNotEmpty() && state.customLists.isNotEmpty()) {
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
+            }
+
+            if (state.customLists.isNotEmpty()) {
+                CustomListsSection(
+                    customLists = state.customLists,
+                    onCustomListToggle = { listName, isSelected ->
+                        state.toggleCustomList(listName, isSelected)
                     },
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
-                    label = { Text(name) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
             }
+
+            if (state.advancedScoresText.isNotEmpty() || state.customLists.isNotEmpty()) {
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
+            }
+
+            NotesSection(
+                notes = state.notesText,
+                onNotesChange = { state.notesText = it },
+            )
+        }
+    }
+}
+
+@Composable
+private fun AdvancedScoresSection(state: MediaListEditorState) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        SectionHeading(
+            title = stringResource(R.string.label_media_list_editor_advanced_scores, state.advancedScoresText.size),
+        )
+        state.advancedScoresText.forEach { (name, value) ->
+            NumericStepperRow(
+                label = name,
+                value = value,
+                onValueChange = { newValue -> state.setAdvancedScore(name, newValue) },
+                onDecrement = { state.adjustAdvancedScore(name, -1) },
+                onIncrement = { state.adjustAdvancedScore(name, 1) },
+                valueSuffix = state.maxScore,
+                canDecrement = (value.toFloatOrNull() ?: 0f) > 0f,
+                canIncrement = (value.toFloatOrNull() ?: 0f) < scoreFormatMax(state.scoreFormat),
+                compact = true,
+            )
         }
     }
 }
@@ -577,60 +690,32 @@ private fun AdvancedScoresSection(
 private fun CustomListsSection(
     customLists: Map<String, Boolean>,
     onCustomListToggle: (listName: String, isSelected: Boolean) -> Unit,
-    onCreateNewList: () -> Unit,
 ) {
-    var expanded by rememberSaveable { mutableStateOf(false) }
     val selectedCount = customLists.count { it.value }
 
-    Column {
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .clickable { expanded = !expanded }
-                    .padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Text(stringResource(R.string.label_media_list_editor_custom_lists_count, customLists.size), style = MaterialTheme.typography.titleMedium)
-            Row(verticalAlignment = Alignment.CenterVertically) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        SectionHeading(
+            title = stringResource(R.string.label_media_list_editor_custom_lists_count, customLists.size),
+            trailingText =
                 if (selectedCount > 0) {
-                    AssistChip(
-                        onClick = { expanded = !expanded },
-                        label = { Text(stringResource(R.string.label_media_list_editor_custom_lists_selected, selectedCount)) },
-                    )
-                    Spacer(Modifier.width(8.dp))
-                }
-                Icon(
-                    imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                    contentDescription = if (expanded) "Collapse" else "Expand",
-                )
-            }
-        }
-
-        if (expanded) {
+                    stringResource(R.string.label_media_list_editor_custom_lists_selected, selectedCount)
+                } else {
+                    null
+                },
+        )
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             customLists.forEach { (name, isSelected) ->
-                Row(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .clickable { onCustomListToggle(name, !isSelected) }
-                            .padding(vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Checkbox(checked = isSelected, onCheckedChange = { onCustomListToggle(name, it) })
-                    Spacer(Modifier.width(8.dp))
-                    Text(name, style = MaterialTheme.typography.bodyLarge)
-                }
-            }
-            Spacer(Modifier.height(8.dp))
-            Button(
-                onClick = onCreateNewList,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(ButtonDefaults.IconSize))
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text(stringResource(R.string.action_media_list_editor_create_new_list))
+                FilterChip(
+                    selected = isSelected,
+                    onClick = { onCustomListToggle(name, !isSelected) },
+                    label = { Text(name) },
+                )
             }
         }
     }
@@ -641,23 +726,87 @@ private fun NotesSection(
     notes: String,
     onNotesChange: (String) -> Unit,
 ) {
-    Column {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.AutoMirrored.Filled.Notes, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
-            Text(stringResource(R.string.label_media_list_editor_personal_notes), style = MaterialTheme.typography.titleMedium)
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.Notes,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = stringResource(R.string.label_media_list_editor_personal_notes),
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            }
+            Text(
+                text = stringResource(R.string.label_media_list_editor_optional),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
-        Spacer(Modifier.height(8.dp))
         OutlinedTextField(
             value = notes,
             onValueChange = onNotesChange,
-            modifier =
-                Modifier
-                    .fillMaxWidth(),
-            label = { Text(stringResource(R.string.placeholder_media_list_editor_personal_notes)) },
+            modifier = Modifier.fillMaxWidth(),
+            placeholder = { Text(stringResource(R.string.placeholder_media_list_editor_personal_notes)) },
+            minLines = 4,
             maxLines = 5,
         )
     }
 }
+
+@Composable
+private fun mediaQuickFacts(state: MediaListEditorState): String {
+    val media = state.media
+    val parts = mutableListOf<String>()
+
+    media.startDate.year
+        .takeIf { it > 0 }
+        ?.let { parts += it.toString() }
+    media.format
+        ?.alias
+        ?.toString()
+        ?.takeIf(String::isNotBlank)
+        ?.let(parts::add)
+
+    when (val category = media.category) {
+        is Media.Category.Anime -> {
+            category.episodes.takeIf { it > 0 }?.let {
+                parts += stringResource(R.string.label_media_list_editor_episode_count, it)
+            }
+        }
+        is Media.Category.Manga -> {
+            category.chapters.takeIf { it > 0 }?.let {
+                parts += stringResource(R.string.label_media_list_editor_chapter_count, it)
+            }
+            category.volumes.takeIf { it > 0 }?.let {
+                parts += stringResource(R.string.label_media_list_editor_volume_count, it)
+            }
+        }
+    }
+
+    return parts.joinToString(" • ")
+}
+
+private fun statusIcon(status: MediaListStatus): Int =
+    when (status) {
+        MediaListStatus.CURRENT -> co.anitrend.common.media.ui.R.drawable.ic_current
+        MediaListStatus.COMPLETED -> co.anitrend.common.media.ui.R.drawable.ic_completed
+        MediaListStatus.DROPPED -> co.anitrend.common.media.ui.R.drawable.ic_dropped
+        MediaListStatus.PAUSED -> co.anitrend.common.media.ui.R.drawable.ic_paused
+        MediaListStatus.REPEATING -> co.anitrend.common.media.ui.R.drawable.ic_repeat
+        else -> co.anitrend.common.media.ui.R.drawable.ic_planning
+    }
 
 @AniTrendPreview.Light
 @AniTrendPreview.Dark
@@ -678,3 +827,33 @@ private fun MediaListEditorScreenPreview(
         )
     }
 }
+
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
+@Composable
+private fun MediaListEditorDiscreteScorePreview(
+    @PreviewParameter(MediaListEditorContentPreviewProvider::class) media: Media,
+) {
+    PreviewTheme(wrapInSurface = true) {
+        val state =
+            rememberMediaListEditorState(
+                media = media,
+                scoreFormat = ScoreFormat.POINT_5,
+                dateHelper = AniTrendDateHelper(),
+            )
+        MediaListEditorScreen(
+            state = state,
+            onAction = {},
+        )
+    }
+}
+
+private fun scoreFormatMax(scoreFormat: ScoreFormat): Float =
+    when (scoreFormat) {
+        ScoreFormat.POINT_10,
+        ScoreFormat.POINT_10_DECIMAL,
+        -> 10f
+        ScoreFormat.POINT_100 -> 100f
+        ScoreFormat.POINT_3 -> 3f
+        ScoreFormat.POINT_5 -> 5f
+    }

@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.studio.datasource.local
 
-import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
@@ -54,19 +53,4 @@ internal abstract class StudioLocalSource : AbstractLocalSource<StudioEntity>() 
     """,
     )
     abstract fun studioByIdFlow(id: Long): Flow<StudioEntity?>
-
-    @Query(
-        """
-        select * from studio
-    """,
-    )
-    abstract fun allStudioFactory(): DataSource.Factory<Int, StudioEntity>
-
-    @Query(
-        """
-        select * from studio
-        where name match :term
-    """,
-    )
-    abstract fun searchStudioFactory(term: String): DataSource.Factory<Int, StudioEntity>
 }

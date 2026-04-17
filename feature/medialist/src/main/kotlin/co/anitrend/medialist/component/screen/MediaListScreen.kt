@@ -18,30 +18,33 @@ package co.anitrend.medialist.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.padding
-import androidx.compose.ui.Modifier
-import co.anitrend.common.shared.ui.compose.DefaultScaffold
-import co.anitrend.common.shared.ui.compose.FragmentItemHost
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.common.media.ui.controller.extensions.handleMediaItemNavigation
 import co.anitrend.core.component.screen.AniTrendScreen
-import co.anitrend.core.ui.model.FragmentItem
-import co.anitrend.navigation.MediaListRouter
+import co.anitrend.medialist.component.compose.MediaListCompose
+import co.anitrend.medialist.component.container.viewmodel.UserViewModel
+import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaListScreen : AniTrendScreen() {
+    private val settings by inject<Settings>()
+    private val userViewModel by viewModel<UserViewModel>()
+    private val mediaViewModel by viewModel<MediaListViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AniTrendTheme3 {
-                DefaultScaffold(onBackPress = onBackPressedDispatcher::onBackPressed) {
-                    FragmentItemHost(
-                        modifier = Modifier.padding(it),
-                        fragmentItem =
-                            FragmentItem(
-                                fragment = MediaListRouter.forFragment(),
-                                parameter = intent.extras,
-                            ),
-                    )
-                }
+                MediaListCompose(
+                    settings = settings,
+                    userSettings = settings,
+                    userViewModel = userViewModel,
+                    mediaViewModel = mediaViewModel,
+                    onBackPress = onBackPressedDispatcher::onBackPressed,
+                    onMediaItemClick = { param -> handleMediaItemNavigation(param, settings) },
+                )
             }
         }
     }

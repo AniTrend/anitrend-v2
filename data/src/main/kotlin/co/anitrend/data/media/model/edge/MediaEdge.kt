@@ -118,9 +118,9 @@ internal sealed class MediaEdge {
     @Serializable
     data class Staff(
         @SerialName("role") val staffRole: String?,
-        @SerialName("node") override val node: MediaModel.Core?,
+        @SerialName("node") override val node: StaffModel.Core?,
         @SerialName("id") override val id: Long,
     ) : MediaEdge(),
-        IEntityEdge<MediaModel>,
+        IEntityEdge<StaffModel>,
         IEntityId<Long>
 }

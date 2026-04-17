@@ -16,37 +16,12 @@
  */
 package co.anitrend.airing.koin
 
-import androidx.recyclerview.widget.RecyclerView
-import co.anitrend.airing.component.content.AiringContent
 import co.anitrend.airing.component.viewmodel.AiringViewModel
 import co.anitrend.airing.provider.FeatureProvider
-import co.anitrend.common.media.ui.adapter.MediaPagedAdapter
-import co.anitrend.android.core.settings.Settings
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.AiringRouter
-import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-
-private val fragmentModule =
-    module {
-        fragment {
-            val settings = get<Settings>()
-            AiringContent(
-                settings = settings,
-                dateHelper = get(),
-                stateConfig = get(),
-                supportViewAdapter =
-                    MediaPagedAdapter(
-                        settings = settings,
-                        viewPool = RecyclerView.RecycledViewPool(),
-                        resources = androidContext().resources,
-                        stateConfiguration = get(),
-                    ),
-            )
-        }
-    }
 
 private val viewModelModule =
     module {
@@ -67,5 +42,5 @@ private val featureModule =
 
 internal val moduleHelper =
     DynamicFeatureModuleHelper(
-        listOf(fragmentModule, viewModelModule, featureModule),
+        listOf(viewModelModule, featureModule),
     )

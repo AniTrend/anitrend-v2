@@ -26,6 +26,7 @@ dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.episode))
     implementation(project(Libraries.AniTrend.CommonUi.markdown))
 
+    implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.browser)
 
     implementation(libs.jsoup)

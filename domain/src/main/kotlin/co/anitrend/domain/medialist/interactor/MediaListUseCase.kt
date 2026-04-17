@@ -33,7 +33,7 @@ sealed class MediaListUseCase {
         operator fun invoke(param: MediaListParam.Entry): State = repository.getEntry(param)
     }
 
-    abstract class GetPaged<State : UiState<*>>(
+    abstract class GetPaged<State>(
         protected val repository: IMediaListRepository.Paged<State>,
     ) : MediaListUseCase() {
         operator fun invoke(param: MediaListParam.Paged): State = repository.getPaged(param)

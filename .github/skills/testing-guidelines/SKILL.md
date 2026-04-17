@@ -64,5 +64,11 @@ or device.
 ## Best practices
 
 - Write pure functions in use cases to simplify unit testing.
+- For offline-first fixed-size cached reads, add at least one unit test that proves the local
+  entity converter or mapper preserves the UI-facing fields the screen depends on.
+- When a mapper intentionally persists empty collections to avoid repeat fetches, cover that path
+  with a unit test or an integration-style mapper test.
+- If a cache key varies by request shape, add an assertion around the variant identity or the
+  converter output that makes the distinction explicit.
 - Do not remove or modify existing tests to make a PR pass; fix the underlying code instead.
 - Include test results or a brief pass/fail note in the PR checklist.

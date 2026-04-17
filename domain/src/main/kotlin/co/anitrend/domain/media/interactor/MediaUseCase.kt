@@ -27,7 +27,49 @@ sealed class MediaUseCase {
         operator fun invoke(param: MediaParam.Detail) = repository.getMedia(param)
     }
 
-    abstract class GetPaged<State : UiState<*>>(
+    abstract class GetRelations<State : UiState<*>>(
+        protected val repository: IMediaRepository.Relations<State>,
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Relations) = repository.getRelations(param)
+    }
+
+    abstract class GetRecommendations<State : UiState<*>>(
+        protected val repository: IMediaRepository.Recommendations<State>,
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Recommendations) = repository.getRecommendations(param)
+    }
+
+    abstract class GetRecommendationsPaged<State>(
+        protected val repository: IMediaRepository.RecommendationsPaged<State>,
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Recommendations) = repository.getRecommendationsPaged(param)
+    }
+
+    abstract class GetCharacters<State>(
+        protected val repository: IMediaRepository.Characters<State>,
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Characters) = repository.getCharacters(param)
+    }
+
+    abstract class GetStaff<State>(
+        protected val repository: IMediaRepository.Staff<State>,
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Staff) = repository.getStaff(param)
+    }
+
+    abstract class GetStudios<State : UiState<*>>(
+        protected val repository: IMediaRepository.Studios<State>,
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Studios) = repository.getStudios(param)
+    }
+
+    abstract class GetStats<State : UiState<*>>(
+        protected val repository: IMediaRepository.Stats<State>,
+    ) : MediaUseCase() {
+        operator fun invoke(param: MediaParam.Stats) = repository.getStats(param)
+    }
+
+    abstract class GetPaged<State>(
         protected val repository: IMediaRepository.Paged<State>,
     ) : MediaUseCase() {
         operator fun invoke(param: MediaParam.Find) = repository.getPaged(param)

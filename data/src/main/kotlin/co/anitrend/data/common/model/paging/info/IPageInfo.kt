@@ -25,9 +25,9 @@ package co.anitrend.data.common.model.paging.info
  * @property total The total number of items
  */
 interface IPageInfo {
-    val currentPage: Int
-    val hasNextPage: Boolean
-    val lastPage: Int
-    val perPage: Int
-    val total: Int
+    val currentPage: Int?
+    val hasNextPage: Boolean?
+    val lastPage: Int?
+    val perPage: Int?
+    val total: Int?
 }

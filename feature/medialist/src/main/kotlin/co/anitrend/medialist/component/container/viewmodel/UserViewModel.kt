@@ -39,7 +39,7 @@ class UserViewModel(
         key = nameOf<MediaListRouter.MediaListParam>(),
     )
 
-    val tabConfigurationListInfo: LiveData<List<MediaListInfo>> =
+    val sectionListInfo: LiveData<List<MediaListInfo>> =
         model.map {
             val user = it as User.Extended
             user.mediaListInfo.filter { mediaListInfo ->

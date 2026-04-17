@@ -16,12 +16,20 @@
  */
 package co.anitrend.common.media.ui.compose.component.synopsis
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -38,7 +46,24 @@ import co.anitrend.domain.common.entity.contract.ISynopsis
 fun MediaSynopsisSection(
     synopsis: ISynopsis,
     modifier: Modifier = Modifier,
+    collapsedMaxLines: Int? = null,
+    initiallyExpanded: Boolean = false,
 ) {
+    val description =
+        synopsis.description
+            ?.toString()
+            ?.trim()
+            .orEmpty()
+    val canCollapse =
+        collapsedMaxLines != null &&
+            (
+                description.length > 280 ||
+                    description.count { it == '\n' } >= 3
+            )
+    var isExpanded by rememberSaveable(description, collapsedMaxLines) {
+        mutableStateOf(!canCollapse || initiallyExpanded)
+    }
+
     OutlinedCard(
         colors =
             CardDefaults.cardColors(
@@ -49,14 +74,44 @@ fun MediaSynopsisSection(
     ) {
         Text(
             text = stringResource(R.string.label_media_synopsis_section_title),
-            modifier = Modifier.padding(all = 16.dp),
+            modifier = Modifier.padding(all = 14.dp),
             textAlign = TextAlign.Start,
             style = MaterialTheme.typography.titleLarge,
         )
         MarkdownText(
             synopsis = synopsis,
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 24.dp),
+            maxLines = if (isExpanded) Int.MAX_VALUE else requireNotNull(collapsedMaxLines),
+            modifier =
+                Modifier.padding(
+                    start = 14.dp,
+                    end = 14.dp,
+                    bottom = if (canCollapse) 0.dp else 20.dp,
+                ),
         )
+        if (canCollapse) {
+            Row(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                TextButton(
+                    onClick = { isExpanded = !isExpanded },
+                ) {
+                    Text(
+                        text =
+                            stringResource(
+                                if (isExpanded) {
+                                    R.string.action_media_synopsis_section_show_less
+                                } else {
+                                    R.string.action_media_synopsis_section_show_more
+                                },
+                            ),
+                    )
+                }
+            }
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 fragment MediaRelationConnection on MediaConnection {
     pageInfo {
-        ... PageInfo
+      ... PageInfo
     }
     edges {
         id

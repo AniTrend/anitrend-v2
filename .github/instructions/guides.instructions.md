@@ -10,9 +10,11 @@ description: This file provides guidelines for using and extending the architect
 This file is the high-level contributor playbook. For deep implementation specifics, jump to:
 
 - `.github/skills/data-state-pattern/SKILL.md`
+- `.github/skills/layered-module-patterns/SKILL.md`
 - `.github/skills/room-entity-pattern/SKILL.md`
 - `.github/skills/graphql-query-pattern/SKILL.md`
 - `.github/skills/string-resources-convention/SKILL.md`
+- `.github/skills/string-resource-inline-comments/SKILL.md`
 - `.github/skills/testing-guidelines/SKILL.md`
 - `.github/skills/reference-map/SKILL.md`
 
@@ -21,17 +23,58 @@ detail in skill files to prevent context drift and duplication.
 
 ## Architectural patterns — quick reference
 
-- **Domain use cases**: business logic lives in `*UseCase` / `*Interactor` in `:domain`. Return
-  `UiState<T>` or `DataState<T>`. Never place substantial logic in a ViewModel or repository.
+- **Domain use cases**: keep params, repository contracts, and abstract `*UseCase` /
+  `*Interactor` wrappers in `:domain`. These contracts are usually generic over `UiState<T>`;
+  the data layer specializes them to `DataState<T>`. Do not move contract shape into feature or
+  data `Types.kt`.
 - **Repository interfaces in domain, implementations in data**: define `IXxxRepository` in
-  `:domain`, implement `XxxRepository` in `:data`. Wire via Koin (see
-  `.github/skills/koin-module-wiring/SKILL.md`).
-- **DataState for all data streams**: repositories return `DataState<T>` — never raw values or
-  `LiveData`. See `.github/skills/data-state-pattern/SKILL.md`.
+  `:domain`, implement `XxxRepository` in `:data`. For hybrid modules, split the contract by
+  operation (`Detail`, `Paged`, `Save`, `Delete`, `Rate`, etc.). Wire via Koin (see
+  `.github/skills/koin-module-wiring/SKILL.md` and `.github/skills/layered-module-patterns/SKILL.md`).
+- **DataState for public data contracts**: data-layer repository specializations return
+  `DataState<T>`; feature and task code should never depend on raw repository values or `LiveData`.
+  See `.github/skills/data-state-pattern/SKILL.md`.
+- **Non-paged offline-first reads**: for single entities or fixed-size collections, use
+  `observable(): Flow<T>` or `observable(): Flow<List<T>>` with Room as the source of truth.
+  Cache policy should gate refresh at the source boundary while the observable flow continues to
+  emit local state. See `.github/skills/data-state-pattern/SKILL.md`.
+- **Offline-first paged reads**: for DB-backed paged query flows, treat Room as the source of
+  truth. The source contract should expose `observable(): Flow<PagedList<T>>` from a local
+  `DataSource.Factory`, and network refreshes should persist through the controller/mapper chain.
+  Do not implement local entity mapping or cache-merging logic directly inside the source class,
+  and do not fall back to `SupportPagingLiveDataSource` for a flow that already has a local store.
+- **Feature and task modules consume interactors, not repositories**: imports like
+  `co.anitrend.data.media.GetDetailMediaInteractor` are acceptable because they alias domain use
+  cases. Do not inject repositories, sources, mappers, controllers, or remote models into
+  `feature`, `common`, or `task` code.
+- **Mutation routing**: if the existing flow is task-backed or should survive process transitions,
+  create params through the corresponding `*TaskRouter` and let the worker execute the mutation
+  interactor. Current references: `task/medialist`, `task/review`, and `task/favourite`.
 - **Room persistence**: follow the four-file entity/DAO/mapper/repository pattern. See
   `.github/skills/room-entity-pattern/SKILL.md`.
+- **Relationship collections**: when a screen needs an offline-first related collection such as
+  media characters or staff, persist the collection in dedicated connection tables keyed to the
+  parent entity and order the rows explicitly for paging. Convert local connection entities back
+  to domain models with a converter, and keep request-specific persistence decisions inside the
+  mapper rather than the source.
+- **Fixed-size detail reads**: non-paged detail children and aggregate reads should follow the
+  same Room-first rule as larger collections. Back them with dedicated tables keyed to the parent,
+  keep refresh orchestration inside the controller + mapper chain, and use source-level
+  `clearDataSource()` to invalidate cache identity and local rows together.
+- **Query-shape cache variants**: if two callers intentionally request different result sizes from
+  the same parent resource, keep one local table but use distinct cache identities so each shape
+  can refresh independently without fragmenting persistence.
+- **Context-specific source variants**: when one entity type has multiple distinct read contexts,
+  define separate source variants for those contexts instead of overloading one broad contract.
+  `UserSource.Identifier`, `Viewer`, `Profile`, and `Statistic` are the clearest reference.
 - **GraphQL networking**: use `GraphQLController` and the `retrofit-graphql` adapter. See
   `.github/skills/graphql-query-pattern/SKILL.md`.
+  - Keep query/mutation payloads composed from reusable fragments under
+    `data/src/main/assets/graphql/fragments/**` instead of inlining duplicated field sets.
+  - Keep remote models aligned to fragment composition (smaller, shareable models) to support
+    composition-first reuse and controlled inheritance where appropriate.
+  - If a task requires deviating from this fragment-first convention (for example inlining fields
+    or redefining model boundaries), stop and open a discussion before implementing the change.
 - **New module**: register in `Modules.kt`, add Koin wiring, follow the full checklist in
   `.github/skills/new-module-checklist/SKILL.md`.
 
@@ -49,6 +92,10 @@ detail in skill files to prevent context drift and duplication.
 - **Threading**: `support-arch` base classes already dispatch to `Dispatchers.IO`. Avoid extra
   `withContext` unless bypassing the provided base.
 - **Logging**: `Timber.d/e/w` only — never `Log.*` or `println`.
+- **Android runtime debugging**: on-device investigation should start by identifying the exact
+  installed package and using pid-scoped `adb logcat --pid` when the process is alive. Prefer
+  recorded debug traffic evidence such as Chucker before changing serializers, mappers, or UI
+  assumptions. See `.github/skills/android-runtime-investigation/SKILL.md`.
 - **Imports**: no wildcard imports except for `R` classes and nested static imports.
 - **Analytics**: gate Firebase Analytics calls behind a flavor check; use the analytics helper if
   available in `support-arch:analytics`.
@@ -57,7 +104,16 @@ detail in skill files to prevent context drift and duplication.
 
 String resources follow a strict semantic prefix pattern. For the complete convention, examples,
 migration guide, and POEditor translator comment requirements, see
-`.github/skills/string-resources-convention/SKILL.md`.
+`.github/skills/string-resources-convention/SKILL.md` and
+`.github/skills/string-resource-inline-comments/SKILL.md`.
+
+For Android platform-level behavior such as escaping, formatting, plurals, arrays, and styled
+text handling, also consult
+`.github/skills/string-resources-convention/references/android-string-resource-best-practices.md`.
+
+Every resource block in `strings.xml` must have an XML comment immediately above it. Those
+comments are surfaced to POEditor translators and should explain context, placeholders,
+tone, and any UI constraints.
 
 **Pattern**: `{prefix}_{module_or_context}_{specific_identifier}`
 
@@ -89,12 +145,17 @@ Summary:
 
 ## Getting Help from the Code
 
-The `tag` domain + data package is the canonical reference implementation. For any new entity:
+Pick the closest reference module instead of defaulting to `tag` for every task:
 
-1. Read `domain/src/main/kotlin/co/anitrend/domain/tag/` — use case, repository interface.
-2. Read `data/src/main/kotlin/co/anitrend/data/tag/` — entity, DAO, mapper, source, repository,
-   use-case impl, Koin module.
-3. Apply the same structure to the new entity, adjusting names.
+1. `domain/tag` + `data/tag` for the smallest non-paged query-only baseline.
+2. `domain/media` + `data/media` for multi-contract read modules (`Detail`, `Paged`, `Network`).
+3. `domain/medialist` + `data/medialist` + `task/medialist` for hybrid fetch plus save/delete/sync
+   flows.
+4. `domain/review` + `data/review` + `task/review` for paged/detail fetch plus vote/save/delete.
+5. `domain/favourite` + `data/favourite` + `task/favourite` for mutation-only toggle flow.
+
+If the module shape is unclear, read `.github/skills/layered-module-patterns/SKILL.md` first,
+then inspect the closest code reference.
 
 For GraphQL queries, search for existing usages of `@GraphQuery` in the data source files.
 

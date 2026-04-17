@@ -11,6 +11,10 @@ AniTrend v2 uses a combination of standard Android Jetpack libraries and in-hous
 libraries. All versions are centrally managed in `gradle/libs.versions.toml`; use the generated
 `libs.*` accessors rather than hardcoded coordinates.
 
+For AniTrend's repo-specific Android wrappers around system services, theme/configuration helpers,
+notifications, deep links, and app-shell behavior, read
+`.github/skills/android-platform-patterns/SKILL.md` before adding a new helper API.
+
 ## Jetpack components
 
 - **Lifecycle + ViewModel** — lifecycle-aware holders for UI state.
@@ -35,7 +39,7 @@ All versions are declared in `gradle/libs.versions.toml`.
 - **Retrofit + OkHttp** — HTTP client; shared configuration injected by `buildSrc`.
 - **`retrofit-graphql`** — AniTrend's custom Retrofit converter for GraphQL requests.
 - **Kotlinx Serialization** — JSON serialization; configured alongside Retrofit.
-- **Chucker** — Debug HTTP traffic inspector; only included in debug builds.
+- **Chucker** — Debug HTTP traffic inspector; only included in debug builds. When runtime evidence is needed, prefer inspecting recorded responses from the debug app sandbox before changing serializers, mappers, or UI assumptions.
 
 ## Image loading
 
@@ -49,12 +53,14 @@ All versions are declared in `gradle/libs.versions.toml`.
   typography.
 - **support-arch theme** — `AniTrendTheme3` and `PreviewTheme` wrappers; apply them in
   composables and previews.
+- **AniTrend Android core UI** — `:android:core` owns repo-specific theme, configuration, helper,
+  and Compose utility surfaces consumed by the app shell and feature modules.
 - **android-emojify** — Emoji parsing/rendering exposed as `EmojiManager` singleton via Koin;
   registered in `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt`.
 
 ## Dependency injection
 
-- **Koin** — loaded at startup via `InjectorInitializer`. See `skills/koin-module-wiring.md`
+- **Koin** — loaded at startup via `InjectorInitializer`. See `.github/skills/koin-module-wiring/SKILL.md`
   for wiring conventions.
 
 ## Logging and analytics

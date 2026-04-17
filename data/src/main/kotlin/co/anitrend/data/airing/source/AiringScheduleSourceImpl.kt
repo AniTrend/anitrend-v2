@@ -16,29 +16,29 @@
  */
 package co.anitrend.data.airing.source
 
-import androidx.paging.PagedList
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
-import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
-import co.anitrend.arch.request.callback.RequestCallback
+import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.data.airing.AiringSchedulePagedController
 import co.anitrend.data.airing.cache.AiringCache
 import co.anitrend.data.airing.datasource.local.AiringLocalSource
 import co.anitrend.data.airing.datasource.remote.AiringRemoteSource
 import co.anitrend.data.airing.entity.filter.AiringQueryFilter
+import co.anitrend.data.airing.model.query.AiringScheduleQuery
 import co.anitrend.data.airing.source.contract.AiringScheduleSource
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
-import co.anitrend.data.android.extensions.deferred
-import co.anitrend.data.common.extension.from
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.media.entity.Media
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 internal class AiringScheduleSourceImpl {
-    class Paged(
+    class Paging(
         private val remoteSource: AiringRemoteSource,
         private val localSource: AiringLocalSource,
         private val mediaLocalSource: MediaLocalSource,
@@ -46,47 +46,33 @@ internal class AiringScheduleSourceImpl {
         private val converter: MediaEntityViewConverter,
         private val clearDataHelper: IClearDataHelper,
         private val filter: AiringQueryFilter.Paged,
-        override val dispatcher: ISupportDispatcher,
-    ) : AiringScheduleSource.Paged() {
-        override val cacheIdentity = AiringCache.Identity.Paged()
+        private val dispatcher: ISupportDispatcher,
+    ) : AiringScheduleSource.Paging() {
+        override fun invoke(param: AiringParam.Find): Flow<PagingData<Media>> {
+            val source =
+                AiringSchedulePagingSource(
+                    cacheIdentity = AiringCache.Identity.Paged(),
+                    remoteSource = remoteSource,
+                    localSource = localSource,
+                    mediaLocalSource = mediaLocalSource,
+                    controller = controller,
+                    clearDataHelper = clearDataHelper,
+                    filter = filter,
+                    query = AiringScheduleQuery(param),
+                    dispatcher = dispatcher,
+                )
 
-        override fun observable(): Flow<PagedList<Media>> {
-            val dataSourceFactory =
-                mediaLocalSource
-                    .rawFactory(filter.build(query.param))
-                    .map(converter::convertFrom)
-
-            return FlowPagedListBuilder(
-                dataSourceFactory,
-                PAGING_CONFIGURATION,
-                null,
-                this,
-            ).buildFlow()
-        }
-
-        override suspend fun getAiringSchedule(requestCallback: RequestCallback) {
-            val deferred =
-                deferred {
-                    val queryBuilder =
-                        query.toQueryContainerBuilder(
-                            supportPagingHelper,
-                        )
-                    remoteSource.getAiringPaged(queryBuilder)
-                }
-
-            controller(deferred, requestCallback) {
-                supportPagingHelper.from(it.page)
-                it
-            }
-        }
-
-        /**
-         * Clears data sources (databases, preferences, e.t.c)
-         *
-         * @param context Dispatcher context to run in
-         */
-        override suspend fun clearDataSource(context: CoroutineDispatcher) {
-            clearDataHelper(context = context, action = localSource::clear)
+            return Pager(
+                config =
+                    PagingConfig(
+                        pageSize = DEFAULT_PAGE_SIZE,
+                        initialLoadSize = DEFAULT_PAGE_SIZE,
+                        prefetchDistance = DEFAULT_PAGE_SIZE,
+                        enablePlaceholders = false,
+                    ),
+                remoteMediator = source,
+                pagingSourceFactory = source.pagingSourceFactory(),
+            ).flow.map { pagingData -> pagingData.map { entity -> converter.convertFrom(entity) } }
         }
     }
 }

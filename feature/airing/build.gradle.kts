@@ -28,7 +28,7 @@ dependencies {
 
     implementation(project(Libraries.AniTrend.CommonUi.media))
 
-    implementation(libs.sheets.calendar)
+    implementation(libs.androidx.paging.compose)
 }
 
 android {

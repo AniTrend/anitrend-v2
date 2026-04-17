@@ -17,10 +17,33 @@
 package co.anitrend.media.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.media.component.viewmodel.MediaCommunityViewModel
+import co.anitrend.media.component.viewmodel.MediaCharactersViewModel
+import co.anitrend.media.component.viewmodel.MediaStatsViewModel
+import co.anitrend.media.component.viewmodel.MediaRecommendationsViewModel
+import co.anitrend.media.component.viewmodel.MediaRelationsViewModel
+import co.anitrend.media.component.viewmodel.MediaStaffViewModel
+import co.anitrend.media.component.viewmodel.MediaStudiosViewModel
 import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
+import co.anitrend.media.provider.CharactersFeatureProvider
+import co.anitrend.media.provider.EpisodeFeatureProvider
 import co.anitrend.media.provider.FeatureProvider
+import co.anitrend.media.provider.PeopleFeatureProvider
+import co.anitrend.media.provider.RecommendationsFeatureProvider
+import co.anitrend.media.provider.RelationsFeatureProvider
+import co.anitrend.media.provider.StaffFeatureProvider
+import co.anitrend.media.provider.StatsFeatureProvider
+import co.anitrend.media.provider.StudiosFeatureProvider
+import co.anitrend.navigation.MediaCharactersRouter
+import co.anitrend.navigation.MediaEpisodeRouter
+import co.anitrend.navigation.MediaPeopleRouter
+import co.anitrend.navigation.MediaRecommendationsRouter
+import co.anitrend.navigation.MediaRelationsRouter
 import co.anitrend.navigation.MediaRouter
+import co.anitrend.navigation.MediaStaffRouter
+import co.anitrend.navigation.MediaStatsRouter
+import co.anitrend.navigation.MediaStudiosRouter
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -37,12 +60,72 @@ private val viewModelModule =
                 interactor = get(),
             )
         }
+        viewModel {
+            MediaRelationsViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            MediaRecommendationsViewModel(
+                interactor = get(),
+                pagingInteractor = get(),
+            )
+        }
+        viewModel {
+            MediaCommunityViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            MediaStudiosViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            MediaStatsViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            MediaCharactersViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            MediaStaffViewModel(
+                interactor = get(),
+            )
+        }
     }
 
 private val featureModule =
     module {
         factory<MediaRouter.Provider> {
             FeatureProvider()
+        }
+        factory<MediaPeopleRouter.Provider> {
+            PeopleFeatureProvider()
+        }
+        factory<MediaEpisodeRouter.Provider> {
+            EpisodeFeatureProvider()
+        }
+        factory<MediaCharactersRouter.Provider> {
+            CharactersFeatureProvider()
+        }
+        factory<MediaStaffRouter.Provider> {
+            StaffFeatureProvider()
+        }
+        factory<MediaRelationsRouter.Provider> {
+            RelationsFeatureProvider()
+        }
+        factory<MediaRecommendationsRouter.Provider> {
+            RecommendationsFeatureProvider()
+        }
+        factory<MediaStudiosRouter.Provider> {
+            StudiosFeatureProvider()
+        }
+        factory<MediaStatsRouter.Provider> {
+            StatsFeatureProvider()
         }
     }
 

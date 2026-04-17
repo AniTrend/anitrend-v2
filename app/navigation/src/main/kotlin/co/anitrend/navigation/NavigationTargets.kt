@@ -226,6 +226,113 @@ object MediaRouter : NavigationRouter() {
     ) : IParam
 }
 
+object MediaPeopleRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    enum class Section {
+        CHARACTERS,
+        STAFF,
+    }
+
+    @Parcelize
+    data class MediaPeopleParam(
+        val mediaId: Long,
+        val mediaTitle: String? = null,
+        val initialSection: Section = Section.CHARACTERS,
+    ) : IParam
+}
+
+object MediaEpisodeRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class MediaEpisodeParam(
+        val mediaId: Long,
+        val mediaType: MediaType,
+        val mediaTitle: String? = null,
+    ) : IParam
+}
+
+object MediaCharactersRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class MediaCharactersParam(
+        val mediaId: Long,
+        val mediaTitle: String? = null,
+    ) : IParam
+}
+
+object MediaStaffRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class MediaStaffParam(
+        val mediaId: Long,
+        val mediaTitle: String? = null,
+    ) : IParam
+}
+
+object MediaRelationsRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class MediaRelationsParam(
+        val mediaId: Long,
+        val mediaTitle: String? = null,
+    ) : IParam
+}
+
+object MediaRecommendationsRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class MediaRecommendationsParam(
+        val mediaId: Long,
+        val mediaTitle: String? = null,
+    ) : IParam
+}
+
+object MediaStudiosRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class MediaStudiosParam(
+        val mediaId: Long,
+        val mediaTitle: String? = null,
+    ) : IParam
+}
+
+object MediaStatsRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class MediaStatsParam(
+        val mediaId: Long,
+        val mediaTitle: String? = null,
+        val averageScore: Int? = null,
+        val favourites: Int? = null,
+        val popularity: Int? = null,
+        val trendRank: Int? = null,
+    ) : IParam
+}
+
 object MediaDiscoverRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
@@ -454,6 +561,7 @@ object ReviewRouter : NavigationRouter() {
     @Parcelize
     data class ReviewParam(
         val id: Long? = null,
+        val scoreFormat: ScoreFormat? = null,
     ) : IParam
 }
 
@@ -632,6 +740,8 @@ object ImageViewerRouter : NavigationRouter() {
     @Parcelize
     data class ImageSourceParam(
         val imageSrc: CharSequence,
+        val imageSources: List<String> = listOf(imageSrc.toString()),
+        val initialIndex: Int = 0,
     ) : IParam
 }
 

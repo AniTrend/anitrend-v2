@@ -16,18 +16,29 @@
  */
 package co.anitrend.data.media.repository
 
-import androidx.paging.PagedList
+import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
-import co.anitrend.arch.paging.legacy.FlowPagedListBuilder
-import co.anitrend.arch.paging.legacy.util.PAGING_CONFIGURATION
+import co.anitrend.data.media.MediaCharactersRepository
 import co.anitrend.data.media.MediaDetailRepository
-import co.anitrend.data.media.MediaNetworkRepository
-import co.anitrend.data.media.MediaPagedRepository
+import co.anitrend.data.media.MediaPagingRepository
+import co.anitrend.data.media.MediaRecommendationsPagingRepository
+import co.anitrend.data.media.MediaRecommendationsRepository
+import co.anitrend.data.media.MediaRelationsRepository
+import co.anitrend.data.media.MediaStaffRepository
+import co.anitrend.data.media.MediaStatsRepository
+import co.anitrend.data.media.MediaStudiosRepository
+import co.anitrend.data.media.source.contract.MediaConnectionSource
+import co.anitrend.data.media.source.contract.MediaPeopleSource
 import co.anitrend.data.media.source.contract.MediaSource
-import co.anitrend.data.media.source.factory.MediaSourceFactory
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.entity.MediaRecommendationEntry
+import co.anitrend.domain.media.entity.MediaRelationEntry
+import co.anitrend.domain.media.entity.MediaPerson
+import co.anitrend.domain.media.entity.MediaStats
+import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.media.model.MediaParam
+import kotlinx.coroutines.flow.Flow
 
 internal sealed class MediaRepository {
     class Detail(
@@ -37,26 +48,59 @@ internal sealed class MediaRepository {
         override fun getMedia(param: MediaParam.Detail) = source create source(param)
     }
 
-    class Paged(
-        private val source: MediaSource.Paged,
+    class Relations(
+        private val source: MediaConnectionSource.Relations,
     ) : MediaRepository(),
-        MediaPagedRepository {
-        override fun getPaged(param: MediaParam.Find) = source create source(param)
+        MediaRelationsRepository {
+        override fun getRelations(param: MediaParam.Relations): DataState<List<MediaRelationEntry>> = source create source(param)
     }
 
-    class Network(
-        private val source: MediaSourceFactory.Network,
+    class Recommendations(
+        private val source: MediaConnectionSource.Recommendations,
     ) : MediaRepository(),
-        MediaNetworkRepository {
-        override fun getPaged(param: MediaParam.Find): DataState<PagedList<Media>> {
-            source.initialKey = param
-            val dataSource = source.create()
+        MediaRecommendationsRepository {
+        override fun getRecommendations(param: MediaParam.Recommendations): DataState<List<MediaRecommendationEntry>> = source create source(param)
+    }
 
-            return dataSource create
-                FlowPagedListBuilder(
-                    source,
-                    PAGING_CONFIGURATION,
-                ).buildFlow()
-        }
+    class RecommendationsPaging(
+        private val source: MediaConnectionSource.RecommendationsPaged,
+    ) : MediaRepository(),
+        MediaRecommendationsPagingRepository {
+        override fun getRecommendationsPaged(param: MediaParam.Recommendations): Flow<PagingData<MediaRecommendationEntry>> = source(param)
+    }
+
+    class Paging(
+        private val source: MediaSource.Paging,
+    ) : MediaRepository(),
+        MediaPagingRepository {
+        override fun getPaged(param: MediaParam.Find): Flow<PagingData<Media>> = source(param)
+    }
+
+    class Characters(
+        private val source: MediaPeopleSource.Characters,
+    ) : MediaRepository(),
+        MediaCharactersRepository {
+        override fun getCharacters(param: MediaParam.Characters): Flow<PagingData<MediaPerson.Character>> = source(param)
+    }
+
+    class Staff(
+        private val source: MediaPeopleSource.Staff,
+    ) : MediaRepository(),
+        MediaStaffRepository {
+        override fun getStaff(param: MediaParam.Staff): Flow<PagingData<MediaPerson.Staff>> = source(param)
+    }
+
+    class Studios(
+        private val source: MediaSource.Studios,
+    ) : MediaRepository(),
+        MediaStudiosRepository {
+        override fun getStudios(param: MediaParam.Studios): DataState<List<MediaStudioEntry>> = source create source(param)
+    }
+
+    class Stats(
+        private val source: MediaSource.Stats,
+    ) : MediaRepository(),
+        MediaStatsRepository {
+        override fun getStats(param: MediaParam.Stats): DataState<MediaStats> = source create source(param)
     }
 }

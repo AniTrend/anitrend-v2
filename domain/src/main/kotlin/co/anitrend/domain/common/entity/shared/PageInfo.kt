@@ -23,9 +23,9 @@ import co.anitrend.domain.common.entity.contract.IEntityPageInfo
  * paging info
  */
 data class PageInfo(
-    override val currentPage: Int,
-    override val hasNextPage: Boolean,
-    override val lastPage: Int,
-    override val perPage: Int,
-    override val total: Int,
+    override val currentPage: Int?,
+    override val hasNextPage: Boolean?,
+    override val lastPage: Int?,
+    override val perPage: Int?,
+    override val total: Int?,
 ) : IEntityPageInfo

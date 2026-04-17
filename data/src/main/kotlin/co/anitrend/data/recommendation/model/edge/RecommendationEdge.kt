@@ -17,9 +17,7 @@
 package co.anitrend.data.recommendation.model.edge
 
 import co.anitrend.data.common.entity.IEntityEdge
-import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.recommendation.model.RecommendationModel
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /** [RecommendationEdge](https://anilist.github.io/ApiV2-GraphQL-Docs/recommendationedge.doc.html)
@@ -27,7 +25,5 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal class RecommendationEdge(
-    @SerialName("id") override val id: Long,
-    @SerialName("node") override val node: RecommendationModel.Core?,
-) : IEntityEdge<RecommendationModel>,
-    IEntityId<Long>
+    override val node: RecommendationModel.Core?,
+) : IEntityEdge<RecommendationModel>

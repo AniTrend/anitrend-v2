@@ -20,7 +20,7 @@ import co.anitrend.arch.domain.state.UiState
 import co.anitrend.domain.news.model.NewsParam
 
 interface INewsRepository {
-    interface Paged<State : UiState<*>> : INewsRepository {
+    interface Paged<State> : INewsRepository {
         fun getPagedNews(param: NewsParam): State
     }
 

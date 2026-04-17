@@ -11,6 +11,7 @@ This file captures Room-specific policy for `data/**` changes. Pair it with:
 
 - `.github/skills/room-entity-pattern/SKILL.md` for four-file entity/DAO/mapper/repository structure.
 - `.github/skills/data-state-pattern/SKILL.md` for repository return-type and flow behavior.
+- `.github/skills/cache-request-isolation/SKILL.md` for diagnosing and fixing silent empty-UI bugs caused by CacheRequest collisions.
 - `.github/skills/reference-map/SKILL.md` for cross-cutting navigation.
 
 For docs hygiene, use repo-relative links and validate with
@@ -27,7 +28,19 @@ For docs hygiene, use repo-relative links and validate with
 - Upsert by composite uniqueness, not by surrogate PK: add DAO `@Insert(onConflict = REPLACE)` methods for batch upserts; pass entities keyed by the composite columns so duplicates replace the correct logical row.
 - Keep mappers simple and deterministic: in mappers’ `persist` steps, call the DAO batch upsert for connection entities rather than persisting by surrogate PK.
 - Avoid non-null ID contracts: do not require non-null `id` in interfaces or models for rows whose IDs are DB-generated; this ensures inserts go through with NULL.
+### CacheRequest isolation rule
 
+`cache_log` identifies entries by `request + cache_item_id` only — there is no `key` column. Two source
+variants that share the same `CacheRequest` enum value and the same entity ID will silently collide: the
+second source sees the first source's cache row as "fresh" and skips its network request, producing an
+empty UI with no error.
+
+**Rule**: every independently-fetchable resource variant must have its own `CacheRequest` enum entry in
+`CacheRequest.kt`. Sidecar sources (e.g. Studios, Stats, Relations, Recommendations alongside a Detail
+source) must never reuse `CacheRequest.MEDIA`; add `MEDIA_STUDIOS`, `MEDIA_STATS`, etc. and construct
+their `MediaCache` inline in the Koin factory with `request = CacheRequest.MEDIA_STUDIOS`.
+
+For the full diagnosis and fix workflow see `.github/skills/cache-request-isolation/SKILL.md`.
 ### Database migration checklist
 
 When making schema-impacting changes:

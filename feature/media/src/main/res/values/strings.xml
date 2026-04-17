@@ -17,6 +17,464 @@
 
 <resources>
 
+    <!-- Section title for additional metadata shown on the media detail screen -->
+    <string name="label_media_extended_details_section_title">More details</string>
+    <!-- Supporting copy for the quieter metadata overflow module on media detail -->
+    <string name="subtitle_media_extended_details_section">Alternative titles, and quieter metadata.</string>
+    <!-- Label for the age rating row shown on the media detail screen -->
+    <string name="label_media_extended_details_age_rating">Age rating</string>
+    <!-- Label for the source material row shown on the media detail screen -->
+    <string name="label_media_extended_details_source">Source</string>
+    <!-- Label for the social hashtag row shown on the media detail screen -->
+    <string name="label_media_extended_details_twitter_tag">Twitter tag</string>
+    <!-- Heading for alternate titles shown as chips on the media detail screen -->
+    <string name="label_media_extended_details_synonyms">Alternative titles</string>
+    <!-- Heading for theme song chips shown on the media detail screen -->
+    <string name="label_media_extended_details_themes">Theme songs</string>
+    <!-- Supporting copy for the standalone theme section variant -->
+    <string name="subtitle_media_theme_section">Openings, endings, and preview asset availability.</string>
+    <!-- Action label to reveal additional metadata chips in the media details section -->
+    <string name="action_media_extended_details_show_more">Show more</string>
+    <!-- Action label to collapse additional metadata chips in the media details section -->
+    <string name="action_media_extended_details_show_less">Show less</string>
+    <!-- Label for release end metadata shown in the extended details section -->
+    <string name="label_media_extended_details_ended">Ended</string>
+    <!-- Action label to expand the visible theme rows on the media detail screen -->
+    <string name="action_media_theme_section_show_all">Show all themes</string>
+    <!-- Action label to collapse the visible theme rows on the media detail screen -->
+    <string name="action_media_theme_section_show_less">Show fewer</string>
+    <!-- Compact availability summary when both audio and video assets are known -->
+    <string name="label_media_theme_section_audio_video_available">Audio + video available</string>
+    <!-- Compact availability summary when only audio assets are known -->
+    <string name="label_media_theme_section_audio_available">Audio available</string>
+    <!-- Compact availability summary when only video assets are known -->
+    <string name="label_media_theme_section_video_available">Video available</string>
+    <!-- Compact availability summary when no preview assets are exposed -->
+    <string name="label_media_theme_section_details_only">Details only</string>
+    <!-- Row label for the theme type inside the theme detail sheet -->
+    <string name="label_media_theme_sheet_type">Type</string>
+    <!-- Row label for the theme number inside the theme detail sheet -->
+    <string name="label_media_theme_sheet_number">Number</string>
+    <!-- Row label for the theme version inside the theme detail sheet -->
+    <string name="label_media_theme_sheet_version">Version</string>
+    <!-- Row label describing audio asset availability -->
+    <string name="label_media_theme_sheet_audio">Audio</string>
+    <!-- Row label describing video asset availability -->
+    <string name="label_media_theme_sheet_video">Video</string>
+    <!-- Supporting copy shown at the top of the theme detail sheet -->
+    <string name="subtitle_media_theme_sheet">Asset availability and theme metadata for this track.</string>
+    <!-- Availability value when the requested preview asset exists -->
+    <string name="label_media_theme_sheet_available">Available</string>
+    <!-- Availability value when the requested preview asset does not exist -->
+    <string name="label_media_theme_sheet_not_available">Not available</string>
+    <!-- Disabled future-facing action shown when an audio preview asset exists -->
+    <string name="action_media_theme_sheet_preview_audio_coming_soon">Preview audio coming soon</string>
+    <!-- Disabled future-facing action shown when a video preview asset exists -->
+    <string name="action_media_theme_sheet_preview_video_coming_soon">Preview video coming soon</string>
+    <!-- Informational copy shown when no preview assets are currently available for a theme -->
+    <string name="label_media_theme_sheet_no_preview_assets">No preview assets are available for this theme yet.</string>
+    <!-- Section title for descriptive tags shown on the media detail screen -->
+    <string name="label_media_tag_section_title">Tags</string>
+    <!-- Supporting copy for spoiler-aware media-detail tags -->
+    <string name="subtitle_media_tag_section">Analytical descriptors with spoiler-aware reveal.</string>
+    <!-- Action label to expand the visible non-spoiler media-detail tags -->
+    <string name="action_media_tag_section_show_all">Show all tags</string>
+    <!-- Action label to collapse the visible non-spoiler media-detail tags -->
+    <string name="action_media_tag_section_show_less">Show fewer</string>
+    <!-- Action label to reveal spoiler-sensitive tags on the media detail screen -->
+    <string name="action_media_tag_section_reveal_spoilers">Reveal spoilers</string>
+    <!-- Action label to hide spoiler-sensitive tags on the media detail screen -->
+    <string name="action_media_tag_section_hide_spoilers">Hide spoilers</string>
+    <!-- Empty-state title shown when only spoiler-sensitive tags exist -->
+    <string name="label_media_tag_section_no_safe_tags_title">Spoiler-aware tags only</string>
+    <!-- Empty-state copy shown when safe tags are unavailable -->
+    <string name="label_media_tag_section_no_safe_tags_message">This title only exposes spoiler-sensitive tags until you reveal them.</string>
+    <!-- Status label shown when spoiler-sensitive tags are hidden by default -->
+    <string name="label_media_tag_section_spoilers_hidden">Spoiler tags hidden</string>
+    <!-- Status label shown after spoiler-sensitive tags have been explicitly revealed -->
+    <string name="label_media_tag_section_spoilers_revealed">Spoiler tags revealed</string>
+    <!-- Compact adult-content badge shown on media-detail tags -->
+    <string name="label_media_tag_indicator_adult">18+</string>
+    <!-- Label for the category row inside the media-detail tag info sheet -->
+    <string name="label_media_tag_sheet_category">Category</string>
+    <!-- Label for the confidence row inside the media-detail tag info sheet -->
+    <string name="label_media_tag_sheet_confidence">Confidence</string>
+    <!-- Fallback text shown when a media-detail tag does not have a description -->
+    <string name="label_media_tag_sheet_no_description">No description available yet.</string>
+    <!-- Supporting copy shown at the top of the media-detail tag info sheet -->
+    <string name="subtitle_media_tag_sheet">Read the tag context before exploring related titles.</string>
+    <!-- Badge label shown when a media-detail tag is a spoiler for the current title -->
+    <string name="label_media_tag_sheet_media_spoiler">Media spoiler</string>
+    <!-- Badge label shown when a media-detail tag is a broader spoiler warning -->
+    <string name="label_media_tag_sheet_general_spoiler">Potential spoiler</string>
+    <!-- Action label to explore media by the selected tag from the tag info sheet -->
+    <string name="action_media_tag_sheet_explore">Explore tag</string>
+    <!-- Summary label for hidden media-specific spoiler tags in the media-detail spoiler disclosure -->
+    <plurals name="plural_media_tag_section_media_spoiler_count">
+        <item quantity="one">%1$d media spoiler</item>
+        <item quantity="other">%1$d media spoilers</item>
+    </plurals>
+    <!-- Summary label for hidden general spoiler tags in the media-detail spoiler disclosure -->
+    <plurals name="plural_media_tag_section_general_spoiler_count">
+        <item quantity="one">%1$d potential spoiler</item>
+        <item quantity="other">%1$d potential spoilers</item>
+    </plurals>
+    <!-- Primary action to add a media item to the user's list from the detail screen -->
+    <string name="action_add_to_list">Add to list</string>
     <string name="action_my_anime_list">MyAnimeList</string>
+    <!-- Primary action to manage the user's list state from the detail screen -->
     <string name="action_manage_on_list">Manage status</string>
+    <!-- Secondary action label when the media is already marked as favourite -->
+    <string name="action_remove_from_favourites">Remove favourite</string>
+    <!-- Secondary action label when the media is not yet marked as favourite -->
+    <string name="action_add_to_favourites">Favourite</string>
+    <!-- Compact user-state label when the media is marked as favourite -->
+    <string name="label_media_user_state_favourite">Favourite</string>
+    <!-- Compact user-state label when the media is not marked as favourite -->
+    <string name="label_media_user_state_not_favourite">Not favourite</string>
+    <!-- Section title for primary discoverability genres on media detail -->
+    <string name="label_media_genre_section_title">Genres</string>
+    <!-- Supporting copy for the genre preview module -->
+    <string name="subtitle_media_genre_section">Primary discovery signals for this title.</string>
+    <!-- Supporting copy for the synopsis preview module -->
+    <string name="subtitle_media_synopsis_section">Story overview with capped preview text.</string>
+    <!-- Section title for long-form upstream notes shown near the top of media detail -->
+    <string name="label_media_supplemental_info_section_title">Series notes</string>
+    <!-- Supporting copy for supplemental release or franchise context on media detail -->
+    <string name="subtitle_media_supplemental_info_section">Expanded release and franchise context when available.</string>
+    <!-- Action label to open the full supplemental note in a bottom sheet -->
+    <string name="action_media_supplemental_info_read_full">Read full note</string>
+    <!-- Action label to dismiss the supplemental note reader sheet -->
+    <string name="action_media_supplemental_info_close">Close</string>
+    <!-- Empty-state title for a missing synopsis -->
+    <string name="label_media_synopsis_empty_title">Synopsis unavailable</string>
+    <!-- Empty-state copy for a missing synopsis -->
+    <string name="label_media_synopsis_empty_message">A synopsis has not been added for this title yet.</string>
+    <!-- Section title for the media detail people preview module -->
+    <string name="title_media_people_section">People</string>
+    <!-- Supporting copy for the media detail people preview module -->
+    <string name="subtitle_media_people_section">Key characters and core creators, previewed without leaving the hub.</string>
+    <!-- Trailing action label for the media detail people section -->
+    <string name="action_media_people_section_see_all">See selected</string>
+    <!-- Subheading for the character preview inside the media detail people section -->
+    <string name="label_media_people_characters_heading">Characters</string>
+    <!-- Subheading for the staff preview inside the media detail people section and segmented control -->
+    <string name="label_media_people_staff_heading">Staff</string>
+    <!-- Loading label for media-detail character preview content -->
+    <string name="label_media_people_characters_loading">Loading characters</string>
+    <!-- Loading label for media-detail staff preview content -->
+    <string name="label_media_people_staff_loading">Loading staff</string>
+    <!-- Empty-state title when no characters are available for a media title -->
+    <string name="label_media_people_characters_empty_title">No characters listed</string>
+    <!-- Empty-state copy when no characters are available for a media title -->
+    <string name="message_media_people_characters_empty">Character credits are not available for this title yet.</string>
+    <!-- Empty-state title when no staff are available for a media title -->
+    <string name="label_media_people_staff_empty_title">No staff listed</string>
+    <!-- Empty-state copy when no staff are available for a media title -->
+    <string name="message_media_people_staff_empty">Staff credits are not available for this title yet.</string>
+    <!-- Error-state title for failed character requests -->
+    <string name="label_media_people_characters_error_title">Characters unavailable</string>
+    <!-- Error-state title for failed staff requests -->
+    <string name="label_media_people_staff_error_title">Staff unavailable</string>
+    <!-- Fallback label when a character name is missing from the upstream payload -->
+    <string name="label_media_people_character_name_unknown">Unknown character</string>
+    <!-- Fallback label when a staff name is missing from the upstream payload -->
+    <string name="label_media_people_staff_name_unknown">Unknown staff</string>
+    <!-- Screen title for the dedicated people destination -->
+    <string name="title_media_people_screen">People</string>
+    <!-- Supporting copy for the dedicated people destination -->
+    <string name="subtitle_media_people_screen">Switch between cast recognition and creator credits without leaving the media flow.</string>
+    <!-- Group heading for the primary cast section on the dedicated characters screen -->
+    <string name="label_media_people_characters_group_main">Main cast</string>
+    <!-- Group heading for the supporting cast section on the dedicated characters screen -->
+    <string name="label_media_people_characters_group_supporting">Supporting cast</string>
+    <!-- Group heading for the background character section on the dedicated characters screen -->
+    <string name="label_media_people_characters_group_background">Background</string>
+    <!-- Supporting loading copy for the dedicated characters pane -->
+    <string name="message_media_people_characters_loading">Fetching the most relevant cast for this title.</string>
+    <!-- Supporting loading copy for the dedicated staff pane -->
+    <string name="message_media_people_staff_loading">Fetching the most relevant staff credits for this title.</string>
+    <!-- Fallback role label when a staff role is missing from the upstream payload -->
+    <string name="label_media_people_staff_role_unknown">Role unavailable</string>
+    <!-- Section title for grouped production credits on media detail -->
+    <string name="title_media_production_section">Production</string>
+    <!-- Supporting copy for the grouped production credit section -->
+    <string name="subtitle_media_production_section">Studios and major creators, grouped for quick recognition.</string>
+    <!-- Group heading for original source and creator credits -->
+    <string name="label_media_production_original_creator">Original creator</string>
+    <!-- Group heading for directorial credits -->
+    <string name="label_media_production_directors">Directors</string>
+    <!-- Group heading for writing and composition credits -->
+    <string name="label_media_production_writers">Writers</string>
+    <!-- Group heading for producer credits -->
+    <string name="label_media_production_producers">Producers</string>
+    <!-- Group heading for grouped production credits that do not fit a stronger bucket -->
+    <string name="label_media_production_additional_credits">Additional credits</string>
+    <!-- Group heading for animation studios in the production section -->
+    <string name="label_media_production_studios_heading">Studios</string>
+    <!-- Badge label for the primary studio credit -->
+    <string name="label_media_production_studio_main_badge">Main</string>
+    <!-- Overflow label for hidden production credits -->
+    <string name="label_media_production_more_count">+%1$d more</string>
+    <!-- Loading label for the production-studios sidecar fetch -->
+    <string name="label_media_production_studios_loading">Loading studios</string>
+    <!-- Supporting loading copy for the production-studios sidecar fetch -->
+    <string name="message_media_production_studios_loading">Fetching animation studio credits for this title.</string>
+    <!-- Error-state title for failed production-studios fetches -->
+    <string name="label_media_production_studios_error_title">Studios unavailable</string>
+    <!-- Loading label for the production-staff sidecar fetch -->
+    <string name="label_media_production_staff_loading">Loading production credits</string>
+    <!-- Supporting loading copy for the production-staff sidecar fetch -->
+    <string name="message_media_production_staff_loading">Fetching creators, directors, and writers for this title.</string>
+    <!-- Error-state title for failed production-staff fetches -->
+    <string name="label_media_production_staff_error_title">Production credits unavailable</string>
+    <!-- Empty-state title for a title without exposed production credits -->
+    <string name="label_media_production_empty_title">No production credits yet</string>
+    <!-- Empty-state copy for a title without exposed production credits -->
+    <string name="message_media_production_empty">Production roles and studio credits are not exposed for this title yet.</string>
+    <!-- Localized release season label for fall -->
+    <string name="label_media_release_timeline_season_fall">Fall</string>
+    <!-- Localized release season label for spring -->
+    <string name="label_media_release_timeline_season_spring">Spring</string>
+    <!-- Localized release season label for summer -->
+    <string name="label_media_release_timeline_season_summer">Summer</string>
+    <!-- Localized release season label for winter -->
+    <string name="label_media_release_timeline_season_winter">Winter</string>
+    <!-- Section title for media-detail stats -->
+    <string name="title_media_stats_section">Stats</string>
+    <!-- Supporting copy for the media-detail stats section -->
+    <string name="subtitle_media_stats_section">Community snapshot at a glance</string>
+    <!-- Action label to open the dedicated stats destination -->
+    <string name="action_media_stats_section_see_more">See more</string>
+    <!-- Metric label for the community mean score -->
+    <string name="label_media_stats_average_score">Average score</string>
+    <!-- Metric label for favourites -->
+    <string name="label_media_stats_favourites">Favourites</string>
+    <!-- Metric label for popularity -->
+    <string name="label_media_stats_popularity">Popularity</string>
+    <!-- Metric label for trending -->
+    <string name="label_media_stats_trending">Trend rank</string>
+    <!-- Subheading for score distribution snapshots -->
+    <string name="label_media_stats_score_distribution">Score distribution</string>
+    <!-- Subheading for status distribution snapshots -->
+    <string name="label_media_stats_status_distribution">Status distribution</string>
+    <!-- Accessibility description for one score distribution bar; %1$d is the score bucket and %2$s is the number of ratings -->
+    <string name="description_media_stats_score_distribution_bar" formatted="true">Score %1$d with %2$s ratings</string>
+    <!-- Accessibility description for one status distribution segment; %1$s is the status label and %2$s is the list-entry count -->
+    <string name="description_media_stats_status_distribution_segment" formatted="true">%1$s with %2$s list entries</string>
+    <!-- Loading label for the media-detail stats sidecar fetch -->
+    <string name="label_media_stats_loading">Loading stats</string>
+    <!-- Supporting loading copy for the media-detail stats sidecar fetch -->
+    <string name="message_media_stats_loading">Fetching score and status distribution snapshots for this title.</string>
+    <!-- Title shown at the top of the media schedule bottom sheet -->
+    <string name="title_media_schedule_sheet">Upcoming episodes</string>
+    <!-- Loading copy shown while the media schedule bottom sheet fetches paging data -->
+    <string name="message_media_schedule_loading">Loading upcoming episodes.</string>
+    <!-- Empty-state copy shown when no upcoming schedule items are available -->
+    <string name="message_media_schedule_empty">No upcoming episodes are scheduled yet.</string>
+    <!-- Error-state title shown when the media schedule bottom sheet fails to load -->
+    <string name="label_media_schedule_error_title">Schedule unavailable</string>
+    <!-- Section title for video trailers on the media detail hub -->
+    <string name="title_media_trailer_section">Trailers</string>
+    <!-- Supporting copy for the trailer rail on the media detail hub -->
+    <string name="subtitle_media_trailer_section">Official promos and previews from the available video sources.</string>
+    <!-- Action label used to open a trailer in an external player -->
+    <string name="action_media_trailer_watch">Watch trailer</string>
+    <!-- Fallback label when a trailer source is missing or unknown -->
+    <string name="label_media_trailer_source_unknown">Trailer</string>
+    <!-- Section title for supplementary edge artwork on the media detail hub -->
+    <string name="title_media_gallery_section">Gallery</string>
+    <!-- Supporting copy for the media detail artwork rail -->
+    <string name="subtitle_media_gallery_section">Fanart, posters, and branded artwork pulled into the detail view.</string>
+    <!-- Label for backdrop-style gallery artwork -->
+    <string name="label_media_gallery_type_backdrop">Backdrop</string>
+    <!-- Label for poster-style gallery artwork -->
+    <string name="label_media_gallery_type_poster">Poster</string>
+    <!-- Label for logo-style gallery artwork -->
+    <string name="label_media_gallery_type_logo">Logo</string>
+    <!-- Error-state title for failed media-detail stats fetches -->
+    <string name="label_media_stats_error_title">Stats unavailable</string>
+    <!-- Empty-state title for media-detail stats -->
+    <string name="label_media_stats_empty_title">No stats yet</string>
+    <!-- Empty-state copy for media-detail stats -->
+    <string name="message_media_stats_empty">No secondary stats are exposed for this title yet.</string>
+    <!-- Compact copy shown when summary metrics exist but no distribution breakdown is exposed -->
+    <string name="message_media_stats_distribution_empty">Detailed distribution data is not available for this title yet.</string>
+    <!-- Section title for related titles shown on the media detail hub -->
+    <string name="title_media_related_section">Related</string>
+    <!-- Supporting copy for the related titles hub section -->
+    <string name="subtitle_media_related_section">Sequels, prequels, adaptations, and adjacent entries worth opening next.</string>
+    <!-- Action label to open the full related titles destination -->
+    <string name="action_media_related_section_see_all">See selected</string>
+    <!-- Loading label for the related titles preview section -->
+    <string name="label_media_related_loading">Loading related titles</string>
+    <!-- Supporting loading copy for the related titles preview section -->
+    <string name="message_media_related_loading">Gathering the strongest continuity and franchise links.</string>
+    <!-- Empty-state title for a media title with no related entries -->
+    <string name="label_media_related_empty_title">No related titles listed</string>
+    <!-- Empty-state copy for a media title with no related entries -->
+    <string name="message_media_related_empty">This title does not expose related works yet.</string>
+    <!-- Error-state title for failed related-title requests -->
+    <string name="label_media_related_error_title">Related titles unavailable</string>
+    <!-- Section title for recommendation signals shown on the media detail hub -->
+    <string name="title_media_recommendations_section">Similar</string>
+    <!-- Supporting copy for the recommendation preview module -->
+    <string name="subtitle_media_recommendations_section">Community-backed pairings that usually travel with this title.</string>
+    <!-- Action label to open the full recommendations destination -->
+    <string name="action_media_recommendations_section_see_all">See selected</string>
+    <!-- Loading label for recommendation preview content -->
+    <string name="label_media_recommendations_loading">Loading recommendations</string>
+    <!-- Supporting loading copy for recommendation preview content -->
+    <string name="message_media_recommendations_loading">Reading community recommendation signals for this title.</string>
+    <!-- Empty-state title when no recommendations are available -->
+    <string name="label_media_recommendations_empty_title">No recommendations yet</string>
+    <!-- Empty-state copy when no recommendations are available -->
+    <string name="message_media_recommendations_empty">Community recommendation data has not surfaced for this title yet.</string>
+    <!-- Error-state title for failed recommendation requests -->
+    <string name="label_media_recommendations_error_title">Recommendations unavailable</string>
+    <!-- Fallback label when a recommendation does not expose a rating signal -->
+    <string name="label_media_recommendations_rating_unknown">No rating signal</string>
+    <!-- Fallback label when the recommending user is not exposed -->
+    <string name="label_media_recommendations_source_unknown">AniList community</string>
+    <!-- Fallback relation label for a related title when upstream relation metadata is missing -->
+    <string name="label_media_related_relation_unknown">Related</string>
+    <!-- Recommendation strength label when a positive community signal is available -->
+    <string name="label_media_recommendations_signal_value">+%1$d signal</string>
+    <!-- Recommendation strength label when the community signal is neutral or negative -->
+    <string name="label_media_recommendations_signal_signed">%1$d signal</string>
+    <!-- Recommendation strength fallback when no explicit rating signal is available -->
+    <string name="label_media_recommendations_signal_unknown">Community signal</string>
+    <!-- Recommendation rationale label when the recommending user is known -->
+    <string name="label_media_recommendations_rationale_user">Recommended by %1$s</string>
+    <!-- Recommendation rationale fallback when no recommending user is exposed -->
+    <string name="label_media_recommendations_rationale_unknown">Community pairing</string>
+    <!-- Compact label when the current user has rated a recommendation up -->
+    <string name="label_media_recommendations_vote_up">You rated this up</string>
+    <!-- Compact label when the current user has rated a recommendation down -->
+    <string name="label_media_recommendations_vote_down">You rated this down</string>
+    <!-- Compact quick-facts label for anime episode counts in connection cards -->
+    <plurals name="label_media_connection_episodes_short">
+        <item quantity="one">%d ep</item>
+        <item quantity="other">%d eps</item>
+    </plurals>
+    <!-- Compact quick-facts label for manga chapter counts in connection cards -->
+    <plurals name="label_media_connection_chapters_short">
+        <item quantity="one">%d ch</item>
+        <item quantity="other">%d ch</item>
+    </plurals>
+    <!-- Compact quick-facts label for manga volume counts in connection cards -->
+    <plurals name="label_media_connection_volumes_short">
+        <item quantity="one">%d vol</item>
+        <item quantity="other">%d vols</item>
+    </plurals>
+    <!-- Section title for community activity shown on the media detail hub -->
+    <string name="title_media_community_section">Community</string>
+    <!-- Supporting copy for the community preview section -->
+    <string name="subtitle_media_community_section">Recent community reviews.</string>
+    <!-- Action label to open the full review discover surface -->
+    <string name="action_media_community_section_see_all">See all</string>
+    <!-- Loading label for community preview content -->
+    <string name="label_media_community_loading">Loading community notes</string>
+    <!-- Supporting loading copy for community preview content -->
+    <string name="message_media_community_loading">Fetching reviews.</string>
+    <!-- Empty-state title when no reviews are available for the media -->
+    <string name="label_media_community_empty_title">No reviews yet</string>
+    <!-- Empty-state copy when no reviews are available for the media -->
+    <string name="message_media_community_empty">Community reviews have not been published for this title yet.</string>
+    <!-- Error-state title for failed community requests -->
+    <string name="label_media_community_error_title">Could not load reviews</string>
+    <!-- Error-state message for failed community requests -->
+    <string name="message_media_community_error">Retry to refresh this section.</string>
+    <!-- Fallback author label when a review author is missing -->
+    <string name="label_media_community_review_by_unknown">Unknown reviewer</string>
+    <!-- Compact score label for review preview cards -->
+    <string name="label_media_community_review_score">Score %1$d</string>
+    <!-- Empty-state title for review-blocked titles -->
+    <string name="label_media_community_blocked_title">Reviews hidden</string>
+    <!-- Empty-state copy for review-blocked titles -->
+    <string name="message_media_community_blocked">Community reviews are not exposed for this title.</string>
+    <!-- Screen title for the dedicated related destination -->
+    <string name="title_media_related_screen">Related</string>
+    <!-- Supporting copy for the dedicated related destination -->
+    <string name="subtitle_media_related_screen">Browse continuity links and adjacent entries without leaving the media flow.</string>
+    <!-- Screen title for the dedicated recommendations destination -->
+    <string name="title_media_recommendations_screen">Recommendations</string>
+    <!-- Supporting copy for the dedicated recommendations destination -->
+    <string name="subtitle_media_recommendations_screen">Follow the community’s strongest recommendation trails from this title.</string>
+    <!-- Screen title for the dedicated stats destination -->
+    <string name="title_media_stats_screen">Stats</string>
+    <!-- Supporting copy for the dedicated stats destination -->
+    <string name="subtitle_media_stats_screen">See how the community scores and tracks this title in detail.</string>
+    <!-- Screen title for the dedicated episode guide destination -->
+    <string name="title_media_episode_screen">Episodes</string>
+    <!-- Supporting copy for the dedicated episode guide destination -->
+    <string name="subtitle_media_episode_screen">Follow the latest rollout and browse episode history for this title.</string>
+    <!-- Section heading for the full episode list inside the episode guide destination -->
+    <string name="label_media_episode_list_heading">Episode guide</string>
+    <!-- Section heading for the next scheduled episodes inside the episode guide destination -->
+    <string name="label_media_episode_upcoming_heading">Upcoming</string>
+    <!-- Section heading for the most recently aired episodes inside the episode guide destination -->
+    <string name="label_media_episode_recent_heading">Recent episodes</string>
+    <!-- Section heading for episodes that have incomplete scheduling metadata -->
+    <string name="label_media_episode_more_heading">More episodes</string>
+    <!-- Section title for expanded release and schedule context on the episode destination -->
+    <string name="title_media_episode_context_notes">Timeline notes</string>
+    <!-- Supporting copy for expanded release and schedule context on the episode destination -->
+    <string name="subtitle_media_episode_context_notes">Broadcast shifts, crossover blocks, and release context for this title.</string>
+    <!-- Loading title for the dedicated episode guide destination -->
+    <string name="label_media_episode_loading">Loading episodes</string>
+    <!-- Loading copy for the dedicated episode guide destination -->
+    <string name="message_media_episode_loading">Fetching the latest episode roll-out for this title.</string>
+    <!-- Empty-state title when no episode guide data is available -->
+    <string name="label_media_episode_empty_title">No episode guide yet</string>
+    <!-- Empty-state message when no episode guide data is available -->
+    <string name="message_media_episode_empty">Episode-level metadata has not surfaced for this title yet.</string>
+    <!-- Error-state title when the dedicated episode guide fails to load -->
+    <string name="label_media_episode_error_title">Episode guide unavailable</string>
+    <!-- Error-state copy when the dedicated episode guide fails to load -->
+    <string name="message_media_episode_error">Retry to refresh the episode guide for this title.</string>
+    <!-- Heading for official and third-party links in the extended metadata section -->
+    <string name="label_media_extended_details_links">External links</string>
+    <!-- Section title for the unified related and recommendation browser -->
+    <string name="title_media_connections_browser_section">Continue the story</string>
+    <!-- Supporting copy for the unified related and recommendation browser -->
+    <string name="subtitle_media_connections_browser_section">Switch between franchise continuity and community follow-up picks without scanning oversized cards.</string>
+    <!-- Section title for the flattened contributor band -->
+    <string name="title_media_contributors_section">Contributors</string>
+    <!-- Supporting copy for the flattened contributor band -->
+    <string name="subtitle_media_contributors_section">Switch between cast recognition and creator credits without scanning parallel lists.</string>
+    <!-- Section title for the dedicated studios preview module -->
+    <string name="title_media_studios_section">Studios</string>
+    <!-- Supporting copy for the dedicated studios preview module -->
+    <string name="subtitle_media_studios_section">Lead production credit first, then the supporting studios behind this title.</string>
+    <!-- Action label to open the full studios destination -->
+    <string name="action_media_studios_section_see_all">See all</string>
+    <!-- Badge label for a studio credited as an animation studio -->
+    <string name="label_media_studios_animation_badge">Animation studio</string>
+    <!-- Loading label for studio preview and list content -->
+    <string name="label_media_studios_loading">Loading studios</string>
+    <!-- Supporting loading copy for studio preview and list content -->
+    <string name="message_media_studios_loading">Fetching credited studios for this title.</string>
+    <!-- Error-state title for failed studio requests -->
+    <string name="label_media_studios_error_title">Studios unavailable</string>
+    <!-- Empty-state title for titles without credited studios -->
+    <string name="label_media_studios_empty_title">No studios listed</string>
+    <!-- Empty-state copy for titles without credited studios -->
+    <string name="message_media_studios_empty">Studio credits are not exposed for this title yet.</string>
+    <!-- Compact summary for a studio's favourites count -->
+    <string name="label_media_studios_favourites_value">%1$s favourites</string>
+    <!-- Screen title for the dedicated studios destination -->
+    <string name="title_media_studios_screen">Studios</string>
+    <!-- Supporting copy for the dedicated studios destination -->
+    <string name="subtitle_media_studios_screen">Browse every credited studio for this title without leaving the media flow.</string>
+    <!-- Secondary action label for opening a studio's external site -->
+    <string name="action_media_studios_external_site">Open site</string>
+    <!-- Group title for continuity-first related entries -->
+    <string name="title_media_related_group_story_continuity">Story continuity</string>
+    <!-- Group title for source and adaptation related entries -->
+    <string name="title_media_related_group_source_adaptation">Source &amp; adaptation</string>
+    <!-- Group title for side stories, spin-offs, and alternative entries -->
+    <string name="title_media_related_group_side_paths">Side paths</string>
+    <!-- Group title for shared-cast and miscellaneous related entries -->
+    <string name="title_media_related_group_shared_universe">Shared universe</string>
 </resources>

@@ -16,14 +16,13 @@
  */
 package co.anitrend.data.review.source.contract
 
-import androidx.paging.PagedList
+import androidx.paging.PagingData
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.invoke
-import co.anitrend.data.android.paging.AbstractPagingSource
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.review.cache.ReviewCache
 import co.anitrend.data.review.model.mutation.ReviewMutation
@@ -100,60 +99,13 @@ internal class ReviewSource {
         }
     }
 
-    abstract class Paged : AbstractPagingSource<Review>() {
+    abstract class Paging {
         protected lateinit var query: ReviewQuery.Paged
 
-        protected abstract val cacheIdentity: CacheIdentity
+        abstract operator fun invoke(param: ReviewParam.Paged): Flow<PagingData<Review>>
 
-        protected abstract fun observable(): Flow<PagedList<Review>>
-
-        protected abstract suspend fun getReview(requestCallback: RequestCallback)
-
-        operator fun invoke(param: ReviewParam.Paged): Flow<PagedList<Review>> {
+        protected fun assignQuery(param: ReviewParam.Paged) {
             query = ReviewQuery.Paged(param)
-            return observable()
-        }
-
-        /**
-         * Called when the item at the end of the PagedList has been loaded, and access has
-         * occurred within [Config.prefetchDistance] of it.
-         *
-         * No more data will be appended to the PagedList after this item.
-         *
-         * @param itemAtEnd The first item of PagedList
-         */
-        override fun onItemAtEndLoaded(itemAtEnd: Review) {
-            cacheIdentity(
-                scope = scope,
-                paging = supportPagingHelper,
-                requestHelper = requestHelper,
-                requestType = Request.Type.AFTER,
-                block = ::getReview,
-            )
-        }
-
-        /**
-         * Called when the item at the front of the PagedList has been loaded, and access has
-         * occurred within [Config.prefetchDistance] of it.
-         *
-         * No more data will be prepended to the PagedList before this item.
-         *
-         * @param itemAtFront The first item of PagedList
-         */
-        override fun onItemAtFrontLoaded(itemAtFront: Review) {
-            super.onItemAtFrontLoaded(itemAtFront)
-        }
-
-        /**
-         * Called when zero items are returned from an initial load of the PagedList's data source.
-         */
-        override fun onZeroItemsLoaded() {
-            cacheIdentity(
-                scope = scope,
-                paging = supportPagingHelper,
-                requestHelper = requestHelper,
-                block = ::getReview,
-            )
         }
     }
 }

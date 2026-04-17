@@ -16,5 +16,20 @@
   -->
 
 <resources>
-
+  <!-- Screen title for the dedicated review reader destination -->
+  <string name="title_review_entry">Review</string>
+  <!-- Supporting copy for the review reader screen -->
+  <string name="subtitle_review_entry">Read the full community review without leaving the app.</string>
+  <!-- Heading shown while the review reader is loading content -->
+  <string name="label_review_entry_loading_title">Loading review</string>
+  <!-- Supporting copy shown while the review reader is loading content -->
+  <string name="message_review_entry_loading">Fetching the latest review details and markdown body.</string>
+  <!-- Heading shown when the review reader fails to load content -->
+  <string name="label_review_entry_error_title">Unable to load review</string>
+  <!-- Supporting copy shown when the review reader fails to load content -->
+  <string name="message_review_entry_error">Try again to load this review.</string>
+  <!-- Heading shown if the review reader resolves without usable review content -->
+  <string name="label_review_entry_empty_title">Review unavailable</string>
+  <!-- Supporting copy shown if the review reader resolves without usable review content -->
+  <string name="message_review_entry_empty">This review is not available right now.</string>
 </resources>

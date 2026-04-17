@@ -16,6 +16,12 @@
  */
 package co.anitrend.data.media.datasource.local
 
+import co.anitrend.data.media.datasource.local.connection.MediaRelationConnectionLocalSource
+
 internal interface IMediaStore {
     fun mediaDao(): MediaLocalSource
+
+    fun mediaRelationConnectionDao(): MediaRelationConnectionLocalSource
+
+    fun mediaStatsDao(): MediaStatsLocalSource
 }

@@ -22,7 +22,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import co.anitrend.android.core.helpers.color.asColorInt
+import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.domain.common.entity.contract.IMediaCover
+import co.anitrend.domain.media.entity.Media
+
+typealias MediaBrowseLayout = PreferredViewMode
+
+enum class MediaBrowseListVariant {
+    DETAILED,
+    SUMMARY,
+}
 
 @Composable
 fun IMediaCover.rememberAccentColor(): Color {
@@ -37,3 +46,50 @@ fun IMediaCover.rememberAccentColor(): Color {
         }
     return accent
 }
+
+fun Media.displayTitle(): String? =
+    title.userPreferred
+        ?.toString()
+        ?.trim()
+        ?.takeIf(String::isNotBlank)
+        ?: listOf(title.english, title.romaji, title.native)
+            .firstNotNullOfOrNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
+
+fun Media.secondaryTitle(): String? {
+    val preferred = title.userPreferred?.toString()?.trim()
+
+    return listOf(title.english, title.romaji, title.native)
+        .mapNotNull { it?.toString()?.trim()?.takeIf(String::isNotBlank) }
+        .firstOrNull { it != preferred }
+}
+
+fun Media.genreMetaLine(): String? =
+    genres
+        .map { genre ->
+            listOfNotNull(
+                genre.emoji?.takeIf(String::isNotBlank),
+                genre.name.takeIf(String::isNotBlank),
+            ).joinToString(separator = " ")
+        }.filter(String::isNotBlank)
+        .takeIf(List<String>::isNotEmpty)
+        ?.joinToString(separator = " • ")
+
+fun MediaBrowseLayout.listVariantOrNull(): MediaBrowseListVariant? =
+    when (this) {
+        MediaBrowseLayout.DETAILED -> MediaBrowseListVariant.DETAILED
+        MediaBrowseLayout.SUMMARY -> MediaBrowseListVariant.SUMMARY
+        MediaBrowseLayout.COMFORTABLE,
+        MediaBrowseLayout.COMPACT,
+        -> null
+    }
+
+fun MediaBrowseLayout.isListLayout(): Boolean = listVariantOrNull() != null
+
+fun MediaBrowseLayout.gridColumns(): Int =
+    when (this) {
+        MediaBrowseLayout.COMFORTABLE -> 2
+        MediaBrowseLayout.COMPACT -> 3
+        MediaBrowseLayout.DETAILED,
+        MediaBrowseLayout.SUMMARY,
+        -> 1
+    }

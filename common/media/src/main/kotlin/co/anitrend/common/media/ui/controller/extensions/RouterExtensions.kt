@@ -17,7 +17,7 @@
 package co.anitrend.common.media.ui.controller.extensions
 
 import android.view.View
-import co.anitrend.android.core.extensions.fragmentManager
+import androidx.fragment.app.FragmentActivity
 import co.anitrend.core.extensions.runIfActivityContext
 import co.anitrend.core.extensions.runIfAuthenticated
 import co.anitrend.core.ui.fragmentByTagOrNew
@@ -29,6 +29,7 @@ import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.extensions.asBundle
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
+import co.anitrend.navigation.model.common.IParam
 
 internal fun View.startMediaScreenFor(entity: Media) {
     MediaRouter.startActivity(
@@ -42,20 +43,52 @@ internal fun View.startMediaScreenFor(entity: Media) {
     )
 }
 
+fun FragmentActivity.handleMediaItemNavigation(
+    param: IParam,
+    settings: IUserSettings,
+) {
+    when (param) {
+        is MediaRouter.MediaParam ->
+            MediaRouter.startActivity(
+                context = this,
+                navPayload = param.asNavPayload(),
+            )
+
+        is MediaListEditorRouter.MediaListEditorParam ->
+            openMediaListSheetFor(
+                mediaListParam = param,
+                settings = settings,
+            )
+
+        else -> Unit
+    }
+}
+
+fun FragmentActivity.openMediaListSheetFor(
+    mediaListParam: MediaListEditorRouter.MediaListEditorParam,
+    settings: IUserSettings,
+): Boolean {
+    window.decorView.runIfAuthenticated(settings) {
+        val fragmentItem =
+            FragmentItem(
+                fragment = MediaListEditorRouter.forSheet(),
+                parameter = mediaListParam.asBundle(),
+            )
+        val dialog = fragmentItem.fragmentByTagOrNew(this)
+        dialog.show(supportFragmentManager, fragmentItem.tag())
+    }
+    return true
+}
+
 fun View.openMediaListSheetFor(
     mediaListParam: MediaListEditorRouter.MediaListEditorParam,
     settings: IUserSettings,
 ): Boolean {
     runIfActivityContext {
-        runIfAuthenticated(settings) {
-            val fragmentItem =
-                FragmentItem(
-                    fragment = MediaListEditorRouter.forSheet(),
-                    parameter = mediaListParam.asBundle(),
-                )
-            val dialog = fragmentItem.fragmentByTagOrNew(this)
-            dialog.show(fragmentManager(), fragmentItem.tag())
-        }
+        openMediaListSheetFor(
+            mediaListParam = mediaListParam,
+            settings = settings,
+        )
     }
     return true
 }

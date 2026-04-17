@@ -35,6 +35,8 @@ import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.medialist.editor.component.compose.MediaListEditorSheetScreen
 import co.anitrend.medialist.editor.component.viewmodel.MediaListEditorViewModel
 import co.anitrend.navigation.MediaListEditorRouter
+import co.anitrend.navigation.MediaListTaskRouter
+import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
 import co.anitrend.navigation.extensions.nameOf
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -69,21 +71,29 @@ class MediaListEditorSheet(
         savedInstanceState: Bundle?,
     ): View =
         composable(requireActivity()) {
+            val scoreFormat by settings.scoreFormat.flow.collectAsStateWithLifecycle(ScoreFormat.POINT_10_DECIMAL)
             AniTrendTheme3 {
                 LaunchedEffect(param) {
                     param?.also { viewModel(param = it) }
                         ?: Timber.e("MediaListEditor param is null when it should not be")
                 }
                 Surface {
-                    val scoreFormat by settings.scoreFormat.flow.collectAsStateWithLifecycle(ScoreFormat.POINT_100)
                     MediaListEditorSheetScreen(
                         viewModel = viewModel,
                         scoreFormat = scoreFormat,
                         dateHelper = dateHelper,
                         onDismiss = { dismiss() },
                         onSave = {
+                            MediaListTaskRouter
+                                .forMediaListSaveEntryWorker()
+                                .createOneTimeUniqueWorker(requireContext(), it)
+                                .enqueue()
                         },
                         onDelete = {
+                            MediaListTaskRouter
+                                .forMediaListDeleteEntryWorker()
+                                .createOneTimeUniqueWorker(requireContext(), it)
+                                .enqueue()
                         },
                     )
                 }

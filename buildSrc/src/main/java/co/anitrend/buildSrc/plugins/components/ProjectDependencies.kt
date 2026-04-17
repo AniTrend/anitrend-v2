@@ -52,8 +52,6 @@ private fun Project.applyFeatureModuleGroupDependencies() {
     dependencies.implementation(libs.anitrend.arch.theme)
     dependencies.implementation(libs.anitrend.arch.domain)
     dependencies.implementation(libs.anitrend.arch.recycler)
-    dependencies.implementation(libs.anitrend.arch.recycler.paging.legacy)
-    dependencies.implementation(libs.anitrend.arch.paging.legacy)
     dependencies.implementation(libs.anitrend.arch.analytics)
 
     dependencies.implementation(libs.androidx.core.ktx)
@@ -232,7 +230,6 @@ private fun Project.applyDataModuleGroupDependencies() {
     dependencies.implementation(libs.anitrend.arch.domain)
     dependencies.implementation(libs.anitrend.arch.data)
     dependencies.implementation(libs.anitrend.arch.request)
-    dependencies.implementation(libs.anitrend.arch.paging.legacy)
     dependencies.implementation(libs.anitrend.arch.extension)
 
     dependencies.implementation(project(Modules.Domain.Common.path))
@@ -327,8 +324,6 @@ private fun Project.applyCommonModuleGroupDependencies() {
     dependencies.implementation(libs.anitrend.arch.theme)
     dependencies.implementation(libs.anitrend.arch.domain)
     dependencies.implementation(libs.anitrend.arch.recycler)
-    dependencies.implementation(libs.anitrend.arch.recycler.paging.legacy)
-    dependencies.implementation(libs.anitrend.arch.paging.legacy)
     dependencies.implementation(libs.anitrend.arch.analytics)
 
     dependencies.implementation(libs.androidx.core.ktx)

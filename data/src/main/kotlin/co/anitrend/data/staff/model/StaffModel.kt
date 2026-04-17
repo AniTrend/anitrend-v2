@@ -18,6 +18,7 @@ package co.anitrend.data.staff.model
 
 import co.anitrend.data.character.model.remote.connection.CharacterConnection
 import co.anitrend.data.common.model.date.FuzzyDateModel
+import co.anitrend.data.common.model.scalar.LenientNullableIntSerializer
 import co.anitrend.data.media.model.connection.MediaConnection
 import co.anitrend.data.shared.model.SharedImageModel
 import co.anitrend.data.shared.model.SharedNameModel
@@ -52,6 +53,7 @@ internal sealed class StaffModel : IStaffModel {
 
     @Serializable
     internal data class Core(
+        @Serializable(with = LenientNullableIntSerializer::class)
         @SerialName("age") override val age: Int? = null,
         @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel? = null,
         @SerialName("dateOfDeath") override val dateOfDeath: FuzzyDateModel? = null,
@@ -59,15 +61,16 @@ internal sealed class StaffModel : IStaffModel {
         @SerialName("homeTown") override val homeTown: String? = null,
         @SerialName("bloodType") override val bloodType: String? = null,
         @SerialName("primaryOccupations") override val primaryOccupations: List<String>? = null,
-        @SerialName("yearsActive") override val yearsActive: List<Int>,
+        @SerialName("yearsActive") override val yearsActive: List<Int> = emptyList(),
         @SerialName("description") override val description: String? = null,
-        @SerialName("favourites") override val favourites: Int,
+        @SerialName("favourites") override val favourites: Int = 0,
         @SerialName("image") override val image: SharedImageModel? = null,
-        @SerialName("isFavourite") override val isFavourite: Boolean,
-        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean,
+        @SerialName("isFavourite") override val isFavourite: Boolean = false,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean = false,
         @SerialName("languageV2") override val language: StaffLanguage? = null,
         @SerialName("name") override val name: SharedNameModel? = null,
         @SerialName("siteUrl") override val siteUrl: String? = null,
+        @SerialName("updatedAt") override val updatedAt: Long? = null,
         @SerialName("id") override val id: Long,
     ) : StaffModel()
 
@@ -79,6 +82,7 @@ internal sealed class StaffModel : IStaffModel {
     internal data class Extended(
         @SerialName("character") val character: CharacterConnection? = null,
         @SerialName("staffMedia") val staffMedia: MediaConnection? = null,
+        @Serializable(with = LenientNullableIntSerializer::class)
         @SerialName("age") override val age: Int? = null,
         @SerialName("dateOfBirth") override val dateOfBirth: FuzzyDateModel? = null,
         @SerialName("dateOfDeath") override val dateOfDeath: FuzzyDateModel? = null,
@@ -86,15 +90,16 @@ internal sealed class StaffModel : IStaffModel {
         @SerialName("homeTown") override val homeTown: String? = null,
         @SerialName("bloodType") override val bloodType: String? = null,
         @SerialName("primaryOccupations") override val primaryOccupations: List<String>? = null,
-        @SerialName("yearsActive") override val yearsActive: List<Int>,
+        @SerialName("yearsActive") override val yearsActive: List<Int> = emptyList(),
         @SerialName("description") override val description: String? = null,
-        @SerialName("favourites") override val favourites: Int,
+        @SerialName("favourites") override val favourites: Int = 0,
         @SerialName("image") override val image: SharedImageModel? = null,
-        @SerialName("isFavourite") override val isFavourite: Boolean,
-        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean,
+        @SerialName("isFavourite") override val isFavourite: Boolean = false,
+        @SerialName("isFavouriteBlocked") override val isFavouriteBlocked: Boolean = false,
         @SerialName("languageV2") override val language: StaffLanguage? = null,
         @SerialName("name") override val name: SharedNameModel? = null,
         @SerialName("siteUrl") override val siteUrl: String? = null,
+        @SerialName("updatedAt") override val updatedAt: Long? = null,
         @SerialName("id") override val id: Long,
     ) : StaffModel()
 }

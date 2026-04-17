@@ -17,6 +17,7 @@
 package co.anitrend.data.recommendation.model.connection
 
 import co.anitrend.data.common.entity.IEntityConnection
+import co.anitrend.data.common.model.paging.data.IPageModel
 import co.anitrend.data.common.model.paging.info.PageInfo
 import co.anitrend.data.recommendation.model.RecommendationModel
 import co.anitrend.data.recommendation.model.edge.RecommendationEdge
@@ -28,9 +29,10 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 internal class RecommendationConnection(
-    @SerialName("edges") override val edges: List<RecommendationEdge>?,
-    @SerialName("nodes") override val nodes: List<RecommendationModel.Core>?,
-    @SerialName("pageInfo") override val pageInfo: PageInfo?,
+    @SerialName("edges") override val edges: List<RecommendationEdge>? = null,
+    @SerialName("nodes") override val nodes: List<RecommendationModel.Core>? = null,
+    @SerialName("pageInfo") override val pageInfo: PageInfo? = null,
 ) : IEntityConnection,
     IEntityConnection.IEdge<RecommendationEdge>,
-    IEntityConnection.INode<RecommendationModel>
+    IEntityConnection.INode<RecommendationModel>,
+    IPageModel

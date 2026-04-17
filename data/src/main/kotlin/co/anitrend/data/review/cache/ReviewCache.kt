@@ -41,13 +41,36 @@ internal class ReviewCache(
     sealed class Identity : CacheIdentity {
         class Entry(
             val param: ReviewParam.Entry,
-            override val id: Long = param.id,
+            override val id: Long = param.cacheIdentityValue(),
             override val key: String = "review_entry",
         ) : ReviewCache.Identity()
 
         class Paged(
-            override val id: Long = 0,
+            val param: ReviewParam.Paged,
+            override val id: Long = param.cacheIdentityValue(),
             override val key: String = "review_paged",
         ) : ReviewCache.Identity()
     }
 }
+
+private fun ReviewParam.Paged.cacheIdentityValue(): Long =
+    buildString {
+        append("media:")
+        append(mediaId ?: "none")
+        append("|user:")
+        append(userId ?: "none")
+        append("|type:")
+        append(mediaType?.name ?: "none")
+        append("|sort:")
+        append(sort?.joinToString(separator = ",") { "${it.sortable}:${it.order}" } ?: "none")
+        append("|score:")
+        append(scoreFormat.name)
+    }.hashCode().toLong()
+
+private fun ReviewParam.Entry.cacheIdentityValue(): Long =
+    buildString {
+        append("review:")
+        append(id)
+        append("|score:")
+        append(scoreFormat.name)
+    }.hashCode().toLong()

@@ -48,7 +48,8 @@ internal class MediaListCache(
         ) : MediaListCache.Identity()
 
         class Paged(
-            override val id: Long = 0,
+            val param: MediaListParam.Paged? = null,
+            override val id: Long = param.cacheIdentityValue(),
             override val key: String = "media_list_paged",
         ) : MediaListCache.Identity()
 
@@ -58,3 +59,10 @@ internal class MediaListCache(
         ) : MediaListCache.Identity()
     }
 }
+
+private fun MediaListParam.Paged?.cacheIdentityValue(): Long =
+    this
+        ?.toString()
+        ?.hashCode()
+        ?.toLong()
+        ?: 0L

@@ -30,6 +30,7 @@ import co.anitrend.domain.common.entity.contract.ISynopsis
 fun MarkdownText(
     content: CharSequence?,
     modifier: Modifier = Modifier,
+    maxLines: Int = Int.MAX_VALUE,
     flavour: MarkdownFlavour = MarkdownFlavour.ANILIST,
 ) {
     val onSurfaceColor = MaterialTheme.colorScheme.onSurface.toArgb()
@@ -37,9 +38,11 @@ fun MarkdownText(
         factory = ::MarkdownTextWidget,
         update = { widget ->
             widget.setTextColor(onSurfaceColor)
+            widget.maxLines = maxLines
             widget.setContent(text = content, flavour = flavour)
         },
         onReset = { widget ->
+            widget.maxLines = Int.MAX_VALUE
             widget.text = String.empty()
         },
         onRelease = MarkdownTextWidget::onViewRecycled,
@@ -51,9 +54,11 @@ fun MarkdownText(
 fun MarkdownText(
     synopsis: ISynopsis,
     modifier: Modifier = Modifier,
+    maxLines: Int = Int.MAX_VALUE,
     flavour: MarkdownFlavour = MarkdownFlavour.ANILIST,
 ) = MarkdownText(
     content = synopsis.description,
     modifier = modifier,
+    maxLines = maxLines,
     flavour = flavour,
 )

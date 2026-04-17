@@ -16,8 +16,8 @@
  */
 package co.anitrend.data.airing.koin
 
-import co.anitrend.data.airing.AiringSchedulePagedRepository
-import co.anitrend.data.airing.GetPagedAiringScheduleInteractor
+import co.anitrend.data.airing.AiringSchedulePagingRepository
+import co.anitrend.data.airing.GetPagingAiringScheduleInteractor
 import co.anitrend.data.airing.cache.AiringCache
 import co.anitrend.data.airing.converters.AiringConverter
 import co.anitrend.data.airing.converters.AiringEntityConverter
@@ -36,8 +36,8 @@ import org.koin.dsl.module
 
 private val sourceModule =
     module {
-        factory<AiringScheduleSource.Paged> {
-            AiringScheduleSourceImpl.Paged(
+        factory<AiringScheduleSource.Paging> {
+            AiringScheduleSourceImpl.Paging(
                 remoteSource = aniListApi(),
                 localSource = store().airingScheduleDao(),
                 mediaLocalSource = store().mediaDao(),
@@ -109,8 +109,8 @@ private val mapperModule =
 
 private val useCaseModule =
     module {
-        factory<GetPagedAiringScheduleInteractor> {
-            AiringScheduleInteractor.Paged(
+        factory<GetPagingAiringScheduleInteractor> {
+            AiringScheduleInteractor.Paging(
                 repository = get(),
             )
         }
@@ -118,8 +118,8 @@ private val useCaseModule =
 
 private val repositoryModule =
     module {
-        factory<AiringSchedulePagedRepository> {
-            AiringScheduleRepository.Paged(
+        factory<AiringSchedulePagingRepository> {
+            AiringScheduleRepository(
                 source = get(),
             )
         }

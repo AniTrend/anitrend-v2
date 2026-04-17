@@ -19,6 +19,7 @@ package co.anitrend.data.edge.media.entity.view
 import androidx.room.Embedded
 import androidx.room.Relation
 import co.anitrend.data.edge.episode.entity.EdgeEpisodeEntity
+import co.anitrend.data.edge.image.entity.EdgeMediaImageEntity
 import co.anitrend.data.edge.media.entity.EdgeMediaEntity
 import co.anitrend.data.edge.network.entity.EdgeNetworkEntity
 import co.anitrend.data.edge.season.entity.EdgeSeasonEntity
@@ -37,6 +38,11 @@ data class EdgeMediaEntityView(
         entityColumn = "media_id",
     )
     val trailers: List<EdgeTrailerEntity>,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "media_id",
+    )
+    val images: List<EdgeMediaImageEntity>,
     @Relation(
         parentColumn = "id",
         entityColumn = "media_id",

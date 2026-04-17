@@ -20,48 +20,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import co.anitrend.android.core.compose.design.ContentWrapper
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.android.core.views.compose.composable
-import co.anitrend.core.component.FeatureUnavailable
 import co.anitrend.core.component.content.compose.AniTrendComposition
-import co.anitrend.navigation.model.common.IParam
+import co.anitrend.review.component.compose.ReviewRoute
 import co.anitrend.review.component.viewmodel.ReviewViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ReviewContent : AniTrendComposition() {
     private val viewModel by viewModel<ReviewViewModel>()
 
-    /**
-     * Invoke view model observer to watch for changes, this will be called
-     * called in [onViewCreated]
-     */
-    override fun setUpViewModelObserver() {
-    }
-
-    /**
-     * Called to have the fragment instantiate its user interface view. This is optional, and
-     * non-graphical fragments can return null. This will be called between
-     * [onCreate] & [onActivityCreated].
-     *
-     * A default View can be returned by calling [Fragment] in your
-     * constructor. Otherwise, this method returns null.
-     *
-     * It is recommended to __only__ inflate the layout in this method and move
-     * logic that operates on the returned View to [onViewCreated].
-     *
-     * If you return a View from here, you will later be called in [onDestroyView]
-     * when the view is being released.
-     *
-     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
-     * @param container If non-null, this is the parent view that the fragment's UI should be
-     * attached to. The fragment should not add the view itself, but this can be used to generate
-     * the LayoutParams of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     *
-     * @return Return the View for the fragment's UI, or null.
-     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,17 +37,11 @@ class ReviewContent : AniTrendComposition() {
     ): View =
         composable(requireActivity()) {
             AniTrendTheme3 {
-                ContentWrapper(
-                    stateFlow = FeatureUnavailable.loadState,
-                    config = FeatureUnavailable.config,
-                    param = IParam.None,
-                    onClick = {},
-                ) {}
+                ReviewRoute(
+                    viewModel = viewModel,
+                    onBackPress = requireActivity().onBackPressedDispatcher::onBackPressed,
+                    showBottomBar = false,
+                )
             }
         }
-
-    /**
-     * Proxy for a view model state if one exists
-     */
-    override fun viewModelState() = viewModel
 }
