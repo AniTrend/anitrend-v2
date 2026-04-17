@@ -16,9 +16,11 @@
  */
 package co.anitrend.android.navigation.drawer.provider
 
+import androidx.fragment.app.Fragment
 import co.anitrend.navigation.NavigationDrawerRouter
-import co.anitrend.android.navigation.drawer.component.content.BottomDrawerContent
 
-class FeatureProvider : NavigationDrawerRouter.Provider {
-    override fun fragment() = BottomDrawerContent::class.java
+class FeatureProvider(
+    private val fragment: Class<out Fragment>,
+) : NavigationDrawerRouter.Provider {
+    override fun fragment() = fragment
 }

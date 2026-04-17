@@ -60,7 +60,6 @@ import co.anitrend.navigation.ReviewDiscoverRouter
 import co.anitrend.navigation.SearchRouter
 import co.anitrend.navigation.SettingsRouter
 import co.anitrend.navigation.SuggestionRouter
-import co.anitrend.android.navigation.drawer.component.content.BottomDrawerContent
 import co.anitrend.android.navigation.drawer.component.content.contract.INavigationDrawer
 import co.anitrend.android.navigation.drawer.model.navigation.Navigation
 import co.anitrend.navigation.extensions.asBundle
@@ -70,7 +69,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.koin.androidx.fragment.android.replace
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -157,8 +155,9 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
 
     private fun inflateNavigationBottomDrawer() {
         supportFragmentManager.commit {
-            replace<BottomDrawerContent>(
+            replace(
                 R.id.bottomNavigation,
+                drawerFragmentItem.fragment,
                 drawerFragmentItem.parameter,
                 drawerFragmentItem.tag(),
             )
