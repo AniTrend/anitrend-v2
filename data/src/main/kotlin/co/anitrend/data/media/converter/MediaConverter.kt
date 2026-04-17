@@ -392,6 +392,16 @@ internal class MediaConverter(
                                 myAnimeList = source.idMal,
                                 aniList = source.id,
                             ),
+                        trailers =
+                            listOfNotNull(
+                                source.trailer?.let {
+                                    MediaTrailer(
+                                        id = it.id.orEmpty(),
+                                        site = it.site,
+                                        thumbnail = it.thumbnail,
+                                    )
+                                },
+                            ),
                         countryCode = source.countryOfOrigin,
                         description = source.description,
                         externalLinks =

@@ -17,6 +17,7 @@
 package co.anitrend.media.component.compose
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import co.anitrend.domain.airing.entity.AiringSchedule
 import co.anitrend.domain.common.entity.shared.FuzzyDate
 import co.anitrend.domain.genre.entity.Genre
 import co.anitrend.domain.media.entity.Media
@@ -34,6 +35,8 @@ import co.anitrend.domain.medialist.entity.MediaList
 import co.anitrend.domain.medialist.entity.contract.MediaListPrivacy
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.tag.entity.Tag
+import org.threeten.bp.Instant
+import org.threeten.bp.temporal.ChronoUnit
 
 internal data class MediaComposePreviewProvider(
     override val values: Sequence<Media.Extended> =
@@ -54,9 +57,91 @@ internal data class MediaComposePreviewProvider(
                 startDate = FuzzyDate.empty().copy(2018),
                 format = MediaFormat.TV,
                 category =
-                    Media.Category.Anime
-                        .empty()
-                        .copy(25),
+                    Media.Category.Anime(
+                        episodes = 25,
+                        duration = 24,
+                        broadcast = "Saturdays 17:30 (JST)",
+                        premiered = "Spring 2018",
+                        schedule =
+                            AiringSchedule(
+                                airingAt = Instant.now().plus(2, ChronoUnit.DAYS).epochSecond,
+                                episode = 23,
+                                mediaId = 1,
+                                timeUntilAiring = 172800,
+                                id = 23,
+                            ),
+                        scheduleDetails =
+                            Media.Category.Anime.ScheduleDetails(
+                                airedEpisodes = 22,
+                                firstAirDate = Instant.now().minus(120, ChronoUnit.DAYS).epochSecond,
+                                lastAirDate = Instant.now().minus(5, ChronoUnit.DAYS).epochSecond,
+                                nextEpisode =
+                                    Media.Category.Anime.ScheduleDetails.Episode(
+                                        id = 23,
+                                        airDate = Instant.now().plus(2, ChronoUnit.DAYS).epochSecond,
+                                        episodeNumber = 23,
+                                        image = "https://cdn.example.com/mha-23.jpg",
+                                        name = "Full Cowl",
+                                        overview = "The raid plan hits a breaking point as the next clash comes into view.",
+                                        productionCode = null,
+                                        runtime = 24,
+                                        seasonNumber = 3,
+                                        tmdbId = null,
+                                    ),
+                                lastEpisode =
+                                    Media.Category.Anime.ScheduleDetails.Episode(
+                                        id = 22,
+                                        airDate = Instant.now().minus(5, ChronoUnit.DAYS).epochSecond,
+                                        episodeNumber = 22,
+                                        image = "https://cdn.example.com/mha-22.jpg",
+                                        name = "Bakugo's Answer",
+                                        overview = "The fallout from the last duel reshapes the team's hierarchy.",
+                                        productionCode = null,
+                                        runtime = 24,
+                                        seasonNumber = 3,
+                                        tmdbId = null,
+                                    ),
+                                episodes =
+                                    listOf(
+                                        Media.Category.Anime.ScheduleDetails.Episode(
+                                            id = 21,
+                                            airDate = Instant.now().minus(12, ChronoUnit.DAYS).epochSecond,
+                                            episodeNumber = 21,
+                                            image = "https://cdn.example.com/mha-21.jpg",
+                                            name = "Shiketsu High Lurking",
+                                            overview = "The provisional license exam tightens across the final field.",
+                                            productionCode = null,
+                                            runtime = 24,
+                                            seasonNumber = 3,
+                                            tmdbId = null,
+                                        ),
+                                        Media.Category.Anime.ScheduleDetails.Episode(
+                                            id = 22,
+                                            airDate = Instant.now().minus(5, ChronoUnit.DAYS).epochSecond,
+                                            episodeNumber = 22,
+                                            image = "https://cdn.example.com/mha-22.jpg",
+                                            name = "Bakugo's Answer",
+                                            overview = "The fallout from the last duel reshapes the team's hierarchy.",
+                                            productionCode = null,
+                                            runtime = 24,
+                                            seasonNumber = 3,
+                                            tmdbId = null,
+                                        ),
+                                        Media.Category.Anime.ScheduleDetails.Episode(
+                                            id = 23,
+                                            airDate = Instant.now().plus(2, ChronoUnit.DAYS).epochSecond,
+                                            episodeNumber = 23,
+                                            image = "https://cdn.example.com/mha-23.jpg",
+                                            name = "Full Cowl",
+                                            overview = "The raid plan hits a breaking point as the next clash comes into view.",
+                                            productionCode = null,
+                                            runtime = 24,
+                                            seasonNumber = 3,
+                                            tmdbId = null,
+                                        ),
+                                    ),
+                            ),
+                    ),
                 description =
                     "What would the world be like if 80 percent of the population manifested " +
                         "extraordinary superpowers called “Quirks” at age four? Heroes and villains would be battling it out " +

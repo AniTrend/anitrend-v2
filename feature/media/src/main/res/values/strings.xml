@@ -266,6 +266,24 @@
     <string name="message_media_schedule_empty">No upcoming episodes are scheduled yet.</string>
     <!-- Error-state title shown when the media schedule bottom sheet fails to load -->
     <string name="label_media_schedule_error_title">Schedule unavailable</string>
+    <!-- Section title for video trailers on the media detail hub -->
+    <string name="title_media_trailer_section">Trailers</string>
+    <!-- Supporting copy for the trailer rail on the media detail hub -->
+    <string name="subtitle_media_trailer_section">Official promos and previews from the available video sources.</string>
+    <!-- Action label used to open a trailer in an external player -->
+    <string name="action_media_trailer_watch">Watch trailer</string>
+    <!-- Fallback label when a trailer source is missing or unknown -->
+    <string name="label_media_trailer_source_unknown">Trailer</string>
+    <!-- Section title for supplementary edge artwork on the media detail hub -->
+    <string name="title_media_gallery_section">Gallery</string>
+    <!-- Supporting copy for the media detail artwork rail -->
+    <string name="subtitle_media_gallery_section">Fanart, posters, and branded artwork pulled into the detail view.</string>
+    <!-- Label for backdrop-style gallery artwork -->
+    <string name="label_media_gallery_type_backdrop">Backdrop</string>
+    <!-- Label for poster-style gallery artwork -->
+    <string name="label_media_gallery_type_poster">Poster</string>
+    <!-- Label for logo-style gallery artwork -->
+    <string name="label_media_gallery_type_logo">Logo</string>
     <!-- Error-state title for failed media-detail stats fetches -->
     <string name="label_media_stats_error_title">Stats unavailable</string>
     <!-- Empty-state title for media-detail stats -->
@@ -379,6 +397,24 @@
     <string name="title_media_stats_screen">Stats</string>
     <!-- Supporting copy for the dedicated stats destination -->
     <string name="subtitle_media_stats_screen">See how the community scores and tracks this title in detail.</string>
+    <!-- Screen title for the dedicated episode guide destination -->
+    <string name="title_media_episode_screen">Episodes</string>
+    <!-- Supporting copy for the dedicated episode guide destination -->
+    <string name="subtitle_media_episode_screen">Follow the latest aired episode, upcoming stop, and episode-by-episode rollout for this title.</string>
+    <!-- Section heading for the full episode list inside the episode guide destination -->
+    <string name="label_media_episode_list_heading">Episode guide</string>
+    <!-- Loading title for the dedicated episode guide destination -->
+    <string name="label_media_episode_loading">Loading episodes</string>
+    <!-- Loading copy for the dedicated episode guide destination -->
+    <string name="message_media_episode_loading">Fetching the latest episode roll-out for this title.</string>
+    <!-- Empty-state title when no episode guide data is available -->
+    <string name="label_media_episode_empty_title">No episode guide yet</string>
+    <!-- Empty-state message when no episode guide data is available -->
+    <string name="message_media_episode_empty">Episode-level metadata has not surfaced for this title yet.</string>
+    <!-- Error-state title when the dedicated episode guide fails to load -->
+    <string name="label_media_episode_error_title">Episode guide unavailable</string>
+    <!-- Error-state copy when the dedicated episode guide fails to load -->
+    <string name="message_media_episode_error">Retry to refresh the episode guide for this title.</string>
     <!-- Heading for official and third-party links in the extended metadata section -->
     <string name="label_media_extended_details_links">External links</string>
     <!-- Section title for the unified related and recommendation browser -->

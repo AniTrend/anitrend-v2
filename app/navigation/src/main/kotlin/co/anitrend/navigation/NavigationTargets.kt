@@ -244,6 +244,19 @@ object MediaPeopleRouter : NavigationRouter() {
     ) : IParam
 }
 
+object MediaEpisodeRouter : NavigationRouter() {
+    override val provider by inject<Provider>()
+
+    interface Provider : INavigationProvider
+
+    @Parcelize
+    data class MediaEpisodeParam(
+        val mediaId: Long,
+        val mediaType: MediaType,
+        val mediaTitle: String? = null,
+    ) : IParam
+}
+
 object MediaCharactersRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
@@ -727,6 +740,8 @@ object ImageViewerRouter : NavigationRouter() {
     @Parcelize
     data class ImageSourceParam(
         val imageSrc: CharSequence,
+        val imageSources: List<String> = listOf(imageSrc.toString()),
+        val initialIndex: Int = 0,
     ) : IParam
 }
 

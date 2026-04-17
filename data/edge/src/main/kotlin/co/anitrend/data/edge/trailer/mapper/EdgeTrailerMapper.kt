@@ -21,10 +21,19 @@ import co.anitrend.data.edge.trailer.EdgeTrailerEmbedded
 import co.anitrend.data.edge.trailer.converter.EdgeTrailerConverter
 import co.anitrend.data.edge.trailer.datasource.EdgeTrailerLocalSource
 import co.anitrend.data.edge.trailer.entity.EdgeTrailerEntity
+import co.anitrend.data.edge.trailer.model.EdgeTrailerModel
 
 internal class EdgeTrailerMapper(
     override val localSource: EdgeTrailerLocalSource,
     override val converter: EdgeTrailerConverter,
 ) : EmbedMapper<EdgeTrailerEmbedded, EdgeTrailerEntity>() {
+    suspend fun onEmbedded(
+        mediaId: String,
+        sources: List<EdgeTrailerModel>,
+    ) {
+        localSource.deleteByMediaId(mediaId)
+        super.onEmbedded(sources.map { mediaId to it })
+    }
+
     override suspend fun onResponseMapFrom(source: List<EdgeTrailerEmbedded>): List<EdgeTrailerEntity> = source.map(converter::convertFrom)
 }

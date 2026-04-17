@@ -63,10 +63,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -113,19 +111,19 @@ import co.anitrend.media.component.compose.section.ContributorsSection
 import co.anitrend.media.component.compose.section.MediaCommunitySection
 import co.anitrend.media.component.compose.section.MediaConnectionsBrowserSection
 import co.anitrend.media.component.compose.section.MediaExtendedMetadataSection
+import co.anitrend.media.component.compose.section.MediaGallerySection
 import co.anitrend.media.component.compose.section.MediaGenrePreviewSection
 import co.anitrend.media.component.compose.section.MediaRankPreviewSection
 import co.anitrend.media.component.compose.section.MediaStudiosPreviewSection
 import co.anitrend.media.component.compose.section.MediaSynopsisPreviewSection
 import co.anitrend.media.component.compose.section.MediaTagSection
+import co.anitrend.media.component.compose.section.MediaTrailerSection
 import co.anitrend.media.component.compose.section.MediaThemeSection
 import co.anitrend.media.component.compose.stats.MediaStatsSection
-import co.anitrend.media.component.schedule.MediaScheduleSheet
 import co.anitrend.media.component.viewmodel.MediaCharactersViewModel
 import co.anitrend.media.component.viewmodel.MediaCommunityViewModel
 import co.anitrend.media.component.viewmodel.MediaRecommendationsViewModel
 import co.anitrend.media.component.viewmodel.MediaRelationsViewModel
-import co.anitrend.media.component.viewmodel.MediaScheduleViewModel
 import co.anitrend.media.component.viewmodel.MediaStaffViewModel
 import co.anitrend.media.component.viewmodel.MediaStatsViewModel
 import co.anitrend.media.component.viewmodel.MediaStudiosViewModel
@@ -133,6 +131,7 @@ import co.anitrend.media.component.viewmodel.MediaViewModel
 import co.anitrend.navigation.FavouriteTaskRouter
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.navigation.MediaDiscoverRouter
+import co.anitrend.navigation.MediaEpisodeRouter
 import co.anitrend.navigation.MediaPeopleRouter
 import co.anitrend.navigation.MediaRecommendationsRouter
 import co.anitrend.navigation.MediaRelationsRouter
@@ -475,6 +474,7 @@ private fun MediaDetailContent(
     onMyAnimeListButtonClick: (String) -> Unit,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
+    onEpisodeGuideClick: (MediaEpisodeRouter.MediaEpisodeParam) -> Unit,
     onMediaConnectionItemClick: (IParam) -> Unit,
     onExternalLinkClick: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -507,7 +507,6 @@ private fun MediaDetailContent(
     onRetryRecommendations: () -> Unit = {},
     onRetryCommunity: () -> Unit = {},
 ) {
-    var showScheduleSheet by remember { mutableStateOf(false) }
     val mediaTitle = media.displayTitle()
 
     LazyColumn(
@@ -543,8 +542,14 @@ private fun MediaDetailContent(
 
                     MediaStatusSection(
                         media = media,
-                        onShowSchedule = {
-                            showScheduleSheet = media.category is Media.Category.Anime
+                        onOpenEpisodeGuide = {
+                            onEpisodeGuideClick(
+                                MediaEpisodeRouter.MediaEpisodeParam(
+                                    mediaId = media.id,
+                                    mediaType = media.category.type,
+                                    mediaTitle = mediaTitle,
+                                ),
+                            )
                         },
                     )
                 }
@@ -565,6 +570,26 @@ private fun MediaDetailContent(
                 onExternalLinkClick = onExternalLinkClick,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
+        }
+
+        if (media.trailers.isNotEmpty()) {
+            item {
+                MediaTrailerSection(
+                    trailers = media.trailers,
+                    onTrailerClick = onExternalLinkClick,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+            }
+        }
+
+        if (media.gallery.isNotEmpty()) {
+            item {
+                MediaGallerySection(
+                    images = media.gallery,
+                    onImageClick = onImageClick,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+            }
         }
 
         if (media.genres.isNotEmpty()) {
@@ -763,14 +788,6 @@ private fun MediaDetailContent(
         }
     }
 
-    if (showScheduleSheet && media.category is Media.Category.Anime) {
-        val scheduleViewModel: MediaScheduleViewModel = koinViewModel()
-        MediaScheduleSheet(
-            mediaId = media.id,
-            onDismiss = { showScheduleSheet = false },
-            viewModel = scheduleViewModel,
-        )
-    }
 }
 
 @Composable
@@ -782,6 +799,7 @@ fun MediaScreenContent(
     onFloatingActionButtonClick: (Media) -> Unit,
     onMediaDiscoverableItemClick: (MediaDiscoverRouter.MediaDiscoverParam) -> Unit,
     onImageClick: (ImageViewerRouter.ImageSourceParam) -> Unit,
+    onEpisodeGuideClick: (MediaEpisodeRouter.MediaEpisodeParam) -> Unit,
     onMediaConnectionItemClick: (IParam) -> Unit,
     onPeopleClick: (MediaPeopleRouter.MediaPeopleParam) -> Unit,
     onStudioClick: (StudioRouter.StudioParam) -> Unit,
@@ -884,6 +902,7 @@ fun MediaScreenContent(
             onMyAnimeListButtonClick = onMyAnimeListButtonClick,
             onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
             onImageClick = onImageClick,
+            onEpisodeGuideClick = onEpisodeGuideClick,
             onMediaConnectionItemClick = onMediaConnectionItemClick,
             onExternalLinkClick = onExternalLinkClick,
             characters = characters,
@@ -982,6 +1001,7 @@ private fun MediaDetailComponentPreview(
             onMyAnimeListButtonClick = {},
             onMediaDiscoverableItemClick = {},
             onImageClick = {},
+            onEpisodeGuideClick = {},
             onMediaConnectionItemClick = {},
             onExternalLinkClick = {},
             modifier = Modifier,
