@@ -532,6 +532,10 @@ private fun MediaDetailContent(
                         onMyAnimeListClick = onMyAnimeListButtonClick,
                     )
 
+                    MediaSupplementalInfoSection(
+                        extraInfo = media.extraInfo,
+                    )
+                    
                     MediaStatusSection(
                         media = media,
                         onOpenEpisodeGuide = {
@@ -543,10 +547,6 @@ private fun MediaDetailContent(
                                 ),
                             )
                         },
-                    )
-
-                    MediaSupplementalInfoSection(
-                        extraInfo = media.extraInfo,
                     )
                 }
             }
