@@ -21,20 +21,32 @@ import androidx.activity.compose.setContent
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.common.shared.ui.extension.shareContent
 import co.anitrend.android.core.compose.design.ContentWrapper
+import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.navigation.ImageViewerRouter
+import co.anitrend.navigation.MediaRouter
 import co.anitrend.navigation.NotificationRouter
 import co.anitrend.navigation.ProfileRouter
+import co.anitrend.navigation.ReviewRouter
+import co.anitrend.navigation.SettingsRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.profile.component.compose.ProfileScreenContent
+import co.anitrend.profile.component.viewmodel.ProfileFeedViewModel
+import co.anitrend.profile.component.viewmodel.ProfileOverviewViewModel
+import co.anitrend.profile.component.viewmodel.ProfileStatsViewModel
 import co.anitrend.profile.component.viewmodel.ProfileViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileScreen : AniTrendScreen() {
     private val viewModel by viewModel<ProfileViewModel>()
+    private val statsViewModel by viewModel<ProfileStatsViewModel>()
+    private val overviewViewModel by viewModel<ProfileOverviewViewModel>()
+    private val feedViewModel by viewModel<ProfileFeedViewModel>()
+    private val authSettings by inject<IAuthenticationSettings>()
     private val param by extra<ProfileRouter.ProfileParam>(
         key = nameOf<ProfileRouter.ProfileParam>(),
     )
@@ -51,23 +63,40 @@ class ProfileScreen : AniTrendScreen() {
                 ) {
                     ProfileScreenContent(
                         viewModel = viewModelState(),
+                        statsViewModel = statsViewModel,
+                        overviewViewModel = overviewViewModel,
+                        feedViewModel = feedViewModel,
+                        authenticatedUserId = authSettings.authenticatedUserId.value,
                         onImageClick = { param ->
                             ImageViewerRouter.startActivity(
                                 context = this@ProfileScreen,
                                 navPayload = param.asNavPayload(),
                             )
                         },
-                        onFloatingActionButtonClick = { url ->
+                        onMediaClick = { mediaId, mediaType ->
+                            mediaType ?: return@ProfileScreenContent
+                            MediaRouter.startActivity(
+                                context = this@ProfileScreen,
+                                navPayload = MediaRouter.MediaParam(id = mediaId, type = mediaType).asNavPayload(),
+                            )
+                        },
+                        onReviewClick = { reviewId, scoreFormat ->
+                            ReviewRouter.startActivity(
+                                context = this@ProfileScreen,
+                                navPayload = ReviewRouter.ReviewParam(id = reviewId, scoreFormat = scoreFormat).asNavPayload(),
+                            )
+                        },
+                        onShareClick = { url ->
                             shareContent {
                                 setType("text/plain")
                                 setText(url)
                             }
                         },
-                        onInboxButtonClick = {
-                            // TODO: Create an inbox or messages router
-                        },
-                        onNotificationsButtonClick = {
+                        onNotificationsClick = {
                             NotificationRouter.startActivity(this)
+                        },
+                        onSettingsClick = {
+                            SettingsRouter.startActivity(this)
                         },
                         onBackClick = onBackPressedDispatcher::onBackPressed,
                     )

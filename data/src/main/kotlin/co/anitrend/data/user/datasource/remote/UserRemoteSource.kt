@@ -20,6 +20,7 @@ import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.user.model.container.UserModelContainer
+import co.anitrend.data.user.model.container.UserSidecarModelContainer
 import io.github.wax911.library.annotation.GraphQuery
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import retrofit2.Response
@@ -61,6 +62,20 @@ internal interface UserRemoteSource {
     suspend fun getUserWithStatistic(
         @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<UserModelContainer.WithStatistic>>
+
+    @GRAPHQL
+    @GraphQuery("GetUserProfileOverview")
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    suspend fun getUserProfileOverview(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<UserSidecarModelContainer.Overview>>
+
+    @GRAPHQL
+    @GraphQuery("GetUserProfileFeed")
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    suspend fun getUserProfileFeed(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<UserSidecarModelContainer.Feed>>
 
     @GRAPHQL
     @GraphQuery("SaveToggleFollowUser")

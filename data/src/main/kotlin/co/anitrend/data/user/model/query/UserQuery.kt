@@ -64,6 +64,28 @@ internal sealed class UserQuery : IGraphPayload {
             )
     }
 
+    data class Overview(
+        val param: UserParam.Overview,
+    ) : UserQuery() {
+        fun isUserIdValid() = param.id != IAuthenticationSettings.INVALID_USER_ID
+
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+            )
+    }
+
+    data class Feed(
+        val param: UserParam.Feed,
+    ) : UserQuery() {
+        fun isUserIdValid() = param.id != IAuthenticationSettings.INVALID_USER_ID
+
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+            )
+    }
+
     data class Search(
         val param: UserParam.Search,
     ) : UserQuery() {

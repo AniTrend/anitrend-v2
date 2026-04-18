@@ -19,9 +19,14 @@ package co.anitrend.data.user
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.user.entity.UserEntity
+import co.anitrend.data.user.entity.sidecar.UserProfileFeedEntity
+import co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 import co.anitrend.data.user.model.container.UserModelContainer
+import co.anitrend.data.user.model.container.UserSidecarModelContainer
 import co.anitrend.domain.user.entity.User
+import co.anitrend.domain.user.entity.profile.ProfileFeed
+import co.anitrend.domain.user.entity.profile.ProfileOverview
 import co.anitrend.domain.user.interactor.UserUseCase
 import co.anitrend.domain.user.repository.IUserRepository
 
@@ -30,17 +35,25 @@ internal typealias UserProfileController = GraphQLController<UserModelContainer.
 internal typealias UserController = GraphQLController<UserModelContainer.User, UserEntity>
 internal typealias UserProfileStatisticController =
     GraphQLController<UserModelContainer.WithStatistic, UserWithStatisticEntity>
+internal typealias UserProfileOverviewController =
+    GraphQLController<UserSidecarModelContainer.Overview, UserProfileOverviewEntity>
+internal typealias UserProfileFeedController =
+    GraphQLController<UserSidecarModelContainer.Feed, UserProfileFeedEntity>
 
 internal typealias UserIdentifierRepository = IUserRepository.User<DataState<User>>
 internal typealias UserAuthenticatedRepository = IUserRepository.Authenticated<DataState<User>>
 internal typealias UserProfileRepository = IUserRepository.Profile<DataState<User>>
 internal typealias UserProfileStatisticRepository = IUserRepository.Statistic<DataState<User.WithStats>>
+internal typealias UserProfileOverviewRepository = IUserRepository.Overview<DataState<ProfileOverview>>
+internal typealias UserProfileFeedRepository = IUserRepository.Feed<DataState<ProfileFeed>>
 internal typealias UserFollowRepository = IUserRepository.ToggleFollow<DataState<User>>
 internal typealias UserUpdateRepository = IUserRepository.Update<DataState<User>>
 
 typealias GetUserInteractor = UserUseCase.GetUser<DataState<User>>
 typealias GetProfileInteractor = UserUseCase.GetProfile<DataState<User>>
 typealias GetProfileStatisticInteractor = UserUseCase.Statistic<DataState<User.WithStats>>
+typealias GetProfileOverviewInteractor = UserUseCase.Overview<DataState<ProfileOverview>>
+typealias GetProfileFeedInteractor = UserUseCase.Feed<DataState<ProfileFeed>>
 typealias GetAuthenticatedInteractor = UserUseCase.GetAuthenticated<DataState<User>>
 typealias ToggleFollowInteractor = UserUseCase.ToggleFollow<DataState<User>>
 typealias UpdateProfileInteractor = UserUseCase.Update<DataState<User>>
