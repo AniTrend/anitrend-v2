@@ -26,28 +26,32 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Report
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.filled.WorkHistory
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale
 import co.anitrend.android.core.settings.helper.theme.model.AniTrendTheme
+import co.anitrend.settings.R
 import co.anitrend.settings.model.SettingItem
 
-internal val PreviewData =
+@Composable
+internal fun previewData(): List<SettingItem> =
     listOf(
         // Appearance category
         SettingItem.HintCard(
             id = "hint_card",
-            title = "About this app",
-            description = "Find out more about our product",
+            title = stringResource(R.string.title_settings_preview_about_app),
+            description = stringResource(R.string.summary_settings_preview_about_app),
             icon = Icons.Default.BarChart,
             onClick = { },
         ),
         SettingItem.CategoryHeader(
             id = "appearance_category",
-            title = "Appearance",
+            title = stringResource(R.string.preference_category_title_user_interface),
         ),
         SettingItem.DialogSetting(
             id = "locale",
-            title = "Application Language",
-            summary = "Change the application language",
+            title = stringResource(R.string.preference_title_locale_config),
+            summary = stringResource(R.string.preference_summary_locale),
             icon = Icons.Default.Translate,
             options = AniTrendLocale.entries.toList(),
             selectedOption = { true },
@@ -57,8 +61,8 @@ internal val PreviewData =
         ),
         SettingItem.DialogSetting(
             id = "theme",
-            title = "Theme",
-            summary = "Change the application theme",
+            title = stringResource(R.string.preference_title_theme),
+            summary = stringResource(R.string.preference_summary_theme),
             icon = Icons.Default.ColorLens,
             options = AniTrendTheme.entries.toList(),
             selectedOption = { AniTrendTheme.SYSTEM },
@@ -69,20 +73,20 @@ internal val PreviewData =
         // Analytics & Reporting category
         SettingItem.CategoryHeader(
             id = "analytics_category",
-            title = "Analytics & Reporting",
+            title = stringResource(R.string.title_settings_preview_analytics_reporting),
         ),
         SettingItem.SwitchSetting(
             id = "analytics",
-            title = "Usage Analytics",
-            summary = "Allows usage statistics to be sent to the developer",
+            title = stringResource(R.string.preference_title_privacy_analytics_config),
+            summary = stringResource(R.string.preference_summary_privacy_analytics_config),
             icon = Icons.Default.BarChart,
             onClick = { true },
             onValueChange = { },
         ),
         SettingItem.SwitchSetting(
             id = "crash_reporting",
-            title = "Crash Reporting",
-            summary = "Automatically report crashes",
+            title = stringResource(R.string.preference_title_privacy_crash_analytics_config),
+            summary = stringResource(R.string.preference_summary_privacy_crash_analytics_config),
             icon = Icons.Default.Report,
             onClick = { true },
             onValueChange = { },
@@ -90,84 +94,85 @@ internal val PreviewData =
         // Behavior category
         SettingItem.CategoryHeader(
             id = "behavior_category",
-            title = "Behavior",
+            title = stringResource(R.string.title_settings_preview_behavior),
         ),
         SettingItem.SwitchSetting(
             id = "clear_on_refresh",
-            title = "Clear Database on Refresh",
-            summary = "Typically the database is cleared when you pull to refresh",
+            title = stringResource(R.string.preference_title_refresh_behavior_config),
+            summary = stringResource(R.string.preference_summary_refresh_behavior_config),
             icon = Icons.Default.Refresh,
             onClick = { false },
             onValueChange = { },
         ),
         SettingItem.SwitchSetting(
             id = "auto_heap_dump",
-            title = "Auto Heap Dump",
-            summary = "Dump heap automatically when leak is detected",
+            title = stringResource(R.string.preference_title_heap_dump),
+            summary = stringResource(R.string.preference_summary_heap),
             icon = Icons.Default.Memory,
             onClick = { true },
             onValueChange = { },
         ),
         SettingItem.CategoryHeader(
             id = "privacy_category",
-            title = "Privacy",
+            title = stringResource(R.string.preference_title_privacy),
         ),
         SettingItem.ClickableSetting(
             id = "privacy",
-            title = "Privacy",
-            summary = "Dial in the right level of privacy for you",
+            title = stringResource(R.string.preference_title_privacy),
+            summary = stringResource(R.string.preference_summary_privacy),
             icon = Icons.Default.PrivacyTip,
             onClick = { },
         ),
         SettingItem.CategoryHeader(
             id = "advanced_category",
-            title = "Advanced",
+            title = stringResource(R.string.preference_category_title_advanced_settings),
         ),
         SettingItem.ClickableSetting(
             id = "developer_options",
-            title = "Developer options",
-            summary = "Diagnostics and runtime behavior controls",
+            title = stringResource(R.string.preference_title_developer_options),
+            summary = stringResource(R.string.preference_summary_developer_options),
             icon = Icons.Default.DeveloperBoard,
             onClick = { },
         ),
     )
 
-internal val PreviewDeveloperData =
+@Composable
+internal fun previewDeveloperData(): List<SettingItem> =
     listOf(
         SettingItem.CategoryHeader(
             id = "developer_settings_diagnostics",
-            title = "Diagnostics",
+            title = stringResource(R.string.preference_category_title_developer_diagnostics),
         ),
         SettingItem.ClickableSetting(
             id = "log_viewer",
-            title = "Manage logs",
-            summary = "Audit application logs",
+            title = stringResource(R.string.preference_title_manage_logs),
+            summary = stringResource(R.string.preference_summary_manage_logs),
             icon = Icons.Default.DeveloperBoard,
             onClick = { },
         ),
         SettingItem.ClickableSetting(
             id = "work_manager_tasks",
-            title = "Work manager tasks",
-            summary = "Inspect and manage background tasks",
+            title = stringResource(R.string.preference_title_work_manager_tasks),
+            summary = stringResource(R.string.preference_summary_work_manager_tasks),
             icon = Icons.Default.WorkHistory,
             onClick = { },
         ),
         SettingItem.CategoryHeader(
             id = "developer_settings_runtime_behavior",
-            title = "Runtime behavior",
+            title = stringResource(R.string.preference_category_title_developer_runtime_behavior),
         ),
         SettingItem.SwitchSetting(
             id = "clear_on_refresh",
-            title = "Clear database on refresh",
-            summary = "Typically the database is cleared when you pull to refresh",
+            title = stringResource(R.string.preference_title_refresh_behavior_config),
+            summary = stringResource(R.string.preference_summary_refresh_behavior_config),
             icon = Icons.Default.Refresh,
             onClick = { false },
             onValueChange = { },
         ),
         SettingItem.SwitchSetting(
             id = "auto_heap_dump",
-            title = "Auto heap dump",
-            summary = "Dump heap automatically when leak is detected",
+            title = stringResource(R.string.preference_title_heap_dump),
+            summary = stringResource(R.string.preference_summary_heap),
             icon = Icons.Default.Memory,
             onClick = { true },
             onValueChange = { },

@@ -16,14 +16,24 @@
   -->
 
 <resources>
-    <!-- Reply Preference -->
+    <!-- Options for how reply actions should behave in settings-related mail or share flows -->
     <string-array name="reply_entries">
         <item>Reply</item>
         <item>Reply to all</item>
     </string-array>
 
+    <!-- Internal values paired with the reply options array above -->
     <string-array name="reply_values">
         <item>reply</item>
         <item>reply_all</item>
+    </string-array>
+
+    <!-- Labels used by the log viewer filter chips; order matches the LogFilter enum in the settings module -->
+    <string-array name="entry_settings_log_filters">
+        <item>All</item>
+        <item>Error</item>
+        <item>Warning</item>
+        <item>Info</item>
+        <item>Debug</item>
     </string-array>
 </resources>

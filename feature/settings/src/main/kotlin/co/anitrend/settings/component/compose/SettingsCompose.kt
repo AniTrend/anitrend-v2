@@ -149,9 +149,8 @@ fun SettingsContentScreen(
 @AniTrendPreview.Dark
 @AniTrendPreview.Mobile
 @Composable
-private fun SettingsScreenPreview(
-) {
+private fun SettingsScreenPreview() {
     PreviewTheme(wrapInSurface = true) {
-        SettingsContent(settingsItems = PreviewData)
+        SettingsContent(settingsItems = previewData())
     }
 }

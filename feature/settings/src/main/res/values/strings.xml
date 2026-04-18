@@ -66,6 +66,22 @@
   <string name="description_settings_notification_hint">Manage system-level notification permissions and channels</string>
   <!-- Description when POST_NOTIFICATIONS permission is not granted yet -->
   <string name="description_settings_notification_permission">Grant the notification permission to receive alerts</string>
+  <!-- Summary for the card that explains whether system-level notification delivery is currently available -->
+  <string name="summary_settings_notification_system_access">Control Android-level access before tuning which AniTrend notifications should be delivered.</string>
+  <!-- Section title for the card that manages whether AniTrend can deliver notifications at all -->
+  <string name="title_settings_notification_delivery_controls">Delivery controls</string>
+  <!-- Summary for the card that manages whether AniTrend can deliver notifications at all -->
+  <string name="summary_settings_notification_delivery_controls">Use the master switch to silence everything at once, then tune the categories that still matter to you.</string>
+  <!-- Section title for the card that groups individual AniTrend notification categories -->
+  <string name="title_settings_notification_categories">Categories</string>
+  <!-- Summary for the card that groups individual AniTrend notification categories -->
+  <string name="summary_settings_notification_categories">Choose whether AniTrend should surface AniList activity and app announcements separately.</string>
+  <!-- Summary shown when category toggles are unavailable because master notifications are turned off -->
+  <string name="summary_settings_notification_categories_disabled">Turn on AniTrend notifications first to enable category-level controls.</string>
+  <!-- Current-value badge shown when Android notification permission is available -->
+  <string name="label_settings_notification_permission_ready">Ready</string>
+  <!-- Current-value badge shown when Android notification permission still needs user approval -->
+  <string name="label_settings_notification_permission_required">Required</string>
 
   <!-- App-level notification toggles -->
   <!-- Master toggle controlling whether AniTrend shows any notifications at all -->
@@ -142,6 +158,12 @@
     <!-- Common actions -->
     <!-- Button label to close dialogs in settings -->
     <string name="action_settings_close">Close</string>
+    <!-- CTA shown on the root settings hint card to open the about screen -->
+    <string name="action_settings_learn_more">Learn more</string>
+    <!-- CTA shown on the notification hint card when runtime notification permission is still missing -->
+    <string name="action_settings_notification_grant_permission">Grant permission</string>
+    <!-- CTA shown on the notification hint card when the app can open system notification settings directly -->
+    <string name="action_settings_notification_open_system_settings">Open system settings</string>
 
 
     <!-- Preference Entries Title -->
@@ -170,5 +192,226 @@
   <string name="label_settings_storage_info" formatted="true">Limit %1$s • Limit %2$s • Free %3$s</string>
   <!-- Used percent label: e.g., Used 25% -->
   <string name="label_settings_storage_used_percent" formatted="true">Used %1$d%%</string>
+
+  <!-- Short current-state labels used as trailing values on settings index rows -->
+  <!-- Indicates an authenticated AniList session is active -->
+  <string name="label_settings_state_signed_in">Signed in</string>
+  <!-- Indicates there is no active AniList session -->
+  <string name="label_settings_state_signed_out">Signed out</string>
+  <!-- Generic positive enabled state for root summaries -->
+  <string name="label_settings_state_enabled">Enabled</string>
+  <!-- Generic disabled state for root summaries -->
+  <string name="label_settings_state_off">Off</string>
+  <!-- Privacy state when all optional sharing is disabled -->
+  <string name="label_settings_state_minimal">Minimal</string>
+  <!-- Privacy or behavior state when a mixed custom configuration is active -->
+  <string name="label_settings_state_custom">Custom</string>
+  <!-- Power row trailing state when saver behavior is enabled -->
+  <string name="label_settings_state_power_saver_on">Saver on</string>
+  <!-- Generic default/balanced state for root summaries -->
+  <string name="label_settings_state_default">Default</string>
+  <!-- Notification row state when platform permission still needs to be granted -->
+  <string name="label_settings_state_permission_required">Permission</string>
+  <!-- Placeholder trailing value for planned or incomplete settings surfaces -->
+  <string name="label_settings_state_preview">Preview</string>
+  <!-- Debug-only trailing value for the developer destination entry -->
+  <string name="label_settings_state_debug">Debug</string>
+  <!-- Indicates logs reflect live runtime diagnostics -->
+  <string name="label_settings_state_live">Live</string>
+  <!-- Indicates a runtime operations page such as task management -->
+  <string name="label_settings_state_runtime">Runtime</string>
+
+  <!-- Root settings hint card title warning users that defaults may shift between app versions -->
+  <string name="title_settings_root_hint">Heads up!</string>
+  <!-- Root settings hint card description explaining that defaults may change between releases -->
+  <string name="summary_settings_root_hint">Between app versions we may reset or apply new defaults. Tap to learn more.</string>
+
+  <!-- Preview-only hint card title used in settings component previews -->
+  <string name="title_settings_preview_about_app">About this app</string>
+  <!-- Preview-only hint card description used in settings component previews -->
+  <string name="summary_settings_preview_about_app">Find out more about our product</string>
+  <!-- Preview-only category title shown in settings previews for analytics controls -->
+  <string name="title_settings_preview_analytics_reporting">Analytics &amp; reporting</string>
+  <!-- Preview-only category title shown in settings previews for behavioral controls -->
+  <string name="title_settings_preview_behavior">Behavior</string>
+
+  <!-- Title shown on the account screen when an AniList account is already connected -->
+  <string name="title_settings_account_connected">Account connected</string>
+  <!-- Title shown on the account screen when the user still needs to authenticate -->
+  <string name="title_settings_account_sign_in">Sign in to AniTrend</string>
+  <!-- Description shown when an AniList account is active on the account settings screen -->
+  <string name="summary_settings_account_connected">Your current AniList session is active. Add another account or refresh your sign-in when needed.</string>
+  <!-- Description shown when no AniList account is connected yet -->
+  <string name="summary_settings_account_sign_in">Connect an AniList account to sync lists, notifications, and profile data.</string>
+  <!-- Section title for the authentication card on the account settings screen -->
+  <string name="title_settings_account_authentication">Authentication</string>
+  <!-- Section summary when the authenticated AniList viewer id is known; %1$d is the current viewer id -->
+  <string name="summary_settings_account_viewer_id" formatted="true">Viewer id %1$d</string>
+  <!-- Section summary shown when no AniList account is authenticated -->
+  <string name="summary_settings_account_no_authenticated">No authenticated account detected</string>
+  <!-- Action row title used to open the AniList authentication flow from account settings -->
+  <string name="action_settings_account_add_or_refresh_sign_in">Add or refresh sign in</string>
+  <!-- Action row summary explaining what opening account authentication will do -->
+  <string name="summary_settings_account_add_or_refresh_sign_in">Open AniList authentication to add an account or refresh your session.</string>
+  <!-- Trailing value shown on the account action row when the session is active -->
+  <string name="label_settings_account_connected">Connected</string>
+  <!-- Trailing value shown on the account action row when authentication is required -->
+  <string name="label_settings_account_required">Required</string>
+
+  <!-- Intro title for the filters screen describing the future filtering surface -->
+  <string name="title_settings_filters_overview">Content filtering</string>
+  <!-- Intro summary for the filters screen explaining that richer controls are planned -->
+  <string name="summary_settings_filters_overview">This area will evolve into stronger tag, theme, and content-sensitivity controls.</string>
+  <!-- Section title for the planned filters roadmap card -->
+  <string name="title_settings_filters_planned_controls">Planned controls</string>
+  <!-- Section summary for the planned filters roadmap card -->
+  <string name="summary_settings_filters_planned_controls">We are keeping this surface visible so it can grow into a proper filter editor instead of disappearing behind a hidden menu.</string>
+  <!-- Placeholder row title for future muted-theme filtering controls -->
+  <string name="title_settings_filters_muted_themes">Muted themes</string>
+  <!-- Placeholder row summary describing the future muted-theme filters capability -->
+  <string name="summary_settings_filters_muted_themes">Hide themes or tags you do not want to see across browse surfaces.</string>
+  <!-- Placeholder row title for future content-sensitivity controls -->
+  <string name="title_settings_filters_content_sensitivity">Content sensitivity</string>
+  <!-- Placeholder row summary describing future sensitivity filtering controls -->
+  <string name="summary_settings_filters_content_sensitivity">Review and hide content classes that are not useful for your browsing habits.</string>
+  <!-- Short trailing label for filter roadmap rows that are not implemented yet -->
+  <string name="label_settings_filters_soon">Soon</string>
+  <!-- Caution card title shown while the filtering editor is still under development -->
+  <string name="title_settings_filters_not_active">Not active yet</string>
+  <!-- Caution card summary shown while the filtering editor is still under development -->
+  <string name="summary_settings_filters_not_active">This screen is being reserved for a fuller filtering editor instead of a shallow one-off toggle list.</string>
+
+  <!-- Intro title for the locale screen explaining language and region selection -->
+  <string name="title_settings_locale_language_region">Language and region</string>
+  <!-- Intro summary for the locale screen explaining how app language selection works -->
+  <string name="summary_settings_locale_language_region">Choose the language AniTrend should prioritize and compare it to your device defaults.</string>
+  <!-- Section title showing the currently selected app language -->
+  <string name="title_settings_locale_current_language">Current language</string>
+  <!-- Section title for locale suggestions based on device configuration -->
+  <string name="title_settings_locale_suggested">Suggested</string>
+  <!-- Section summary describing locale suggestions based on the current device region -->
+  <string name="summary_settings_locale_suggested">Matches your device and region most closely.</string>
+  <!-- Section title for the full supported-languages list on the locale screen -->
+  <string name="title_settings_locale_all_languages">All supported languages</string>
+  <!-- Section summary for the explicit locale picker on the locale screen -->
+  <string name="summary_settings_locale_all_languages">Select a language explicitly when you do not want to follow the system.</string>
+
+  <!-- Title for the log viewer hint card encouraging users to export logs -->
+  <string name="title_settings_log_share">Share logs</string>
+  <!-- Description for the log viewer hint card explaining why logs are useful -->
+  <string name="summary_settings_log_share">Logs help us figure out the root cause to some issues. Tap to share.</string>
+  <!-- Title shown when the log viewer cannot load diagnostics data -->
+  <string name="title_settings_log_unavailable">Diagnostics unavailable</string>
+  <!-- Title for the section that contains the current log stream -->
+  <string name="title_settings_log_stream">Log stream</string>
+  <!-- Summary for the log stream card; %1$s is the entry count label and %2$s is the active filter label -->
+  <string name="summary_settings_log_stream" formatted="true">%1$s • %2$s</string>
+  <!-- Error shown when the expected log file does not exist yet -->
+  <string name="message_settings_log_none_found">No logs found</string>
+
+  <!-- Section title for the notifications card inside notification settings -->
+  <string name="title_settings_notification_app_notifications">App notifications</string>
+
+  <!-- Section title for the privacy toggles card inside privacy settings -->
+  <string name="title_settings_privacy_data_sharing">Data sharing</string>
+
+  <!-- Section title for the power-management toggles card inside power settings -->
+  <string name="title_settings_power_battery_behavior">Battery behavior</string>
+
+  <!-- Intro title for the storage settings screen -->
+  <string name="title_settings_storage_budget">Storage budget</string>
+  <!-- Intro summary for the storage settings screen explaining cache allocation -->
+  <string name="summary_settings_storage_budget">Control how much device storage AniTrend reserves for cache-heavy browsing.</string>
+  <!-- Section title for the storage cache-allocation card -->
+  <string name="title_settings_storage_cache_allowance">Cache allowance</string>
+  <!-- Section summary for the cache-allocation card; %1$s is the current percentage label -->
+  <string name="summary_settings_storage_current_limit" formatted="true">Current limit %1$s</string>
+  <!-- Extra helper text below the storage slider explaining the tradeoff of larger cache budgets -->
+  <string name="summary_settings_storage_cache_allowance_info">Higher values reduce refetching but use more device storage.</string>
+  <!-- Section title for the storage card that compares AniTrend cache allowance with available device space -->
+  <string name="title_settings_storage_device_overview">Device overview</string>
+  <!-- Section summary for the storage card that compares AniTrend cache allowance with available device space -->
+  <string name="summary_settings_storage_device_overview">Compare AniTrend\'s reserved cache budget against the free storage still available on this device.</string>
+  <!-- Section title for the storage card that breaks down cache usage by directory type -->
+  <string name="title_settings_storage_cache_breakdown">Cache breakdown</string>
+  <!-- Section summary for the storage card that breaks down cache usage by directory type -->
+  <string name="summary_settings_storage_cache_breakdown">See how much of the current cache allowance is already occupied by logs, images, video, and offline media.</string>
+  <!-- Legend label for AniTrend's total reserved cache budget -->
+  <string name="label_settings_storage_allowance">Allowance</string>
+  <!-- Legend label for currently free device storage -->
+  <string name="label_settings_storage_free_space">Free space</string>
+  <!-- Legend label for the amount of cache currently used by AniTrend -->
+  <string name="label_settings_storage_used_cache">Used cache</string>
+  <!-- Legend label for the unused portion of the current AniTrend cache budget -->
+  <string name="label_settings_storage_remaining_allowance">Allowance remaining</string>
+  <!-- Legend label for the logs cache directory on the storage breakdown card -->
+  <string name="label_settings_storage_logs">Logs</string>
+  <!-- Legend label for the image cache directory on the storage breakdown card -->
+  <string name="label_settings_storage_images">Images</string>
+  <!-- Legend label for the video cache directory on the storage breakdown card -->
+  <string name="label_settings_storage_video">Video</string>
+  <!-- Legend label for the offline video cache directory on the storage breakdown card -->
+  <string name="label_settings_storage_offline">Offline</string>
+  <!-- Summary shown when local storage controller metrics are temporarily unavailable on the storage settings screen -->
+  <string name="summary_settings_storage_unavailable">Detailed cache metrics are temporarily unavailable, but you can still adjust the cache allowance safely.</string>
+
+  <!-- Intro summary for the synchronization settings screen explaining the refresh controls -->
+  <string name="summary_settings_sync_overview">Tune how often AniTrend refreshes metadata, your lists, and profile data.</string>
+  <!-- Section title for metadata refresh controls on the synchronization screen -->
+  <string name="title_settings_sync_metadata_refresh">Metadata refresh</string>
+  <!-- Section summary for metadata refresh controls on the synchronization screen -->
+  <string name="summary_settings_sync_metadata_refresh">Genres, tags, and shared reference data.</string>
+  <!-- Section title for list refresh controls on the synchronization screen -->
+  <string name="title_settings_sync_list_refresh">List refresh</string>
+  <!-- Section summary for list refresh controls on the synchronization screen -->
+  <string name="summary_settings_sync_list_refresh">Anime and manga list changes.</string>
+  <!-- Section title for profile refresh controls on the synchronization screen -->
+  <string name="title_settings_sync_profile_refresh">Profile refresh</string>
+  <!-- Section summary for profile refresh controls on the synchronization screen -->
+  <string name="summary_settings_sync_profile_refresh">Viewer profile and user statistics.</string>
+
+  <!-- Intro title for the theme settings screen describing color and appearance options -->
+  <string name="title_settings_theme_color_appearance">Color and appearance</string>
+  <!-- Intro summary for the theme settings screen describing surface and contrast behavior -->
+  <string name="summary_settings_theme_color_appearance">Choose how AniTrend renders surfaces, contrast, and system integration.</string>
+  <!-- Section title showing the currently selected theme -->
+  <string name="title_settings_theme_current">Current theme</string>
+  <!-- Section title for the theme picker card -->
+  <string name="title_settings_theme_choose">Choose theme</string>
+  <!-- Section summary for the theme picker card explaining system and dynamic theme behavior -->
+  <string name="summary_settings_theme_choose">System follows your device. Dynamic uses wallpaper colors when supported.</string>
+  <!-- Caution card title shown when dynamic color is unavailable on this Android version -->
+  <string name="title_settings_theme_dynamic_unavailable">Dynamic theme unavailable</string>
+  <!-- Caution card summary shown when dynamic color is unavailable on this Android version -->
+  <string name="summary_settings_theme_dynamic_unavailable">Wallpaper-based colors require Android 12 or newer.</string>
+  <!-- Label for the dynamic color theme option in the theme picker -->
+  <string name="label_settings_theme_dynamic">Dynamic</string>
+  <!-- Label for the AMOLED or pure black theme option in the theme picker -->
+  <string name="label_settings_theme_black">Black</string>
+  <!-- Label for the light theme option in the theme picker -->
+  <string name="label_settings_theme_light">Light</string>
+  <!-- Label for the dark theme option in the theme picker -->
+  <string name="label_settings_theme_dark">Dark</string>
+
+  <!-- Empty-state title shown when no WorkManager jobs are currently scheduled -->
+  <string name="title_settings_task_empty">No scheduled work</string>
+  <!-- Empty-state summary shown when no WorkManager jobs are currently scheduled -->
+  <string name="summary_settings_task_empty">Background jobs will appear here once sync or maintenance tasks are queued.</string>
+  <!-- Section label for enqueued background tasks on the task management screen -->
+  <string name="label_settings_task_state_enqueued">Enqueued</string>
+  <!-- Section label for actively running background tasks on the task management screen -->
+  <string name="label_settings_task_state_running">Running</string>
+  <!-- Section label for blocked background tasks on the task management screen -->
+  <string name="label_settings_task_state_blocked">Blocked</string>
+  <!-- Section label for successfully completed background tasks on the task management screen -->
+  <string name="label_settings_task_state_succeeded">Succeeded</string>
+  <!-- Section label for failed background tasks on the task management screen -->
+  <string name="label_settings_task_state_failed">Failed</string>
+  <!-- Section label for cancelled background tasks on the task management screen -->
+  <string name="label_settings_task_state_cancelled">Cancelled</string>
+  <!-- Summary for a task row; %1$s is the task status or info text and %2$s is the next scheduled time -->
+  <string name="label_settings_task_item_summary" formatted="true">%1$s → %2$s</string>
+  <!-- Accessibility description for the button that cancels a WorkManager job -->
+  <string name="description_settings_task_cancel_work">Cancel work</string>
 
 </resources>

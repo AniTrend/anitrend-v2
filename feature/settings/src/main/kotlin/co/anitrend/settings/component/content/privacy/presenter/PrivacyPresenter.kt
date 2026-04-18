@@ -52,6 +52,11 @@ class PrivacyPresenter(
 
         // Section header and toggles
         preferenceBuilder.add(
+            category =
+                SettingItem.CategoryHeader(
+                    id = "privacy_controls_header",
+                    title = context.getString(R.string.title_settings_privacy_data_sharing),
+                ),
             entries =
                 listOf(
                     SettingItem.SwitchSetting(

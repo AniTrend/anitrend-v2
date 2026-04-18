@@ -35,10 +35,10 @@ class ThemePresenter(
     private fun themeLabel(theme: AniTrendTheme): String =
         when (theme) {
             AniTrendTheme.SYSTEM -> context.getString(R.string.global_label_system)
-            AniTrendTheme.DYNAMIC -> "Dynamic"
-            AniTrendTheme.AMOLED -> "Black"
-            AniTrendTheme.LIGHT -> "Light"
-            AniTrendTheme.DARK -> "Dark"
+            AniTrendTheme.DYNAMIC -> context.getString(co.anitrend.settings.R.string.label_settings_theme_dynamic)
+            AniTrendTheme.AMOLED -> context.getString(co.anitrend.settings.R.string.label_settings_theme_black)
+            AniTrendTheme.LIGHT -> context.getString(co.anitrend.settings.R.string.label_settings_theme_light)
+            AniTrendTheme.DARK -> context.getString(co.anitrend.settings.R.string.label_settings_theme_dark)
         }
 
     fun getItems(): List<SettingItem> {

@@ -17,17 +17,13 @@
 package co.anitrend.settings.component.compose
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
-import co.anitrend.android.core.compose.design.category.AniTrendCategoryHeader
-import co.anitrend.android.core.compose.design.category.AniTrendCategoryItem
 import co.anitrend.android.core.compose.design.slider.AniTrendSliderItem
-import co.anitrend.android.core.compose.design.toggle.AniTrendSwitch
 import co.anitrend.settings.model.SettingItem
 
 @Composable
@@ -35,52 +31,76 @@ fun SettingsItemsList(
     modifier: Modifier = Modifier,
     settingsItems: List<SettingItem>,
 ) {
+    val blocks = rememberSettingsBlocks(settingsItems)
     LazyColumn(modifier = modifier.fillMaxSize()) {
         items(
-            count = settingsItems.size,
-            key = { settingsItems[it].id },
+            count = blocks.size,
+            key = { blocks[it].id },
         ) { index ->
-            RenderSettingItem(item = settingsItems[index])
+            when (val block = blocks[index]) {
+                is SettingsBlock.SingleItem -> RenderStandaloneItem(item = block.item)
+                is SettingsBlock.Section -> {
+                    SettingsSectionCard(title = block.header.title) {
+                        block.items.forEachIndexed { itemIndex, item ->
+                            RenderSectionItem(item = item)
+                            if (itemIndex != block.items.lastIndex) {
+                                androidx.compose.material3.HorizontalDivider(
+                                    modifier = Modifier.padding(horizontal = 20.dp),
+                                    color =
+                                        androidx.compose.material3.MaterialTheme.colorScheme.outlineVariant
+                                            .copy(alpha = 0.35f),
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun RenderSettingItem(item: SettingItem) {
+private fun RenderStandaloneItem(item: SettingItem) {
     when (item) {
-        is SettingItem.CategoryHeader ->
-            AniTrendCategoryHeader(text = item.title)
-
         is SettingItem.HintCard ->
             AniTrendHintCard(
                 title = item.title,
                 description = item.description,
                 icon = item.icon,
+                currentValue = item.currentValue,
+                actionLabel = item.actionLabel,
                 onClick = item.onClick,
             )
 
+        is SettingItem.CategoryHeader -> Unit
+        else ->
+            SettingsSectionCard {
+                RenderSectionItem(item = item)
+            }
+    }
+}
+
+@Composable
+private fun RenderSectionItem(item: SettingItem) {
+    when (item) {
         is SettingItem.SwitchSetting ->
-            AniTrendSwitch(
+            SettingsToggleRow(
                 title = item.title,
-                description = item.summary,
+                summary = item.summary,
                 icon = item.icon,
-                enabled = true,
-                isChecked = item.onClick(),
-                onClick = { item.onValueChange(!item.onClick()) },
+                enabled = item.enabled(),
+                checked = item.onClick(),
+                onCheckedChange = item.onValueChange,
             )
 
         is SettingItem.ClickableSetting ->
-            AniTrendCategoryItem(
+            SettingsValueRow(
                 title = item.title,
-                description = item.summary,
+                summary = item.summary,
                 icon = item.icon,
+                currentValue = item.currentValue?.invoke(),
+                enabled = item.enabled,
                 onClick = item.onClick,
-                trailingIcon = {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-                        contentDescription = null,
-                    )
-                },
             )
 
         is SettingItem.DialogSetting<*> ->
@@ -96,5 +116,64 @@ private fun RenderSettingItem(item: SettingItem) {
                 extraInfo = item.extraInfo,
                 progress = item.progress,
             )
+
+        is SettingItem.CategoryHeader,
+        is SettingItem.HintCard,
+        -> Unit
     }
 }
+
+private sealed class SettingsBlock(
+    open val id: String,
+) {
+    data class SingleItem(
+        val item: SettingItem,
+    ) : SettingsBlock(item.id)
+
+    data class Section(
+        val header: SettingItem.CategoryHeader,
+        val items: List<SettingItem>,
+    ) : SettingsBlock(header.id)
+}
+
+@Composable
+private fun rememberSettingsBlocks(settingsItems: List<SettingItem>): List<SettingsBlock> =
+    androidx.compose.runtime.remember(settingsItems) {
+        buildList {
+            var currentHeader: SettingItem.CategoryHeader? = null
+            val currentItems = mutableListOf<SettingItem>()
+
+            fun flushSection() {
+                val header = currentHeader
+                if (header != null && currentItems.isNotEmpty()) {
+                    add(SettingsBlock.Section(header = header, items = currentItems.toList()))
+                }
+                currentHeader = null
+                currentItems.clear()
+            }
+
+            settingsItems.forEach { item ->
+                when (item) {
+                    is SettingItem.CategoryHeader -> {
+                        flushSection()
+                        currentHeader = item
+                    }
+
+                    is SettingItem.HintCard -> {
+                        flushSection()
+                        add(SettingsBlock.SingleItem(item))
+                    }
+
+                    else -> {
+                        if (currentHeader == null) {
+                            add(SettingsBlock.SingleItem(item))
+                        } else {
+                            currentItems += item
+                        }
+                    }
+                }
+            }
+
+            flushSection()
+        }
+    }

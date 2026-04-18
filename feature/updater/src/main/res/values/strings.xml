@@ -1,0 +1,65 @@
+<!--
+  ~ Copyright (C) 2026 AniTrend
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU General Public License
+  ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <!-- Title for the updater hub hero card; %1$s is the installed app label -->
+    <string name="title_updater_hub" formatted="true">%1$s update hub</string>
+    <!-- Hero summary shown before a manual check is requested; %1$s is the installed version and %2$s is the build type -->
+    <string name="summary_updater_overview" formatted="true">You are currently on version %1$s (%2$s). Remote update checks are still being staged, so this screen focuses on channel and build visibility for now.</string>
+    <!-- Hero summary shown after a manual check is requested; %1$s is the installed version -->
+    <string name="summary_updater_manual_check_result" formatted="true">Manual checks currently confirm the installed build only. AniTrend is still on version %1$s until remote update services are wired in.</string>
+    <!-- Primary action label for triggering a manual updater refresh -->
+    <string name="action_updater_check_now">Check now</string>
+    <!-- Supporting note shown in the updater hub to explain that only local installed-build state is currently available -->
+    <string name="summary_updater_local_only">Updater currently shows the installed build and channel preferences only. Download or install flows should not be implied until a real update source exists.</string>
+
+    <!-- Section title for installed-build metadata on the updater screen -->
+    <string name="title_updater_installed_build">Installed build</string>
+    <!-- Section summary for installed-build metadata on the updater screen -->
+    <string name="summary_updater_installed_build">These values come directly from the currently installed package and help when comparing releases or reporting issues.</string>
+    <!-- Label for the installed app version value -->
+    <string name="label_updater_version">Version</string>
+    <!-- Label for the installed build identifier value -->
+    <string name="label_updater_build">Build</string>
+    <!-- Label for the installed version code value -->
+    <string name="label_updater_version_code">Version code</string>
+    <!-- Label for the app store or installation source value -->
+    <string name="label_updater_distribution">Distribution</string>
+    <!-- Label for the current app locale value -->
+    <string name="label_updater_locale">Locale</string>
+    <!-- Label for the current build type value -->
+    <string name="label_updater_build_type">Build type</string>
+
+    <!-- Section title for updater channel and opt-in controls -->
+    <string name="title_updater_release_channel">Release channel</string>
+    <!-- Section summary for updater channel and opt-in controls -->
+    <string name="summary_updater_release_channel">Choose how adventurous this install should be and whether updater checks should consider preview builds.</string>
+    <!-- Label for the stable release channel chip -->
+    <string name="label_updater_channel_stable">Stable</string>
+    <!-- Label for the beta release channel chip -->
+    <string name="label_updater_channel_beta">Beta</string>
+    <!-- Label for the experimental release channel chip -->
+    <string name="label_updater_channel_experimental">Experimental</string>
+    <!-- Label for the automatic update-check toggle -->
+    <string name="label_updater_auto_check">Check in the background</string>
+    <!-- Summary for the automatic update-check toggle -->
+    <string name="summary_updater_auto_check">Keep this install ready for future background update checks as updater services come online.</string>
+    <!-- Label for the preview-build opt-in toggle -->
+    <string name="label_updater_include_preview">Include preview builds</string>
+    <!-- Summary for the preview-build opt-in toggle -->
+    <string name="summary_updater_include_preview">Consider beta or experimental releases when a matching release channel becomes available.</string>
+</resources>

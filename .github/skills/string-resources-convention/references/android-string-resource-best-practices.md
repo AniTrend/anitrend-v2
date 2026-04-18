@@ -21,6 +21,7 @@ repo's naming or translator-comment conventions.
 - Double quotes must be escaped with `\"` when they should appear literally.
 - Escape `@` as `\@` and `?` as `\?` when they should not be treated as resource syntax.
 - Use `\n` for new lines, `\t` for tabs, and `\uXXXX` for explicit Unicode characters.
+- Never leave a stray `\u` sequence in plain copy. Android will try to parse it as a Unicode escape and fail resource flattening if the next four characters are not valid hex.
 - Android collapses repeated whitespace unless the relevant region is wrapped in double quotes.
 
 ### 2. Prefer positional formatting placeholders
@@ -63,6 +64,7 @@ repo's naming or translator-comment conventions.
 ## Common Failure Modes
 
 - Unescaped apostrophes causing AAPT resource compilation failures.
+- Copy that includes a literal `\u` sequence, which AAPT treats as an invalid Unicode escape during flattening.
 - Non-positional placeholders in translatable text.
 - Using plurals for UI state labels that are not grammatically quantity-driven.
 - Mixing HTML markup with formatting arguments without escaping or `Html.fromHtml(...)`.

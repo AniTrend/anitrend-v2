@@ -18,10 +18,10 @@ package co.anitrend.settings.component.content.task
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.StopCircle
@@ -35,16 +35,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.work.WorkManager
-import co.anitrend.android.core.compose.design.category.AniTrendCategoryHeader
+import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
 import co.anitrend.android.core.compose.design.category.AniTrendCategoryItem
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.applyOpacity
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.settings.R
+import co.anitrend.settings.component.compose.SettingsSectionCard
 import co.anitrend.settings.component.content.task.state.TaskState
 import co.anitrend.settings.component.content.task.state.TaskWorkItem
 import co.anitrend.settings.component.content.task.viewmodel.TaskViewModel
@@ -88,57 +92,95 @@ private fun TaskContent(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier.fillMaxSize(),
     ) {
-        // For each state, if there are any work items, show a section header and its items.
+        if (taskWorkItems.isEmpty()) {
+            item {
+                AniTrendHintCard(
+                    title = stringResource(R.string.title_settings_task_empty),
+                    description = stringResource(R.string.summary_settings_task_empty),
+                    icon = Icons.Outlined.Task,
+                )
+            }
+        }
+
         orderedStates.forEach { state ->
             groupedItems[state]?.let { itemsForState ->
-                item { AniTrendCategoryHeader(text = state.name) }
-                items(
-                    items = itemsForState,
-                    key = { it.id },
-                ) { workItem ->
-                    val isEnabled = workItem.state !in listOf(TaskState.Cancelled, TaskState.Failed, TaskState.Blocked, TaskState.Succeeded)
-                    AniTrendCategoryItem(
-                        title = workItem.tags,
-                        description = "${workItem.info} -> ${workItem.nextScheduleTime}",
-                        enabled = isEnabled,
-                        trailingIcon = {
-                            if (workItem.state in listOf(TaskState.Enqueued, TaskState.Running, TaskState.Blocked)) {
-                                IconButton(onClick = { onCancelWork(workItem.id) }) {
-                                    Icon(
-                                        imageVector = if (workItem.state == TaskState.Running) Icons.Outlined.StopCircle else Icons.Outlined.Cancel,
-                                        contentDescription = "Cancel Work",
-                                    )
-                                }
-                            }
-                        },
-                        leadingIcon = {
-                            if (workItem.state == TaskState.Running) {
-                                CircularProgressIndicator(
-                                    modifier =
-                                        Modifier
-                                            .padding(start = 8.dp, end = 16.dp)
-                                            .size(24.dp),
+                item {
+                    SettingsSectionCard(
+                        title = taskStateLabel(state),
+                        description = pluralStringResource(R.plurals.label_settings_task_count, itemsForState.size, itemsForState.size),
+                    ) {
+                        itemsForState.forEachIndexed { index, workItem ->
+                            val isEnabled = workItem.state !in listOf(TaskState.Cancelled, TaskState.Failed, TaskState.Blocked, TaskState.Succeeded)
+                            AniTrendCategoryItem(
+                                title = workItem.tags,
+                                description = stringResource(R.string.label_settings_task_item_summary, workItem.info, workItem.nextScheduleTime),
+                                enabled = isEnabled,
+                                trailingIcon = {
+                                    if (workItem.state in listOf(TaskState.Enqueued, TaskState.Running, TaskState.Blocked)) {
+                                        IconButton(onClick = { onCancelWork(workItem.id) }) {
+                                            Icon(
+                                                imageVector =
+                                                    if (workItem.state ==
+                                                        TaskState.Running
+                                                    ) {
+                                                        Icons.Outlined.StopCircle
+                                                    } else {
+                                                        Icons.Outlined.Cancel
+                                                    },
+                                                contentDescription = stringResource(R.string.description_settings_task_cancel_work),
+                                            )
+                                        }
+                                    }
+                                },
+                                leadingIcon = {
+                                    if (workItem.state == TaskState.Running) {
+                                        CircularProgressIndicator(
+                                            modifier =
+                                                Modifier
+                                                    .padding(start = 8.dp, end = 16.dp)
+                                                    .size(24.dp),
+                                        )
+                                    } else {
+                                        Icon(
+                                            imageVector = Icons.Outlined.Task,
+                                            contentDescription = null,
+                                            modifier =
+                                                Modifier
+                                                    .padding(start = 8.dp, end = 16.dp)
+                                                    .size(24.dp),
+                                            tint = MaterialTheme.colorScheme.onSurfaceVariant.applyOpacity(isEnabled),
+                                        )
+                                    }
+                                },
+                            )
+                            if (index != itemsForState.lastIndex) {
+                                androidx.compose.material3.HorizontalDivider(
+                                    modifier = Modifier.padding(horizontal = 20.dp),
+                                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
                                 )
-                            } else {
-                                Icon(
-                                    imageVector = Icons.Outlined.Task,
-                                    contentDescription = null,
-                                    modifier =
-                                        Modifier
-                                            .padding(start = 8.dp, end = 16.dp)
-                                            .size(24.dp),
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant.applyOpacity(isEnabled),
-                                )
                             }
-                        },
-                    )
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-@AniTrendPreview.Default
+@Composable
+private fun taskStateLabel(state: TaskState): String =
+    when (state) {
+        TaskState.Enqueued -> stringResource(R.string.label_settings_task_state_enqueued)
+        TaskState.Running -> stringResource(R.string.label_settings_task_state_running)
+        TaskState.Succeeded -> stringResource(R.string.label_settings_task_state_succeeded)
+        TaskState.Failed -> stringResource(R.string.label_settings_task_state_failed)
+        TaskState.Blocked -> stringResource(R.string.label_settings_task_state_blocked)
+        TaskState.Cancelled -> stringResource(R.string.label_settings_task_state_cancelled)
+    }
+
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
+@AniTrendPreview.Mobile
 @Composable
 fun TaskContentPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,

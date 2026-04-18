@@ -18,7 +18,9 @@ package co.anitrend.updater.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.UpdaterRouter
+import co.anitrend.updater.component.viewmodel.UpdateViewModel
 import co.anitrend.updater.provider.FeatureProvider
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 private val coreModule =
@@ -31,6 +33,12 @@ private val fragmentModule =
 
 private val viewModelModule =
     module {
+        viewModel {
+            UpdateViewModel(
+                savedStateHandle = get(),
+                appInfo = get(),
+            )
+        }
     }
 
 private val featureModule =
@@ -42,5 +50,5 @@ private val featureModule =
 
 internal val moduleHelper =
     DynamicFeatureModuleHelper(
-        listOf(featureModule),
+        listOf(viewModelModule, featureModule),
     )

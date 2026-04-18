@@ -20,7 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
-import co.anitrend.settings.component.compose.PreviewDeveloperData
+import co.anitrend.settings.component.compose.previewDeveloperData
 import co.anitrend.settings.component.compose.SettingsItemsList
 import co.anitrend.settings.model.SettingItem
 
@@ -38,6 +38,6 @@ fun DeveloperScreen(
 @Composable
 private fun DeveloperScreenPreview() {
     PreviewTheme(wrapInSurface = true) {
-        DeveloperScreen(settingsItems = PreviewDeveloperData)
+        DeveloperScreen(settingsItems = previewDeveloperData())
     }
 }
