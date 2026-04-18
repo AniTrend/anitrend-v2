@@ -59,6 +59,16 @@ sealed class UserParam {
             ),
     ) : UserParam()
 
+    /** Profile overview sidecar query keyed by a resolved user id */
+    data class Overview(
+        val id: Long,
+    ) : UserParam()
+
+    /** Profile feed sidecar query keyed by a resolved user id */
+    data class Feed(
+        val id: Long,
+    ) : UserParam()
+
     /** [User query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
      *
      * @param search Filter by search query

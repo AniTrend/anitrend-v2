@@ -17,6 +17,8 @@
 package co.anitrend.domain.user.interactor
 
 import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.user.entity.profile.ProfileFeed
+import co.anitrend.domain.user.entity.profile.ProfileOverview
 import co.anitrend.domain.user.model.UserParam
 import co.anitrend.domain.user.repository.IUserRepository
 
@@ -61,5 +63,17 @@ sealed class UserUseCase {
         protected val repository: IUserRepository.Statistic<State>,
     ) : UserUseCase() {
         suspend operator fun invoke(param: UserParam.Statistic) = repository.getProfileStatistic(param)
+    }
+
+    abstract class Overview<State : UiState<*>>(
+        protected val repository: IUserRepository.Overview<State>,
+    ) : UserUseCase() {
+        suspend operator fun invoke(param: UserParam.Overview) = repository.getProfileOverview(param)
+    }
+
+    abstract class Feed<State : UiState<*>>(
+        protected val repository: IUserRepository.Feed<State>,
+    ) : UserUseCase() {
+        suspend operator fun invoke(param: UserParam.Feed) = repository.getProfileFeed(param)
     }
 }

@@ -17,6 +17,8 @@
 package co.anitrend.domain.user.repository
 
 import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.user.entity.profile.ProfileFeed
+import co.anitrend.domain.user.entity.profile.ProfileOverview
 import co.anitrend.domain.user.model.UserParam
 
 interface IUserRepository {
@@ -46,5 +48,13 @@ interface IUserRepository {
 
     interface Statistic<State : UiState<*>> : IUserRepository {
         suspend fun getProfileStatistic(param: UserParam.Statistic): State
+    }
+
+    interface Overview<State : UiState<*>> : IUserRepository {
+        suspend fun getProfileOverview(param: UserParam.Overview): State
+    }
+
+    interface Feed<State : UiState<*>> : IUserRepository {
+        suspend fun getProfileFeed(param: UserParam.Feed): State
     }
 }

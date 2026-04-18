@@ -20,6 +20,8 @@ import co.anitrend.data.user.datasource.local.name.UserPreviousNameLocalSource
 import co.anitrend.data.user.datasource.local.notification.UserNotificationLocalSource
 import co.anitrend.data.user.datasource.local.option.UserGeneralOptionLocalSource
 import co.anitrend.data.user.datasource.local.option.UserMediaOptionLocalSource
+import co.anitrend.data.user.datasource.local.sidecar.UserProfileFeedLocalSource
+import co.anitrend.data.user.datasource.local.sidecar.UserProfileOverviewLocalSource
 import co.anitrend.data.user.datasource.local.statistic.UserStatisticLocalSource
 
 internal interface IUserStore {
@@ -30,6 +32,10 @@ internal interface IUserStore {
     fun userMediaOptionDao(): UserMediaOptionLocalSource
 
     fun userStatisticDao(): UserStatisticLocalSource
+
+    fun userProfileOverviewDao(): UserProfileOverviewLocalSource
+
+    fun userProfileFeedDao(): UserProfileFeedLocalSource
 
     fun userPreviousNameDao(): UserPreviousNameLocalSource
 

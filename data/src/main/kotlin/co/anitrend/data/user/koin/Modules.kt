@@ -23,22 +23,33 @@ import co.anitrend.data.auth.mapper.AuthMapper
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.user.GetAuthenticatedInteractor
+import co.anitrend.data.user.GetProfileFeedInteractor
+import co.anitrend.data.user.GetProfileOverviewInteractor
 import co.anitrend.data.user.GetProfileInteractor
+import co.anitrend.data.user.GetProfileStatisticInteractor
 import co.anitrend.data.user.GetUserInteractor
 import co.anitrend.data.user.ToggleFollowInteractor
 import co.anitrend.data.user.UpdateProfileInteractor
 import co.anitrend.data.user.UserAuthenticatedRepository
 import co.anitrend.data.user.UserFollowRepository
 import co.anitrend.data.user.UserIdentifierRepository
+import co.anitrend.data.user.UserProfileFeedRepository
+import co.anitrend.data.user.UserProfileOverviewRepository
 import co.anitrend.data.user.UserProfileRepository
+import co.anitrend.data.user.UserProfileStatisticRepository
 import co.anitrend.data.user.UserUpdateRepository
 import co.anitrend.data.user.cache.UserCache
 import co.anitrend.data.user.converter.UserEntityConverter
 import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
 import co.anitrend.data.user.converter.UserMediaOptionModelConverter
 import co.anitrend.data.user.converter.UserModelConverter
+import co.anitrend.data.user.converter.UserProfileFeedConverter
+import co.anitrend.data.user.converter.UserProfileOverviewConverter
+import co.anitrend.data.user.converter.UserStatisticModelConverter
 import co.anitrend.data.user.converter.UserViewEntityConverter
 import co.anitrend.data.user.mapper.UserMapper
+import co.anitrend.data.user.mapper.UserProfileFeedMapper
+import co.anitrend.data.user.mapper.UserProfileOverviewMapper
 import co.anitrend.data.user.repository.UserRepository
 import co.anitrend.data.user.source.UserSourceImpl
 import co.anitrend.data.user.source.contract.UserSource
@@ -108,6 +119,42 @@ private val sourceModule =
                 dispatcher = get(),
             )
         }
+        factory<UserSource.Overview> {
+            val mapper = get<UserProfileOverviewMapper>()
+
+            UserSourceImpl.Overview(
+                remoteSource = aniListApi(),
+                localSource = store().userProfileOverviewDao(),
+                clearDataHelper = get(),
+                controller =
+                    graphQLController(
+                        mapper = mapper,
+                        strategy = offline(),
+                    ),
+                mapper = mapper,
+                converter = get(),
+                cachePolicy = get<UserCache.Overview>(),
+                dispatcher = get(),
+            )
+        }
+        factory<UserSource.Feed> {
+            val mapper = get<UserProfileFeedMapper>()
+
+            UserSourceImpl.Feed(
+                remoteSource = aniListApi(),
+                localSource = store().userProfileFeedDao(),
+                clearDataHelper = get(),
+                controller =
+                    graphQLController(
+                        mapper = mapper,
+                        strategy = offline(),
+                    ),
+                mapper = mapper,
+                converter = get(),
+                    cachePolicy = get<UserCache.Feed>(),
+                dispatcher = get(),
+            )
+        }
         factory<UserSource.ToggleFollow> {
             UserSourceImpl.ToggleFollow(
                 remoteSource = aniListApi(),
@@ -157,6 +204,16 @@ private val cacheModule =
                 localSource = cacheLocalSource(),
             )
         }
+        factory {
+            UserCache.Overview(
+                localSource = cacheLocalSource(),
+            )
+        }
+        factory {
+            UserCache.Feed(
+                localSource = cacheLocalSource(),
+            )
+        }
     }
 
 private val converterModule =
@@ -175,6 +232,15 @@ private val converterModule =
         }
         factory {
             UserViewEntityConverter()
+        }
+        factory {
+            UserStatisticModelConverter()
+        }
+        factory {
+            UserProfileOverviewConverter()
+        }
+        factory {
+            UserProfileFeedConverter()
         }
     }
 
@@ -223,6 +289,23 @@ private val mapperModule =
                 localSource = store().userNotificationDao(),
             )
         }
+        factory {
+            UserMapper.Statistic(
+                userMapper = get(),
+                localSource = store().userStatisticDao(),
+                converter = get(),
+            )
+        }
+        factory {
+            UserProfileOverviewMapper(
+                localSource = store().userProfileOverviewDao(),
+            )
+        }
+        factory {
+            UserProfileFeedMapper(
+                localSource = store().userProfileFeedDao(),
+            )
+        }
     }
 
 private val useCaseModule =
@@ -239,6 +322,21 @@ private val useCaseModule =
         }
         factory<GetAuthenticatedInteractor> {
             UserInteractor.Authenticated(
+                repository = get(),
+            )
+        }
+        factory<GetProfileStatisticInteractor> {
+            UserInteractor.Statistic(
+                repository = get(),
+            )
+        }
+        factory<GetProfileOverviewInteractor> {
+            UserInteractor.Overview(
+                repository = get(),
+            )
+        }
+        factory<GetProfileFeedInteractor> {
+            UserInteractor.Feed(
                 repository = get(),
             )
         }
@@ -268,6 +366,21 @@ private val repositoryModule =
         }
         factory<UserProfileRepository> {
             UserRepository.Profile(
+                source = get(),
+            )
+        }
+        factory<UserProfileStatisticRepository> {
+            UserRepository.Statistic(
+                source = get(),
+            )
+        }
+        factory<UserProfileOverviewRepository> {
+            UserRepository.Overview(
+                source = get(),
+            )
+        }
+        factory<UserProfileFeedRepository> {
+            UserRepository.Feed(
                 source = get(),
             )
         }

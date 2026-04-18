@@ -23,11 +23,11 @@ import android.view.ViewGroup
 import android.widget.Space
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
+import co.anitrend.android.core.extensions.dp
+import co.anitrend.android.core.helpers.image.using
 import co.anitrend.arch.extension.ext.getCompatColor
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.android.core.extensions.dp
-import co.anitrend.android.core.helpers.image.using
 import co.anitrend.domain.review.entity.Review
 import coil.request.Disposable
 import coil.transform.CircleCropTransformation
@@ -103,7 +103,7 @@ internal class ReviewAvatarWidget
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                     )
                 userImage.setImageDrawable(
-                    context.getCompatDrawable(co.anitrend.core.R.drawable.ic_anitrend_notification_logo),
+                    context.getCompatDrawable(co.anitrend.core.R.mipmap.ic_launcher_round),
                 )
                 userName.text = "Groenboys"
             }

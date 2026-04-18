@@ -1,0 +1,15 @@
+query GetUserProfileFeed($id: Int) {
+    User(id: $id) {
+        id
+    }
+    reviewPage: Page(page: 1, perPage: 6) {
+        reviews(userId: $id, sort: [ID_DESC]) {
+            ... UserProfileReviewPreview
+        }
+    }
+    activityPage: Page(page: 1, perPage: 6) {
+        listActivity: activities(userId: $id, sort: [ID_DESC], type: MEDIA_LIST) {
+            ... UserProfileListActivity
+        }
+    }
+}

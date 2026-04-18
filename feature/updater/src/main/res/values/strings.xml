@@ -16,8 +16,8 @@
   -->
 
 <resources>
-    <!-- Title for the updater hub hero card; %1$s is the installed app label -->
-    <string name="title_updater_hub" formatted="true">%1$s update hub</string>
+    <!-- Title for the updater hub hero card -->
+    <string name="title_updater_hub">Update hub</string>
     <!-- Hero summary shown before a manual check is requested; %1$s is the installed version and %2$s is the build type -->
     <string name="summary_updater_overview" formatted="true">You are currently on version %1$s (%2$s). Remote update checks are still being staged, so this screen focuses on channel and build visibility for now.</string>
     <!-- Hero summary shown after a manual check is requested; %1$s is the installed version -->
@@ -34,7 +34,7 @@
     <!-- Label for the installed app version value -->
     <string name="label_updater_version">Version</string>
     <!-- Label for the installed build identifier value -->
-    <string name="label_updater_build">Build</string>
+    <string name="label_updater_build">Device Build</string>
     <!-- Label for the installed version code value -->
     <string name="label_updater_version_code">Version code</string>
     <!-- Label for the app store or installation source value -->

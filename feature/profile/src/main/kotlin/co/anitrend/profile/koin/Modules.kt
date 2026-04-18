@@ -18,6 +18,9 @@ package co.anitrend.profile.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.ProfileRouter
+import co.anitrend.profile.component.viewmodel.ProfileFeedViewModel
+import co.anitrend.profile.component.viewmodel.ProfileOverviewViewModel
+import co.anitrend.profile.component.viewmodel.ProfileStatsViewModel
 import co.anitrend.profile.component.viewmodel.ProfileViewModel
 import co.anitrend.profile.provider.FeatureProvider
 import org.koin.core.module.dsl.viewModel
@@ -27,6 +30,21 @@ private val viewModelModule =
     module {
         viewModel {
             ProfileViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            ProfileStatsViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            ProfileOverviewViewModel(
+                interactor = get(),
+            )
+        }
+        viewModel {
+            ProfileFeedViewModel(
                 interactor = get(),
             )
         }
