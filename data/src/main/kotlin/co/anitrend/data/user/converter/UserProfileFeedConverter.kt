@@ -34,14 +34,12 @@ internal class UserProfileFeedConverter(
                 reviews = source.reviews.map(::reviewPreview),
                 listActivity =
                     source.listActivity.map { activity ->
-                        overviewConverter
-                            .convertFrom(
-                                co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity(
-                                    id = source.id,
-                                    recentActivity = listOf(activity),
-                                ),
-                            ).recentActivity
-                            .first()
+                        overviewConverter.convertFrom(
+                            co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity(
+                                id = source.id,
+                                recentActivity = listOf(activity),
+                            ),
+                        ).recentActivity.first()
                     },
             )
 
@@ -57,17 +55,14 @@ internal class UserProfileFeedConverter(
                 updatedAt = source.updatedAt,
                 mediaId = source.mediaId,
                 mediaType = source.mediaType,
-                media =
-                    source.media?.let { media ->
-                        overviewConverter
-                            .convertFrom(
-                                co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity(
-                                    id = source.mediaId,
-                                    animeFavourites = listOf(media),
-                                ),
-                            ).animeFavourites
-                            .first()
-                    },
+                media = source.media?.let { media ->
+                    overviewConverter.convertFrom(
+                        co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity(
+                            id = source.mediaId,
+                            animeFavourites = listOf(media),
+                        ),
+                    ).animeFavourites.first()
+                },
             )
     }
 }

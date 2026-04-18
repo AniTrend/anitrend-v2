@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2026 AniTrend
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
 package co.anitrend.profile.component.compose
 
 import androidx.compose.foundation.BorderStroke
@@ -140,16 +124,17 @@ private fun ProfileRecentSection(
 }
 
 @Composable
-private fun ProfileLibraryPulseSection(summary: ProfileLibraryPulseSummary) {
+private fun ProfileLibraryPulseSection(
+    summary: ProfileLibraryPulseSummary,
+) {
     val metricItems =
         listOf(
             stringResource(R.string.label_profile_metric_anime_total) to summary.animeTotal.toString(),
             stringResource(R.string.label_profile_metric_manga_total) to summary.mangaTotal.toString(),
             stringResource(R.string.label_profile_metric_progress_footprint) to summary.progressFootprint,
-            stringResource(R.string.label_profile_metric_collection_bias) to
-                summary.dominantStatus.ifBlank {
-                    stringResource(R.string.label_profile_row_order_default)
-                },
+            stringResource(R.string.label_profile_metric_collection_bias) to summary.dominantStatus.ifBlank {
+                stringResource(R.string.label_profile_row_order_default)
+            },
         )
 
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -208,7 +193,9 @@ private fun ProfileStatsPreviewSection(
 }
 
 @Composable
-private fun StatsPreviewChart(statistic: Statistic) {
+private fun StatsPreviewChart(
+    statistic: Statistic,
+) {
     val scoreEntries = remember(statistic) { statistic.scoreEntries() }
     val statusEntries = remember(statistic) { statistic.statusEntries() }
 

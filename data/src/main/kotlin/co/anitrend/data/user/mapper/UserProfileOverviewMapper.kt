@@ -33,17 +33,11 @@ internal class UserProfileOverviewMapper(
         return UserProfileOverviewEntity(
             id = userId,
             animeFavourites =
-                source.user.favourites
-                    ?.anime
-                    ?.edges
-                    .orEmpty()
+                source.user.favourites?.anime?.edges.orEmpty()
                     .sortedBy { it.favouriteOrder ?: Int.MAX_VALUE }
                     .mapNotNull { it.node },
             mangaFavourites =
-                source.user.favourites
-                    ?.manga
-                    ?.edges
-                    .orEmpty()
+                source.user.favourites?.manga?.edges.orEmpty()
                     .sortedBy { it.favouriteOrder ?: Int.MAX_VALUE }
                     .mapNotNull { it.node },
             recentActivity = source.page?.activities.orEmpty(),

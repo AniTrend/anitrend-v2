@@ -123,7 +123,7 @@ internal fun ProfileContent(
                     contentDescription = stringResource(R.string.action_profile_share),
                 )
             }
-        },
+        }
     ) { innerPadding ->
         LazyColumn(
             modifier =
@@ -398,13 +398,12 @@ private fun previewMediaPreview(
 ): ProfileOverview.MediaPreview =
     ProfileOverview.MediaPreview(
         id = id,
-        title =
-            co.anitrend.domain.media.entity.attribute.title.MediaTitle(
-                romaji = title,
-                english = title,
-                native = null,
-                userPreferred = title,
-            ),
+        title = co.anitrend.domain.media.entity.attribute.title.MediaTitle(
+            romaji = title,
+            english = title,
+            native = null,
+            userPreferred = title,
+        ),
         image =
             co.anitrend.domain.media.entity.attribute.image.MediaImage(
                 color = null,

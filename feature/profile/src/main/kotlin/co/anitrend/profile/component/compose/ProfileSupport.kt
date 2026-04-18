@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2026 AniTrend
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
 package co.anitrend.profile.component.compose
 
 import co.anitrend.android.core.extensions.toHumanReadableQuantity
@@ -151,15 +135,15 @@ internal fun User.statisticFor(tab: ProfileMediaTab): Statistic? =
         else -> null
     }
 
-internal fun User.heroMetaItems(): List<ProfileHeroMetaItem> =
-    buildList {
-        formatEpochDate(status.createdAt)?.let {
-            add(ProfileHeroMetaItem(kind = ProfileHeroMetaKind.Joined, value = it))
+    internal fun User.heroMetaItems(): List<ProfileHeroMetaItem> =
+        buildList {
+            formatEpochDate(status.createdAt)?.let {
+                add(ProfileHeroMetaItem(kind = ProfileHeroMetaKind.Joined, value = it))
+            }
+            formatEpochDate(status.updatedAt)?.let {
+                add(ProfileHeroMetaItem(kind = ProfileHeroMetaKind.Updated, value = it))
+            }
         }
-        formatEpochDate(status.updatedAt)?.let {
-            add(ProfileHeroMetaItem(kind = ProfileHeroMetaKind.Updated, value = it))
-        }
-    }
 
 internal fun <T> profileSectionStateOf(
     value: T?,
@@ -168,11 +152,10 @@ internal fun <T> profileSectionStateOf(
 ): ProfileSectionState<T> =
     when {
         loadState is LoadState.Loading && value == null -> ProfileSectionState.Loading
-        loadState is LoadState.Error && value != null && !isEmpty(value) ->
-            ProfileSectionState.Partial(
-                data = value,
-                cause = loadState.details,
-            )
+        loadState is LoadState.Error && value != null && !isEmpty(value) -> ProfileSectionState.Partial(
+            data = value,
+            cause = loadState.details,
+        )
         loadState is LoadState.Error -> ProfileSectionState.Error(loadState.details)
         value == null || isEmpty(value) -> ProfileSectionState.Empty
         else -> ProfileSectionState.Content(value)
@@ -188,7 +171,8 @@ internal fun ProfileOverview.favouriteGroups(): List<Pair<ProfileMediaTab, List<
         }
     }
 
-internal fun ProfileOverview.leadFavourite(): ProfileOverview.MediaPreview? = animeFavourites.firstOrNull() ?: mangaFavourites.firstOrNull()
+internal fun ProfileOverview.leadFavourite(): ProfileOverview.MediaPreview? =
+    animeFavourites.firstOrNull() ?: mangaFavourites.firstOrNull()
 
 internal fun ProfileOverview.favouritesRail(limit: Int = 10): List<ProfileOverview.MediaPreview> =
     favouriteGroups()
@@ -245,11 +229,15 @@ internal fun ProfileFeed.filteredListUpdates(filter: ProfileActivityFilter): Lis
         ProfileActivityFilter.Reviews -> emptyList()
     }
 
-internal fun ProfileFeed.reviewSpotlight(filter: ProfileActivityFilter): ProfileFeed.ReviewPreview? = filteredReviews(filter).firstOrNull()
+internal fun ProfileFeed.reviewSpotlight(filter: ProfileActivityFilter): ProfileFeed.ReviewPreview? =
+    filteredReviews(filter).firstOrNull()
 
-internal fun ProfileFeed.reviewArchive(filter: ProfileActivityFilter): List<ProfileFeed.ReviewPreview> = filteredReviews(filter).drop(1)
+internal fun ProfileFeed.reviewArchive(filter: ProfileActivityFilter): List<ProfileFeed.ReviewPreview> =
+    filteredReviews(filter).drop(1)
 
-internal fun ProfileDetails.libraryPulseSummary(displayUser: User): ProfileLibraryPulseSummary {
+internal fun ProfileDetails.libraryPulseSummary(
+    displayUser: User,
+): ProfileLibraryPulseSummary {
     val animeTotal =
         mediaListStats
             .filter { !it.isCustomList && it.mediaType == MediaType.ANIME }
@@ -263,13 +251,11 @@ internal fun ProfileDetails.libraryPulseSummary(displayUser: User): ProfileLibra
         when (displayUser) {
             is User.WithStats ->
                 listOfNotNull(
-                    displayUser.statistics.anime
-                        ?.minutesWatched
+                    displayUser.statistics.anime?.minutesWatched
                         ?.takeIf { it > 0 }
                         ?.toHumanReadableQuantity(0)
                         ?.let { "$it min" },
-                    displayUser.statistics.manga
-                        ?.chaptersRead
+                    displayUser.statistics.manga?.chaptersRead
                         ?.takeIf { it > 0 }
                         ?.toHumanReadableQuantity(0)
                         ?.let { "$it ch" },

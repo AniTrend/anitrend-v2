@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2026 AniTrend
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
 package co.anitrend.profile.component.compose
 
 import androidx.compose.animation.animateContentSize
@@ -434,7 +418,8 @@ internal fun ProfileEditorialMarkdownBlock(
                                     } else {
                                         Modifier.heightIn(max = 240.dp)
                                     },
-                                ).padding(16.dp),
+                                )
+                                .padding(16.dp),
                     ) {
                         MarkdownText(content = markdown)
                     }
@@ -502,21 +487,21 @@ internal fun ProfileStatsOverviewSection(
         when (state) {
             is ProfileSectionState.Content -> StatsOverviewContent(statistic = state.data)
             is ProfileSectionState.Partial -> StatsOverviewContent(statistic = state.data)
-            ProfileSectionState.Loading ->
-                ProfileMessageState(
-                    message = stringResource(R.string.message_profile_stats_loading),
-                )
+            ProfileSectionState.Loading -> ProfileMessageState(
+                message = stringResource(R.string.message_profile_stats_loading),
+            )
             is ProfileSectionState.Error -> ProfileRetryState(onRetry = onRetry)
-            ProfileSectionState.Empty ->
-                ProfileMessageState(
-                    message = stringResource(R.string.message_profile_stats_unavailable),
-                )
+            ProfileSectionState.Empty -> ProfileMessageState(
+                message = stringResource(R.string.message_profile_stats_unavailable),
+            )
         }
     }
 }
 
 @Composable
-private fun StatsOverviewContent(statistic: Statistic) {
+private fun StatsOverviewContent(
+    statistic: Statistic,
+) {
     val scoreEntries = remember(statistic) { statistic.scoreEntries() }
     val statusEntries = remember(statistic) { statistic.statusEntries() }
     val metrics = statsMetricItems(statistic)
@@ -691,17 +676,15 @@ private fun buildLibraryMetricItems(
         add(
             stringLabelAndValue(
                 labelRes = R.string.label_profile_metric_row_order,
-                value =
-                    details.listOption.rowOrder
-                        ?.toString()
-                        .orEmpty()
-                        .ifBlank { stringResource(R.string.label_profile_row_order_default) },
+                value = details.listOption.rowOrder?.toString().orEmpty().ifBlank { stringResource(R.string.label_profile_row_order_default) },
             ),
         )
     }
 
 @Composable
-internal fun statsMetricItems(statistic: Statistic): List<Pair<String, String>> =
+internal fun statsMetricItems(
+    statistic: Statistic,
+): List<Pair<String, String>> =
     buildList {
         add(stringLabelAndValue(R.string.label_profile_metric_mean_score, statistic.meanScore.displayScore()))
         add(
@@ -743,7 +726,9 @@ internal fun statsMetricItems(statistic: Statistic): List<Pair<String, String>> 
         }
     }
 
-internal fun topGenreEntries(statistic: Statistic): List<Pair<String, Int>> =
+internal fun topGenreEntries(
+    statistic: Statistic,
+): List<Pair<String, Int>> =
     when (statistic) {
         is Statistic.Anime ->
             statistic.genres

@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2026 AniTrend
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
 package co.anitrend.profile.component.compose
 
 import androidx.compose.foundation.layout.Arrangement
@@ -210,7 +194,9 @@ private fun ProfileLibraryStatusSection(
 }
 
 @Composable
-private fun LibraryStatusContent(statistic: Statistic) {
+private fun LibraryStatusContent(
+    statistic: Statistic,
+) {
     val statusEntries = remember(statistic) { statistic.statusEntries() }
 
     if (statusEntries.isEmpty()) {
@@ -340,7 +326,9 @@ private fun ProfileLibraryStateSection(
 }
 
 @Composable
-private fun LibrarySectionLabel(label: String) {
+private fun LibrarySectionLabel(
+    label: String,
+) {
     Text(
         text = label,
         style = MaterialTheme.typography.labelLarge,
@@ -408,7 +396,9 @@ private fun libraryCollectionMetricItems(
     }
 
 @Composable
-private fun librarySettingMetricItems(details: ProfileDetails): List<Pair<String, String>> =
+private fun librarySettingMetricItems(
+    details: ProfileDetails,
+): List<Pair<String, String>> =
     buildList {
         add(
             stringLabelAndValue(
@@ -419,16 +409,14 @@ private fun librarySettingMetricItems(details: ProfileDetails): List<Pair<String
         add(
             stringLabelAndValue(
                 labelRes = R.string.label_profile_metric_row_order,
-                value =
-                    details.listOption.rowOrder
-                        ?.toString()
-                        .orEmpty()
-                        .ifBlank { stringResource(R.string.label_profile_row_order_default) },
+                value = details.listOption.rowOrder?.toString().orEmpty().ifBlank { stringResource(R.string.label_profile_row_order_default) },
             ),
         )
     }
 
-private fun ProfileDetails.listTypeOptions(tab: ProfileMediaTab): UserMediaListTypeOptions =
+private fun ProfileDetails.listTypeOptions(
+    tab: ProfileMediaTab,
+): UserMediaListTypeOptions =
     when (tab) {
         ProfileMediaTab.Anime -> listOption.animeList
         ProfileMediaTab.Manga -> listOption.mangaList
