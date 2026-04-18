@@ -76,6 +76,8 @@ import co.anitrend.data.user.entity.name.UserPreviousNameEntity
 import co.anitrend.data.user.entity.notification.UserNotificationEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
+import co.anitrend.data.user.entity.sidecar.UserProfileFeedEntity
+import co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 
 @Database(
@@ -85,7 +87,8 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         GenreEntity::class, GenreConnectionEntity::class,
         MediaEntity::class, MediaFtsEntity::class, AiringScheduleEntity::class,
         UserEntity::class, UserFtsEntity::class, UserGeneralOptionEntity::class,
-        UserMediaOptionEntity::class, UserWithStatisticEntity::class, MediaListEntity::class,
+        UserMediaOptionEntity::class, UserWithStatisticEntity::class,
+        UserProfileOverviewEntity::class, UserProfileFeedEntity::class, MediaListEntity::class,
         NewsEntity::class, NewsFtsEntity::class, EpisodeEntity::class, EpisodeFtsEntity::class,
         CharacterEntity::class, CharacterFtsEntity::class, StudioEntity::class, StudioFtsEntity::class,
         StaffEntity::class, StaffFtsEntity::class, LinkEntity::class, RankEntity::class,
@@ -110,6 +113,7 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         AutoMigration(from = 13, to = 14),
         AutoMigration(from = 14, to = 15),
         AutoMigration(from = 15, to = 16),
+        AutoMigration(from = 16, to = 17),
     ],
 )
 @TypeConverters(
@@ -122,7 +126,7 @@ internal abstract class AniTrendStore :
     RoomDatabase(),
     IAniTrendStore {
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 16
+        const val DATABASE_SCHEMA_VERSION = 17
 
         internal fun create(applicationContext: Context): IAniTrendStore =
             Room

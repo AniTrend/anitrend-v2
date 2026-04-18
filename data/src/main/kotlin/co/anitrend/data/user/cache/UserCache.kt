@@ -123,4 +123,38 @@ internal sealed class UserCache : CacheStorePolicy() {
             override val expiresAt: Instant = instantInPast(hours = 1),
         ) : CacheIdentity
     }
+
+    class Overview(
+        override val localSource: CacheLocalSource,
+        override val request: CacheRequest = CacheRequest.USER_PROFILE_OVERVIEW,
+    ) : UserCache() {
+        override suspend fun shouldRefresh(
+            identity: CacheIdentity,
+            expiresAfter: Instant,
+        ): Boolean = isRequestBefore(identity, expiresAfter)
+
+        class Identity(
+            val param: UserParam.Overview,
+            override val id: Long = param.id,
+            override val key: String = "user_profile_overview",
+            override val expiresAt: Instant = instantInPast(minutes = 30),
+        ) : CacheIdentity
+    }
+
+    class Feed(
+        override val localSource: CacheLocalSource,
+        override val request: CacheRequest = CacheRequest.USER_PROFILE_FEED,
+    ) : UserCache() {
+        override suspend fun shouldRefresh(
+            identity: CacheIdentity,
+            expiresAfter: Instant,
+        ): Boolean = isRequestBefore(identity, expiresAfter)
+
+        class Identity(
+            val param: UserParam.Feed,
+            override val id: Long = param.id,
+            override val key: String = "user_profile_feed",
+            override val expiresAt: Instant = instantInPast(minutes = 15),
+        ) : CacheIdentity
+    }
 }

@@ -66,7 +66,7 @@ sealed class MediaStatistic {
         ) : Anime()
 
         data class Length(
-            val length: String,
+            val length: String?,
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,
@@ -169,7 +169,7 @@ sealed class MediaStatistic {
         ) : Manga()
 
         data class Length(
-            val length: String,
+            val length: String?,
             override val count: Int,
             override val meanScore: Float,
             override val mediaIds: List<Long>,

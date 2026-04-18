@@ -25,15 +25,25 @@ import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.user.UserAuthController
 import co.anitrend.data.user.UserController
+import co.anitrend.data.user.UserProfileFeedController
+import co.anitrend.data.user.UserProfileOverviewController
 import co.anitrend.data.user.UserProfileController
 import co.anitrend.data.user.UserProfileStatisticController
 import co.anitrend.data.user.converter.UserEntityConverter
+import co.anitrend.data.user.converter.UserProfileFeedConverter
+import co.anitrend.data.user.converter.UserProfileOverviewConverter
 import co.anitrend.data.user.converter.UserViewEntityConverter
+import co.anitrend.data.user.datasource.local.sidecar.UserProfileFeedLocalSource
+import co.anitrend.data.user.datasource.local.sidecar.UserProfileOverviewLocalSource
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.remote.UserRemoteSource
+import co.anitrend.data.user.mapper.UserProfileFeedMapper
+import co.anitrend.data.user.mapper.UserProfileOverviewMapper
 import co.anitrend.data.user.source.contract.UserSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.user.entity.User
+import co.anitrend.domain.user.entity.profile.ProfileFeed
+import co.anitrend.domain.user.entity.profile.ProfileOverview
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -231,6 +241,80 @@ internal class UserSourceImpl {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
                 localSource.clearById(query.param.id)
+            }
+        }
+    }
+
+    class Overview(
+        private val remoteSource: UserRemoteSource,
+        private val localSource: UserProfileOverviewLocalSource,
+        private val clearDataHelper: IClearDataHelper,
+        private val controller: UserProfileOverviewController,
+        private val mapper: UserProfileOverviewMapper,
+        private val converter: UserProfileOverviewConverter,
+        override val cachePolicy: ICacheStorePolicy,
+        override val dispatcher: ISupportDispatcher,
+    ) : UserSource.Overview() {
+        override fun observable(): Flow<ProfileOverview> =
+            localSource
+                .entryByUserIdFlow(query.param.id)
+                .flowOn(dispatcher.io)
+                .filterNotNull()
+                .map(converter::convertFrom)
+                .distinctUntilChanged()
+                .flowOn(dispatcher.computation)
+
+        override suspend fun getProfileOverview(callback: RequestCallback): Boolean {
+            val deferred =
+                deferred {
+                    val queryBuilder = query.toQueryContainerBuilder()
+                    remoteSource.getUserProfileOverview(queryBuilder)
+                }
+
+            return controller(deferred, callback) != null
+        }
+
+        override suspend fun clearDataSource(context: CoroutineDispatcher) {
+            clearDataHelper(context) {
+                cachePolicy.invalidateLastRequest(cacheIdentity)
+                localSource.clearByUserId(query.param.id)
+            }
+        }
+    }
+
+    class Feed(
+        private val remoteSource: UserRemoteSource,
+        private val localSource: UserProfileFeedLocalSource,
+        private val clearDataHelper: IClearDataHelper,
+        private val controller: UserProfileFeedController,
+        private val mapper: UserProfileFeedMapper,
+        private val converter: UserProfileFeedConverter,
+        override val cachePolicy: ICacheStorePolicy,
+        override val dispatcher: ISupportDispatcher,
+    ) : UserSource.Feed() {
+        override fun observable(): Flow<ProfileFeed> =
+            localSource
+                .entryByUserIdFlow(query.param.id)
+                .flowOn(dispatcher.io)
+                .filterNotNull()
+                .map(converter::convertFrom)
+                .distinctUntilChanged()
+                .flowOn(dispatcher.computation)
+
+        override suspend fun getProfileFeed(callback: RequestCallback): Boolean {
+            val deferred =
+                deferred {
+                    val queryBuilder = query.toQueryContainerBuilder()
+                    remoteSource.getUserProfileFeed(queryBuilder)
+                }
+
+            return controller(deferred, callback) != null
+        }
+
+        override suspend fun clearDataSource(context: CoroutineDispatcher) {
+            clearDataHelper(context) {
+                cachePolicy.invalidateLastRequest(cacheIdentity)
+                localSource.clearByUserId(query.param.id)
             }
         }
     }

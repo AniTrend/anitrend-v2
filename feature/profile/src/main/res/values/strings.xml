@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Content description for the profile banner image; %1$s is the profile owner's display name -->
+    <string name="description_profile_banner" formatted="true">%1$s\'s profile banner</string>
+
+    <!-- Content description for the profile avatar image; %1$s is the profile owner's display name -->
+    <string name="description_profile_avatar" formatted="true">%1$s\'s profile avatar</string>
+
+    <!-- Action label for sharing the current profile page -->
+    <string name="action_profile_share">Share</string>
+
+    <!-- Action label for opening notifications from the viewer's own profile -->
+    <string name="action_profile_open_notifications">Notifications</string>
+
+    <!-- Action label for opening settings from the viewer's own profile -->
+    <string name="action_profile_open_settings">Settings</string>
+
+    <!-- Action label for expanding long profile sections such as the bio or previous names -->
+    <string name="action_profile_show_more">Show more</string>
+
+    <!-- Action label for collapsing long profile sections such as the bio or previous names -->
+    <string name="action_profile_show_less">Show less</string>
+
+    <!-- Section title for the profile's anime and manga library overview -->
+    <string name="title_profile_section_library_snapshot">Library snapshot</string>
+
+    <!-- Section subtitle explaining the quick library summary that follows the hero -->
+    <string name="subtitle_profile_section_library_snapshot">A quick read on list size, organisation, and recent list shape.</string>
+
+    <!-- Section title for the dedicated Library tab's collection totals block -->
+    <string name="title_profile_section_collection_totals">Collection totals</string>
+
+    <!-- Section subtitle explaining the high-level counts and watch-read footprint in the Library tab -->
+    <string name="subtitle_profile_section_collection_totals">The selected library at a glance, with totals and reading or watching footprint.</string>
+
+    <!-- Section title for the Library tab's organisation and settings block -->
+    <string name="title_profile_section_collection_organisation">Collection organisation</string>
+
+    <!-- Section subtitle explaining section order, list settings, and custom list structure -->
+    <string name="subtitle_profile_section_collection_organisation">How the selected library is grouped, ordered, and customised.</string>
+
+    <!-- Section title for the profile statistics preview block -->
+    <string name="title_profile_section_stats_overview">Stats overview</string>
+
+    <!-- Section subtitle explaining the taste and behaviour charts in the profile preview -->
+    <string name="subtitle_profile_section_stats_overview">A compact look at scoring, status patterns, and standout tastes.</string>
+
+    <!-- Section title for the dedicated Stats tab metric strip -->
+    <string name="title_profile_section_stats_metric_strip">Metric strip</string>
+
+    <!-- Section subtitle explaining the small set of headline values in the Stats tab -->
+    <string name="subtitle_profile_section_stats_metric_strip">The sharpest numbers for the selected library without overwhelming the surface.</string>
+
+    <!-- Section title for the main hero chart section in the Stats tab -->
+    <string name="title_profile_section_stats_hero_chart">Hero chart</string>
+
+    <!-- Section subtitle explaining the primary analytical chart shown in the Stats tab -->
+    <string name="subtitle_profile_section_stats_hero_chart">One chart takes priority, with score distribution preferred before status shape.</string>
+
+    <!-- Section title for the secondary supporting chart block in the Stats tab -->
+    <string name="title_profile_section_stats_supporting_chart">Supporting patterns</string>
+
+    <!-- Section subtitle explaining the secondary chart that complements the hero chart -->
+    <string name="subtitle_profile_section_stats_supporting_chart">A second pattern only appears when it adds something distinct to the main chart.</string>
+
+    <!-- Section title for the ranked taste-group block in the Stats tab -->
+    <string name="title_profile_section_stats_taste_groups">Taste groups</string>
+
+    <!-- Section subtitle explaining the ranked taste signals in the Stats tab -->
+    <string name="subtitle_profile_section_stats_taste_groups">Compact ranked groups that show where the selected library leans most strongly.</string>
+
+    <!-- Section title for the markdown bio card -->
+    <string name="title_profile_section_about">About</string>
+
+    <!-- Section subtitle describing the profile biography block -->
+    <string name="subtitle_profile_section_about">Bio, notes, and anything the user decided to share.</string>
+
+    <!-- Section title for the previous-name history block -->
+    <string name="title_profile_section_previous_names">Identity history</string>
+
+    <!-- Section subtitle explaining the previous-name history list -->
+    <string name="subtitle_profile_section_previous_names">Past display names captured on the profile over time.</string>
+
+    <!-- Label for the Anime segmented tab in profile sections -->
+    <string name="label_profile_tab_anime">Anime</string>
+
+    <!-- Label for the Manga segmented tab in profile sections -->
+    <string name="label_profile_tab_manga">Manga</string>
+
+    <!-- Label for the sticky Overview surface tab in the redesigned profile shell -->
+    <string name="label_profile_surface_tab_overview">Overview</string>
+
+    <!-- Label for the sticky Library surface tab in the redesigned profile shell -->
+    <string name="label_profile_surface_tab_library">Library</string>
+
+    <!-- Label for the sticky Stats surface tab in the redesigned profile shell -->
+    <string name="label_profile_surface_tab_stats">Stats</string>
+
+    <!-- Label for the sticky Activity surface tab in the redesigned profile shell -->
+    <string name="label_profile_surface_tab_activity">Activity</string>
+
+    <!-- Passive badge label indicating the authenticated viewer follows this user -->
+    <string name="label_profile_relationship_following">Following</string>
+
+    <!-- Passive badge label indicating this user follows the authenticated viewer -->
+    <string name="label_profile_relationship_follows_you">Follows you</string>
+
+    <!-- Passive badge label indicating this user is blocked by the authenticated viewer -->
+    <string name="label_profile_relationship_blocked">Blocked</string>
+
+    <!-- Fact chip label showing when the account was created; paired with a formatted date value -->
+    <string name="label_profile_fact_joined">Joined</string>
+
+    <!-- Fact chip label showing when the profile was last updated; paired with a formatted date value -->
+    <string name="label_profile_fact_updated">Updated</string>
+
+    <!-- Fact chip label showing the user's preferred title language -->
+    <string name="label_profile_fact_title_language">Title language</string>
+
+    <!-- Fact chip label showing the user's preferred score format -->
+    <string name="label_profile_fact_score_format">Score format</string>
+
+    <!-- Fact chip label showing the user's selected profile accent colour -->
+    <string name="label_profile_fact_profile_color">Accent</string>
+
+    <!-- Metric label for the total number of list entries in the selected media tab -->
+    <string name="label_profile_metric_entries">Entries</string>
+
+    <!-- Metric label for the total number of anime entries in the profile library pulse -->
+    <string name="label_profile_metric_anime_total">Anime total</string>
+
+    <!-- Metric label for the total number of manga entries in the profile library pulse -->
+    <string name="label_profile_metric_manga_total">Manga total</string>
+
+    <!-- Metric label for how many custom lists exist in the selected media tab -->
+    <string name="label_profile_metric_custom_lists">Custom lists</string>
+
+    <!-- Section label for the ordered primary list sections in the Library tab -->
+    <string name="label_profile_library_primary_sections">Primary sections</string>
+
+    <!-- Section label for the ordered list-section preferences in the Library tab -->
+    <string name="label_profile_library_section_order">Section order</string>
+
+    <!-- Metric label for the list row ordering preference -->
+    <string name="label_profile_metric_row_order">List order</string>
+
+    <!-- Fallback value shown when the profile does not define a custom row ordering preference -->
+    <string name="label_profile_row_order_default">Default</string>
+
+    <!-- Metric label for the mean score in the selected media stats -->
+    <string name="label_profile_metric_mean_score">Mean score</string>
+
+    <!-- Metric label for the score standard deviation in the selected media stats -->
+    <string name="label_profile_metric_standard_deviation">Deviation</string>
+
+    <!-- Metric label for the number of anime episodes watched -->
+    <string name="label_profile_metric_episodes_watched">Episodes watched</string>
+
+    <!-- Metric label for total anime minutes watched -->
+    <string name="label_profile_metric_minutes_watched">Minutes watched</string>
+
+    <!-- Metric label for the combined watch-read footprint shown in the overview pulse -->
+    <string name="label_profile_metric_progress_footprint">Progress footprint</string>
+
+    <!-- Metric label for the dominant collection tendency shown in the overview pulse -->
+    <string name="label_profile_metric_collection_bias">Collection bias</string>
+
+    <!-- Metric label for average community score on favourite media cards -->
+    <string name="label_profile_metric_average_score">Average score</string>
+
+    <!-- Metric label for the number of manga chapters read -->
+    <string name="label_profile_metric_chapters_read">Chapters read</string>
+
+    <!-- Metric label for the number of manga volumes read -->
+    <string name="label_profile_metric_volumes_read">Volumes read</string>
+
+    <!-- Card title for the score distribution chart in the stats preview -->
+    <string name="label_profile_chart_score_distribution">Score distribution</string>
+
+    <!-- Card title for the status distribution chart in the stats preview -->
+    <string name="label_profile_chart_status_distribution">Status distribution</string>
+
+    <!-- Card title for the ranked genre chips in the stats preview -->
+    <string name="label_profile_chart_top_genres">Top genres</string>
+
+    <!-- Display label for the 100-point AniList scoring format -->
+    <string name="label_profile_score_format_100_point">100-point</string>
+
+    <!-- Display label for the 10-point decimal AniList scoring format -->
+    <string name="label_profile_score_format_10_point_decimal">10-point decimal</string>
+
+    <!-- Display label for the 10-point AniList scoring format -->
+    <string name="label_profile_score_format_10_point">10-point</string>
+
+    <!-- Display label for the 5-star AniList scoring format -->
+    <string name="label_profile_score_format_5_star">5-star</string>
+
+    <!-- Display label for the 3-face AniList scoring format -->
+    <string name="label_profile_score_format_3_face">3-face</string>
+
+    <!-- Fallback status label used when a media list status is absent -->
+    <string name="label_profile_status_unknown">Unknown</string>
+
+    <!-- Placeholder message shown while profile statistics are being fetched -->
+    <string name="message_profile_stats_loading">Loading profile statistics…</string>
+
+    <!-- Empty-state message shown when no statistics are available for the selected media tab -->
+    <string name="message_profile_stats_unavailable">No statistics are available for this section yet.</string>
+
+    <!-- Placeholder message shown while overview sidecar content is being fetched -->
+    <string name="message_profile_overview_loading">Loading the profile snapshot…</string>
+
+    <!-- Empty-state message shown when the favourites showcase has no items to present -->
+    <string name="message_profile_favourites_empty">No favourites have been surfaced for this profile yet.</string>
+
+    <!-- Empty-state message shown when no recent media behavior is available for the overview -->
+    <string name="message_profile_recent_activity_empty">No recent media activity is available for the overview right now.</string>
+
+    <!-- Quiet-state message shown when the profile has neither favourites nor recent media activity to lead Overview -->
+    <string name="message_profile_overview_quiet">This profile is quiet right now, so the library and bio take the lead instead.</string>
+
+    <!-- Error-state message shown when the overview sidecar cannot be refreshed at all -->
+    <string name="message_profile_overview_unavailable">The profile snapshot could not be refreshed right now.</string>
+
+    <!-- Empty-state message shown when the library pulse lacks enough data to render -->
+    <string name="message_profile_library_unavailable">Library details are still loading for this profile.</string>
+
+    <!-- Empty-state message shown when the Library tab has no recent list updates for the selected media type -->
+    <string name="message_profile_library_recent_updates_empty">No recent collection updates are available for this library tab yet.</string>
+
+    <!-- Placeholder message shown while activity feed sidecar content is being fetched -->
+    <string name="message_profile_feed_loading">Loading the latest authored activity…</string>
+
+    <!-- Empty-state message shown when no activity content is available for the selected filter -->
+    <string name="message_profile_feed_empty">No authored reviews or list updates are available for this filter yet.</string>
+
+    <!-- Empty-state message shown when a user has not written a bio -->
+    <string name="message_profile_about_empty">No profile bio has been added yet.</string>
+
+    <!-- Summary label for the previous names disclosure row; %1$d is the number of historical names -->
+    <string name="label_profile_previous_names_count" formatted="true">Previous names (%1$d)</string>
+
+    <!-- Section title for the poster-led favourites showcase on the Overview tab -->
+    <string name="title_profile_section_favourites_showcase">Favourites showcase</string>
+
+    <!-- Section subtitle explaining that the favourites showcase leads with the user's taste -->
+    <string name="subtitle_profile_section_favourites_showcase">A poster-first opening that anchors the profile in visible taste.</string>
+
+    <!-- Label for the lead favourite card at the top of the favourites showcase -->
+    <string name="label_profile_favourites_lead">Lead favourite</string>
+
+    <!-- Passive badge shown when a preview card represents a favourited media item -->
+    <string name="label_profile_media_favourite">Favourite</string>
+
+    <!-- Section title for the recent-media activity surface on the Overview tab -->
+    <string name="title_profile_section_recent_activity">Now or recently active</string>
+
+    <!-- Section subtitle explaining the recent-media preview row list on the Overview tab -->
+    <string name="subtitle_profile_section_recent_activity">Poster-assisted media behavior that keeps the profile feeling alive.</string>
+
+    <!-- Section title for the quiet-state note that replaces empty taste cards at the top of Overview -->
+    <string name="title_profile_section_profile_note">Profile note</string>
+
+    <!-- Section subtitle explaining the calm lead-state note when taste and activity signals are absent -->
+    <string name="subtitle_profile_section_profile_note">A lighter lead state when the profile has less recent public signal to show.</string>
+
+    <!-- Section title for the cohesive library pulse block on the Overview tab -->
+    <string name="title_profile_section_library_pulse">Library pulse</string>
+
+    <!-- Section subtitle explaining the library pulse summary block on the Overview tab -->
+    <string name="subtitle_profile_section_library_pulse">A fast read on collection scale, momentum, and dominant habits.</string>
+
+    <!-- Section title for the selective stats preview on the Overview tab -->
+    <string name="title_profile_section_stats_preview">Stats preview</string>
+
+    <!-- Section subtitle explaining the lightweight analytical preview on the Overview tab -->
+    <string name="subtitle_profile_section_stats_preview">A single chart and one taste signal before the deeper stats tab.</string>
+
+    <!-- Action label for switching from the Overview preview into the full Stats tab -->
+    <string name="action_profile_open_stats">Open stats</string>
+
+    <!-- Section title for the Activity tab content block -->
+    <string name="title_profile_section_activity">Activity</string>
+
+    <!-- Section subtitle explaining the narrower authored-output focus of the Activity tab -->
+    <string name="subtitle_profile_section_activity">Reviews and collection events only, kept grounded in real profile output.</string>
+
+    <!-- Label for the all-content activity filter chip -->
+    <string name="label_profile_activity_filter_all">All</string>
+
+    <!-- Label for the reviews-only activity filter chip -->
+    <string name="label_profile_activity_filter_reviews">Reviews</string>
+
+    <!-- Label for the list-updates-only activity filter chip -->
+    <string name="label_profile_activity_filter_list_updates">List updates</string>
+
+    <!-- Section title for the featured review card at the top of the Activity tab -->
+    <string name="title_profile_section_review_spotlight">Review spotlight</string>
+
+    <!-- Section subtitle explaining the featured authored review block on the Activity tab -->
+    <string name="subtitle_profile_section_review_spotlight">A single featured review that carries the strongest authored voice.</string>
+
+    <!-- Section title for the recent review archive list on the Activity tab -->
+    <string name="title_profile_section_recent_reviews">Recent reviews</string>
+
+    <!-- Section subtitle explaining the compact review list on the Activity tab -->
+    <string name="subtitle_profile_section_recent_reviews">Compact authored reviews ordered by recency.</string>
+
+    <!-- Section title for the recent list updates block on the Activity tab -->
+    <string name="title_profile_section_recent_list_updates">Recent list updates</string>
+
+    <!-- Section subtitle explaining the collection event rows on the Activity tab -->
+    <string name="subtitle_profile_section_recent_list_updates">Recent collection events tied to poster-led media rows.</string>
+
+    <!-- Section title for the status breakdown block in the dedicated Library tab -->
+    <string name="title_profile_section_library_status">Status breakdown</string>
+
+    <!-- Section subtitle explaining the status-distribution view within the Library tab -->
+    <string name="subtitle_profile_section_library_status">A compact view of how this library currently distributes across list states.</string>
+
+    <!-- Section title for the recent collection updates block in the dedicated Library tab -->
+    <string name="title_profile_section_recently_updated">Recently updated</string>
+
+    <!-- Section subtitle explaining the collection-state rows shown in the Library tab -->
+    <string name="subtitle_profile_section_recently_updated">Recent list changes that still read as library behaviour rather than social activity.</string>
+
+    <!-- Summary pill label for a review score; %1$d is the numeric review score -->
+    <string name="label_profile_review_score" formatted="true">Score %1$d</string>
+
+    <!-- Summary pill label for review vote count; %1$s is a human-readable vote total -->
+    <string name="label_profile_review_votes" formatted="true">%1$s votes</string>
+
+</resources>

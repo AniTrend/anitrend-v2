@@ -61,7 +61,7 @@ internal sealed class UserStatisticMangaModel : IStatisticModel {
 
     @Serializable
     data class Length(
-        @SerialName("length") val length: String,
+        @SerialName("length") val length: String? = null,
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,

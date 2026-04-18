@@ -1,0 +1,11 @@
+fragment UserProfileListActivity on ListActivity {
+    id
+    createdAt
+    status
+    progress
+    siteUrl
+    type
+    media {
+        ... UserProfileMediaPreview
+    }
+}

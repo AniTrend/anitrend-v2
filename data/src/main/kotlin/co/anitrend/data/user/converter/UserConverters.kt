@@ -469,7 +469,7 @@ internal class UserViewEntityConverter(
                         statistics =
                             UserMediaStatisticType(
                                 anime =
-                                    source.statistic.statistic.anime?.let { entity ->
+                                    source.statistic?.statistic?.anime?.let { entity ->
                                         Statistic.Anime(
                                             minutesWatched = entity.minutesWatched,
                                             episodesWatched = entity.episodesWatched,
@@ -611,7 +611,7 @@ internal class UserViewEntityConverter(
                                         )
                                     },
                                 manga =
-                                    source.statistic.statistic.manga?.let { entity ->
+                                    source.statistic?.statistic?.manga?.let { entity ->
                                         Statistic.Manga(
                                             chaptersRead = entity.chaptersRead,
                                             volumesRead = entity.volumesRead,

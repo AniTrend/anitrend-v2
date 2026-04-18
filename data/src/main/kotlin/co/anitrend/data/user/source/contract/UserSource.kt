@@ -28,6 +28,8 @@ import co.anitrend.data.user.cache.UserCache
 import co.anitrend.data.user.model.mutation.UserMutation
 import co.anitrend.data.user.model.query.UserQuery
 import co.anitrend.domain.user.entity.User
+import co.anitrend.domain.user.entity.profile.ProfileFeed
+import co.anitrend.domain.user.entity.profile.ProfileOverview
 import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -136,6 +138,54 @@ internal class UserSource {
                 requestHelper = requestHelper,
                 cacheIdentity = cacheIdentity,
                 block = ::getProfileStatistic,
+            )
+            return observable()
+        }
+    }
+
+    abstract class Overview : AbstractCoreDataSource() {
+        protected lateinit var query: UserQuery.Overview
+
+        protected lateinit var cacheIdentity: CacheIdentity
+
+        protected abstract val cachePolicy: ICacheStorePolicy
+
+        protected abstract fun observable(): Flow<ProfileOverview>
+
+        protected abstract suspend fun getProfileOverview(callback: RequestCallback): Boolean
+
+        suspend operator fun invoke(param: UserParam.Overview): Flow<ProfileOverview> {
+            query = UserQuery.Overview(param)
+            cacheIdentity = UserCache.Overview.Identity(param)
+            cachePolicy(
+                scope = scope,
+                requestHelper = requestHelper,
+                cacheIdentity = cacheIdentity,
+                block = ::getProfileOverview,
+            )
+            return observable()
+        }
+    }
+
+    abstract class Feed : AbstractCoreDataSource() {
+        protected lateinit var query: UserQuery.Feed
+
+        protected lateinit var cacheIdentity: CacheIdentity
+
+        protected abstract val cachePolicy: ICacheStorePolicy
+
+        protected abstract fun observable(): Flow<ProfileFeed>
+
+        protected abstract suspend fun getProfileFeed(callback: RequestCallback): Boolean
+
+        suspend operator fun invoke(param: UserParam.Feed): Flow<ProfileFeed> {
+            query = UserQuery.Feed(param)
+            cacheIdentity = UserCache.Feed.Identity(param)
+            cachePolicy(
+                scope = scope,
+                requestHelper = requestHelper,
+                cacheIdentity = cacheIdentity,
+                block = ::getProfileFeed,
             )
             return observable()
         }
