@@ -52,6 +52,11 @@ class PowerPresenter(
 
         // Section header and toggles
         preferenceBuilder.add(
+            category =
+                SettingItem.CategoryHeader(
+                    id = "power_controls_header",
+                    title = context.getString(R.string.title_settings_power_battery_behavior),
+                ),
             entries =
                 listOf(
                     SettingItem.SwitchSetting(

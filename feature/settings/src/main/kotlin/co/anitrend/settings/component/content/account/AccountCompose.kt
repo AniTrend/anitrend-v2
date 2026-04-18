@@ -16,12 +16,14 @@
  */
 package co.anitrend.settings.component.content.account
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AccountTree
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
 import co.anitrend.android.core.ui.AniTrendPreview
@@ -30,6 +32,9 @@ import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.extensions.startActivity
+import co.anitrend.settings.R
+import co.anitrend.settings.component.compose.SettingsSectionCard
+import co.anitrend.settings.component.compose.SettingsValueRow
 import org.koin.compose.koinInject
 
 @Composable
@@ -40,6 +45,8 @@ fun AccountScreen(
     val context = LocalContext.current
     AccountContent(
         modifier = modifier,
+        isAuthenticated = settings.isAuthenticated.value,
+        userId = settings.authenticatedUserId.value,
         onAddNewAccount = {
             AuthRouter.startActivity(context)
         },
@@ -49,25 +56,74 @@ fun AccountScreen(
 @Composable
 private fun AccountContent(
     modifier: Modifier = Modifier,
+    isAuthenticated: Boolean,
+    userId: Long = IAuthenticationSettings.INVALID_USER_ID,
     onAddNewAccount: () -> Unit,
 ) {
-    Column(modifier = modifier) {
-        AniTrendHintCard(
-            title = "Multiple accounts",
-            description = "You can switch between authenticated accounts easily. Tap here to add a new account.",
-            icon = Icons.Outlined.AccountTree,
-            onClick = onAddNewAccount,
-        )
+    LazyColumn(modifier = modifier) {
+        items(listOf(Unit)) {
+            AniTrendHintCard(
+                title =
+                    if (isAuthenticated) {
+                        stringResource(
+                            R.string.title_settings_account_connected,
+                        )
+                    } else {
+                        stringResource(R.string.title_settings_account_sign_in)
+                    },
+                description =
+                    if (isAuthenticated) {
+                        stringResource(R.string.summary_settings_account_connected)
+                    } else {
+                        stringResource(R.string.summary_settings_account_sign_in)
+                    },
+                icon = Icons.Outlined.AccountTree,
+                onClick = onAddNewAccount,
+            )
+        }
+        items(listOf(Unit)) {
+            SettingsSectionCard(
+                title = stringResource(R.string.title_settings_account_authentication),
+                description =
+                    if (isAuthenticated) {
+                        stringResource(
+                            R.string.summary_settings_account_viewer_id,
+                            userId,
+                        )
+                    } else {
+                        stringResource(R.string.summary_settings_account_no_authenticated)
+                    },
+            ) {
+                SettingsValueRow(
+                    title = stringResource(R.string.action_settings_account_add_or_refresh_sign_in),
+                    summary = stringResource(R.string.summary_settings_account_add_or_refresh_sign_in),
+                    icon = Icons.Outlined.AccountTree,
+                    currentValue =
+                        if (isAuthenticated) {
+                            stringResource(
+                                R.string.label_settings_account_connected,
+                            )
+                        } else {
+                            stringResource(R.string.label_settings_account_required)
+                        },
+                    onClick = onAddNewAccount,
+                )
+            }
+        }
     }
 }
 
-@AniTrendPreview.Default
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
+@AniTrendPreview.Mobile
 @Composable
 fun AccountScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme(wrapInSurface = true, darkTheme = darkTheme) {
         AccountContent(
+            isAuthenticated = true,
+            userId = 42,
             onAddNewAccount = {},
         )
     }

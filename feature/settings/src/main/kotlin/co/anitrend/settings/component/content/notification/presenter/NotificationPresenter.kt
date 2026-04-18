@@ -63,6 +63,12 @@ class NotificationPresenter(
                         title = hintTitle,
                         description = hintDescription,
                         icon = Icons.Outlined.Notifications,
+                        actionLabel =
+                            if (hasPermission) {
+                                context.getString(R.string.action_settings_notification_open_system_settings)
+                            } else {
+                                context.getString(R.string.action_settings_notification_grant_permission)
+                            },
                         onClick = hintAction,
                     ),
                 ),
@@ -70,6 +76,11 @@ class NotificationPresenter(
 
         // Section header and app-level toggles
         preferenceBuilder.add(
+            category =
+                SettingItem.CategoryHeader(
+                    id = "notification_settings_header",
+                    title = context.getString(R.string.title_settings_notification_app_notifications),
+                ),
             entries =
                 listOf(
                     SettingItem.SwitchSetting(
@@ -87,6 +98,7 @@ class NotificationPresenter(
                         icon = Icons.Outlined.Tv,
                         onValueChange = { settings.isAniListNotificationsEnabled.value = it },
                         onClick = { settings.isAniListNotificationsEnabled.value },
+                        enabled = { settings.isNotificationsEnabled.value },
                     ),
                     SettingItem.SwitchSetting(
                         id = "notifications_announcements",
@@ -95,6 +107,7 @@ class NotificationPresenter(
                         icon = Icons.AutoMirrored.Outlined.Announcement,
                         onValueChange = { settings.isAnnouncementNotificationsEnabled.value = it },
                         onClick = { settings.isAnnouncementNotificationsEnabled.value },
+                        enabled = { settings.isNotificationsEnabled.value },
                     ),
                 ),
         )

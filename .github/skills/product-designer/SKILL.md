@@ -32,7 +32,6 @@ Use this skill when the user needs a scoped plan for:
 - interaction model decisions for media, list, or editor surfaces
 - component decomposition before implementation
 - incremental refactors tied to concrete product value
-- acceptance criteria and execution prompts for another coding model
 
 Use the [planning heuristics](./references/plan-heuristics.md) whenever the request risks expanding beyond a small, reviewable change.
 Use the [Compose/Material3 accessibility handoff reference](./references/compose-material3-accessibility-handoff.md) for UI-heavy plans that need stronger preview, Material3, and accessibility guidance.

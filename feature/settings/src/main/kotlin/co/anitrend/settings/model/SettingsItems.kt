@@ -31,6 +31,8 @@ sealed class SettingItem(
         val title: String,
         val description: String?,
         val icon: ImageVector,
+        val currentValue: String? = null,
+        val actionLabel: String? = null,
         val onClick: () -> Unit,
     ) : SettingItem(id)
 
@@ -41,6 +43,7 @@ sealed class SettingItem(
         val icon: ImageVector,
         val onValueChange: (Boolean) -> Unit,
         val onClick: () -> Boolean,
+        val enabled: () -> Boolean = { true },
     ) : SettingItem(id)
 
     data class ClickableSetting(
@@ -48,6 +51,8 @@ sealed class SettingItem(
         val title: String,
         val summary: String,
         val icon: ImageVector,
+        val currentValue: (() -> String?)? = null,
+        val enabled: Boolean = true,
         val onClick: () -> Unit,
     ) : SettingItem(id)
 

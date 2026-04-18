@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.android.core.storage.contract.IStorageController
+import co.anitrend.settings.R
 import co.anitrend.settings.component.content.log.state.LogUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -100,7 +101,7 @@ class LogViewModel(
                     logsContentStateFlow.value = lines.toList()
                 }
             } else {
-                mutableLogsStateFlow.value = LogUiState.Error("No logs found")
+                mutableLogsStateFlow.value = LogUiState.Error(context.getString(R.string.message_settings_log_none_found))
             }
         }
     }

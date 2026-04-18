@@ -17,6 +17,7 @@
 package co.anitrend.settings.component.content.locale
 
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.runtime.Composable
@@ -30,7 +31,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.core.os.LocaleListCompat
 import co.anitrend.android.core.R
 import co.anitrend.android.core.compose.design.cards.AniTrendHintCard
-import co.anitrend.android.core.compose.design.category.AniTrendCategoryHeader
 import co.anitrend.android.core.compose.design.choice.AniTrendSingleChoiceItem
 import co.anitrend.android.core.settings.common.locale.ILocaleSettings
 import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale
@@ -40,6 +40,8 @@ import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale.Comp
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.settings.R as SettingsR
+import co.anitrend.settings.component.compose.SettingsSectionCard
 import org.koin.compose.koinInject
 import java.util.Locale
 
@@ -102,69 +104,74 @@ private fun LocaleContent(
     onLocaleChange: (Locale) -> Unit = {},
 ) {
     LazyColumn(modifier = modifier) {
-        item {
+        items(listOf(Unit)) {
             AniTrendHintCard(
-                title = "Language and region",
-                description = "Help us add more languages and regions. Tap to learn more.",
+                title = stringResource(SettingsR.string.title_settings_locale_language_region),
+                description = stringResource(SettingsR.string.summary_settings_locale_language_region),
                 icon = Icons.Outlined.Translate,
-                onClick = {
-                },
+                currentValue = selectedLocale.asDisplayName(),
             )
+        }
+        items(listOf(Unit)) {
+            SettingsSectionCard(
+                title = stringResource(SettingsR.string.title_settings_locale_current_language),
+                description = selectedLocale.asDisplayName(),
+            ) {}
         }
 
         if (suggestedLocales.isNotEmpty()) {
-            item {
-                AniTrendCategoryHeader(
-                    text = "Suggested",
-                )
-            }
-            if (!suggestedLocales.contains(Locale.getDefault())) {
-                item {
-                    val defaultLocale = AniTrendLocale.AUTOMATIC.asLocale()
-                    AniTrendSingleChoiceItem(
-                        text = stringResource(R.string.global_label_system),
-                        selected = defaultLocale == selectedLocale,
-                        onOptionSelected = {
-                            onLocaleChange(defaultLocale)
-                        },
-                    )
-                }
-            }
-            for (locale in suggestedLocales) {
-                item {
-                    AniTrendSingleChoiceItem(
-                        text = locale.asDisplayName(),
-                        selected = locale == selectedLocale,
-                        onOptionSelected = {
-                            onLocaleChange(locale)
-                        },
-                    )
+            items(listOf(Unit)) {
+                SettingsSectionCard(
+                    title = stringResource(SettingsR.string.title_settings_locale_suggested),
+                    description = stringResource(SettingsR.string.summary_settings_locale_suggested),
+                ) {
+                    if (!suggestedLocales.contains(Locale.getDefault())) {
+                        val defaultLocale = AniTrendLocale.AUTOMATIC.asLocale()
+                        AniTrendSingleChoiceItem(
+                            text = stringResource(R.string.global_label_system),
+                            selected = defaultLocale == selectedLocale,
+                            onOptionSelected = {
+                                onLocaleChange(defaultLocale)
+                            },
+                        )
+                    }
+                    suggestedLocales.forEach { locale ->
+                        AniTrendSingleChoiceItem(
+                            text = locale.asDisplayName(),
+                            selected = locale == selectedLocale,
+                            onOptionSelected = {
+                                onLocaleChange(locale)
+                            },
+                        )
+                    }
                 }
             }
         }
 
         if (allLocales.isNotEmpty()) {
-            item {
-                AniTrendCategoryHeader(
-                    text = "Supported",
-                )
-            }
-            for (locale in allLocales) {
-                item {
-                    AniTrendSingleChoiceItem(
-                        text = locale.asDisplayName(),
-                        selected = locale == selectedLocale,
-                        onOptionSelected = {
-                            onLocaleChange(locale)
-                        },
-                    )
+            items(listOf(Unit)) {
+                SettingsSectionCard(
+                    title = stringResource(SettingsR.string.title_settings_locale_all_languages),
+                    description = stringResource(SettingsR.string.summary_settings_locale_all_languages),
+                ) {
+                    allLocales.forEach { locale ->
+                        AniTrendSingleChoiceItem(
+                            text = locale.asDisplayName(),
+                            selected = locale == selectedLocale,
+                            onOptionSelected = {
+                                onLocaleChange(locale)
+                            },
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-@AniTrendPreview.Default
+@AniTrendPreview.Light
+@AniTrendPreview.Dark
+@AniTrendPreview.Mobile
 @Composable
 private fun LocaleScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,

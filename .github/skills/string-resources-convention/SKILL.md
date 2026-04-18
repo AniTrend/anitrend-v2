@@ -41,6 +41,8 @@ load [Android string resource best practices](./references/android-string-resour
 ## Platform best practices
 
 - Follow Android escaping rules for apostrophes, quotes, `@`, `?`, newline, tab, and Unicode.
+- Escape literal apostrophes in normal text with `\'` unless the entire string is deliberately wrapped in double quotes.
+- Treat any literal `\u` sequence as dangerous unless you are intentionally writing a Unicode code point such as `\u0027`.
 - Use `<plurals>` only when the grammar genuinely changes with quantity.
 - Prefer quantity-neutral wording when plurals are avoidable.
 - Use `getText()` when styled text must be preserved instead of flattened to plain text.
@@ -117,5 +119,7 @@ Use this checklist before finishing any `strings.xml` edit:
 - Documenting only the first string in a cluster of related additions.
 - Forgetting to explain `%1$s`, `%2$d`, or similar placeholders.
 - Using non-positional placeholders or incorrect escaping in translatable strings.
+- Leaving a literal apostrophe unescaped and only discovering it during AAPT resource flattening.
+- Writing copy that accidentally contains a `\u` sequence Android tries to interpret as an invalid Unicode escape.
 - Reaching for `<plurals>` when a quantity-neutral phrase would be safer.
 - Writing engineering notes instead of translator-facing context.

@@ -39,6 +39,7 @@ plugins {
 
 dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.shared))
+    implementation(project(Libraries.AniTrend.Data.core))
 }
 
 android {
