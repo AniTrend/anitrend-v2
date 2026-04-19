@@ -19,6 +19,7 @@ package co.anitrend.settings.component.content.account
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.AccountTree
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -41,12 +42,14 @@ import org.koin.compose.koinInject
 fun AccountScreen(
     modifier: Modifier = Modifier,
     settings: IAuthenticationSettings = koinInject(),
+    onAniListSettings: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     AccountContent(
         modifier = modifier,
         isAuthenticated = settings.isAuthenticated.value,
         userId = settings.authenticatedUserId.value,
+        onAniListSettings = onAniListSettings,
         onAddNewAccount = {
             AuthRouter.startActivity(context)
         },
@@ -58,6 +61,7 @@ private fun AccountContent(
     modifier: Modifier = Modifier,
     isAuthenticated: Boolean,
     userId: Long = IAuthenticationSettings.INVALID_USER_ID,
+    onAniListSettings: (() -> Unit)?,
     onAddNewAccount: () -> Unit,
 ) {
     LazyColumn(modifier = modifier) {
@@ -80,6 +84,22 @@ private fun AccountContent(
                 icon = Icons.Outlined.AccountTree,
                 onClick = onAddNewAccount,
             )
+        }
+        if (isAuthenticated && onAniListSettings != null) {
+            items(listOf(Unit)) {
+                SettingsSectionCard(
+                    title = stringResource(R.string.title_settings_account_anilist_settings),
+                    description = stringResource(R.string.summary_settings_account_anilist_settings),
+                ) {
+                    SettingsValueRow(
+                        title = stringResource(R.string.action_settings_account_view_anilist_settings),
+                        summary = stringResource(R.string.summary_settings_account_view_anilist_settings),
+                        icon = Icons.Outlined.AccountCircle,
+                        currentValue = stringResource(R.string.label_settings_account_read_only),
+                        onClick = onAniListSettings,
+                    )
+                }
+            }
         }
         items(listOf(Unit)) {
             SettingsSectionCard(
@@ -124,6 +144,7 @@ fun AccountScreenPreview(
         AccountContent(
             isAuthenticated = true,
             userId = 42,
+            onAniListSettings = {},
             onAddNewAccount = {},
         )
     }

@@ -14,6 +14,7 @@ follow these companion skills:
 - `.github/skills/layered-module-patterns/SKILL.md`
 - `.github/skills/android-platform-patterns/SKILL.md`
 - `.github/skills/navigation-architecture/SKILL.md`
+- `.github/skills/product-designer/SKILL.md`
 - `.github/skills/koin-module-wiring/SKILL.md`
 - `.github/skills/new-module-checklist/SKILL.md`
 - `.github/skills/string-resource-inline-comments/SKILL.md`

@@ -21,6 +21,7 @@ import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.notification.enums.NotificationType
+import co.anitrend.domain.user.enums.UserStaffNameLanguage
 import co.anitrend.domain.user.enums.UserTitleLanguage
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -50,6 +51,8 @@ internal data class UserGeneralOptionEntity(
     @ColumnInfo(name = "notification_option") val notificationOption: List<NotificationOption>,
     @ColumnInfo(name = "title_language") val titleLanguage: UserTitleLanguage,
     @ColumnInfo(name = "profile_color") val profileColor: String?,
+    @ColumnInfo(name = "time_zone") val timeZone: String? = null,
+    @ColumnInfo(name = "staff_name_language") val staffNameLanguage: UserStaffNameLanguage? = null,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
 ) : IEntityId<Long> {
     @Serializable

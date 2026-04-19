@@ -125,6 +125,7 @@ object SettingsRouter : NavigationRouter() {
     enum class Destination {
         ROOT,
         ACCOUNTS,
+        ANILIST_SETTINGS,
         PRIVACY,
         FILTERS,
         POWER,

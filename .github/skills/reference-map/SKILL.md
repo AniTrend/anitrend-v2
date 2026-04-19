@@ -31,6 +31,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 
 | Legacy topic | Primary instruction | Primary skill |
 |---|---|---|
+| Compose screen planning and product-heavy UI refinement | `.github/instructions/context.instructions.md` | `.github/skills/product-designer/SKILL.md` |
 | Architecture boundaries | `.github/instructions/context.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
 | Layered module plumbing | `.github/instructions/context.instructions.md` | `.github/skills/layered-module-patterns/SKILL.md` |
 | UI navigation architecture | `.github/instructions/context.instructions.md` | `.github/skills/navigation-architecture/SKILL.md` |
@@ -49,6 +50,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 
 | If your task is... | Read this first | Then read |
 |---|---|---|
+| Plan or refine a Compose screen, settings surface, or interaction-heavy UI | `.github/instructions/context.instructions.md` | `.github/skills/product-designer/SKILL.md` |
 | Add a new feature module | `.github/instructions/context.instructions.md` | `.github/skills/new-module-checklist/SKILL.md` |
 | Evaluate or add domain/data/feature/task plumbing | `.github/instructions/context.instructions.md` | `.github/skills/layered-module-patterns/SKILL.md` |
 | Trace or add screen navigation | `.github/instructions/context.instructions.md` | `.github/skills/navigation-architecture/SKILL.md` |
