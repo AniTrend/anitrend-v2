@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2026 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.profile.component.compose
 
 import androidx.compose.foundation.BorderStroke
@@ -92,9 +108,7 @@ internal fun ProfileSectionCard(
 }
 
 @Composable
-internal fun ProfileMetricGrid(
-    metricItems: List<Pair<String, String>>,
-) {
+internal fun ProfileMetricGrid(metricItems: List<Pair<String, String>>) {
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -110,9 +124,7 @@ internal fun ProfileMetricGrid(
 }
 
 @Composable
-internal fun ProfileMetricStrip(
-    metricItems: List<Pair<String, String>>,
-) {
+internal fun ProfileMetricStrip(metricItems: List<Pair<String, String>>) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         metricItems.forEachIndexed { index, (label, value) ->
             if (index > 0) {
@@ -174,9 +186,7 @@ private fun ProfileMetricCard(
 }
 
 @Composable
-internal fun MediaListChipRow(
-    items: List<MediaListInfo>,
-) {
+internal fun MediaListChipRow(items: List<MediaListInfo>) {
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -206,9 +216,7 @@ internal fun StatsChartBlock(
 }
 
 @Composable
-internal fun ProfileMessageState(
-    message: String,
-) {
+internal fun ProfileMessageState(message: String) {
     Text(
         text = message,
         style = MaterialTheme.typography.bodyMedium,
