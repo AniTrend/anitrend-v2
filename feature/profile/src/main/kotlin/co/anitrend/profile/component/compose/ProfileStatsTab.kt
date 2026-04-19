@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2026 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.profile.component.compose
 
 import androidx.compose.foundation.layout.Arrangement
@@ -83,9 +99,7 @@ private fun StatsStateSection(
 }
 
 @Composable
-private fun StatsTabContent(
-    statistic: Statistic,
-) {
+private fun StatsTabContent(statistic: Statistic) {
     ProfileStatsMetricStripSection(statistic = statistic)
     ProfileStatsHeroChartSection(statistic = statistic)
 
@@ -103,9 +117,7 @@ private fun StatsTabContent(
 }
 
 @Composable
-private fun ProfileStatsMetricStripSection(
-    statistic: Statistic,
-) {
+private fun ProfileStatsMetricStripSection(statistic: Statistic) {
     val metrics = statsMetricItems(statistic).take(5)
 
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -121,9 +133,7 @@ private fun ProfileStatsMetricStripSection(
 }
 
 @Composable
-private fun ProfileStatsHeroChartSection(
-    statistic: Statistic,
-) {
+private fun ProfileStatsHeroChartSection(statistic: Statistic) {
     val heroChart = remember(statistic) { statistic.preferredHeroChart() }
 
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -188,9 +198,7 @@ private fun ScoreChartContent(
 }
 
 @Composable
-private fun StatusChartContent(
-    statistic: Statistic,
-) {
+private fun StatusChartContent(statistic: Statistic) {
     val statusEntries = remember(statistic) { statistic.statusEntries() }
 
     if (statusEntries.isEmpty()) {
@@ -217,9 +225,7 @@ private fun StatusChartContent(
 }
 
 @Composable
-private fun ProfileStatsTasteGroupsSection(
-    topGenres: List<Pair<String, Int>>,
-) {
+private fun ProfileStatsTasteGroupsSection(topGenres: List<Pair<String, Int>>) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         ProfileSectionHeader(
             title = stringResource(R.string.title_profile_section_stats_taste_groups),
