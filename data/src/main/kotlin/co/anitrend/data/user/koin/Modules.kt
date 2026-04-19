@@ -151,7 +151,7 @@ private val sourceModule =
                     ),
                 mapper = mapper,
                 converter = get(),
-                    cachePolicy = get<UserCache.Feed>(),
+                cachePolicy = get<UserCache.Feed>(),
                 dispatcher = get(),
             )
         }
