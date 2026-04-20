@@ -146,9 +146,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(source: UserModelContainer.User): UserEntity {
-            return converter.convertFrom(source.user)
-        }
+        override suspend fun onResponseMapFrom(source: UserModelContainer.User): UserEntity = converter.convertFrom(source.user)
     }
 
     class Embed(

@@ -24,12 +24,10 @@ import co.anitrend.data.user.converter.UserModelConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.local.option.UserGeneralOptionLocalSource
 import co.anitrend.data.user.datasource.local.option.UserMediaOptionLocalSource
-import co.anitrend.data.user.datasource.local.statistic.UserStatisticLocalSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.name.UserPreviousNameEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
-import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 import co.anitrend.data.user.entity.view.UserEntityView
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -39,32 +37,25 @@ import kotlin.test.assertEquals
 
 class UserMapperTest {
     @Test
-    fun `given user mapper when persisting user then statistic placeholder is ensured`() =
+    fun `given user mapper when persisting user then user is upserted`() =
         runBlocking {
-            val statisticLocalSource = FakeUserStatisticLocalSource()
-            val transactionRunner = FakeTransactionRunner()
+            val localSource = FakeUserLocalSource()
             val mapper =
                 UserMapper.User(
-                    localSource = FakeUserLocalSource(),
-                    statisticMapper =
-                        UserMapper.StatisticEmbed(
-                            localSource = statisticLocalSource,
-                        ),
-                    transactionRunner = transactionRunner,
+                    localSource = localSource,
                     converter = UserModelConverter(),
                 )
 
             mapper.onResponseDatabaseInsert(userEntity())
 
-            assertEquals(listOf(1L), statisticLocalSource.ensuredUserIds)
-            assertEquals(1, transactionRunner.invocationCount)
+            assertEquals(listOf(1L), localSource.upsertedUserIds)
         }
 
     @Test
-    fun `given profile mapper when persisting user then statistic placeholder is ensured`() =
+    fun `given profile mapper when persisting user then transaction runner is invoked`() =
         runBlocking {
-            val statisticLocalSource = FakeUserStatisticLocalSource()
             val transactionRunner = FakeTransactionRunner()
+            val localSource = FakeUserLocalSource()
             val mapper =
                 UserMapper.Profile(
                     generalOptionMapper =
@@ -81,18 +72,14 @@ class UserMapperTest {
                         UserMapper.PreviousNameEmbed(
                             localSource = FakeUserPreviousNameLocalSource(),
                         ),
-                    statisticMapper =
-                        UserMapper.StatisticEmbed(
-                            localSource = statisticLocalSource,
-                        ),
-                    localSource = FakeUserLocalSource(),
+                    localSource = localSource,
                     transactionRunner = transactionRunner,
                     converter = UserModelConverter(),
                 )
 
             mapper.onResponseDatabaseInsert(userEntity())
 
-            assertEquals(listOf(1L), statisticLocalSource.ensuredUserIds)
+            assertEquals(listOf(1L), localSource.upsertedUserIds)
             assertEquals(1, transactionRunner.invocationCount)
         }
 
@@ -118,41 +105,6 @@ class UserMapperTest {
             id = 1L,
         )
 
-    private class FakeUserStatisticLocalSource : UserStatisticLocalSource() {
-        val ensuredUserIds = mutableListOf<Long>()
-
-        override suspend fun count(): Int = 0
-
-        override suspend fun clear() {
-        }
-
-        override suspend fun ensurePlaceholder(userId: Long) {
-            ensuredUserIds += userId
-        }
-
-        override suspend fun insert(attribute: UserWithStatisticEntity): Long = 0L
-
-        override suspend fun insert(attribute: List<UserWithStatisticEntity>): List<Long> = emptyList()
-
-        override suspend fun update(attribute: UserWithStatisticEntity) {
-        }
-
-        override suspend fun update(attribute: List<UserWithStatisticEntity>) {
-        }
-
-        override suspend fun delete(attribute: UserWithStatisticEntity) {
-        }
-
-        override suspend fun delete(attribute: List<UserWithStatisticEntity>) {
-        }
-
-        override suspend fun upsert(attribute: UserWithStatisticEntity) {
-        }
-
-        override suspend fun upsert(attribute: List<UserWithStatisticEntity>) {
-        }
-    }
-
     private class FakeTransactionRunner : TransactionRunner {
         var invocationCount = 0
 
@@ -163,6 +115,8 @@ class UserMapperTest {
     }
 
     private class FakeUserLocalSource : UserLocalSource() {
+        val upsertedUserIds = mutableListOf<Long>()
+
         override suspend fun count(): Int = 0
 
         override suspend fun clear() {
@@ -210,9 +164,11 @@ class UserMapperTest {
         }
 
         override suspend fun upsert(attribute: UserEntity) {
+            upsertedUserIds += attribute.id
         }
 
         override suspend fun upsert(attribute: List<UserEntity>) {
+            upsertedUserIds += attribute.map { it.id }
         }
     }
 

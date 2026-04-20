@@ -50,7 +50,10 @@ data class AniListSettingsEditorState(
 object AniListSettingsEditorMapper {
     fun from(source: User.Authenticated): AniListSettingsEditorState =
         AniListSettingsEditorState(
-            about = source.status.about?.toString().orEmpty(),
+            about =
+                source.status.about
+                    ?.toString()
+                    .orEmpty(),
             profileColor = source.profileOption.profileColor.orEmpty(),
             titleLanguage = source.profileOption.titleLanguage,
             staffNameLanguage = source.profileOption.staffNameLanguage ?: UserStaffNameLanguage.ROMAJI,
@@ -65,7 +68,10 @@ object AniListSettingsEditorMapper {
                     )
                 },
             scoreFormat = source.listOption.scoreFormat,
-            rowOrder = source.listOption.rowOrder?.toString().orEmpty(),
+            rowOrder =
+                source.listOption.rowOrder
+                    ?.toString()
+                    .orEmpty(),
             animeListOptions = source.listOption.animeList.toEditorState(),
             mangaListOptions = source.listOption.mangaList.toEditorState(),
         )
