@@ -158,6 +158,19 @@ media detail screen exposing characters or staff.
 - Convert connection entities back to the domain model in a local converter that the source uses
   when building the `FlowPagedListBuilder` pipeline.
 
+### Mapper sidecar persistence
+
+When a parent mapper needs to persist related local-only rows as part of the same response, keep
+those writes behind `EmbedMapper` helpers such as `UserMapper.GeneralOptionEmbed` or
+`UserMapper.NotificationEmbed`.
+
+- Prefer introducing a new `XxxEmbed` mapper over injecting an additional DAO directly into the
+  parent mapper.
+- Keep placeholder or sidecar persistence rules inside that embed helper, even when the helper uses
+  custom DAO methods instead of a plain `upsert`.
+- Let the parent mapper coordinate embeds with `onEmbedded(...)` and `persistEmbedded()` so mapper
+  wiring stays consistent across query and mutation flows.
+
 ## Rules
 
 - Never return a raw value or `LiveData` from a repository; always return `DataState`.

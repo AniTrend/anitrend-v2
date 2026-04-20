@@ -16,6 +16,7 @@
  */
 package co.anitrend.data.auth.mapper
 
+import co.anitrend.data.android.database.common.TransactionRunner
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.user.converter.UserModelConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
@@ -30,6 +31,7 @@ internal class AuthMapper(
     private val mediaOptionMapper: UserMapper.MediaOptionEmbed,
     private val notificationMapper: UserMapper.NotificationEmbed,
     private val localSource: UserLocalSource,
+    private val transactionRunner: TransactionRunner,
     private val converter: UserModelConverter,
 ) : DefaultMapper<UserModelContainer.Viewer, UserEntity>() {
     /**
@@ -40,6 +42,12 @@ internal class AuthMapper(
         generalOptionMapper.persistEmbedded(settings)
         mediaOptionMapper.persistEmbedded(settings)
         notificationMapper.persistEmbedded()
+    }
+
+    override suspend fun onResponseDatabaseInsert(mappedData: UserEntity) {
+        transactionRunner.run {
+            super.onResponseDatabaseInsert(mappedData)
+        }
     }
 
     /**

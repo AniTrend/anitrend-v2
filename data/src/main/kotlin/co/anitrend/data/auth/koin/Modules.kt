@@ -25,6 +25,7 @@ import co.anitrend.data.auth.source.contract.AuthSource
 import co.anitrend.data.auth.usecase.AuthUseCaseImpl
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
+import co.anitrend.data.core.extensions.transaction
 import org.koin.dsl.module
 
 private val sourceModule =
@@ -56,6 +57,7 @@ private val mapperModule =
                 mediaOptionMapper = get(),
                 notificationMapper = get(),
                 localSource = store().userDao(),
+                transactionRunner = transaction(),
                 converter = get(),
             )
         }

@@ -95,7 +95,7 @@ private fun AccountContent(
                         title = stringResource(R.string.action_settings_account_view_anilist_settings),
                         summary = stringResource(R.string.summary_settings_account_view_anilist_settings),
                         icon = Icons.Outlined.AccountCircle,
-                        currentValue = stringResource(R.string.label_settings_account_read_only),
+                        currentValue = stringResource(R.string.label_settings_account_editable),
                         onClick = onAniListSettings,
                     )
                 }

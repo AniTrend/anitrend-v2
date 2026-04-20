@@ -265,8 +265,8 @@
   <string name="action_settings_account_view_anilist_settings">View AniList settings</string>
   <!-- Action row summary for the read-only AniList settings detail screen -->
   <string name="summary_settings_account_view_anilist_settings">Inspect synced AniList preferences, open AniList to edit them, or sync them again.</string>
-  <!-- Trailing value used for the read-only AniList settings entry -->
-  <string name="label_settings_account_read_only">Read only</string>
+  <!-- Trailing value used for the AniList settings entry when section editors are available -->
+  <string name="label_settings_account_editable">Editable</string>
 
   <!-- Intro title for the filters screen describing the future filtering surface -->
   <string name="title_settings_filters_overview">Content filtering</string>
@@ -440,6 +440,32 @@
   <string name="action_settings_anilist_sync">Sync from AniList</string>
   <!-- Action summary for refreshing the AniList settings snapshot -->
   <string name="summary_settings_anilist_sync">Refresh the cached AniList settings shown in AniTrend.</string>
+  <!-- Action title used for opening an in-app editor for a settings section -->
+  <string name="action_settings_anilist_edit_section">Edit this section</string>
+  <!-- Action summary used for opening an in-app editor for a settings section -->
+  <string name="summary_settings_anilist_edit_section">Adjust these settings in-app and save back to AniList.</string>
+  <!-- Trailing value shown on the section edit row when editing can begin -->
+  <string name="label_settings_anilist_edit_ready">Ready</string>
+  <!-- Summary shown for enum fields where tapping cycles through available values -->
+  <string name="summary_settings_anilist_cycle_option">Tap to cycle through options.</string>
+  <!-- Helper summary shown below timezone input to communicate the expected format -->
+  <string name="summary_settings_anilist_timezone_format">Use hh:mm format, for example 02:00.</string>
+  <!-- Error shown below timezone input when the entered time does not match hh:mm -->
+  <string name="error_settings_anilist_invalid_timezone">Enter a valid time in hh:mm format.</string>
+  <!-- Action label for saving edited AniList settings from the section sheet -->
+  <string name="action_settings_anilist_save_changes">Save changes</string>
+  <!-- Input label used to add a new list item token in AniList settings editors -->
+  <string name="label_settings_anilist_list_item_input">List item</string>
+  <!-- Action label used to append a token item in AniList settings editors -->
+  <string name="action_settings_anilist_add_item">Add</string>
+  <!-- Summary shown when a tokenized list setting has no current values -->
+  <string name="summary_settings_anilist_no_items">No items yet.</string>
+  <!-- Error message shown when a tokenized list contains duplicate items -->
+  <string name="error_settings_anilist_duplicate_item">List items must be unique.</string>
+  <!-- Error message shown when a tokenized list contains blank entries -->
+  <string name="error_settings_anilist_empty_item">List items cannot be empty.</string>
+  <!-- Error helper shown above save actions when tokenized list validation fails -->
+  <string name="error_settings_anilist_fix_list_items">Fix invalid list entries before saving.</string>
   <!-- Trailing value shown when AniList settings are idle and can be refreshed -->
   <string name="label_settings_anilist_sync_refresh">Refresh</string>
   <!-- Trailing value shown while AniList settings are syncing -->

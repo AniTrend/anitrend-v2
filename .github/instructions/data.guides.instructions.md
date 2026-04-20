@@ -28,6 +28,13 @@ For docs hygiene, use repo-relative links and validate with
 - Upsert by composite uniqueness, not by surrogate PK: add DAO `@Insert(onConflict = REPLACE)` methods for batch upserts; pass entities keyed by the composite columns so duplicates replace the correct logical row.
 - Keep mappers simple and deterministic: in mappers’ `persist` steps, call the DAO batch upsert for connection entities rather than persisting by surrogate PK.
 - Avoid non-null ID contracts: do not require non-null `id` in interfaces or models for rows whose IDs are DB-generated; this ensures inserts go through with NULL.
+
+### Mapper embed policy
+
+- When a response mapper needs to persist related entities, e.g. `user option`, `notification`, `statistic`, or other sidecar rows, express that work through `EmbedMapper` helpers.
+- Do not inject extra Room sources straight into a parent mapper when the write is a related embedded side effect; introduce `XxxEmbed` and keep the persistence rule there, even if it calls a custom DAO method.
+- Use the parent mapper only to coordinate `onEmbedded(...)` and `persistEmbedded()` calls, so query and mutation mapper wiring stays uniform.
+
 ### CacheRequest isolation rule
 
 `cache_log` identifies entries by `request + cache_item_id` only — there is no `key` column. Two source

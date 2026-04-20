@@ -36,4 +36,16 @@ internal abstract class UserStatisticLocalSource : AbstractLocalSource<UserWithS
         """,
     )
     abstract override suspend fun clear()
+
+    @Query(
+        """
+        insert into user_statistic(user_id, statistic_anime, statistic_manga)
+        select :userId, null, null
+        where not exists(
+            select 1 from user_statistic
+            where user_id = :userId
+        )
+        """,
+    )
+    abstract suspend fun ensurePlaceholder(userId: Long)
 }

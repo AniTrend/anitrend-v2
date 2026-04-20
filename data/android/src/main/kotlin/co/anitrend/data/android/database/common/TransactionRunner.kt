@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 AniTrend
+ * Copyright (C) 2026 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,19 +14,21 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import co.anitrend.buildSrc.Libraries
+package co.anitrend.data.android.database.common
 
-plugins {
-    id("co.anitrend.plugin")
+import androidx.room.RoomDatabase
+import androidx.room.withTransaction
+
+fun interface TransactionRunner {
+    suspend fun run(block: suspend () -> Unit)
 }
 
-dependencies {
-    implementation(libs.androidx.preference.ktx)
-    implementation(project(Libraries.AniTrend.CommonUi.markdown))
-    implementation(project(Libraries.AniTrend.CommonUi.shared))
-}
-
-android {
-    namespace = "co.anitrend.settings"
-    buildFeatures.buildConfig = true
+class RoomTransactionRunner(
+    private val database: RoomDatabase,
+) : TransactionRunner {
+    override suspend fun run(block: suspend () -> Unit) {
+        database.withTransaction {
+            block()
+        }
+    }
 }

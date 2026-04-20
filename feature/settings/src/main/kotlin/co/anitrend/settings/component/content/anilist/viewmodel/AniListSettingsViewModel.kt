@@ -19,11 +19,14 @@ package co.anitrend.settings.component.content.anilist.viewmodel
 import androidx.lifecycle.viewModelScope
 import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.data.user.GetAuthenticatedInteractor
+import co.anitrend.data.user.UpdateProfileInteractor
 import co.anitrend.domain.user.entity.User
+import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.launch
 
 class AniListSettingsViewModel(
     private val interactor: GetAuthenticatedInteractor,
+    private val updateInteractor: UpdateProfileInteractor,
 ) : AniTrendViewModelState<User>() {
     private var hasLoaded = false
 
@@ -45,6 +48,12 @@ class AniListSettingsViewModel(
             } else {
                 refresh()
             }
+        }
+    }
+
+    fun save(param: UserParam.Update) {
+        viewModelScope.launch {
+            state.postValue(updateInteractor(param))
         }
     }
 }
