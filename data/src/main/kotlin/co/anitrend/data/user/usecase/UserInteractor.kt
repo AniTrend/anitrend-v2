@@ -17,6 +17,8 @@
 package co.anitrend.data.user.usecase
 
 import co.anitrend.data.user.GetAuthenticatedInteractor
+import co.anitrend.data.user.GetProfileFeedInteractor
+import co.anitrend.data.user.GetProfileOverviewInteractor
 import co.anitrend.data.user.GetProfileInteractor
 import co.anitrend.data.user.GetProfileStatisticInteractor
 import co.anitrend.data.user.GetUserInteractor
@@ -25,6 +27,8 @@ import co.anitrend.data.user.UpdateProfileInteractor
 import co.anitrend.data.user.UserAuthenticatedRepository
 import co.anitrend.data.user.UserFollowRepository
 import co.anitrend.data.user.UserIdentifierRepository
+import co.anitrend.data.user.UserProfileFeedRepository
+import co.anitrend.data.user.UserProfileOverviewRepository
 import co.anitrend.data.user.UserProfileRepository
 import co.anitrend.data.user.UserProfileStatisticRepository
 import co.anitrend.data.user.UserUpdateRepository
@@ -41,6 +45,14 @@ internal interface UserInteractor {
     class Statistic(
         repository: UserProfileStatisticRepository,
     ) : GetProfileStatisticInteractor(repository)
+
+    class Overview(
+        repository: UserProfileOverviewRepository,
+    ) : GetProfileOverviewInteractor(repository)
+
+    class Feed(
+        repository: UserProfileFeedRepository,
+    ) : GetProfileFeedInteractor(repository)
 
     class Authenticated(
         repository: UserAuthenticatedRepository,

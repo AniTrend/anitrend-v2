@@ -34,6 +34,8 @@ enum class CacheRequest(
     REVIEW("review"),
     USER_ID("user_id"),
     STATISTIC("statistic"),
+    USER_PROFILE_OVERVIEW("user_profile_overview"),
+    USER_PROFILE_FEED("user_profile_feed"),
     NEWS("news"),
     EPISODE("episode"),
     CONFIG("config"),

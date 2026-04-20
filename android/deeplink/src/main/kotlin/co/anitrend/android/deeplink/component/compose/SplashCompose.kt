@@ -16,7 +16,6 @@
  */
 package co.anitrend.android.deeplink.component.compose
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,7 +40,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.integerResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -52,6 +50,7 @@ import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.android.deeplink.component.presenter.SplashPresenter
+import coil.compose.AsyncImage
 
 @Composable
 fun SplashSpinner(modifier: Modifier = Modifier) {
@@ -124,8 +123,8 @@ fun SplashLines(
 
 @Composable
 fun SplashLogo(modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(id = co.anitrend.core.R.drawable.ic_anitrend_logo),
+    AsyncImage(
+        model = co.anitrend.core.R.mipmap.ic_launcher,
         contentDescription = null,
         modifier =
             modifier

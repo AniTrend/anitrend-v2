@@ -20,6 +20,8 @@ import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.user.UserAuthenticatedRepository
 import co.anitrend.data.user.UserFollowRepository
 import co.anitrend.data.user.UserIdentifierRepository
+import co.anitrend.data.user.UserProfileFeedRepository
+import co.anitrend.data.user.UserProfileOverviewRepository
 import co.anitrend.data.user.UserProfileRepository
 import co.anitrend.data.user.UserProfileStatisticRepository
 import co.anitrend.data.user.UserUpdateRepository
@@ -53,6 +55,20 @@ internal interface UserRepository {
     ) : UserRepository,
         UserProfileStatisticRepository {
         override suspend fun getProfileStatistic(param: UserParam.Statistic) = source create source(param)
+    }
+
+    class Overview(
+        private val source: UserSource.Overview,
+    ) : UserRepository,
+        UserProfileOverviewRepository {
+        override suspend fun getProfileOverview(param: UserParam.Overview) = source create source(param)
+    }
+
+    class Feed(
+        private val source: UserSource.Feed,
+    ) : UserRepository,
+        UserProfileFeedRepository {
+        override suspend fun getProfileFeed(param: UserParam.Feed) = source create source(param)
     }
 
     class ToggleFollow(

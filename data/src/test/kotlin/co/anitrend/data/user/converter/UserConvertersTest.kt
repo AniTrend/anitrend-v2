@@ -16,11 +16,20 @@
  */
 package co.anitrend.data.user.converter
 
+import co.anitrend.data.user.entity.UserEntity
+import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
+import co.anitrend.data.user.entity.option.UserMediaOptionEntity
+import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
+import co.anitrend.data.user.entity.view.UserEntityView
 import co.anitrend.data.user.model.UserModel
 import co.anitrend.data.user.model.option.UserOptionsModel
+import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.notification.enums.NotificationType
+import co.anitrend.domain.user.entity.User
+import co.anitrend.domain.user.enums.UserTitleLanguage
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class UserConvertersTest {
@@ -102,5 +111,85 @@ class UserConvertersTest {
         assertEquals(1, result.notificationOption.size)
         assertEquals(NotificationType.CHARACTER_SUBMISSION_UPDATE, result.notificationOption.first().notificationType)
         assertTrue(result.notificationOption.first().enabled)
+    }
+
+    @Test
+    fun `given missing statistic relation when mapping profile stats view then empty stats are used`() {
+        val source = withStatisticView(statistic = null)
+
+        val result = UserViewEntityConverter().convertFrom(source) as User.WithStats
+
+        assertNull(result.statistics.anime)
+        assertNull(result.statistics.manga)
+        assertEquals("viewer", result.name)
+    }
+
+    private fun withStatisticView(statistic: UserWithStatisticEntity?): UserEntityView.WithStatistic {
+        val constructor =
+            UserEntityView.WithStatistic::class.java.getDeclaredConstructor(
+                UserEntity::class.java,
+                UserWithStatisticEntity::class.java,
+                UserGeneralOptionEntity::class.java,
+                UserMediaOptionEntity::class.java,
+                List::class.java,
+                List::class.java,
+                List::class.java,
+            )
+
+        return constructor.newInstance(
+            UserEntity(
+                about =
+                    UserEntity.About(
+                        name = "viewer",
+                        bio = null,
+                        siteUrl = "https://anilist.co/user/viewer",
+                        donatorTier = null,
+                        donatorBadge = null,
+                    ),
+                status =
+                    UserEntity.Status(
+                        isFollowing = false,
+                        isFollower = false,
+                        isBlocked = false,
+                    ),
+                coverImage = UserEntity.CoverImage(),
+                updatedAt = null,
+                createdAt = null,
+                id = 1L,
+            ),
+            statistic,
+            UserGeneralOptionEntity(
+                userId = 1L,
+                airingNotifications = false,
+                displayAdultContent = false,
+                notificationOption = emptyList(),
+                titleLanguage = UserTitleLanguage.ROMAJI,
+                profileColor = null,
+            ),
+            UserMediaOptionEntity(
+                userId = 1L,
+                scoreFormat = ScoreFormat.POINT_100,
+                rowOrder = null,
+                anime =
+                    UserMediaOptionEntity.MediaOption(
+                        customLists = emptyList(),
+                        sectionOrder = emptyList(),
+                        advancedScoring = emptyList(),
+                        advancedScoringEnabled = false,
+                        splitCompletedSectionByFormat = false,
+                    ),
+                manga =
+                    UserMediaOptionEntity.MediaOption(
+                        customLists = emptyList(),
+                        sectionOrder = emptyList(),
+                        advancedScoring = emptyList(),
+                        advancedScoringEnabled = false,
+                        splitCompletedSectionByFormat = false,
+                    ),
+            ),
+            emptyList<Any>(),
+            emptyList<Any>(),
+            emptyList<Any>(),
+        )
     }
 }

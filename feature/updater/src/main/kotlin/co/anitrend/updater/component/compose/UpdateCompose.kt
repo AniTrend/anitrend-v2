@@ -16,7 +16,6 @@
  */
 package co.anitrend.updater.component.compose
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -25,10 +24,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SystemUpdate
 import androidx.compose.material3.Card
@@ -38,12 +34,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -73,31 +65,16 @@ private fun UpdateContent(
         contentPadding = PaddingValues(vertical = 12.dp),
     ) {
         item {
-            Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                ) {
-                    Image(
-                        painter = painterResource(id = co.anitrend.core.R.drawable.ic_anitrend_logo),
-                        contentDescription = null,
-                        modifier =
-                            Modifier
-                                .size(dimensionResource(id = co.anitrend.android.core.R.dimen.series_image_sm))
-                                .clip(RoundedCornerShape(64.dp)),
-                    )
-                }
-                AniTrendHintCard(
-                    title = stringResource(R.string.title_updater_hub, uiState.appLabel),
-                    description = heroDescription(uiState),
-                    icon = Icons.Outlined.SystemUpdate,
-                    currentValue = uiState.version,
-                    actionLabel = stringResource(R.string.action_updater_check_now),
-                    onClick = onCheckForUpdates,
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                )
-            }
+            AniTrendHintCard(
+                title = stringResource(R.string.title_updater_hub),
+                description = heroDescription(uiState),
+                icon = Icons.Outlined.SystemUpdate,
+                currentValue = uiState.version,
+                actionLabel = stringResource(R.string.action_updater_check_now),
+                onClick = onCheckForUpdates,
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+            )
         }
         item {
             UpdateSectionCard(
@@ -275,11 +252,6 @@ fun UpdateScreenContent(
     val uiState = viewModel.uiState
     DefaultScaffold(
         onBackPress = onBackPress,
-        bottomBarActions = {
-            TextButton(onClick = viewModel::checkForUpdates) {
-                Text(text = stringResource(R.string.action_updater_check_now))
-            }
-        },
     ) { innerPadding ->
         UpdateContent(
             modifier = Modifier.padding(innerPadding),

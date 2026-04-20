@@ -55,7 +55,7 @@ fun FragmentActivity.handleMediaItemNavigation(
             )
 
         is MediaListEditorRouter.MediaListEditorParam ->
-            openMediaListSheetFor(
+            window.decorView.openMediaListSheetFor(
                 mediaListParam = param,
                 settings = settings,
             )
@@ -64,31 +64,20 @@ fun FragmentActivity.handleMediaItemNavigation(
     }
 }
 
-fun FragmentActivity.openMediaListSheetFor(
-    mediaListParam: MediaListEditorRouter.MediaListEditorParam,
-    settings: IUserSettings,
-): Boolean {
-    window.decorView.runIfAuthenticated(settings) {
-        val fragmentItem =
-            FragmentItem(
-                fragment = MediaListEditorRouter.forSheet(),
-                parameter = mediaListParam.asBundle(),
-            )
-        val dialog = fragmentItem.fragmentByTagOrNew(this)
-        dialog.show(supportFragmentManager, fragmentItem.tag())
-    }
-    return true
-}
-
 fun View.openMediaListSheetFor(
     mediaListParam: MediaListEditorRouter.MediaListEditorParam,
     settings: IUserSettings,
 ): Boolean {
     runIfActivityContext {
-        openMediaListSheetFor(
-            mediaListParam = mediaListParam,
-            settings = settings,
-        )
+        runIfAuthenticated(settings) {
+            val fragmentItem =
+                FragmentItem(
+                    fragment = MediaListEditorRouter.forSheet(),
+                    parameter = mediaListParam.asBundle(),
+                )
+            val dialog = fragmentItem.fragmentByTagOrNew(this)
+            dialog.show(supportFragmentManager, fragmentItem.tag())
+        }
     }
     return true
 }
