@@ -45,6 +45,16 @@ internal sealed class UserEntityView {
             entityColumn = "user_id",
         )
         val notification: UserNotificationEntity,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id",
+        )
+        val generalOption: UserGeneralOptionEntity,
+        @Relation(
+            parentColumn = "id",
+            entityColumn = "user_id",
+        )
+        val mediaListOption: UserMediaOptionEntity,
     ) : UserEntityView()
 
     internal data class WithOptions(

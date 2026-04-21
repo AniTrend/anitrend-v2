@@ -257,6 +257,16 @@
   <string name="label_settings_account_connected">Connected</string>
   <!-- Trailing value shown on the account action row when authentication is required -->
   <string name="label_settings_account_required">Required</string>
+  <!-- Section title for the linked AniList settings preview entry -->
+  <string name="title_settings_account_anilist_settings">AniList settings</string>
+  <!-- Section summary for the linked AniList settings preview entry -->
+  <string name="summary_settings_account_anilist_settings">Review the AniList profile and list settings currently synced into AniTrend.</string>
+  <!-- Action row title that opens the read-only AniList settings detail screen -->
+  <string name="action_settings_account_view_anilist_settings">View AniList settings</string>
+  <!-- Action row summary for the read-only AniList settings detail screen -->
+  <string name="summary_settings_account_view_anilist_settings">Inspect synced AniList preferences, open AniList to edit them, or sync them again.</string>
+  <!-- Trailing value used for the AniList settings entry when section editors are available -->
+  <string name="label_settings_account_editable">Editable</string>
 
   <!-- Intro title for the filters screen describing the future filtering surface -->
   <string name="title_settings_filters_overview">Content filtering</string>
@@ -413,5 +423,113 @@
   <string name="label_settings_task_item_summary" formatted="true">%1$s → %2$s</string>
   <!-- Accessibility description for the button that cancels a WorkManager job -->
   <string name="description_settings_task_cancel_work">Cancel work</string>
+
+  <!-- Overview card title for the AniList settings detail screen -->
+  <string name="title_settings_anilist_overview">AniList settings overview</string>
+  <!-- Overview card summary for the AniList settings detail screen -->
+  <string name="summary_settings_anilist_overview">AniTrend currently exposes these AniList preferences as a read-only preview. Edit them on AniList, then sync to refresh this page.</string>
+  <!-- Action section title for AniList settings controls -->
+  <string name="title_settings_anilist_actions">Actions</string>
+  <!-- Action section summary for AniList settings controls -->
+  <string name="summary_settings_anilist_actions">Open AniList to manage your profile settings directly, or sync this screen to pull the latest values.</string>
+  <!-- Action title for opening AniList web settings -->
+  <string name="action_settings_anilist_open_web_settings">Open AniList web settings</string>
+  <!-- Action summary for opening AniList web settings -->
+  <string name="summary_settings_anilist_open_web_settings">Launch https://anilist.co/settings to edit preferences that AniTrend currently mirrors read-only.</string>
+  <!-- Action title for refreshing the AniList settings snapshot -->
+  <string name="action_settings_anilist_sync">Sync from AniList</string>
+  <!-- Action summary for refreshing the AniList settings snapshot -->
+  <string name="summary_settings_anilist_sync">Refresh the cached AniList settings shown in AniTrend.</string>
+  <!-- Action title used for opening an in-app editor for a settings section -->
+  <string name="action_settings_anilist_edit_section">Edit this section</string>
+  <!-- Action summary used for opening an in-app editor for a settings section -->
+  <string name="summary_settings_anilist_edit_section">Adjust these settings in-app and save back to AniList.</string>
+  <!-- Trailing value shown on the section edit row when editing can begin -->
+  <string name="label_settings_anilist_edit_ready">Ready</string>
+  <!-- Summary shown for enum fields where tapping cycles through available values -->
+  <string name="summary_settings_anilist_cycle_option">Tap to cycle through options.</string>
+  <!-- Helper summary shown below timezone input to communicate the expected format -->
+  <string name="summary_settings_anilist_timezone_format">Use hh:mm format, for example 02:00.</string>
+  <!-- Error shown below timezone input when the entered time does not match hh:mm -->
+  <string name="error_settings_anilist_invalid_timezone">Enter a valid time in hh:mm format.</string>
+  <!-- Action label for saving edited AniList settings from the section sheet -->
+  <string name="action_settings_anilist_save_changes">Save changes</string>
+  <!-- Input label used to add a new list item token in AniList settings editors -->
+  <string name="label_settings_anilist_list_item_input">List item</string>
+  <!-- Action label used to append a token item in AniList settings editors -->
+  <string name="action_settings_anilist_add_item">Add</string>
+  <!-- Summary shown when a tokenized list setting has no current values -->
+  <string name="summary_settings_anilist_no_items">No items yet.</string>
+  <!-- Error message shown when a tokenized list contains duplicate items -->
+  <string name="error_settings_anilist_duplicate_item">List items must be unique.</string>
+  <!-- Error message shown when a tokenized list contains blank entries -->
+  <string name="error_settings_anilist_empty_item">List items cannot be empty.</string>
+  <!-- Error helper shown above save actions when tokenized list validation fails -->
+  <string name="error_settings_anilist_fix_list_items">Fix invalid list entries before saving.</string>
+  <!-- Trailing value shown when AniList settings are idle and can be refreshed -->
+  <string name="label_settings_anilist_sync_refresh">Refresh</string>
+  <!-- Trailing value shown while AniList settings are syncing -->
+  <string name="label_settings_anilist_sync_loading">Syncing</string>
+  <!-- Trailing value shown after an AniList settings sync failure -->
+  <string name="label_settings_anilist_sync_retry">Retry</string>
+  <!-- Hero state shown when AniList settings are loaded successfully -->
+  <string name="label_settings_anilist_state_synced">Synced</string>
+  <!-- Hero state shown while AniList settings are being refreshed with cached content visible -->
+  <string name="label_settings_anilist_state_refreshing">Refreshing</string>
+  <!-- Hero state shown when AniList settings are showing cached content after a sync failure -->
+  <string name="label_settings_anilist_state_cached">Cached</string>
+  <!-- Hero state shown when AniList settings are loading for the first time -->
+  <string name="label_settings_anilist_state_loading">Loading</string>
+  <!-- Hero state shown when AniList settings could not be loaded -->
+  <string name="label_settings_anilist_state_unavailable">Unavailable</string>
+  <!-- Title shown when AniList settings cannot be loaded yet -->
+  <string name="title_settings_anilist_unavailable">AniList settings unavailable</string>
+  <!-- Fallback summary shown when AniList settings cannot be loaded yet -->
+  <string name="summary_settings_anilist_unavailable">AniTrend could not load your AniList settings yet. Try syncing again in a moment.</string>
+  <!-- Title shown when a sync fails but cached AniList settings are still displayed -->
+  <string name="title_settings_anilist_sync_issue">Last sync failed</string>
+  <!-- Summary shown when cached AniList settings remain visible after a sync failure -->
+  <string name="summary_settings_anilist_sync_issue">AniTrend is still showing the last synced AniList settings below. Try syncing again or open AniList to update them directly.</string>
+  <!-- Title shown when AniList settings are opened without an authenticated account -->
+  <string name="title_settings_anilist_signed_out">Sign in to view AniList settings</string>
+  <!-- Summary shown when AniList settings are opened without an authenticated account -->
+  <string name="summary_settings_anilist_signed_out">Connect an AniList account first, then return here to inspect the synced settings snapshot.</string>
+
+  <!-- AniList settings groups -->
+  <string name="title_settings_anilist_group_profile">Profile</string>
+  <string name="summary_settings_anilist_group_profile">Public profile details and cosmetic preferences.</string>
+  <string name="title_settings_anilist_group_general">General</string>
+  <string name="summary_settings_anilist_group_general">Language, adult content, and timezone preferences.</string>
+  <string name="title_settings_anilist_group_notifications">Notifications</string>
+  <string name="summary_settings_anilist_group_notifications">AniList notification delivery and category preferences.</string>
+  <string name="title_settings_anilist_group_anime_list">Anime list</string>
+  <string name="summary_settings_anilist_group_anime_list">Default organization rules for anime lists.</string>
+  <string name="title_settings_anilist_group_manga_list">Manga list</string>
+  <string name="summary_settings_anilist_group_manga_list">Default organization rules for manga lists.</string>
+
+  <!-- AniList settings entry labels -->
+  <string name="label_settings_anilist_profile_about">About</string>
+  <string name="label_settings_anilist_profile_donator_badge">Donator badge</string>
+  <string name="label_settings_anilist_profile_color">Profile color</string>
+  <string name="label_settings_anilist_title_language">Title language</string>
+  <string name="label_settings_anilist_staff_name_language">Staff name language</string>
+  <string name="label_settings_anilist_display_adult_content">Display adult content</string>
+  <string name="label_settings_anilist_timezone">Timezone</string>
+  <string name="label_settings_anilist_airing_notifications">Airing notifications</string>
+  <string name="label_settings_anilist_notification_options">Notification options</string>
+  <string name="label_settings_anilist_anime_score_format">Anime score format</string>
+  <string name="label_settings_anilist_anime_row_order">Anime row order</string>
+  <string name="label_settings_anilist_anime_section_order">Anime section order</string>
+  <string name="label_settings_anilist_anime_split_completed_section">Anime split completed section by format</string>
+  <string name="label_settings_anilist_anime_custom_lists">Anime custom lists</string>
+  <string name="label_settings_anilist_anime_advanced_scoring">Anime advanced scoring</string>
+  <string name="label_settings_anilist_anime_advanced_scoring_enabled">Anime advanced scoring enabled</string>
+  <string name="label_settings_anilist_manga_score_format">Manga score format</string>
+  <string name="label_settings_anilist_manga_row_order">Manga row order</string>
+  <string name="label_settings_anilist_manga_section_order">Manga section order</string>
+  <string name="label_settings_anilist_manga_split_completed_section">Manga split completed section by format</string>
+  <string name="label_settings_anilist_manga_custom_lists">Manga custom lists</string>
+  <string name="label_settings_anilist_manga_advanced_scoring">Manga advanced scoring</string>
+  <string name="label_settings_anilist_manga_advanced_scoring_enabled">Manga advanced scoring enabled</string>
 
 </resources>

@@ -45,6 +45,7 @@ import co.anitrend.domain.user.entity.attribute.statistic.Statistic
 import co.anitrend.domain.user.entity.attribute.statistic.UserMediaStatisticType
 import co.anitrend.domain.user.entity.contract.UserImage
 import co.anitrend.domain.user.entity.contract.UserStatus
+import co.anitrend.domain.user.enums.UserStaffNameLanguage
 import co.anitrend.domain.user.enums.UserTitleLanguage
 
 internal class UserModelConverter(
@@ -257,6 +258,8 @@ internal class UserGeneralOptionModelConverter(
                         notificationOption = emptyList(),
                         titleLanguage = source.options?.titleLanguage ?: UserTitleLanguage.ROMAJI,
                         profileColor = source.options?.profileColor,
+                        timeZone = null,
+                        staffNameLanguage = null,
                     )
                 is UserModel.Viewer ->
                     UserGeneralOptionEntity(
@@ -276,6 +279,8 @@ internal class UserGeneralOptionModelConverter(
                                 }.orEmpty(),
                         titleLanguage = source.options?.titleLanguage ?: UserTitleLanguage.ROMAJI,
                         profileColor = source.options?.profileColor,
+                        timeZone = source.options?.timeZone,
+                        staffNameLanguage = source.options?.staffNameLanguage ?: UserStaffNameLanguage.ROMAJI_WESTERN,
                     )
                 else -> error("$source type does not contain any models of type UserGeneralOption")
             }
@@ -394,6 +399,8 @@ internal class UserViewEntityConverter(
                                         }
                                     },
                                 profileColor = source.generalOption.profileColor,
+                                timeZone = source.generalOption.timeZone,
+                                staffNameLanguage = source.generalOption.staffNameLanguage,
                             ),
                         name = source.user.about.name,
                         previousNames =
@@ -465,6 +472,8 @@ internal class UserViewEntityConverter(
                                         }
                                     },
                                 profileColor = source.generalOption.profileColor,
+                                timeZone = source.generalOption.timeZone,
+                                staffNameLanguage = source.generalOption.staffNameLanguage,
                             ),
                         statistics =
                             UserMediaStatisticType(
@@ -788,6 +797,45 @@ internal class UserViewEntityConverter(
                 is UserEntityView.Authenticated ->
                     User.Authenticated(
                         unreadNotifications = source.notification.unreadNotifications,
+                        listOption =
+                            UserMediaListOption(
+                                scoreFormat = source.mediaListOption.scoreFormat,
+                                rowOrder = source.mediaListOption.rowOrder,
+                                animeList =
+                                    UserMediaListTypeOptions(
+                                        sectionOrder = source.mediaListOption.anime.sectionOrder,
+                                        splitCompletedSectionByFormat = source.mediaListOption.anime.splitCompletedSectionByFormat,
+                                        customLists = source.mediaListOption.anime.customLists,
+                                        advancedScoring = source.mediaListOption.anime.advancedScoring,
+                                        advancedScoringEnabled = source.mediaListOption.anime.advancedScoringEnabled,
+                                    ),
+                                mangaList =
+                                    UserMediaListTypeOptions(
+                                        sectionOrder = source.mediaListOption.manga.sectionOrder,
+                                        splitCompletedSectionByFormat = source.mediaListOption.manga.splitCompletedSectionByFormat,
+                                        customLists = source.mediaListOption.manga.customLists,
+                                        advancedScoring = source.mediaListOption.manga.advancedScoring,
+                                        advancedScoringEnabled = source.mediaListOption.manga.advancedScoringEnabled,
+                                    ),
+                            ),
+                        profileOption =
+                            UserProfileOption(
+                                titleLanguage = source.generalOption.titleLanguage,
+                                displayAdultContent = source.generalOption.displayAdultContent,
+                                airingNotifications = source.generalOption.airingNotifications,
+                                notificationOptions =
+                                    source.generalOption.notificationOption.mapNotNull { option ->
+                                        option.notificationType?.let { notificationType ->
+                                            UserNotificationOption(
+                                                isEnabled = option.enabled,
+                                                type = notificationType,
+                                            )
+                                        }
+                                    },
+                                profileColor = source.generalOption.profileColor,
+                                timeZone = source.generalOption.timeZone,
+                                staffNameLanguage = source.generalOption.staffNameLanguage,
+                            ),
                         name = source.user.about.name,
                         avatar =
                             UserImage(

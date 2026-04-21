@@ -58,6 +58,8 @@ sealed class User : IEntity {
 
     data class Authenticated(
         val unreadNotifications: Int,
+        val listOption: UserMediaListOption,
+        val profileOption: UserProfileOption,
         override val name: CharSequence,
         override val avatar: UserImage,
         override val status: UserStatus,

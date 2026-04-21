@@ -22,10 +22,11 @@ import co.anitrend.data.android.extensions.offline
 import co.anitrend.data.auth.mapper.AuthMapper
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
+import co.anitrend.data.core.extensions.transaction
 import co.anitrend.data.user.GetAuthenticatedInteractor
 import co.anitrend.data.user.GetProfileFeedInteractor
-import co.anitrend.data.user.GetProfileOverviewInteractor
 import co.anitrend.data.user.GetProfileInteractor
+import co.anitrend.data.user.GetProfileOverviewInteractor
 import co.anitrend.data.user.GetProfileStatisticInteractor
 import co.anitrend.data.user.GetUserInteractor
 import co.anitrend.data.user.ToggleFollowInteractor
@@ -252,6 +253,7 @@ private val mapperModule =
                 mediaOptionMapper = get(),
                 previousNameMapper = get(),
                 localSource = store().userDao(),
+                transactionRunner = transaction(),
                 converter = get(),
             )
         }
@@ -287,6 +289,11 @@ private val mapperModule =
         factory {
             UserMapper.NotificationEmbed(
                 localSource = store().userNotificationDao(),
+            )
+        }
+        factory {
+            UserMapper.StatisticEmbed(
+                localSource = store().userStatisticDao(),
             )
         }
         factory {

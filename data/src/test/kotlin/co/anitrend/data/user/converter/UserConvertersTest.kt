@@ -26,6 +26,7 @@ import co.anitrend.data.user.model.option.UserOptionsModel
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.notification.enums.NotificationType
 import co.anitrend.domain.user.entity.User
+import co.anitrend.domain.user.enums.UserStaffNameLanguage
 import co.anitrend.domain.user.enums.UserTitleLanguage
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -122,6 +123,92 @@ class UserConvertersTest {
         assertNull(result.statistics.anime)
         assertNull(result.statistics.manga)
         assertEquals("viewer", result.name)
+    }
+
+    @Test
+    fun `given authenticated user view when mapping then AniList settings are preserved`() {
+        val source =
+            UserEntityView.Authenticated(
+                user =
+                    UserEntity(
+                        about =
+                            UserEntity.About(
+                                name = "viewer",
+                                bio = "About me",
+                                siteUrl = "https://anilist.co/user/viewer",
+                                donatorTier = null,
+                                donatorBadge = "Supporter",
+                            ),
+                        status =
+                            UserEntity.Status(
+                                isFollowing = false,
+                                isFollower = false,
+                                isBlocked = false,
+                            ),
+                        coverImage = UserEntity.CoverImage(),
+                        updatedAt = null,
+                        createdAt = null,
+                        id = 1L,
+                    ),
+                notification = UserGeneralOptionEntity.NotificationOption(enabled = true, notificationType = NotificationType.AIRING)
+                    .let { _ ->
+                        co.anitrend.data.user.entity.notification.UserNotificationEntity(
+                            userId = 1L,
+                            unreadNotifications = 7,
+                        )
+                    },
+                generalOption =
+                    UserGeneralOptionEntity(
+                        userId = 1L,
+                        airingNotifications = true,
+                        displayAdultContent = true,
+                        notificationOption =
+                            listOf(
+                                UserGeneralOptionEntity.NotificationOption(
+                                    enabled = true,
+                                    notificationType = NotificationType.AIRING,
+                                ),
+                            ),
+                        titleLanguage = UserTitleLanguage.ENGLISH,
+                        profileColor = "blue",
+                        timeZone = "+02:00",
+                        staffNameLanguage = UserStaffNameLanguage.NATIVE,
+                    ),
+                mediaListOption =
+                    UserMediaOptionEntity(
+                        userId = 1L,
+                        scoreFormat = ScoreFormat.POINT_100,
+                        rowOrder = "SCORE",
+                        anime =
+                            UserMediaOptionEntity.MediaOption(
+                                customLists = listOf("Seasonal"),
+                                sectionOrder = listOf("Watching", "Completed"),
+                                advancedScoring = listOf("Story", "Characters"),
+                                advancedScoringEnabled = true,
+                                splitCompletedSectionByFormat = true,
+                            ),
+                        manga =
+                            UserMediaOptionEntity.MediaOption(
+                                customLists = listOf("Backlog"),
+                                sectionOrder = listOf("Reading", "Completed"),
+                                advancedScoring = listOf("Art"),
+                                advancedScoringEnabled = false,
+                                splitCompletedSectionByFormat = false,
+                            ),
+                    ),
+            )
+
+        val result = UserViewEntityConverter().convertFrom(source) as User.Authenticated
+
+        assertEquals(7, result.unreadNotifications)
+        assertEquals("About me", result.status.about)
+        assertEquals("Supporter", result.status.donationBadge)
+        assertEquals("+02:00", result.profileOption.timeZone)
+        assertEquals(UserStaffNameLanguage.NATIVE, result.profileOption.staffNameLanguage)
+        assertEquals(UserTitleLanguage.ENGLISH, result.profileOption.titleLanguage)
+        assertEquals("SCORE", result.listOption.rowOrder)
+        assertEquals(listOf("Watching", "Completed"), result.listOption.animeList.sectionOrder)
+        assertTrue(result.listOption.animeList.advancedScoringEnabled)
     }
 
     private fun withStatisticView(statistic: UserWithStatisticEntity?): UserEntityView.WithStatistic {

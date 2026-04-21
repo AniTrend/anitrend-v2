@@ -16,7 +16,9 @@
  */
 package co.anitrend.data.core.extensions
 
+import androidx.room.RoomDatabase
 import co.anitrend.data.android.database.common.IAniTrendStore
+import co.anitrend.data.android.database.common.RoomTransactionRunner
 import co.anitrend.data.core.api.factory.AniListApiFactory
 import org.koin.core.scope.Scope
 
@@ -32,3 +34,5 @@ internal inline fun <reified T> Scope.aniListApi(): T {
  * Facade for supplying database contract
  */
 internal fun Scope.store() = get<IAniTrendStore>()
+
+internal fun Scope.transaction() = RoomTransactionRunner(database = get<RoomDatabase>())

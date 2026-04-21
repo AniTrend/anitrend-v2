@@ -12,6 +12,7 @@ fragment UserViewer on User {
             type
             disabled
         }
+        staffNameLanguage
         timezone
     }
     isBlocked

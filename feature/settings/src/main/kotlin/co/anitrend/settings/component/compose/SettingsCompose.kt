@@ -26,6 +26,7 @@ import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.navigation.SettingsRouter
+import co.anitrend.settings.component.content.anilist.AniListSettingsScreen
 import co.anitrend.settings.component.content.account.AccountScreen
 import co.anitrend.settings.component.content.developer.DeveloperScreen
 import co.anitrend.settings.component.content.log.LogViewerScreen
@@ -72,7 +73,17 @@ fun SettingsContentScreen(
             composable(
                 route = SettingsRouter.Destination.ACCOUNTS.name,
                 content = {
-                    AccountScreen()
+                    AccountScreen(
+                        onAniListSettings = {
+                            navigationController.navigate(SettingsRouter.Destination.ANILIST_SETTINGS.name)
+                        },
+                    )
+                },
+            )
+            composable(
+                route = SettingsRouter.Destination.ANILIST_SETTINGS.name,
+                content = {
+                    AniListSettingsScreen()
                 },
             )
             composable(

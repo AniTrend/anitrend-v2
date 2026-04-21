@@ -16,6 +16,7 @@
  */
 package co.anitrend.domain.user.entity.attribute.option
 
+import co.anitrend.domain.user.enums.UserStaffNameLanguage
 import co.anitrend.domain.user.enums.UserTitleLanguage
 
 /**
@@ -27,4 +28,6 @@ data class UserProfileOption(
     val airingNotifications: Boolean = true,
     val notificationOptions: Collection<UserNotificationOption> = emptyList(),
     val profileColor: String? = null,
+    val timeZone: String? = null,
+    val staffNameLanguage: UserStaffNameLanguage? = null,
 )

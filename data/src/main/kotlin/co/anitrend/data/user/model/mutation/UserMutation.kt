@@ -59,12 +59,22 @@ internal sealed class UserMutation : IGraphPayload {
             mapOf(
                 "about" to param.about,
                 "titleLanguage" to param.titleLanguage,
+                "activityMergeTime" to param.activityMergeTime,
                 "displayAdultContent" to param.displayAdultContent,
                 "airingNotifications" to param.airingNotifications,
                 "scoreFormat" to param.scoreFormat,
-                "timeZone" to param.timeZone,
+                "timezone" to param.timeZone,
                 "rowOrder" to param.rowOrder,
                 "profileColor" to param.profileColor,
+                "disabledListActivity" to
+                    param.disabledListActivity
+                        ?.map { option ->
+                            mapOf(
+                                "disabled" to option.disabled,
+                                "type" to option.type,
+                            )
+                        },
+                "restrictMessagesToFollowing" to param.restrictMessagesToFollowing,
                 "notificationOptions" to
                     param.notificationOptions
                         .map(::NotificationOptionInput)

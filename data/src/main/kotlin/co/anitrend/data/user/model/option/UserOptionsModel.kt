@@ -18,6 +18,7 @@ package co.anitrend.data.user.model.option
 
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.notification.enums.NotificationType
+import co.anitrend.domain.user.enums.UserStaffNameLanguage
 import co.anitrend.domain.user.enums.UserTitleLanguage
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -35,6 +36,7 @@ internal sealed class UserOptionsModel {
     abstract val restrictMessagesToFollowing: Boolean?
     abstract val displayAdultContent: Boolean?
     abstract val profileColor: String?
+    abstract val staffNameLanguage: UserStaffNameLanguage?
     abstract val titleLanguage: UserTitleLanguage?
 
     @Serializable
@@ -43,6 +45,7 @@ internal sealed class UserOptionsModel {
         @SerialName("restrictMessagesToFollowing") override val restrictMessagesToFollowing: Boolean? = null,
         @SerialName("displayAdultContent") override val displayAdultContent: Boolean? = null,
         @SerialName("profileColor") override val profileColor: String? = null,
+        @SerialName("staffNameLanguage") override val staffNameLanguage: UserStaffNameLanguage? = null,
         @SerialName("titleLanguage") override val titleLanguage: UserTitleLanguage? = null,
     ) : UserOptionsModel()
 
@@ -60,6 +63,7 @@ internal sealed class UserOptionsModel {
         @SerialName("restrictMessagesToFollowing") override val restrictMessagesToFollowing: Boolean? = null,
         @SerialName("displayAdultContent") override val displayAdultContent: Boolean? = null,
         @SerialName("profileColor") override val profileColor: String? = null,
+        @SerialName("staffNameLanguage") override val staffNameLanguage: UserStaffNameLanguage? = null,
         @SerialName("titleLanguage") override val titleLanguage: UserTitleLanguage? = null,
     ) : UserOptionsModel()
 

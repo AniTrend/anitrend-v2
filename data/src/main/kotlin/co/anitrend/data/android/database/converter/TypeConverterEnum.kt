@@ -30,6 +30,7 @@ import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.review.enums.ReviewRating
 import co.anitrend.domain.staff.enums.StaffLanguage
+import co.anitrend.domain.user.enums.UserStaffNameLanguage
 import co.anitrend.domain.user.enums.UserTitleLanguage
 
 internal class TypeConverterEnum {
@@ -68,6 +69,10 @@ internal class TypeConverterEnum {
     @TypeConverter fun fromUserTitleLanguage(value: UserTitleLanguage?) = value?.fromEnum()
 
     @TypeConverter fun toUserTitleLanguage(value: String?) = value?.toEnum<UserTitleLanguage>()
+
+    @TypeConverter fun fromUserStaffNameLanguage(value: UserStaffNameLanguage?) = value?.fromEnum()
+
+    @TypeConverter fun toUserStaffNameLanguage(value: String?) = value?.toEnum<UserStaffNameLanguage>()
 
     @TypeConverter fun fromMediaListStatus(value: MediaListStatus?) = value?.fromEnum()
 

@@ -19,6 +19,7 @@ package co.anitrend.domain.user.model
 import co.anitrend.domain.common.sort.SortWithOrder
 import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.notification.enums.NotificationType
 import co.anitrend.domain.user.enums.UserSort
@@ -83,12 +84,15 @@ sealed class UserParam {
      *
      * @param about User's about/bio text
      * @param titleLanguage User's title language
+     * @param activityMergeTime Minutes between activity entries to be merged together
      * @param displayAdultContent If the user should see media marked as adult-only
      * @param airingNotifications If the user should get notifications when a show they are watching airs
      * @param scoreFormat The user's list scoring system
      * @param timeZone Timezone offset format: -?HH:MM
      * @param rowOrder The user's default list order
      * @param profileColor Profile highlight color
+     * @param disabledListActivity The list activity types the user has disabled from being created
+     * @param restrictMessagesToFollowing Only allow messages from users the viewer follows
      * @param notificationOptions Notification Options
      * @param animeListOptions The user's anime list options
      * @param mangaListOptions The user's anime list options
@@ -96,16 +100,19 @@ sealed class UserParam {
     data class Update(
         val about: String?,
         val titleLanguage: UserTitleLanguage,
+        val activityMergeTime: Int? = null,
         val displayAdultContent: Boolean = false,
         val airingNotifications: Boolean = true,
         val scoreFormat: ScoreFormat,
         val timeZone: String?,
-        val rowOrder: String,
-        val profileColor: String,
+        val rowOrder: String?,
+        val profileColor: String?,
+        val disabledListActivity: List<ListActivityOption>? = null,
+        val restrictMessagesToFollowing: Boolean? = null,
         val notificationOptions: List<NotificationOption>,
         val animeListOptions: MediaListOptions,
         val mangaListOptions: MediaListOptions,
-        val staffNameLanguage: UserStaffNameLanguage,
+        val staffNameLanguage: UserStaffNameLanguage?,
     ) {
         /** [MediaListOptionsInput](https://anilist.github.io/ApiV2-GraphQL-Docs/medialistoptionsinput.doc.html)
          *
@@ -133,6 +140,16 @@ sealed class UserParam {
         data class NotificationOption(
             val enabled: Boolean,
             val type: NotificationType,
+        )
+
+        /** [ListActivityOptionInput](https://anilist.github.io/ApiV2-GraphQL-Docs/listactivityoptioninput.doc.html)
+         *
+         * @param disabled Whether this list activity type is disabled
+         * @param type The media list status type to disable activity generation for
+         */
+        data class ListActivityOption(
+            val disabled: Boolean,
+            val type: MediaListStatus,
         )
     }
 

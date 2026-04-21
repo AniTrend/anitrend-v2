@@ -17,10 +17,14 @@
 package co.anitrend.data.user.mapper
 
 import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.android.database.common.TransactionRunner
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.android.source.local.AbstractLocalSource
-import co.anitrend.data.user.converter.*
+import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
+import co.anitrend.data.user.converter.UserMediaOptionModelConverter
+import co.anitrend.data.user.converter.UserModelConverter
+import co.anitrend.data.user.converter.UserStatisticModelConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.local.option.UserGeneralOptionLocalSource
 import co.anitrend.data.user.datasource.local.option.UserMediaOptionLocalSource
@@ -33,6 +37,7 @@ import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 import co.anitrend.data.user.model.UserModel
 import co.anitrend.data.user.model.container.UserModelContainer
+import co.anitrend.data.user.model.statistics.UserStatisticModel
 import co.anitrend.data.user.settings.IUserSettings
 
 internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
@@ -64,6 +69,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
         private val mediaOptionMapper: MediaOptionEmbed,
         private val previousNameMapper: PreviousNameEmbed,
         override val localSource: UserLocalSource,
+        private val transactionRunner: TransactionRunner,
         override val converter: UserModelConverter,
     ) : UserMapper<UserModelContainer.Profile, UserEntity>() {
         /**
@@ -74,6 +80,12 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
             generalOptionMapper.persistEmbedded()
             mediaOptionMapper.persistEmbedded()
             previousNameMapper.persistEmbedded()
+        }
+
+        override suspend fun onResponseDatabaseInsert(mappedData: UserEntity) {
+            transactionRunner.run {
+                super.onResponseDatabaseInsert(mappedData)
+            }
         }
 
         /**
@@ -134,7 +146,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(source: UserModelContainer.User) = converter.convertFrom(source.user)
+        override suspend fun onResponseMapFrom(source: UserModelContainer.User): UserEntity = converter.convertFrom(source.user)
     }
 
     class Embed(
@@ -249,6 +261,49 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
                 Item(
                     userId = source.id,
                     unreadNotifications = source.unreadNotificationCount ?: 0,
+                )
+        }
+    }
+
+    class StatisticEmbed(
+        override val localSource: UserStatisticLocalSource,
+    ) : EmbedMapper<StatisticEmbed.Item, UserWithStatisticEntity>() {
+        override val converter =
+            object : SupportConverter<Item, UserWithStatisticEntity>() {
+                override val fromType: (Item) -> UserWithStatisticEntity = {
+                    UserWithStatisticEntity(
+                        statistic =
+                            UserWithStatisticEntity.Statistic(
+                                anime = it.anime,
+                                manga = it.manga,
+                            ),
+                        userId = it.userId,
+                    )
+                }
+
+                override val toType: (UserWithStatisticEntity) -> Item
+                    get() = throw NotImplementedError()
+            }
+
+        override suspend fun persistEmbedded() {
+            entities.orEmpty().forEach { entity ->
+                localSource.ensurePlaceholder(entity.userId)
+            }
+            entities = null
+        }
+
+        data class Item(
+            val userId: Long,
+            val anime: UserStatisticModel.Anime?,
+            val manga: UserStatisticModel.Manga?,
+        )
+
+        companion object {
+            fun asItem(source: UserModel.WithStatistic) =
+                Item(
+                    userId = source.id,
+                    anime = source.statistics?.anime,
+                    manga = source.statistics?.manga,
                 )
         }
     }

@@ -1,10 +1,10 @@
 ---
 name: product-designer
-description: 'Create scoped implementation plans for AniTrend UI, UX, and product-heavy changes. Use when planning Compose screen redesigns, interaction models, component decomposition, state handling, or incremental refactors before coding.'
+description: 'Use when planning or refining AniTrend Compose screens, settings surfaces, interaction-heavy UI, layout hierarchy, component decomposition, preview strategy, Material3 layering, or incremental product-facing refactors before coding.'
 argument-hint: 'Describe the screen, product problem, desired UX outcome, and any constraints or non-goals.'
 ---
 
-# Product Planning Skill
+# Skill: Product Designer
 
 ## Purpose
 
