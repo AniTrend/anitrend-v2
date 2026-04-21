@@ -16,68 +16,97 @@
  */
 package co.anitrend.data.user.converter
 
-import co.anitrend.arch.data.converter.SupportConverter
-import co.anitrend.arch.data.transformer.ISupportTransformer
-import co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity
-import co.anitrend.data.user.model.container.UserSidecarModelContainer
+import co.anitrend.data.status.entity.StatusEntity
+import co.anitrend.data.user.entity.connection.UserProfileFavouriteMediaEntity
 import co.anitrend.domain.media.entity.attribute.image.MediaImage
 import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.user.entity.profile.ProfileOverview
 
-internal class UserProfileOverviewConverter(
-    override val fromType: (UserProfileOverviewEntity) -> ProfileOverview = ::transform,
-    override val toType: (ProfileOverview) -> UserProfileOverviewEntity = { throw NotImplementedError() },
-) : SupportConverter<UserProfileOverviewEntity, ProfileOverview>() {
-    private companion object : ISupportTransformer<UserProfileOverviewEntity, ProfileOverview> {
-        override fun transform(source: UserProfileOverviewEntity) =
-            ProfileOverview(
-                animeFavourites = source.animeFavourites.map(::mediaPreview),
-                mangaFavourites = source.mangaFavourites.map(::mediaPreview),
-                recentActivity = source.recentActivity.map(::listActivityPreview),
-            )
+internal object UserProfileOverviewConverter {
 
-        private fun mediaPreview(source: UserSidecarModelContainer.MediaPreviewPayload) =
-            ProfileOverview.MediaPreview(
-                id = source.id,
-                title =
-                    MediaTitle(
-                        romaji = source.title?.romaji,
-                        english = source.title?.english,
-                        native = source.title?.nativeTitle,
-                        userPreferred = source.title?.userPreferred,
-                    ),
-                image =
-                    MediaImage(
-                        color = source.image?.color,
-                        extraLarge = null,
-                        large = source.image?.large,
-                        medium = source.image?.medium,
-                        banner = null,
-                    ),
-                type = source.type,
-                format = source.format,
-                status = source.status,
-                episodes = source.episodes ?: 0,
-                chapters = source.chapters ?: 0,
-                volumes = source.volumes ?: 0,
-                isFavourite = source.isFavourite ?: false,
-                meanScore = source.meanScore ?: 0,
-                averageScore = source.averageScore ?: 0,
-                siteUrl = source.siteUrl,
-            )
+    fun toProfileOverview(
+        favourites: List<UserProfileFavouriteMediaEntity>,
+        activities: List<StatusEntity.ListStatus>,
+    ): ProfileOverview =
+        ProfileOverview(
+            animeFavourites = favourites.filter { it.category == "ANIME" }.map { mediaPreview(it) },
+            mangaFavourites = favourites.filter { it.category == "MANGA" }.map { mediaPreview(it) },
+            recentActivity = activities.map { listActivityPreview(it) },
+        )
 
-        private fun listActivityPreview(source: UserSidecarModelContainer.ListActivityPayload) =
-            ProfileOverview.ListActivityPreview(
-                id = source.id,
-                createdAt = source.createdAt,
-                status = source.status,
-                progress = source.progress,
-                siteUrl = source.siteUrl,
-                type = source.type,
-                media = source.media?.let(::mediaPreview),
-                mediaListStatus = source.mediaListStatus ?: source.media?.mediaList?.status,
-                mediaListProgress = source.mediaListProgress ?: source.media?.mediaList?.progress,
-                mediaListVolumeProgress = source.mediaListVolumeProgress ?: source.media?.mediaList?.progressVolumes,
-            )
+    internal fun mediaPreview(source: UserProfileFavouriteMediaEntity): ProfileOverview.MediaPreview =
+        ProfileOverview.MediaPreview(
+            id = source.mediaId,
+            title =
+                MediaTitle(
+                    romaji = source.titleRomaji,
+                    english = source.titleEnglish,
+                    native = source.titleNative,
+                    userPreferred = source.titleUserPreferred,
+                ),
+            image =
+                MediaImage(
+                    color = source.coverColor,
+                    extraLarge = null,
+                    large = source.coverLarge,
+                    medium = source.coverMedium,
+                    banner = null,
+                ),
+            type = source.type,
+            format = source.format,
+            status = source.status,
+            episodes = source.episodes ?: 0,
+            chapters = source.chapters ?: 0,
+            volumes = source.volumes ?: 0,
+            isFavourite = source.isFavourite ?: false,
+            meanScore = source.meanScore ?: 0,
+            averageScore = source.averageScore ?: 0,
+            siteUrl = source.siteUrl,
+        )
+
+    internal fun activityMediaPreview(source: StatusEntity.ListStatus): ProfileOverview.MediaPreview? {
+        val mediaId = source.mediaId ?: return null
+        return ProfileOverview.MediaPreview(
+            id = mediaId,
+            title =
+                MediaTitle(
+                    romaji = source.mediaTitleRomaji,
+                    english = source.mediaTitleEnglish,
+                    native = source.mediaTitleNative,
+                    userPreferred = source.mediaTitleUserPreferred,
+                ),
+            image =
+                MediaImage(
+                    color = source.mediaCoverColor,
+                    extraLarge = null,
+                    large = source.mediaCoverLarge,
+                    medium = source.mediaCoverMedium,
+                    banner = null,
+                ),
+            type = source.mediaType,
+            format = source.mediaFormat,
+            status = source.mediaStatus,
+            episodes = source.mediaEpisodes ?: 0,
+            chapters = source.mediaChapters ?: 0,
+            volumes = source.mediaVolumes ?: 0,
+            isFavourite = source.mediaIsFavourite ?: false,
+            meanScore = source.mediaMeanScore ?: 0,
+            averageScore = source.mediaAverageScore ?: 0,
+            siteUrl = source.mediaSiteUrl,
+        )
     }
+
+    internal fun listActivityPreview(source: StatusEntity.ListStatus): ProfileOverview.ListActivityPreview =
+        ProfileOverview.ListActivityPreview(
+            id = source.id,
+            createdAt = source.createdAt,
+            status = source.status,
+            progress = source.progress,
+            siteUrl = source.siteUrl,
+            type = source.type,
+            media = activityMediaPreview(source),
+            mediaListStatus = source.mediaListStatus,
+            mediaListProgress = source.mediaListProgress,
+            mediaListVolumeProgress = source.mediaListVolumeProgress,
+        )
 }

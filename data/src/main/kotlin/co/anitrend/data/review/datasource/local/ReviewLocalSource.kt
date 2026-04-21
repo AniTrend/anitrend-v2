@@ -59,4 +59,13 @@ internal abstract class ReviewLocalSource : AbstractLocalSource<ReviewEntity>() 
 
     @RawQuery(observedEntities = [MediaEntity::class, UserEntity::class, ReviewEntity::class])
     abstract fun rawPagingSource(query: SupportSQLiteQuery): PagingSource<Int, ReviewEntityView.Core>
+
+    @Query(
+        """
+        SELECT * FROM review
+        WHERE user_id = :userId
+        ORDER BY created_at DESC
+        """,
+    )
+    abstract fun entryByUserIdFlow(userId: Long): Flow<List<ReviewEntity>>
 }

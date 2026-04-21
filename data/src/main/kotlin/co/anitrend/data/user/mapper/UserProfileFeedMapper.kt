@@ -17,24 +17,69 @@
 package co.anitrend.data.user.mapper
 
 import co.anitrend.data.android.mapper.DefaultMapper
-import co.anitrend.data.user.datasource.local.sidecar.UserProfileFeedLocalSource
-import co.anitrend.data.user.entity.sidecar.UserProfileFeedEntity
+import co.anitrend.data.status.datasource.local.StatusLocalSource
+import co.anitrend.data.status.entity.StatusEntity
+import co.anitrend.data.user.datasource.local.connection.UserProfileReviewLocalSource
+import co.anitrend.data.user.entity.connection.UserProfileReviewEntity
+import co.anitrend.data.user.mapper.UserProfileOverviewMapper.Companion.toListStatusEntity
 import co.anitrend.data.user.model.container.UserSidecarModelContainer
 
 internal class UserProfileFeedMapper(
-    private val localSource: UserProfileFeedLocalSource,
-) : DefaultMapper<UserSidecarModelContainer.Feed, UserProfileFeedEntity>() {
-    override suspend fun persist(data: UserProfileFeedEntity) {
-        localSource.upsert(data)
+    private val reviewLocalSource: UserProfileReviewLocalSource,
+    private val statusLocalSource: StatusLocalSource,
+) : DefaultMapper<UserSidecarModelContainer.Feed, Unit>() {
+
+    private var pendingReviews: List<UserProfileReviewEntity> = emptyList()
+    private var pendingActivities: List<StatusEntity.ListStatus> = emptyList()
+
+    override suspend fun persist(data: Unit) {
+        reviewLocalSource.upsert(pendingReviews)
+        statusLocalSource.upsert(pendingActivities)
     }
 
-    override suspend fun onResponseMapFrom(source: UserSidecarModelContainer.Feed): UserProfileFeedEntity {
+    override suspend fun onResponseMapFrom(source: UserSidecarModelContainer.Feed): Unit {
         val userId = requireNotNull(source.user?.id) { "Feed response missing user id" }
 
-        return UserProfileFeedEntity(
-            id = userId,
-            reviews = source.reviewPage?.reviews.orEmpty(),
-            listActivity = source.activityPage?.listActivity.orEmpty(),
-        )
+        pendingReviews = source.reviewPage?.reviews.orEmpty().mapIndexed { index, review ->
+            UserProfileReviewEntity(
+                userId = userId,
+                reviewId = review.id,
+                sortIndex = index,
+                summary = review.summary,
+                score = review.score,
+                rating = review.rating,
+                ratingAmount = review.ratingAmount,
+                siteUrl = review.siteUrl,
+                createdAt = review.createdAt,
+                updatedAt = review.updatedAt,
+                mediaId = review.mediaId,
+                mediaType = review.mediaType,
+                mediaTitleRomaji = review.media?.title?.romaji,
+                mediaTitleEnglish = review.media?.title?.english,
+                mediaTitleNative = review.media?.title?.nativeTitle,
+                mediaTitleUserPreferred = review.media?.title?.userPreferred,
+                mediaCoverColor = review.media?.image?.color,
+                mediaCoverLarge = review.media?.image?.large,
+                mediaCoverMedium = review.media?.image?.medium,
+                mediaEntityType = review.media?.type,
+                mediaFormat = review.media?.format,
+                mediaStatus = review.media?.status,
+                mediaEpisodes = review.media?.episodes,
+                mediaChapters = review.media?.chapters,
+                mediaVolumes = review.media?.volumes,
+                mediaIsFavourite = review.media?.isFavourite,
+                mediaMeanScore = review.media?.meanScore,
+                mediaAverageScore = review.media?.averageScore,
+                mediaSiteUrl = review.media?.siteUrl,
+                mediaListStatus = review.media?.mediaList?.status,
+                mediaListProgress = review.media?.mediaList?.progress,
+                mediaListVolumeProgress = review.media?.mediaList?.progressVolumes,
+            )
+        }
+
+        pendingActivities = source.activityPage?.listActivity.orEmpty().mapIndexed { index, activity ->
+            activity.toListStatusEntity(userId, index)
+        }
     }
 }
+

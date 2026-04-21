@@ -32,13 +32,12 @@ import co.anitrend.data.user.UserProfileStatisticController
 import co.anitrend.data.user.converter.UserEntityConverter
 import co.anitrend.data.user.converter.UserProfileFeedConverter
 import co.anitrend.data.user.converter.UserProfileOverviewConverter
-import co.anitrend.data.user.converter.UserViewEntityConverter
-import co.anitrend.data.user.datasource.local.sidecar.UserProfileFeedLocalSource
-import co.anitrend.data.user.datasource.local.sidecar.UserProfileOverviewLocalSource
+import co.anitrend.data.status.datasource.local.StatusLocalSource
+import co.anitrend.data.user.datasource.local.connection.UserProfileFavouriteMediaLocalSource
+import co.anitrend.data.user.datasource.local.connection.UserProfileReviewLocalSource
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.remote.UserRemoteSource
-import co.anitrend.data.user.mapper.UserProfileFeedMapper
-import co.anitrend.data.user.mapper.UserProfileOverviewMapper
+import co.anitrend.data.user.converter.UserViewEntityConverter
 import co.anitrend.data.user.source.contract.UserSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.user.entity.User
@@ -46,6 +45,7 @@ import co.anitrend.domain.user.entity.profile.ProfileFeed
 import co.anitrend.domain.user.entity.profile.ProfileOverview
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
@@ -247,20 +247,20 @@ internal class UserSourceImpl {
 
     class Overview(
         private val remoteSource: UserRemoteSource,
-        private val localSource: UserProfileOverviewLocalSource,
+        private val favouriteMediaLocalSource: UserProfileFavouriteMediaLocalSource,
+        private val statusLocalSource: StatusLocalSource,
         private val clearDataHelper: IClearDataHelper,
         private val controller: UserProfileOverviewController,
-        private val mapper: UserProfileOverviewMapper,
-        private val converter: UserProfileOverviewConverter,
         override val cachePolicy: ICacheStorePolicy,
         override val dispatcher: ISupportDispatcher,
     ) : UserSource.Overview() {
         override fun observable(): Flow<ProfileOverview> =
-            localSource
+            favouriteMediaLocalSource
                 .entryByUserIdFlow(query.param.id)
+                .combine(statusLocalSource.listStatusByUserIdFlow(query.param.id)) { favourites, activities ->
+                    UserProfileOverviewConverter.toProfileOverview(favourites, activities)
+                }
                 .flowOn(dispatcher.io)
-                .filterNotNull()
-                .map(converter::convertFrom)
                 .distinctUntilChanged()
                 .flowOn(dispatcher.computation)
 
@@ -277,27 +277,28 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                localSource.clearByUserId(query.param.id)
+                favouriteMediaLocalSource.clearByUserId(query.param.id)
+                statusLocalSource.clearListStatusByUserId(query.param.id)
             }
         }
     }
 
     class Feed(
         private val remoteSource: UserRemoteSource,
-        private val localSource: UserProfileFeedLocalSource,
+        private val reviewLocalSource: UserProfileReviewLocalSource,
+        private val statusLocalSource: StatusLocalSource,
         private val clearDataHelper: IClearDataHelper,
         private val controller: UserProfileFeedController,
-        private val mapper: UserProfileFeedMapper,
-        private val converter: UserProfileFeedConverter,
         override val cachePolicy: ICacheStorePolicy,
         override val dispatcher: ISupportDispatcher,
     ) : UserSource.Feed() {
         override fun observable(): Flow<ProfileFeed> =
-            localSource
+            reviewLocalSource
                 .entryByUserIdFlow(query.param.id)
+                .combine(statusLocalSource.listStatusByUserIdFlow(query.param.id)) { reviews, activities ->
+                    UserProfileFeedConverter.toProfileFeed(reviews, activities)
+                }
                 .flowOn(dispatcher.io)
-                .filterNotNull()
-                .map(converter::convertFrom)
                 .distinctUntilChanged()
                 .flowOn(dispatcher.computation)
 
@@ -314,7 +315,8 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                localSource.clearByUserId(query.param.id)
+                reviewLocalSource.clearByUserId(query.param.id)
+                statusLocalSource.clearListStatusByUserId(query.param.id)
             }
         }
     }

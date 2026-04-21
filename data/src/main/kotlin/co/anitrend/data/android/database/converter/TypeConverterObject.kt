@@ -22,7 +22,6 @@ import co.anitrend.data.android.database.extensions.toCommaSeparatedValues
 import co.anitrend.data.core.extensions.koinOf
 import co.anitrend.data.media.entity.MediaStatsEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
-import co.anitrend.data.user.model.container.UserSidecarModelContainer
 import co.anitrend.data.user.model.statistics.UserStatisticModel
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
@@ -102,36 +101,6 @@ internal class TypeConverterObject {
 
     @TypeConverter fun toMediaStatsStatusDistributionList(value: String): List<MediaStatsEntity.StatusDistribution> {
         val serializer = ListSerializer(MediaStatsEntity.StatusDistribution.serializer())
-        return koinOf<Json>().decodeFromString(serializer, value)
-    }
-
-    @TypeConverter fun fromUserProfileMediaPreviewList(value: List<UserSidecarModelContainer.MediaPreviewPayload>): String {
-        val serializer = ListSerializer(UserSidecarModelContainer.MediaPreviewPayload.serializer())
-        return koinOf<Json>().encodeToString(serializer, value)
-    }
-
-    @TypeConverter fun toUserProfileMediaPreviewList(value: String): List<UserSidecarModelContainer.MediaPreviewPayload> {
-        val serializer = ListSerializer(UserSidecarModelContainer.MediaPreviewPayload.serializer())
-        return koinOf<Json>().decodeFromString(serializer, value)
-    }
-
-    @TypeConverter fun fromUserProfileListActivityList(value: List<UserSidecarModelContainer.ListActivityPayload>): String {
-        val serializer = ListSerializer(UserSidecarModelContainer.ListActivityPayload.serializer())
-        return koinOf<Json>().encodeToString(serializer, value)
-    }
-
-    @TypeConverter fun toUserProfileListActivityList(value: String): List<UserSidecarModelContainer.ListActivityPayload> {
-        val serializer = ListSerializer(UserSidecarModelContainer.ListActivityPayload.serializer())
-        return koinOf<Json>().decodeFromString(serializer, value)
-    }
-
-    @TypeConverter fun fromUserProfileReviewPreviewList(value: List<UserSidecarModelContainer.ReviewPreviewPayload>): String {
-        val serializer = ListSerializer(UserSidecarModelContainer.ReviewPreviewPayload.serializer())
-        return koinOf<Json>().encodeToString(serializer, value)
-    }
-
-    @TypeConverter fun toUserProfileReviewPreviewList(value: String): List<UserSidecarModelContainer.ReviewPreviewPayload> {
-        val serializer = ListSerializer(UserSidecarModelContainer.ReviewPreviewPayload.serializer())
         return koinOf<Json>().decodeFromString(serializer, value)
     }
 }

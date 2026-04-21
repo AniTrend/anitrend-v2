@@ -28,6 +28,7 @@ import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.android.database.converter.TypeConverterEnum
 import co.anitrend.data.android.database.converter.TypeConverterObject
 import co.anitrend.data.android.database.migration.MIGRATIONS
+import co.anitrend.data.android.database.migration.UserProfileSidecarMigrationSpec
 import co.anitrend.data.auth.entity.AuthEntity
 import co.anitrend.data.character.entity.CharacterEntity
 import co.anitrend.data.character.entity.fts.CharacterFtsEntity
@@ -76,8 +77,9 @@ import co.anitrend.data.user.entity.name.UserPreviousNameEntity
 import co.anitrend.data.user.entity.notification.UserNotificationEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
-import co.anitrend.data.user.entity.sidecar.UserProfileFeedEntity
-import co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity
+import co.anitrend.data.status.entity.StatusEntity
+import co.anitrend.data.user.entity.connection.UserProfileFavouriteMediaEntity
+import co.anitrend.data.user.entity.connection.UserProfileReviewEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 
 @Database(
@@ -88,7 +90,8 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         MediaEntity::class, MediaFtsEntity::class, AiringScheduleEntity::class,
         UserEntity::class, UserFtsEntity::class, UserGeneralOptionEntity::class,
         UserMediaOptionEntity::class, UserWithStatisticEntity::class,
-        UserProfileOverviewEntity::class, UserProfileFeedEntity::class, MediaListEntity::class,
+        UserProfileFavouriteMediaEntity::class, StatusEntity.ListStatus::class,
+        UserProfileReviewEntity::class, MediaListEntity::class,
         NewsEntity::class, NewsFtsEntity::class, EpisodeEntity::class, EpisodeFtsEntity::class,
         CharacterEntity::class, CharacterFtsEntity::class, StudioEntity::class, StudioFtsEntity::class,
         StaffEntity::class, StaffFtsEntity::class, LinkEntity::class, RankEntity::class,
@@ -115,6 +118,7 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         AutoMigration(from = 15, to = 16),
         AutoMigration(from = 16, to = 17),
         AutoMigration(from = 17, to = 18),
+        AutoMigration(from = 18, to = 19, spec = UserProfileSidecarMigrationSpec::class),
     ],
 )
 @TypeConverters(
@@ -127,7 +131,7 @@ internal abstract class AniTrendStore :
     RoomDatabase(),
     IAniTrendStore {
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 18
+        const val DATABASE_SCHEMA_VERSION = 19
 
         internal fun create(applicationContext: Context): IAniTrendStore =
             Room

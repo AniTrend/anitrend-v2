@@ -44,8 +44,6 @@ import co.anitrend.data.user.converter.UserEntityConverter
 import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
 import co.anitrend.data.user.converter.UserMediaOptionModelConverter
 import co.anitrend.data.user.converter.UserModelConverter
-import co.anitrend.data.user.converter.UserProfileFeedConverter
-import co.anitrend.data.user.converter.UserProfileOverviewConverter
 import co.anitrend.data.user.converter.UserStatisticModelConverter
 import co.anitrend.data.user.converter.UserViewEntityConverter
 import co.anitrend.data.user.mapper.UserMapper
@@ -121,37 +119,31 @@ private val sourceModule =
             )
         }
         factory<UserSource.Overview> {
-            val mapper = get<UserProfileOverviewMapper>()
-
             UserSourceImpl.Overview(
                 remoteSource = aniListApi(),
-                localSource = store().userProfileOverviewDao(),
+                favouriteMediaLocalSource = store().userProfileFavouriteMediaDao(),
+                statusLocalSource = store().statusDao(),
                 clearDataHelper = get(),
                 controller =
                     graphQLController(
-                        mapper = mapper,
+                        mapper = get<UserProfileOverviewMapper>(),
                         strategy = offline(),
                     ),
-                mapper = mapper,
-                converter = get(),
                 cachePolicy = get<UserCache.Overview>(),
                 dispatcher = get(),
             )
         }
         factory<UserSource.Feed> {
-            val mapper = get<UserProfileFeedMapper>()
-
             UserSourceImpl.Feed(
                 remoteSource = aniListApi(),
-                localSource = store().userProfileFeedDao(),
+                reviewLocalSource = store().userProfileReviewDao(),
+                statusLocalSource = store().statusDao(),
                 clearDataHelper = get(),
                 controller =
                     graphQLController(
-                        mapper = mapper,
+                        mapper = get<UserProfileFeedMapper>(),
                         strategy = offline(),
                     ),
-                mapper = mapper,
-                converter = get(),
                 cachePolicy = get<UserCache.Feed>(),
                 dispatcher = get(),
             )
@@ -237,12 +229,6 @@ private val converterModule =
         factory {
             UserStatisticModelConverter()
         }
-        factory {
-            UserProfileOverviewConverter()
-        }
-        factory {
-            UserProfileFeedConverter()
-        }
     }
 
 private val mapperModule =
@@ -305,12 +291,14 @@ private val mapperModule =
         }
         factory {
             UserProfileOverviewMapper(
-                localSource = store().userProfileOverviewDao(),
+                favouriteMediaLocalSource = store().userProfileFavouriteMediaDao(),
+                statusLocalSource = store().statusDao(),
             )
         }
         factory {
             UserProfileFeedMapper(
-                localSource = store().userProfileFeedDao(),
+                reviewLocalSource = store().userProfileReviewDao(),
+                statusLocalSource = store().statusDao(),
             )
         }
     }

@@ -16,58 +16,68 @@
  */
 package co.anitrend.data.user.converter
 
-import co.anitrend.arch.data.converter.SupportConverter
-import co.anitrend.arch.data.transformer.ISupportTransformer
-import co.anitrend.data.user.entity.sidecar.UserProfileFeedEntity
-import co.anitrend.data.user.model.container.UserSidecarModelContainer
+import co.anitrend.data.status.entity.StatusEntity
+import co.anitrend.data.user.entity.connection.UserProfileReviewEntity
+import co.anitrend.domain.media.entity.attribute.image.MediaImage
+import co.anitrend.domain.media.entity.attribute.title.MediaTitle
 import co.anitrend.domain.user.entity.profile.ProfileFeed
+import co.anitrend.domain.user.entity.profile.ProfileOverview
 
-internal class UserProfileFeedConverter(
-    override val fromType: (UserProfileFeedEntity) -> ProfileFeed = ::transform,
-    override val toType: (ProfileFeed) -> UserProfileFeedEntity = { throw NotImplementedError() },
-) : SupportConverter<UserProfileFeedEntity, ProfileFeed>() {
-    private companion object : ISupportTransformer<UserProfileFeedEntity, ProfileFeed> {
-        private val overviewConverter = UserProfileOverviewConverter()
+internal object UserProfileFeedConverter {
 
-        override fun transform(source: UserProfileFeedEntity) =
-            ProfileFeed(
-                reviews = source.reviews.map(::reviewPreview),
-                listActivity =
-                    source.listActivity.map { activity ->
-                        overviewConverter
-                            .convertFrom(
-                                co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity(
-                                    id = source.id,
-                                    recentActivity = listOf(activity),
-                                ),
-                            ).recentActivity
-                            .first()
-                    },
-            )
+    fun toProfileFeed(
+        reviews: List<UserProfileReviewEntity>,
+        activities: List<StatusEntity.ListStatus>,
+    ): ProfileFeed =
+        ProfileFeed(
+            reviews = reviews.map { reviewPreview(it) },
+            listActivity = activities.map { UserProfileOverviewConverter.listActivityPreview(it) },
+        )
 
-        private fun reviewPreview(source: UserSidecarModelContainer.ReviewPreviewPayload) =
-            ProfileFeed.ReviewPreview(
-                id = source.id,
-                summary = source.summary.orEmpty(),
-                score = source.score ?: 0,
-                rating = source.rating ?: 0,
-                ratingAmount = source.ratingAmount ?: 0,
-                siteUrl = source.siteUrl.orEmpty(),
-                createdAt = source.createdAt,
-                updatedAt = source.updatedAt,
-                mediaId = source.mediaId,
-                mediaType = source.mediaType,
-                media =
-                    source.media?.let { media ->
-                        overviewConverter
-                            .convertFrom(
-                                co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity(
-                                    id = source.mediaId,
-                                    animeFavourites = listOf(media),
-                                ),
-                            ).animeFavourites
-                            .first()
-                    },
-            )
+    private fun reviewMediaPreview(source: UserProfileReviewEntity): ProfileOverview.MediaPreview? {
+        val mediaId = source.mediaId.takeIf { it != 0L } ?: return null
+        return ProfileOverview.MediaPreview(
+            id = mediaId,
+            title =
+                MediaTitle(
+                    romaji = source.mediaTitleRomaji,
+                    english = source.mediaTitleEnglish,
+                    native = source.mediaTitleNative,
+                    userPreferred = source.mediaTitleUserPreferred,
+                ),
+            image =
+                MediaImage(
+                    color = source.mediaCoverColor,
+                    extraLarge = null,
+                    large = source.mediaCoverLarge,
+                    medium = source.mediaCoverMedium,
+                    banner = null,
+                ),
+            type = source.mediaEntityType,
+            format = source.mediaFormat,
+            status = source.mediaStatus,
+            episodes = source.mediaEpisodes ?: 0,
+            chapters = source.mediaChapters ?: 0,
+            volumes = source.mediaVolumes ?: 0,
+            isFavourite = source.mediaIsFavourite ?: false,
+            meanScore = source.mediaMeanScore ?: 0,
+            averageScore = source.mediaAverageScore ?: 0,
+            siteUrl = source.mediaSiteUrl,
+        )
     }
+
+    private fun reviewPreview(source: UserProfileReviewEntity): ProfileFeed.ReviewPreview =
+        ProfileFeed.ReviewPreview(
+            id = source.reviewId,
+            summary = source.summary.orEmpty(),
+            score = source.score ?: 0,
+            rating = source.rating ?: 0,
+            ratingAmount = source.ratingAmount ?: 0,
+            siteUrl = source.siteUrl.orEmpty(),
+            createdAt = source.createdAt,
+            updatedAt = source.updatedAt,
+            mediaId = source.mediaId,
+            mediaType = source.mediaType,
+            media = reviewMediaPreview(source),
+        )
 }

@@ -16,8 +16,10 @@
  */
 package co.anitrend.data.user.mapper
 
-import co.anitrend.data.user.datasource.local.sidecar.UserProfileFeedLocalSource
-import co.anitrend.data.user.entity.sidecar.UserProfileFeedEntity
+import co.anitrend.data.status.datasource.local.StatusLocalSource
+import co.anitrend.data.status.entity.StatusEntity
+import co.anitrend.data.user.datasource.local.connection.UserProfileReviewLocalSource
+import co.anitrend.data.user.entity.connection.UserProfileReviewEntity
 import co.anitrend.data.user.model.container.UserSidecarModelContainer
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaStatus
@@ -76,14 +78,24 @@ class UserProfileFeedMapperTest {
                         ),
                 )
 
-            val result = UserProfileFeedMapper(FakeUserProfileFeedLocalSource()).onResponseMapFrom(source)
+            val fakeReviewSource = FakeUserProfileReviewLocalSource()
+            val fakeStatusSource = FakeStatusLocalSource()
+            val mapper = UserProfileFeedMapper(
+                reviewLocalSource = fakeReviewSource,
+                statusLocalSource = fakeStatusSource,
+            )
+            val mapped = mapper.onResponseMapFrom(source)
+            mapper.onResponseDatabaseInsert(mapped)
 
-            assertEquals(7L, result.id)
-            assertEquals(1, result.reviews.size)
-            assertEquals("Frieren", result.reviews.first().media?.title?.userPreferred)
-            assertEquals(1, result.listActivity.size)
-            assertEquals(5, result.listActivity.first().mediaListProgress)
-            assertEquals("Delicious in Dungeon", result.listActivity.first().media?.title?.userPreferred)
+            assertEquals(1, fakeReviewSource.upserted.size)
+            assertEquals(1L, fakeReviewSource.upserted.first().reviewId)
+            assertEquals("Sharp review", fakeReviewSource.upserted.first().summary)
+            assertEquals(7L, fakeReviewSource.upserted.first().userId)
+
+            assertEquals(1, fakeStatusSource.upserted.size)
+            assertEquals(8L, fakeStatusSource.upserted.first().id)
+            assertEquals(5, fakeStatusSource.upserted.first().mediaListProgress)
+            assertEquals("Delicious in Dungeon", fakeStatusSource.upserted.first().mediaTitleUserPreferred)
         }
 
     private fun mediaPayload(id: Long, title: String) =
@@ -115,37 +127,37 @@ class UserProfileFeedMapperTest {
             mediaList = null,
         )
 
-    private class FakeUserProfileFeedLocalSource : UserProfileFeedLocalSource() {
+    private class FakeUserProfileReviewLocalSource : UserProfileReviewLocalSource() {
+        val upserted = mutableListOf<UserProfileReviewEntity>()
+
         override suspend fun count(): Int = 0
+        override suspend fun clear() {}
+        override suspend fun insert(attribute: UserProfileReviewEntity): Long = 0L
+        override suspend fun insert(attribute: List<UserProfileReviewEntity>): List<Long> = emptyList()
+        override suspend fun update(attribute: UserProfileReviewEntity) {}
+        override suspend fun update(attribute: List<UserProfileReviewEntity>) {}
+        override suspend fun delete(attribute: UserProfileReviewEntity) {}
+        override suspend fun delete(attribute: List<UserProfileReviewEntity>) {}
+        override suspend fun upsert(attribute: UserProfileReviewEntity) { upserted += attribute }
+        override suspend fun upsert(attribute: List<UserProfileReviewEntity>) { upserted += attribute }
+        override fun entryByUserIdFlow(userId: Long): Flow<List<UserProfileReviewEntity>> = flowOf(emptyList())
+        override suspend fun clearByUserId(userId: Long) {}
+    }
 
-        override suspend fun clear() {
-        }
+    private class FakeStatusLocalSource : StatusLocalSource() {
+        val upserted = mutableListOf<StatusEntity.ListStatus>()
 
-        override suspend fun insert(attribute: UserProfileFeedEntity): Long = 0L
-
-        override suspend fun insert(attribute: List<UserProfileFeedEntity>): List<Long> = emptyList()
-
-        override suspend fun update(attribute: UserProfileFeedEntity) {
-        }
-
-        override suspend fun update(attribute: List<UserProfileFeedEntity>) {
-        }
-
-        override suspend fun delete(attribute: UserProfileFeedEntity) {
-        }
-
-        override suspend fun delete(attribute: List<UserProfileFeedEntity>) {
-        }
-
-        override suspend fun upsert(attribute: UserProfileFeedEntity) {
-        }
-
-        override suspend fun upsert(attribute: List<UserProfileFeedEntity>) {
-        }
-
-        override fun entryByUserIdFlow(userId: Long): Flow<UserProfileFeedEntity?> = flowOf(null)
-
-        override suspend fun clearByUserId(userId: Long) {
-        }
+        override suspend fun count(): Int = 0
+        override suspend fun clear() {}
+        override suspend fun insert(attribute: StatusEntity.ListStatus): Long = 0L
+        override suspend fun insert(attribute: List<StatusEntity.ListStatus>): List<Long> = emptyList()
+        override suspend fun update(attribute: StatusEntity.ListStatus) {}
+        override suspend fun update(attribute: List<StatusEntity.ListStatus>) {}
+        override suspend fun delete(attribute: StatusEntity.ListStatus) {}
+        override suspend fun delete(attribute: List<StatusEntity.ListStatus>) {}
+        override suspend fun upsert(attribute: StatusEntity.ListStatus) { upserted += attribute }
+        override suspend fun upsert(attribute: List<StatusEntity.ListStatus>) { upserted += attribute }
+        override fun listStatusByUserIdFlow(userId: Long): Flow<List<StatusEntity.ListStatus>> = flowOf(emptyList())
+        override suspend fun clearListStatusByUserId(userId: Long) {}
     }
 }

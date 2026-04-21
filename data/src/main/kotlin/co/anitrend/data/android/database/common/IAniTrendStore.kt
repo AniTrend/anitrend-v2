@@ -35,6 +35,7 @@ import co.anitrend.data.rank.datasource.IRankStore
 import co.anitrend.data.review.datasource.local.IReviewStore
 import co.anitrend.data.recommendation.datasource.local.IRecommendationStore
 import co.anitrend.data.staff.datasource.local.IStaffStore
+import co.anitrend.data.status.datasource.local.IStatusStore
 import co.anitrend.data.studio.datasource.local.IStudioStore
 import co.anitrend.data.tag.datasource.local.ITagStore
 import co.anitrend.data.user.datasource.local.IUserStore
@@ -60,6 +61,7 @@ internal interface IAniTrendStore :
     ICustomListStore,
     ICustomScoreStore,
     IReviewStore,
+    IStatusStore,
     IEdgeStore {
     companion object {
         /** Binding types for [IAniTrendStore] */
@@ -85,6 +87,7 @@ internal interface IAniTrendStore :
                 ICustomListStore::class,
                 ICustomScoreStore::class,
                 IReviewStore::class,
+                IStatusStore::class,
                 IEdgeStore::class,
                 RoomDatabase::class,
             )
