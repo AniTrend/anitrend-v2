@@ -13,6 +13,7 @@ This file is the high-level contributor playbook. For deep implementation specif
 - `.github/skills/layered-module-patterns/SKILL.md`
 - `.github/skills/room-entity-pattern/SKILL.md`
 - `.github/skills/graphql-query-pattern/SKILL.md`
+- `.github/skills/data-android-infrastructure/SKILL.md`
 - `.github/skills/product-designer/SKILL.md`
 - `.github/skills/string-resources-convention/SKILL.md`
 - `.github/skills/string-resource-inline-comments/SKILL.md`
