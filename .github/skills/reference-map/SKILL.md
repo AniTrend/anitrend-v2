@@ -42,6 +42,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 | Room entity + migration pattern | `.github/instructions/guides.instructions.md` | `.github/skills/room-entity-pattern/SKILL.md` |
 | CacheRequest collision / empty UI with no crash | `.github/instructions/guides.instructions.md` | `.github/skills/cache-request-isolation/SKILL.md` |
 | GraphQL controller lifecycle | `.github/instructions/guides.instructions.md` | `.github/skills/graphql-query-pattern/SKILL.md` |
+| GraphQL fragment-to-model mapping and remote source wiring | `.github/instructions/guides.instructions.md` | `.github/skills/mapping-graphql-models/SKILL.md` |
 | String naming and POEditor context | `.github/instructions/guides.instructions.md` | `.github/skills/string-resources-convention/SKILL.md` |
 | Test strategy and commands | `.github/instructions/guides.instructions.md` | `.github/skills/testing-guidelines/SKILL.md` |
 | Library stack and integrations | `.github/instructions/project-scope.instructions.md` | `.github/skills/key-libraries/SKILL.md` |
@@ -64,6 +65,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 | Add or update Room entities | `.github/instructions/data.guides.instructions.md` | `.github/skills/room-entity-pattern/SKILL.md` |
 | Debug empty-UI / silent cache bypass | `.github/instructions/guides.instructions.md` | `.github/skills/cache-request-isolation/SKILL.md` |
 | Add or change GraphQL query flow | `.github/instructions/guides.instructions.md` | `.github/skills/graphql-query-pattern/SKILL.md` |
+| Add or change GraphQL fragments, model variants, or remote source wiring | `.github/instructions/guides.instructions.md` | `.github/skills/mapping-graphql-models/SKILL.md` |
 | Update user-facing strings | `.github/instructions/context.instructions.md` | `.github/skills/string-resources-convention/SKILL.md` |
 | Add tests for data/domain logic | `.github/instructions/guides.instructions.md` | `.github/skills/testing-guidelines/SKILL.md` |
 | Update dependencies or build logic | `.github/instructions/build-system.instructions.md` | `.github/skills/key-libraries/SKILL.md` |

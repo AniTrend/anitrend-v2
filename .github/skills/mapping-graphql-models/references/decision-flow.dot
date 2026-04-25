@@ -1,0 +1,33 @@
+digraph mapping_graphql_models {
+    rankdir=TB;
+    node [shape=diamond];
+
+    start [label="New field or operation change?"];
+    owner [label="Owner schema known?"];
+    kind [label="Read or write contract?"];
+    variant [label="Variant ownership explicit?"];
+    remote [label="Operation and @GraphQuery aligned?"];
+    source [label="Source path uses correct operation?"];
+
+    node [shape=box];
+    map_owner [label="Map to schema: AniList or edge"];
+    update_fragment [label="Update fragment and operation shape"];
+    update_model [label="Update model variant and container"];
+    update_mutation [label="Update mutation selection set and post-write mapping"];
+    validate [label="Run checklist and regression guard"];
+
+    start -> owner;
+    owner -> map_owner [label="no"];
+    owner -> kind [label="yes"];
+    kind -> update_fragment [label="read"];
+    kind -> update_mutation [label="write"];
+    update_fragment -> variant;
+    update_mutation -> variant;
+    variant -> update_model [label="yes"];
+    variant -> update_model [label="no, define it"];
+    update_model -> remote;
+    remote -> source [label="yes"];
+    remote -> update_fragment [label="no"];
+    source -> validate [label="yes"];
+    source -> update_model [label="no"];
+}
