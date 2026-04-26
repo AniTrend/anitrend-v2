@@ -22,14 +22,27 @@ import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.core.extensions.koinOf
 import co.anitrend.data.medialist.entity.view.CustomListCountView
 import co.anitrend.data.medialist.entity.view.MediaListCountView
-import co.anitrend.data.staff.converter.StaffConverter
-import co.anitrend.data.studio.converter.StudioConverter
-import co.anitrend.data.tag.converter.TagConverter
+import co.anitrend.data.staff.converter.StaffEntityConverter
+import co.anitrend.data.studio.converter.StudioEntityConverter
+import co.anitrend.data.tag.converter.TagEntityConverter
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticCountryEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticFormatEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticGenreEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticLengthEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticReleaseYearEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticScoreEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticStaffEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticStartYearEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticStatusEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticStudioEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticTagEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticVoiceActorEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 import co.anitrend.data.user.entity.view.UserEntityView
+import co.anitrend.data.user.entity.view.UserStatisticEntityView
 import co.anitrend.data.user.model.UserModel
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
@@ -164,19 +177,179 @@ internal class UserModelConverter(
     }
 }
 
+internal data class UserStatisticPayload(
+    val statistic: UserWithStatisticEntity,
+    val countries: List<UserStatisticCountryEntity>,
+    val formats: List<UserStatisticFormatEntity>,
+    val genres: List<UserStatisticGenreEntity>,
+    val lengths: List<UserStatisticLengthEntity>,
+    val releaseYears: List<UserStatisticReleaseYearEntity>,
+    val scores: List<UserStatisticScoreEntity>,
+    val staff: List<UserStatisticStaffEntity>,
+    val startYears: List<UserStatisticStartYearEntity>,
+    val statuses: List<UserStatisticStatusEntity>,
+    val studios: List<UserStatisticStudioEntity>,
+    val tags: List<UserStatisticTagEntity>,
+    val voiceActors: List<UserStatisticVoiceActorEntity>,
+)
+
 internal class UserStatisticModelConverter(
-    override val fromType: (UserModel.WithStatistic) -> UserWithStatisticEntity = ::transform,
-    override val toType: (UserWithStatisticEntity) -> UserModel.WithStatistic = { throw NotImplementedError() },
-) : SupportConverter<UserModel.WithStatistic, UserWithStatisticEntity>() {
-    private companion object : ISupportTransformer<UserModel.WithStatistic, UserWithStatisticEntity> {
+    override val fromType: (UserModel.WithStatistic) -> UserStatisticPayload = ::transform,
+    override val toType: (UserStatisticPayload) -> UserModel.WithStatistic = { throw NotImplementedError() },
+) : SupportConverter<UserModel.WithStatistic, UserStatisticPayload>() {
+    private companion object : ISupportTransformer<UserModel.WithStatistic, UserStatisticPayload> {
         override fun transform(source: UserModel.WithStatistic) =
-            UserWithStatisticEntity(
+            UserStatisticPayload(
                 statistic =
-                    UserWithStatisticEntity.Statistic(
-                        anime = source.statistics?.anime,
-                        manga = source.statistics?.manga,
+                    UserWithStatisticEntity(
+                        statistic =
+                            UserWithStatisticEntity.Statistic(
+                                animeCount = source.statistics?.anime?.count,
+                                animeMeanScore = source.statistics?.anime?.meanScore,
+                                animeStandardDeviation = source.statistics?.anime?.standardDeviation,
+                                animeMinutesWatched = source.statistics?.anime?.minutesWatched,
+                                animeEpisodesWatched = source.statistics?.anime?.episodesWatched,
+                                mangaCount = source.statistics?.manga?.count,
+                                mangaMeanScore = source.statistics?.manga?.meanScore,
+                                mangaStandardDeviation = source.statistics?.manga?.standardDeviation,
+                                mangaChaptersRead = source.statistics?.manga?.chaptersRead,
+                                mangaVolumesRead = source.statistics?.manga?.volumesRead,
+                            ),
+                        userId = source.id,
+                        id = source.id,
                     ),
-                userId = source.id,
+                countries =
+                    source.statistics?.anime?.countries.orEmpty().map {
+                        UserStatisticCountryEntity(it.country, source.id, MediaType.ANIME, it.count, it.meanScore, it.mediaIds, it.minutesWatched)
+                    } +
+                        source.statistics?.manga?.countries.orEmpty().map {
+                            UserStatisticCountryEntity(it.country, source.id, MediaType.MANGA, it.count, it.meanScore, it.mediaIds, it.chaptersRead)
+                        },
+                formats =
+                    source.statistics?.anime?.formats.orEmpty().map {
+                        UserStatisticFormatEntity(it.format, source.id, MediaType.ANIME, it.count, it.meanScore, it.mediaIds, it.minutesWatched)
+                    } +
+                        source.statistics?.manga?.formats.orEmpty().map {
+                            UserStatisticFormatEntity(it.format, source.id, MediaType.MANGA, it.count, it.meanScore, it.mediaIds, it.chaptersRead)
+                        },
+                genres =
+                    source.statistics?.anime?.genres.orEmpty().map {
+                        UserStatisticGenreEntity(it.genre, source.id, MediaType.ANIME, it.count, it.meanScore, it.mediaIds, it.minutesWatched)
+                    } +
+                        source.statistics?.manga?.genres.orEmpty().map {
+                            UserStatisticGenreEntity(it.genre, source.id, MediaType.MANGA, it.count, it.meanScore, it.mediaIds, it.chaptersRead)
+                        },
+                lengths =
+                    source.statistics?.anime?.lengths.orEmpty().map {
+                        UserStatisticLengthEntity(it.length, source.id, MediaType.ANIME, it.count, it.meanScore, it.mediaIds, it.minutesWatched)
+                    } +
+                        source.statistics?.manga?.lengths.orEmpty().map {
+                            UserStatisticLengthEntity(it.length, source.id, MediaType.MANGA, it.count, it.meanScore, it.mediaIds, it.chaptersRead)
+                        },
+                releaseYears =
+                    source.statistics?.anime?.releaseYears.orEmpty().map {
+                        UserStatisticReleaseYearEntity(
+                            it.releaseYear,
+                            source.id,
+                            MediaType.ANIME,
+                            it.count,
+                            it.meanScore,
+                            it.mediaIds,
+                            it.minutesWatched,
+                        )
+                    } +
+                        source.statistics?.manga?.releaseYears.orEmpty().map {
+                            UserStatisticReleaseYearEntity(
+                                it.releaseYear,
+                                source.id,
+                                MediaType.MANGA,
+                                it.count,
+                                it.meanScore,
+                                it.mediaIds,
+                                it.chaptersRead,
+                            )
+                        },
+                scores =
+                    source.statistics?.anime?.scores.orEmpty().map {
+                        UserStatisticScoreEntity(it.score, source.id, MediaType.ANIME, it.count, it.meanScore, it.mediaIds, it.minutesWatched)
+                    } +
+                        source.statistics?.manga?.scores.orEmpty().map {
+                            UserStatisticScoreEntity(it.score, source.id, MediaType.MANGA, it.count, it.meanScore, it.mediaIds, it.chaptersRead)
+                        },
+                staff =
+                    source.statistics?.anime?.staff.orEmpty().mapNotNull {
+                        it.staff?.id?.let { staffId ->
+                            UserStatisticStaffEntity(staffId, source.id, MediaType.ANIME, it.count, it.meanScore, it.mediaIds, it.minutesWatched)
+                        }
+                    } +
+                        source.statistics?.manga?.staff.orEmpty().mapNotNull {
+                            it.staff?.id?.let { staffId ->
+                                UserStatisticStaffEntity(staffId, source.id, MediaType.MANGA, it.count, it.meanScore, it.mediaIds, it.chaptersRead)
+                            }
+                        },
+                startYears =
+                    source.statistics?.anime?.startYears.orEmpty().map {
+                        UserStatisticStartYearEntity(it.startYear, source.id, MediaType.ANIME, it.count, it.meanScore, it.mediaIds, it.minutesWatched)
+                    } +
+                        source.statistics?.manga?.startYears.orEmpty().map {
+                            UserStatisticStartYearEntity(
+                                it.startYear,
+                                source.id,
+                                MediaType.MANGA,
+                                it.count,
+                                it.meanScore,
+                                it.mediaIds,
+                                it.chaptersRead,
+                            )
+                        },
+                statuses =
+                    source.statistics?.anime?.statuses.orEmpty().map {
+                        UserStatisticStatusEntity(it.status, source.id, MediaType.ANIME, it.count, it.meanScore, it.mediaIds, it.minutesWatched)
+                    } +
+                        source.statistics?.manga?.statuses.orEmpty().map {
+                            UserStatisticStatusEntity(it.status, source.id, MediaType.MANGA, it.count, it.meanScore, it.mediaIds, it.chaptersRead)
+                        },
+                studios =
+                    source.statistics?.anime?.studios.orEmpty().mapNotNull {
+                        it.studio?.id?.let { studioId ->
+                            UserStatisticStudioEntity(studioId, source.id, MediaType.ANIME, it.count, it.meanScore, it.mediaIds, it.minutesWatched)
+                        }
+                    } +
+                        source.statistics?.manga?.studios.orEmpty().mapNotNull {
+                            it.studio?.id?.let { studioId ->
+                                UserStatisticStudioEntity(studioId, source.id, MediaType.MANGA, it.count, it.meanScore, it.mediaIds, it.chaptersRead)
+                            }
+                        },
+                tags =
+                    source.statistics?.anime?.tags.orEmpty().mapNotNull {
+                        it.tag?.id?.let { tagId ->
+                            UserStatisticTagEntity(tagId, source.id, MediaType.ANIME, it.count, it.meanScore, it.mediaIds, it.minutesWatched)
+                        }
+                    } +
+                        source.statistics?.manga?.tags.orEmpty().mapNotNull {
+                            it.tag?.id?.let { tagId ->
+                                UserStatisticTagEntity(tagId, source.id, MediaType.MANGA, it.count, it.meanScore, it.mediaIds, it.chaptersRead)
+                            }
+                        },
+                voiceActors =
+                    source.statistics?.anime?.voiceActors.orEmpty().mapNotNull {
+                        it.voiceActor?.id?.let { staffId ->
+                            UserStatisticVoiceActorEntity(staffId, source.id, MediaType.ANIME, it.count, it.meanScore, it.mediaIds, it.minutesWatched)
+                        }
+                    } +
+                        source.statistics?.manga?.voiceActors.orEmpty().mapNotNull {
+                            it.voiceActor?.id?.let { staffId ->
+                                UserStatisticVoiceActorEntity(
+                                    staffId,
+                                    source.id,
+                                    MediaType.MANGA,
+                                    it.count,
+                                    it.meanScore,
+                                    it.mediaIds,
+                                    it.chaptersRead,
+                                )
+                            }
+                        },
             )
     }
 }
@@ -359,6 +532,214 @@ internal class UserViewEntityConverter(
             return mediaListInfoList + customListInfoList
         }
 
+        private fun UserStatisticEntityView.toAnimeStatistic(): Statistic.Anime? {
+            val summary = statistic.statistic
+            val count = summary.animeCount ?: return null
+            return Statistic.Anime(
+                minutesWatched = summary.animeMinutesWatched ?: 0,
+                episodesWatched = summary.animeEpisodesWatched ?: 0,
+                count = count,
+                meanScore = summary.animeMeanScore ?: 0f,
+                standardDeviation = summary.animeStandardDeviation ?: 0f,
+                countries =
+                    countries
+                        .filter {
+                            it.mediaType == MediaType.ANIME
+                        }.map { MediaStatistic.Anime.Country(it.country, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                formats =
+                    formats
+                        .filter {
+                            it.mediaType == MediaType.ANIME
+                        }.map { MediaStatistic.Anime.Format(it.format, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                genres =
+                    genres
+                        .filter {
+                            it.mediaType == MediaType.ANIME
+                        }.map { MediaStatistic.Anime.Genre(it.genre, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                lengths =
+                    lengths
+                        .filter {
+                            it.mediaType == MediaType.ANIME
+                        }.map { MediaStatistic.Anime.Length(it.length, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                releaseYears =
+                    releaseYears
+                        .filter {
+                            it.mediaType == MediaType.ANIME
+                        }.map { MediaStatistic.Anime.ReleaseYear(it.releaseYear, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                scores =
+                    scores
+                        .filter {
+                            it.mediaType == MediaType.ANIME
+                        }.map { MediaStatistic.Anime.Score(it.score, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                staff =
+                    staff
+                        .filter {
+                            it.connection.mediaType == MediaType.ANIME
+                        }.map {
+                            MediaStatistic.Anime.Staff(
+                                it.staff?.let(koinOf<StaffEntityConverter>()::convertFrom),
+                                it.connection.count,
+                                it.connection.meanScore,
+                                it.connection.mediaIds,
+                                it.connection.trackedAmount,
+                            )
+                        },
+                startYears =
+                    startYears
+                        .filter {
+                            it.mediaType == MediaType.ANIME
+                        }.map { MediaStatistic.Anime.StartYear(it.startYear, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                statuses =
+                    statuses
+                        .filter {
+                            it.mediaType == MediaType.ANIME
+                        }.map { MediaStatistic.Anime.Status(it.status, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                studios =
+                    studios
+                        .filter {
+                            it.connection.mediaType == MediaType.ANIME
+                        }.map {
+                            MediaStatistic.Anime.Studio(
+                                it.studio?.let(koinOf<StudioEntityConverter>()::convertFrom),
+                                it.connection.count,
+                                it.connection.meanScore,
+                                it.connection.mediaIds,
+                                it.connection.trackedAmount,
+                            )
+                        },
+                tags =
+                    tags
+                        .filter {
+                            it.connection.mediaType == MediaType.ANIME
+                        }.map {
+                            MediaStatistic.Anime.Tag(
+                                it.tag?.let(koinOf<TagEntityConverter>()::convertFrom),
+                                it.connection.count,
+                                it.connection.meanScore,
+                                it.connection.mediaIds,
+                                it.connection.trackedAmount,
+                            )
+                        },
+                voiceActors =
+                    voiceActors
+                        .filter {
+                            it.connection.mediaType == MediaType.ANIME
+                        }.map {
+                            MediaStatistic.Anime.VoiceActor(
+                                it.voiceActor?.let(koinOf<StaffEntityConverter>()::convertFrom),
+                                it.connection.count,
+                                it.connection.meanScore,
+                                it.connection.mediaIds,
+                                it.connection.trackedAmount,
+                            )
+                        },
+            )
+        }
+
+        private fun UserStatisticEntityView.toMangaStatistic(): Statistic.Manga? {
+            val summary = statistic.statistic
+            val count = summary.mangaCount ?: return null
+            return Statistic.Manga(
+                chaptersRead = summary.mangaChaptersRead ?: 0,
+                volumesRead = summary.mangaVolumesRead ?: 0,
+                count = count,
+                meanScore = summary.mangaMeanScore ?: 0f,
+                standardDeviation = summary.mangaStandardDeviation ?: 0f,
+                countries =
+                    countries
+                        .filter {
+                            it.mediaType == MediaType.MANGA
+                        }.map { MediaStatistic.Manga.Country(it.country, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                formats =
+                    formats
+                        .filter {
+                            it.mediaType == MediaType.MANGA
+                        }.map { MediaStatistic.Manga.Format(it.format, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                genres =
+                    genres
+                        .filter {
+                            it.mediaType == MediaType.MANGA
+                        }.map { MediaStatistic.Manga.Genre(it.genre, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                lengths =
+                    lengths
+                        .filter {
+                            it.mediaType == MediaType.MANGA
+                        }.map { MediaStatistic.Manga.Length(it.length, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                releaseYears =
+                    releaseYears
+                        .filter {
+                            it.mediaType == MediaType.MANGA
+                        }.map { MediaStatistic.Manga.ReleaseYear(it.releaseYear, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                scores =
+                    scores
+                        .filter {
+                            it.mediaType == MediaType.MANGA
+                        }.map { MediaStatistic.Manga.Score(it.score, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                staff =
+                    staff
+                        .filter {
+                            it.connection.mediaType == MediaType.MANGA
+                        }.map {
+                            MediaStatistic.Manga.Staff(
+                                it.staff?.let(koinOf<StaffEntityConverter>()::convertFrom),
+                                it.connection.count,
+                                it.connection.meanScore,
+                                it.connection.mediaIds,
+                                it.connection.trackedAmount,
+                            )
+                        },
+                startYears =
+                    startYears
+                        .filter {
+                            it.mediaType == MediaType.MANGA
+                        }.map { MediaStatistic.Manga.StartYear(it.startYear, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                statuses =
+                    statuses
+                        .filter {
+                            it.mediaType == MediaType.MANGA
+                        }.map { MediaStatistic.Manga.Status(it.status, it.count, it.meanScore, it.mediaIds, it.trackedAmount) },
+                studios =
+                    studios
+                        .filter {
+                            it.connection.mediaType == MediaType.MANGA
+                        }.map {
+                            MediaStatistic.Manga.Studio(
+                                it.studio?.let(koinOf<StudioEntityConverter>()::convertFrom),
+                                it.connection.count,
+                                it.connection.meanScore,
+                                it.connection.mediaIds,
+                                it.connection.trackedAmount,
+                            )
+                        },
+                tags =
+                    tags
+                        .filter {
+                            it.connection.mediaType == MediaType.MANGA
+                        }.map {
+                            MediaStatistic.Manga.Tag(
+                                it.tag?.let(koinOf<TagEntityConverter>()::convertFrom),
+                                it.connection.count,
+                                it.connection.meanScore,
+                                it.connection.mediaIds,
+                                it.connection.trackedAmount,
+                            )
+                        },
+                voiceActors =
+                    voiceActors
+                        .filter {
+                            it.connection.mediaType == MediaType.MANGA
+                        }.map {
+                            MediaStatistic.Manga.VoiceActor(
+                                it.voiceActor?.let(koinOf<StaffEntityConverter>()::convertFrom),
+                                it.connection.count,
+                                it.connection.meanScore,
+                                it.connection.mediaIds,
+                                it.connection.trackedAmount,
+                            )
+                        },
+            )
+        }
+
         override fun transform(source: UserEntityView) =
             when (source) {
                 is UserEntityView.WithOptions ->
@@ -477,290 +858,8 @@ internal class UserViewEntityConverter(
                             ),
                         statistics =
                             UserMediaStatisticType(
-                                anime =
-                                    source.statistic?.statistic?.anime?.let { entity ->
-                                        Statistic.Anime(
-                                            minutesWatched = entity.minutesWatched,
-                                            episodesWatched = entity.episodesWatched,
-                                            count = entity.count,
-                                            meanScore = entity.meanScore,
-                                            standardDeviation = entity.standardDeviation,
-                                            countries =
-                                                entity.countries?.map {
-                                                    MediaStatistic.Anime.Country(
-                                                        country = it.country,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        minutesWatched = it.minutesWatched,
-                                                    )
-                                                },
-                                            formats =
-                                                entity.formats?.map {
-                                                    MediaStatistic.Anime.Format(
-                                                        format = it.format,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        minutesWatched = it.minutesWatched,
-                                                    )
-                                                },
-                                            genres =
-                                                entity.genres?.map {
-                                                    MediaStatistic.Anime.Genre(
-                                                        genre = it.genre,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        minutesWatched = it.minutesWatched,
-                                                    )
-                                                },
-                                            lengths =
-                                                entity.lengths?.map {
-                                                    MediaStatistic.Anime.Length(
-                                                        length = it.length,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        minutesWatched = it.minutesWatched,
-                                                    )
-                                                },
-                                            releaseYears =
-                                                entity.releaseYears?.map {
-                                                    MediaStatistic.Anime.ReleaseYear(
-                                                        releaseYear = it.releaseYear,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        minutesWatched = it.minutesWatched,
-                                                    )
-                                                },
-                                            scores =
-                                                entity.scores?.map {
-                                                    MediaStatistic.Anime.Score(
-                                                        score = it.score,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        minutesWatched = it.minutesWatched,
-                                                    )
-                                                },
-                                            staff =
-                                                entity.staff?.map {
-                                                    MediaStatistic.Anime.Staff(
-                                                        staff =
-                                                            it.staff?.let { staff ->
-                                                                koinOf<StaffConverter>().convertFrom(staff)
-                                                            },
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        minutesWatched = it.minutesWatched,
-                                                    )
-                                                },
-                                            startYears =
-                                                entity.startYears?.map {
-                                                    MediaStatistic.Anime.StartYear(
-                                                        startYear = it.startYear,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        minutesWatched = it.minutesWatched,
-                                                    )
-                                                },
-                                            statuses =
-                                                entity.statuses?.map {
-                                                    MediaStatistic.Anime.Status(
-                                                        status = it.status,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        minutesWatched = it.minutesWatched,
-                                                    )
-                                                },
-                                            studios =
-                                                entity.studios?.map {
-                                                    MediaStatistic.Anime.Studio(
-                                                        studio =
-                                                            it.studio?.let { studio ->
-                                                                koinOf<StudioConverter>().convertFrom(studio)
-                                                            },
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        minutesWatched = it.minutesWatched,
-                                                    )
-                                                },
-                                            tags =
-                                                entity.tags?.map {
-                                                    MediaStatistic.Anime.Tag(
-                                                        tag =
-                                                            it.tag?.let { tag ->
-                                                                koinOf<TagConverter>().convertFrom(tag)
-                                                            },
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        minutesWatched = it.minutesWatched,
-                                                    )
-                                                },
-                                            voiceActors =
-                                                entity.voiceActors?.map {
-                                                    MediaStatistic.Anime.VoiceActor(
-                                                        voiceActor =
-                                                            it.voiceActor?.let { staff ->
-                                                                koinOf<StaffConverter>().convertFrom(staff)
-                                                            },
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        minutesWatched = it.minutesWatched,
-                                                    )
-                                                },
-                                        )
-                                    },
-                                manga =
-                                    source.statistic?.statistic?.manga?.let { entity ->
-                                        Statistic.Manga(
-                                            chaptersRead = entity.chaptersRead,
-                                            volumesRead = entity.volumesRead,
-                                            count = entity.count,
-                                            meanScore = entity.meanScore,
-                                            standardDeviation = entity.standardDeviation,
-                                            countries =
-                                                entity.countries?.map {
-                                                    MediaStatistic.Manga.Country(
-                                                        country = it.country,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        chaptersRead = it.chaptersRead,
-                                                    )
-                                                },
-                                            formats =
-                                                entity.formats?.map {
-                                                    MediaStatistic.Manga.Format(
-                                                        format = it.format,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        chaptersRead = it.chaptersRead,
-                                                    )
-                                                },
-                                            genres =
-                                                entity.genres?.map {
-                                                    MediaStatistic.Manga.Genre(
-                                                        genre = it.genre,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        chaptersRead = it.chaptersRead,
-                                                    )
-                                                },
-                                            lengths =
-                                                entity.lengths?.map {
-                                                    MediaStatistic.Manga.Length(
-                                                        length = it.length,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        chaptersRead = it.chaptersRead,
-                                                    )
-                                                },
-                                            releaseYears =
-                                                entity.releaseYears?.map {
-                                                    MediaStatistic.Manga.ReleaseYear(
-                                                        releaseYear = it.releaseYear,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        chaptersRead = it.chaptersRead,
-                                                    )
-                                                },
-                                            scores =
-                                                entity.scores?.map {
-                                                    MediaStatistic.Manga.Score(
-                                                        score = it.score,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        chaptersRead = it.chaptersRead,
-                                                    )
-                                                },
-                                            staff =
-                                                entity.staff?.map {
-                                                    MediaStatistic.Manga.Staff(
-                                                        staff =
-                                                            it.staff?.let { staff ->
-                                                                koinOf<StaffConverter>().convertFrom(staff)
-                                                            },
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        chaptersRead = it.chaptersRead,
-                                                    )
-                                                },
-                                            startYears =
-                                                entity.startYears?.map {
-                                                    MediaStatistic.Manga.StartYear(
-                                                        startYear = it.startYear,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        chaptersRead = it.chaptersRead,
-                                                    )
-                                                },
-                                            statuses =
-                                                entity.statuses?.map {
-                                                    MediaStatistic.Manga.Status(
-                                                        status = it.status,
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        chaptersRead = it.chaptersRead,
-                                                    )
-                                                },
-                                            studios =
-                                                entity.studios?.map {
-                                                    MediaStatistic.Manga.Studio(
-                                                        studio =
-                                                            it.studio?.let { studio ->
-                                                                koinOf<StudioConverter>().convertFrom(studio)
-                                                            },
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        chaptersRead = it.chaptersRead,
-                                                    )
-                                                },
-                                            tags =
-                                                entity.tags?.map {
-                                                    MediaStatistic.Manga.Tag(
-                                                        tag =
-                                                            it.tag?.let { tag ->
-                                                                koinOf<TagConverter>().convertFrom(tag)
-                                                            },
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        chaptersRead = it.chaptersRead,
-                                                    )
-                                                },
-                                            voiceActors =
-                                                entity.voiceActors?.map {
-                                                    MediaStatistic.Manga.VoiceActor(
-                                                        voiceActor =
-                                                            it.voiceActor?.let { staff ->
-                                                                koinOf<StaffConverter>().convertFrom(staff)
-                                                            },
-                                                        count = it.count,
-                                                        meanScore = it.meanScore,
-                                                        mediaIds = it.mediaIds,
-                                                        chaptersRead = it.chaptersRead,
-                                                    )
-                                                },
-                                        )
-                                    },
+                                anime = source.statistic?.toAnimeStatistic(),
+                                manga = source.statistic?.toMangaStatistic(),
                             ),
                         name = source.user.about.name,
                         previousNames =

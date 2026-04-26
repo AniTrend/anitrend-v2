@@ -22,11 +22,8 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import co.anitrend.data.core.common.IEntityId
+import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.domain.media.enums.MediaFormat
-import co.anitrend.domain.media.enums.MediaStatus
-import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.status.enums.StatusType
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
@@ -41,12 +38,21 @@ internal sealed class StatusEntity : IEntityId<Long> {
         tableName = "list_status",
         indices = [
             Index(value = ["user_id", "sort_index"]),
+            Index(value = ["user_id", "media_id"]),
+            Index(value = ["media_id"]),
         ],
         foreignKeys = [
             ForeignKey(
                 entity = UserEntity::class,
                 parentColumns = ["id"],
                 childColumns = ["user_id"],
+                onDelete = ForeignKey.CASCADE,
+                onUpdate = ForeignKey.CASCADE,
+            ),
+            ForeignKey(
+                entity = MediaEntity::class,
+                parentColumns = ["id"],
+                childColumns = ["media_id"],
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.CASCADE,
             ),
@@ -61,28 +67,7 @@ internal sealed class StatusEntity : IEntityId<Long> {
         @ColumnInfo(name = "progress") val progress: String?,
         @ColumnInfo(name = "site_url") val siteUrl: String?,
         @ColumnInfo(name = "activity_type") val type: StatusType?,
-        // Inline media preview (nullable — not all activities have an associated media item)
         @ColumnInfo(name = "media_id") val mediaId: Long?,
-        @ColumnInfo(name = "media_title_romaji") val mediaTitleRomaji: String?,
-        @ColumnInfo(name = "media_title_english") val mediaTitleEnglish: String?,
-        @ColumnInfo(name = "media_title_native") val mediaTitleNative: String?,
-        @ColumnInfo(name = "media_title_user_preferred") val mediaTitleUserPreferred: String?,
-        @ColumnInfo(name = "media_cover_color") val mediaCoverColor: String?,
-        @ColumnInfo(name = "media_cover_large") val mediaCoverLarge: String?,
-        @ColumnInfo(name = "media_cover_medium") val mediaCoverMedium: String?,
-        @ColumnInfo(name = "media_type") val mediaType: MediaType?,
-        @ColumnInfo(name = "media_format") val mediaFormat: MediaFormat?,
-        @ColumnInfo(name = "media_status") val mediaStatus: MediaStatus?,
-        @ColumnInfo(name = "media_episodes") val mediaEpisodes: Int?,
-        @ColumnInfo(name = "media_chapters") val mediaChapters: Int?,
-        @ColumnInfo(name = "media_volumes") val mediaVolumes: Int?,
-        @ColumnInfo(name = "media_is_favourite") val mediaIsFavourite: Boolean?,
-        @ColumnInfo(name = "media_mean_score") val mediaMeanScore: Int?,
-        @ColumnInfo(name = "media_average_score") val mediaAverageScore: Int?,
-        @ColumnInfo(name = "media_site_url") val mediaSiteUrl: String?,
-        @ColumnInfo(name = "media_list_status") val mediaListStatus: MediaListStatus?,
-        @ColumnInfo(name = "media_list_progress") val mediaListProgress: Int?,
-        @ColumnInfo(name = "media_list_volume_progress") val mediaListVolumeProgress: Int?,
         @PrimaryKey override val id: Long,
     ) : StatusEntity()
 

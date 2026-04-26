@@ -16,116 +16,94 @@
  */
 package co.anitrend.data.user.mapper
 
+import co.anitrend.data.android.database.common.TransactionRunner
+import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.android.mapper.DefaultMapper
-import co.anitrend.data.status.datasource.local.StatusLocalSource
-import co.anitrend.data.status.entity.StatusEntity
-import co.anitrend.data.user.datasource.local.connection.UserProfileFavouriteMediaLocalSource
-import co.anitrend.data.user.entity.connection.UserProfileFavouriteMediaEntity
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.model.MediaModel
+import co.anitrend.data.status.mapper.StatusMapper
 import co.anitrend.data.user.model.container.UserSidecarModelContainer
+import co.anitrend.domain.media.enums.MediaType
 
 internal class UserProfileOverviewMapper(
-    private val favouriteMediaLocalSource: UserProfileFavouriteMediaLocalSource,
-    private val statusLocalSource: StatusLocalSource,
+    private val favouriteEmbedMapper: UserProfileConnectionMapper.FavouriteEmbed,
+    private val statusEmbedMapper: StatusMapper.Activity.Embed,
+    private val mediaEmbedMapper: EmbedMapper<MediaModel, MediaEntity>,
+    private val transactionRunner: TransactionRunner,
 ) : DefaultMapper<UserSidecarModelContainer.Overview, Unit>() {
-
-    private var pendingFavourites: List<UserProfileFavouriteMediaEntity> = emptyList()
-    private var pendingActivities: List<StatusEntity.ListStatus> = emptyList()
-
     override suspend fun persist(data: Unit) {
-        favouriteMediaLocalSource.upsert(pendingFavourites)
-        statusLocalSource.upsert(pendingActivities)
+        mediaEmbedMapper.persistEmbedded()
+        favouriteEmbedMapper.persistEmbedded()
+        statusEmbedMapper.persistEmbedded()
     }
 
-    override suspend fun onResponseMapFrom(source: UserSidecarModelContainer.Overview): Unit {
+    override suspend fun onResponseDatabaseInsert(mappedData: Unit) {
+        transactionRunner.run {
+            super.onResponseDatabaseInsert(mappedData)
+        }
+    }
+
+    override suspend fun onResponseMapFrom(source: UserSidecarModelContainer.Overview) {
         val userId = requireNotNull(source.user?.id) { "Overview response missing user id" }
 
-        val animeEdges = source.user.favourites?.anime?.edges.orEmpty()
-            .sortedBy { it.favouriteOrder ?: Int.MAX_VALUE }
-        val mangaEdges = source.user.favourites?.manga?.edges.orEmpty()
-            .sortedBy { it.favouriteOrder ?: Int.MAX_VALUE }
+        val animeEdges =
+            source.user.favourites
+                ?.anime
+                ?.edges
+                .orEmpty()
+                .sortedBy { it.favouriteOrder ?: Int.MAX_VALUE }
+        val mangaEdges =
+            source.user.favourites
+                ?.manga
+                ?.edges
+                .orEmpty()
+                .sortedBy { it.favouriteOrder ?: Int.MAX_VALUE }
 
-        pendingFavourites = buildList {
-            animeEdges.forEachIndexed { index, edge ->
-                val node = edge.node ?: return@forEachIndexed
-                add(node.toFavouriteEntity(userId, "ANIME", index))
+        val mediaNodes =
+            buildList {
+                addAll(animeEdges.mapNotNull { it.node })
+                addAll(mangaEdges.mapNotNull { it.node })
+                addAll(
+                    source.page
+                        ?.activities
+                        .orEmpty()
+                        .mapNotNull { it.media },
+                )
             }
-            mangaEdges.forEachIndexed { index, edge ->
-                val node = edge.node ?: return@forEachIndexed
-                add(node.toFavouriteEntity(userId, "MANGA", index))
-            }
-        }
+        mediaEmbedMapper.onEmbedded(mediaNodes)
 
-        pendingActivities = source.page?.activities.orEmpty().mapIndexed { index, activity ->
-            activity.toListStatusEntity(userId, index)
-        }
-    }
-
-    companion object {
-        internal fun UserSidecarModelContainer.MediaPreviewPayload.toFavouriteEntity(
-            userId: Long,
-            category: String,
-            sortIndex: Int,
-        ) = UserProfileFavouriteMediaEntity(
-            userId = userId,
-            mediaId = id,
-            category = category,
-            sortIndex = sortIndex,
-            titleRomaji = title?.romaji,
-            titleEnglish = title?.english,
-            titleNative = title?.nativeTitle,
-            titleUserPreferred = title?.userPreferred,
-            coverColor = image?.color,
-            coverLarge = image?.large,
-            coverMedium = image?.medium,
-            type = type,
-            format = format,
-            status = status,
-            episodes = episodes,
-            chapters = chapters,
-            volumes = volumes,
-            isFavourite = isFavourite,
-            meanScore = meanScore,
-            averageScore = averageScore,
-            siteUrl = siteUrl,
-            mediaListStatus = mediaList?.status,
-            mediaListProgress = mediaList?.progress,
-            mediaListVolumeProgress = mediaList?.progressVolumes,
+        favouriteEmbedMapper.onEmbedded(
+            buildList {
+                animeEdges.forEachIndexed { index, edge ->
+                    val node = edge.node ?: return@forEachIndexed
+                    add(
+                        UserProfileConnectionMapper.FavouriteEmbed.Item(
+                            userId = userId,
+                            mediaId = node.id,
+                            category = MediaType.ANIME,
+                            sortIndex = index,
+                        ),
+                    )
+                }
+                mangaEdges.forEachIndexed { index, edge ->
+                    val node = edge.node ?: return@forEachIndexed
+                    add(
+                        UserProfileConnectionMapper.FavouriteEmbed.Item(
+                            userId = userId,
+                            mediaId = node.id,
+                            category = MediaType.MANGA,
+                            sortIndex = index,
+                        ),
+                    )
+                }
+            },
         )
 
-        internal fun UserSidecarModelContainer.ListActivityPayload.toListStatusEntity(
-            userId: Long,
-            sortIndex: Int,
-        ) = StatusEntity.ListStatus(
-            id = id,
-            userId = userId,
-            sortIndex = sortIndex,
-            createdAt = createdAt,
-            status = status,
-            progress = progress,
-            siteUrl = siteUrl,
-            type = type,
-            mediaId = media?.id,
-            mediaTitleRomaji = media?.title?.romaji,
-            mediaTitleEnglish = media?.title?.english,
-            mediaTitleNative = media?.title?.nativeTitle,
-            mediaTitleUserPreferred = media?.title?.userPreferred,
-            mediaCoverColor = media?.image?.color,
-            mediaCoverLarge = media?.image?.large,
-            mediaCoverMedium = media?.image?.medium,
-            mediaType = media?.type,
-            mediaFormat = media?.format,
-            mediaStatus = media?.status,
-            mediaEpisodes = media?.episodes,
-            mediaChapters = media?.chapters,
-            mediaVolumes = media?.volumes,
-            mediaIsFavourite = media?.isFavourite,
-            mediaMeanScore = media?.meanScore,
-            mediaAverageScore = media?.averageScore,
-            mediaSiteUrl = media?.siteUrl,
-            mediaListStatus = mediaListStatus ?: media?.mediaList?.status,
-            mediaListProgress = mediaListProgress ?: media?.mediaList?.progress,
-            mediaListVolumeProgress = mediaListVolumeProgress ?: media?.mediaList?.progressVolumes,
+        statusEmbedMapper.onEmbedded(
+            StatusMapper.Activity.Embed.asItems(
+                userId = userId,
+                source = source.page?.activities.orEmpty(),
+            ),
         )
     }
 }
-

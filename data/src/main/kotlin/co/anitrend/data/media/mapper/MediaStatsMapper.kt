@@ -16,44 +16,64 @@
  */
 package co.anitrend.data.media.mapper
 
+import co.anitrend.data.android.database.common.TransactionRunner
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.media.datasource.local.MediaStatsLocalSource
 import co.anitrend.data.media.entity.MediaStatsEntity
+import co.anitrend.data.media.entity.stats.MediaScoreDistributionEntity
+import co.anitrend.data.media.entity.stats.MediaStatusDistributionEntity
 import co.anitrend.data.media.model.container.MediaSidecarModelContainer
 
 internal class MediaStatsMapper(
     private val localSource: MediaStatsLocalSource,
-) : DefaultMapper<MediaSidecarModelContainer.Stats, MediaStatsEntity?>() {
-    override suspend fun persist(data: MediaStatsEntity?) {
+    private val transactionRunner: TransactionRunner,
+) : DefaultMapper<MediaSidecarModelContainer.Stats, MediaStatsMapper.Payload?>() {
+    internal data class Payload(
+        val stats: MediaStatsEntity,
+        val scoreDistribution: List<MediaScoreDistributionEntity>,
+        val statusDistribution: List<MediaStatusDistributionEntity>,
+    )
+
+    override suspend fun persist(data: Payload?) {
         if (data != null) {
-            localSource.upsert(data)
+            localSource.upsert(data.stats)
+            localSource.upsertScoreDistributions(data.scoreDistribution)
+            localSource.upsertStatusDistributions(data.statusDistribution)
         }
     }
 
-    override suspend fun onResponseMapFrom(source: MediaSidecarModelContainer.Stats): MediaStatsEntity? {
+    override suspend fun onResponseDatabaseInsert(mappedData: Payload?) {
+        transactionRunner.run {
+            super.onResponseDatabaseInsert(mappedData)
+        }
+    }
+
+    override suspend fun onResponseMapFrom(source: MediaSidecarModelContainer.Stats): Payload? {
         val media = source.media ?: return null
         val mediaId = media.id ?: return null
         val stats = media.stats ?: return null
 
-        return MediaStatsEntity(
-            id = mediaId,
+        return Payload(
+            stats = MediaStatsEntity(id = mediaId),
             scoreDistribution =
                 stats.scoreDistribution.orEmpty().mapNotNull { distribution ->
                     val amount = distribution.amount ?: return@mapNotNull null
                     val score = distribution.score ?: return@mapNotNull null
 
-                    MediaStatsEntity.ScoreDistribution(
+                    MediaScoreDistributionEntity(
                         amount = amount,
                         score = score,
+                        mediaId = mediaId,
                     )
                 },
             statusDistribution =
                 stats.statusDistribution.orEmpty().mapNotNull { distribution ->
                     val amount = distribution.amount ?: return@mapNotNull null
 
-                    MediaStatsEntity.StatusDistribution(
+                    MediaStatusDistributionEntity(
                         amount = amount,
                         status = distribution.status?.name,
+                        mediaId = mediaId,
                     )
                 },
         )

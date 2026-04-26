@@ -16,4 +16,55 @@
  */
 package co.anitrend.data.status.mapper
 
-internal sealed class StatusMapper
+import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.android.mapper.EmbedMapper
+import co.anitrend.data.status.datasource.local.StatusLocalSource
+import co.anitrend.data.status.entity.StatusEntity
+import co.anitrend.data.user.model.container.UserSidecarModelContainer
+
+internal sealed class StatusMapper {
+    internal sealed class Activity : StatusMapper() {
+        internal class Embed(
+            override val localSource: StatusLocalSource,
+        ) : EmbedMapper<Embed.Item, StatusEntity.ListStatus>() {
+            override val converter =
+                object : SupportConverter<Item, StatusEntity.ListStatus>() {
+                    override val fromType: (Item) -> StatusEntity.ListStatus = { item ->
+                        with(item.activity) {
+                            StatusEntity.ListStatus(
+                                id = id,
+                                userId = item.userId,
+                                sortIndex = item.sortIndex,
+                                createdAt = createdAt,
+                                status = status,
+                                progress = progress,
+                                siteUrl = siteUrl,
+                                type = type,
+                                mediaId = media?.id,
+                            )
+                        }
+                    }
+
+                    override val toType: (StatusEntity.ListStatus) -> Item
+                        get() = throw NotImplementedError()
+                }
+
+            internal data class Item(
+                val userId: Long,
+                val sortIndex: Int,
+                val activity: UserSidecarModelContainer.ListActivityPayload,
+            )
+
+            companion object {
+                fun asItems(userId: Long, source: kotlin.collections.List<UserSidecarModelContainer.ListActivityPayload>) =
+                    source.mapIndexed { index, activity ->
+                        Item(
+                            userId = userId,
+                            sortIndex = index,
+                            activity = activity,
+                        )
+                    }
+            }
+        }
+    }
+}

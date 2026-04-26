@@ -22,6 +22,7 @@ import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.android.extensions.offline
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
+import co.anitrend.data.core.extensions.transaction
 import co.anitrend.data.edge.core.store.IEdgeStore
 import co.anitrend.data.media.GetDetailMediaInteractor
 import co.anitrend.data.media.GetMediaCharactersInteractor
@@ -356,6 +357,7 @@ private val mapperModule =
         factory {
             MediaStatsMapper(
                 localSource = store().mediaStatsDao(),
+                transactionRunner = transaction(),
             )
         }
         factory {

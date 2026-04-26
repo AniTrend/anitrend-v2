@@ -17,13 +17,49 @@
 package co.anitrend.data.media.datasource.local
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.media.entity.MediaStatsEntity
+import co.anitrend.data.media.entity.stats.MediaScoreDistributionEntity
+import co.anitrend.data.media.entity.stats.MediaStatusDistributionEntity
+import co.anitrend.data.media.entity.view.MediaStatsEntityView
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal abstract class MediaStatsLocalSource : AbstractLocalSource<MediaStatsEntity>() {
+    @Query(
+        """
+        delete from media_score_distribution
+        """,
+    )
+    protected abstract suspend fun clearScoreDistributions()
+
+    @Query(
+        """
+        delete from media_status_distribution
+        """,
+    )
+    protected abstract suspend fun clearStatusDistributions()
+
+    @Query(
+        """
+        delete from media_score_distribution
+        where media_id = :mediaId
+        """,
+    )
+    protected abstract suspend fun clearScoreDistributionsByMediaId(mediaId: Long)
+
+    @Query(
+        """
+        delete from media_status_distribution
+        where media_id = :mediaId
+        """,
+    )
+    protected abstract suspend fun clearStatusDistributionsByMediaId(mediaId: Long)
+
     @Query(
         """
         select count(media_id) from media_stats
@@ -31,12 +67,15 @@ internal abstract class MediaStatsLocalSource : AbstractLocalSource<MediaStatsEn
     )
     abstract override suspend fun count(): Int
 
-    @Query(
-        """
-        delete from media_stats
-        """,
-    )
-    abstract override suspend fun clear()
+    @Query("delete from media_stats")
+    protected abstract suspend fun clearStats()
+
+    @Transaction
+    override suspend fun clear() {
+        clearScoreDistributions()
+        clearStatusDistributions()
+        clearStats()
+    }
 
     @Query(
         """
@@ -45,13 +84,22 @@ internal abstract class MediaStatsLocalSource : AbstractLocalSource<MediaStatsEn
         limit 1
         """,
     )
-    abstract fun entryByMediaIdFlow(mediaId: Long): Flow<MediaStatsEntity?>
+    @Transaction
+    abstract fun entryByMediaIdFlow(mediaId: Long): Flow<MediaStatsEntityView?>
 
-    @Query(
-        """
-        delete from media_stats
-        where media_id = :mediaId
-        """,
-    )
-    abstract suspend fun clearByMediaId(mediaId: Long)
+    @Query("delete from media_stats where media_id = :mediaId")
+    protected abstract suspend fun clearStatsByMediaId(mediaId: Long)
+
+    @Transaction
+    open suspend fun clearByMediaId(mediaId: Long) {
+        clearScoreDistributionsByMediaId(mediaId)
+        clearStatusDistributionsByMediaId(mediaId)
+        clearStatsByMediaId(mediaId)
+    }
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsertScoreDistributions(attribute: List<MediaScoreDistributionEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun upsertStatusDistributions(attribute: List<MediaStatusDistributionEntity>)
 }

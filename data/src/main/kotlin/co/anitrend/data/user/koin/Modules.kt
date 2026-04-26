@@ -23,11 +23,15 @@ import co.anitrend.data.auth.mapper.AuthMapper
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.core.extensions.transaction
+import co.anitrend.data.review.mapper.ReviewMapper
+import co.anitrend.data.status.mapper.StatusMapper
 import co.anitrend.data.user.GetAuthenticatedInteractor
 import co.anitrend.data.user.GetProfileFeedInteractor
 import co.anitrend.data.user.GetProfileInteractor
 import co.anitrend.data.user.GetProfileOverviewInteractor
 import co.anitrend.data.user.GetProfileStatisticInteractor
+import co.anitrend.data.user.UserProfileStatisticController
+import co.anitrend.data.user.mapper.UserProfileConnectionMapper
 import co.anitrend.data.user.GetUserInteractor
 import co.anitrend.data.user.ToggleFollowInteractor
 import co.anitrend.data.user.UpdateProfileInteractor
@@ -104,15 +108,17 @@ private val sourceModule =
             )
         }
         factory<UserSource.Statistic> {
+            val controller: UserProfileStatisticController =
+                graphQLController(
+                    mapper = get<UserMapper.Statistic>(),
+                    strategy = offline(),
+                )
+
             UserSourceImpl.Statistic(
                 remoteSource = aniListApi(),
                 localSource = store().userDao(),
                 clearDataHelper = get(),
-                controller =
-                    graphQLController(
-                        mapper = get<UserMapper.Statistic>(),
-                        strategy = offline(),
-                    ),
+                controller = controller,
                 converter = get(),
                 cachePolicy = get<UserCache.Statistic>(),
                 dispatcher = get(),
@@ -287,18 +293,44 @@ private val mapperModule =
                 userMapper = get(),
                 localSource = store().userStatisticDao(),
                 converter = get(),
+                transactionRunner = transaction(),
             )
         }
         factory {
             UserProfileOverviewMapper(
-                favouriteMediaLocalSource = store().userProfileFavouriteMediaDao(),
-                statusLocalSource = store().statusDao(),
+                favouriteEmbedMapper = get(),
+                statusEmbedMapper = get(),
+                mediaEmbedMapper = get(),
+                transactionRunner = transaction(),
             )
         }
         factory {
             UserProfileFeedMapper(
-                reviewLocalSource = store().userProfileReviewDao(),
-                statusLocalSource = store().statusDao(),
+                reviewConnectionMapper = get(),
+                reviewPreviewMapper = get(),
+                statusEmbedMapper = get(),
+                mediaEmbedMapper = get(),
+                transactionRunner = transaction(),
+            )
+        }
+        factory {
+            UserProfileConnectionMapper.FavouriteEmbed(
+                localSource = store().userProfileFavouriteMediaDao(),
+            )
+        }
+        factory {
+            UserProfileConnectionMapper.ReviewEmbed(
+                localSource = store().userProfileReviewDao(),
+            )
+        }
+        factory {
+            StatusMapper.Activity.Embed(
+                localSource = store().statusDao(),
+            )
+        }
+        factory {
+            ReviewMapper.PreviewEmbed(
+                localSource = store().reviewDao(),
             )
         }
     }

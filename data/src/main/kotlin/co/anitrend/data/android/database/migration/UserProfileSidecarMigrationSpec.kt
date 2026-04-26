@@ -16,6 +16,7 @@
  */
 package co.anitrend.data.android.database.migration
 
+import androidx.room.DeleteColumn
 import androidx.room.DeleteTable
 import androidx.room.migration.AutoMigrationSpec
 
@@ -28,5 +29,9 @@ import androidx.room.migration.AutoMigrationSpec
 @DeleteTable.Entries(
     DeleteTable(tableName = "user_profile_overview"),
     DeleteTable(tableName = "user_profile_feed"),
+)
+@DeleteColumn.Entries(
+    DeleteColumn(tableName = "media_stats", columnName = "score_distribution"),
+    DeleteColumn(tableName = "media_stats", columnName = "status_distribution"),
 )
 internal class UserProfileSidecarMigrationSpec : AutoMigrationSpec

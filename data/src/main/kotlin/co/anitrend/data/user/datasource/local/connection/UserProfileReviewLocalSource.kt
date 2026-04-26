@@ -18,13 +18,14 @@ package co.anitrend.data.user.datasource.local.connection
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.user.entity.connection.UserProfileReviewEntity
+import co.anitrend.data.user.entity.view.UserProfileReviewEntityView
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class UserProfileReviewLocalSource :
-    AbstractLocalSource<UserProfileReviewEntity>() {
+internal abstract class UserProfileReviewLocalSource : AbstractLocalSource<UserProfileReviewEntity>() {
     @Query("SELECT COUNT(id) FROM user_profile_review")
     abstract override suspend fun count(): Int
 
@@ -38,7 +39,8 @@ internal abstract class UserProfileReviewLocalSource :
         ORDER BY sort_index ASC
         """,
     )
-    abstract fun entryByUserIdFlow(userId: Long): Flow<List<UserProfileReviewEntity>>
+    @Transaction
+    abstract fun entryByUserIdFlow(userId: Long): Flow<List<UserProfileReviewEntityView>>
 
     @Query(
         """

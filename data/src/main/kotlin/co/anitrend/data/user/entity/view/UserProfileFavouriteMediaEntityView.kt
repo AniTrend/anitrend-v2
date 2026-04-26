@@ -14,13 +14,19 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.media.entity
+package co.anitrend.data.user.entity.view
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import co.anitrend.data.core.common.IEntityId
+import androidx.room.Embedded
+import androidx.room.Relation
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.user.entity.connection.UserProfileFavouriteMediaEntity
 
-@Entity(tableName = "media_stats", primaryKeys = ["media_id"])
-internal data class MediaStatsEntity(
-    @ColumnInfo(name = "media_id") override val id: Long,
-) : IEntityId<Long>
+internal data class UserProfileFavouriteMediaEntityView(
+    @Embedded
+    val favourite: UserProfileFavouriteMediaEntity,
+    @Relation(
+        parentColumn = "media_id",
+        entityColumn = "id",
+    )
+    val media: MediaEntity,
+)

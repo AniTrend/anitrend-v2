@@ -21,11 +21,9 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.review.entity.ReviewEntity
 import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.domain.media.enums.MediaFormat
-import co.anitrend.domain.media.enums.MediaStatus
-import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
 /**
@@ -43,7 +41,7 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
 @Entity(
     tableName = "user_profile_review",
     indices = [
-        Index(value = ["user_id", "review_id"], unique = true),
+        Index(value = ["user_id", "review_id", "media_id"], unique = true),
         Index(value = ["user_id", "sort_index"]),
     ],
     foreignKeys = [
@@ -54,6 +52,20 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
         ),
+        ForeignKey(
+            entity = ReviewEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["review_id"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE,
+        ),
+        ForeignKey(
+            entity = MediaEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["media_id"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE,
+        ),
     ],
 )
 @EntitySchema
@@ -61,35 +73,6 @@ internal data class UserProfileReviewEntity(
     @ColumnInfo(name = "user_id") val userId: Long,
     @ColumnInfo(name = "review_id") val reviewId: Long,
     @ColumnInfo(name = "sort_index") val sortIndex: Int,
-    @ColumnInfo(name = "summary") val summary: String?,
-    @ColumnInfo(name = "score") val score: Int?,
-    @ColumnInfo(name = "rating") val rating: Int?,
-    @ColumnInfo(name = "rating_amount") val ratingAmount: Int?,
-    @ColumnInfo(name = "site_url") val siteUrl: String?,
-    @ColumnInfo(name = "created_at") val createdAt: Long,
-    @ColumnInfo(name = "updated_at") val updatedAt: Long,
-    @ColumnInfo(name = "review_media_id") val mediaId: Long,
-    @ColumnInfo(name = "review_media_type") val mediaType: MediaType?,
-    // Inline media preview columns (flat, following MediaStaffConnectionEntity pattern)
-    @ColumnInfo(name = "media_title_romaji") val mediaTitleRomaji: String?,
-    @ColumnInfo(name = "media_title_english") val mediaTitleEnglish: String?,
-    @ColumnInfo(name = "media_title_native") val mediaTitleNative: String?,
-    @ColumnInfo(name = "media_title_user_preferred") val mediaTitleUserPreferred: String?,
-    @ColumnInfo(name = "media_cover_color") val mediaCoverColor: String?,
-    @ColumnInfo(name = "media_cover_large") val mediaCoverLarge: String?,
-    @ColumnInfo(name = "media_cover_medium") val mediaCoverMedium: String?,
-    @ColumnInfo(name = "media_type") val mediaEntityType: MediaType?,
-    @ColumnInfo(name = "media_format") val mediaFormat: MediaFormat?,
-    @ColumnInfo(name = "media_status") val mediaStatus: MediaStatus?,
-    @ColumnInfo(name = "media_episodes") val mediaEpisodes: Int?,
-    @ColumnInfo(name = "media_chapters") val mediaChapters: Int?,
-    @ColumnInfo(name = "media_volumes") val mediaVolumes: Int?,
-    @ColumnInfo(name = "media_is_favourite") val mediaIsFavourite: Boolean?,
-    @ColumnInfo(name = "media_mean_score") val mediaMeanScore: Int?,
-    @ColumnInfo(name = "media_average_score") val mediaAverageScore: Int?,
-    @ColumnInfo(name = "media_site_url") val mediaSiteUrl: String?,
-    @ColumnInfo(name = "media_list_status") val mediaListStatus: MediaListStatus?,
-    @ColumnInfo(name = "media_list_progress") val mediaListProgress: Int?,
-    @ColumnInfo(name = "media_list_volume_progress") val mediaListVolumeProgress: Int?,
+    @ColumnInfo(name = "media_id") val mediaId: Long,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
 )

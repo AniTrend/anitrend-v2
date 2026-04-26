@@ -16,68 +16,32 @@
  */
 package co.anitrend.data.user.converter
 
-import co.anitrend.data.status.entity.StatusEntity
-import co.anitrend.data.user.entity.connection.UserProfileReviewEntity
-import co.anitrend.domain.media.entity.attribute.image.MediaImage
-import co.anitrend.domain.media.entity.attribute.title.MediaTitle
+import co.anitrend.data.status.entity.view.ListStatusEntityView
+import co.anitrend.data.user.entity.view.UserProfileReviewEntityView
 import co.anitrend.domain.user.entity.profile.ProfileFeed
-import co.anitrend.domain.user.entity.profile.ProfileOverview
 
 internal object UserProfileFeedConverter {
-
     fun toProfileFeed(
-        reviews: List<UserProfileReviewEntity>,
-        activities: List<StatusEntity.ListStatus>,
+        reviews: List<UserProfileReviewEntityView>,
+        activities: List<ListStatusEntityView>,
     ): ProfileFeed =
         ProfileFeed(
             reviews = reviews.map { reviewPreview(it) },
             listActivity = activities.map { UserProfileOverviewConverter.listActivityPreview(it) },
         )
 
-    private fun reviewMediaPreview(source: UserProfileReviewEntity): ProfileOverview.MediaPreview? {
-        val mediaId = source.mediaId.takeIf { it != 0L } ?: return null
-        return ProfileOverview.MediaPreview(
-            id = mediaId,
-            title =
-                MediaTitle(
-                    romaji = source.mediaTitleRomaji,
-                    english = source.mediaTitleEnglish,
-                    native = source.mediaTitleNative,
-                    userPreferred = source.mediaTitleUserPreferred,
-                ),
-            image =
-                MediaImage(
-                    color = source.mediaCoverColor,
-                    extraLarge = null,
-                    large = source.mediaCoverLarge,
-                    medium = source.mediaCoverMedium,
-                    banner = null,
-                ),
-            type = source.mediaEntityType,
-            format = source.mediaFormat,
-            status = source.mediaStatus,
-            episodes = source.mediaEpisodes ?: 0,
-            chapters = source.mediaChapters ?: 0,
-            volumes = source.mediaVolumes ?: 0,
-            isFavourite = source.mediaIsFavourite ?: false,
-            meanScore = source.mediaMeanScore ?: 0,
-            averageScore = source.mediaAverageScore ?: 0,
-            siteUrl = source.mediaSiteUrl,
-        )
-    }
-
-    private fun reviewPreview(source: UserProfileReviewEntity): ProfileFeed.ReviewPreview =
+    private fun reviewPreview(source: UserProfileReviewEntityView): ProfileFeed.ReviewPreview =
         ProfileFeed.ReviewPreview(
-            id = source.reviewId,
-            summary = source.summary.orEmpty(),
-            score = source.score ?: 0,
-            rating = source.rating ?: 0,
-            ratingAmount = source.ratingAmount ?: 0,
-            siteUrl = source.siteUrl.orEmpty(),
-            createdAt = source.createdAt,
-            updatedAt = source.updatedAt,
-            mediaId = source.mediaId,
-            mediaType = source.mediaType,
-            media = reviewMediaPreview(source),
+            id = source.review.id,
+            summary = source.review.summary,
+            score = source.review.score,
+            rating = source.review.rating,
+            ratingAmount = source.review.ratingAmount,
+            siteUrl = source.review.siteUrl,
+            createdAt = source.review.createdAt,
+            updatedAt = source.review.updatedAt,
+            mediaId = source.review.mediaId,
+            mediaType = source.media.type,
+            media = UserProfileOverviewConverter.mediaPreview(source.media),
         )
 }

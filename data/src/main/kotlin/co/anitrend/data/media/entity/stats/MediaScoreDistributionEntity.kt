@@ -14,53 +14,37 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.user.entity.connection
+package co.anitrend.data.media.entity.stats
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
-/**
- * User-scoped connection/ordering table that associates a user with their favourite media
- * (anime or manga). Carries inline media preview columns to avoid requiring a join at read
- * time, following the same pattern as [co.anitrend.data.media.entity.connection.MediaStaffConnectionEntity].
- *
- * Table: `user_profile_favourite_media`
- */
 @Entity(
-    tableName = "user_profile_favourite_media",
+    tableName = "media_score_distribution",
     indices = [
-        Index(value = ["user_id", "media_id", "category"], unique = true),
-        Index(value = ["user_id", "sort_index"]),
+        Index(value = ["media_id", "score"], unique = true),
+        Index(value = ["media_id"]),
     ],
     foreignKeys = [
-        ForeignKey(
-            entity = UserEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["user_id"],
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE,
-        ),
         ForeignKey(
             entity = MediaEntity::class,
             parentColumns = ["id"],
             childColumns = ["media_id"],
-            onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE,
         ),
     ],
 )
 @EntitySchema
-internal data class UserProfileFavouriteMediaEntity(
-    @ColumnInfo(name = "user_id") val userId: Long,
+internal data class MediaScoreDistributionEntity(
+    @ColumnInfo(name = "amount") val amount: Int,
+    @ColumnInfo(name = "score") val score: Int,
     @ColumnInfo(name = "media_id") val mediaId: Long,
-    @ColumnInfo(name = "category") val category: MediaType,
-    @ColumnInfo(name = "sort_index") val sortIndex: Int,
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
-)
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long? = null,
+) : IEntityId<Long?>

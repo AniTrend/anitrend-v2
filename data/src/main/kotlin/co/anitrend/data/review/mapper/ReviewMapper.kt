@@ -16,7 +16,9 @@
  */
 package co.anitrend.data.review.mapper
 
+import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.mapper.DefaultMapper
+import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.review.converter.ReviewModelConverter
 import co.anitrend.data.review.datasource.local.ReviewLocalSource
@@ -24,7 +26,9 @@ import co.anitrend.data.review.entity.ReviewEntity
 import co.anitrend.data.review.model.container.ReviewContainerModel
 import co.anitrend.data.review.model.remote.ReviewModel
 import co.anitrend.data.user.mapper.UserMapper
+import co.anitrend.data.user.model.container.UserSidecarModelContainer
 import co.anitrend.data.user.model.UserModel
+import co.anitrend.domain.review.enums.ReviewRating
 
 internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
     protected abstract val localSource: ReviewLocalSource
@@ -150,5 +154,39 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
          */
         override suspend fun persist(data: Boolean) {
         }
+    }
+
+    class PreviewEmbed(
+        override val localSource: ReviewLocalSource,
+    ) : EmbedMapper<PreviewEmbed.Item, ReviewEntity>() {
+        override val converter =
+            object : SupportConverter<Item, ReviewEntity>() {
+                override val fromType: (Item) -> ReviewEntity = { item ->
+                    val review = item.preview
+                    ReviewEntity(
+                        body = "",
+                        createdAt = review.createdAt,
+                        mediaId = review.mediaId,
+                        isPrivate = false,
+                        rating = review.rating ?: 0,
+                        ratingAmount = review.ratingAmount ?: 0,
+                        score = review.score ?: 0,
+                        siteUrl = review.siteUrl.orEmpty(),
+                        summary = review.summary.orEmpty(),
+                        updatedAt = review.updatedAt,
+                        userId = item.userId,
+                        userRating = ReviewRating.NO_VOTE,
+                        id = review.id,
+                    )
+                }
+
+                override val toType: (ReviewEntity) -> Item
+                    get() = throw NotImplementedError()
+            }
+
+        internal data class Item(
+            val userId: Long,
+            val preview: UserSidecarModelContainer.ReviewPreviewPayload,
+        )
     }
 }

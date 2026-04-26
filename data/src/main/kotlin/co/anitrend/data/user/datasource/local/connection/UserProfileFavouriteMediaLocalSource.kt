@@ -18,13 +18,14 @@ package co.anitrend.data.user.datasource.local.connection
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.user.entity.connection.UserProfileFavouriteMediaEntity
+import co.anitrend.data.user.entity.view.UserProfileFavouriteMediaEntityView
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class UserProfileFavouriteMediaLocalSource :
-    AbstractLocalSource<UserProfileFavouriteMediaEntity>() {
+internal abstract class UserProfileFavouriteMediaLocalSource : AbstractLocalSource<UserProfileFavouriteMediaEntity>() {
     @Query("SELECT COUNT(id) FROM user_profile_favourite_media")
     abstract override suspend fun count(): Int
 
@@ -38,7 +39,8 @@ internal abstract class UserProfileFavouriteMediaLocalSource :
         ORDER BY category ASC, sort_index ASC
         """,
     )
-    abstract fun entryByUserIdFlow(userId: Long): Flow<List<UserProfileFavouriteMediaEntity>>
+    @Transaction
+    abstract fun entryByUserIdFlow(userId: Long): Flow<List<UserProfileFavouriteMediaEntityView>>
 
     @Query(
         """
