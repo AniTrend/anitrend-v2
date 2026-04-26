@@ -90,4 +90,18 @@ internal interface UserRemoteSource {
     suspend fun updateUserProfile(
         @Body queryContainer: QueryContainerBuilder,
     ): Response<GraphQLResponse<UserModelContainer.Profile>>
+
+    @GRAPHQL
+    @GraphQuery("GetAnimeFavourites")
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    suspend fun getAnimeFavourites(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<UserSidecarModelContainer.AnimeFavourites>>
+
+    @GRAPHQL
+    @GraphQuery("GetMangaFavourites")
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    suspend fun getMangaFavourites(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<UserSidecarModelContainer.MangaFavourites>>
 }

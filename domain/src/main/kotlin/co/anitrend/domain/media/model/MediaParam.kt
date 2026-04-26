@@ -60,6 +60,7 @@ sealed class MediaParam {
     data class Studios(
         val id: Long,
         val sort: List<ISortWithOrder<StudioSort>>? = null,
+        val isMain: Boolean? = null,
     ) : MediaParam()
 
     data class Stats(

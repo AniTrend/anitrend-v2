@@ -1,4 +1,4 @@
-fragment MediaAiringConnetion on AiringScheduleConnection {
+fragment MediaAiringConnection on AiringScheduleConnection {
     pageInfo {
         ... PageInfo
     }

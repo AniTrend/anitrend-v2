@@ -1,10 +1,11 @@
 query GetMediaWithStudio(
     $id: Int!,
+    $isMain: Boolean,
     $sort: [StudioSort]
 ) {
     Media(id: $id) {
         id
-        studios(sort: $sort) {
+        studios(sort: $sort, isMain: $isMain) {
             ... MediaStudioConnection
         }
     }
