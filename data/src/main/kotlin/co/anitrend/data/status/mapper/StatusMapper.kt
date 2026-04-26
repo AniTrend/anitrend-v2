@@ -56,14 +56,16 @@ internal sealed class StatusMapper {
             )
 
             companion object {
-                fun asItems(userId: Long, source: kotlin.collections.List<UserSidecarModelContainer.ListActivityPayload>) =
-                    source.mapIndexed { index, activity ->
-                        Item(
-                            userId = userId,
-                            sortIndex = index,
-                            activity = activity,
-                        )
-                    }
+                fun asItems(
+                    userId: Long,
+                    source: kotlin.collections.List<UserSidecarModelContainer.ListActivityPayload>,
+                ) = source.mapIndexed { index, activity ->
+                    Item(
+                        userId = userId,
+                        sortIndex = index,
+                        activity = activity,
+                    )
+                }
             }
         }
     }
