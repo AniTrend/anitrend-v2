@@ -19,6 +19,7 @@ follow these companion skills:
 - `.github/skills/new-module-checklist/SKILL.md`
 - `.github/skills/string-resource-inline-comments/SKILL.md`
 - `.github/skills/string-resources-convention/SKILL.md`
+- `.github/skills/mapping-graphql-models/SKILL.md`
 - `.github/skills/reference-map/SKILL.md`
 
 Documentation policy: keep high-level boundaries here, move deep procedural detail into skills,

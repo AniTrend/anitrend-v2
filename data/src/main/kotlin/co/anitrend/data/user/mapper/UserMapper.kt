@@ -24,6 +24,7 @@ import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
 import co.anitrend.data.user.converter.UserMediaOptionModelConverter
 import co.anitrend.data.user.converter.UserModelConverter
+import co.anitrend.data.user.converter.UserStatisticPayload
 import co.anitrend.data.user.converter.UserStatisticModelConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.local.option.UserGeneralOptionLocalSource
@@ -108,13 +109,32 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
         private val userMapper: Embed,
         private val localSource: UserStatisticLocalSource,
         private val converter: UserStatisticModelConverter,
-    ) : DefaultMapper<UserModelContainer.WithStatistic, UserWithStatisticEntity>() {
+        private val transactionRunner: TransactionRunner,
+    ) : DefaultMapper<UserModelContainer.WithStatistic, UserStatisticPayload>() {
         /**
          * Save [data] into your desired local source
          */
-        override suspend fun persist(data: UserWithStatisticEntity) {
+        override suspend fun persist(data: UserStatisticPayload) {
             userMapper.persistEmbedded()
-            localSource.upsert(data)
+            localSource.upsert(data.statistic)
+            localSource.upsertCountries(data.countries)
+            localSource.upsertFormats(data.formats)
+            localSource.upsertGenres(data.genres)
+            localSource.upsertLengths(data.lengths)
+            localSource.upsertReleaseYears(data.releaseYears)
+            localSource.upsertScores(data.scores)
+            localSource.upsertStaff(data.staff)
+            localSource.upsertStartYears(data.startYears)
+            localSource.upsertStatuses(data.statuses)
+            localSource.upsertStudios(data.studios)
+            localSource.upsertTags(data.tags)
+            localSource.upsertVoiceActors(data.voiceActors)
+        }
+
+        override suspend fun onResponseDatabaseInsert(mappedData: UserStatisticPayload) {
+            transactionRunner.run {
+                super.onResponseDatabaseInsert(mappedData)
+            }
         }
 
         /**
@@ -123,7 +143,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * @param source the incoming data source type
          * @return mapped object that will be consumed by [onResponseDatabaseInsert]
          */
-        override suspend fun onResponseMapFrom(source: UserModelContainer.WithStatistic): UserWithStatisticEntity {
+        override suspend fun onResponseMapFrom(source: UserModelContainer.WithStatistic): UserStatisticPayload {
             userMapper.onEmbedded(source.user)
             return converter.convertFrom(source.user)
         }
@@ -274,10 +294,19 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
                     UserWithStatisticEntity(
                         statistic =
                             UserWithStatisticEntity.Statistic(
-                                anime = it.anime,
-                                manga = it.manga,
+                                animeCount = it.anime?.count,
+                                animeMeanScore = it.anime?.meanScore,
+                                animeStandardDeviation = it.anime?.standardDeviation,
+                                animeMinutesWatched = it.anime?.minutesWatched,
+                                animeEpisodesWatched = it.anime?.episodesWatched,
+                                mangaCount = it.manga?.count,
+                                mangaMeanScore = it.manga?.meanScore,
+                                mangaStandardDeviation = it.manga?.standardDeviation,
+                                mangaChaptersRead = it.manga?.chaptersRead,
+                                mangaVolumesRead = it.manga?.volumesRead,
                             ),
                         userId = it.userId,
+                        id = it.userId,
                     )
                 }
 

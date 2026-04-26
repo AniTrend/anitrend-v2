@@ -16,12 +16,14 @@
  */
 package co.anitrend.data.user.entity.statistic
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.data.user.model.statistics.UserStatisticModel
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
 @Entity(
     tableName = "user_statistic",
@@ -39,11 +41,18 @@ import kotlinx.serialization.Serializable
 internal data class UserWithStatisticEntity(
     @Embedded(prefix = "statistic_") val statistic: Statistic,
     @ColumnInfo(name = "user_id") val userId: Long,
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
+    @PrimaryKey @ColumnInfo(name = "id") override val id: Long,
 ) : IEntityId<Long> {
-    @Serializable
     data class Statistic(
-        @SerialName("anime") @ColumnInfo(name = "anime") val anime: UserStatisticModel.Anime?,
-        @SerialName("manga") @ColumnInfo(name = "manga") val manga: UserStatisticModel.Manga?,
+        @ColumnInfo(name = "anime_count") val animeCount: Int?,
+        @ColumnInfo(name = "anime_mean_score") val animeMeanScore: Float?,
+        @ColumnInfo(name = "anime_standard_deviation") val animeStandardDeviation: Float?,
+        @ColumnInfo(name = "anime_minutes_watched") val animeMinutesWatched: Int?,
+        @ColumnInfo(name = "anime_episodes_watched") val animeEpisodesWatched: Int?,
+        @ColumnInfo(name = "manga_count") val mangaCount: Int?,
+        @ColumnInfo(name = "manga_mean_score") val mangaMeanScore: Float?,
+        @ColumnInfo(name = "manga_standard_deviation") val mangaStandardDeviation: Float?,
+        @ColumnInfo(name = "manga_chapters_read") val mangaChaptersRead: Int?,
+        @ColumnInfo(name = "manga_volumes_read") val mangaVolumesRead: Int?,
     )
 }

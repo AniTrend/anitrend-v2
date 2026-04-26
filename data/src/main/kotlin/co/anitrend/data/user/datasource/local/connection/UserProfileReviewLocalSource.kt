@@ -14,43 +14,38 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.user.datasource.local.sidecar
+package co.anitrend.data.user.datasource.local.connection
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import co.anitrend.data.android.source.local.AbstractLocalSource
-import co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity
+import co.anitrend.data.user.entity.connection.UserProfileReviewEntity
+import co.anitrend.data.user.entity.view.UserProfileReviewEntityView
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class UserProfileOverviewLocalSource : AbstractLocalSource<UserProfileOverviewEntity>() {
-    @Query(
-        """
-        select count(user_id) from user_profile_overview
-        """,
-    )
+internal abstract class UserProfileReviewLocalSource : AbstractLocalSource<UserProfileReviewEntity>() {
+    @Query("SELECT COUNT(id) FROM user_profile_review")
     abstract override suspend fun count(): Int
 
-    @Query(
-        """
-        delete from user_profile_overview
-        """,
-    )
+    @Query("DELETE FROM user_profile_review")
     abstract override suspend fun clear()
 
     @Query(
         """
-        select * from user_profile_overview
-        where user_id = :userId
-        limit 1
+        SELECT * FROM user_profile_review
+        WHERE user_id = :userId
+        ORDER BY sort_index ASC
         """,
     )
-    abstract fun entryByUserIdFlow(userId: Long): Flow<UserProfileOverviewEntity?>
+    @Transaction
+    abstract fun entryByUserIdFlow(userId: Long): Flow<List<UserProfileReviewEntityView>>
 
     @Query(
         """
-        delete from user_profile_overview
-        where user_id = :userId
+        DELETE FROM user_profile_review
+        WHERE user_id = :userId
         """,
     )
     abstract suspend fun clearByUserId(userId: Long)

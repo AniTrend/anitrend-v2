@@ -112,4 +112,28 @@ internal sealed class UserQuery : IGraphPayload {
                 "id" to param.id,
             )
     }
+
+    data class AnimeFavourites(
+        val param: UserParam.AnimeFavourites,
+    ) : UserQuery() {
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+                "page" to param.page,
+                "perPage" to param.perPage,
+                "scoreFormat" to param.scoreFormat,
+            )
+    }
+
+    data class MangaFavourites(
+        val param: UserParam.MangaFavourites,
+    ) : UserQuery() {
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+                "page" to param.page,
+                "perPage" to param.perPage,
+                "scoreFormat" to param.scoreFormat,
+            )
+    }
 }

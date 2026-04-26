@@ -14,31 +14,37 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.user.entity.sidecar
+package co.anitrend.data.media.entity.stats
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.data.user.model.container.UserSidecarModelContainer
+import androidx.room.PrimaryKey
+import co.anitrend.data.core.common.IEntityId
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
-    tableName = "user_profile_feed",
-    primaryKeys = ["user_id"],
-    indices = [Index(value = ["user_id"])],
+    tableName = "media_status_distribution",
+    indices = [
+        Index(value = ["media_id", "status"], unique = true),
+        Index(value = ["media_id"]),
+    ],
     foreignKeys = [
         ForeignKey(
-            entity = UserEntity::class,
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE,
-            childColumns = ["user_id"],
+            entity = MediaEntity::class,
             parentColumns = ["id"],
+            childColumns = ["media_id"],
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE,
         ),
     ],
 )
-internal data class UserProfileFeedEntity(
-    @ColumnInfo(name = "user_id") val id: Long,
-    @ColumnInfo(name = "reviews") val reviews: List<UserSidecarModelContainer.ReviewPreviewPayload> = emptyList(),
-    @ColumnInfo(name = "list_activity") val listActivity: List<UserSidecarModelContainer.ListActivityPayload> = emptyList(),
-)
+@EntitySchema
+internal data class MediaStatusDistributionEntity(
+    @ColumnInfo(name = "amount") val amount: Int,
+    @ColumnInfo(name = "status") val status: String?,
+    @ColumnInfo(name = "media_id") val mediaId: Long,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long? = null,
+) : IEntityId<Long?>

@@ -16,37 +16,94 @@
  */
 package co.anitrend.data.user.mapper
 
+import co.anitrend.data.android.database.common.TransactionRunner
+import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.android.mapper.DefaultMapper
-import co.anitrend.data.user.datasource.local.sidecar.UserProfileOverviewLocalSource
-import co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.model.MediaModel
+import co.anitrend.data.status.mapper.StatusMapper
 import co.anitrend.data.user.model.container.UserSidecarModelContainer
+import co.anitrend.domain.media.enums.MediaType
 
 internal class UserProfileOverviewMapper(
-    private val localSource: UserProfileOverviewLocalSource,
-) : DefaultMapper<UserSidecarModelContainer.Overview, UserProfileOverviewEntity>() {
-    override suspend fun persist(data: UserProfileOverviewEntity) {
-        localSource.upsert(data)
+    private val favouriteEmbedMapper: UserProfileConnectionMapper.FavouriteEmbed,
+    private val statusEmbedMapper: StatusMapper.Activity.Embed,
+    private val mediaEmbedMapper: EmbedMapper<MediaModel, MediaEntity>,
+    private val transactionRunner: TransactionRunner,
+) : DefaultMapper<UserSidecarModelContainer.Overview, Unit>() {
+    override suspend fun persist(data: Unit) {
+        mediaEmbedMapper.persistEmbedded()
+        favouriteEmbedMapper.persistEmbedded()
+        statusEmbedMapper.persistEmbedded()
     }
 
-    override suspend fun onResponseMapFrom(source: UserSidecarModelContainer.Overview): UserProfileOverviewEntity {
+    override suspend fun onResponseDatabaseInsert(mappedData: Unit) {
+        transactionRunner.run {
+            super.onResponseDatabaseInsert(mappedData)
+        }
+    }
+
+    override suspend fun onResponseMapFrom(source: UserSidecarModelContainer.Overview) {
         val userId = requireNotNull(source.user?.id) { "Overview response missing user id" }
-        return UserProfileOverviewEntity(
-            id = userId,
-            animeFavourites =
-                source.user.favourites
-                    ?.anime
-                    ?.edges
-                    .orEmpty()
-                    .sortedBy { it.favouriteOrder ?: Int.MAX_VALUE }
-                    .mapNotNull { it.node },
-            mangaFavourites =
-                source.user.favourites
-                    ?.manga
-                    ?.edges
-                    .orEmpty()
-                    .sortedBy { it.favouriteOrder ?: Int.MAX_VALUE }
-                    .mapNotNull { it.node },
-            recentActivity = source.page?.activities.orEmpty(),
+
+        val animeEdges =
+            source.user.favourites
+                ?.anime
+                ?.edges
+                .orEmpty()
+                .sortedBy { it.favouriteOrder ?: Int.MAX_VALUE }
+        val mangaEdges =
+            source.user.favourites
+                ?.manga
+                ?.edges
+                .orEmpty()
+                .sortedBy { it.favouriteOrder ?: Int.MAX_VALUE }
+
+        val mediaNodes =
+            buildList {
+                addAll(animeEdges.mapNotNull { it.node })
+                addAll(mangaEdges.mapNotNull { it.node })
+                addAll(
+                    source.page
+                        ?.activities
+                        .orEmpty()
+                        .mapNotNull { it.media },
+                )
+            }
+        mediaEmbedMapper.onEmbedded(mediaNodes)
+
+        favouriteEmbedMapper.onEmbedded(
+            buildList {
+                animeEdges.forEachIndexed { index, edge ->
+                    val node = edge.node ?: return@forEachIndexed
+                    add(
+                        UserProfileConnectionMapper.FavouriteEmbed.Item(
+                            userId = userId,
+                            mediaId = node.id,
+                            category = MediaType.ANIME,
+                            sortIndex = index,
+                        ),
+                    )
+                }
+                mangaEdges.forEachIndexed { index, edge ->
+                    val node = edge.node ?: return@forEachIndexed
+                    add(
+                        UserProfileConnectionMapper.FavouriteEmbed.Item(
+                            userId = userId,
+                            mediaId = node.id,
+                            category = MediaType.MANGA,
+                            sortIndex = index,
+                        ),
+                    )
+                }
+            },
+        )
+
+        statusEmbedMapper.onEmbedded(
+            StatusMapper.Activity.Embed.asItems(
+                userId = userId,
+                source = source.page?.activities.orEmpty(),
+            ),
         )
     }
 }

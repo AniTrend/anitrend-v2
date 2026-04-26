@@ -22,23 +22,24 @@ import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.user.UserAuthController
 import co.anitrend.data.user.UserController
 import co.anitrend.data.user.UserProfileFeedController
 import co.anitrend.data.user.UserProfileOverviewController
 import co.anitrend.data.user.UserProfileController
-import co.anitrend.data.user.UserProfileStatisticController
 import co.anitrend.data.user.converter.UserEntityConverter
 import co.anitrend.data.user.converter.UserProfileFeedConverter
 import co.anitrend.data.user.converter.UserProfileOverviewConverter
-import co.anitrend.data.user.converter.UserViewEntityConverter
-import co.anitrend.data.user.datasource.local.sidecar.UserProfileFeedLocalSource
-import co.anitrend.data.user.datasource.local.sidecar.UserProfileOverviewLocalSource
+import co.anitrend.data.user.converter.UserStatisticPayload
+import co.anitrend.data.status.datasource.local.StatusLocalSource
+import co.anitrend.data.user.datasource.local.connection.UserProfileFavouriteMediaLocalSource
+import co.anitrend.data.user.datasource.local.connection.UserProfileReviewLocalSource
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.remote.UserRemoteSource
-import co.anitrend.data.user.mapper.UserProfileFeedMapper
-import co.anitrend.data.user.mapper.UserProfileOverviewMapper
+import co.anitrend.data.user.model.container.UserModelContainer
+import co.anitrend.data.user.converter.UserViewEntityConverter
 import co.anitrend.data.user.source.contract.UserSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.user.entity.User
@@ -46,6 +47,7 @@ import co.anitrend.domain.user.entity.profile.ProfileFeed
 import co.anitrend.domain.user.entity.profile.ProfileOverview
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
@@ -205,7 +207,7 @@ internal class UserSourceImpl {
         private val remoteSource: UserRemoteSource,
         private val localSource: UserLocalSource,
         private val clearDataHelper: IClearDataHelper,
-        private val controller: UserProfileStatisticController,
+        private val controller: GraphQLController<UserModelContainer.WithStatistic, UserStatisticPayload>,
         private val converter: UserViewEntityConverter,
         override val cachePolicy: ICacheStorePolicy,
         override val dispatcher: ISupportDispatcher,
@@ -247,20 +249,19 @@ internal class UserSourceImpl {
 
     class Overview(
         private val remoteSource: UserRemoteSource,
-        private val localSource: UserProfileOverviewLocalSource,
+        private val favouriteMediaLocalSource: UserProfileFavouriteMediaLocalSource,
+        private val statusLocalSource: StatusLocalSource,
         private val clearDataHelper: IClearDataHelper,
         private val controller: UserProfileOverviewController,
-        private val mapper: UserProfileOverviewMapper,
-        private val converter: UserProfileOverviewConverter,
         override val cachePolicy: ICacheStorePolicy,
         override val dispatcher: ISupportDispatcher,
     ) : UserSource.Overview() {
         override fun observable(): Flow<ProfileOverview> =
-            localSource
+            favouriteMediaLocalSource
                 .entryByUserIdFlow(query.param.id)
-                .flowOn(dispatcher.io)
-                .filterNotNull()
-                .map(converter::convertFrom)
+                .combine(statusLocalSource.listStatusByUserIdFlow(query.param.id)) { favourites, activities ->
+                    UserProfileOverviewConverter.toProfileOverview(favourites, activities)
+                }.flowOn(dispatcher.io)
                 .distinctUntilChanged()
                 .flowOn(dispatcher.computation)
 
@@ -277,27 +278,27 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                localSource.clearByUserId(query.param.id)
+                favouriteMediaLocalSource.clearByUserId(query.param.id)
+                statusLocalSource.clearListStatusByUserId(query.param.id)
             }
         }
     }
 
     class Feed(
         private val remoteSource: UserRemoteSource,
-        private val localSource: UserProfileFeedLocalSource,
+        private val reviewLocalSource: UserProfileReviewLocalSource,
+        private val statusLocalSource: StatusLocalSource,
         private val clearDataHelper: IClearDataHelper,
         private val controller: UserProfileFeedController,
-        private val mapper: UserProfileFeedMapper,
-        private val converter: UserProfileFeedConverter,
         override val cachePolicy: ICacheStorePolicy,
         override val dispatcher: ISupportDispatcher,
     ) : UserSource.Feed() {
         override fun observable(): Flow<ProfileFeed> =
-            localSource
+            reviewLocalSource
                 .entryByUserIdFlow(query.param.id)
-                .flowOn(dispatcher.io)
-                .filterNotNull()
-                .map(converter::convertFrom)
+                .combine(statusLocalSource.listStatusByUserIdFlow(query.param.id)) { reviews, activities ->
+                    UserProfileFeedConverter.toProfileFeed(reviews, activities)
+                }.flowOn(dispatcher.io)
                 .distinctUntilChanged()
                 .flowOn(dispatcher.computation)
 
@@ -314,7 +315,8 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                localSource.clearByUserId(query.param.id)
+                reviewLocalSource.clearByUserId(query.param.id)
+                statusLocalSource.clearListStatusByUserId(query.param.id)
             }
         }
     }

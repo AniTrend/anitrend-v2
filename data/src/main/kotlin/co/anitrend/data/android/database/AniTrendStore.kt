@@ -28,6 +28,7 @@ import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.android.database.converter.TypeConverterEnum
 import co.anitrend.data.android.database.converter.TypeConverterObject
 import co.anitrend.data.android.database.migration.MIGRATIONS
+import co.anitrend.data.android.database.migration.UserProfileSidecarMigrationSpec
 import co.anitrend.data.auth.entity.AuthEntity
 import co.anitrend.data.character.entity.CharacterEntity
 import co.anitrend.data.character.entity.fts.CharacterFtsEntity
@@ -57,6 +58,8 @@ import co.anitrend.data.media.entity.connection.MediaCharacterConnectionEntity
 import co.anitrend.data.media.entity.connection.MediaRelationConnectionEntity
 import co.anitrend.data.media.entity.connection.MediaStaffConnectionEntity
 import co.anitrend.data.media.entity.fts.MediaFtsEntity
+import co.anitrend.data.media.entity.stats.MediaScoreDistributionEntity
+import co.anitrend.data.media.entity.stats.MediaStatusDistributionEntity
 import co.anitrend.data.medialist.entity.MediaListEntity
 import co.anitrend.data.medialist.entity.view.CustomListCountView
 import co.anitrend.data.medialist.entity.view.MediaListCountView
@@ -76,8 +79,21 @@ import co.anitrend.data.user.entity.name.UserPreviousNameEntity
 import co.anitrend.data.user.entity.notification.UserNotificationEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
-import co.anitrend.data.user.entity.sidecar.UserProfileFeedEntity
-import co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity
+import co.anitrend.data.status.entity.StatusEntity
+import co.anitrend.data.user.entity.connection.UserProfileFavouriteMediaEntity
+import co.anitrend.data.user.entity.connection.UserProfileReviewEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticCountryEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticFormatEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticGenreEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticLengthEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticReleaseYearEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticScoreEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticStaffEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticStartYearEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticStatusEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticStudioEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticTagEntity
+import co.anitrend.data.user.entity.statistic.UserStatisticVoiceActorEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 
 @Database(
@@ -88,13 +104,21 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         MediaEntity::class, MediaFtsEntity::class, AiringScheduleEntity::class,
         UserEntity::class, UserFtsEntity::class, UserGeneralOptionEntity::class,
         UserMediaOptionEntity::class, UserWithStatisticEntity::class,
-        UserProfileOverviewEntity::class, UserProfileFeedEntity::class, MediaListEntity::class,
+        UserStatisticCountryEntity::class, UserStatisticFormatEntity::class,
+        UserStatisticGenreEntity::class, UserStatisticLengthEntity::class,
+        UserStatisticReleaseYearEntity::class, UserStatisticScoreEntity::class,
+        UserStatisticStaffEntity::class, UserStatisticStartYearEntity::class,
+        UserStatisticStatusEntity::class, UserStatisticStudioEntity::class,
+        UserStatisticTagEntity::class, UserStatisticVoiceActorEntity::class,
+        UserProfileFavouriteMediaEntity::class, StatusEntity.ListStatus::class,
+        UserProfileReviewEntity::class, MediaListEntity::class,
         NewsEntity::class, NewsFtsEntity::class, EpisodeEntity::class, EpisodeFtsEntity::class,
         CharacterEntity::class, CharacterFtsEntity::class, StudioEntity::class, StudioFtsEntity::class,
         StaffEntity::class, StaffFtsEntity::class, LinkEntity::class, RankEntity::class,
         MediaCharacterConnectionEntity::class, MediaStaffConnectionEntity::class,
         MediaStudioConnectionEntity::class, MediaRelationConnectionEntity::class,
         MediaRecommendationConnectionEntity::class, MediaStatsEntity::class,
+        MediaScoreDistributionEntity::class, MediaStatusDistributionEntity::class,
         CustomListEntity::class, CustomScoreEntity::class,
         UserPreviousNameEntity::class, ReviewEntity::class,
         UserNotificationEntity::class,
@@ -115,6 +139,7 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         AutoMigration(from = 15, to = 16),
         AutoMigration(from = 16, to = 17),
         AutoMigration(from = 17, to = 18),
+        AutoMigration(from = 18, to = 19, spec = UserProfileSidecarMigrationSpec::class),
     ],
 )
 @TypeConverters(
@@ -127,7 +152,7 @@ internal abstract class AniTrendStore :
     RoomDatabase(),
     IAniTrendStore {
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 18
+        const val DATABASE_SCHEMA_VERSION = 21
 
         internal fun create(applicationContext: Context): IAniTrendStore =
             Room

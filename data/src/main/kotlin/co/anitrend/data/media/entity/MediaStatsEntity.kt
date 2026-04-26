@@ -19,23 +19,8 @@ package co.anitrend.data.media.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import co.anitrend.data.core.common.IEntityId
-import kotlinx.serialization.Serializable
 
 @Entity(tableName = "media_stats", primaryKeys = ["media_id"])
 internal data class MediaStatsEntity(
     @ColumnInfo(name = "media_id") override val id: Long,
-    @ColumnInfo(name = "score_distribution") val scoreDistribution: List<ScoreDistribution>,
-    @ColumnInfo(name = "status_distribution") val statusDistribution: List<StatusDistribution>,
-) : IEntityId<Long> {
-    @Serializable
-    internal data class ScoreDistribution(
-        val amount: Int,
-        val score: Int,
-    )
-
-    @Serializable
-    internal data class StatusDistribution(
-        val amount: Int,
-        val status: String?,
-    )
-}
+) : IEntityId<Long>

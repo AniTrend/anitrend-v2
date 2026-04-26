@@ -1,40 +1,51 @@
 /*
  * Copyright (C) 2026 AniTrend
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 package co.anitrend.data.user.mapper
 
-import co.anitrend.data.user.datasource.local.sidecar.UserProfileFeedLocalSource
-import co.anitrend.data.user.entity.sidecar.UserProfileFeedEntity
+import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.android.database.common.TransactionRunner
+import co.anitrend.data.android.mapper.EmbedMapper
+import co.anitrend.data.android.source.local.AbstractLocalSource
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.model.MediaModel
+import co.anitrend.data.review.datasource.local.ReviewLocalSource
+import co.anitrend.data.review.entity.ReviewEntity
+import co.anitrend.data.review.mapper.ReviewMapper
+import co.anitrend.data.status.datasource.local.StatusLocalSource
+import co.anitrend.data.status.mapper.StatusMapper
+import co.anitrend.data.status.entity.StatusEntity
+import co.anitrend.data.status.entity.view.ListStatusEntityView
+import co.anitrend.data.user.datasource.local.connection.UserProfileReviewLocalSource
+import co.anitrend.data.user.entity.connection.UserProfileReviewEntity
+import co.anitrend.data.user.entity.view.UserProfileReviewEntityView
 import co.anitrend.data.user.model.container.UserSidecarModelContainer
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.status.enums.StatusType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class UserProfileFeedMapperTest {
     @Test
-    fun `onResponseMapFrom merges aliased review and activity pages`() =
-        runBlocking {
-            val source =
+    fun `onResponseMapFrom persists review and activity rows`() = runBlocking {
+        val reviewConnectionLocalSource = FakeUserProfileReviewLocalSource()
+        val reviewLocalSource = FakeReviewLocalSource()
+        val statusLocalSource = FakeStatusLocalSource()
+        val mapper =
+            UserProfileFeedMapper(
+                reviewConnectionMapper = UserProfileConnectionMapper.ReviewEmbed(reviewConnectionLocalSource),
+                reviewPreviewMapper = ReviewMapper.PreviewEmbed(reviewLocalSource),
+                statusEmbedMapper = StatusMapper.Activity.Embed(statusLocalSource),
+                mediaEmbedMapper = FakeMediaEmbedMapper(),
+                transactionRunner = FakeTransactionRunner(),
+            )
+
+        mapper.onResponseDatabaseInsert(
+            mapper.onResponseMapFrom(
                 UserSidecarModelContainer.Feed(
                     user = UserSidecarModelContainer.Feed.User(id = 7L),
                     reviewPage =
@@ -68,84 +79,107 @@ class UserProfileFeedMapperTest {
                                         siteUrl = "https://anilist.co/activity/8",
                                         type = StatusType.ANIME_LIST,
                                         media = mediaPayload(77L, "Delicious in Dungeon"),
-                                        mediaListStatus = MediaListStatus.CURRENT,
-                                        mediaListProgress = 5,
-                                        mediaListVolumeProgress = null,
                                     ),
                                 ),
                         ),
-                )
+                ),
+            ),
+        )
 
-            val result = UserProfileFeedMapper(FakeUserProfileFeedLocalSource()).onResponseMapFrom(source)
-
-            assertEquals(7L, result.id)
-            assertEquals(1, result.reviews.size)
-            assertEquals("Frieren", result.reviews.first().media?.title?.userPreferred)
-            assertEquals(1, result.listActivity.size)
-            assertEquals(5, result.listActivity.first().mediaListProgress)
-            assertEquals("Delicious in Dungeon", result.listActivity.first().media?.title?.userPreferred)
-        }
+        assert(!reviewConnectionLocalSource.upserted.isEmpty())
+        assert(!reviewLocalSource.upserted.isEmpty())
+        assert(!statusLocalSource.upserted.isEmpty())
+    }
 
     private fun mediaPayload(id: Long, title: String) =
-        UserSidecarModelContainer.MediaPreviewPayload(
+        MediaModel.Core(
             id = id,
-            title =
-                UserSidecarModelContainer.MediaPreviewPayload.Title(
-                    english = title,
-                    nativeTitle = null,
-                    romaji = title,
-                    userPreferred = title,
-                ),
-            image =
-                UserSidecarModelContainer.MediaPreviewPayload.Image(
-                    color = null,
-                    large = "https://example.com/$id.jpg",
-                    medium = "https://example.com/$id.jpg",
-                ),
+            title = MediaModel.Title(romaji = title, english = title, userPreferred = title),
+            coverImage = MediaModel.CoverImage(large = "https://example.com/$id.jpg", medium = "https://example.com/$id.jpg"),
             type = MediaType.ANIME,
             format = MediaFormat.TV,
             status = MediaStatus.RELEASING,
-            episodes = 12,
-            chapters = null,
-            volumes = null,
-            isFavourite = false,
-            meanScore = 84,
-            averageScore = 83,
+            favourites = 1,
             siteUrl = "https://anilist.co/media/$id",
-            mediaList = null,
+            isReviewBlocked = false,
         )
 
-    private class FakeUserProfileFeedLocalSource : UserProfileFeedLocalSource() {
+    private class FakeTransactionRunner : TransactionRunner {
+        override suspend fun run(block: suspend () -> Unit) {
+            block()
+        }
+    }
+
+    private class FakeUserProfileReviewLocalSource : UserProfileReviewLocalSource() {
+        val upserted = mutableListOf<UserProfileReviewEntity>()
         override suspend fun count(): Int = 0
+        override suspend fun clear() {}
+        override suspend fun insert(attribute: UserProfileReviewEntity): Long = 0L
+        override suspend fun insert(attribute: List<UserProfileReviewEntity>): List<Long> = emptyList()
+        override suspend fun update(attribute: UserProfileReviewEntity) {}
+        override suspend fun update(attribute: List<UserProfileReviewEntity>) {}
+        override suspend fun delete(attribute: UserProfileReviewEntity) {}
+        override suspend fun delete(attribute: List<UserProfileReviewEntity>) {}
+        override suspend fun upsert(attribute: UserProfileReviewEntity) { upserted += attribute }
+        override suspend fun upsert(attribute: List<UserProfileReviewEntity>) { upserted += attribute }
+        override fun entryByUserIdFlow(userId: Long): Flow<List<UserProfileReviewEntityView>> = flowOf(emptyList())
+        override suspend fun clearByUserId(userId: Long) {}
+    }
 
-        override suspend fun clear() {
+    private class FakeReviewLocalSource : ReviewLocalSource() {
+        val upserted = mutableListOf<ReviewEntity>()
+        override suspend fun count(): Int = 0
+        override suspend fun clear() {}
+        override suspend fun clearById(id: Long) {}
+        override fun rawFlow(query: androidx.sqlite.db.SupportSQLiteQuery): Flow<co.anitrend.data.review.entity.view.ReviewEntityView.Core?> = flowOf(null)
+        override fun rawPagingSource(query: androidx.sqlite.db.SupportSQLiteQuery) = throw NotImplementedError()
+        override fun entryByUserIdFlow(userId: Long): Flow<List<ReviewEntity>> = flowOf(emptyList())
+        override suspend fun insert(attribute: ReviewEntity): Long = 0L
+        override suspend fun insert(attribute: List<ReviewEntity>): List<Long> = emptyList()
+        override suspend fun update(attribute: ReviewEntity) {}
+        override suspend fun update(attribute: List<ReviewEntity>) {}
+        override suspend fun delete(attribute: ReviewEntity) {}
+        override suspend fun delete(attribute: List<ReviewEntity>) {}
+        override suspend fun upsert(attribute: ReviewEntity) { upserted += attribute }
+        override suspend fun upsert(attribute: List<ReviewEntity>) { upserted += attribute }
+    }
+
+    private class FakeStatusLocalSource : StatusLocalSource() {
+        val upserted = mutableListOf<StatusEntity.ListStatus>()
+        override suspend fun count(): Int = 0
+        override suspend fun clear() {}
+        override suspend fun insert(attribute: StatusEntity.ListStatus): Long = 0L
+        override suspend fun insert(attribute: List<StatusEntity.ListStatus>): List<Long> = emptyList()
+        override suspend fun update(attribute: StatusEntity.ListStatus) {}
+        override suspend fun update(attribute: List<StatusEntity.ListStatus>) {}
+        override suspend fun delete(attribute: StatusEntity.ListStatus) {}
+        override suspend fun delete(attribute: List<StatusEntity.ListStatus>) {}
+        override suspend fun upsert(attribute: StatusEntity.ListStatus) { upserted += attribute }
+        override suspend fun upsert(attribute: List<StatusEntity.ListStatus>) { upserted += attribute }
+        override fun listStatusByUserIdFlow(userId: Long): Flow<List<ListStatusEntityView>> = flowOf(emptyList())
+        override suspend fun clearListStatusByUserId(userId: Long) {}
+    }
+
+    private class FakeMediaEmbedMapper : EmbedMapper<MediaModel, MediaEntity>() {
+        override val localSource: AbstractLocalSource<MediaEntity> = object : AbstractLocalSource<MediaEntity>() {
+            override suspend fun count(): Int = 0
+            override suspend fun clear() {}
+            override suspend fun insert(attribute: MediaEntity): Long = 0
+            override suspend fun insert(attribute: List<MediaEntity>): List<Long> = emptyList()
+            override suspend fun update(attribute: MediaEntity) {}
+            override suspend fun update(attribute: List<MediaEntity>) {}
+            override suspend fun delete(attribute: MediaEntity) {}
+            override suspend fun delete(attribute: List<MediaEntity>) {}
+            override suspend fun upsert(attribute: MediaEntity) {}
+            override suspend fun upsert(attribute: List<MediaEntity>) {}
+        }
+        override val converter: SupportConverter<MediaModel, MediaEntity>
+            get() = throw NotImplementedError()
+
+        override suspend fun onEmbedded(source: List<MediaModel>) {
         }
 
-        override suspend fun insert(attribute: UserProfileFeedEntity): Long = 0L
-
-        override suspend fun insert(attribute: List<UserProfileFeedEntity>): List<Long> = emptyList()
-
-        override suspend fun update(attribute: UserProfileFeedEntity) {
-        }
-
-        override suspend fun update(attribute: List<UserProfileFeedEntity>) {
-        }
-
-        override suspend fun delete(attribute: UserProfileFeedEntity) {
-        }
-
-        override suspend fun delete(attribute: List<UserProfileFeedEntity>) {
-        }
-
-        override suspend fun upsert(attribute: UserProfileFeedEntity) {
-        }
-
-        override suspend fun upsert(attribute: List<UserProfileFeedEntity>) {
-        }
-
-        override fun entryByUserIdFlow(userId: Long): Flow<UserProfileFeedEntity?> = flowOf(null)
-
-        override suspend fun clearByUserId(userId: Long) {
+        override suspend fun persistEmbedded() {
         }
     }
 }

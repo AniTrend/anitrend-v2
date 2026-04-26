@@ -1,0 +1,27 @@
+query Episodes(
+  $after: String,
+  $before: String,
+  $end: Int,
+  $includeOrphans: Boolean,
+  $kind: queryInput_episodes_kind,
+  $limit: PositiveInt,
+  $malId: Int!,
+  $specialsOnly: Boolean,
+  $start: Int
+) {
+    episodes(
+      after: $after,
+      before: $before,
+      end: $end,
+      includeOrphans: $includeOrphans,
+      kind: $kind,
+      limit: $limit,
+      malId: $malId,
+      specialsOnly: $specialsOnly,
+      start: $start
+    ) {
+        data {
+            ... EdgeEpisode
+        }
+    }
+}

@@ -18,16 +18,16 @@ package co.anitrend.data.media.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
-import co.anitrend.data.media.entity.MediaStatsEntity
+import co.anitrend.data.media.entity.view.MediaStatsEntityView
 import co.anitrend.domain.media.entity.MediaStats
 import co.anitrend.domain.medialist.enums.MediaListStatus
 
 internal class MediaStatsEntityConverter(
-    override val fromType: (MediaStatsEntity) -> MediaStats = ::transform,
-    override val toType: (MediaStats) -> MediaStatsEntity = { throw NotImplementedError() },
-) : SupportConverter<MediaStatsEntity, MediaStats>() {
-    private companion object : ISupportTransformer<MediaStatsEntity, MediaStats> {
-        override fun transform(source: MediaStatsEntity) =
+    override val fromType: (MediaStatsEntityView) -> MediaStats = ::transform,
+    override val toType: (MediaStats) -> MediaStatsEntityView = { throw NotImplementedError() },
+) : SupportConverter<MediaStatsEntityView, MediaStats>() {
+    private companion object : ISupportTransformer<MediaStatsEntityView, MediaStats> {
+        override fun transform(source: MediaStatsEntityView) =
             MediaStats(
                 scoreDistribution =
                     source.scoreDistribution.map { distribution ->

@@ -1,132 +1,111 @@
 /*
  * Copyright (C) 2026 AniTrend
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 package co.anitrend.data.user.converter
 
-import co.anitrend.data.user.entity.sidecar.UserProfileFeedEntity
-import co.anitrend.data.user.model.container.UserSidecarModelContainer
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.review.entity.ReviewEntity
+import co.anitrend.data.status.entity.StatusEntity
+import co.anitrend.data.status.entity.view.ListStatusEntityView
+import co.anitrend.data.user.entity.connection.UserProfileReviewEntity
+import co.anitrend.data.user.entity.view.UserProfileReviewEntityView
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
-import co.anitrend.domain.medialist.enums.MediaListStatus
+import co.anitrend.domain.review.enums.ReviewRating
+import co.anitrend.domain.status.enums.StatusType
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNull
 
 class UserProfileFeedConverterTest {
     @Test
-    fun `convertFrom maps review and list activity previews`() {
-        val source =
-            UserProfileFeedEntity(
-                id = 9L,
-                reviews =
-                    listOf(
-                        UserSidecarModelContainer.ReviewPreviewPayload(
-                            id = 1L,
-                            summary = "Tight, character-driven review",
-                            score = 90,
-                            rating = 120,
-                            ratingAmount = 30,
-                            siteUrl = "https://anilist.co/review/1",
-                            createdAt = 1_700_000_000L,
-                            updatedAt = 1_700_000_500L,
-                            mediaId = 44L,
-                            mediaType = MediaType.ANIME,
-                            media = overviewMediaPayload(44L, "Monster"),
-                        ),
-                    ),
-                listActivity =
-                    listOf(
-                        UserSidecarModelContainer.ListActivityPayload(
-                            id = 10L,
-                            createdAt = 1_700_000_200L,
-                            status = "completed",
-                            progress = "26 of 26",
-                            siteUrl = "https://anilist.co/activity/10",
-                            type = co.anitrend.domain.status.enums.StatusType.ANIME_LIST,
-                            media = overviewMediaPayload(55L, "Mob Psycho 100"),
-                            mediaListStatus = MediaListStatus.COMPLETED,
-                            mediaListProgress = 26,
-                            mediaListVolumeProgress = null,
-                        ),
-                    ),
+    fun `toProfileFeed maps review and activity relation views`() {
+        val result =
+            UserProfileFeedConverter.toProfileFeed(
+                reviews = listOf(reviewView(reviewId = 1L, mediaId = 44L, title = "Monster")),
+                activities = listOf(activityView(id = 10L, mediaId = 55L, title = "Mob Psycho 100")),
             )
-
-        val result = UserProfileFeedConverter().convertFrom(source)
 
         assertEquals(1, result.reviews.size)
         assertEquals("Monster", result.reviews.first().media?.title?.userPreferred)
-        assertEquals(MediaListStatus.COMPLETED, result.listActivity.first().mediaListStatus)
-        assertEquals(26, result.listActivity.first().mediaListProgress)
+        assertEquals("Mob Psycho 100", result.listActivity.first().media?.title?.userPreferred)
     }
 
-    @Test
-    fun `convertFrom tolerates empty media snapshots`() {
-        val source =
-            UserProfileFeedEntity(
-                id = 9L,
-                reviews =
-                    listOf(
-                        UserSidecarModelContainer.ReviewPreviewPayload(
-                            id = 2L,
-                            summary = "Minimal snapshot",
-                            score = 70,
-                            rating = 0,
-                            ratingAmount = 0,
-                            siteUrl = "https://anilist.co/review/2",
-                            createdAt = 1L,
-                            updatedAt = 2L,
-                            mediaId = 0L,
-                            mediaType = null,
-                            media = null,
-                        ),
-                    ),
-                listActivity = emptyList(),
-            )
-
-        val result = UserProfileFeedConverter().convertFrom(source)
-
-        assertNull(result.reviews.first().media)
-        assertEquals(0, result.listActivity.size)
-    }
-
-    private fun overviewMediaPayload(id: Long, title: String) =
-        UserSidecarModelContainer.MediaPreviewPayload(
-            id = id,
-            title =
-                UserSidecarModelContainer.MediaPreviewPayload.Title(
-                    english = title,
-                    nativeTitle = null,
-                    romaji = title,
-                    userPreferred = title,
+    private fun reviewView(reviewId: Long, mediaId: Long, title: String) =
+        UserProfileReviewEntityView(
+            connection = UserProfileReviewEntity(userId = 9L, reviewId = reviewId, sortIndex = 0, mediaId = mediaId),
+            review =
+                ReviewEntity(
+                    body = "",
+                    createdAt = 1_700_000_000L,
+                    mediaId = mediaId,
+                    isPrivate = false,
+                    rating = 120,
+                    ratingAmount = 30,
+                    score = 90,
+                    siteUrl = "https://anilist.co/review/$reviewId",
+                    summary = "Tight review",
+                    updatedAt = 1_700_000_500L,
+                    userId = 9L,
+                    userRating = ReviewRating.NO_VOTE,
+                    id = reviewId,
                 ),
-            image =
-                UserSidecarModelContainer.MediaPreviewPayload.Image(
-                    color = null,
-                    large = "https://example.com/$id.jpg",
-                    medium = "https://example.com/$id.jpg",
+            media = mediaEntity(mediaId, title),
+        )
+
+    private fun activityView(id: Long, mediaId: Long, title: String) =
+        ListStatusEntityView(
+            activity =
+                StatusEntity.ListStatus(
+                    id = id,
+                    userId = 9L,
+                    sortIndex = 0,
+                    createdAt = 1_700_000_200L,
+                    status = "completed",
+                    progress = "26 of 26",
+                    siteUrl = "https://anilist.co/activity/$id",
+                    type = StatusType.ANIME_LIST,
+                    mediaId = mediaId,
                 ),
-            type = MediaType.ANIME,
-            format = co.anitrend.domain.media.enums.MediaFormat.TV,
-            status = co.anitrend.domain.media.enums.MediaStatus.FINISHED,
-            episodes = 24,
-            chapters = 0,
-            volumes = 0,
-            isFavourite = false,
-            meanScore = 82,
+            media = mediaEntity(mediaId, title),
+        )
+
+    private fun mediaEntity(mediaId: Long, title: String) =
+        MediaEntity(
+            coverImage = MediaEntity.CoverImage(color = null, extraLarge = null, large = null, medium = null, banner = null),
+            title = MediaEntity.Title(romaji = title, english = title, original = null, userPreferred = title),
+            trailer = null,
+            nextAiringId = null,
             averageScore = 80,
-            siteUrl = "https://anilist.co/media/$id",
-            mediaList = null,
+            chapters = null,
+            countryOfOrigin = null,
+            description = null,
+            duration = null,
+            endDate = null,
+            episodes = 24,
+            favourites = 1,
+            format = MediaFormat.TV,
+            hashTag = null,
+            isAdult = null,
+            isFavourite = false,
+            isFavouriteBlocked = false,
+            isLicensed = null,
+            isRecommendationBlocked = false,
+            isReviewBlocked = false,
+            isLocked = null,
+            meanScore = 82,
+            popularity = null,
+            season = null,
+            siteUrl = "https://anilist.co/media/$mediaId",
+            source = null,
+            startDate = null,
+            status = MediaStatus.FINISHED,
+            synonyms = emptyList(),
+            trending = null,
+            type = MediaType.ANIME,
+            updatedAt = null,
+            volumes = null,
+            malId = null,
+            id = mediaId,
         )
 }

@@ -1,7 +1,0 @@
-query MediaWithEpisodes($id: Int!) {
-    episodes(malId: $id) {
-        data {
-            ... EdgeEpisode
-        }
-    }
-}

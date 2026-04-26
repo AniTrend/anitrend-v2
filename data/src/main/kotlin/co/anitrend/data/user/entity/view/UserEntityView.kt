@@ -91,8 +91,9 @@ internal sealed class UserEntityView {
         @Relation(
             parentColumn = "id",
             entityColumn = "user_id",
+            entity = UserWithStatisticEntity::class,
         )
-        val statistic: UserWithStatisticEntity?,
+        val statistic: UserStatisticEntityView?,
         @Relation(
             parentColumn = "id",
             entityColumn = "user_id",

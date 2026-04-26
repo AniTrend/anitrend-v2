@@ -172,4 +172,32 @@ sealed class UserParam {
     data class Viewer(
         val id: Long,
     ) : UserParam()
+
+    /** Paginated anime favourites sidecar query keyed by a resolved user id
+     *
+     * @param id The id of the user
+     * @param page The page number
+     * @param perPage The number of results per page
+     * @param scoreFormat The user's list scoring format
+     */
+    data class AnimeFavourites(
+        val id: Long,
+        val page: Int = 1,
+        val perPage: Int = 18,
+        val scoreFormat: ScoreFormat? = null,
+    ) : UserParam()
+
+    /** Paginated manga favourites sidecar query keyed by a resolved user id
+     *
+     * @param id The id of the user
+     * @param page The page number
+     * @param perPage The number of results per page
+     * @param scoreFormat The user's list scoring format
+     */
+    data class MangaFavourites(
+        val id: Long,
+        val page: Int = 1,
+        val perPage: Int = 18,
+        val scoreFormat: ScoreFormat? = null,
+    ) : UserParam()
 }

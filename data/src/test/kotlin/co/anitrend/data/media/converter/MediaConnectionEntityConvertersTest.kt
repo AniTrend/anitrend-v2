@@ -17,6 +17,9 @@
 package co.anitrend.data.media.converter
 
 import co.anitrend.data.media.entity.MediaStatsEntity
+import co.anitrend.data.media.entity.stats.MediaScoreDistributionEntity
+import co.anitrend.data.media.entity.stats.MediaStatusDistributionEntity
+import co.anitrend.data.media.entity.view.MediaStatsEntityView
 import co.anitrend.data.media.entity.connection.MediaRelationConnectionEntity
 import co.anitrend.data.recommendation.converter.MediaRecommendationConnectionEntityConverter
 import co.anitrend.data.recommendation.entity.connection.MediaRecommendationConnectionEntity
@@ -123,18 +126,18 @@ class MediaConnectionEntityConvertersTest {
     @Test
     fun `given cached stats with unknown status labels when converting then invalid labels are ignored`() {
         val entity =
-            MediaStatsEntity(
-                id = 42L,
+            MediaStatsEntityView(
+                stats = MediaStatsEntity(id = 42L),
                 scoreDistribution =
                     listOf(
-                        MediaStatsEntity.ScoreDistribution(amount = 100, score = 90),
-                        MediaStatsEntity.ScoreDistribution(amount = 20, score = 70),
+                        MediaScoreDistributionEntity(amount = 100, score = 90, mediaId = 42L),
+                        MediaScoreDistributionEntity(amount = 20, score = 70, mediaId = 42L),
                     ),
                 statusDistribution =
                     listOf(
-                        MediaStatsEntity.StatusDistribution(amount = 60, status = "CURRENT"),
-                        MediaStatsEntity.StatusDistribution(amount = 15, status = null),
-                        MediaStatsEntity.StatusDistribution(amount = 5, status = "NOT_A_REAL_STATUS"),
+                        MediaStatusDistributionEntity(amount = 60, status = "CURRENT", mediaId = 42L),
+                        MediaStatusDistributionEntity(amount = 15, status = null, mediaId = 42L),
+                        MediaStatusDistributionEntity(amount = 5, status = "NOT_A_REAL_STATUS", mediaId = 42L),
                     ),
             )
 

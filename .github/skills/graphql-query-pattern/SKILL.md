@@ -1,6 +1,10 @@
 ---
 name: graphql-query-pattern
-description: 'GraphQL controller and query lifecycle guide. Use when adding or refactoring AniList GraphQL requests, mappers, and error propagation in the data layer.'
+description: >
+  GraphQL controller and query lifecycle guide. Use when adding or refactoring AniList GraphQL
+  requests, remote source bindings, mappers, and error propagation in the data layer. Covers
+  @GraphQuery annotation, @GRAPHQL tag, QueryContainerBuilder, Response<GraphQLResponse<*>>,
+  IGraphPayload.toMap(), and the full request-to-Room pipeline.
 ---
 
 # Skill: GraphQL Query / Controller Pattern
@@ -47,6 +51,45 @@ Retrofit interface method (suspend fun)
 3. Create or reuse a `GraphQLController` instance, passing the mapper and dispatcher.
 4. In the data source `invoke()` / `getX()` method, call the Retrofit method then feed the result
    to the controller.
+
+## Remote source binding — annotation and type contract
+
+Every remote source method uses three cooperating pieces:
+
+### `@GRAPHQL`
+A Retrofit tag annotation defined in `data/android`. It signals the `retrofit-graphql` converter
+to serialize the `QueryContainerBuilder` body as a GraphQL envelope
+`{ operationName, query, variables }` rather than as plain JSON.
+
+### `@GraphQuery("OperationName")`
+Resolves and loads the matching `.graphql` asset file at runtime by operation name. The annotation
+processor injects `operationName` and the query string into the `QueryContainerBuilder` so the
+correct operation is sent to the server.
+
+### `@Body queryContainer: QueryContainerBuilder`
+`QueryContainerBuilder` carries the assembled `{ operationName, query, variables: Map }` envelope.
+The data source creates the variables map by calling `IGraphPayload.toMap()` on the query object
+(see Rule 6 in `mapping-graphql-models/SKILL.md`) and passes it to the builder before handing it
+to Retrofit. **All three annotations must stay in sync with each other and with the variables
+declared in the `.graphql` file.**
+
+### `Response<GraphQLResponse<*>>`
+- `Response<T>` is Retrofit's envelope — it exposes HTTP status code and headers while keeping the
+  deserialized body separate.
+- `GraphQLResponse<T>` is the standard GraphQL envelope `{ data: T?, errors: List<Error>? }` from
+  `retrofit-graphql`.
+- Both wrappers are stripped inside `GraphQLController` before the mapped domain type ever reaches
+  the repository or ViewModel. Data sources should never unwrap them manually.
+
+A complete method signature looks like:
+```kotlin
+@GRAPHQL
+@GraphQuery("GetMediaDetail")
+@POST(IEndpointType.BASE_ENDPOINT_PATH)
+suspend fun getMediaDetail(
+    @Body queryContainer: QueryContainerBuilder,
+): Response<GraphQLResponse<MediaModelContainer.Detail>>
+```
 
 ## Mutation flow rules
 

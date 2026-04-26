@@ -16,7 +16,37 @@
  */
 package co.anitrend.data.status.datasource.local
 
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.status.entity.StatusEntity
+import co.anitrend.data.status.entity.view.ListStatusEntityView
+import kotlinx.coroutines.flow.Flow
 
-internal abstract class StatusLocalSource : AbstractLocalSource<StatusEntity>()
+@Dao
+internal abstract class StatusLocalSource : AbstractLocalSource<StatusEntity.ListStatus>() {
+    @Query("SELECT COUNT(id) FROM list_status")
+    abstract override suspend fun count(): Int
+
+    @Query("DELETE FROM list_status")
+    abstract override suspend fun clear()
+
+    @Query(
+        """
+        SELECT * FROM list_status
+        WHERE user_id = :userId
+        ORDER BY sort_index ASC
+        """,
+    )
+    @Transaction
+    abstract fun listStatusByUserIdFlow(userId: Long): Flow<List<ListStatusEntityView>>
+
+    @Query(
+        """
+        DELETE FROM list_status
+        WHERE user_id = :userId
+        """,
+    )
+    abstract suspend fun clearListStatusByUserId(userId: Long)
+}

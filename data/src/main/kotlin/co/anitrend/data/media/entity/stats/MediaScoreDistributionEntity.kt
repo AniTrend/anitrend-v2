@@ -14,32 +14,37 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.user.entity.sidecar
+package co.anitrend.data.media.entity.stats
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.data.user.model.container.UserSidecarModelContainer
+import androidx.room.PrimaryKey
+import co.anitrend.data.core.common.IEntityId
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
-    tableName = "user_profile_overview",
-    primaryKeys = ["user_id"],
-    indices = [Index(value = ["user_id"])],
+    tableName = "media_score_distribution",
+    indices = [
+        Index(value = ["media_id", "score"], unique = true),
+        Index(value = ["media_id"]),
+    ],
     foreignKeys = [
         ForeignKey(
-            entity = UserEntity::class,
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE,
-            childColumns = ["user_id"],
+            entity = MediaEntity::class,
             parentColumns = ["id"],
+            childColumns = ["media_id"],
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE,
         ),
     ],
 )
-internal data class UserProfileOverviewEntity(
-    @ColumnInfo(name = "user_id") val id: Long,
-    @ColumnInfo(name = "anime_favourites") val animeFavourites: List<UserSidecarModelContainer.MediaPreviewPayload> = emptyList(),
-    @ColumnInfo(name = "manga_favourites") val mangaFavourites: List<UserSidecarModelContainer.MediaPreviewPayload> = emptyList(),
-    @ColumnInfo(name = "recent_activity") val recentActivity: List<UserSidecarModelContainer.ListActivityPayload> = emptyList(),
-)
+@EntitySchema
+internal data class MediaScoreDistributionEntity(
+    @ColumnInfo(name = "amount") val amount: Int,
+    @ColumnInfo(name = "score") val score: Int,
+    @ColumnInfo(name = "media_id") val mediaId: Long,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long? = null,
+) : IEntityId<Long?>

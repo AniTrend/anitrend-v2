@@ -20,10 +20,10 @@ import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.media.entity.MediaEntity
-import co.anitrend.data.media.entity.MediaStatsEntity
 import co.anitrend.data.media.entity.connection.MediaCharacterConnectionEntity
 import co.anitrend.data.media.entity.connection.MediaRelationConnectionEntity
 import co.anitrend.data.media.entity.connection.MediaStaffConnectionEntity
+import co.anitrend.data.media.mapper.MediaStatsMapper
 import co.anitrend.data.media.model.container.MediaConnectionModelContainer
 import co.anitrend.data.media.model.container.MediaModelContainer
 import co.anitrend.data.media.model.container.MediaPeopleModelContainer
@@ -48,7 +48,7 @@ internal typealias MediaRecommendationsController =
     GraphQLController<MediaConnectionModelContainer.Recommendations, List<MediaRecommendationConnectionEntity>>
 internal typealias MediaStaffController = GraphQLController<MediaPeopleModelContainer.Staff, List<MediaStaffConnectionEntity>>
 internal typealias MediaStudiosController = GraphQLController<MediaSidecarModelContainer.Studios, List<MediaStudioConnectionEntity>>
-internal typealias MediaStatsController = GraphQLController<MediaSidecarModelContainer.Stats, MediaStatsEntity?>
+internal typealias MediaStatsController = GraphQLController<MediaSidecarModelContainer.Stats, MediaStatsMapper.Payload?>
 
 internal typealias MediaDetailRepository = IMediaRepository.Detail<DataState<Media>>
 internal typealias MediaCharactersRepository = IMediaRepository.Characters<Flow<PagingData<MediaPerson.Character>>>

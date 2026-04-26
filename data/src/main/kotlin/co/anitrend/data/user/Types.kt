@@ -18,10 +18,8 @@ package co.anitrend.data.user
 
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.android.controller.graphql.GraphQLController
+import co.anitrend.data.user.converter.UserStatisticPayload
 import co.anitrend.data.user.entity.UserEntity
-import co.anitrend.data.user.entity.sidecar.UserProfileFeedEntity
-import co.anitrend.data.user.entity.sidecar.UserProfileOverviewEntity
-import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 import co.anitrend.data.user.model.container.UserModelContainer
 import co.anitrend.data.user.model.container.UserSidecarModelContainer
 import co.anitrend.domain.user.entity.User
@@ -34,11 +32,11 @@ internal typealias UserAuthController = GraphQLController<UserModelContainer.Vie
 internal typealias UserProfileController = GraphQLController<UserModelContainer.Profile, UserEntity>
 internal typealias UserController = GraphQLController<UserModelContainer.User, UserEntity>
 internal typealias UserProfileStatisticController =
-    GraphQLController<UserModelContainer.WithStatistic, UserWithStatisticEntity>
+    GraphQLController<UserModelContainer.WithStatistic, UserStatisticPayload>
 internal typealias UserProfileOverviewController =
-    GraphQLController<UserSidecarModelContainer.Overview, UserProfileOverviewEntity>
+    GraphQLController<UserSidecarModelContainer.Overview, Unit>
 internal typealias UserProfileFeedController =
-    GraphQLController<UserSidecarModelContainer.Feed, UserProfileFeedEntity>
+    GraphQLController<UserSidecarModelContainer.Feed, Unit>
 
 internal typealias UserIdentifierRepository = IUserRepository.User<DataState<User>>
 internal typealias UserAuthenticatedRepository = IUserRepository.Authenticated<DataState<User>>

@@ -121,6 +121,7 @@ internal sealed class MediaQuery : IGraphPayload {
             mapOf(
                 "id" to param.id,
                 "sort" to param.sort,
+                "isMain" to param.isMain,
             )
     }
 

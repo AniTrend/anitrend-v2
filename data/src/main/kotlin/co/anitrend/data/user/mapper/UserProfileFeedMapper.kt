@@ -16,25 +16,75 @@
  */
 package co.anitrend.data.user.mapper
 
+import co.anitrend.data.android.database.common.TransactionRunner
+import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.android.mapper.DefaultMapper
-import co.anitrend.data.user.datasource.local.sidecar.UserProfileFeedLocalSource
-import co.anitrend.data.user.entity.sidecar.UserProfileFeedEntity
+import co.anitrend.data.media.entity.MediaEntity
+import co.anitrend.data.media.model.MediaModel
+import co.anitrend.data.review.mapper.ReviewMapper
+import co.anitrend.data.status.mapper.StatusMapper
 import co.anitrend.data.user.model.container.UserSidecarModelContainer
 
 internal class UserProfileFeedMapper(
-    private val localSource: UserProfileFeedLocalSource,
-) : DefaultMapper<UserSidecarModelContainer.Feed, UserProfileFeedEntity>() {
-    override suspend fun persist(data: UserProfileFeedEntity) {
-        localSource.upsert(data)
+    private val reviewConnectionMapper: UserProfileConnectionMapper.ReviewEmbed,
+    private val reviewPreviewMapper: ReviewMapper.PreviewEmbed,
+    private val statusEmbedMapper: StatusMapper.Activity.Embed,
+    private val mediaEmbedMapper: EmbedMapper<MediaModel, MediaEntity>,
+    private val transactionRunner: TransactionRunner,
+) : DefaultMapper<UserSidecarModelContainer.Feed, Unit>() {
+    override suspend fun persist(data: Unit) {
+        mediaEmbedMapper.persistEmbedded()
+        reviewPreviewMapper.persistEmbedded()
+        reviewConnectionMapper.persistEmbedded()
+        statusEmbedMapper.persistEmbedded()
     }
 
-    override suspend fun onResponseMapFrom(source: UserSidecarModelContainer.Feed): UserProfileFeedEntity {
+    override suspend fun onResponseDatabaseInsert(mappedData: Unit) {
+        transactionRunner.run {
+            super.onResponseDatabaseInsert(mappedData)
+        }
+    }
+
+    override suspend fun onResponseMapFrom(source: UserSidecarModelContainer.Feed) {
         val userId = requireNotNull(source.user?.id) { "Feed response missing user id" }
 
-        return UserProfileFeedEntity(
-            id = userId,
-            reviews = source.reviewPage?.reviews.orEmpty(),
-            listActivity = source.activityPage?.listActivity.orEmpty(),
+        val reviewMedia =
+            source.reviewPage
+                ?.reviews
+                .orEmpty()
+                .mapNotNull { it.media }
+        val activityMedia =
+            source.activityPage
+                ?.listActivity
+                .orEmpty()
+                .mapNotNull { it.media }
+        mediaEmbedMapper.onEmbedded(reviewMedia + activityMedia)
+
+        reviewPreviewMapper.onEmbedded(
+            source.reviewPage?.reviews.orEmpty().map { review ->
+                ReviewMapper.PreviewEmbed.Item(
+                    userId = userId,
+                    preview = review,
+                )
+            },
+        )
+
+        reviewConnectionMapper.onEmbedded(
+            source.reviewPage?.reviews.orEmpty().mapIndexed { index, review ->
+                UserProfileConnectionMapper.ReviewEmbed.Item(
+                    userId = userId,
+                    reviewId = review.id,
+                    sortIndex = index,
+                    mediaId = review.mediaId,
+                )
+            },
+        )
+
+        statusEmbedMapper.onEmbedded(
+            StatusMapper.Activity.Embed.asItems(
+                userId = userId,
+                source = source.activityPage?.listActivity.orEmpty(),
+            ),
         )
     }
 }

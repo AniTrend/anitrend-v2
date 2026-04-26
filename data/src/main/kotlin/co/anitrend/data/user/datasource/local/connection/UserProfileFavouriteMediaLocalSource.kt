@@ -14,43 +14,38 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.user.datasource.local.sidecar
+package co.anitrend.data.user.datasource.local.connection
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import co.anitrend.data.android.source.local.AbstractLocalSource
-import co.anitrend.data.user.entity.sidecar.UserProfileFeedEntity
+import co.anitrend.data.user.entity.connection.UserProfileFavouriteMediaEntity
+import co.anitrend.data.user.entity.view.UserProfileFavouriteMediaEntityView
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-internal abstract class UserProfileFeedLocalSource : AbstractLocalSource<UserProfileFeedEntity>() {
-    @Query(
-        """
-        select count(user_id) from user_profile_feed
-        """,
-    )
+internal abstract class UserProfileFavouriteMediaLocalSource : AbstractLocalSource<UserProfileFavouriteMediaEntity>() {
+    @Query("SELECT COUNT(id) FROM user_profile_favourite_media")
     abstract override suspend fun count(): Int
 
-    @Query(
-        """
-        delete from user_profile_feed
-        """,
-    )
+    @Query("DELETE FROM user_profile_favourite_media")
     abstract override suspend fun clear()
 
     @Query(
         """
-        select * from user_profile_feed
-        where user_id = :userId
-        limit 1
+        SELECT * FROM user_profile_favourite_media
+        WHERE user_id = :userId
+        ORDER BY category ASC, sort_index ASC
         """,
     )
-    abstract fun entryByUserIdFlow(userId: Long): Flow<UserProfileFeedEntity?>
+    @Transaction
+    abstract fun entryByUserIdFlow(userId: Long): Flow<List<UserProfileFavouriteMediaEntityView>>
 
     @Query(
         """
-        delete from user_profile_feed
-        where user_id = :userId
+        DELETE FROM user_profile_favourite_media
+        WHERE user_id = :userId
         """,
     )
     abstract suspend fun clearByUserId(userId: Long)

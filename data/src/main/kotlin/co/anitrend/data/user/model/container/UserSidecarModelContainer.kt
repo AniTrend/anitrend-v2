@@ -16,8 +16,7 @@
  */
 package co.anitrend.data.user.model.container
 
-import co.anitrend.domain.media.enums.MediaFormat
-import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.data.media.model.MediaModel
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.status.enums.StatusType
@@ -78,48 +77,7 @@ internal sealed class UserSidecarModelContainer {
         @Serializable
         data class MediaEdge(
             @SerialName("favouriteOrder") val favouriteOrder: Int? = null,
-            @SerialName("node") val node: MediaPreviewPayload? = null,
-        )
-    }
-
-    @Serializable
-    data class MediaPreviewPayload(
-        @SerialName("id") val id: Long,
-        @SerialName("title") val title: Title? = null,
-        @SerialName("coverImage") val image: Image? = null,
-        @SerialName("type") val type: MediaType? = null,
-        @SerialName("format") val format: MediaFormat? = null,
-        @SerialName("status") val status: MediaStatus? = null,
-        @SerialName("episodes") val episodes: Int? = null,
-        @SerialName("chapters") val chapters: Int? = null,
-        @SerialName("volumes") val volumes: Int? = null,
-        @SerialName("isFavourite") val isFavourite: Boolean? = null,
-        @SerialName("meanScore") val meanScore: Int? = null,
-        @SerialName("averageScore") val averageScore: Int? = null,
-        @SerialName("siteUrl") val siteUrl: String? = null,
-        @SerialName("mediaListEntry") val mediaList: MediaList? = null,
-    ) {
-        @Serializable
-        data class Title(
-            @SerialName("english") val english: String? = null,
-            @SerialName("native") val nativeTitle: String? = null,
-            @SerialName("romaji") val romaji: String? = null,
-            @SerialName("userPreferred") val userPreferred: String? = null,
-        )
-
-        @Serializable
-        data class Image(
-            @SerialName("color") val color: String? = null,
-            @SerialName("large") val large: String? = null,
-            @SerialName("medium") val medium: String? = null,
-        )
-
-        @Serializable
-        data class MediaList(
-            @SerialName("status") val status: MediaListStatus? = null,
-            @SerialName("progress") val progress: Int? = null,
-            @SerialName("progressVolumes") val progressVolumes: Int? = null,
-            @SerialName("updatedAt") val updatedAt: Long? = null,
+            @SerialName("node") val node: MediaModel.Core? = null,
         )
     }
 
@@ -131,7 +89,7 @@ internal sealed class UserSidecarModelContainer {
         @SerialName("progress") val progress: String? = null,
         @SerialName("siteUrl") val siteUrl: String? = null,
         @SerialName("type") val type: StatusType? = null,
-        @SerialName("media") val media: MediaPreviewPayload? = null,
+        @SerialName("media") val media: MediaModel.Core? = null,
         @SerialName("mediaListStatus") val mediaListStatus: MediaListStatus? = null,
         @SerialName("mediaListProgress") val mediaListProgress: Int? = null,
         @SerialName("mediaListVolumeProgress") val mediaListVolumeProgress: Int? = null,
@@ -149,6 +107,38 @@ internal sealed class UserSidecarModelContainer {
         @SerialName("updatedAt") val updatedAt: Long,
         @SerialName("mediaId") val mediaId: Long,
         @SerialName("mediaType") val mediaType: MediaType? = null,
-        @SerialName("media") val media: MediaPreviewPayload? = null,
+        @SerialName("media") val media: MediaModel.Core? = null,
     )
+
+    @Serializable
+    data class AnimeFavourites(
+        @SerialName("User") val user: User? = null,
+    ) : UserSidecarModelContainer() {
+        @Serializable
+        data class User(
+            @SerialName("id") val id: Long? = null,
+            @SerialName("favourites") val favourites: Favourites? = null,
+        ) {
+            @Serializable
+            data class Favourites(
+                @SerialName("anime") val anime: MediaConnection? = null,
+            )
+        }
+    }
+
+    @Serializable
+    data class MangaFavourites(
+        @SerialName("User") val user: User? = null,
+    ) : UserSidecarModelContainer() {
+        @Serializable
+        data class User(
+            @SerialName("id") val id: Long? = null,
+            @SerialName("favourites") val favourites: Favourites? = null,
+        ) {
+            @Serializable
+            data class Favourites(
+                @SerialName("manga") val manga: MediaConnection? = null,
+            )
+        }
+    }
 }

@@ -21,6 +21,7 @@ import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
 import co.anitrend.data.user.entity.view.UserEntityView
+import co.anitrend.data.user.entity.view.UserStatisticEntityView
 import co.anitrend.data.user.model.UserModel
 import co.anitrend.data.user.model.option.UserOptionsModel
 import co.anitrend.domain.medialist.enums.ScoreFormat
@@ -215,7 +216,7 @@ class UserConvertersTest {
         val constructor =
             UserEntityView.WithStatistic::class.java.getDeclaredConstructor(
                 UserEntity::class.java,
-                UserWithStatisticEntity::class.java,
+                UserStatisticEntityView::class.java,
                 UserGeneralOptionEntity::class.java,
                 UserMediaOptionEntity::class.java,
                 List::class.java,
@@ -244,7 +245,7 @@ class UserConvertersTest {
                 createdAt = null,
                 id = 1L,
             ),
-            statistic,
+            statistic?.let { UserStatisticEntityView(statistic = it) },
             UserGeneralOptionEntity(
                 userId = 1L,
                 airingNotifications = false,
