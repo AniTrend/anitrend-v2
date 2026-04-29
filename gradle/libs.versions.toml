@@ -209,7 +209,7 @@ anitrend-sync = { module = "com.github.anitrend:support-sync-plugin", version.re
 
 anitrend-querybuilder-annotation = { module = "com.github.anitrend.support-query-builder:core", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-core = { module = "com.github.anitrend.support-query-builder:annotations", version.ref = "anitrend-querybuilder" }
-anitrend-querybuilder-core-ext = { module = "com.github.anitrend.support-query-builder:core-ext", version.ref = "anitrend-querybuilder" }
+anitrend-querybuilder-ext = { module = "com.github.anitrend.support-query-builder:ext", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-processor = { module = "com.github.anitrend.support-query-builder:processor", version.ref = "anitrend-querybuilder" }
 
 airbnb-paris = { module = "com.airbnb.android:paris", version.ref = "airbnb-paris" }
