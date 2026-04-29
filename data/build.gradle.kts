@@ -39,7 +39,9 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
     implementation(libs.androidx.room.paging)
 
-    implementation(libs.anitrend.sync)
+    implementation(libs.anitrend.sync) {
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-android-extensions-runtime")
+    }
     implementation(libs.cash.copper)
 
     implementation(libs.anitrend.emojify)
@@ -47,8 +49,8 @@ dependencies {
 
     implementation(libs.anitrend.querybuilder.annotation)
     implementation(libs.anitrend.querybuilder.core)
-    implementation(libs.anitrend.querybuilder.core.ext)
-    kapt(libs.anitrend.querybuilder.processor)
+    implementation(libs.anitrend.querybuilder.ext)
+    ksp(libs.anitrend.querybuilder.processor)
 }
 
 android {

@@ -16,8 +16,8 @@
  */
 package co.anitrend.data.core.extensions
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import kotlin.test.Test
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class CommonExtensionsKtTest {
     @Test

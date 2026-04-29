@@ -17,8 +17,7 @@
 
 package co.anitrend.buildSrc.plugins.components
 
-import co.anitrend.buildSrc.extensions.baseAppExtension
-import co.anitrend.buildSrc.extensions.baseExtension
+import co.anitrend.buildSrc.extensions.applicationExtension
 import co.anitrend.buildSrc.extensions.hasComposeSupport
 import co.anitrend.buildSrc.extensions.hasCoroutineSupport
 import co.anitrend.buildSrc.extensions.isAppModule
@@ -27,8 +26,6 @@ import co.anitrend.buildSrc.extensions.libraryExtension
 import co.anitrend.buildSrc.extensions.matchesAppModule
 import co.anitrend.buildSrc.extensions.matchesTaskModule
 import co.anitrend.buildSrc.extensions.props
-import com.android.build.gradle.internal.api.BaseVariantOutputImpl
-import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
@@ -39,7 +36,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import java.io.File
 
 private fun Project.configureBuildFlavours() {
-    baseAppExtension().run {
+    applicationExtension().apply {
         flavorDimensions.add("default")
         productFlavors {
             create("google") {
@@ -51,116 +48,129 @@ private fun Project.configureBuildFlavours() {
                 versionNameSuffix = "-github"
             }
         }
-        applicationVariants.all {
-            outputs.map { it as BaseVariantOutputImpl }.forEach { output ->
-                val original = output.outputFileName
-                output.outputFileName = original
+    }
+}
+
+private fun Project.configureLint() = applicationExtension().lint {
+    abortOnError = false
+    ignoreWarnings = false
+    ignoreTestSources = true
+}
+
+private fun Project.configureAppAndroid() {
+    val ext = applicationExtension()
+    createSigningConfiguration(ext)
+    configureLint()
+    configureBuildFlavours()
+    ext.apply {
+        compileSdk = 36
+        defaultConfig {
+            applicationId = "co.anitrend"
+            minSdk = 24
+            targetSdk = 36
+            versionCode = props[PropertyTypes.CODE].toInt()
+            versionName = props[PropertyTypes.VERSION]
+            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
+        buildFeatures {
+            viewBinding = true
+            compose = true
+        }
+        buildTypes {
+            getByName("release") {
+                isMinifyEnabled = true
+                isShrinkResources = false
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    projectDir.resolve("proguard-rules.pro"),
+                    rootDir.resolve("proguard-common.pro"),
+                )
+                if (project.file(".config/keystore.properties").exists())
+                    signingConfig = signingConfigs.getByName("release")
             }
+            getByName("debug") {
+                isDebuggable = true
+                isMinifyEnabled = false
+                isShrinkResources = false
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    projectDir.resolve("proguard-rules.pro"),
+                    rootDir.resolve("proguard-common.pro"),
+                )
+            }
+        }
+        packaging {
+            resources.excludes.add("META-INF/NOTICE.*")
+            resources.excludes.add("META-INF/LICENSE*")
+            resources.excludes.add("META-INF/*kotlin_module")
+            resources.excludes.add("META-INF/proguard/*")
+            resources.excludes.add("META-INF/*.version")
+            resources.excludes.add("META-INF/*.properties")
+            resources.excludes.add("/*.properties")
+            resources.excludes.add("fabric/*.properties")
+        }
+        sourceSets {
+            map { androidSourceSet ->
+                androidSourceSet.java.srcDir(
+                    "src/${androidSourceSet.name}/kotlin"
+                )
+            }
+        }
+        testOptions {
+            unitTests {
+                isReturnDefaultValues = true
+                isIncludeAndroidResources = true
+            }
+        }
+        compileOptions {
+            sourceCompatibility = JavaVersion.VERSION_21
+            targetCompatibility = JavaVersion.VERSION_21
         }
     }
 }
 
-private fun DefaultConfig.applyAdditionalConfiguration(project: Project) {
-    if (project.isAppModule()) {
-        applicationId = "co.anitrend"
-        project.baseAppExtension().run {
-            buildFeatures {
-                viewBinding = true
-                compose = true
-            }
-        }
-    }
-    else
-        consumerProguardFiles.add(File("consumer-rules.pro"))
-
-    if (!project.matchesAppModule() && !project.matchesTaskModule()) {
-        // checking app module again since the group for app modules is
-        // `:app:` while the main app is just `:app`
-        if (!project.isAppModule() && project.hasComposeSupport()) {
-            project.logger.lifecycle("Applying view binding and compose build features for module -> ${project.path}")
-            project.libraryExtension().buildFeatures {
-                viewBinding = true
-                if (project.hasComposeSupport())
-                    compose = true
-            }
-        }
-
-        project.logger.lifecycle("Applying vector drawables configuration for module -> ${project.path}")
-        vectorDrawables.useSupportLibrary = true
-    }
-}
-
-private fun Project.configureLint() = baseAppExtension().run {
-    lint {
-        abortOnError = false
-        ignoreWarnings = false
-        ignoreTestSources = true
-    }
-}
-
-internal fun Project.configureAndroid(): Unit = baseExtension().run {
-    compileSdkVersion(36)
+private fun Project.configureLibraryAndroid() = libraryExtension().apply {
+    compileSdk = 36
     defaultConfig {
         minSdk = 24
-        targetSdk = 36
-        versionCode = props[PropertyTypes.CODE].toInt()
-        versionName = props[PropertyTypes.VERSION]
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        applyAdditionalConfiguration(project)
+        vectorDrawables.useSupportLibrary = true
     }
-
-    if (isAppModule()) {
-        configureLint()
-        configureBuildFlavours()
-        createSigningConfiguration(this)
+    if (!matchesAppModule() && !matchesTaskModule() && hasComposeSupport()) {
+        logger.lifecycle("Applying view binding and compose build features for module -> $path")
+        buildFeatures {
+            viewBinding = true
+            compose = true
+        }
     }
-
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            isShrinkResources = false
-            isTestCoverageEnabled = false
             proguardFiles(
-                getDefaultProguardFile(
-                    "proguard-android-optimize.txt"
-                ),
+                getDefaultProguardFile("proguard-android-optimize.txt"),
                 projectDir.resolve("proguard-rules.pro"),
                 rootDir.resolve("proguard-common.pro"),
             )
-            if (project.file(".config/keystore.properties").exists())
-                signingConfig = signingConfigs.getByName("release")
         }
-
         getByName("debug") {
-            isDebuggable = true
             isMinifyEnabled = false
-            isShrinkResources = false
-            isTestCoverageEnabled = true
             proguardFiles(
-                getDefaultProguardFile(
-                    "proguard-android-optimize.txt"
-                ),
+                getDefaultProguardFile("proguard-android-optimize.txt"),
                 projectDir.resolve("proguard-rules.pro"),
                 rootDir.resolve("proguard-common.pro"),
             )
         }
     }
-
-    packagingOptions {
+    packaging {
         resources.excludes.add("META-INF/NOTICE.*")
         resources.excludes.add("META-INF/LICENSE*")
-        // Exclude potential duplicate kotlin_module files
         resources.excludes.add("META-INF/*kotlin_module")
-        // Exclude consumer proguard files
         resources.excludes.add("META-INF/proguard/*")
-        // Exclude AndroidX version files
         resources.excludes.add("META-INF/*.version")
-        // Exclude the Firebase/Fabric/other random properties files
         resources.excludes.add("META-INF/*.properties")
         resources.excludes.add("/*.properties")
         resources.excludes.add("fabric/*.properties")
     }
-
     sourceSets {
         map { androidSourceSet ->
             androidSourceSet.java.srcDir(
@@ -168,18 +178,21 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
             )
         }
     }
-
     testOptions {
         unitTests {
             isReturnDefaultValues = true
             isIncludeAndroidResources = true
         }
     }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
+}
+
+internal fun Project.configureAndroid() {
+    if (isAppModule()) configureAppAndroid()
+    else configureLibraryAndroid()
 
     tasks.withType(KotlinJvmCompile::class.java) {
         compilerOptions {
@@ -232,14 +245,6 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
             showStandardStreams = true
         }
     }
-
-    // Disabling experimental language version, causing issues with KAPT + Room
-    //tasks.withType(KotlinCompilationTask::class.java)
-    //    .configureEach {
-    //        compilerOptions
-    //            .languageVersion
-    //            .set(KotlinVersion.KOTLIN_1_9)
-    //    }
 
     tasks.register("makeProguard") {
         val projectDirectory = project.layout.projectDirectory

@@ -33,7 +33,7 @@ anitrend-markdown = "0.12.1-alpha01"
 anitrend-material = "0.2.0"
 anitrend-retrofit = "0.11.13"
 anitrend-sync = "0.1.0-alpha01"
-anitrend-querybuilder = "0.2.13"
+anitrend-querybuilder = "0.3.0"
 
 airbnb-paris = "2.2.1"
 
@@ -48,7 +48,7 @@ devrieze-xmlutil = "0.90.3"
 google-android-material = "1.12.0"
 
 jetbrains-dokka = "2.2.0"
-jetbrains-kotlin = "2.2.10"
+jetbrains-kotlin = "2.3.21"
 jetbrains-kotlinx-coroutines = "1.10.2"
 jetbrains-kotlinx-datetime = "0.7.1-0.6.x-compat"
 jetbrains-kotlinx-serialization = "1.11.0"
@@ -78,7 +78,6 @@ google-devtools-ksp = "2.3.7"
 jetbrains-kotlin-plugin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "google-devtools-ksp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin" }
 android-library = { id = "com.android.library", version.ref = "gradle-plugin" }
 
 
@@ -87,6 +86,10 @@ annotatedtext = { module = "io.github.aghajari:AnnotatedText", version.ref = "an
 threeTenBp = { module = "com.jakewharton.threetenabp:threetenabp", version = "1.4.9" }
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 junit = { module = "junit:junit", version = "4.13.2" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.12.2" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version = "5.12.2" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version = "5.12.2" }
+junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version = "5.12.2" }
 
 treessence = { module = "com.github.bastienpaulfr:Treessence", version = "1.1.2" }
 jsoup = { module = "org.jsoup:jsoup", version = "1.22.2" }
@@ -96,6 +99,8 @@ retrofitSerializer = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-seri
 deeplink = { module = "com.kingsleyadio.deeplink:deeplink", version = "0.4.0" }
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
+android-gradle-plugin-kotlin = { module = "com.android.tools.build:gradle-kotlin", version.ref = "gradle-plugin" }
+google-devtools-ksp-gradle = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "google-devtools-ksp" }
 
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "androidx-activity" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
@@ -209,7 +214,7 @@ anitrend-sync = { module = "com.github.anitrend:support-sync-plugin", version.re
 
 anitrend-querybuilder-annotation = { module = "com.github.anitrend.support-query-builder:core", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-core = { module = "com.github.anitrend.support-query-builder:annotations", version.ref = "anitrend-querybuilder" }
-anitrend-querybuilder-core-ext = { module = "com.github.anitrend.support-query-builder:core-ext", version.ref = "anitrend-querybuilder" }
+anitrend-querybuilder-ext = { module = "com.github.anitrend.support-query-builder:ext", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-processor = { module = "com.github.anitrend.support-query-builder:processor", version.ref = "anitrend-querybuilder" }
 
 airbnb-paris = { module = "com.airbnb.android:paris", version.ref = "airbnb-paris" }
@@ -246,7 +251,7 @@ google-gson = { module = "com.google.code.gson:gson", version = "2.14.0" }
 google-firebase-core = { module = "com.google.firebase:firebase-core", version = "21.1.1" }
 google-firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version = "22.5.0" }
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "20.0.5" }
-google-firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "2.9.9" }
+google-firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "3.0.3" }
 google-firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx", version = "24.1.2" }
 
 google-flexbox = { module = "com.google.android.flexbox:flexbox", version = "3.0.0" }
