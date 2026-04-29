@@ -47,8 +47,8 @@ dependencies {
 
     implementation(libs.anitrend.querybuilder.annotation)
     implementation(libs.anitrend.querybuilder.core)
-    implementation(libs.anitrend.querybuilder.core.ext)
-    kapt(libs.anitrend.querybuilder.processor)
+    implementation(libs.anitrend.querybuilder.ext)
+    ksp(libs.anitrend.querybuilder.processor)
 }
 
 android {

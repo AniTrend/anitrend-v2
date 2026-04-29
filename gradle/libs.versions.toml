@@ -33,7 +33,7 @@ anitrend-markdown = "0.12.1-alpha01"
 anitrend-material = "0.2.0"
 anitrend-retrofit = "0.11.13"
 anitrend-sync = "0.1.0-alpha01"
-anitrend-querybuilder = "0.2.13"
+anitrend-querybuilder = "0.3.0"
 
 airbnb-paris = "2.2.1"
 
@@ -210,7 +210,7 @@ anitrend-sync = { module = "com.github.anitrend:support-sync-plugin", version.re
 
 anitrend-querybuilder-annotation = { module = "com.github.anitrend.support-query-builder:core", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-core = { module = "com.github.anitrend.support-query-builder:annotations", version.ref = "anitrend-querybuilder" }
-anitrend-querybuilder-core-ext = { module = "com.github.anitrend.support-query-builder:core-ext", version.ref = "anitrend-querybuilder" }
+anitrend-querybuilder-ext = { module = "com.github.anitrend.support-query-builder:ext", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-processor = { module = "com.github.anitrend.support-query-builder:processor", version.ref = "anitrend-querybuilder" }
 
 airbnb-paris = { module = "com.airbnb.android:paris", version.ref = "airbnb-paris" }
