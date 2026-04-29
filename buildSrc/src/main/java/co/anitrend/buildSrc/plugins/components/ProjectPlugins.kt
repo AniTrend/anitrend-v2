@@ -14,15 +14,9 @@ private fun addAndroidPlugin(project: Project, pluginContainer: PluginContainer)
 }
 
 private fun addAnnotationProcessor(project: Project, pluginContainer: PluginContainer) {
-    // TODO: Revisit after https://github.com/AniTrend/anitrend-v2/pull/1076 is merged to default.
-    // If support-query-builder is fully KSP-compatible, remove legacy-kapt handling and simplify this branch.
-    // KSP for all data modules (Room compiler is KSP-compatible)
+    // KSP for all data modules
     if (project.isDataGroupModule()) {
         pluginContainer.apply("com.google.devtools.ksp")
-    }
-    // Legacy kapt only for :data (querybuilder processor is not KSP-compatible)
-    if (project.isDataModule()) {
-        pluginContainer.apply("com.android.legacy-kapt")
     }
 }
 

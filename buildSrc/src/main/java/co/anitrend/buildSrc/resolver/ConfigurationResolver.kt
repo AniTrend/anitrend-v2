@@ -23,9 +23,15 @@ import org.gradle.api.artifacts.Configuration
 
 fun Configuration.handleConflicts(project: Project): Unit = with(project) {
     resolutionStrategy.eachDependency {
+        if (requested.name == "kotlin-android-extensions-runtime") {
+            useTarget("org.jetbrains.kotlin:kotlin-parcelize-runtime:${libs.versions.jetbrains.kotlin.get()}")
+        }
         when (requested.group) {
             "org.jetbrains.kotlin" -> {
-                if (requested.name.matches(Regex("kotlin-.*"))) {
+                if (
+                    requested.name.matches(Regex("kotlin-.*")) &&
+                    requested.name != "kotlin-android-extensions-runtime"
+                ) {
                     useVersion(libs.versions.jetbrains.kotlin.get())
                 }
             }

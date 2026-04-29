@@ -27,7 +27,6 @@ import co.anitrend.buildSrc.extensions.isAndroidCoreModule
 import co.anitrend.buildSrc.extensions.isAppModule
 import co.anitrend.buildSrc.extensions.isDataModule
 import co.anitrend.buildSrc.extensions.isDomainModule
-import co.anitrend.buildSrc.extensions.kapt
 import co.anitrend.buildSrc.extensions.ksp
 import co.anitrend.buildSrc.extensions.libs
 import co.anitrend.buildSrc.extensions.matchesAndroidModule

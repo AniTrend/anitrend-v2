@@ -134,7 +134,6 @@ private fun Project.configureLibraryAndroid() = libraryExtension().apply {
     defaultConfig {
         minSdk = 24
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles.add(File("consumer-rules.pro"))
         vectorDrawables.useSupportLibrary = true
     }
     if (!matchesAppModule() && !matchesTaskModule() && hasComposeSupport()) {
