@@ -28,6 +28,7 @@ import co.anitrend.buildSrc.extensions.isAppModule
 import co.anitrend.buildSrc.extensions.isDataModule
 import co.anitrend.buildSrc.extensions.isDomainModule
 import co.anitrend.buildSrc.extensions.kapt
+import co.anitrend.buildSrc.extensions.ksp
 import co.anitrend.buildSrc.extensions.libs
 import co.anitrend.buildSrc.extensions.matchesAndroidModule
 import co.anitrend.buildSrc.extensions.matchesAppModule
@@ -201,7 +202,7 @@ private fun Project.applyDataModuleDependencies() {
     dependencies.implementation(libs.androidx.paging.runtime.ktx)
     dependencies.implementation(libs.androidx.room.runtime)
     dependencies.implementation(libs.androidx.room.ktx)
-    dependencies.kapt(libs.androidx.room.compiler)
+    dependencies.ksp(libs.androidx.room.compiler)
 
     dependencies.implementation(libs.square.okhttp.logging)
     dependencies.implementation(libs.square.retrofit)
@@ -241,7 +242,7 @@ private fun Project.applyDataModuleGroupDependencies() {
 
         dependencies.implementation(libs.androidx.room.runtime)
         dependencies.implementation(libs.androidx.room.ktx)
-        dependencies.kapt(libs.androidx.room.compiler)
+        dependencies.ksp(libs.androidx.room.compiler)
 
         dependencies.implementation(libs.square.okhttp.logging)
         dependencies.implementation(libs.square.retrofit)

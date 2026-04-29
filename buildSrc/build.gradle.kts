@@ -39,6 +39,12 @@ dependencies {
     /** Depend on the android gradle plugin, since we want to access it in our plugin */
     implementation(libs.android.gradle.plugin)
 
+    /** Depend on the android gradle plugin kotlin extension, provides com.android.legacy-kapt */
+    implementation(libs.android.gradle.plugin.kotlin)
+
+    /** Depend on the KSP Gradle plugin, since we want to apply it in our plugin */
+    implementation(libs.google.devtools.ksp.gradle)
+
     /** Depend on the kotlin plugin, since we want to access it in our plugin */
     implementation(libs.jetbrains.kotlin.gradle)
 

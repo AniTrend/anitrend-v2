@@ -1,27 +1,10 @@
-/*
- * Copyright (C) 2020  AniTrend
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package co.anitrend.buildSrc.plugins.components
 
 import co.anitrend.buildSrc.extensions.androidComponents
 import co.anitrend.buildSrc.extensions.hasComposeSupport
-import co.anitrend.buildSrc.extensions.hasKaptSupport
-import co.anitrend.buildSrc.extensions.hasKotlinAndroidExtensionSupport
 import co.anitrend.buildSrc.extensions.isAppModule
+import co.anitrend.buildSrc.extensions.isDataGroupModule
+import co.anitrend.buildSrc.extensions.isDataModule
 import org.gradle.api.Project
 import org.gradle.api.plugins.PluginContainer
 
@@ -30,24 +13,26 @@ private fun addAndroidPlugin(project: Project, pluginContainer: PluginContainer)
     else pluginContainer.apply("com.android.library")
 }
 
-private fun addKotlinAndroidPlugin(pluginContainer: PluginContainer) {
-    pluginContainer.apply("kotlin-android")
-    pluginContainer.apply("com.diffplug.spotless")
-}
-
 private fun addAnnotationProcessor(project: Project, pluginContainer: PluginContainer) {
-    if (project.hasKaptSupport())
-        pluginContainer.apply("kotlin-kapt")
+    // TODO: Revisit after https://github.com/AniTrend/anitrend-v2/pull/1076 is merged to default.
+    // If support-query-builder is fully KSP-compatible, remove legacy-kapt handling and simplify this branch.
+    // KSP for all data modules (Room compiler is KSP-compatible)
+    if (project.isDataGroupModule()) {
+        pluginContainer.apply("com.google.devtools.ksp")
+    }
+    // Legacy kapt only for :data (querybuilder processor is not KSP-compatible)
+    if (project.isDataModule()) {
+        pluginContainer.apply("com.android.legacy-kapt")
+    }
 }
 
 private fun addKotlinAndroidExtensions(project: Project, pluginContainer: PluginContainer) {
-    if (project.hasKotlinAndroidExtensionSupport())
-        pluginContainer.apply("kotlin-parcelize")
+    pluginContainer.apply("kotlin-parcelize")
+    pluginContainer.apply("com.diffplug.spotless")
 }
 
 internal fun Project.configurePlugins() {
     addAndroidPlugin(project, plugins)
-    addKotlinAndroidPlugin(plugins)
     addKotlinAndroidExtensions(project, plugins)
     addAnnotationProcessor(project, plugins)
 

@@ -23,9 +23,9 @@ import co.anitrend.buildSrc.extensions.isDataModule
 import co.anitrend.buildSrc.extensions.libraryExtension
 import co.anitrend.buildSrc.extensions.matchesDataModule
 import co.anitrend.buildSrc.extensions.props
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.LibraryDefaultConfig
-import com.android.build.gradle.BaseExtension
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import java.util.Properties
@@ -88,7 +88,7 @@ private fun LibraryDefaultConfig.applyRoomCompilerOptions(project: Project) {
     }
 }
 
-internal fun Project.createSigningConfiguration(extension: BaseExtension) {
+internal fun Project.createSigningConfiguration(extension: ApplicationExtension) {
     var properties: Properties? = null
     val keyStoreFile = project.file(".config/keystore.properties")
     if (keyStoreFile.exists())
@@ -102,10 +102,10 @@ internal fun Project.createSigningConfiguration(extension: BaseExtension) {
     properties?.also {
         extension.signingConfigs {
             create("release") {
-                storeFile(file(it["STORE_FILE"] as String))
-                storePassword(it["STORE_PASSWORD"] as String)
-                keyAlias(it["STORE_KEY_ALIAS"] as String)
-                keyPassword(it["STORE_KEY_PASSWORD"] as String)
+                storeFile = file(it["STORE_FILE"] as String)
+                storePassword = it["STORE_PASSWORD"] as String
+                keyAlias = it["STORE_KEY_ALIAS"] as String
+                keyPassword = it["STORE_KEY_PASSWORD"] as String
             }
         }
     }
