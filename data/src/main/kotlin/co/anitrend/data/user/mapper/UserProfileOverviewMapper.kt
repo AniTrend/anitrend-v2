@@ -29,12 +29,11 @@ internal class UserProfileOverviewMapper(
     private val favouriteEmbedMapper: UserProfileConnectionMapper.FavouriteEmbed,
     private val statusEmbedMapper: StatusMapper.Activity.Embed,
     private val mediaEmbedMapper: EmbedMapper<MediaModel, MediaEntity>,
+    private val writer: UserProfileOverviewWriterContract,
     private val transactionRunner: TransactionRunner,
 ) : DefaultMapper<UserSidecarModelContainer.Overview, Unit>() {
     override suspend fun persist(data: Unit) {
-        mediaEmbedMapper.persistEmbedded()
-        favouriteEmbedMapper.persistEmbedded()
-        statusEmbedMapper.persistEmbedded()
+        writer.persist()
     }
 
     override suspend fun onResponseDatabaseInsert(mappedData: Unit) {

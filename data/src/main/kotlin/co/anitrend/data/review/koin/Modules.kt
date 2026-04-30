@@ -37,6 +37,8 @@ import co.anitrend.data.review.converter.ReviewEntityViewConverter
 import co.anitrend.data.review.converter.ReviewModelConverter
 import co.anitrend.data.review.entity.filter.ReviewQueryFilter
 import co.anitrend.data.review.mapper.ReviewMapper
+import co.anitrend.data.review.mapper.ReviewWriter
+import co.anitrend.data.review.mapper.ReviewWriterContract
 import co.anitrend.data.review.repository.ReviewRepository
 import co.anitrend.data.review.source.ReviewSourceImpl
 import co.anitrend.data.review.source.contract.ReviewSource
@@ -121,9 +123,17 @@ private val cacheModule =
 
 private val mapperModule =
     module {
+        factory<ReviewWriterContract> {
+            ReviewWriter(
+                mediaPersistence = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>(),
+                userPersistence = get<co.anitrend.data.user.mapper.UserMapper.Embed>(),
+                localSource = store().reviewDao(),
+            )
+        }
         factory {
             ReviewMapper.Entry(
                 mediaMapper = get(),
+                writer = get(),
                 localSource = store().reviewDao(),
                 converter = get(),
             )
@@ -150,6 +160,7 @@ private val mapperModule =
             ReviewMapper.Paged(
                 mediaMapper = get(),
                 userMapper = get(),
+                writer = get(),
                 localSource = store().reviewDao(),
                 converter = get(),
             )

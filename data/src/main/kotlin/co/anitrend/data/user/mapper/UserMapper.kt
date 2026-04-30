@@ -69,6 +69,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
         private val generalOptionMapper: GeneralOptionEmbed,
         private val mediaOptionMapper: MediaOptionEmbed,
         private val previousNameMapper: PreviousNameEmbed,
+        private val writer: UserProfileWriterContract,
         override val localSource: UserLocalSource,
         private val transactionRunner: TransactionRunner,
         override val converter: UserModelConverter,
@@ -77,10 +78,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: UserEntity) {
-            localSource.upsert(data)
-            generalOptionMapper.persistEmbedded()
-            mediaOptionMapper.persistEmbedded()
-            previousNameMapper.persistEmbedded()
+            writer.persist(data)
         }
 
         override suspend fun onResponseDatabaseInsert(mappedData: UserEntity) {
@@ -107,7 +105,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
 
     class Statistic(
         private val userMapper: Embed,
-        private val localSource: UserStatisticLocalSource,
+        private val writer: UserStatisticPersistenceWriterContract,
         private val converter: UserStatisticModelConverter,
         private val transactionRunner: TransactionRunner,
     ) : DefaultMapper<UserModelContainer.WithStatistic, UserStatisticPayload>() {
@@ -115,20 +113,7 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: UserStatisticPayload) {
-            userMapper.persistEmbedded()
-            localSource.upsert(data.statistic)
-            localSource.upsertCountries(data.countries)
-            localSource.upsertFormats(data.formats)
-            localSource.upsertGenres(data.genres)
-            localSource.upsertLengths(data.lengths)
-            localSource.upsertReleaseYears(data.releaseYears)
-            localSource.upsertScores(data.scores)
-            localSource.upsertStaff(data.staff)
-            localSource.upsertStartYears(data.startYears)
-            localSource.upsertStatuses(data.statuses)
-            localSource.upsertStudios(data.studios)
-            localSource.upsertTags(data.tags)
-            localSource.upsertVoiceActors(data.voiceActors)
+            writer.persist(data)
         }
 
         override suspend fun onResponseDatabaseInsert(mappedData: UserStatisticPayload) {

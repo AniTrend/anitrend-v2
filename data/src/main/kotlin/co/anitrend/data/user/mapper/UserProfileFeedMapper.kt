@@ -30,13 +30,11 @@ internal class UserProfileFeedMapper(
     private val reviewPreviewMapper: ReviewMapper.PreviewEmbed,
     private val statusEmbedMapper: StatusMapper.Activity.Embed,
     private val mediaEmbedMapper: EmbedMapper<MediaModel, MediaEntity>,
+    private val writer: UserProfileFeedWriterContract,
     private val transactionRunner: TransactionRunner,
 ) : DefaultMapper<UserSidecarModelContainer.Feed, Unit>() {
     override suspend fun persist(data: Unit) {
-        mediaEmbedMapper.persistEmbedded()
-        reviewPreviewMapper.persistEmbedded()
-        reviewConnectionMapper.persistEmbedded()
-        statusEmbedMapper.persistEmbedded()
+        writer.persist()
     }
 
     override suspend fun onResponseDatabaseInsert(mappedData: Unit) {

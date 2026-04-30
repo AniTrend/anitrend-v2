@@ -33,8 +33,8 @@ class MediaStatsMapperTest {
     fun `given normalized stats when persisting then transaction runner stores parent and distributions`() =
         runBlocking {
             val transactionRunner = FakeTransactionRunner()
-            val localSource = FakeMediaStatsLocalSource()
-            val mapper = MediaStatsMapper(localSource = localSource, transactionRunner = transactionRunner)
+            val writer = FakeMediaStatsWriter()
+            val mapper = MediaStatsMapper(writer = writer, transactionRunner = transactionRunner)
 
             mapper.onResponseDatabaseInsert(
                 MediaStatsMapper.Payload(
@@ -51,9 +51,9 @@ class MediaStatsMapperTest {
             )
 
             assertEquals(1, transactionRunner.invocationCount)
-            assertEquals(listOf(42L), localSource.upsertedStatsIds)
-            assertEquals(listOf(90), localSource.upsertedScores.map(MediaScoreDistributionEntity::score))
-            assertEquals(listOf("CURRENT"), localSource.upsertedStatuses.map(MediaStatusDistributionEntity::status))
+            assertEquals(listOf(42L), writer.upsertedStatsIds)
+            assertEquals(listOf(90), writer.upsertedScores.map(MediaScoreDistributionEntity::score))
+            assertEquals(listOf("CURRENT"), writer.upsertedStatuses.map(MediaStatusDistributionEntity::status))
         }
 
     private class FakeTransactionRunner : TransactionRunner {
@@ -65,63 +65,15 @@ class MediaStatsMapperTest {
         }
     }
 
-    private class FakeMediaStatsLocalSource : MediaStatsLocalSource() {
+    private class FakeMediaStatsWriter : MediaStatsWriterContract {
         val upsertedStatsIds = mutableListOf<Long>()
         val upsertedScores = mutableListOf<MediaScoreDistributionEntity>()
         val upsertedStatuses = mutableListOf<MediaStatusDistributionEntity>()
 
-        override suspend fun count(): Int = 0
-
-        override suspend fun clearScoreDistributions() {
-        }
-
-        override suspend fun clearStatusDistributions() {
-        }
-
-        override suspend fun clearScoreDistributionsByMediaId(mediaId: Long) {
-        }
-
-        override suspend fun clearStatusDistributionsByMediaId(mediaId: Long) {
-        }
-
-        override suspend fun clearStats() {
-        }
-
-        override fun entryByMediaIdFlow(mediaId: Long): Flow<MediaStatsEntityView?> = flowOf(null)
-
-        override suspend fun clearStatsByMediaId(mediaId: Long) {
-        }
-
-        override suspend fun upsert(attribute: MediaStatsEntity) {
-            upsertedStatsIds += attribute.id
-        }
-
-        override suspend fun upsertScoreDistributions(attribute: List<MediaScoreDistributionEntity>) {
-            upsertedScores += attribute
-        }
-
-        override suspend fun upsertStatusDistributions(attribute: List<MediaStatusDistributionEntity>) {
-            upsertedStatuses += attribute
-        }
-
-        override suspend fun insert(attribute: MediaStatsEntity): Long = 0L
-
-        override suspend fun insert(attribute: List<MediaStatsEntity>): List<Long> = emptyList()
-
-        override suspend fun update(attribute: MediaStatsEntity) {
-        }
-
-        override suspend fun update(attribute: List<MediaStatsEntity>) {
-        }
-
-        override suspend fun delete(attribute: MediaStatsEntity) {
-        }
-
-        override suspend fun delete(attribute: List<MediaStatsEntity>) {
-        }
-
-        override suspend fun upsert(attribute: List<MediaStatsEntity>) {
-            upsertedStatsIds += attribute.map(MediaStatsEntity::id)
+        override suspend fun persist(payload: MediaStatsMapper.Payload) {
+            upsertedStatsIds += payload.stats.id
+            upsertedScores += payload.scoreDistribution
+            upsertedStatuses += payload.statusDistribution
         }
     }
 }

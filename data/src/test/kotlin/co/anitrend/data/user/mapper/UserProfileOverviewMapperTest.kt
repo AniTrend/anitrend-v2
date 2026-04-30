@@ -29,14 +29,37 @@ import kotlin.test.assertEquals
 
 class UserProfileOverviewMapperTest {
     @Test
+    fun `persist uses overview writer inside transaction`() = runBlocking {
+        val transactionRunner = FakeTransactionRunner()
+        val writer = FakeUserProfileOverviewWriter()
+        val mapper =
+            UserProfileOverviewMapper(
+                favouriteEmbedMapper = UserProfileConnectionMapper.FavouriteEmbed(FakeUserProfileFavouriteMediaLocalSource()),
+                statusEmbedMapper = StatusMapper.Activity.Embed(FakeStatusLocalSource()),
+                mediaEmbedMapper = FakeMediaEmbedMapper(),
+                writer = writer,
+                transactionRunner = transactionRunner,
+            )
+
+        mapper.onResponseDatabaseInsert(Unit)
+
+        assertEquals(1, transactionRunner.invocationCount)
+        assertEquals(1, writer.invocationCount)
+    }
+
+    @Test
     fun `onResponseMapFrom and persist store favourites activities and embedded media`() = runBlocking {
         val favouriteLocalSource = FakeUserProfileFavouriteMediaLocalSource()
         val statusLocalSource = FakeStatusLocalSource()
+        val mediaEmbedMapper = FakeMediaEmbedMapper()
+        val favouriteEmbedMapper = UserProfileConnectionMapper.FavouriteEmbed(favouriteLocalSource)
+        val statusEmbedMapper = StatusMapper.Activity.Embed(statusLocalSource)
         val mapper =
             UserProfileOverviewMapper(
-                favouriteEmbedMapper = UserProfileConnectionMapper.FavouriteEmbed(favouriteLocalSource),
-                statusEmbedMapper = StatusMapper.Activity.Embed(statusLocalSource),
-                mediaEmbedMapper = FakeMediaEmbedMapper(),
+                favouriteEmbedMapper = favouriteEmbedMapper,
+                statusEmbedMapper = statusEmbedMapper,
+                mediaEmbedMapper = mediaEmbedMapper,
+                writer = UserProfileOverviewWriter(mediaEmbedMapper, favouriteEmbedMapper, statusEmbedMapper),
                 transactionRunner = FakeTransactionRunner(),
             )
 
@@ -99,6 +122,14 @@ class UserProfileOverviewMapperTest {
         override suspend fun run(block: suspend () -> Unit) {
             invocationCount += 1
             block()
+        }
+    }
+
+    private class FakeUserProfileOverviewWriter : UserProfileOverviewWriterContract {
+        var invocationCount = 0
+
+        override suspend fun persist() {
+            invocationCount += 1
         }
     }
 

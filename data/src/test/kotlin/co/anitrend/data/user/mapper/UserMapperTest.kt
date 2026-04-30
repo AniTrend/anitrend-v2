@@ -21,6 +21,8 @@ import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
 import co.anitrend.data.user.converter.UserMediaOptionModelConverter
 import co.anitrend.data.user.converter.UserModelConverter
+import co.anitrend.data.user.converter.UserStatisticPayload
+import co.anitrend.data.user.converter.UserStatisticModelConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.local.option.UserGeneralOptionLocalSource
 import co.anitrend.data.user.datasource.local.option.UserMediaOptionLocalSource
@@ -56,6 +58,7 @@ class UserMapperTest {
         runBlocking {
             val transactionRunner = FakeTransactionRunner()
             val localSource = FakeUserLocalSource()
+            val writer = FakeUserProfileWriter()
             val mapper =
                 UserMapper.Profile(
                     generalOptionMapper =
@@ -72,6 +75,7 @@ class UserMapperTest {
                         UserMapper.PreviousNameEmbed(
                             localSource = FakeUserPreviousNameLocalSource(),
                         ),
+                    writer = writer,
                     localSource = localSource,
                     transactionRunner = transactionRunner,
                     converter = UserModelConverter(),
@@ -79,8 +83,60 @@ class UserMapperTest {
 
             mapper.onResponseDatabaseInsert(userEntity())
 
-            assertEquals(listOf(1L), localSource.upsertedUserIds)
             assertEquals(1, transactionRunner.invocationCount)
+            assertEquals(listOf(1L), writer.persistedUserIds)
+        }
+
+    @Test
+    fun `given statistic mapper when persisting payload then writer is invoked inside transaction`() =
+        runBlocking {
+            val transactionRunner = FakeTransactionRunner()
+            val writer = FakeUserStatisticPersistenceWriter()
+            val mapper =
+                UserMapper.Statistic(
+                    userMapper = UserMapper.Embed(localSource = FakeUserLocalSource(), converter = UserModelConverter()),
+                    writer = writer,
+                    converter = UserStatisticModelConverter(),
+                    transactionRunner = transactionRunner,
+                )
+
+            val payload =
+                UserStatisticPayload(
+                    statistic = co.anitrend.data.user.entity.statistic.UserWithStatisticEntity(
+                        statistic =
+                            co.anitrend.data.user.entity.statistic.UserWithStatisticEntity.Statistic(
+                                animeCount = 1,
+                                animeMeanScore = 80f,
+                                animeStandardDeviation = 0f,
+                                animeMinutesWatched = 24,
+                                animeEpisodesWatched = 1,
+                                mangaCount = null,
+                                mangaMeanScore = null,
+                                mangaStandardDeviation = null,
+                                mangaChaptersRead = null,
+                                mangaVolumesRead = null,
+                            ),
+                        userId = 1L,
+                        id = 1L,
+                    ),
+                    countries = emptyList(),
+                    formats = emptyList(),
+                    genres = emptyList(),
+                    lengths = emptyList(),
+                    releaseYears = emptyList(),
+                    scores = emptyList(),
+                    staff = emptyList(),
+                    startYears = emptyList(),
+                    statuses = emptyList(),
+                    studios = emptyList(),
+                    tags = emptyList(),
+                    voiceActors = emptyList(),
+                )
+
+            mapper.onResponseDatabaseInsert(payload)
+
+            assertEquals(1, transactionRunner.invocationCount)
+            assertEquals(listOf(payload), writer.persisted)
         }
 
     private fun userEntity() =
@@ -111,6 +167,22 @@ class UserMapperTest {
         override suspend fun run(block: suspend () -> Unit) {
             invocationCount += 1
             block()
+        }
+    }
+
+    private class FakeUserStatisticPersistenceWriter : UserStatisticPersistenceWriterContract {
+        val persisted = mutableListOf<UserStatisticPayload>()
+
+        override suspend fun persist(payload: UserStatisticPayload) {
+            persisted += payload
+        }
+    }
+
+    private class FakeUserProfileWriter : UserProfileWriterContract {
+        val persistedUserIds = mutableListOf<Long>()
+
+        override suspend fun persist(user: UserEntity) {
+            persistedUserIds += user.id
         }
     }
 

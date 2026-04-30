@@ -19,7 +19,7 @@ package co.anitrend.data.android.mapper
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.android.source.local.AbstractLocalSource
 
-abstract class EmbedMapper<S, D> : DefaultMapper<List<S>, List<D>>() {
+abstract class EmbedMapper<S, D> : DefaultMapper<List<S>, List<D>>(), PersistEmbedded {
     protected var entities: List<D>? = null
     protected abstract val localSource: AbstractLocalSource<D>
     protected abstract val converter: SupportConverter<S, D>
@@ -34,7 +34,7 @@ abstract class EmbedMapper<S, D> : DefaultMapper<List<S>, List<D>>() {
         }
     }
 
-    open suspend fun persistEmbedded() {
+    override open suspend fun persistEmbedded() {
         onResponseDatabaseInsert(entities.orEmpty())
         entities = null
     }
