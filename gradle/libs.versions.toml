@@ -48,7 +48,7 @@ devrieze-xmlutil = "0.90.3"
 google-android-material = "1.12.0"
 
 jetbrains-dokka = "2.2.0"
-jetbrains-kotlin = "2.2.10"
+jetbrains-kotlin = "2.3.21"
 jetbrains-kotlinx-coroutines = "1.10.2"
 jetbrains-kotlinx-datetime = "0.7.1-0.6.x-compat"
 jetbrains-kotlinx-serialization = "1.11.0"
