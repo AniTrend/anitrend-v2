@@ -36,6 +36,7 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
 
     class Entry(
         private val mediaMapper: MediaMapper.EmbedWithAiring,
+        private val writer: ReviewWriterContract,
         override val localSource: ReviewLocalSource,
         override val converter: ReviewModelConverter,
     ) : ReviewMapper<ReviewContainerModel.Entry, ReviewEntity>() {
@@ -56,14 +57,14 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: ReviewEntity) {
-            mediaMapper.persistEmbedded()
-            localSource.upsert(data)
+            writer.persist(data)
         }
     }
 
     class Paged(
         private val mediaMapper: MediaMapper.EmbedWithAiring,
         private val userMapper: UserMapper.Embed,
+        private val writer: ReviewWriterContract,
         override val localSource: ReviewLocalSource,
         override val converter: ReviewModelConverter,
     ) : ReviewMapper<ReviewContainerModel.Paged, List<ReviewEntity>>() {
@@ -91,9 +92,7 @@ internal sealed class ReviewMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<ReviewEntity>) {
-            mediaMapper.persistEmbedded()
-            userMapper.persistEmbedded()
-            localSource.upsert(data)
+            writer.persist(data)
         }
     }
 

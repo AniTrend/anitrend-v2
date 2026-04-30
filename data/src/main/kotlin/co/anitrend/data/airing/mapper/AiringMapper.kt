@@ -31,6 +31,7 @@ internal sealed class AiringMapper<S, D> : DefaultMapper<S, D>() {
 
     class Paged(
         private val mediaMapper: MediaMapper.Embed,
+        private val writer: AiringWriterContract,
         override val localSource: AiringLocalSource,
         override val converter: AiringModelConverter,
     ) : AiringMapper<AiringScheduleModelContainer.Paged, List<AiringScheduleEntity>>() {
@@ -38,8 +39,7 @@ internal sealed class AiringMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<AiringScheduleEntity>) {
-            mediaMapper.persistEmbedded()
-            localSource.upsert(data)
+            writer.persist(data)
         }
 
         /**

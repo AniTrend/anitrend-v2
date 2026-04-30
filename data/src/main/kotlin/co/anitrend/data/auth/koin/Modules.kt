@@ -18,7 +18,13 @@ package co.anitrend.data.auth.koin
 
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.auth.AuthUserInteractor
+import co.anitrend.data.auth.mapper.AuthenticatedUserWriter
+import co.anitrend.data.auth.mapper.AuthenticatedUserWriterContract
 import co.anitrend.data.auth.mapper.AuthMapper
+import co.anitrend.data.auth.mapper.UserGeneralOptionWriter
+import co.anitrend.data.auth.mapper.UserGeneralOptionWriterContract
+import co.anitrend.data.auth.mapper.UserMediaOptionWriter
+import co.anitrend.data.auth.mapper.UserMediaOptionWriterContract
 import co.anitrend.data.auth.repository.AuthRepositoryImpl
 import co.anitrend.data.auth.source.AuthSourceImpl
 import co.anitrend.data.auth.source.contract.AuthSource
@@ -52,13 +58,32 @@ private val mapperModule =
     module {
         factory {
             AuthMapper(
-                settings = get(),
                 generalOptionMapper = get(),
                 mediaOptionMapper = get(),
                 notificationMapper = get(),
-                localSource = store().userDao(),
+                writer = get(),
                 transactionRunner = transaction(),
                 converter = get(),
+            )
+        }
+        factory<AuthenticatedUserWriterContract> {
+            AuthenticatedUserWriter(
+                generalOptionWriter = get(),
+                mediaOptionWriter = get(),
+                notificationMapper = get(),
+                localSource = store().userDao(),
+            )
+        }
+        factory<UserGeneralOptionWriterContract> {
+            UserGeneralOptionWriter(
+                settings = get(),
+                mapper = get(),
+            )
+        }
+        factory<UserMediaOptionWriterContract> {
+            UserMediaOptionWriter(
+                settings = get(),
+                mapper = get(),
             )
         }
     }

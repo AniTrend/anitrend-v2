@@ -43,6 +43,7 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         private val airingMapper: AiringMapper.Embed,
         private val genreMapper: GenreMapper.Embed,
         private val tagMapper: TagMapper.Embed,
+        private val writer: MediaPagedWriterContract,
         override val linkMapper: LinkMapper.Embed,
         override val rankMapper: RankMapper.Embed,
         override val localSource: MediaLocalSource,
@@ -52,11 +53,7 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<MediaEntity>) {
-            localSource.upsert(data)
-            tagMapper.persistEmbedded()
-            genreMapper.persistEmbedded()
-            airingMapper.persistEmbedded()
-            mediaListMapper.persistEmbedded()
+            writer.persist(data)
         }
 
         /**
@@ -97,19 +94,14 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         private val airingMapper: AiringMapper.Embed,
         private val genreMapper: GenreMapper.Embed,
         private val tagMapper: TagMapper.Embed,
+        private val writer: MediaDetailWriterContract,
         override val linkMapper: LinkMapper.Embed,
         override val rankMapper: RankMapper.Embed,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter,
     ) : MediaMapper<MediaModelContainer.Detail, MediaEntity>() {
         override suspend fun persist(data: MediaEntity) {
-            localSource.upsert(data)
-            linkMapper.persistEmbedded()
-            rankMapper.persistEmbedded()
-            tagMapper.persistEmbedded()
-            genreMapper.persistEmbedded()
-            airingMapper.persistEmbedded()
-            mediaListMapper.persistEmbedded()
+            writer.persist(data)
         }
 
         /**
@@ -144,6 +136,7 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         private val tagMapper: TagMapper.Embed,
         private val linkMapper: LinkMapper.Embed,
         private val rankMapper: RankMapper.Embed,
+        private val writer: MediaEmbedWriterContract,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter,
     ) : EmbedMapper<MediaModel, MediaEntity>() {
@@ -151,9 +144,7 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<MediaEntity>) {
-            super.persist(data)
-            tagMapper.persistEmbedded()
-            genreMapper.persistEmbedded()
+            writer.persist(data)
         }
 
         /**
@@ -185,14 +176,12 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         private val tagMapper: TagMapper.Embed,
         private val linkMapper: LinkMapper.Embed,
         private val rankMapper: RankMapper.Embed,
+        private val writer: MediaEmbedWithAiringWriterContract,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter,
     ) : EmbedMapper<MediaModel, MediaEntity>() {
         override suspend fun persist(data: List<MediaEntity>) {
-            super.persist(data)
-            tagMapper.persistEmbedded()
-            genreMapper.persistEmbedded()
-            airingMapper.persistEmbedded()
+            writer.persist(data)
         }
 
         /**
@@ -230,15 +219,12 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         private val tagMapper: TagMapper.Embed,
         private val linkMapper: LinkMapper.Embed,
         private val rankMapper: RankMapper.Embed,
+        private val writer: MediaEmbedWithMediaListWriterContract,
         override val localSource: MediaLocalSource,
         override val converter: MediaModelConverter,
     ) : EmbedMapper<MediaModel, MediaEntity>() {
         override suspend fun persist(data: List<MediaEntity>) {
-            super.persist(data)
-            tagMapper.persistEmbedded()
-            genreMapper.persistEmbedded()
-            airingMapper.persistEmbedded()
-            mediaListMapper.persistEmbedded()
+            writer.persist(data)
         }
 
         /**

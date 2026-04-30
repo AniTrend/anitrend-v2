@@ -25,7 +25,7 @@ import co.anitrend.data.media.entity.stats.MediaStatusDistributionEntity
 import co.anitrend.data.media.model.container.MediaSidecarModelContainer
 
 internal class MediaStatsMapper(
-    private val localSource: MediaStatsLocalSource,
+    private val writer: MediaStatsWriterContract,
     private val transactionRunner: TransactionRunner,
 ) : DefaultMapper<MediaSidecarModelContainer.Stats, MediaStatsMapper.Payload?>() {
     internal data class Payload(
@@ -36,9 +36,7 @@ internal class MediaStatsMapper(
 
     override suspend fun persist(data: Payload?) {
         if (data != null) {
-            localSource.upsert(data.stats)
-            localSource.upsertScoreDistributions(data.scoreDistribution)
-            localSource.upsertStatusDistributions(data.statusDistribution)
+            writer.persist(data)
         }
     }
 

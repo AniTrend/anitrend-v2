@@ -40,6 +40,12 @@ import co.anitrend.data.medialist.converter.MediaListEntityViewConverter
 import co.anitrend.data.medialist.converter.MediaListModelConverter
 import co.anitrend.data.medialist.entity.filter.MediaListQueryFilter
 import co.anitrend.data.medialist.mapper.MediaListMapper
+import co.anitrend.data.medialist.mapper.MediaListEmbedWithMediaWriter
+import co.anitrend.data.medialist.mapper.MediaListEmbedWithMediaWriterContract
+import co.anitrend.data.medialist.mapper.MediaListEmbedWriter
+import co.anitrend.data.medialist.mapper.MediaListEmbedWriterContract
+import co.anitrend.data.medialist.mapper.MediaListWriter
+import co.anitrend.data.medialist.mapper.MediaListWriterContract
 import co.anitrend.data.medialist.repository.MediaListRepository
 import co.anitrend.data.medialist.source.MediaListSourceImpl
 import co.anitrend.data.medialist.source.contract.MediaListSource
@@ -154,6 +160,30 @@ private val cacheModule =
 
 private val mapperModule =
     module {
+        factory<MediaListWriterContract> {
+            MediaListWriter(
+                userPersistence = get<co.anitrend.data.user.mapper.UserMapper.Embed>(),
+                mediaPersistence = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>(),
+                localSource = store().mediaListDao(),
+                customListPersistence = get<co.anitrend.data.customlist.mapper.CustomListMapper>(),
+                customScorePersistence = get<co.anitrend.data.customscore.mapper.CustomScoreMapper>(),
+            )
+        }
+        factory<MediaListEmbedWriterContract> {
+            MediaListEmbedWriter(
+                userPersistence = get<co.anitrend.data.user.mapper.UserMapper.Embed>(),
+                localSource = store().mediaListDao(),
+                customListPersistence = get<co.anitrend.data.customlist.mapper.CustomListMapper>(),
+                customScorePersistence = get<co.anitrend.data.customscore.mapper.CustomScoreMapper>(),
+            )
+        }
+        factory<MediaListEmbedWithMediaWriterContract> {
+            MediaListEmbedWithMediaWriter(
+                userPersistence = get<co.anitrend.data.user.mapper.UserMapper.Embed>(),
+                mediaPersistence = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>(),
+                localSource = store().mediaListDao(),
+            )
+        }
         factory {
             MediaListMapper.DeletedEntry(
                 localSource = store().mediaListDao(),
@@ -172,6 +202,7 @@ private val mapperModule =
                 mediaMapper = get(),
                 customListMapper = get(),
                 customScoreMapper = get(),
+                writer = get(),
                 localSource = store().mediaListDao(),
                 converter = get(),
             )
@@ -182,6 +213,7 @@ private val mapperModule =
                 mediaMapper = get(),
                 customListMapper = get(),
                 customScoreMapper = get(),
+                writer = get(),
                 localSource = store().mediaListDao(),
                 converter = get(),
             )
@@ -192,6 +224,7 @@ private val mapperModule =
                 mediaMapper = get(),
                 customListMapper = get(),
                 customScoreMapper = get(),
+                writer = get(),
                 localSource = store().mediaListDao(),
                 converter = get(),
             )
@@ -202,6 +235,7 @@ private val mapperModule =
                 mediaMapper = get(),
                 customListMapper = get(),
                 customScoreMapper = get(),
+                writer = get(),
                 localSource = store().mediaListDao(),
                 converter = get(),
             )
@@ -212,6 +246,7 @@ private val mapperModule =
                 mediaMapper = get(),
                 customListMapper = get(),
                 customScoreMapper = get(),
+                writer = get(),
                 localSource = store().mediaListDao(),
                 converter = get(),
             )
@@ -221,6 +256,7 @@ private val mapperModule =
                 userMapper = get(),
                 customListMapper = get(),
                 customScoreMapper = get(),
+                writer = get(),
                 localSource = store().mediaListDao(),
                 converter = get(),
             )
@@ -229,6 +265,7 @@ private val mapperModule =
             MediaListMapper.EmbedWithMedia(
                 userMapper = get(),
                 mediaMapper = get(),
+                writer = get(),
                 localSource = store().mediaListDao(),
                 converter = get(),
             )

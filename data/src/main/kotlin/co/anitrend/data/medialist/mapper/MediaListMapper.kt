@@ -76,6 +76,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         private val mediaMapper: MediaMapper.EmbedWithAiring,
         private val customListMapper: CustomListMapper,
         private val customScoreMapper: CustomScoreMapper,
+        private val writer: MediaListWriterContract,
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : MediaListMapper<MediaListContainerModel.Entry, MediaListEntity>() {
@@ -83,11 +84,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: MediaListEntity) {
-            userMapper.persistEmbedded()
-            mediaMapper.persistEmbedded()
-            localSource.upsert(data)
-            customListMapper.persistEmbedded()
-            customScoreMapper.persistEmbedded()
+            writer.persist(data)
         }
 
         /**
@@ -118,6 +115,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         private val mediaMapper: MediaMapper.EmbedWithAiring,
         private val customListMapper: CustomListMapper,
         private val customScoreMapper: CustomScoreMapper,
+        private val writer: MediaListWriterContract,
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : MediaListMapper<MediaListContainerModel.SavedEntry, MediaListEntity>() {
@@ -125,11 +123,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: MediaListEntity) {
-            userMapper.persistEmbedded()
-            mediaMapper.persistEmbedded()
-            localSource.upsert(data)
-            customListMapper.persistEmbedded()
-            customScoreMapper.persistEmbedded()
+            writer.persist(data)
         }
 
         /**
@@ -157,6 +151,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         private val mediaMapper: MediaMapper.EmbedWithAiring,
         private val customListMapper: CustomListMapper,
         private val customScoreMapper: CustomScoreMapper,
+        private val writer: MediaListWriterContract,
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : MediaListMapper<MediaListContainerModel.SavedEntries, List<MediaListEntity>>() {
@@ -164,11 +159,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<MediaListEntity>) {
-            userMapper.persistEmbedded()
-            mediaMapper.persistEmbedded()
-            localSource.upsert(data)
-            customListMapper.persistEmbedded()
-            customScoreMapper.persistEmbedded()
+            writer.persist(data)
         }
 
         /**
@@ -196,6 +187,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         private val customListMapper: CustomListMapper,
         private val customScoreMapper: CustomScoreMapper,
         private val userMapper: UserMapper.Embed,
+        private val writer: MediaListWriterContract,
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : MediaListMapper<MediaListContainerModel.Collection, List<MediaListEntity>>() {
@@ -203,11 +195,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<MediaListEntity>) {
-            userMapper.persistEmbedded()
-            mediaMapper.persistEmbedded()
-            localSource.upsert(data)
-            customListMapper.persistEmbedded()
-            customScoreMapper.persistEmbedded()
+            writer.persist(data)
         }
 
         /**
@@ -237,6 +225,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         private val customListMapper: CustomListMapper,
         private val customScoreMapper: CustomScoreMapper,
         private val mediaMapper: MediaMapper.EmbedWithAiring,
+        private val writer: MediaListWriterContract,
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : MediaListMapper<MediaListContainerModel.Paged, List<MediaListEntity>>() {
@@ -244,11 +233,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<MediaListEntity>) {
-            userMapper.persistEmbedded()
-            mediaMapper.persistEmbedded()
-            localSource.upsert(data)
-            customListMapper.persistEmbedded()
-            customScoreMapper.persistEmbedded()
+            writer.persist(data)
         }
 
         /**
@@ -282,6 +267,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
         private val userMapper: UserMapper.Embed,
         private val customListMapper: CustomListMapper,
         private val customScoreMapper: CustomScoreMapper,
+        private val writer: MediaListEmbedWriterContract,
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : EmbedMapper<MediaListModel, MediaListEntity>() {
@@ -289,10 +275,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<MediaListEntity>) {
-            super.persist(data)
-            userMapper.persistEmbedded()
-            customListMapper.persistEmbedded()
-            customScoreMapper.persistEmbedded()
+            writer.persist(data)
         }
 
         /**
@@ -318,6 +301,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
     class EmbedWithMedia(
         private val userMapper: UserMapper.Embed,
         private val mediaMapper: MediaMapper.EmbedWithAiring,
+        private val writer: MediaListEmbedWithMediaWriterContract,
         override val localSource: MediaListLocalSource,
         override val converter: MediaListModelConverter,
     ) : EmbedMapper<MediaListModel, MediaListEntity>() {
@@ -325,9 +309,7 @@ internal sealed class MediaListMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<MediaListEntity>) {
-            userMapper.persistEmbedded()
-            mediaMapper.persistEmbedded()
-            super.persist(data)
+            writer.persist(data)
         }
 
         /**

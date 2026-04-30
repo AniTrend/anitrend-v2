@@ -28,19 +28,45 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class UserProfileFeedMapperTest {
+    @Test
+    fun `persist uses feed writer inside transaction`() = runBlocking {
+        val transactionRunner = FakeTransactionRunner()
+        val writer = FakeUserProfileFeedWriter()
+        val mapper =
+            UserProfileFeedMapper(
+                reviewConnectionMapper = UserProfileConnectionMapper.ReviewEmbed(FakeUserProfileReviewLocalSource()),
+                reviewPreviewMapper = ReviewMapper.PreviewEmbed(FakeReviewLocalSource()),
+                statusEmbedMapper = StatusMapper.Activity.Embed(FakeStatusLocalSource()),
+                mediaEmbedMapper = FakeMediaEmbedMapper(),
+                writer = writer,
+                transactionRunner = transactionRunner,
+            )
+
+        mapper.onResponseDatabaseInsert(Unit)
+
+        assertEquals(1, transactionRunner.invocationCount)
+        assertEquals(1, writer.invocationCount)
+    }
+
     @Test
     fun `onResponseMapFrom persists review and activity rows`() = runBlocking {
         val reviewConnectionLocalSource = FakeUserProfileReviewLocalSource()
         val reviewLocalSource = FakeReviewLocalSource()
         val statusLocalSource = FakeStatusLocalSource()
+        val mediaEmbedMapper = FakeMediaEmbedMapper()
+        val reviewConnectionMapper = UserProfileConnectionMapper.ReviewEmbed(reviewConnectionLocalSource)
+        val reviewPreviewMapper = ReviewMapper.PreviewEmbed(reviewLocalSource)
+        val statusEmbedMapper = StatusMapper.Activity.Embed(statusLocalSource)
         val mapper =
             UserProfileFeedMapper(
-                reviewConnectionMapper = UserProfileConnectionMapper.ReviewEmbed(reviewConnectionLocalSource),
-                reviewPreviewMapper = ReviewMapper.PreviewEmbed(reviewLocalSource),
-                statusEmbedMapper = StatusMapper.Activity.Embed(statusLocalSource),
-                mediaEmbedMapper = FakeMediaEmbedMapper(),
+                reviewConnectionMapper = reviewConnectionMapper,
+                reviewPreviewMapper = reviewPreviewMapper,
+                statusEmbedMapper = statusEmbedMapper,
+                mediaEmbedMapper = mediaEmbedMapper,
+                writer = UserProfileFeedWriter(mediaEmbedMapper, reviewPreviewMapper, reviewConnectionMapper, statusEmbedMapper),
                 transactionRunner = FakeTransactionRunner(),
             )
 
@@ -105,8 +131,19 @@ class UserProfileFeedMapperTest {
         )
 
     private class FakeTransactionRunner : TransactionRunner {
+        var invocationCount = 0
+
         override suspend fun run(block: suspend () -> Unit) {
+            invocationCount += 1
             block()
+        }
+    }
+
+    private class FakeUserProfileFeedWriter : UserProfileFeedWriterContract {
+        var invocationCount = 0
+
+        override suspend fun persist() {
+            invocationCount += 1
         }
     }
 

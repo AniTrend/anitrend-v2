@@ -19,6 +19,7 @@ package co.anitrend.data.user.koin
 import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.android.extensions.offline
+import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.auth.mapper.AuthMapper
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
@@ -52,7 +53,17 @@ import co.anitrend.data.user.converter.UserStatisticModelConverter
 import co.anitrend.data.user.converter.UserViewEntityConverter
 import co.anitrend.data.user.mapper.UserMapper
 import co.anitrend.data.user.mapper.UserProfileFeedMapper
+import co.anitrend.data.user.mapper.UserProfileWriter
+import co.anitrend.data.user.mapper.UserProfileWriterContract
 import co.anitrend.data.user.mapper.UserProfileOverviewMapper
+import co.anitrend.data.user.mapper.UserProfileFeedWriter
+import co.anitrend.data.user.mapper.UserProfileFeedWriterContract
+import co.anitrend.data.user.mapper.UserProfileOverviewWriter
+import co.anitrend.data.user.mapper.UserProfileOverviewWriterContract
+import co.anitrend.data.user.mapper.UserStatisticPersistenceWriter
+import co.anitrend.data.user.mapper.UserStatisticPersistenceWriterContract
+import co.anitrend.data.user.mapper.UserStatisticWriter
+import co.anitrend.data.user.mapper.UserStatisticWriterContract
 import co.anitrend.data.user.repository.UserRepository
 import co.anitrend.data.user.source.UserSourceImpl
 import co.anitrend.data.user.source.contract.UserSource
@@ -244,9 +255,18 @@ private val mapperModule =
                 generalOptionMapper = get(),
                 mediaOptionMapper = get(),
                 previousNameMapper = get(),
+                writer = get(),
                 localSource = store().userDao(),
                 transactionRunner = transaction(),
                 converter = get(),
+            )
+        }
+        factory<UserProfileWriterContract> {
+            UserProfileWriter(
+                localSource = store().userDao(),
+                generalOptionMapper = get(),
+                mediaOptionMapper = get(),
+                previousNameMapper = get(),
             )
         }
         factory {
@@ -291,9 +311,35 @@ private val mapperModule =
         factory {
             UserMapper.Statistic(
                 userMapper = get(),
-                localSource = store().userStatisticDao(),
+                writer = get(),
                 converter = get(),
                 transactionRunner = transaction(),
+            )
+        }
+        factory<UserStatisticPersistenceWriterContract> {
+            UserStatisticPersistenceWriter(
+                userPersistence = get<UserMapper.Embed>(),
+                statisticWriter = get(),
+            )
+        }
+        factory<UserStatisticWriterContract> {
+            UserStatisticWriter(
+                localSource = store().userStatisticDao(),
+            )
+        }
+        factory<UserProfileOverviewWriterContract> {
+            UserProfileOverviewWriter(
+                mediaPersistence = get<EmbedMapper<co.anitrend.data.media.model.MediaModel, co.anitrend.data.media.entity.MediaEntity>>(),
+                favouritePersistence = get<UserProfileConnectionMapper.FavouriteEmbed>(),
+                statusPersistence = get<StatusMapper.Activity.Embed>(),
+            )
+        }
+        factory<UserProfileFeedWriterContract> {
+            UserProfileFeedWriter(
+                mediaPersistence = get<EmbedMapper<co.anitrend.data.media.model.MediaModel, co.anitrend.data.media.entity.MediaEntity>>(),
+                reviewPreviewPersistence = get<ReviewMapper.PreviewEmbed>(),
+                reviewConnectionPersistence = get<UserProfileConnectionMapper.ReviewEmbed>(),
+                statusPersistence = get<StatusMapper.Activity.Embed>(),
             )
         }
         factory {
@@ -301,6 +347,7 @@ private val mapperModule =
                 favouriteEmbedMapper = get(),
                 statusEmbedMapper = get(),
                 mediaEmbedMapper = get(),
+                writer = get(),
                 transactionRunner = transaction(),
             )
         }
@@ -310,6 +357,7 @@ private val mapperModule =
                 reviewPreviewMapper = get(),
                 statusEmbedMapper = get(),
                 mediaEmbedMapper = get(),
+                writer = get(),
                 transactionRunner = transaction(),
             )
         }

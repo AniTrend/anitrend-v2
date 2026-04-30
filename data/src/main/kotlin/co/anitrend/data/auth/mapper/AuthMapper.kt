@@ -26,11 +26,10 @@ import co.anitrend.data.user.model.container.UserModelContainer
 import co.anitrend.data.user.settings.IUserSettings
 
 internal class AuthMapper(
-    private val settings: IUserSettings,
     private val generalOptionMapper: UserMapper.GeneralOptionEmbed,
     private val mediaOptionMapper: UserMapper.MediaOptionEmbed,
     private val notificationMapper: UserMapper.NotificationEmbed,
-    private val localSource: UserLocalSource,
+    private val writer: AuthenticatedUserWriterContract,
     private val transactionRunner: TransactionRunner,
     private val converter: UserModelConverter,
 ) : DefaultMapper<UserModelContainer.Viewer, UserEntity>() {
@@ -38,10 +37,7 @@ internal class AuthMapper(
      * Save [data] into your desired local source
      */
     override suspend fun persist(data: UserEntity) {
-        localSource.upsert(data)
-        generalOptionMapper.persistEmbedded(settings)
-        mediaOptionMapper.persistEmbedded(settings)
-        notificationMapper.persistEmbedded()
+        writer.persist(data)
     }
 
     override suspend fun onResponseDatabaseInsert(mappedData: UserEntity) {
