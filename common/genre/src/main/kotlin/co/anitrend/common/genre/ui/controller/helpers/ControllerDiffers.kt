@@ -28,10 +28,9 @@ internal object GenreDiffUtil : DiffUtil.ItemCallback<Genre>() {
     override fun areContentsTheSame(
         oldItem: Genre,
         newItem: Genre,
-    ) =
-        when {
-            oldItem is Genre.Core && newItem is Genre.Core -> oldItem == newItem
-            oldItem is Genre.Extended && newItem is Genre.Extended -> oldItem == newItem
-            else -> false
-        }
+    ) = when {
+        oldItem is Genre.Core && newItem is Genre.Core -> oldItem == newItem
+        oldItem is Genre.Extended && newItem is Genre.Extended -> oldItem == newItem
+        else -> false
+    }
 }
