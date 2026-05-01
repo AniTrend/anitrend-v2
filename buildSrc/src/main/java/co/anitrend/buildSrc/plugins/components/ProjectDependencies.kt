@@ -71,7 +71,6 @@ private fun Project.applyFeatureModuleGroupDependencies() {
 
     dependencies.implementation(libs.google.android.material)
 
-    dependencies.implementation(libs.airbnb.paris)
     dependencies.implementation(libs.threeTenBp)
 
     dependencies.implementation(project(Modules.Android.Core.path))
@@ -344,7 +343,6 @@ private fun Project.applyCommonModuleGroupDependencies() {
     dependencies.implementation(libs.coil)
 
     dependencies.implementation(libs.threeTenBp)
-    dependencies.implementation(libs.airbnb.paris)
 
     dependencies.implementation(project(Modules.Android.Core.path))
     dependencies.implementation(project(Modules.App.Navigation.path))

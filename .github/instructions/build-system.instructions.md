@@ -10,10 +10,10 @@ description: This file describes the Gradle build system and dependency manageme
 This instruction file captures build-system policy and conventions. For deeper implementation
 guides, use:
 
-- `.github/skills/new-module-checklist/SKILL.md` for adding modules end to end.
-- `.github/skills/key-libraries/SKILL.md` for library stack context and integration choices.
-- `.github/skills/testing-guidelines/SKILL.md` for validation commands and test expectations.
-- `.github/skills/reference-map/SKILL.md` for the cross-file routing index.
+- `.agents/skills/new-module-checklist/SKILL.md` for adding modules end to end.
+- `.agents/skills/key-libraries/SKILL.md` for library stack context and integration choices.
+- `.agents/skills/testing-guidelines/SKILL.md` for validation commands and test expectations.
+- `.agents/skills/reference-map/SKILL.md` for the cross-file routing index.
 
 To preserve this split strategy, avoid SHA-pinned links and run
 `.github/scripts/audit-instruction-refs.sh` before merging documentation changes.
@@ -67,7 +67,7 @@ module-specific dependencies not covered by the convention. Most dependencies ar
 automatically.
 
 For a complete step-by-step guide to adding a new module, see
-`.github/skills/new-module-checklist/SKILL.md`.
+`.agents/skills/new-module-checklist/SKILL.md`.
 
 ## Build Flavors and Variants
 

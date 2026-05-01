@@ -22,8 +22,6 @@ plugins {
 }
 
 dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.mediaList))
-    implementation(project(Libraries.AniTrend.CommonUi.editor))
     implementation(project(Libraries.AniTrend.CommonUi.markdown))
     implementation(project(Libraries.AniTrend.CommonUi.shared))
     implementation(project(Libraries.AniTrend.CommonUi.media))

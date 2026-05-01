@@ -25,7 +25,6 @@ dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.review))
     implementation(project(Libraries.AniTrend.CommonUi.shared))
     implementation(libs.androidx.paging.compose)
-    implementation(libs.sheets.core)
 }
 
 android {

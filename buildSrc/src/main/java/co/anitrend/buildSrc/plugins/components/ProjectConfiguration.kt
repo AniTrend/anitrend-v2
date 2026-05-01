@@ -27,6 +27,8 @@ import co.anitrend.buildSrc.extensions.libraryExtension
 import co.anitrend.buildSrc.extensions.matchesAppModule
 import co.anitrend.buildSrc.extensions.matchesTaskModule
 import co.anitrend.buildSrc.extensions.props
+import co.anitrend.buildSrc.extensions.runIfAppModule
+import co.anitrend.buildSrc.extensions.runIfLibraryModule
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
@@ -117,6 +119,23 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         configureLint()
         configureBuildFlavours()
         createSigningConfiguration(this)
+    }
+
+    project.runIfAppModule {
+        lint {
+            // androidx.startup lint crashes across this repo's initializer hierarchy even when
+            // the corresponding manifest metadata is present.
+            disable += "EnsureInitializerMetadata"
+        }
+    }
+
+    project.runIfLibraryModule {
+        lint {
+            ignoreTestSources = true
+            // androidx.startup lint crashes across this repo's initializer hierarchy even when
+            // the corresponding manifest metadata is present.
+            disable += "EnsureInitializerMetadata"
+        }
     }
 
     buildTypes {

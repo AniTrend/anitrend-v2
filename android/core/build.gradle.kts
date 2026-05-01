@@ -30,7 +30,6 @@ tasks.withType(KotlinCompilationTask::class.java) {
 }
 
 dependencies {
-    implementation(libs.airbnb.paris)
     implementation(libs.anitrend.arch.recycler)
     implementation(libs.google.flexbox)
     implementation(libs.prettyTime)

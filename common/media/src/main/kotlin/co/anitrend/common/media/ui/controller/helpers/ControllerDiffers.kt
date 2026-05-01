@@ -29,7 +29,12 @@ internal object MediaDiffUtil : DiffUtil.ItemCallback<Media>() {
     override fun areContentsTheSame(
         oldItem: Media,
         newItem: Media,
-    ): Boolean = oldItem.hashCode() == newItem.hashCode()
+    ): Boolean =
+        when {
+            oldItem is Media.Core && newItem is Media.Core -> oldItem == newItem
+            oldItem is Media.Extended && newItem is Media.Extended -> oldItem == newItem
+            else -> false
+        }
 
     /**
      * When [.areItemsTheSame] returns `true` for two items and
@@ -65,7 +70,15 @@ internal object CarouselDiffUtil : DiffUtil.ItemCallback<MediaCarousel>() {
     override fun areContentsTheSame(
         oldItem: MediaCarousel,
         newItem: MediaCarousel,
-    ): Boolean = oldItem.hashCode() == newItem.hashCode()
+    ): Boolean =
+        oldItem.mediaItems.size == newItem.mediaItems.size &&
+            oldItem.mediaItems.zip(newItem.mediaItems).all { (oldMedia, newMedia) ->
+                when {
+                    oldMedia is Media.Core && newMedia is Media.Core -> oldMedia == newMedia
+                    oldMedia is Media.Extended && newMedia is Media.Extended -> oldMedia == newMedia
+                    else -> false
+                }
+            }
 
     /**
      * When [.areItemsTheSame] returns `true` for two items and

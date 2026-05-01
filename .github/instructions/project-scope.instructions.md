@@ -9,8 +9,8 @@ For architecture and implementation routing, pair this file with:
 
 - `.github/instructions/context.instructions.md` for clean-architecture boundaries.
 - `.github/instructions/guides.instructions.md` for contribution conventions.
-- `.github/skills/key-libraries/SKILL.md` for library-level detail.
-- `.github/skills/reference-map/SKILL.md` for task-first navigation across instructions and skills.
+- `.agents/skills/key-libraries/SKILL.md` for library-level detail.
+- `.agents/skills/reference-map/SKILL.md` for task-first navigation across instructions and skills.
 
 **AniTrend v2** is an Android client for the AniList service — an anime and manga tracking
 platform. The app lets users discover and track anime/manga, read news and forum posts, get
@@ -33,13 +33,13 @@ Each integration has a dedicated data module with its own network client and mod
 ### Key libraries and frameworks
 
 For the complete library reference including versions, DI wiring, and usage rules, see
-`.github/skills/key-libraries/SKILL.md`. Summary:
+`.agents/skills/key-libraries/SKILL.md`. Summary:
 
 - **Jetpack**: Lifecycle, Room, Paging, WorkManager, Navigation Compose — core Android stack.
 - **support-arch** (in-house, via JitPack) — `DataState`, `UiState`, base data sources and UI.
 - **Retrofit + OkHttp + retrofit-graphql** — networking and GraphQL requests.
 - **Kotlinx Serialization** — JSON serialization.
-- **Koin** — dependency injection (see `.github/skills/koin-module-wiring/SKILL.md`).
+- **Koin** — dependency injection (see `.agents/skills/koin-module-wiring/SKILL.md`).
 - **Coil** — image loading (GIF, SVG, video frames).
 - **Material3 Compose** — primary design system.
 - **Timber** — logging (use `Timber.*` not `Log.*`).
@@ -82,7 +82,7 @@ loading/error states propagate correctly to the UI.
 - **Background work**: schedule via WorkManager in `:task:*` modules.
 - **Performance**: use Paging (`PagingData` / `Pager`) for list/feed screens; do not build a
   custom scroll + load mechanism.
-- **Testing**: see `.github/skills/testing-guidelines/SKILL.md`.
-- **String resources**: see `.github/skills/string-resources-convention/SKILL.md`.
+- **Testing**: see `.agents/skills/testing-guidelines/SKILL.md`.
+- **String resources**: see `.agents/skills/string-resources-convention/SKILL.md`.
 
 ---

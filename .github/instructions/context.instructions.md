@@ -10,22 +10,22 @@ description: This file describes the overall architecture and module structure o
 This file defines architecture boundaries and module intent. For focused implementation details,
 follow these companion skills:
 
-- `.github/skills/data-state-pattern/SKILL.md`
-- `.github/skills/layered-module-patterns/SKILL.md`
-- `.github/skills/android-platform-patterns/SKILL.md`
-- `.github/skills/navigation-architecture/SKILL.md`
-- `.github/skills/product-designer/SKILL.md`
-- `.github/skills/koin-module-wiring/SKILL.md`
-- `.github/skills/new-module-checklist/SKILL.md`
-- `.github/skills/string-resource-inline-comments/SKILL.md`
-- `.github/skills/string-resources-convention/SKILL.md`
-- `.github/skills/mapping-graphql-models/SKILL.md`
-- `.github/skills/reference-map/SKILL.md`
+- `.agents/skills/data-state-pattern/SKILL.md`
+- `.agents/skills/layered-module-patterns/SKILL.md`
+- `.agents/skills/android-platform-patterns/SKILL.md`
+- `.agents/skills/navigation-architecture/SKILL.md`
+- `.agents/skills/product-designer/SKILL.md`
+- `.agents/skills/koin-module-wiring/SKILL.md`
+- `.agents/skills/new-module-checklist/SKILL.md`
+- `.agents/skills/string-resource-inline-comments/SKILL.md`
+- `.agents/skills/string-resources-convention/SKILL.md`
+- `.agents/skills/mapping-graphql-models/SKILL.md`
+- `.agents/skills/reference-map/SKILL.md`
 
 Documentation policy: keep high-level boundaries here, move deep procedural detail into skills,
 and validate links with `.github/scripts/audit-instruction-refs.sh`.
 For concrete file anchors across layers, use
-`.github/skills/reference-map/references/layer-example-matrix.md`.
+`.agents/skills/reference-map/references/layer-example-matrix.md`.
 
 AniTrend v2 follows a **multi-layered Clean Architecture** with domain and data layers consumed
 through feature, common, and task entry points:
@@ -37,21 +37,21 @@ through feature, common, and task entry points:
 - **Data layer** – Implements domain contracts; handles GraphQL, Room, paging, and caching.
   Produces concrete `DataState<T>` specializations of the domain `UiState<T>` contracts and
   exposes alias-based interactors through each module `Types.kt`. Read `data/` for examples.
-  For the DataState contract and pattern variants see `.github/skills/data-state-pattern/SKILL.md`
-  and `.github/skills/layered-module-patterns/SKILL.md`.
+  For the DataState contract and pattern variants see `.agents/skills/data-state-pattern/SKILL.md`
+  and `.agents/skills/layered-module-patterns/SKILL.md`.
 - **Android/platform layer** – `:android:*` modules hold Android-specific shared helpers such as
   configuration, theme, notification, context/fragment utilities, drawer shell wiring, and
   deep-link entry. Read `android/` before inventing a new helper API, and see
-  `.github/skills/android-platform-patterns/SKILL.md` for reuse rules and concrete anchors.
+  `.agents/skills/android-platform-patterns/SKILL.md` for reuse rules and concrete anchors.
 - **Entry layers** – `:feature:*` UI modules, shared `:common:*` presenters/controllers, and
   `:task:*` WorkManager modules. They consume interactors and routers, then observe `DataState`
   outputs or terminal worker states.
 
 **String resources** follow semantic prefix conventions (`label_`, `title_`, `action_`, etc.),
 and every resource block in `strings.xml` must have an XML comment immediately above it so
-POEditor translators receive clear context. See `.github/skills/string-resources-convention/SKILL.md`,
-`.github/skills/string-resource-inline-comments/SKILL.md`, and
-`.github/skills/string-resources-convention/references/android-string-resource-best-practices.md`
+POEditor translators receive clear context. See `.agents/skills/string-resources-convention/SKILL.md`,
+`.agents/skills/string-resource-inline-comments/SKILL.md`, and
+`.agents/skills/string-resources-convention/references/android-string-resource-best-practices.md`
 for naming, audit workflow, and Android platform behavior.
 
 ## Module Organization and Naming
@@ -70,7 +70,7 @@ Module paths are centrally registered in
 | `:task:*` | WorkManager background jobs |
 
 When adding a new module, register it in `Modules.kt` and follow the full checklist in
-`.github/skills/new-module-checklist/SKILL.md`.
+`.agents/skills/new-module-checklist/SKILL.md`.
 
 ## Communication Between Layers
 
@@ -87,7 +87,7 @@ ViewModel / Presenter / Worker
   `co.anitrend.data.media.GetDetailMediaInteractor` are acceptable because they alias domain use
   cases; importing data repositories, sources, mappers, controllers, or remote models is not.
 - Koin wires domain repository specializations to data repositories and exposes alias-based
-  interactors at runtime. See `.github/skills/koin-module-wiring/SKILL.md`.
+  interactors at runtime. See `.agents/skills/koin-module-wiring/SKILL.md`.
 - Before adding a new helper around Android system APIs, inspect `:android:*` and `:app:core`
   first. Shared helpers should live there instead of being recreated in entry-layer modules.
 - Use the reference that matches the shape of the work:
@@ -112,7 +112,7 @@ Never embed compatibility hacks or inferred IDs directly in serialized models.
 
 `support-arch` standardises patterns across all layers:
 
-- `DataState<T>` — data stream with refresh/retry (see `.github/skills/data-state-pattern/SKILL.md`).
+- `DataState<T>` — data stream with refresh/retry (see `.agents/skills/data-state-pattern/SKILL.md`).
 - `AbstractDataSource` — base for all data sources; handles IO threading internally.
 - `StateLayoutConfig` — standard empty/loading/error UI config, registered via Koin.
 - `SupportFragment` / `SupportFragmentList` — base fragment classes for non-Compose screens.
@@ -130,7 +130,7 @@ goes through shared router contracts in `:app:navigation`, and many feature scre
 Compose hosts to fragment content while newer screens may keep navigation local to a feature.
 Shared Android helpers such as theme/configuration, shell navigation, and notification flows live
 in `:android:core` and `:android:navigation`, then get consumed by `:app:core` and the app shell.
-See `.github/skills/navigation-architecture/SKILL.md` for the end-to-end flow.
+See `.agents/skills/navigation-architecture/SKILL.md` for the end-to-end flow.
 
 Key UI conventions:
 - Composables should be small and focused; include `@Preview` functions.

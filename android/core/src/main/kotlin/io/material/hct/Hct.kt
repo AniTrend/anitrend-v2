@@ -15,7 +15,6 @@
  */
 package io.material.hct
 
-import com.google.android.material.color.utilities.HctSolver
 import io.material.utils.ColorUtils
 
 /**

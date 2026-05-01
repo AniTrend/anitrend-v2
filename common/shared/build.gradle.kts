@@ -22,8 +22,6 @@ plugins {
 }
 
 dependencies {
-	implementation(libs.blitz)
-
 	implementation(project(Libraries.AniTrend.CommonUi.markdown))
 	implementation(libs.anitrend.markdown)
 

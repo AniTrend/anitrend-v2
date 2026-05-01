@@ -39,7 +39,6 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
     implementation(libs.androidx.room.paging)
 
-    implementation(libs.anitrend.sync)
     implementation(libs.cash.copper)
 
     implementation(libs.anitrend.emojify)

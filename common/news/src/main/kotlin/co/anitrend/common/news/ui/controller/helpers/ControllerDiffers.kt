@@ -28,5 +28,5 @@ internal object NewsDiffUtil : DiffUtil.ItemCallback<News>() {
     override fun areContentsTheSame(
         oldItem: News,
         newItem: News,
-    ) = oldItem.hashCode() == newItem.hashCode()
+    ) = oldItem == newItem
 }

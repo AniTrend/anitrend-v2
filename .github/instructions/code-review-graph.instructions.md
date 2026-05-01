@@ -41,7 +41,7 @@ Target ≤5 graph calls and ≤800 total output tokens for any single workflow.
 
 For step-by-step guidance on each workflow, load the matching skill before starting:
 
-- **Explore codebase** → `.github/skills/code-review-graph-explore/SKILL.md`
-- **Debug an issue** → `.github/skills/code-review-graph-debug/SKILL.md`
-- **Refactor safely** → `.github/skills/code-review-graph-refactor/SKILL.md`
-- **Review changes** → `.github/skills/code-review-graph-review/SKILL.md`
+- **Explore codebase** → `.agents/skills/code-review-graph-explore/SKILL.md`
+- **Debug an issue** → `.agents/skills/code-review-graph-debug/SKILL.md`
+- **Refactor safely** → `.agents/skills/code-review-graph-refactor/SKILL.md`
+- **Review changes** → `.agents/skills/code-review-graph-review/SKILL.md`

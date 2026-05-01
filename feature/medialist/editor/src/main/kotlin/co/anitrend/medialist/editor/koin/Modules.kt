@@ -17,9 +17,7 @@
 package co.anitrend.medialist.editor.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.medialist.editor.component.content.MediaListEditorContent
 import co.anitrend.medialist.editor.component.content.MediaListEditorSheet
-import co.anitrend.medialist.editor.component.controller.MediaListEditorController
 import co.anitrend.medialist.editor.component.viewmodel.MediaListEditorViewModel
 import co.anitrend.medialist.editor.provider.FeatureProvider
 import co.anitrend.navigation.MediaListEditorRouter
@@ -29,15 +27,6 @@ import org.koin.dsl.module
 
 private val fragmentModule =
     module {
-        fragment {
-            MediaListEditorContent(
-                stateConfig = get(),
-                controller =
-                    MediaListEditorController(
-                        settings = get(),
-                    ),
-            )
-        }
         fragment {
             MediaListEditorSheet(
                 dateHelper = get(),
@@ -57,9 +46,7 @@ private val viewModelModule =
 private val featureModule =
     module {
         factory<MediaListEditorRouter.Provider> {
-            FeatureProvider(
-                settings = get(),
-            )
+            FeatureProvider()
         }
     }
 

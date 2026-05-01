@@ -17,11 +17,13 @@
 package co.anitrend.android.core.extensions
 
 import android.content.Intent
+import android.content.ContextWrapper
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.net.toUri
 import androidx.core.view.children
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -61,8 +63,6 @@ fun View.setTooltip(
 
 /**
  * Temporary work around for nested scrolling inside a bottom sheet for [ViewPager2]
- *
- * @see co.anitrend.android.core.widget.viewpager.BottomSheetViewPager
  */
 fun ViewPager2.enableBottomSheetScrolling() {
     children
@@ -73,7 +73,10 @@ fun ViewPager2.enableBottomSheetScrolling() {
 
 /**
  * Get fragment support manager from a view
- *
- * @see Context.fragmentManager
  */
-fun View.fragmentManager(): FragmentManager = context.fragmentManager()
+fun View.fragmentManager(): FragmentManager =
+    when (val viewContext = context) {
+        is FragmentActivity -> viewContext.supportFragmentManager
+        is ContextWrapper -> (viewContext.baseContext as FragmentActivity).supportFragmentManager
+        else -> throw NotImplementedError("This type of context: $viewContext is not handled/supported")
+    }
