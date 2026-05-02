@@ -22,12 +22,11 @@ plugins {
 }
 
 dependencies {
-	implementation(libs.blitz)
-
 	implementation(project(Libraries.AniTrend.CommonUi.markdown))
 	implementation(libs.anitrend.markdown)
 
 	implementation(libs.markwon.core)
+	implementation(libs.markwon.editor)
 	implementation(libs.markwon.html)
 	implementation(libs.markwon.image)
 	implementation(libs.markwon.simple.ext)

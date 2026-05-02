@@ -9,16 +9,16 @@ description: This file provides guidelines for using and extending the architect
 
 This file is the high-level contributor playbook. For deep implementation specifics, jump to:
 
-- `.github/skills/data-state-pattern/SKILL.md`
-- `.github/skills/layered-module-patterns/SKILL.md`
-- `.github/skills/room-entity-pattern/SKILL.md`
-- `.github/skills/graphql-query-pattern/SKILL.md`
-- `.github/skills/data-android-infrastructure/SKILL.md`
-- `.github/skills/product-designer/SKILL.md`
-- `.github/skills/string-resources-convention/SKILL.md`
-- `.github/skills/string-resource-inline-comments/SKILL.md`
-- `.github/skills/testing-guidelines/SKILL.md`
-- `.github/skills/reference-map/SKILL.md`
+- `.agents/skills/data-state-pattern/SKILL.md`
+- `.agents/skills/layered-module-patterns/SKILL.md`
+- `.agents/skills/room-entity-pattern/SKILL.md`
+- `.agents/skills/graphql-query-pattern/SKILL.md`
+- `.agents/skills/data-android-infrastructure/SKILL.md`
+- `.agents/skills/product-designer/SKILL.md`
+- `.agents/skills/string-resources-convention/SKILL.md`
+- `.agents/skills/string-resource-inline-comments/SKILL.md`
+- `.agents/skills/testing-guidelines/SKILL.md`
+- `.agents/skills/reference-map/SKILL.md`
 
 Keep architectural intent and policy in this instruction file, and keep tactical implementation
 detail in skill files to prevent context drift and duplication.
@@ -32,14 +32,14 @@ detail in skill files to prevent context drift and duplication.
 - **Repository interfaces in domain, implementations in data**: define `IXxxRepository` in
   `:domain`, implement `XxxRepository` in `:data`. For hybrid modules, split the contract by
   operation (`Detail`, `Paged`, `Save`, `Delete`, `Rate`, etc.). Wire via Koin (see
-  `.github/skills/koin-module-wiring/SKILL.md` and `.github/skills/layered-module-patterns/SKILL.md`).
+  `.agents/skills/koin-module-wiring/SKILL.md` and `.agents/skills/layered-module-patterns/SKILL.md`).
 - **DataState for public data contracts**: data-layer repository specializations return
   `DataState<T>`; feature and task code should never depend on raw repository values or `LiveData`.
-  See `.github/skills/data-state-pattern/SKILL.md`.
+  See `.agents/skills/data-state-pattern/SKILL.md`.
 - **Non-paged offline-first reads**: for single entities or fixed-size collections, use
   `observable(): Flow<T>` or `observable(): Flow<List<T>>` with Room as the source of truth.
   Cache policy should gate refresh at the source boundary while the observable flow continues to
-  emit local state. See `.github/skills/data-state-pattern/SKILL.md`.
+  emit local state. See `.agents/skills/data-state-pattern/SKILL.md`.
 - **Offline-first paged reads**: for DB-backed paged query flows, treat Room as the source of
   truth. The source contract should expose `observable(): Flow<PagedList<T>>` from a local
   `DataSource.Factory`, and network refreshes should persist through the controller/mapper chain.
@@ -53,7 +53,7 @@ detail in skill files to prevent context drift and duplication.
   create params through the corresponding `*TaskRouter` and let the worker execute the mutation
   interactor. Current references: `task/medialist`, `task/review`, and `task/favourite`.
 - **Room persistence**: follow the four-file entity/DAO/mapper/repository pattern. See
-  `.github/skills/room-entity-pattern/SKILL.md`.
+  `.agents/skills/room-entity-pattern/SKILL.md`.
 - **Relationship collections**: when a screen needs an offline-first related collection such as
   media characters or staff, persist the collection in dedicated connection tables keyed to the
   parent entity and order the rows explicitly for paging. Convert local connection entities back
@@ -70,7 +70,7 @@ detail in skill files to prevent context drift and duplication.
   define separate source variants for those contexts instead of overloading one broad contract.
   `UserSource.Identifier`, `Viewer`, `Profile`, and `Statistic` are the clearest reference.
 - **GraphQL networking**: use `GraphQLController` and the `retrofit-graphql` adapter. See
-  `.github/skills/graphql-query-pattern/SKILL.md`.
+  `.agents/skills/graphql-query-pattern/SKILL.md`.
   - Keep query/mutation payloads composed from reusable fragments under
     `data/src/main/assets/graphql/fragments/**` instead of inlining duplicated field sets.
   - Keep remote models aligned to fragment composition (smaller, shareable models) to support
@@ -78,7 +78,7 @@ detail in skill files to prevent context drift and duplication.
   - If a task requires deviating from this fragment-first convention (for example inlining fields
     or redefining model boundaries), stop and open a discussion before implementing the change.
 - **New module**: register in `Modules.kt`, add Koin wiring, follow the full checklist in
-  `.github/skills/new-module-checklist/SKILL.md`.
+  `.agents/skills/new-module-checklist/SKILL.md`.
 
 ## Coding Conventions and Style
 
@@ -97,7 +97,7 @@ detail in skill files to prevent context drift and duplication.
 - **Android runtime debugging**: on-device investigation should start by identifying the exact
   installed package and using pid-scoped `adb logcat --pid` when the process is alive. Prefer
   recorded debug traffic evidence such as Chucker before changing serializers, mappers, or UI
-  assumptions. See `.github/skills/android-runtime-investigation/SKILL.md`.
+  assumptions. See `.agents/skills/android-runtime-investigation/SKILL.md`.
 - **Imports**: no wildcard imports except for `R` classes and nested static imports.
 - **Analytics**: gate Firebase Analytics calls behind a flavor check; use the analytics helper if
   available in `support-arch:analytics`.
@@ -106,12 +106,12 @@ detail in skill files to prevent context drift and duplication.
 
 String resources follow a strict semantic prefix pattern. For the complete convention, examples,
 migration guide, and POEditor translator comment requirements, see
-`.github/skills/string-resources-convention/SKILL.md` and
-`.github/skills/string-resource-inline-comments/SKILL.md`.
+`.agents/skills/string-resources-convention/SKILL.md` and
+`.agents/skills/string-resource-inline-comments/SKILL.md`.
 
 For Android platform-level behavior such as escaping, formatting, plurals, arrays, and styled
 text handling, also consult
-`.github/skills/string-resources-convention/references/android-string-resource-best-practices.md`.
+`.agents/skills/string-resources-convention/references/android-string-resource-best-practices.md`.
 
 Every resource block in `strings.xml` must have an XML comment immediately above it. Those
 comments are surfaced to POEditor translators and should explain context, placeholders,
@@ -125,7 +125,7 @@ Standard prefixes: `label_`, `title_`, `subtitle_`, `placeholder_`, `action_`, `
 ## Testing Guidelines
 
 For the full testing guide (unit vs instrumented, Turbine usage, WorkManager, and run commands),
-see `.github/skills/testing-guidelines/SKILL.md`.
+see `.agents/skills/testing-guidelines/SKILL.md`.
 
 Summary:
 - Unit tests: JUnit 4 + MockK + Turbine + coroutines-test; mirror production package names.
@@ -156,7 +156,7 @@ Pick the closest reference module instead of defaulting to `tag` for every task:
 4. `domain/review` + `data/review` + `task/review` for paged/detail fetch plus vote/save/delete.
 5. `domain/favourite` + `data/favourite` + `task/favourite` for mutation-only toggle flow.
 
-If the module shape is unclear, read `.github/skills/layered-module-patterns/SKILL.md` first,
+If the module shape is unclear, read `.agents/skills/layered-module-patterns/SKILL.md` first,
 then inspect the closest code reference.
 
 For GraphQL queries, search for existing usages of `@GraphQuery` in the data source files.

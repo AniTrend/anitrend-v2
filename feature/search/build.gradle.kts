@@ -21,7 +21,6 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.anitrend.material)
     implementation(project(Libraries.AniTrend.CommonUi.shared))
 }
 

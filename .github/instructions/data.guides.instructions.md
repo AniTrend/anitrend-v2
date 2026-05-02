@@ -9,10 +9,10 @@ description: Guidelines for contributing to AniTrend's Room database layer, focu
 
 This file captures Room-specific policy for `data/**` changes. Pair it with:
 
-- `.github/skills/room-entity-pattern/SKILL.md` for four-file entity/DAO/mapper/repository structure.
-- `.github/skills/data-state-pattern/SKILL.md` for repository return-type and flow behavior.
-- `.github/skills/cache-request-isolation/SKILL.md` for diagnosing and fixing silent empty-UI bugs caused by CacheRequest collisions.
-- `.github/skills/reference-map/SKILL.md` for cross-cutting navigation.
+- `.agents/skills/room-entity-pattern/SKILL.md` for four-file entity/DAO/mapper/repository structure.
+- `.agents/skills/data-state-pattern/SKILL.md` for repository return-type and flow behavior.
+- `.agents/skills/cache-request-isolation/SKILL.md` for diagnosing and fixing silent empty-UI bugs caused by CacheRequest collisions.
+- `.agents/skills/reference-map/SKILL.md` for cross-cutting navigation.
 
 For docs hygiene, use repo-relative links and validate with
 `.github/scripts/audit-instruction-refs.sh`.
@@ -47,7 +47,7 @@ empty UI with no error.
 source) must never reuse `CacheRequest.MEDIA`; add `MEDIA_STUDIOS`, `MEDIA_STATS`, etc. and construct
 their `MediaCache` inline in the Koin factory with `request = CacheRequest.MEDIA_STUDIOS`.
 
-For the full diagnosis and fix workflow see `.github/skills/cache-request-isolation/SKILL.md`.
+For the full diagnosis and fix workflow see `.agents/skills/cache-request-isolation/SKILL.md`.
 ### Database migration checklist
 
 When making schema-impacting changes:

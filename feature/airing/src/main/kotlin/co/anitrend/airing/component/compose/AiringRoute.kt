@@ -45,7 +45,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -98,7 +97,6 @@ fun AiringRoute(
     )
     val airings = viewModel.schedule.collectAsLazyPagingItems()
     val refreshState = airings.loadState.refresh
-    val context = LocalContext.current
     var showDatePicker by rememberSaveable { mutableStateOf(false) }
     val selectedDateLabel = remember(filter.airingAt_greater) { formatAiringDate(filter.airingAt_greater, dateHelper) }
     val selectedDateMillis =
@@ -157,7 +155,7 @@ fun AiringRoute(
                 Text(
                     text =
                         selectedDateLabel?.let {
-                            context.getString(R.string.message_airing_filter_active, it)
+                            stringResource(R.string.message_airing_filter_active, it)
                         } ?: stringResource(R.string.message_airing_filter_default),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,

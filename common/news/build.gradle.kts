@@ -20,7 +20,6 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.blitz)
 }
 
 android {

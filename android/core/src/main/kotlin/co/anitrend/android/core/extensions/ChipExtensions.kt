@@ -16,38 +16,13 @@
  */
 package co.anitrend.android.core.extensions
 
-import android.content.Context
-import com.airbnb.paris.extensions.style
 import com.google.android.material.chip.Chip
 
 /**
- * Themes and styles chip for choice selection
+ * Marks a chip as a selectable choice control for legacy RecyclerView item bindings.
  */
 fun Chip.asChoice() {
-    style(co.anitrend.android.core.R.style.AppTheme_Material_Chip_Choice)
-    setChipBackgroundColorResource(
-        co.anitrend.android.core.R.color.selector_chip_background,
-    )
-    isCheckedIconVisible = false
     isCheckable = true
+    isClickable = true
+    isFocusable = true
 }
-
-/**
- * Themes and styles chip for choice selection
- *
- * @param action Delegate to access the chip
- *
- * @see asChoice
- */
-inline fun Chip.asChoice(action: Chip.() -> Unit): Chip {
-    asChoice()
-    action(this)
-    return this
-}
-
-/**
- * Creates a themed and styled chip for choice selection
- *
- * @param action Delegate to access the chip
- */
-inline fun Context.createChipChoice(action: Chip.() -> Unit): Chip = Chip(this).asChoice(action)

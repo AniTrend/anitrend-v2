@@ -19,11 +19,11 @@ package co.anitrend.data.user.koin
 import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.android.extensions.offline
-import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.auth.mapper.AuthMapper
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.core.extensions.transaction
+import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.review.mapper.ReviewMapper
 import co.anitrend.data.status.mapper.StatusMapper
 import co.anitrend.data.user.GetAuthenticatedInteractor
@@ -329,14 +329,14 @@ private val mapperModule =
         }
         factory<UserProfileOverviewWriterContract> {
             UserProfileOverviewWriter(
-                mediaPersistence = get<EmbedMapper<co.anitrend.data.media.model.MediaModel, co.anitrend.data.media.entity.MediaEntity>>(),
+                mediaPersistence = get<MediaMapper.Embed>(),
                 favouritePersistence = get<UserProfileConnectionMapper.FavouriteEmbed>(),
                 statusPersistence = get<StatusMapper.Activity.Embed>(),
             )
         }
         factory<UserProfileFeedWriterContract> {
             UserProfileFeedWriter(
-                mediaPersistence = get<EmbedMapper<co.anitrend.data.media.model.MediaModel, co.anitrend.data.media.entity.MediaEntity>>(),
+                mediaPersistence = get<MediaMapper.Embed>(),
                 reviewPreviewPersistence = get<ReviewMapper.PreviewEmbed>(),
                 reviewConnectionPersistence = get<UserProfileConnectionMapper.ReviewEmbed>(),
                 statusPersistence = get<StatusMapper.Activity.Embed>(),
@@ -346,17 +346,17 @@ private val mapperModule =
             UserProfileOverviewMapper(
                 favouriteEmbedMapper = get(),
                 statusEmbedMapper = get(),
-                mediaEmbedMapper = get(),
+                mediaEmbedMapper = get<MediaMapper.Embed>(),
                 writer = get(),
                 transactionRunner = transaction(),
             )
         }
         factory {
             UserProfileFeedMapper(
-                reviewConnectionMapper = get(),
-                reviewPreviewMapper = get(),
-                statusEmbedMapper = get(),
-                mediaEmbedMapper = get(),
+                reviewConnectionMapper = get<UserProfileConnectionMapper.ReviewEmbed>(),
+                reviewPreviewMapper = get<ReviewMapper.PreviewEmbed>(),
+                statusEmbedMapper = get<StatusMapper.Activity.Embed>(),
+                mediaEmbedMapper = get<MediaMapper.Embed>(),
                 writer = get(),
                 transactionRunner = transaction(),
             )

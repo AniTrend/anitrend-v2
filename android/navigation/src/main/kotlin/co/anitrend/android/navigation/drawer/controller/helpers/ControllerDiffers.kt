@@ -24,12 +24,12 @@ internal object NavigationDiffUtil : DiffUtil.ItemCallback<Navigation>() {
     override fun areItemsTheSame(
         oldItem: Navigation,
         newItem: Navigation,
-    ) = oldItem == newItem
+    ) = oldItem.id == newItem.id && oldItem::class == newItem::class
 
     override fun areContentsTheSame(
         oldItem: Navigation,
         newItem: Navigation,
-    ) = oldItem.hashCode() == newItem.hashCode()
+    ) = oldItem == newItem
 }
 
 internal object AccountDiffUtil : DiffUtil.ItemCallback<Account>() {
@@ -41,5 +41,5 @@ internal object AccountDiffUtil : DiffUtil.ItemCallback<Account>() {
     override fun areContentsTheSame(
         oldItem: Account,
         newItem: Account,
-    ) = oldItem.hashCode() == newItem.hashCode()
+    ) = oldItem == newItem
 }

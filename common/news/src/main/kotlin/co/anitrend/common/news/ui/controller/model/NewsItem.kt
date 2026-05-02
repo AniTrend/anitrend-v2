@@ -17,9 +17,11 @@
 package co.anitrend.common.news.ui.controller.model
 
 import android.content.res.Resources
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.text.parseAsHtml
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
@@ -34,8 +36,6 @@ import co.anitrend.navigation.NewsRouter
 import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.startActivity
 import coil.request.Disposable
-import com.perfomer.blitz.cancelTimeAgoUpdates
-import com.perfomer.blitz.setTimeAgo
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class NewsItem(
@@ -70,7 +70,7 @@ internal class NewsItem(
         requireBinding().newsTitle.text = entity.title
         requireBinding().newsSubTitle.text = entity.subTitle
 
-        requireBinding().newsPublishedOn.setTimeAgo(entity.publishedOn ?: 0)
+        requireBinding().newsPublishedOn.setRelativeTime(entity.publishedOn)
 
         requireBinding().newsDescription.text = entity.description?.parseAsHtml()
 
@@ -96,7 +96,6 @@ internal class NewsItem(
      */
     override fun unbind(view: View) {
         binding?.container?.setOnClickListener(null)
-        binding?.newsPublishedOn?.cancelTimeAgoUpdates()
         disposable?.dispose()
         disposable = null
         super.unbind(view)
@@ -124,4 +123,17 @@ internal class NewsItem(
                     false,
                 ).let(::SupportViewHolder)
     }
+}
+
+private fun TextView.setRelativeTime(epochMillis: Long?) {
+    text =
+        epochMillis
+            ?.let {
+                DateUtils
+                    .getRelativeTimeSpanString(
+                        it,
+                        System.currentTimeMillis(),
+                        DateUtils.MINUTE_IN_MILLIS,
+                    ).toString()
+            }.orEmpty()
 }

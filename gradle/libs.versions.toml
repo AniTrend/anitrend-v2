@@ -30,20 +30,12 @@ androidx-work = "2.11.2"
 anitrend-arch = "1.8.12"
 anitrend-emojify = "2.2.0"
 anitrend-markdown = "0.12.1-alpha01"
-anitrend-material = "0.2.0"
 anitrend-retrofit = "0.11.13"
-anitrend-sync = "0.1.0-alpha01"
 anitrend-querybuilder = "0.2.13"
-
-airbnb-paris = "2.2.1"
-
-blitz = "1.0.10"
 
 chuncker = "4.3.1"
 
 coil = "2.7.0"
-
-devrieze-xmlutil = "0.90.3"
 
 google-android-material = "1.12.0"
 
@@ -68,9 +60,6 @@ square-kotlinpoet = "2.3.0"
 square-leakcanary = "2.14"
 square-okhttp = "5.3.2"
 square-retrofit = "3.0.0"
-
-sheets = "2.3.1"
-sheets-compose = "2.3.1"
 
 google-devtools-ksp = "2.3.7"
 
@@ -204,19 +193,12 @@ anitrend-emojify = { module = "com.github.anitrend.android-emojify:emojify", ver
 anitrend-emojify-contract = { module = "com.github.anitrend.android-emojify:contract", version.ref = "anitrend-emojify" }
 anitrend-emojify-kotlinx = { module = "com.github.anitrend.android-emojify:kotlinx", version.ref = "anitrend-emojify" }
 anitrend-markdown = { module = "com.github.anitrend:support-markdown", version.ref = "anitrend-markdown" }
-anitrend-material = { module = "com.github.anitrend:material-multi-search", version.ref = "anitrend-material" }
 anitrend-retrofit-graphql = { module = "com.github.anitrend:retrofit-graphql", version.ref = "anitrend-retrofit" }
-anitrend-sync = { module = "com.github.anitrend:support-sync-plugin", version.ref = "anitrend-sync" }
 
 anitrend-querybuilder-annotation = { module = "com.github.anitrend.support-query-builder:core", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-core = { module = "com.github.anitrend.support-query-builder:annotations", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-core-ext = { module = "com.github.anitrend.support-query-builder:core-ext", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-processor = { module = "com.github.anitrend.support-query-builder:processor", version.ref = "anitrend-querybuilder" }
-
-airbnb-paris = { module = "com.airbnb.android:paris", version.ref = "airbnb-paris" }
-airbnb-paris-processor = { module = "com.airbnb.android:paris-processor", version.ref = "airbnb-paris" }
-
-blitz = { module = "com.github.perfomer:blitz", version.ref = "blitz" }
 
 cash-copper = { module = "app.cash.copper:copper-flow", version = "1.0.0" }
 cash-turbine = { module = "app.cash.turbine:turbine", version = "1.2.1" }
@@ -230,9 +212,6 @@ coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coil" }
 coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil" }
 coil-video = { module = "io.coil-kt:coil-video", version.ref = "coil" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
-
-devrieze-xmlutil-android-core = { module = "io.github.pdvrieze.xmlutil:core-android", version.ref = "devrieze-xmlutil" }
-devrieze-xmlutil-android-serialization = { module = "io.github.pdvrieze.xmlutil:serialization-android", version.ref = "devrieze-xmlutil" }
 
 google-accompanist-insets = { module = "com.google.accompanist:accompanist-insets-ui", version = "0.36.0" }
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version = "0.36.0" }
@@ -301,29 +280,6 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 
 saket-betterlinkmovementmethod = { module = "me.saket:better-link-movement-method", version = "2.2.0" }
-
-sheets-calendar = { module = "com.maxkeppeler.sheets:calendar", version.ref = "sheets" }
-sheets-core = { module = "com.maxkeppeler.sheets:core", version.ref = "sheets" }
-sheets-info = { module = "com.maxkeppeler.sheets:info", version.ref = "sheets" }
-sheets-input = { module = "com.maxkeppeler.sheets:input", version.ref = "sheets" }
-sheets-lottie = { module = "com.maxkeppeler.sheets:lottie", version.ref = "sheets" }
-sheets-options = { module = "com.maxkeppeler.sheets:options", version.ref = "sheets" }
-sheets-simple = { module = "com.maxkeppeler.sheets:simple", version.ref = "sheets" }
-sheets-time = { module = "com.maxkeppeler.sheets:time", version.ref = "sheets" }
-sheets-time-clock = { module = "com.maxkeppeler.sheets:time-clock", version.ref = "sheets" }
-
-sheets-compose-core = { module = "com.maxkeppeler.sheets-compose-dialogs:core", version.ref = "sheets-compose" }
-sheets-compose-info = { module = "com.maxkeppeler.sheets-compose-dialogs:info", version.ref = "sheets-compose" }
-sheets-compose-calendar = { module = "com.maxkeppeler.sheets:calendar", version.ref = "sheets-compose" }
-sheets-compose-rating = { module = "com.maxkeppeler.sheets-compose-dialogs:rating", version.ref = "sheets-compose" }
-sheets-compose-clock = { module = "com.maxkeppeler.sheets-compose-dialogs:clock", version.ref = "sheets-compose" }
-sheets-compose-duration = { module = "com.maxkeppeler.sheets-compose-dialogs:duration", version.ref = "sheets-compose" }
-sheets-compose-date-time = { module = "com.maxkeppeler.sheets-compose-dialogs:date-time", version.ref = "sheets-compose" }
-sheets-compose-option = { module = "com.maxkeppeler.sheets-compose-dialogs:option", version.ref = "sheets-compose" }
-sheets-compose-list = { module = "com.maxkeppeler.sheets-compose-dialogs:list", version.ref = "sheets-compose" }
-sheets-compose-input = { module = "com.maxkeppeler.sheets-compose-dialogs:input", version.ref = "sheets-compose" }
-sheets-compose-emoji = { module = "com.maxkeppeler.sheets-compose-dialogs:emoji", version.ref = "sheets-compose" }
-sheets-compose-state = { module = "com.maxkeppeler.sheets-compose-dialogs:state", version.ref = "sheets-compose" }
 
 square-kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "square-kotlinpoet" }
 square-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "square-leakcanary" }

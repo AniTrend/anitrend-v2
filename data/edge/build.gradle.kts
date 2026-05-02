@@ -25,8 +25,6 @@ dependencies {
 
     implementation(libs.anitrend.retrofit.graphql)
 
-    // Holding off on using xml util for now, seems not to work and probably needs more testing
-    implementation(libs.devrieze.xmlutil.android.serialization)
     implementation(libs.jetbrains.kotlinx.serialization.json)
 
     implementation(libs.androidx.collection.ktx)
