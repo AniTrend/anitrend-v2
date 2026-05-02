@@ -28,10 +28,9 @@ internal object TagDiffUtil : DiffUtil.ItemCallback<Tag>() {
     override fun areContentsTheSame(
         oldItem: Tag,
         newItem: Tag,
-    ) =
-        when {
-            oldItem is Tag.Core && newItem is Tag.Core -> oldItem == newItem
-            oldItem is Tag.Extended && newItem is Tag.Extended -> oldItem == newItem
-            else -> false
-        }
+    ) = when {
+        oldItem is Tag.Core && newItem is Tag.Core -> oldItem == newItem
+        oldItem is Tag.Extended && newItem is Tag.Extended -> oldItem == newItem
+        else -> false
+    }
 }
