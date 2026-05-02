@@ -32,6 +32,7 @@ import co.anitrend.data.auth.usecase.AuthUseCaseImpl
 import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.core.extensions.transaction
+import co.anitrend.data.user.mapper.UserMapper
 import org.koin.dsl.module
 
 private val sourceModule =
@@ -70,7 +71,7 @@ private val mapperModule =
             AuthenticatedUserWriter(
                 generalOptionWriter = get(),
                 mediaOptionWriter = get(),
-                notificationMapper = get(),
+                notificationMapper = get<UserMapper.NotificationEmbed>(),
                 localSource = store().userDao(),
             )
         }

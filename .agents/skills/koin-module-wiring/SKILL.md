@@ -54,6 +54,9 @@ work with [android-platform-patterns](../android-platform-patterns/SKILL.md).
 4. Add the local module to the nearest feature / data aggregator so it gets loaded transitively.
 5. If the module is a new `:data:*` or `:feature:*` top-level module, also add its loader to
    `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt`.
+6. Add or update a Koin resolution test for the changed binding. For central `:data` wiring,
+   prefer a focused `src/test` case that starts Koin with the relevant modules and resolves the
+   exact contract you changed.
 
 ## Rules
 
@@ -68,5 +71,9 @@ work with [android-platform-patterns](../android-platform-patterns/SKILL.md).
 - When a binding depends on a generic contract such as `graphQLController(mapper = ...)`, prefer
   explicit typed lookup like `get<ConcreteMapper>()` instead of bare `get()` so Koin does not have
   to infer an ambiguous generic mapper.
+- When a constructor parameter is declared as a broad interface or typealias, do not assume bare
+  `get()` will resolve the intended implementation. If the module owns a concrete embed mapper or
+  writer binding, request it explicitly with `get<ConcreteType>()` and cover that path with a Koin
+  resolution test.
 - Task Koin files should bind workers and router providers only. Repository, source, mapper, and
   controller bindings stay in the owning data module.

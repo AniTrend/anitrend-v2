@@ -44,9 +44,15 @@ or device.
 ## Koin testing
 
 - Use `KoinTest` when the test needs Koin-backed lookup via `get()` or `by inject()`.
+- For data-layer DI changes, add a focused `src/test` resolution test for the changed binding or
+  writer path, not just a broad graph check. The test should start Koin with the narrow module set,
+  provide mocks for unrelated collaborators, and assert that the concrete binding under change
+  resolves successfully.
 - For DI graph validation, follow the repo's current pattern from
   `data/src/androidTest/kotlin/co/anitrend/data/android/koin/ModulesTest.kt`:
   use `MockProviderRule.create { mockk() }` with `checkModules { modules(...) }`.
+- Treat the `androidTest` graph check as a secondary safety net. It is too broad and too far from
+  normal `testDebugUnitTest` coverage to be the only guard for central `:data` Koin wiring.
 - When a test needs to replace one binding inside an active Koin context, prefer Koin test
   utilities such as `declareMock` or `declare` instead of editing production modules just for test
   coverage.
@@ -54,8 +60,8 @@ or device.
   to validate behavior of the resolved objects.
 - Keep graph verification narrow. Load only the module set relevant to the feature, data package,
   or task being tested.
-- If you add a new module aggregator or worker-binding module, add or update a Koin validation test
-  alongside it.
+- If you add or refactor a module aggregator, writer factory, embed mapper dependency, or worker
+  binding, add or update a Koin validation test alongside it.
 
 ## Instrumented tests (`androidTest/`)
 
@@ -92,5 +98,7 @@ or device.
 - If a cache key varies by request shape, add an assertion around the variant identity or the
   converter output that makes the distinction explicit.
 - For dependency wiring work, add a Koin validation test so broken bindings fail before runtime.
+- For central `:data` module wiring, prefer a binding-specific unit test in `src/test` that proves
+  the changed definition resolves, then keep the broader graph check as additional coverage.
 - Do not remove or modify existing tests to make a PR pass; fix the underlying code instead.
 - Include test results or a brief pass/fail note in the PR checklist.
