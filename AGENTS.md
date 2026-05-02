@@ -28,22 +28,6 @@ Follow instruction precedence in this order:
 2. Repository instructions and skills (`AGENTS.md`, `.github/instructions/*`, `.github/skills/*`)
 3. Task-specific plans/docs
 
-MANDATORY tool routing:
-
-- Any command expected to produce more than 20 lines MUST run through context-mode
-  (`ctx_batch_execute` or `ctx_execute`).
-- Bash is for mutating operations only (for example: `git add`, `git commit`, `git push`, or
-  required write-side commands).
-- Codebase exploration should use code-review-graph first, then fallback tools only when needed.
-- Running high-output commands directly in Bash is non-compliant unless explicitly required by a
-  higher-priority instruction.
-
-Preflight checklist before command execution:
-
-- [ ] Command is routed through context-mode when output is likely high-volume.
-- [ ] Bash is only used for mutation or when context-mode is explicitly not viable.
-- [ ] code-review-graph is used first for structural exploration.
-
 ## AI-Native SDLC Packs
 
 - `docs/support-arch/instructions/*.md` contains autonomous operational playbooks for CI, migrations,
