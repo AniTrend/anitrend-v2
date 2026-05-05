@@ -1,11 +1,11 @@
 package co.anitrend.android.navigation.compose.drawer.component.screen
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
@@ -15,31 +15,49 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import co.anitrend.android.core.compose.shape.DrawerCutoutShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import co.anitrend.android.core.compose.design.image.AniTrendImage
@@ -50,6 +68,15 @@ import co.anitrend.android.navigation.drawer.model.account.Account
 import co.anitrend.android.navigation.drawer.model.internal.DrawerEntry
 import co.anitrend.android.navigation.drawer.model.internal.DrawerUiState
 
+private val DrawerRowShape = RoundedCornerShape(20.dp)
+
+@Immutable
+private enum class DrawerSheetContentState {
+    Closed,
+    Navigation,
+    AccountSwitcher,
+}
+
 @Composable
 internal fun NavigationDrawerSheetScreen(
     uiState: DrawerUiState,
@@ -57,165 +84,415 @@ internal fun NavigationDrawerSheetScreen(
     onAccountClick: (Account) -> Unit,
     onNavigationClick: (DrawerEntry.Item) -> Unit,
 ) {
+    val contentState =
+        when {
+            !uiState.isSheetVisible -> DrawerSheetContentState.Closed
+            uiState.isAccountSwitcherExpanded -> DrawerSheetContentState.AccountSwitcher
+            else -> DrawerSheetContentState.Navigation
+        }
+
     val transition =
-        updateTransition(
-            targetState = uiState.isAccountSwitcherExpanded,
-            label = "drawer_switcher",
+        androidx.compose.animation.core.updateTransition(
+            targetState = contentState,
+            label = "drawer_sheet_state",
         )
-    val avatarScale by transition.animateFloat(
-        label = "avatar_scale",
+    val topCornerRadius by transition.animateDp(
+        label = "top_corner_radius",
         transitionSpec = { tween(durationMillis = 320, easing = FastOutSlowInEasing) },
-    ) { expanded ->
-        if (expanded) 0.88f else 1f
+    ) { state ->
+        if (state == DrawerSheetContentState.Navigation) 34.dp else 30.dp
     }
-    val avatarAlpha by transition.animateFloat(
-        label = "avatar_alpha",
-        transitionSpec = { tween(durationMillis = 240) },
-    ) { expanded ->
-        if (expanded) 0.78f else 1f
-    }
-    val contentOffset by transition.animateDp(
-        label = "content_offset",
+    val badgeScale by transition.animateFloat(
+        label = "badge_scale",
         transitionSpec = { tween(durationMillis = 300, easing = FastOutSlowInEasing) },
-    ) { expanded ->
-        if (expanded) 6.dp else 0.dp
+    ) { state ->
+        when (state) {
+            DrawerSheetContentState.Navigation -> 1f
+            DrawerSheetContentState.AccountSwitcher -> 0.78f
+            DrawerSheetContentState.Closed -> 0.86f
+        }
+    }
+    val badgeAlpha by transition.animateFloat(
+        label = "badge_alpha",
+        transitionSpec = { tween(durationMillis = 260) },
+    ) { state ->
+        when (state) {
+            DrawerSheetContentState.Navigation -> 1f
+            else -> 0f
+        }
+    }
+    val cutoutProgress by transition.animateFloat(
+        label = "cutout_progress",
+        transitionSpec = { tween(durationMillis = 320, easing = FastOutSlowInEasing) },
+    ) { state ->
+        when (state) {
+            DrawerSheetContentState.Navigation -> 1f
+            else -> 0f
+        }
     }
 
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
-        tonalElevation = 10.dp,
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.TopCenter,
     ) {
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+        MorphingDrawerSurface(
+            topCornerRadius = topCornerRadius,
+            cutoutProgress = cutoutProgress,
+            modifier = Modifier.fillMaxSize(),
         ) {
-            DrawerProfileHeader(
-                activeAccount = uiState.activeAccount,
-                isExpanded = uiState.isAccountSwitcherExpanded,
-                avatarScale = avatarScale,
-                avatarAlpha = avatarAlpha,
-                onClick = onHeaderClick,
-            )
-
             AnimatedContent(
-                targetState = uiState.isAccountSwitcherExpanded,
-                label = "drawer_content",
+                targetState = contentState,
                 transitionSpec = {
-                    (
-                        fadeIn(animationSpec = tween(220)) +
-                            slideInVertically(
-                                animationSpec = tween(280, easing = FastOutSlowInEasing),
-                                initialOffsetY = { height -> height / 10 },
-                            )
-                    ) togetherWith
-                        (
-                            fadeOut(animationSpec = tween(160)) +
-                                slideOutVertically(
-                                    animationSpec = tween(220, easing = FastOutSlowInEasing),
-                                    targetOffsetY = { height -> -height / 12 },
-                                )
-                        )
+                    drawerContentTransform(targetState == DrawerSheetContentState.AccountSwitcher)
                 },
-            ) { expanded ->
-                if (expanded) {
-                    DrawerAccountSwitcherSection(
-                        accounts = uiState.accounts,
-                        modifier =
-                            Modifier.graphicsLayer {
-                                alpha = avatarAlpha
-                                translationY = contentOffset.toPx()
-                            },
-                        onAccountClick = onAccountClick,
-                    )
-                } else {
-                    DrawerNavigationSection(
-                        entries = uiState.entries,
-                        modifier =
-                            Modifier.graphicsLayer {
-                                alpha = avatarAlpha
-                                translationY = contentOffset.toPx()
-                            },
-                        onNavigationClick = onNavigationClick,
-                    )
+                label = "drawer_content",
+            ) { state ->
+                when (state) {
+                    DrawerSheetContentState.AccountSwitcher ->
+                        AccountSwitcherContent(
+                            accounts = uiState.accounts,
+                            onAccountClick = onAccountClick,
+                        )
+                    DrawerSheetContentState.Navigation,
+                    DrawerSheetContentState.Closed,
+                    ->
+                        NavigationDrawerContent(
+                            entries = uiState.entries,
+                            enabled = state != DrawerSheetContentState.Closed,
+                            onNavigationClick = onNavigationClick,
+                        )
                 }
             }
+        }
+
+        DrawerSeamBadge(
+            account = uiState.activeAccount,
+            isExpanded = contentState == DrawerSheetContentState.AccountSwitcher,
+            modifier =
+                Modifier
+                    .graphicsLayer { alpha = badgeAlpha }
+                    .scale(badgeScale),
+            onClick = onHeaderClick,
+        )
+    }
+}
+
+@Composable
+private fun MorphingDrawerSurface(
+    topCornerRadius: androidx.compose.ui.unit.Dp,
+    cutoutProgress: Float,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Surface(
+        modifier = modifier,
+        shape =
+            DrawerCutoutShape(
+                topCornerRadius = topCornerRadius,
+                cutoutProgress = cutoutProgress,
+            ),
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = 8.dp,
+        shadowElevation = 8.dp,
+    ) {
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(top = 42.dp),
+        ) {
+            content()
+        }
+    }
+}
+
+private fun drawerContentTransform(showingAccounts: Boolean): ContentTransform {
+    val duration = 240
+    return if (showingAccounts) {
+        (fadeIn(animationSpec = tween(durationMillis = duration, delayMillis = 40)) +
+            slideInVertically(
+                animationSpec = tween(durationMillis = duration, easing = FastOutSlowInEasing),
+                initialOffsetY = { it / 8 },
+            )).togetherWith(
+            fadeOut(animationSpec = tween(durationMillis = duration / 2)) +
+                slideOutVertically(
+                    animationSpec = tween(durationMillis = duration, easing = FastOutSlowInEasing),
+                    targetOffsetY = { -it / 16 },
+                ),
+        )
+    } else {
+        (fadeIn(animationSpec = tween(durationMillis = duration, delayMillis = 20)) +
+            slideInVertically(
+                animationSpec = tween(durationMillis = duration, easing = FastOutSlowInEasing),
+                initialOffsetY = { it / 10 },
+            )).togetherWith(
+            fadeOut(animationSpec = tween(durationMillis = duration / 2)) +
+                slideOutVertically(
+                    animationSpec = tween(durationMillis = duration, easing = FastOutSlowInEasing),
+                    targetOffsetY = { it / 12 },
+                ),
+        )
+    }
+}
+
+@Composable
+private fun DrawerSeamBadge(
+    account: Account?,
+    isExpanded: Boolean,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    val stateDescription =
+        stringResource(
+            id =
+                if (isExpanded) {
+                    R.string.description_navigation_drawer_accounts_expanded
+                } else {
+                    R.string.description_navigation_drawer_navigation_expanded
+                },
+        )
+    val actionDescription =
+        stringResource(
+            id =
+                if (isExpanded) {
+                    R.string.action_navigation_drawer_close_accounts
+                } else {
+                    R.string.action_navigation_drawer_switch_accounts
+                },
+        )
+
+    Surface(
+        modifier =
+            modifier
+                .offset(y = (-34).dp)
+                .semantics {
+                    role = Role.Button
+                    contentDescription = actionDescription
+                    this.stateDescription = stateDescription
+                }
+                .clickable(onClick = onClick),
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        tonalElevation = 10.dp,
+        shadowElevation = 10.dp,
+    ) {
+        Box(
+            modifier =
+                Modifier
+                    .size(68.dp)
+                    .padding(5.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            DrawerAccountAvatar(
+                account = account,
+                modifier = Modifier.fillMaxSize(),
+            )
         }
     }
 }
 
 @Composable
-private fun DrawerProfileHeader(
-    activeAccount: Account?,
-    isExpanded: Boolean,
-    avatarScale: Float,
-    avatarAlpha: Float,
+private fun NavigationDrawerContent(
+    entries: List<DrawerEntry>,
+    enabled: Boolean,
+    onNavigationClick: (DrawerEntry.Item) -> Unit,
+) {
+    val topPadding = WindowInsets.systemBars.asPaddingValues().calculateTopPadding()
+    val bottomPadding = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
+
+    Column(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(
+                    start = 18.dp,
+                    end = 18.dp,
+                    top = topPadding + 6.dp,
+                    bottom = bottomPadding + 20.dp,
+                ),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        entries.forEach { entry ->
+            when (entry) {
+                is DrawerEntry.Header ->
+                    DrawerSection(
+                        title = stringResource(id = entry.titleRes),
+                        modifier = Modifier.padding(top = 12.dp, bottom = 2.dp, start = 4.dp),
+                    )
+                is DrawerEntry.Item ->
+                    DrawerMenuRow(
+                        item = entry,
+                        enabled = enabled,
+                        onClick = { onNavigationClick(entry) },
+                    )
+            }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+    }
+}
+
+@Composable
+private fun AccountSwitcherContent(
+    accounts: List<Account>,
+    onAccountClick: (Account) -> Unit,
+) {
+    val topPadding = WindowInsets.systemBars.asPaddingValues().calculateTopPadding()
+    val bottomPadding = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
+
+    Column(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(
+                    start = 18.dp,
+                    end = 18.dp,
+                    top = topPadding + 6.dp,
+                    bottom = bottomPadding + 20.dp,
+                ),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        accounts.forEach { account ->
+            when (account) {
+                is Account.Group ->
+                    DrawerSection(
+                        title = stringResource(id = account.titleRes),
+                        modifier = Modifier.padding(top = 12.dp, bottom = 2.dp, start = 4.dp),
+                    )
+                else ->
+                    AccountSwitcherRow(
+                        account = account,
+                        onClick = { onAccountClick(account) },
+                    )
+            }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+    }
+}
+
+@Composable
+private fun DrawerSection(
+    title: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.labelMedium,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = modifier.semantics { heading() },
+    )
+}
+
+@Composable
+private fun DrawerMenuRow(
+    item: DrawerEntry.Item,
+    enabled: Boolean,
     onClick: () -> Unit,
 ) {
-    Surface(
+    val itemLabel = stringResource(id = item.titleRes)
+    val selectedContainerColor = selectedDrawerRowContainerColor()
+    val iconTint =
+        if (item.isChecked) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.colorScheme.onSurfaceVariant
+        }
+    val textColor =
+        if (item.isChecked) {
+            MaterialTheme.colorScheme.onSurface
+        } else {
+            MaterialTheme.colorScheme.onSurfaceVariant
+        }
+
+    Row(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .clickable(onClick = onClick),
-        color = MaterialTheme.colorScheme.surfaceContainerLowest,
-        shape = RoundedCornerShape(24.dp),
-        tonalElevation = 2.dp,
+                .clip(DrawerRowShape)
+                .background(if (item.isChecked) selectedContainerColor else Color.Transparent)
+                .defaultMinSize(minHeight = 52.dp)
+                .semantics {
+                    role = Role.Button
+                    selected = item.isChecked
+                    contentDescription = itemLabel
+                }
+                .clickable(enabled = enabled, onClick = onClick)
+                .padding(horizontal = 14.dp, vertical = 7.dp),
+        horizontalArrangement = Arrangement.spacedBy(14.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 14.dp),
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
-            verticalAlignment = Alignment.CenterVertically,
+        Box(
+            modifier = Modifier.width(24.dp),
+            contentAlignment = Alignment.Center,
         ) {
-            DrawerAccountAvatar(
-                account = activeAccount,
-                modifier =
-                    Modifier
-                        .size(56.dp)
-                        .scale(avatarScale)
-                        .alpha(avatarAlpha),
-            )
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-            ) {
-                Text(
-                    text = activeAccountTitle(activeAccount),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Text(
-                    text =
-                        stringResource(
-                            if (isExpanded) {
-                                R.string.account_header_other
-                            } else {
-                                R.string.account_header_active
-                            },
-                        ),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            Text(
-                text = if (isExpanded) "Close" else "Accounts",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.SemiBold,
-                modifier =
-                    Modifier
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
-                        .padding(horizontal = 10.dp, vertical = 6.dp),
+            Icon(
+                painter = painterResource(id = item.iconRes),
+                contentDescription = null,
+                tint = iconTint,
             )
         }
+        Text(
+            text = itemLabel,
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = if (item.isChecked) FontWeight.SemiBold else FontWeight.Medium,
+            color = textColor,
+        )
+    }
+}
+
+@Composable
+private fun AccountSwitcherRow(
+    account: Account,
+    onClick: () -> Unit,
+) {
+    val label = accountTitle(account)
+    val isActive = account.isActiveUser
+    val selectedContainerColor = selectedDrawerRowContainerColor()
+
+    Row(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clip(DrawerRowShape)
+                .background(if (isActive) selectedContainerColor else Color.Transparent)
+                .defaultMinSize(minHeight = 52.dp)
+                .semantics {
+                    role = Role.Button
+                    selected = isActive
+                    contentDescription = label
+                }
+                .clickable(onClick = onClick)
+                .padding(horizontal = 14.dp, vertical = 7.dp),
+        horizontalArrangement = Arrangement.spacedBy(14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        when (account) {
+            is Account.Authenticated,
+            is Account.Anonymous,
+            -> DrawerAccountAvatar(account = account, modifier = Modifier.size(24.dp))
+            is Account.Authorize ->
+                Box(
+                    modifier = Modifier.width(24.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_account_add_24dp),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            is Account.Group -> Unit
+        }
+        Text(
+            text = label,
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Medium,
+            color = if (isActive) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 
@@ -236,13 +513,13 @@ private fun DrawerAccountAvatar(
                 AniTrendImage(
                     image = avatarContent.image,
                     imageType = RequestImage.Media.ImageType.POSTER,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxSize(),
                 )
             is DrawerAvatarContent.AdaptiveLocalImage ->
                 Image(
                     painter = adaptiveIconPainterResource(id = avatarContent.imageRes),
                     contentDescription = stringResource(id = avatarContent.contentDescriptionRes),
-                    modifier = Modifier.padding(12.dp),
+                    modifier = Modifier.padding(4.dp),
                 )
             is DrawerAvatarContent.TintedIcon ->
                 Icon(
@@ -256,192 +533,18 @@ private fun DrawerAccountAvatar(
 }
 
 @Composable
-private fun DrawerAccountSwitcherSection(
-    accounts: List<Account>,
-    modifier: Modifier = Modifier,
-    onAccountClick: (Account) -> Unit,
-) {
-    Column(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        accounts.forEach { account ->
-            when (account) {
-                is Account.Group ->
-                    Text(
-                        text = stringResource(id = account.titleRes),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 6.dp),
-                    )
-                else ->
-                    DrawerAccountRow(
-                        account = account,
-                        onClick = { onAccountClick(account) },
-                    )
-            }
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-    }
-}
-
-@Composable
-private fun DrawerAccountRow(
-    account: Account,
-    onClick: () -> Unit,
-) {
-    Surface(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .clickable(onClick = onClick),
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
-        shape = RoundedCornerShape(22.dp),
-    ) {
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 14.dp, vertical = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            when (account) {
-                is Account.Authenticated ->
-                    DrawerAccountAvatar(
-                        account = account,
-                        modifier = Modifier.size(42.dp),
-                    )
-                is Account.Anonymous ->
-                    DrawerAccountAvatar(
-                        account = account,
-                        modifier = Modifier.size(42.dp),
-                    )
-                is Account.Authorize ->
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_account_add_24dp),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
-                is Account.Group -> Unit
-            }
-            Text(
-                text = accountTitle(account),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight =
-                    if (account.isActiveUser) {
-                        FontWeight.SemiBold
-                    } else {
-                        FontWeight.Normal
-                    },
-            )
-        }
-    }
-}
-
-@Composable
-private fun DrawerNavigationSection(
-    entries: List<DrawerEntry>,
-    modifier: Modifier = Modifier,
-    onNavigationClick: (DrawerEntry.Item) -> Unit,
-) {
-    Column(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        entries.forEach { entry ->
-            when (entry) {
-                is DrawerEntry.Header ->
-                    Text(
-                        text = stringResource(id = entry.titleRes),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 6.dp),
-                    )
-                is DrawerEntry.Item ->
-                    DrawerNavigationRowItem(
-                        item = entry,
-                        onClick = { onNavigationClick(entry) },
-                    )
-            }
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-    }
-}
-
-@Composable
-private fun DrawerNavigationRowItem(
-    item: DrawerEntry.Item,
-    onClick: () -> Unit,
-) {
-    val containerColor =
-        if (item.isChecked) {
-            MaterialTheme.colorScheme.secondaryContainer
-        } else {
-            MaterialTheme.colorScheme.surfaceContainerLow
-        }
-    val contentColor =
-        if (item.isChecked) {
-            MaterialTheme.colorScheme.onSecondaryContainer
-        } else {
-            MaterialTheme.colorScheme.onSurface
-        }
-
-    Surface(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .clickable(onClick = onClick),
-        color = containerColor,
-        shape = RoundedCornerShape(22.dp),
-        tonalElevation = if (item.isChecked) 4.dp else 0.dp,
-    ) {
-        Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 14.dp, vertical = 14.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                painter = painterResource(id = item.iconRes),
-                contentDescription = null,
-                tint = contentColor,
-            )
-            Text(
-                text = stringResource(id = item.titleRes),
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = if (item.isChecked) FontWeight.SemiBold else FontWeight.Normal,
-                color = contentColor,
-            )
-        }
-    }
-}
-
-@Composable
-private fun activeAccountTitle(account: Account?): String =
-    when (account) {
-        is Account.Authenticated -> account.userName.toString()
-        is Account.Anonymous -> stringResource(id = account.titleRes)
-        is Account.Authorize -> stringResource(id = account.titleRes)
-        is Account.Group,
-        null,
-        -> stringResource(id = R.string.label_account_anonymous)
-    }
-
-@Composable
 private fun accountTitle(account: Account): String =
     when (account) {
         is Account.Authenticated -> account.userName.toString()
         is Account.Anonymous -> stringResource(id = account.titleRes)
         is Account.Authorize -> stringResource(id = account.titleRes)
         is Account.Group -> stringResource(id = account.titleRes)
+    }
+
+@Composable
+private fun selectedDrawerRowContainerColor(): Color =
+    if (MaterialTheme.colorScheme.background.luminance() > 0.5f) {
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.82f)
+    } else {
+        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.52f)
     }

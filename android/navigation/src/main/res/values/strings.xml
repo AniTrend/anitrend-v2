@@ -63,6 +63,12 @@
     <!-- Label for signing out -->
     <string name="label_account_sign_out">Sign out</string>
 
+    <!-- Short status pill shown on the compose drawer account rows for the currently active account -->
+    <string name="label_navigation_drawer_active">Active</string>
+
+    <!-- Section header shown on the compose drawer account-switcher surface -->
+    <string name="label_navigation_drawer_accounts">Accounts</string>
+
 
     <!-- Category for the current active account, e.g. user has multiple AL login accounts and this is to show which one is being used -->
     <string name="account_header_active">Active account</string>
@@ -70,6 +76,21 @@
     <string name="account_header_inactive">Inactive accounts</string>
     <!-- Category for other accounts accounts which may not be related to AL -->
     <string name="account_header_other">Other accounts</string>
+
+    <!-- Header action pill shown in the compose drawer while the navigation layer is visible; tapping opens the account switcher -->
+    <string name="action_navigation_drawer_switch_accounts">Tap to switch</string>
+
+    <!-- Header action pill shown in the compose drawer while the account switcher is expanded; tapping closes the account layer -->
+    <string name="action_navigation_drawer_close_accounts">Close</string>
+
+    <!-- Accessibility state description for the compose drawer header when the account switcher is expanded -->
+    <string name="description_navigation_drawer_accounts_expanded">Account switcher expanded</string>
+
+    <!-- Accessibility state description for the compose drawer header when the navigation list is the active foreground surface -->
+    <string name="description_navigation_drawer_navigation_expanded">Navigation menu expanded</string>
+
+    <!-- Secondary text under the compose drawer account name; %1$s is the current account status and %2$s is the next tap action hint -->
+    <string name="subtitle_navigation_drawer_header_status" formatted="true">%1$s • %2$s</string>
 
     <!-- Menu action on the app bar to open notifications screen -->
     <string name="action_notifications">Notifications</string>

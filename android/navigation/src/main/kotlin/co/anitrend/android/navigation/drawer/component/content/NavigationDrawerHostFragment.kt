@@ -64,10 +64,9 @@ class NavigationDrawerHostFragment :
 
     override fun toggleDrawer() {
         if (useComposeDrawer) {
-            if (drawerViewModel.uiState.value.isAccountSwitcherExpanded) {
-                drawerViewModel.setAccountSwitcherExpanded(false)
-            } else if (isShowing()) {
-                dismiss()
+            val currentSheet = composeDrawer()
+            if (currentSheet != null) {
+                currentSheet.toggleDrawer()
             } else {
                 show()
             }
@@ -91,7 +90,6 @@ class NavigationDrawerHostFragment :
     override fun dismiss() {
         if (useComposeDrawer) {
             composeDrawer()?.dismiss()
-            drawerViewModel.setSheetVisible(false)
             return
         }
 
