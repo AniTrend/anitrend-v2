@@ -36,13 +36,20 @@ class ComposeNavigationDrawerSheet :
     private val closeDrawerOnBackPressed =
         object : OnBackPressedCallback(false) {
             override fun handleOnBackPressed() {
-                if (drawerViewModel.uiState.value.isAccountSwitcherExpanded) {
-                    drawerViewModel.setAccountSwitcherExpanded(false)
-                } else {
+                if (!collapseAccountSwitcherIfExpanded()) {
                     dismiss()
                 }
             }
         }
+
+    private fun collapseAccountSwitcherIfExpanded(): Boolean {
+        if (!drawerViewModel.uiState.value.isAccountSwitcherExpanded) {
+            return false
+        }
+
+        drawerViewModel.setAccountSwitcherExpanded(false)
+        return true
+    }
 
     override val navigationFlow: Flow<Navigation.Menu>
         get() =
@@ -108,8 +115,7 @@ class ComposeNavigationDrawerSheet :
     override fun isShowing(): Boolean = dialog?.isShowing == true
 
     override fun toggleDrawer() {
-        if (drawerViewModel.uiState.value.isAccountSwitcherExpanded) {
-            drawerViewModel.setAccountSwitcherExpanded(false)
+        if (collapseAccountSwitcherIfExpanded()) {
             return
         }
 
@@ -128,6 +134,10 @@ class ComposeNavigationDrawerSheet :
     }
 
     override fun dismiss() {
+        if (collapseAccountSwitcherIfExpanded()) {
+            return
+        }
+
         drawerViewModel.setSheetVisible(false)
         super.dismiss()
     }
