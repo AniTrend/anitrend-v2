@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2026 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.android.navigation.drawer.component.content
 
 import android.os.Bundle
@@ -153,7 +169,8 @@ class NavigationDrawerHostFragment :
             return
         }
 
-        childFragmentManager.beginTransaction()
+        childFragmentManager
+            .beginTransaction()
             .replace<BottomDrawerContent>(
                 R.id.navigationDrawerHostContainer,
                 tag = LEGACY_DRAWER_TAG,
@@ -184,8 +201,7 @@ class NavigationDrawerHostFragment :
         pendingStateActions.forEach(target::addOnStateChangedAction)
     }
 
-    private fun legacyDrawer(): INavigationDrawer? =
-        childFragmentManager.findFragmentByTag(LEGACY_DRAWER_TAG) as? INavigationDrawer
+    private fun legacyDrawer(): INavigationDrawer? = childFragmentManager.findFragmentByTag(LEGACY_DRAWER_TAG) as? INavigationDrawer
 
     private fun composeDrawer(): ComposeNavigationDrawerSheet? =
         childFragmentManager.findFragmentByTag(COMPOSE_DRAWER_TAG) as? ComposeNavigationDrawerSheet
