@@ -111,94 +111,162 @@ class DrawerCutoutShape(
         progress: Float,
         density: Density,
     ) {
-        val cutoutD = with(density) { cutoutDiameter.toPx() }
-        val cutoutM = with(density) { cutoutMargin.toPx() }
-        val cutoutRCR = with(density) { cutoutRoundedCornerRadius.toPx() }
-        val cutoutVO = with(density) { cutoutVerticalOffset.toPx() }
+        when (
+            val geometry =
+                calculateDrawerCutoutGeometry(
+                    width = width,
+                    cutoutDiameter = with(density) { cutoutDiameter.toPx() },
+                    cutoutMargin = with(density) { cutoutMargin.toPx() },
+                    cutoutRoundedCornerRadius = with(density) { cutoutRoundedCornerRadius.toPx() },
+                    cutoutVerticalOffset = with(density) { cutoutVerticalOffset.toPx() },
+                    cutoutProgress = progress,
+                )
+        ) {
+            DrawerCutoutGeometry.Plain -> {
+                // Cutout lifted entirely above the edge — draw a straight line.
+                path.lineTo(width, 0f)
+                return
+            }
+            is DrawerCutoutGeometry.Cutout -> drawCutout(path, width, geometry)
+        }
+    }
 
-        val cradleDiameter = cutoutM * 2 + cutoutD
-        val cradleRadius = cradleDiameter / 2f
-        val roundedCornerOffset = progress * cutoutRCR
-        val middle = width / 2f
-
-        // Vertical offset interpolated so the cradle emerges from the edge.
-        val verticalOffset = progress * cutoutVO + (1 - progress) * cradleRadius
-        val verticalOffsetRatio = verticalOffset / cradleRadius
-
-        if (verticalOffsetRatio >= 1.0f) {
-            // Cutout lifted entirely above the edge — draw a straight line.
+    private fun drawCutout(
+        path: Path,
+        width: Float,
+        geometry: DrawerCutoutGeometry.Cutout,
+    ) {
+        if (geometry.verticalOffsetRatio >= 1.0f) {
             path.lineTo(width, 0f)
             return
         }
 
-        // Distance between the centres of the cutout circle and each rounded-corner
-        // circle, resolved via Pythagoras.
-        val distBetweenCentres = cradleRadius + roundedCornerOffset
-        val distY = verticalOffset + roundedCornerOffset
-        val distX =
-            sqrt(
-                (distBetweenCentres * distBetweenCentres - distY * distY).toDouble(),
-            ).toFloat()
-
-        val leftCornerCircleX = middle - distX
-        val rightCornerCircleX = middle + distX
-
-        val cornerRadiusArcLength =
-            Math.toDegrees(atan((distX / distY).toDouble())).toFloat()
-        val cutoutArcOffset = 90f - cornerRadiusArcLength
-
         // Top edge → left of the cutout rounded corner.
-        path.lineTo(leftCornerCircleX - roundedCornerOffset, 0f)
+        path.lineTo(geometry.leftRoundedCornerCircleX - geometry.roundedCornerOffset, 0f)
 
         // Left rounded-corner arc.
-        // Small circle centred at (leftCornerCircleX, roundedCornerOffset).
-        // Walk CW from north (270°) downward-left.
+        // Small circle centred at (leftRoundedCornerCircleX, roundedCornerOffset).
         path.arcTo(
             rect =
                 Rect(
-                    leftCornerCircleX - roundedCornerOffset,
+                    geometry.leftRoundedCornerCircleX - geometry.roundedCornerOffset,
                     0f,
-                    leftCornerCircleX + roundedCornerOffset,
-                    roundedCornerOffset * 2,
+                    geometry.leftRoundedCornerCircleX + geometry.roundedCornerOffset,
+                    geometry.roundedCornerOffset * 2,
                 ),
-            startAngleDegrees = 270f,
-            sweepAngleDegrees = -cornerRadiusArcLength,
+            startAngleDegrees = geometry.leftRoundedCornerStartAngle,
+            sweepAngleDegrees = geometry.leftRoundedCornerSweep,
             forceMoveTo = false,
         )
 
         // Main cutout arc (concave cradle).
         // Circle centred at (middle, -verticalOffset), radius = cradleRadius.
-        // Walk CW from the left tangent through the bottom to the right tangent.
         path.arcTo(
             rect =
                 Rect(
-                    middle - cradleRadius,
-                    -cradleRadius - verticalOffset,
-                    middle + cradleRadius,
-                    cradleRadius - verticalOffset,
+                    geometry.middle - geometry.cradleRadius,
+                    -geometry.cradleRadius - geometry.verticalOffset,
+                    geometry.middle + geometry.cradleRadius,
+                    geometry.cradleRadius - geometry.verticalOffset,
                 ),
-            startAngleDegrees = 90f + cornerRadiusArcLength,
-            sweepAngleDegrees = 2f * cornerRadiusArcLength,
+            startAngleDegrees = geometry.mainCutoutStartAngle,
+            sweepAngleDegrees = geometry.mainCutoutSweep,
             forceMoveTo = false,
         )
 
         // Right rounded-corner arc.
-        // Small circle centred at (rightCornerCircleX, roundedCornerOffset).
-        // Walk CW from lower-right up to north (270°).
+        // Small circle centred at (rightRoundedCornerCircleX, roundedCornerOffset).
         path.arcTo(
             rect =
                 Rect(
-                    rightCornerCircleX - roundedCornerOffset,
+                    geometry.rightRoundedCornerCircleX - geometry.roundedCornerOffset,
                     0f,
-                    rightCornerCircleX + roundedCornerOffset,
-                    roundedCornerOffset * 2,
+                    geometry.rightRoundedCornerCircleX + geometry.roundedCornerOffset,
+                    geometry.roundedCornerOffset * 2,
                 ),
-            startAngleDegrees = 270f - cornerRadiusArcLength,
-            sweepAngleDegrees = -cornerRadiusArcLength,
+            startAngleDegrees = geometry.rightRoundedCornerStartAngle,
+            sweepAngleDegrees = geometry.rightRoundedCornerSweep,
             forceMoveTo = false,
         )
 
         // Continue top edge to top-right corner.
         path.lineTo(width, 0f)
     }
+}
+
+internal sealed interface DrawerCutoutGeometry {
+    data object Plain : DrawerCutoutGeometry
+
+    data class Cutout(
+        val cradleDiameter: Float,
+        val cradleRadius: Float,
+        val roundedCornerOffset: Float,
+        val middle: Float,
+        val verticalOffset: Float,
+        val verticalOffsetRatio: Float,
+        val leftRoundedCornerCircleX: Float,
+        val rightRoundedCornerCircleX: Float,
+        val leftRoundedCornerStartAngle: Float,
+        val leftRoundedCornerSweep: Float,
+        val mainCutoutStartAngle: Float,
+        val mainCutoutSweep: Float,
+        val rightRoundedCornerStartAngle: Float,
+        val rightRoundedCornerSweep: Float,
+    ) : DrawerCutoutGeometry
+}
+
+internal fun calculateDrawerCutoutGeometry(
+    width: Float,
+    cutoutDiameter: Float,
+    cutoutMargin: Float,
+    cutoutRoundedCornerRadius: Float,
+    cutoutVerticalOffset: Float,
+    cutoutProgress: Float,
+): DrawerCutoutGeometry {
+    if (cutoutDiameter == 0f) {
+        return DrawerCutoutGeometry.Plain
+    }
+
+    val cradleDiameter = cutoutMargin * 2 + cutoutDiameter
+    val cradleRadius = cradleDiameter / 2f
+    val roundedCornerOffset = cutoutProgress * cutoutRoundedCornerRadius
+    val middle = width / 2f
+    val verticalOffset = cutoutProgress * cutoutVerticalOffset + (1 - cutoutProgress) * cradleRadius
+    val verticalOffsetRatio = verticalOffset / cradleRadius
+
+    if (verticalOffsetRatio >= 1.0f) {
+        return DrawerCutoutGeometry.Plain
+    }
+
+    val distanceBetweenCenters = cradleRadius + roundedCornerOffset
+    val distanceY = verticalOffset + roundedCornerOffset
+    val distanceX =
+        sqrt(
+            (distanceBetweenCenters * distanceBetweenCenters - distanceY * distanceY).toDouble(),
+        ).toFloat()
+    val leftRoundedCornerCircleX = middle - distanceX
+    val rightRoundedCornerCircleX = middle + distanceX
+    val cornerRadiusArcLength =
+        Math
+            .toDegrees(
+                atan((distanceX / distanceY).toDouble()),
+            ).toFloat()
+    val cutoutArcOffset = 90f - cornerRadiusArcLength
+
+    return DrawerCutoutGeometry.Cutout(
+        cradleDiameter = cradleDiameter,
+        cradleRadius = cradleRadius,
+        roundedCornerOffset = roundedCornerOffset,
+        middle = middle,
+        verticalOffset = verticalOffset,
+        verticalOffsetRatio = verticalOffsetRatio,
+        leftRoundedCornerCircleX = leftRoundedCornerCircleX,
+        rightRoundedCornerCircleX = rightRoundedCornerCircleX,
+        leftRoundedCornerStartAngle = 270f,
+        leftRoundedCornerSweep = cornerRadiusArcLength,
+        mainCutoutStartAngle = 180f - cutoutArcOffset,
+        mainCutoutSweep = cutoutArcOffset * 2 - 180f,
+        rightRoundedCornerStartAngle = 270f - cornerRadiusArcLength,
+        rightRoundedCornerSweep = cornerRadiusArcLength,
+    )
 }

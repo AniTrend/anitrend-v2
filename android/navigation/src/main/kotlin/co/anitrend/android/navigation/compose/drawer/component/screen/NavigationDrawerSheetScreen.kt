@@ -1,16 +1,25 @@
+/*
+ * Copyright (C) 2026 AniTrend
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 package co.anitrend.android.navigation.compose.drawer.component.screen
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +42,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import co.anitrend.android.core.compose.shape.DrawerCutoutShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -60,6 +68,7 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import co.anitrend.android.core.compose.shape.DrawerCutoutShape
 import co.anitrend.android.core.compose.design.image.AniTrendImage
 import co.anitrend.android.core.extensions.adaptiveIconPainterResource
 import co.anitrend.android.core.helpers.image.model.RequestImage
@@ -69,6 +78,11 @@ import co.anitrend.android.navigation.drawer.model.internal.DrawerEntry
 import co.anitrend.android.navigation.drawer.model.internal.DrawerUiState
 
 private val DrawerRowShape = RoundedCornerShape(20.dp)
+private val DrawerSheetTopCornerRadius = 30.dp
+private val DrawerForegroundTopOffset = 24.dp
+private val DrawerAvatarSize = 48.dp
+private val DrawerAvatarHaloSize = 56.dp
+private val DrawerNavigationContentTopPadding = 42.dp
 
 @Immutable
 private enum class DrawerSheetContentState {
@@ -96,12 +110,6 @@ internal fun NavigationDrawerSheetScreen(
             targetState = contentState,
             label = "drawer_sheet_state",
         )
-    val topCornerRadius by transition.animateDp(
-        label = "top_corner_radius",
-        transitionSpec = { tween(durationMillis = 320, easing = FastOutSlowInEasing) },
-    ) { state ->
-        if (state == DrawerSheetContentState.Navigation) 34.dp else 30.dp
-    }
     val badgeScale by transition.animateFloat(
         label = "badge_scale",
         transitionSpec = { tween(durationMillis = 300, easing = FastOutSlowInEasing) },
@@ -130,56 +138,100 @@ internal fun NavigationDrawerSheetScreen(
             else -> 0f
         }
     }
+    val foregroundAlpha by transition.animateFloat(
+        label = "foreground_alpha",
+        transitionSpec = { tween(durationMillis = 220, easing = FastOutSlowInEasing) },
+    ) { state ->
+        if (state == DrawerSheetContentState.Navigation) 1f else 0f
+    }
+    val foregroundOffset by transition.animateDp(
+        label = "foreground_offset",
+        transitionSpec = { tween(durationMillis = 260, easing = FastOutSlowInEasing) },
+    ) { state ->
+        if (state == DrawerSheetContentState.AccountSwitcher) 18.dp else 0.dp
+    }
+    val accountContentAlpha by transition.animateFloat(
+        label = "account_content_alpha",
+        transitionSpec = {
+            if (targetState == DrawerSheetContentState.AccountSwitcher) {
+                tween(durationMillis = 160, delayMillis = 180, easing = FastOutSlowInEasing)
+            } else {
+                tween(durationMillis = 120, easing = FastOutSlowInEasing)
+            }
+        },
+    ) { state ->
+        if (state == DrawerSheetContentState.AccountSwitcher) 1f else 0f
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.TopCenter,
     ) {
-        MorphingDrawerSurface(
-            topCornerRadius = topCornerRadius,
-            cutoutProgress = cutoutProgress,
+        BackgroundDrawerSurface(
             modifier = Modifier.fillMaxSize(),
         ) {
-            AnimatedContent(
-                targetState = contentState,
-                transitionSpec = {
-                    drawerContentTransform(targetState == DrawerSheetContentState.AccountSwitcher)
-                },
-                label = "drawer_content",
-            ) { state ->
-                when (state) {
-                    DrawerSheetContentState.AccountSwitcher ->
-                        AccountSwitcherContent(
-                            accounts = uiState.accounts,
-                            onAccountClick = onAccountClick,
-                        )
-                    DrawerSheetContentState.Navigation,
-                    DrawerSheetContentState.Closed,
-                    ->
-                        NavigationDrawerContent(
-                            entries = uiState.entries,
-                            enabled = state != DrawerSheetContentState.Closed,
-                            onNavigationClick = onNavigationClick,
-                        )
+            if (accountContentAlpha > 0.01f) {
+                Box(
+                    modifier = Modifier.graphicsLayer { alpha = accountContentAlpha },
+                ) {
+                    AccountSwitcherContent(
+                        accounts = uiState.accounts,
+                        onAccountClick = onAccountClick,
+                    )
                 }
             }
         }
 
-        DrawerSeamBadge(
-            account = uiState.activeAccount,
-            isExpanded = contentState == DrawerSheetContentState.AccountSwitcher,
-            modifier =
-                Modifier
-                    .graphicsLayer { alpha = badgeAlpha }
-                    .scale(badgeScale),
-            onClick = onHeaderClick,
-        )
+        if (badgeAlpha > 0.01f) {
+            DrawerSeamBadge(
+                account = uiState.activeAccount,
+                isExpanded = contentState == DrawerSheetContentState.AccountSwitcher,
+                modifier =
+                    Modifier
+                        .graphicsLayer { alpha = badgeAlpha }
+                        .scale(badgeScale),
+                onClick = onHeaderClick,
+            )
+        }
+
+        if (foregroundAlpha > 0.01f) {
+            ForegroundDrawerSurface(
+                cutoutProgress = cutoutProgress,
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(top = DrawerForegroundTopOffset)
+                        .offset(y = foregroundOffset)
+                        .graphicsLayer { alpha = foregroundAlpha },
+            ) {
+                NavigationDrawerContent(
+                    entries = uiState.entries,
+                    enabled = contentState == DrawerSheetContentState.Navigation,
+                    onNavigationClick = onNavigationClick,
+                )
+            }
+        }
     }
 }
 
 @Composable
-private fun MorphingDrawerSurface(
-    topCornerRadius: androidx.compose.ui.unit.Dp,
+private fun BackgroundDrawerSurface(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(topStart = DrawerSheetTopCornerRadius, topEnd = DrawerSheetTopCornerRadius),
+        color = drawerBackgroundColor(),
+        tonalElevation = 1.dp,
+        shadowElevation = 2.dp,
+    ) {
+        content()
+    }
+}
+
+@Composable
+private fun ForegroundDrawerSurface(
     cutoutProgress: Float,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
@@ -188,50 +240,21 @@ private fun MorphingDrawerSurface(
         modifier = modifier,
         shape =
             DrawerCutoutShape(
-                topCornerRadius = topCornerRadius,
+                topCornerRadius = DrawerSheetTopCornerRadius,
                 cutoutProgress = cutoutProgress,
             ),
-        color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 8.dp,
-        shadowElevation = 8.dp,
+        color = drawerForegroundColor(),
+        tonalElevation = 6.dp,
+        shadowElevation = 12.dp,
     ) {
         Box(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(top = 42.dp),
+                    .padding(top = DrawerNavigationContentTopPadding),
         ) {
             content()
         }
-    }
-}
-
-private fun drawerContentTransform(showingAccounts: Boolean): ContentTransform {
-    val duration = 240
-    return if (showingAccounts) {
-        (fadeIn(animationSpec = tween(durationMillis = duration, delayMillis = 40)) +
-            slideInVertically(
-                animationSpec = tween(durationMillis = duration, easing = FastOutSlowInEasing),
-                initialOffsetY = { it / 8 },
-            )).togetherWith(
-            fadeOut(animationSpec = tween(durationMillis = duration / 2)) +
-                slideOutVertically(
-                    animationSpec = tween(durationMillis = duration, easing = FastOutSlowInEasing),
-                    targetOffsetY = { -it / 16 },
-                ),
-        )
-    } else {
-        (fadeIn(animationSpec = tween(durationMillis = duration, delayMillis = 20)) +
-            slideInVertically(
-                animationSpec = tween(durationMillis = duration, easing = FastOutSlowInEasing),
-                initialOffsetY = { it / 10 },
-            )).togetherWith(
-            fadeOut(animationSpec = tween(durationMillis = duration / 2)) +
-                slideOutVertically(
-                    animationSpec = tween(durationMillis = duration, easing = FastOutSlowInEasing),
-                    targetOffsetY = { it / 12 },
-                ),
-        )
     }
 }
 
@@ -264,28 +287,25 @@ private fun DrawerSeamBadge(
     Surface(
         modifier =
             modifier
-                .offset(y = (-34).dp)
                 .semantics {
                     role = Role.Button
                     contentDescription = actionDescription
                     this.stateDescription = stateDescription
-                }
-                .clickable(onClick = onClick),
+                }.clickable(onClick = onClick),
         shape = CircleShape,
-        color = MaterialTheme.colorScheme.surfaceContainerHigh,
-        tonalElevation = 10.dp,
-        shadowElevation = 10.dp,
+        color = drawerAvatarHaloColor(),
+        tonalElevation = 6.dp,
+        shadowElevation = 8.dp,
     ) {
         Box(
             modifier =
                 Modifier
-                    .size(68.dp)
-                    .padding(5.dp),
+                    .size(DrawerAvatarHaloSize),
             contentAlignment = Alignment.Center,
         ) {
             DrawerAccountAvatar(
                 account = account,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.size(DrawerAvatarSize),
             )
         }
     }
@@ -417,8 +437,7 @@ private fun DrawerMenuRow(
                     role = Role.Button
                     selected = item.isChecked
                     contentDescription = itemLabel
-                }
-                .clickable(enabled = enabled, onClick = onClick)
+                }.clickable(enabled = enabled, onClick = onClick)
                 .padding(horizontal = 14.dp, vertical = 7.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -463,8 +482,7 @@ private fun AccountSwitcherRow(
                     role = Role.Button
                     selected = isActive
                     contentDescription = label
-                }
-                .clickable(onClick = onClick)
+                }.clickable(onClick = onClick)
                 .padding(horizontal = 14.dp, vertical = 7.dp),
         horizontalArrangement = Arrangement.spacedBy(14.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -543,8 +561,35 @@ private fun accountTitle(account: Account): String =
 
 @Composable
 private fun selectedDrawerRowContainerColor(): Color =
-    if (MaterialTheme.colorScheme.background.luminance() > 0.5f) {
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.82f)
+    if (isLightTheme()) {
+        MaterialTheme.colorScheme.surfaceContainerHigh
     } else {
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.52f)
+        MaterialTheme.colorScheme.surfaceContainerHighest
     }
+
+@Composable
+private fun drawerBackgroundColor(): Color =
+    if (isLightTheme()) {
+        MaterialTheme.colorScheme.surfaceContainerLow
+    } else {
+        MaterialTheme.colorScheme.surfaceContainerLowest
+    }
+
+@Composable
+private fun drawerForegroundColor(): Color =
+    if (isLightTheme()) {
+        MaterialTheme.colorScheme.surfaceContainerLowest
+    } else {
+        MaterialTheme.colorScheme.surfaceContainerHigh
+    }
+
+@Composable
+private fun drawerAvatarHaloColor(): Color =
+    if (isLightTheme()) {
+        MaterialTheme.colorScheme.surfaceContainerHighest
+    } else {
+        MaterialTheme.colorScheme.surfaceContainer
+    }
+
+@Composable
+private fun isLightTheme(): Boolean = MaterialTheme.colorScheme.background.luminance() > 0.5f
