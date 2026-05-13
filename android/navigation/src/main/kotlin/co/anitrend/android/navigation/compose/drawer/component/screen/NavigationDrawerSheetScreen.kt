@@ -17,7 +17,6 @@
 package co.anitrend.android.navigation.compose.drawer.component.screen
 
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -34,7 +33,6 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
@@ -83,6 +81,7 @@ private val DrawerForegroundTopOffset = 24.dp
 private val DrawerAvatarSize = 48.dp
 private val DrawerAvatarHaloSize = 56.dp
 private val DrawerNavigationContentTopPadding = 42.dp
+private const val DrawerForegroundExitTranslationFraction = 0.15f
 
 @Immutable
 private enum class DrawerSheetContentState {
@@ -90,6 +89,34 @@ private enum class DrawerSheetContentState {
     Navigation,
     AccountSwitcher,
 }
+
+internal data class DrawerSandwichAnimation(
+    val navigationProgress: Float,
+    val accountProgress: Float,
+    val foregroundAlpha: Float,
+    val avatarAlpha: Float,
+    val cutoutProgress: Float,
+)
+
+internal fun calculateDrawerSandwichAnimation(progress: Float): DrawerSandwichAnimation {
+    val clampedProgress = progress.coerceIn(0f, 1f)
+    val navigationProgress = clampedProgress.mapProgress(start = 0f, end = 0.5f)
+    val accountProgress = clampedProgress.mapProgress(start = 0.5f, end = 1f)
+    val navigationVisibility = 1f - navigationProgress
+
+    return DrawerSandwichAnimation(
+        navigationProgress = navigationProgress,
+        accountProgress = accountProgress,
+        foregroundAlpha = navigationVisibility,
+        avatarAlpha = navigationVisibility,
+        cutoutProgress = navigationVisibility,
+    )
+}
+
+private fun Float.mapProgress(
+    start: Float,
+    end: Float,
+): Float = ((this - start) / (end - start)).coerceIn(0f, 1f)
 
 @Composable
 internal fun NavigationDrawerSheetScreen(
@@ -110,69 +137,25 @@ internal fun NavigationDrawerSheetScreen(
             targetState = contentState,
             label = "drawer_sheet_state",
         )
-    val badgeScale by transition.animateFloat(
-        label = "badge_scale",
+    val sandwichProgress by transition.animateFloat(
+        label = "sandwich_progress",
         transitionSpec = { tween(durationMillis = 300, easing = FastOutSlowInEasing) },
-    ) { state ->
-        when (state) {
-            DrawerSheetContentState.Navigation -> 1f
-            DrawerSheetContentState.AccountSwitcher -> 0.78f
-            DrawerSheetContentState.Closed -> 0.86f
-        }
-    }
-    val badgeAlpha by transition.animateFloat(
-        label = "badge_alpha",
-        transitionSpec = { tween(durationMillis = 260) },
-    ) { state ->
-        when (state) {
-            DrawerSheetContentState.Navigation -> 1f
-            else -> 0f
-        }
-    }
-    val cutoutProgress by transition.animateFloat(
-        label = "cutout_progress",
-        transitionSpec = { tween(durationMillis = 320, easing = FastOutSlowInEasing) },
-    ) { state ->
-        when (state) {
-            DrawerSheetContentState.Navigation -> 1f
-            else -> 0f
-        }
-    }
-    val foregroundAlpha by transition.animateFloat(
-        label = "foreground_alpha",
-        transitionSpec = { tween(durationMillis = 220, easing = FastOutSlowInEasing) },
-    ) { state ->
-        if (state == DrawerSheetContentState.Navigation) 1f else 0f
-    }
-    val foregroundOffset by transition.animateDp(
-        label = "foreground_offset",
-        transitionSpec = { tween(durationMillis = 260, easing = FastOutSlowInEasing) },
-    ) { state ->
-        if (state == DrawerSheetContentState.AccountSwitcher) 18.dp else 0.dp
-    }
-    val accountContentAlpha by transition.animateFloat(
-        label = "account_content_alpha",
-        transitionSpec = {
-            if (targetState == DrawerSheetContentState.AccountSwitcher) {
-                tween(durationMillis = 160, delayMillis = 180, easing = FastOutSlowInEasing)
-            } else {
-                tween(durationMillis = 120, easing = FastOutSlowInEasing)
-            }
-        },
     ) { state ->
         if (state == DrawerSheetContentState.AccountSwitcher) 1f else 0f
     }
+    val sandwichAnimation = calculateDrawerSandwichAnimation(sandwichProgress)
 
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.TopCenter,
     ) {
         BackgroundDrawerSurface(
+            isAccountSwitcher = contentState == DrawerSheetContentState.AccountSwitcher,
             modifier = Modifier.fillMaxSize(),
         ) {
-            if (accountContentAlpha > 0.01f) {
+            if (sandwichAnimation.accountProgress > 0.01f) {
                 Box(
-                    modifier = Modifier.graphicsLayer { alpha = accountContentAlpha },
+                    modifier = Modifier.graphicsLayer { alpha = sandwichAnimation.accountProgress },
                 ) {
                     AccountSwitcherContent(
                         accounts = uiState.accounts,
@@ -182,27 +165,29 @@ internal fun NavigationDrawerSheetScreen(
             }
         }
 
-        if (badgeAlpha > 0.01f) {
+        if (sandwichAnimation.avatarAlpha > 0.01f && contentState != DrawerSheetContentState.Closed) {
             DrawerSeamBadge(
                 account = uiState.activeAccount,
                 isExpanded = contentState == DrawerSheetContentState.AccountSwitcher,
                 modifier =
                     Modifier
-                        .graphicsLayer { alpha = badgeAlpha }
-                        .scale(badgeScale),
+                        .graphicsLayer { alpha = sandwichAnimation.avatarAlpha }
+                        .scale(sandwichAnimation.avatarAlpha),
                 onClick = onHeaderClick,
             )
         }
 
-        if (foregroundAlpha > 0.01f) {
+        if (sandwichAnimation.foregroundAlpha > 0.01f && contentState != DrawerSheetContentState.Closed) {
             ForegroundDrawerSurface(
-                cutoutProgress = cutoutProgress,
+                cutoutProgress = sandwichAnimation.cutoutProgress,
                 modifier =
                     Modifier
                         .fillMaxSize()
                         .padding(top = DrawerForegroundTopOffset)
-                        .offset(y = foregroundOffset)
-                        .graphicsLayer { alpha = foregroundAlpha },
+                        .graphicsLayer {
+                            alpha = sandwichAnimation.foregroundAlpha
+                            translationY = size.height * DrawerForegroundExitTranslationFraction * sandwichAnimation.navigationProgress
+                        },
             ) {
                 NavigationDrawerContent(
                     entries = uiState.entries,
@@ -216,13 +201,14 @@ internal fun NavigationDrawerSheetScreen(
 
 @Composable
 private fun BackgroundDrawerSurface(
+    isAccountSwitcher: Boolean,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(topStart = DrawerSheetTopCornerRadius, topEnd = DrawerSheetTopCornerRadius),
-        color = drawerBackgroundColor(),
+        color = if (isAccountSwitcher) drawerAccountSheetColor() else drawerBackgroundColor(),
         tonalElevation = 1.dp,
         shadowElevation = 2.dp,
     ) {
@@ -582,6 +568,9 @@ private fun drawerForegroundColor(): Color =
     } else {
         MaterialTheme.colorScheme.surfaceContainerHigh
     }
+
+@Composable
+private fun drawerAccountSheetColor(): Color = drawerForegroundColor()
 
 @Composable
 private fun drawerAvatarHaloColor(): Color =
