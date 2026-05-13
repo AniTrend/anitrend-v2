@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 AniTrend
+ * Copyright (C) 2026 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,18 +14,21 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package co.anitrend.android.navigation.drawer.model.internal
 
-import co.anitrend.buildSrc.Libraries
+internal object DrawerSelectionResolver {
+    fun resolve(
+        currentSelection: DrawerDestination,
+        entries: List<DrawerEntry>,
+    ): DrawerDestination {
+        val availableSelections =
+            entries
+                .filterIsInstance<DrawerEntry.Item>()
+                .filter(DrawerEntry.Item::isCheckable)
+                .map(DrawerEntry.Item::destination)
 
-plugins {
-    id("co.anitrend.plugin")
-}
-
-dependencies {
-    implementation(libs.anitrend.arch.recycler)
-    implementation(project(Libraries.AniTrend.Data.edge))
-}
-
-android {
-    namespace = "co.anitrend.android.navigation.drawer"
+        return currentSelection.takeIf(availableSelections::contains)
+            ?: availableSelections.firstOrNull()
+            ?: DrawerDestination.Home
+    }
 }

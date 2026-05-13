@@ -43,20 +43,18 @@ import co.anitrend.android.navigation.drawer.adapter.AccountAdapter
 import co.anitrend.android.navigation.drawer.adapter.NavigationAdapter
 import co.anitrend.android.navigation.drawer.component.content.contract.INavigationDrawer
 import co.anitrend.android.navigation.drawer.component.presenter.DrawerPresenter
-import co.anitrend.android.navigation.drawer.component.viewmodel.AccountViewModel
-import co.anitrend.android.navigation.drawer.component.viewmodel.NavigationViewModel
+import co.anitrend.android.navigation.drawer.component.viewmodel.DrawerViewModel
 import co.anitrend.android.navigation.drawer.databinding.BottomNavigationDrawerBinding
+import co.anitrend.android.navigation.drawer.model.internal.DrawerLegacyNavigationAdapter
 import co.anitrend.android.navigation.drawer.model.navigation.Navigation
 import co.anitrend.android.navigation.drawer.model.state.SandwichState
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.MaterialShapeDrawable
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -72,11 +70,7 @@ class BottomDrawerContent(
     INavigationDrawer {
     private val presenter by inject<DrawerPresenter>()
 
-    private val accountViewModel by viewModel<AccountViewModel>(
-        ownerProducer = { requireActivity() },
-    )
-
-    private val navigationViewModel by viewModel<NavigationViewModel>(
+    private val drawerViewModel by viewModel<DrawerViewModel>(
         ownerProducer = { requireActivity() },
     )
 
@@ -96,11 +90,14 @@ class BottomDrawerContent(
         presenter.createForegroundShape(requireBinding().sheetForegroundContainer)
     }
 
-    private val mutableNavigationStateFlow =
-        MutableStateFlow<Navigation.Menu?>(null)
-
-    override val navigationFlow: Flow<Navigation.Menu> =
-        mutableNavigationStateFlow.filterNotNull()
+    override val navigationFlow: Flow<Navigation.Menu>
+        get() =
+            drawerViewModel.events.mapNotNull { event ->
+                when (event) {
+                    is co.anitrend.android.navigation.drawer.model.internal.DrawerEvent.Navigate ->
+                        DrawerLegacyNavigationAdapter.toLegacy(event.item)
+                }
+            }
 
     private var sandwichState: SandwichState = SandwichState.CLOSED
     private var sandwichAnimator: ValueAnimator? = null
@@ -112,7 +109,11 @@ class BottomDrawerContent(
     private val closeDrawerOnBackPressed =
         object : OnBackPressedCallback(false) {
             override fun handleOnBackPressed() {
-                dismiss()
+                if (sandwichState == SandwichState.OPEN) {
+                    toggleSandwich()
+                } else {
+                    dismiss()
+                }
             }
         }
 
@@ -208,6 +209,7 @@ class BottomDrawerContent(
      * Called when the [SandwichState] of the sandwiching account picker has changed.
      */
     private fun onSandwichStateChanged(state: SandwichState) {
+        drawerViewModel.setAccountSwitcherExpanded(state == SandwichState.OPEN)
         // Change visibility/clickability of views which obstruct user interaction with
         // the account list.
         when (state) {
@@ -236,17 +238,11 @@ class BottomDrawerContent(
         )
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                accountViewModel()
-            }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 navigationAdapter.clickableFlow
                     .filterIsInstance<ClickableItem.Data<Navigation.Menu>>()
                     .onEach { clickable ->
                         val model = clickable.data
-                        setCheckedItem(model.id)
-                        mutableNavigationStateFlow.value = model
+                        drawerViewModel.onLegacyMenuSelected(model.id)
                     }.catch { cause: Throwable ->
                         Timber.e(
                             cause,
@@ -255,32 +251,22 @@ class BottomDrawerContent(
                     }.collect()
             }
         }
-        lifecycleScope.launch {
-            presenter.settings.isAuthenticated.flow
-                .onEach { isAuthenticated ->
-                    accountViewModel()
-                    navigationViewModel(isAuthenticated)
-                }.catch { cause: Throwable ->
-                    Timber.e(cause)
-                }.collect()
-        }
     }
 
     override fun setUpViewModelObserver() {
-        accountViewModel.userAccounts.observe(viewLifecycleOwner) {
-            accountAdapter.submitList(it)
-        }
-        accountViewModel.activeAccount.observe(viewLifecycleOwner) { account ->
-            presenter.applyProfilePicture(requireBinding().profileImageView, account)
-        }
-        navigationViewModel.navigationItems
-            .onEach {
-                navigationAdapter.submitList(it)
-            }.catch {
-                Timber.e(it)
-            }.launchIn(lifecycleScope)
         lifecycleScope.launch {
-            setCheckedItem(R.id.navigation_home)
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                drawerViewModel.uiState
+                    .onEach { state ->
+                        accountAdapter.submitList(state.accounts)
+                        navigationAdapter.submitList(
+                            DrawerLegacyNavigationAdapter.map(state.entries),
+                        )
+                        presenter.applyProfilePicture(requireBinding().profileImageView, state.activeAccount)
+                    }.catch { throwable ->
+                        Timber.e(throwable, "Unable to observe drawer ui state")
+                    }.collect()
+            }
         }
     }
 
@@ -312,6 +298,7 @@ class BottomDrawerContent(
                         sheet: View,
                         newState: Int,
                     ) {
+                        drawerViewModel.setSheetVisible(newState != BottomSheetBehavior.STATE_HIDDEN)
                         sandwichAnimator?.cancel()
                         sandwichProgress = 0F
                     }
@@ -360,10 +347,12 @@ class BottomDrawerContent(
     }
 
     override fun show() {
+        drawerViewModel.setSheetVisible(true)
         behavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
     }
 
     override fun dismiss() {
+        drawerViewModel.setSheetVisible(false)
         behavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
@@ -386,7 +375,7 @@ class BottomDrawerContent(
     override suspend fun setCheckedItem(
         @IdRes selectedItem: Int,
     ) {
-        navigationViewModel.setNavigationMenuItemChecked(selectedItem)
+        drawerViewModel.setCheckedItem(selectedItem)
     }
 
     override fun toggleMenuVisibility(showDrawerMenu: Boolean) {
