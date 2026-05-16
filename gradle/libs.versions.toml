@@ -61,7 +61,7 @@ square-leakcanary = "2.14"
 square-okhttp = "5.3.2"
 square-retrofit = "3.0.0"
 
-google-devtools-ksp = "2.3.7"
+google-devtools-ksp = "2.3.8"
 
 [plugins]
 jetbrains-kotlin-plugin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
