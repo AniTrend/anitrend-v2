@@ -195,9 +195,9 @@ anitrend-emojify-kotlinx = { module = "com.github.anitrend.android-emojify:kotli
 anitrend-markdown = { module = "com.github.anitrend:support-markdown", version.ref = "anitrend-markdown" }
 anitrend-retrofit-graphql = { module = "com.github.anitrend:retrofit-graphql", version.ref = "anitrend-retrofit" }
 
-anitrend-querybuilder-annotation = { module = "com.github.anitrend.support-query-builder:core", version.ref = "anitrend-querybuilder" }
-anitrend-querybuilder-core = { module = "com.github.anitrend.support-query-builder:annotations", version.ref = "anitrend-querybuilder" }
-anitrend-querybuilder-core-ext = { module = "com.github.anitrend.support-query-builder:core-ext", version.ref = "anitrend-querybuilder" }
+anitrend-querybuilder-annotation = { module = "com.github.anitrend.support-query-builder:annotations", version.ref = "anitrend-querybuilder" }
+anitrend-querybuilder-core = { module = "com.github.anitrend.support-query-builder:core", version.ref = "anitrend-querybuilder" }
+anitrend-querybuilder-core-ext = { module = "com.github.anitrend.support-query-builder:ext", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-processor = { module = "com.github.anitrend.support-query-builder:processor", version.ref = "anitrend-querybuilder" }
 
 cash-copper = { module = "app.cash.copper:copper-flow", version = "1.0.0" }
