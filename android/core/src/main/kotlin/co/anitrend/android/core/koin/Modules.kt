@@ -48,6 +48,7 @@ import co.anitrend.data.settings.cache.ICacheSettings
 import co.anitrend.data.settings.connectivity.IConnectivitySettings
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.developer.IDeveloperSettings
+import co.anitrend.data.settings.feature.IFeatureFlagSetting
 import co.anitrend.data.settings.notification.INotificationSettings
 import co.anitrend.data.settings.power.IPowerSettings
 import co.anitrend.data.settings.privacy.IPrivacySettings
@@ -85,6 +86,7 @@ private val coreModule =
                 ICacheSettings::class,
                 ISyncSettings::class,
                 IDeveloperSettings::class,
+                IFeatureFlagSetting::class,
             )
 
         single<ISupportDispatcher> {

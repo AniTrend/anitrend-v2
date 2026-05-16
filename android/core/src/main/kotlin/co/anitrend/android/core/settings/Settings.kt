@@ -27,6 +27,7 @@ import co.anitrend.arch.extension.settings.EnumSetting
 import co.anitrend.arch.extension.settings.FloatSetting
 import co.anitrend.arch.extension.settings.IntSetting
 import co.anitrend.arch.extension.settings.LongSetting
+import co.anitrend.arch.extension.settings.StringSetting
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
 import co.anitrend.data.settings.cache.ICacheSettings
@@ -34,6 +35,8 @@ import co.anitrend.data.settings.connectivity.IConnectivitySettings
 import co.anitrend.data.settings.customize.ICustomizationSettings
 import co.anitrend.data.settings.customize.common.PreferredViewMode
 import co.anitrend.data.settings.developer.IDeveloperSettings
+import co.anitrend.data.settings.feature.FeatureFlags
+import co.anitrend.data.settings.feature.IFeatureFlagSetting
 import co.anitrend.data.settings.notification.INotificationSettings
 import co.anitrend.data.settings.power.IPowerSettings
 import co.anitrend.data.settings.privacy.IPrivacySettings
@@ -60,7 +63,8 @@ class Settings(
     IUserSettings,
     ICacheSettings,
     ISyncSettings,
-    IDeveloperSettings {
+    IDeveloperSettings,
+    IFeatureFlagSetting {
     override val locale =
         EnumSetting(
             key = R.string.settings_configuration_locale,
@@ -260,4 +264,30 @@ class Settings(
             resources = context.resources,
             preference = this,
         )
+
+    override val featureFlags =
+        StringSetting(
+            key = R.string.settings_feature_flags,
+            default = FeatureFlags.EMPTY,
+            resources = context.resources,
+            preference = this,
+        )
+
+    private val featureFlagsMigrated =
+        BooleanSetting(
+            key = R.string.settings_feature_flags_migrated,
+            default = false,
+            resources = context.resources,
+            preference = this,
+        )
+
+    init {
+        featureFlags.value =
+            FeatureFlags.migrateLegacyComposeUi(
+                csv = featureFlags.value,
+                legacyEnabled = experimentalComposeUi.value,
+                migrationComplete = featureFlagsMigrated.value,
+            )
+        featureFlagsMigrated.value = true
+    }
 }

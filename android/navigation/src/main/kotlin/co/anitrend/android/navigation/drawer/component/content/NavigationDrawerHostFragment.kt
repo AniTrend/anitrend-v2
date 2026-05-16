@@ -20,10 +20,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.android.core.components.sheet.action.contract.OnSlideAction
 import co.anitrend.android.core.components.sheet.action.contract.OnStateChangedAction
-import co.anitrend.data.settings.developer.IDeveloperSettings
 import co.anitrend.android.navigation.compose.drawer.component.content.ComposeNavigationDrawerSheet
 import co.anitrend.android.navigation.drawer.R
 import co.anitrend.android.navigation.drawer.component.content.contract.INavigationDrawer
@@ -31,6 +29,9 @@ import co.anitrend.android.navigation.drawer.component.viewmodel.DrawerViewModel
 import co.anitrend.android.navigation.drawer.model.internal.DrawerEvent
 import co.anitrend.android.navigation.drawer.model.internal.DrawerLegacyNavigationAdapter
 import co.anitrend.android.navigation.drawer.model.navigation.Navigation
+import co.anitrend.data.settings.feature.FeatureFlag
+import co.anitrend.data.settings.feature.FeatureFlags
+import co.anitrend.data.settings.feature.IFeatureFlagSetting
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
 import org.koin.android.ext.android.inject
@@ -40,14 +41,17 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class NavigationDrawerHostFragment :
     Fragment(R.layout.navigation_drawer_host),
     INavigationDrawer {
-    private val developerSettings by inject<IDeveloperSettings>()
+    private val featureFlagSetting by inject<IFeatureFlagSetting>()
 
     private val drawerViewModel by viewModel<DrawerViewModel>(
         ownerProducer = { requireActivity() },
     )
 
-    private val useComposeDrawer by lazy(UNSAFE) {
-        developerSettings.experimentalComposeUi.value
+    private val useComposeDrawer: Boolean by lazy(LazyThreadSafetyMode.NONE) {
+        FeatureFlags.isEnabled(
+            csv = featureFlagSetting.featureFlags.value,
+            flag = FeatureFlag.EXPERIMENTAL_COMPOSE_UI,
+        )
     }
 
     private val pendingSlideActions = linkedSetOf<OnSlideAction>()

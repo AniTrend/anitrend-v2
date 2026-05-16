@@ -23,6 +23,7 @@ import androidx.compose.material.icons.outlined.BatterySaver
 import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material.icons.outlined.DeveloperBoard
 import androidx.compose.material.icons.outlined.FilterList
+import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material.icons.outlined.Interests
 import androidx.compose.material.icons.outlined.LayersClear
 import androidx.compose.material.icons.outlined.Memory
@@ -38,12 +39,14 @@ import co.anitrend.android.core.helpers.notification.hasNotificationPermissionFo
 import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.settings.common.locale.ILocaleSettings
 import co.anitrend.android.core.settings.common.theme.IThemeSettings
-import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale.Companion.asLocale
 import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale
+import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale.Companion.asLocale
 import co.anitrend.android.core.settings.helper.theme.model.AniTrendTheme
 import co.anitrend.core.presenter.CorePresenter
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.settings.cache.ICacheSettings
+import co.anitrend.data.settings.feature.FeatureFlag
+import co.anitrend.data.settings.feature.FeatureFlags
 import co.anitrend.data.settings.notification.INotificationSettings
 import co.anitrend.data.settings.power.IPowerSettings
 import co.anitrend.data.settings.privacy.IPrivacySettings
@@ -63,6 +66,16 @@ class SettingsPresenter(
     settings: Settings,
     private val preferenceBuilder: IPreferenceBuilder,
 ) : CorePresenter(context, settings) {
+    data class DeveloperSettingsState(
+        val automaticHeapDump: Boolean,
+        val showLeakLauncher: Boolean,
+        val clearDataOnSwipeRefresh: Boolean,
+    )
+
+    data class FeatureFlagSettingsState(
+        val featureFlags: String,
+    )
+
     private fun themeLabel(theme: AniTrendTheme): String =
         when (theme) {
             AniTrendTheme.SYSTEM -> context.getString(co.anitrend.android.core.R.string.global_label_system)
@@ -350,7 +363,10 @@ class SettingsPresenter(
         return preferenceBuilder.build()
     }
 
-    fun getDeveloperSettingsItems(navigateTo: (SettingsRouter.Destination) -> Unit): List<SettingItem> {
+    fun getDeveloperSettingsItems(
+        state: DeveloperSettingsState,
+        navigateTo: (SettingsRouter.Destination) -> Unit,
+    ): List<SettingItem> {
         if (!BuildConfig.DEBUG) {
             return listOf(
                 SettingItem.HintCard(
@@ -388,42 +404,66 @@ class SettingsPresenter(
                 id = "developer_settings_runtime_behavior",
                 title = context.getString(co.anitrend.settings.R.string.preference_category_title_developer_runtime_behavior),
             ),
+            SettingItem.ClickableSetting(
+                id = "feature_flags",
+                title = context.getString(co.anitrend.settings.R.string.preference_title_feature_flags),
+                summary = context.getString(co.anitrend.settings.R.string.preference_summary_feature_flags),
+                icon = Icons.Outlined.Flag,
+                currentValue = { context.getString(co.anitrend.settings.R.string.label_settings_state_debug) },
+                onClick = { navigateTo(SettingsRouter.Destination.FEATURE_FLAGS) },
+            ),
             SettingItem.SwitchSetting(
                 id = "heap_dump",
                 title = context.getString(co.anitrend.settings.R.string.preference_title_heap_dump),
                 summary = context.getString(co.anitrend.settings.R.string.preference_summary_heap),
                 icon = Icons.Outlined.Memory,
-                onClick = { settings.automaticHeapDump.value },
+                onClick = { state.automaticHeapDump },
                 onValueChange = { newValue -> settings.automaticHeapDump.value = newValue },
-                enabled = { true },
             ),
             SettingItem.SwitchSetting(
                 id = "show_leak_launcher",
                 title = context.getString(co.anitrend.settings.R.string.preference_title_show_leak_launcher),
                 summary = context.getString(co.anitrend.settings.R.string.preference_summary_show_leak_launcher),
                 icon = Icons.Outlined.DeveloperBoard,
-                onClick = { settings.showLeakLauncher.value },
+                onClick = { state.showLeakLauncher },
                 onValueChange = { newValue -> settings.showLeakLauncher.value = newValue },
-                enabled = { true },
-            ),
-            SettingItem.SwitchSetting(
-                id = "experimental_compose_ui",
-                title = context.getString(co.anitrend.settings.R.string.preference_title_experimental_compose_ui),
-                summary = context.getString(co.anitrend.settings.R.string.preference_summary_experimental_compose_ui),
-                icon = Icons.Outlined.DeveloperBoard,
-                onClick = { settings.experimentalComposeUi.value },
-                onValueChange = { newValue -> settings.experimentalComposeUi.value = newValue },
-                enabled = { true },
             ),
             SettingItem.SwitchSetting(
                 id = "clear_db_on_refresh",
                 title = context.getString(co.anitrend.settings.R.string.preference_title_refresh_behavior_config),
                 summary = context.getString(co.anitrend.settings.R.string.preference_summary_refresh_behavior_config),
                 icon = Icons.Outlined.LayersClear,
-                onClick = { settings.clearDataOnSwipeRefresh.value },
+                onClick = { state.clearDataOnSwipeRefresh },
                 onValueChange = { newValue -> settings.clearDataOnSwipeRefresh.value = newValue },
-                enabled = { true },
             ),
         )
     }
+
+    fun getFeatureFlagSettingsItems(state: FeatureFlagSettingsState): List<SettingItem> =
+        listOf(
+            SettingItem.CategoryHeader(
+                id = "feature_flags_user_interface",
+                title = context.getString(co.anitrend.settings.R.string.preference_category_title_feature_flags_user_interface),
+            ),
+            SettingItem.SwitchSetting(
+                id = FeatureFlag.EXPERIMENTAL_COMPOSE_UI.key,
+                title = context.getString(co.anitrend.settings.R.string.preference_title_experimental_compose_ui),
+                summary = context.getString(co.anitrend.settings.R.string.preference_summary_experimental_compose_ui),
+                icon = Icons.Outlined.DeveloperBoard,
+                onClick = {
+                    FeatureFlags.isEnabled(
+                        csv = state.featureFlags,
+                        flag = FeatureFlag.EXPERIMENTAL_COMPOSE_UI,
+                    )
+                },
+                onValueChange = { newValue ->
+                    settings.featureFlags.value =
+                        FeatureFlags.setEnabled(
+                            csv = settings.featureFlags.value,
+                            flag = FeatureFlag.EXPERIMENTAL_COMPOSE_UI,
+                            enabled = newValue,
+                        )
+                },
+            ),
+        )
 }

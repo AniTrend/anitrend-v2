@@ -28,6 +28,7 @@
     <string name="preference_group_title_developer_settings">Developer Settings</string>
     <string name="preference_category_title_developer_diagnostics">Diagnostics</string>
     <string name="preference_category_title_developer_runtime_behavior">Runtime behavior</string>
+    <string name="preference_category_title_feature_flags_user_interface">User interface</string>
 
     <!-- Preference Titles -->
     <string name="preference_title_accounts">Accounts</string>
@@ -50,6 +51,8 @@
     <string name="preference_title_manage_logs">Manage logs</string>
     <!-- Primary diagnostics destination entry for WorkManager overview -->
     <string name="preference_title_work_manager_tasks">Work manager tasks</string>
+    <!-- Developer destination entry for CSV-backed feature flags -->
+    <string name="preference_title_feature_flags">Feature flags</string>
 
     <!-- Preference Summaries -->
     <string name="preference_summary_accounts">Access information about your accounts</string>
@@ -107,6 +110,8 @@
     <string name="preference_summary_manage_logs">Audit application logs</string>
     <!-- Summary for WorkManager task entry in developer settings -->
     <string name="preference_summary_work_manager_tasks">Inspect and manage background tasks</string>
+    <!-- Summary for the developer feature flags destination -->
+    <string name="preference_summary_feature_flags">Opt in to feature-specific experiments</string>
 
     <!-- Title shown when developer settings are opened in non-debug scenarios -->
     <string name="title_settings_developer_unavailable">Developer options unavailable</string>

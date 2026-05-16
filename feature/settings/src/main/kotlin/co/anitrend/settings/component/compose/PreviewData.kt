@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DeveloperBoard
+import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Memory
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Refresh
@@ -30,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import co.anitrend.android.core.settings.helper.locale.model.AniTrendLocale
 import co.anitrend.android.core.settings.helper.theme.model.AniTrendTheme
+import co.anitrend.data.settings.feature.FeatureFlag
 import co.anitrend.settings.R
 import co.anitrend.settings.model.SettingItem
 
@@ -161,6 +163,13 @@ internal fun previewDeveloperData(): List<SettingItem> =
             id = "developer_settings_runtime_behavior",
             title = stringResource(R.string.preference_category_title_developer_runtime_behavior),
         ),
+        SettingItem.ClickableSetting(
+            id = "feature_flags",
+            title = stringResource(R.string.preference_title_feature_flags),
+            summary = stringResource(R.string.preference_summary_feature_flags),
+            icon = Icons.Default.Flag,
+            onClick = { },
+        ),
         SettingItem.SwitchSetting(
             id = "clear_on_refresh",
             title = stringResource(R.string.preference_title_refresh_behavior_config),
@@ -175,6 +184,23 @@ internal fun previewDeveloperData(): List<SettingItem> =
             summary = stringResource(R.string.preference_summary_heap),
             icon = Icons.Default.Memory,
             onClick = { true },
+            onValueChange = { },
+        ),
+    )
+
+@Composable
+internal fun previewFeatureFlagData(enabledFlag: FeatureFlag? = null): List<SettingItem> =
+    listOf(
+        SettingItem.CategoryHeader(
+            id = "feature_flags_user_interface",
+            title = stringResource(R.string.preference_category_title_feature_flags_user_interface),
+        ),
+        SettingItem.SwitchSetting(
+            id = FeatureFlag.EXPERIMENTAL_COMPOSE_UI.key,
+            title = stringResource(R.string.preference_title_experimental_compose_ui),
+            summary = stringResource(R.string.preference_summary_experimental_compose_ui),
+            icon = Icons.Default.DeveloperBoard,
+            onClick = { enabledFlag == FeatureFlag.EXPERIMENTAL_COMPOSE_UI },
             onValueChange = { },
         ),
     )

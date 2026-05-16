@@ -29,6 +29,7 @@ import co.anitrend.navigation.SettingsRouter
 import co.anitrend.settings.component.content.anilist.AniListSettingsScreen
 import co.anitrend.settings.component.content.account.AccountScreen
 import co.anitrend.settings.component.content.developer.DeveloperScreen
+import co.anitrend.settings.component.content.featureflags.FeatureFlagsScreen
 import co.anitrend.settings.component.content.log.LogViewerScreen
 import co.anitrend.settings.component.content.task.TaskScreen
 import co.anitrend.settings.model.SettingItem
@@ -40,6 +41,7 @@ import co.anitrend.settings.component.content.theme.ThemeScreen
 import co.anitrend.settings.component.content.notification.NotificationScreen
 import co.anitrend.settings.component.content.sync.SynchronizationScreen
 import co.anitrend.settings.component.content.storage.StorageScreen
+import co.anitrend.settings.component.presenter.SettingsPresenter
 
 @Composable
 private fun SettingsContent(
@@ -53,7 +55,7 @@ private fun SettingsContent(
 fun SettingsContentScreen(
     navigationController: NavHostController,
     settingsItems: List<SettingItem>,
-    developerSettingsItems: List<SettingItem>,
+    presenter: SettingsPresenter,
     onBackPress: () -> Unit,
 ) {
     DefaultScaffold(onBackPress = onBackPress) { padding ->
@@ -137,7 +139,18 @@ fun SettingsContentScreen(
             composable(
                 route = SettingsRouter.Destination.DEVELOPER.name,
                 content = {
-                    DeveloperScreen(settingsItems = developerSettingsItems)
+                    DeveloperScreen(
+                        presenter = presenter,
+                        navigateTo = {
+                            navigationController.navigate(it.name)
+                        },
+                    )
+                },
+            )
+            composable(
+                route = SettingsRouter.Destination.FEATURE_FLAGS.name,
+                content = {
+                    FeatureFlagsScreen(presenter = presenter)
                 },
             )
             composable(
