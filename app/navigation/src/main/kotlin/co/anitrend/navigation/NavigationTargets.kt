@@ -135,6 +135,7 @@ object SettingsRouter : NavigationRouter() {
         SYNCHRONIZATION,
         STORAGE,
         DEVELOPER,
+        FEATURE_FLAGS,
         LOGS,
         TASK,
     }

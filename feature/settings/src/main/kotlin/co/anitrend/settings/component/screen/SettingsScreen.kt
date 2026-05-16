@@ -18,9 +18,6 @@ package co.anitrend.settings.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.lifecycle.liveData
 import androidx.navigation.compose.rememberNavController
 import co.anitrend.arch.domain.entities.LoadState
@@ -44,28 +41,16 @@ class SettingsScreen : AniTrendScreen() {
                     param = IParam.None,
                 ) {
                     val navController = rememberNavController()
-                    val settingItems by remember {
-                        derivedStateOf {
-                            presenter.getSettingsItems(
-                                navigateTo = {
-                                    navController.navigate(route = it.name)
-                                },
-                            )
-                        }
-                    }
-                    val developerSettingItems by remember {
-                        derivedStateOf {
-                            presenter.getDeveloperSettingsItems(
-                                navigateTo = {
-                                    navController.navigate(route = it.name)
-                                },
-                            )
-                        }
-                    }
+                    val settingItems =
+                        presenter.getSettingsItems(
+                            navigateTo = {
+                                navController.navigate(route = it.name)
+                            },
+                        )
                     SettingsContentScreen(
                         navigationController = navController,
                         settingsItems = settingItems,
-                        developerSettingsItems = developerSettingItems,
+                        presenter = presenter,
                         onBackPress = {
                             if (!navController.popBackStack()) {
                                 onBackPressedDispatcher.onBackPressed()
