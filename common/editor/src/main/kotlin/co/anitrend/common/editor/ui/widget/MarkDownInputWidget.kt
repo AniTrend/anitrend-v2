@@ -28,6 +28,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
+import androidx.appcompat.R as AppCompatR
 import androidx.core.content.ContextCompat
 import androidx.core.view.inputmethod.EditorInfoCompat
 import androidx.core.view.inputmethod.InputConnectionCompat
@@ -47,14 +48,13 @@ import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
-import com.google.android.material.R as MaterialR
 
 class MarkDownInputWidget
     @JvmOverloads
     constructor(
         context: Context,
         attrs: AttributeSet? = null,
-        defStyleAttr: Int = MaterialR.attr.editTextStyle,
+        defStyleAttr: Int = AppCompatR.attr.editTextStyle,
     ) : TextInputEditText(context, attrs, defStyleAttr),
         CustomView,
         ActionMode.Callback,

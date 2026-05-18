@@ -37,7 +37,7 @@ chuncker = "4.3.1"
 
 coil = "2.7.0"
 
-google-android-material = "1.12.0"
+google-android-material = "1.14.0"
 
 jetbrains-dokka = "2.2.0"
 jetbrains-kotlin = "2.3.21"
