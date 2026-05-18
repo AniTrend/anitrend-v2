@@ -22,6 +22,7 @@ import kotlin.jvm.java
 plugins {
     id("co.anitrend.plugin")
     id("kotlinx-serialization")
+    alias(libs.plugins.google.devtools.ksp)
 }
 
 tasks.withType(KotlinCompilationTask::class.java) {
@@ -47,7 +48,7 @@ dependencies {
     implementation(libs.anitrend.querybuilder.annotation)
     implementation(libs.anitrend.querybuilder.core)
     implementation(libs.anitrend.querybuilder.core.ext)
-    kapt(libs.anitrend.querybuilder.processor)
+    ksp(libs.anitrend.querybuilder.processor)
 }
 
 android {
