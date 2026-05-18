@@ -73,7 +73,7 @@ class SettingsPresenter(
     )
 
     data class FeatureFlagSettingsState(
-        val featureFlags: String,
+        val featureFlags: Set<String>,
     )
 
     private fun themeLabel(theme: AniTrendTheme): String =
@@ -452,14 +452,14 @@ class SettingsPresenter(
                 icon = Icons.Outlined.DeveloperBoard,
                 onClick = {
                     FeatureFlags.isEnabled(
-                        csv = state.featureFlags,
+                        flags = state.featureFlags,
                         flag = FeatureFlag.EXPERIMENTAL_COMPOSE_UI,
                     )
                 },
                 onValueChange = { newValue ->
                     settings.featureFlags.value =
                         FeatureFlags.setEnabled(
-                            csv = settings.featureFlags.value,
+                            flags = settings.featureFlags.value,
                             flag = FeatureFlag.EXPERIMENTAL_COMPOSE_UI,
                             enabled = newValue,
                         )

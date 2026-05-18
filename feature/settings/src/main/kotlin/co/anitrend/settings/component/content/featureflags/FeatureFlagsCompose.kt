@@ -34,7 +34,7 @@ import co.anitrend.settings.model.SettingItem
 import org.koin.compose.koinInject
 
 internal data class FeatureFlagsScreenState(
-    val featureFlags: String,
+    val featureFlags: Set<String>,
 ) {
     fun asPresenterState() = SettingsPresenter.FeatureFlagSettingsState(featureFlags = featureFlags)
 
@@ -44,7 +44,7 @@ internal data class FeatureFlagsScreenState(
     ): FeatureFlagsScreenState {
         val updatedFlags =
             FeatureFlags.setEnabled(
-                csv = featureFlags,
+                flags = featureFlags,
                 flag = FeatureFlag.EXPERIMENTAL_COMPOSE_UI,
                 enabled = enabled,
             )

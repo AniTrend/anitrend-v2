@@ -17,12 +17,19 @@
 package co.anitrend.core.migration
 
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.core.content.edit
+import co.anitrend.android.core.R
 import co.anitrend.android.core.settings.Settings
+import co.anitrend.arch.extension.settings.SetSetting
 import co.anitrend.core.migration.model.Migration
+import co.anitrend.core.migration.model.Migrations
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
+import org.junit.jupiter.api.BeforeEach
 
 class MigrationManagerTest {
     private val manager = MigrationManager(mockk())
@@ -98,5 +105,38 @@ class MigrationManagerTest {
             )
 
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `given legacy compose flag when migration runs then feature flag is copied and legacy preference removed`() {
+        val context = mockk<Context>()
+        val settings = mockk<Settings>(relaxed = true)
+        val featureFlags = setSetting(initial = setOf("future_flag"))
+        val editor = mockk<SharedPreferences.Editor>(relaxed = true)
+
+        every { context.getString(R.string.settings_experimental_compose_ui) } returns "_experimentalComposeUi"
+        every { settings.featureFlags } returns featureFlags
+        every { settings.contains("_experimentalComposeUi") } returns true
+        every { settings.getBoolean("_experimentalComposeUi", false) } returns true
+        every { settings.edit() } returns editor
+        every { editor.remove(any()) } returns editor
+        every { editor.commit() } returns true
+
+        Migrations.ALL.last().invoke(context, settings)
+
+        assertEquals(setOf("experimental_compose_ui", "future_flag"), featureFlags.value)
+
+        verify { editor.remove("_experimentalComposeUi") }
+    }
+
+    private fun setSetting(initial: Set<String>): SetSetting {
+        var value = initial
+        return mockk {
+            every { this@mockk.value } answers { value }
+            every { this@mockk.value = any() } answers {
+                value = firstArg()
+                Unit
+            }
+        }
     }
 }

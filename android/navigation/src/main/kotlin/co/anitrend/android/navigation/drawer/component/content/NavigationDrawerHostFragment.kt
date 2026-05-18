@@ -49,7 +49,7 @@ class NavigationDrawerHostFragment :
 
     private val useComposeDrawer: Boolean by lazy(LazyThreadSafetyMode.NONE) {
         FeatureFlags.isEnabled(
-            csv = featureFlagSetting.featureFlags.value,
+            flags = featureFlagSetting.featureFlags.value,
             flag = FeatureFlag.EXPERIMENTAL_COMPOSE_UI,
         )
     }

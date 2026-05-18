@@ -19,7 +19,7 @@ package co.anitrend.settings.component.presenter
 import android.content.Context
 import co.anitrend.android.core.settings.Settings
 import co.anitrend.arch.extension.settings.BooleanSetting
-import co.anitrend.arch.extension.settings.StringSetting
+import co.anitrend.arch.extension.settings.SetSetting
 import co.anitrend.data.settings.feature.FeatureFlag
 import co.anitrend.data.settings.feature.FeatureFlags
 import co.anitrend.navigation.SettingsRouter
@@ -124,8 +124,8 @@ class SettingsPresenterDeveloperStateTest {
     }
 
     @Test
-    fun `given feature flag setting when toggled then csv preference updates without dropping unknown tokens`() {
-        val featureFlags = stringSetting(initial = "future_flag")
+    fun `given feature flag setting when toggled then set preference updates without dropping unknown tokens`() {
+        val featureFlags = setSetting(initial = setOf("future_flag"))
         val presenter = settingsPresenter(featureFlags = featureFlags)
 
         val items =
@@ -139,14 +139,14 @@ class SettingsPresenterDeveloperStateTest {
         val composeToggle = items.switchSetting(id = FeatureFlag.EXPERIMENTAL_COMPOSE_UI.key)
         composeToggle.onValueChange(true)
 
-        assertEquals("experimental_compose_ui,future_flag", featureFlags.value)
+        assertEquals(setOf("experimental_compose_ui", "future_flag"), featureFlags.value)
     }
 
     private fun settingsPresenter(
         automaticHeapDump: BooleanSetting = booleanSetting(initial = false),
         showLeakLauncher: BooleanSetting = booleanSetting(initial = false),
         clearDataOnSwipeRefresh: BooleanSetting = booleanSetting(initial = false),
-        featureFlags: StringSetting = stringSetting(initial = FeatureFlags.EMPTY),
+        featureFlags: SetSetting = setSetting(initial = FeatureFlags.EMPTY),
     ): SettingsPresenter {
         val context = mockk<Context>()
         every { context.getString(any<Int>()) } answers { firstArg<Int>().toString() }
@@ -176,7 +176,7 @@ class SettingsPresenterDeveloperStateTest {
         }
     }
 
-    private fun stringSetting(initial: String): StringSetting {
+    private fun setSetting(initial: Set<String>): SetSetting {
         var value = initial
         return mockk {
             every { this@mockk.value } answers { value }
