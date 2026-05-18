@@ -55,5 +55,4 @@
     <string name="settings_show_leak_launcher" translatable="false">_showLeakLauncher</string>
     <string name="settings_experimental_compose_ui" translatable="false">_experimentalComposeUi</string>
     <string name="settings_feature_flags" translatable="false">_featureFlags</string>
-    <string name="settings_feature_flags_migrated" translatable="false">_featureFlagsMigrated</string>
 </resources>

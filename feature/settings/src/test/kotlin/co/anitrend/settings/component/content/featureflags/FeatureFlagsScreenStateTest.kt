@@ -16,7 +16,7 @@
  */
 package co.anitrend.settings.component.content.featureflags
 
-import co.anitrend.arch.extension.settings.StringSetting
+import co.anitrend.arch.extension.settings.SetSetting
 import co.anitrend.data.settings.feature.FeatureFlag
 import co.anitrend.data.settings.feature.FeatureFlags
 import co.anitrend.data.settings.feature.IFeatureFlagSetting
@@ -29,7 +29,7 @@ import kotlin.test.assertTrue
 class FeatureFlagsScreenStateTest {
     @Test
     fun `given feature flag toggle change when updating screen state then checked state mirrors immediately`() {
-        val featureFlagsSetting = stringSetting(initial = "future_flag")
+        val featureFlagsSetting = setSetting(initial = setOf("future_flag"))
         val featureFlagSetting =
             mockk<IFeatureFlagSetting> {
                 every { this@mockk.featureFlags } returns featureFlagsSetting
@@ -41,14 +41,14 @@ class FeatureFlagsScreenStateTest {
 
         assertTrue(
             FeatureFlags.isEnabled(
-                csv = updatedState.featureFlags,
+                flags = updatedState.featureFlags,
                 flag = FeatureFlag.EXPERIMENTAL_COMPOSE_UI,
             ),
         )
         assertEquals(updatedState.featureFlags, featureFlagsSetting.value)
     }
 
-    private fun stringSetting(initial: String): StringSetting {
+    private fun setSetting(initial: Set<String>): SetSetting {
         var value = initial
         return mockk {
             every { this@mockk.value } answers { value }

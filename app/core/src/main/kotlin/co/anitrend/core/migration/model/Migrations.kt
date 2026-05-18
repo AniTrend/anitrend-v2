@@ -21,6 +21,9 @@ import androidx.core.content.edit
 import co.anitrend.android.core.R
 import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.storage.StorageController
+import co.anitrend.core.migration.model.Migration
+import co.anitrend.data.settings.feature.FeatureFlag
+import co.anitrend.data.settings.feature.FeatureFlags
 
 internal object Migrations {
     private val FROM_v2_0_0_28_TO_v2_0_0_30 =
@@ -79,6 +82,28 @@ internal object Migrations {
             }
         }
 
+    private val FROM_v2_0_0_41_TO_v2_0_0_42 =
+        object : Migration(2_000_000_041, 2_000_000_042) {
+            override fun invoke(
+                context: Context,
+                settings: Settings,
+            ) {
+                val legacyKey = context.getString(R.string.settings_experimental_compose_ui)
+                val legacyEnabled = settings.contains(legacyKey) && settings.getBoolean(legacyKey, false)
+
+                if (legacyEnabled) {
+                    settings.featureFlags.value =
+                        FeatureFlags.setEnabled(
+                            flags = settings.featureFlags.value,
+                            flag = FeatureFlag.EXPERIMENTAL_COMPOSE_UI,
+                            enabled = true,
+                        )
+                }
+
+                settings.edit(commit = true) { remove(legacyKey) }
+            }
+        }
+
     val ALL =
         listOf(
             FROM_v2_0_0_28_TO_v2_0_0_30,
@@ -86,5 +111,6 @@ internal object Migrations {
             FROM_v2_0_0_32_TO_v2_0_0_33,
             FROM_v2_0_0_33_TO_v2_0_0_39,
             FROM_v2_0_0_39_TO_v2_0_0_41,
+            FROM_v2_0_0_41_TO_v2_0_0_42,
         )
 }

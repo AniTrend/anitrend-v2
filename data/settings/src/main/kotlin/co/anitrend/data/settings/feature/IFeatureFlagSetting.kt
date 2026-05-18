@@ -19,7 +19,7 @@ package co.anitrend.data.settings.feature
 import co.anitrend.arch.extension.settings.contract.AbstractSetting
 
 interface IFeatureFlagSetting {
-    val featureFlags: AbstractSetting<String>
+    val featureFlags: AbstractSetting<Set<String>>
 }
 
 enum class FeatureFlag(
@@ -38,24 +38,24 @@ enum class FeatureFlag(
 }
 
 object FeatureFlags {
-    const val EMPTY = ""
+    val EMPTY = emptySet<String>()
 
-    fun enabledFlags(csv: String): Set<FeatureFlag> =
-        tokens(csv)
+    fun enabledFlags(flags: Set<String>): Set<FeatureFlag> =
+        tokens(flags)
             .mapNotNull(FeatureFlag::fromToken)
             .toSet()
 
     fun isEnabled(
-        csv: String,
+        flags: Set<String>,
         flag: FeatureFlag,
-    ): Boolean = flag in enabledFlags(csv)
+    ): Boolean = flag in enabledFlags(flags)
 
     fun setEnabled(
-        csv: String,
+        flags: Set<String>,
         flag: FeatureFlag,
         enabled: Boolean,
-    ): String {
-        val enabledFlags = enabledFlags(csv).toMutableSet()
+    ): Set<String> {
+        val enabledFlags = enabledFlags(flags).toMutableSet()
         if (enabled) {
             enabledFlags += flag
         } else {
@@ -64,31 +64,18 @@ object FeatureFlags {
 
         val knownTokens = FeatureFlag.entries.filter { it in enabledFlags }.map(FeatureFlag::key)
         val unknownTokens =
-            tokens(csv)
+            tokens(flags)
                 .filter { FeatureFlag.fromToken(it) == null }
                 .distinctBy { it.lowercase() }
 
-        return (knownTokens + unknownTokens).joinToString(",")
+        return (knownTokens + unknownTokens).toSet()
     }
 
-    fun migrateLegacyComposeUi(
-        csv: String,
-        legacyEnabled: Boolean,
-        migrationComplete: Boolean,
-    ): String =
-        if (!migrationComplete && legacyEnabled) {
-            setEnabled(
-                csv = csv,
-                flag = FeatureFlag.EXPERIMENTAL_COMPOSE_UI,
-                enabled = true,
-            )
-        } else {
-            csv
-        }
-
-    private fun tokens(csv: String): List<String> =
-        csv
-            .split(',')
+    private fun tokens(flags: Set<String>): List<String> =
+        flags
+            .asSequence()
             .map(String::trim)
             .filter(String::isNotEmpty)
+            .distinctBy { it.lowercase() }
+            .toList()
 }

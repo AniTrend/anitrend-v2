@@ -21,5 +21,4 @@ import co.anitrend.arch.extension.settings.contract.AbstractSetting
 interface IDeveloperSettings {
     val automaticHeapDump: AbstractSetting<Boolean>
     val showLeakLauncher: AbstractSetting<Boolean>
-    val experimentalComposeUi: AbstractSetting<Boolean>
 }

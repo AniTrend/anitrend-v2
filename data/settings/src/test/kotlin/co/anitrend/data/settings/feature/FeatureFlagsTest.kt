@@ -23,53 +23,31 @@ import kotlin.test.assertTrue
 
 class FeatureFlagsTest {
     @Test
-    fun `given csv with whitespace blanks and duplicates when parsed then known flags are normalized`() {
-        val csv = " experimental_compose_ui, ,EXPERIMENTAL_COMPOSE_UI,unknown "
+    fun `given flags with duplicates when parsed then known flags are normalized`() {
+        val flags = setOf(" experimental_compose_ui ", "EXPERIMENTAL_COMPOSE_UI", "unknown")
 
-        val flags = FeatureFlags.enabledFlags(csv)
+        val enabledFlags = FeatureFlags.enabledFlags(flags)
 
-        assertEquals(setOf(FeatureFlag.EXPERIMENTAL_COMPOSE_UI), flags)
-        assertTrue(FeatureFlags.isEnabled(csv, FeatureFlag.EXPERIMENTAL_COMPOSE_UI))
+        assertEquals(setOf(FeatureFlag.EXPERIMENTAL_COMPOSE_UI), enabledFlags)
+        assertTrue(FeatureFlags.isEnabled(flags, FeatureFlag.EXPERIMENTAL_COMPOSE_UI))
     }
 
     @Test
     fun `given unknown future flag when enabling known flag then unknown token is preserved`() {
-        val csv = "future_flag"
+        val flags = setOf("future_flag")
 
-        val updated = FeatureFlags.setEnabled(csv, FeatureFlag.EXPERIMENTAL_COMPOSE_UI, true)
+        val updated = FeatureFlags.setEnabled(flags, FeatureFlag.EXPERIMENTAL_COMPOSE_UI, true)
 
-        assertEquals("experimental_compose_ui,future_flag", updated)
+        assertEquals(setOf("experimental_compose_ui", "future_flag"), updated)
     }
 
     @Test
-    fun `given mixed csv when disabling known flag then unknown token remains`() {
-        val csv = "experimental_compose_ui,future_flag"
+    fun `given mixed flags when disabling known flag then unknown token remains`() {
+        val flags = setOf("experimental_compose_ui", "future_flag")
 
-        val updated = FeatureFlags.setEnabled(csv, FeatureFlag.EXPERIMENTAL_COMPOSE_UI, false)
+        val updated = FeatureFlags.setEnabled(flags, FeatureFlag.EXPERIMENTAL_COMPOSE_UI, false)
 
-        assertEquals("future_flag", updated)
+        assertEquals(setOf("future_flag"), updated)
         assertFalse(FeatureFlags.isEnabled(updated, FeatureFlag.EXPERIMENTAL_COMPOSE_UI))
-    }
-
-    @Test
-    fun `given incomplete legacy migration when old compose flag is enabled then csv is enabled without dropping unknown tokens`() {
-        val updated = FeatureFlags.migrateLegacyComposeUi(
-            csv = "future_flag",
-            legacyEnabled = true,
-            migrationComplete = false,
-        )
-
-        assertEquals("experimental_compose_ui,future_flag", updated)
-    }
-
-    @Test
-    fun `given completed legacy migration when old compose flag remains enabled then csv is not re-enabled`() {
-        val updated = FeatureFlags.migrateLegacyComposeUi(
-            csv = FeatureFlags.EMPTY,
-            legacyEnabled = true,
-            migrationComplete = true,
-        )
-
-        assertEquals(FeatureFlags.EMPTY, updated)
     }
 }
