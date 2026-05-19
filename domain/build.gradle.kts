@@ -20,7 +20,7 @@ plugins {
 }
 
 dependencies {
-
+    testImplementation(kotlin("test-junit5"))
 }
 
 android {

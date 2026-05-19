@@ -38,8 +38,6 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
-import org.jetbrains.kotlin.gradle.testing.internal.KotlinTestsRegistry
 import kotlin.DeprecationLevel
 
 
@@ -80,16 +78,15 @@ fun Project.hasKoinAndroidSupport() =
     path != Modules.Data.Common.path || path != Modules.App.Core.path || path != Modules.App.Navigation.path
 
 /**
- * Module that supports the kotlin annotation processor plugin
+ * Module that supports the kotlin parcelize plugin.
  */
-fun Project.hasKaptSupport() =
-    path != Modules.App.Main.path || path != Modules.Data.Common.path || path != Modules.App.Core.path
+fun Project.hasParcelizeSupport() =
+    path != Modules.Domain.Common.path
 
 /**
- * Module that supports the kotlin-android-extensions annotation processor plugin
+ * Data modules use symbol processing for Room and query builder code generation.
  */
-fun Project.hasKotlinAndroidExtensionSupport() =
-    path != Modules.Domain.Common.path
+fun Project.hasKspSupport() = isDataGroupModule()
 
 
 internal val Project.props: PropertiesReader
@@ -140,12 +137,6 @@ internal fun Project.sourceSetContainer() =
 
 internal fun Project.javaPluginExtension() =
     extensions.getByType<JavaPluginExtension>()
-
-internal fun Project.kotlinAndroidProjectExtension() =
-    extensions.getByType<KotlinAndroidProjectExtension>()
-
-internal fun Project.kotlinTestsRegistry() =
-    extensions.getByType<KotlinTestsRegistry>()
 
 internal fun Project.publishingExtension() =
     extensions.getByType<PublishingExtension>()

@@ -256,7 +256,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         }
     }
 
-    // Disabling experimental language version, causing issues with KAPT + Room
+    // Disabling experimental language version, causing issues with KSP + Room
     //tasks.withType(KotlinCompilationTask::class.java)
     //    .configureEach {
     //        compilerOptions

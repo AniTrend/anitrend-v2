@@ -30,8 +30,8 @@ private enum class DependencyType(val configurationName: String) {
     API("api"),
     COMPILE("compileOnly"),
     DEBUG("debugOnly"),
-    KAPT("kapt"),
     IMPLEMENTATION("implementation"),
+    KSP("ksp"),
     // Platform enum entries use the same Gradle configuration names as base entries, but addPlatformDependency wraps with platform(...)
     PLATFORM_IMPLEMENTATION("implementation"),
     DEBUG_IMPLEMENTATION("debugImplementation"),
@@ -140,10 +140,10 @@ private fun DependencyHandler.addPlatformDependency(
  *
  * @return The dependency.
  */
-internal fun DependencyHandler.kapt(
+internal fun DependencyHandler.ksp(
     dependencyNotation: Any,
     dependencyConfiguration: (ExternalModuleDependency.() -> Unit)? = null
-) = addDependency(dependencyNotation, DependencyType.KAPT, dependencyConfiguration)
+) = addDependency(dependencyNotation, DependencyType.KSP, dependencyConfiguration)
 
 /**
  * Adds a dependency to the given configuration, and configures the dependency using the given closure.

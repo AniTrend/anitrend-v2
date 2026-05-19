@@ -87,7 +87,7 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <co.anitrend.common.episode.ui.widget.summary.EpisodeSummaryWidget
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/episodeSummary"
         android:layout_gravity="bottom|center_horizontal"
         android:textColor="@color/white_1000"
@@ -98,6 +98,7 @@
         style="@style/AppTheme.SingleLineText"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
         android:background="@drawable/gradient_shadow"
+        tools:text="S01E15 • Special Ops Squad - Night Before the Counteroffensive (2)"
         />
 
 </com.google.android.material.card.MaterialCardView>
