@@ -46,20 +46,44 @@
             android:layout_height="@dimen/md_margin"
             android:background="@drawable/card_drop_shadow" />
 
-        <co.anitrend.common.shared.ui.view.text.SharedNameView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/sharedName"
             android:padding="@dimen/md_margin"
             android:background="@color/card_drop_start"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textSize="@dimen/shared_name_text_size"
-            style="@style/AppTheme.SingleLineText" />
+            style="@style/AppTheme.SingleLineText"
+            tools:text="Ruka Sarashina" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <co.anitrend.common.shared.ui.view.FavouriteView
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/sharedFavourites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/md_margin" />
+        android:layout_margin="@dimen/md_margin"
+        android:background="@drawable/widget_background"
+        android:backgroundTint="@color/bubble_color"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/md_margin">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/sharedFavouriteIcon"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            app:srcCompat="@drawable/ic_not_favorite" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/sharedFavouriteCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/sm_margin"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textColor="@color/white_1000"
+            android:textStyle="bold"
+            tools:text="11.6K" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </com.google.android.material.card.MaterialCardView>

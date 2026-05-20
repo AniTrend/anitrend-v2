@@ -55,7 +55,7 @@ Located at `buildSrc/src/main/java/co/anitrend/buildSrc/`. Key components:
 | Module prefix | Auto-included libraries |
 |---|---|
 | `:feature:*` | support-arch UI/domain/data, Compose, AndroidX core, Koin, Timber |
-| `:data:*` | Room + KAPT, Retrofit, OkHttp, Kotlinx Serialization, Chucker (debug) |
+| `:data:*` | Room + KSP, Retrofit, OkHttp, Kotlinx Serialization, Chucker (debug) |
 | `:common:*` | support-arch UI, Compose (if name matches pattern), Koin |
 | `:task:*` | WorkManager, support-arch, Koin |
 | `:android:*` | AndroidX core, support-arch, Koin |

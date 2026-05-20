@@ -26,6 +26,11 @@ import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
+data class EdgeNavigationGroupEntity(
+    @ColumnInfo(name = "authenticated") val authenticated: Boolean,
+    @ColumnInfo(name = "i18n") val i18n: String,
+)
+
 @Entity(
     tableName = "edge_config_navigation",
     foreignKeys = [
@@ -46,13 +51,8 @@ data class EdgeNavigationEntity(
     @ColumnInfo(name = "config_id") val configId: Long,
     @ColumnInfo(name = "criteria") val criteria: String,
     @ColumnInfo(name = "destination") val destination: String,
-    @Embedded(prefix = "group_") val group: Group,
+    @Embedded(prefix = "group_") val group: EdgeNavigationGroupEntity,
     @ColumnInfo(name = "i18n") val i18n: String,
     @ColumnInfo(name = "icon") val icon: String,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
-) : IEntityId<Long> {
-    data class Group(
-        @ColumnInfo(name = "authenticated") val authenticated: Boolean,
-        @ColumnInfo(name = "i18n") val i18n: String,
-    )
-}
+) : IEntityId<Long>

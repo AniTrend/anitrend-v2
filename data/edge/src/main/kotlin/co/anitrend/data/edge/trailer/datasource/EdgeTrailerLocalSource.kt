@@ -30,5 +30,5 @@ abstract class EdgeTrailerLocalSource : AbstractLocalSource<EdgeTrailerEntity>()
     abstract override suspend fun clear()
 
     @Query("delete from edge_media_trailer where media_id = :mediaId")
-    internal abstract suspend fun deleteByMediaId(mediaId: String)
+    abstract suspend fun deleteByMediaId(mediaId: String)
 }

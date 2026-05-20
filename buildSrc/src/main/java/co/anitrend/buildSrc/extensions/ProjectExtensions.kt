@@ -20,15 +20,12 @@ package co.anitrend.buildSrc.extensions
 import co.anitrend.buildSrc.extensions.applicationExtension
 import co.anitrend.buildSrc.module.Modules
 import co.anitrend.buildSrc.plugins.components.PropertiesReader
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
-import com.android.build.gradle.BaseExtension
-import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.TestPlugin
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import com.android.build.api.dsl.ApplicationExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
@@ -38,11 +35,6 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
-import org.jetbrains.kotlin.gradle.testing.internal.KotlinTestsRegistry
-import kotlin.DeprecationLevel
-
-
 fun Project.isAppModule() = path == Modules.App.Main.path
 fun Project.isDataModule() = path == Modules.Data.Common.path
 fun Project.isDomainModule() = path == Modules.Domain.Common.path
@@ -80,16 +72,15 @@ fun Project.hasKoinAndroidSupport() =
     path != Modules.Data.Common.path || path != Modules.App.Core.path || path != Modules.App.Navigation.path
 
 /**
- * Module that supports the kotlin annotation processor plugin
+ * Module that supports the kotlin parcelize plugin.
  */
-fun Project.hasKaptSupport() =
-    path != Modules.App.Main.path || path != Modules.Data.Common.path || path != Modules.App.Core.path
+fun Project.hasParcelizeSupport() =
+    path != Modules.Domain.Common.path
 
 /**
- * Module that supports the kotlin-android-extensions annotation processor plugin
+ * Data modules use symbol processing for Room and query builder code generation.
  */
-fun Project.hasKotlinAndroidExtensionSupport() =
-    path != Modules.Domain.Common.path
+fun Project.hasKspSupport() = isDataGroupModule()
 
 
 internal val Project.props: PropertiesReader
@@ -97,31 +88,6 @@ internal val Project.props: PropertiesReader
 
 internal val Project.libs: LibrariesForLibs get() =
     extensions.getByType<LibrariesForLibs>()
-
-@Deprecated(
-    message = "Use commonExtension",
-    replaceWith = ReplaceWith(
-        expression = "commonExtension()",
-        imports = arrayOf("co.anitrend.buildSrc.extensions.commonExtension")
-    ),
-    level = DeprecationLevel.WARNING,
-)
-internal fun Project.baseExtension() =
-    extensions.getByType<BaseExtension>()
-
-internal fun Project.commonExtension() =
-    extensions.getByType<CommonExtension>()
-
-@Deprecated(
-    message = "Use applicationExtension",
-    replaceWith = ReplaceWith(
-        expression = "applicationExtension()",
-        imports = arrayOf("co.anitrend.buildSrc.extensions.applicationExtension")
-    ),
-    level = DeprecationLevel.WARNING,
-)
-internal fun Project.baseAppExtension() =
-    extensions.getByType<BaseAppModuleExtension>()
 
 internal fun Project.applicationExtension() =
     extensions.getByType<ApplicationExtension>()
@@ -140,12 +106,6 @@ internal fun Project.sourceSetContainer() =
 
 internal fun Project.javaPluginExtension() =
     extensions.getByType<JavaPluginExtension>()
-
-internal fun Project.kotlinAndroidProjectExtension() =
-    extensions.getByType<KotlinAndroidProjectExtension>()
-
-internal fun Project.kotlinTestsRegistry() =
-    extensions.getByType<KotlinTestsRegistry>()
 
 internal fun Project.publishingExtension() =
     extensions.getByType<PublishingExtension>()

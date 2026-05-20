@@ -19,6 +19,7 @@ package co.anitrend.data.edge.theme.converter
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.edge.theme.EdgeThemeEmbedded
 import co.anitrend.data.edge.theme.entity.EdgeThemeEntity
+import co.anitrend.data.edge.theme.entity.EdgeThemeMetaEntity
 import co.anitrend.data.edge.theme.model.EdgeThemeModel
 
 /**
@@ -35,7 +36,7 @@ internal class EdgeThemeConverter : SupportConverter<EdgeThemeEmbedded, EdgeThem
             audio = model.audio,
             video = model.video.orEmpty(),
             meta =
-                EdgeThemeEntity.ThemeMeta(
+                EdgeThemeMetaEntity(
                     number = themeMeta?.number ?: 0,
                     type = themeMeta?.type.orEmpty(),
                     version = themeMeta?.version ?: 0,

@@ -26,6 +26,12 @@ import co.anitrend.data.core.common.IEntityId
 import co.anitrend.data.edge.media.entity.EdgeMediaEntity
 import co.anitrend.support.query.builder.annotation.EntitySchema
 
+data class EdgeThemeMetaEntity(
+    @ColumnInfo(name = "number") val number: Int,
+    @ColumnInfo(name = "type") val type: String,
+    @ColumnInfo(name = "version") val version: Int,
+)
+
 @Entity(
     tableName = "edge_media_theme_song",
     indices = [
@@ -49,12 +55,6 @@ data class EdgeThemeEntity(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "audio") val audio: String?,
     @ColumnInfo(name = "video") val video: String,
-    @Embedded(prefix = "meta_") val meta: ThemeMeta,
+    @Embedded(prefix = "meta_") val meta: EdgeThemeMetaEntity,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
-) : IEntityId<Long> {
-    data class ThemeMeta(
-        @ColumnInfo(name = "number") val number: Int,
-        @ColumnInfo(name = "type") val type: String,
-        @ColumnInfo(name = "version") val version: Int,
-    )
-}
+) : IEntityId<Long>

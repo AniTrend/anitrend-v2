@@ -30,7 +30,7 @@ import co.anitrend.buildSrc.extensions.isAndroidCoreModule
 import co.anitrend.buildSrc.extensions.isAppModule
 import co.anitrend.buildSrc.extensions.isDataModule
 import co.anitrend.buildSrc.extensions.isDomainModule
-import co.anitrend.buildSrc.extensions.kapt
+import co.anitrend.buildSrc.extensions.ksp
 import co.anitrend.buildSrc.extensions.libs
 import co.anitrend.buildSrc.extensions.matchesAndroidModule
 import co.anitrend.buildSrc.extensions.matchesAppModule
@@ -41,6 +41,7 @@ import co.anitrend.buildSrc.extensions.matchesFeatureModule
 import co.anitrend.buildSrc.extensions.matchesTaskModule
 import co.anitrend.buildSrc.extensions.releaseImplementation
 import co.anitrend.buildSrc.extensions.runtime
+import co.anitrend.buildSrc.extensions.test
 import co.anitrend.buildSrc.module.Modules
 import co.anitrend.buildSrc.plugins.strategy.DependencyStrategy
 import org.gradle.api.Project
@@ -189,6 +190,10 @@ private fun Project.applyDomainModuleDependencies() {
     dependencies.implementation(libs.anitrend.arch.domain)
 }
 
+private fun Project.applyRoomCompilerDependency() {
+    dependencies.ksp(libs.androidx.room.compiler)
+}
+
 private fun Project.applyDomainModuleGroupDependencies() {
     logger.lifecycle("Applying domain module group dependencies for module -> $path")
     dependencies.implementation(libs.anitrend.arch.domain)
@@ -203,7 +208,7 @@ private fun Project.applyDataModuleDependencies() {
     dependencies.implementation(libs.androidx.paging.runtime.ktx)
     dependencies.implementation(libs.androidx.room.runtime)
     dependencies.implementation(libs.androidx.room.ktx)
-    dependencies.kapt(libs.androidx.room.compiler)
+    applyRoomCompilerDependency()
 
     dependencies.implementation(libs.square.okhttp.logging)
     dependencies.implementation(libs.square.retrofit)
@@ -243,7 +248,7 @@ private fun Project.applyDataModuleGroupDependencies() {
 
         dependencies.implementation(libs.androidx.room.runtime)
         dependencies.implementation(libs.androidx.room.ktx)
-        dependencies.kapt(libs.androidx.room.compiler)
+        applyRoomCompilerDependency()
 
         dependencies.implementation(libs.square.okhttp.logging)
         dependencies.implementation(libs.square.retrofit)
@@ -424,6 +429,7 @@ internal fun Project.configureDependencies() {
             include("*.jar")
         }
     )
+    dependencies.test(libs.jetbrains.kotlin.test.junit5)
     DependencyStrategy(project).applyDependenciesOn(dependencies)
 
     if (isAppModule()) applyAppModuleDependencies()

@@ -20,7 +20,11 @@ import androidx.annotation.VisibleForTesting
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.feed.contract.RssLocale
+import co.anitrend.data.feed.episode.entity.EpisodeAvailabilityEntity
+import co.anitrend.data.feed.episode.entity.EpisodeCoverImageEntity
 import co.anitrend.data.feed.episode.entity.EpisodeEntity
+import co.anitrend.data.feed.episode.entity.EpisodeInformationEntity
+import co.anitrend.data.feed.episode.entity.EpisodeSeriesEntity
 import co.anitrend.data.feed.episode.model.EpisodeModelItem
 import co.anitrend.data.feed.extensions.rcf822ToUnixTime
 import co.anitrend.domain.common.entity.shared.CoverImage
@@ -34,7 +38,7 @@ internal class EpisodeModelConverter(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     companion object : ISupportTransformer<EpisodeModelItem, EpisodeEntity> {
         @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-        fun List<EpisodeModelItem.ThumbnailModel>?.toCoverImage(): EpisodeEntity.CoverImage {
+        fun List<EpisodeModelItem.ThumbnailModel>?.toCoverImage(): EpisodeCoverImageEntity {
             if (!isNullOrEmpty()) {
                 val imageUrls =
                     sortedBy(EpisodeModelItem.ThumbnailModel::width)
@@ -47,13 +51,13 @@ internal class EpisodeModelConverter(
                             }
                         }
 
-                return EpisodeEntity.CoverImage(
+                return EpisodeCoverImageEntity(
                     medium = imageUrls.firstOrNull(),
                     large = imageUrls.lastOrNull(),
                 )
             }
 
-            return EpisodeEntity.CoverImage(null, null)
+            return EpisodeCoverImageEntity(null, null)
         }
 
         @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -108,18 +112,18 @@ internal class EpisodeModelConverter(
                 subtitles = extractSubTitles(source.subtitleLanguages),
                 coverImage = source.thumbnails.toCoverImage(),
                 availability =
-                    EpisodeEntity.Availability(
+                    EpisodeAvailabilityEntity(
                         freeTime = source.freeAvailableDate.rcf822ToUnixTime(),
                         premiumTime = source.premiumAvailableDate.rcf822ToUnixTime(),
                     ),
                 about =
-                    EpisodeEntity.Information(
+                    EpisodeInformationEntity(
                         episodeDuration = source.durationFormatted(),
                         episodeTitle = source.episodeTitle,
                         episodeNumber = source.episodeNumber,
                     ),
                 series =
-                    EpisodeEntity.Series(
+                    EpisodeSeriesEntity(
                         seriesTitle = extractSeriesTitle(source.title),
                         seriesPublisher = source.publisher,
                         seriesSeason = source.season,

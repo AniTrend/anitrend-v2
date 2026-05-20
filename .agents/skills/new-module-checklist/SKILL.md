@@ -74,7 +74,7 @@ Android utility work often extends those modules rather than introducing a new m
 | Module prefix | Auto-included libraries |
 |---|---|
 | `:feature:*` | support-arch UI/domain/data, Compose, AndroidX core, Koin, Timber |
-| `:data:*` | Room + KAPT, Retrofit, OkHttp, Kotlinx Serialization, Chucker (debug) |
+| `:data:*` | Room + KSP, Retrofit, OkHttp, Kotlinx Serialization, Chucker (debug) |
 | `:common:*` | support-arch UI, Compose (if name matches pattern), Koin |
 | `:task:*` | WorkManager, support-arch, Koin |
 | `:android:*` | AndroidX core, support-arch, Koin |

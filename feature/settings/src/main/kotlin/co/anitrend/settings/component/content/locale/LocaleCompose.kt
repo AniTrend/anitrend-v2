@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.core.os.LocaleListCompat
@@ -103,6 +104,8 @@ private fun LocaleContent(
     selectedLocale: Locale,
     onLocaleChange: (Locale) -> Unit = {},
 ) {
+    val currentLocale = LocalConfiguration.current.locales[0]
+
     LazyColumn(modifier = modifier) {
         items(listOf(Unit)) {
             AniTrendHintCard(
@@ -125,7 +128,7 @@ private fun LocaleContent(
                     title = stringResource(SettingsR.string.title_settings_locale_suggested),
                     description = stringResource(SettingsR.string.summary_settings_locale_suggested),
                 ) {
-                    if (!suggestedLocales.contains(Locale.getDefault())) {
+                    if (!suggestedLocales.contains(currentLocale)) {
                         val defaultLocale = AniTrendLocale.AUTOMATIC.asLocale()
                         AniTrendSingleChoiceItem(
                             text = stringResource(R.string.global_label_system),

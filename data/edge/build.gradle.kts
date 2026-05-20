@@ -36,6 +36,8 @@ dependencies {
     // Needed for database store (IAniTrendStore) & controller infrastructure
     // Using direct project path to avoid visibility issue with internal Modules object
     implementation(project(":data:android"))
+
+    testImplementation(kotlin("test-junit5"))
 }
 
 android {

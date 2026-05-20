@@ -31,6 +31,8 @@ tasks.withType(KotlinCompilationTask::class.java) {
 
 dependencies {
     implementation(libs.jetbrains.kotlinx.serialization.json)
+
+    testImplementation(kotlin("test-junit5"))
 }
 
 android {

@@ -19,8 +19,8 @@ package co.anitrend.buildSrc.plugins.components
 
 import co.anitrend.buildSrc.extensions.androidComponents
 import co.anitrend.buildSrc.extensions.hasComposeSupport
-import co.anitrend.buildSrc.extensions.hasKaptSupport
-import co.anitrend.buildSrc.extensions.hasKotlinAndroidExtensionSupport
+import co.anitrend.buildSrc.extensions.hasParcelizeSupport
+import co.anitrend.buildSrc.extensions.hasKspSupport
 import co.anitrend.buildSrc.extensions.isAppModule
 import org.gradle.api.Project
 import org.gradle.api.plugins.PluginContainer
@@ -30,26 +30,25 @@ private fun addAndroidPlugin(project: Project, pluginContainer: PluginContainer)
     else pluginContainer.apply("com.android.library")
 }
 
-private fun addKotlinAndroidPlugin(pluginContainer: PluginContainer) {
-    pluginContainer.apply("kotlin-android")
+private fun addCoreAndroidPlugins(pluginContainer: PluginContainer) {
     pluginContainer.apply("com.diffplug.spotless")
 }
 
-private fun addAnnotationProcessor(project: Project, pluginContainer: PluginContainer) {
-    if (project.hasKaptSupport())
-        pluginContainer.apply("kotlin-kapt")
+private fun addParcelizePlugin(project: Project, pluginContainer: PluginContainer) {
+    if (project.hasParcelizeSupport())
+        pluginContainer.apply("org.jetbrains.kotlin.plugin.parcelize")
 }
 
-private fun addKotlinAndroidExtensions(project: Project, pluginContainer: PluginContainer) {
-    if (project.hasKotlinAndroidExtensionSupport())
-        pluginContainer.apply("kotlin-parcelize")
+private fun addSymbolProcessingPlugin(project: Project, pluginContainer: PluginContainer) {
+    if (project.hasKspSupport())
+        pluginContainer.apply("com.google.devtools.ksp")
 }
 
 internal fun Project.configurePlugins() {
     addAndroidPlugin(project, plugins)
-    addKotlinAndroidPlugin(plugins)
-    addKotlinAndroidExtensions(project, plugins)
-    addAnnotationProcessor(project, plugins)
+    addCoreAndroidPlugins(plugins)
+    addParcelizePlugin(project, plugins)
+    addSymbolProcessingPlugin(project, plugins)
 
     if (project.hasComposeSupport()) {
         plugins.apply("org.jetbrains.kotlin.plugin.compose")

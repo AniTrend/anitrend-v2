@@ -25,6 +25,7 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.common.episode.R
 import co.anitrend.common.episode.databinding.EpisodeItemBinding
+import co.anitrend.common.episode.ui.widget.summary.controller.EpisodeSummaryController
 import co.anitrend.android.core.helpers.image.using
 import co.anitrend.android.core.recycler.model.RecyclerItemBinding
 import co.anitrend.core.extensions.runIfActivityContext
@@ -62,7 +63,7 @@ internal class EpisodeItem(
         disposable = requireBinding().episodeThumbnail.using(entity.thumbnail)
         requireBinding().episodeDuration.text = entity.about.episodeDuration
         requireBinding().episodeSeriesTitle.text = entity.series.seriesTitle
-        requireBinding().episodeSummary.createSummary(entity)
+        requireBinding().episodeSummary.text = EpisodeSummaryController(entity).createSummary()
 
         requireBinding().container.setOnClickListener {
             view.runIfActivityContext {

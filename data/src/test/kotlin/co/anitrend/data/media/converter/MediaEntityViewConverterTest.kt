@@ -2,7 +2,12 @@ package co.anitrend.data.media.converter
 
 import co.anitrend.data.edge.episode.entity.EdgeEpisodeEntity
 import co.anitrend.data.edge.image.entity.EdgeMediaImageEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaCoverEntity
 import co.anitrend.data.edge.media.entity.EdgeMediaEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaExternalIdsEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaScheduleEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaScheduleEpisodeEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaTitleEntity
 import co.anitrend.data.edge.media.entity.view.EdgeMediaEntityView
 import co.anitrend.data.edge.trailer.entity.EdgeTrailerEntity
 import co.anitrend.data.media.entity.MediaEntity
@@ -87,7 +92,7 @@ class MediaEntityViewConverterTest {
                         media =
                             EdgeMediaEntity(
                                 title =
-                                    EdgeMediaEntity.Title(
+                                    EdgeMediaTitleEntity(
                                         canonical = "Seasonal Test",
                                         english = "Seasonal Test",
                                         harigana = null,
@@ -96,7 +101,7 @@ class MediaEntityViewConverterTest {
                                         synonyms = listOf("Season Test"),
                                     ),
                                 cover =
-                                    EdgeMediaEntity.Cover(
+                                    EdgeMediaCoverEntity(
                                         medium = "https://cdn.example.com/edge-medium.jpg",
                                         large = "https://cdn.example.com/edge-large.jpg",
                                         extraLarge = "https://cdn.example.com/edge-xl.jpg",
@@ -120,7 +125,7 @@ class MediaEntityViewConverterTest {
                                 publishedFrom = null,
                                 publishedTo = null,
                                 externalIds =
-                                    EdgeMediaEntity.ExternalIds(
+                                    EdgeMediaExternalIdsEntity(
                                         aniDb = null,
                                         aniList = 1001L,
                                         animePlanet = null,
@@ -139,14 +144,14 @@ class MediaEntityViewConverterTest {
                                         tvRage = null,
                                     ),
                                 schedule =
-                                    EdgeMediaEntity.Schedule(
+                                    EdgeMediaScheduleEntity(
                                         firstAirDate = 1_735_948_800L,
                                         lastAirDate = 1_738_454_400L,
                                         nextEpisodeId = 6L,
                                         lastEpisodeId = 5L,
                                         nextEpisode = null,
                                         lastEpisode =
-                                            EdgeMediaEntity.ScheduleEpisode(
+                                            EdgeMediaScheduleEpisodeEntity(
                                                 id = 5L,
                                                 airDate = 1_737_849_600L,
                                                 episodeNumber = 5,

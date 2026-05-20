@@ -41,12 +41,13 @@
             tools:src="@sample/character"
             tools:scaleType="centerCrop"/>
 
-        <co.anitrend.common.shared.ui.view.text.SharedNameView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/sharedName"
             android:padding="@dimen/md_margin"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textSize="@dimen/shared_name_text_size"
-            style="@style/AppTheme.DoubleLineText" />
+            style="@style/AppTheme.DoubleLineText"
+            tools:text="Ruka Sarashina" />
 
         <View
             android:layout_width="match_parent"
@@ -60,18 +61,19 @@
             android:padding="@dimen/md_margin"
             android:elevation="-8dp">
 
-            <co.anitrend.common.shared.ui.view.image.CircleImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/sharedEmeddedAvatar"
                 android:layout_gravity="center_vertical"
                 android:layout_width="@dimen/avatar_lg"
                 android:layout_height="@dimen/avatar_lg"
+                android:scaleType="centerCrop"
                 tools:src="@sample/actor" />
 
             <Space
                 android:layout_width="@dimen/md_margin"
                 android:layout_height="wrap_content" />
 
-            <co.anitrend.common.shared.ui.view.text.SharedNameView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/sharedEmbeddedName"
                 android:padding="@dimen/md_margin"
                 android:textAppearance="?attr/textAppearanceBody2"
@@ -83,10 +85,33 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <co.anitrend.common.shared.ui.view.FavouriteView
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/sharedFavourites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/md_margin" />
+        android:layout_margin="@dimen/md_margin"
+        android:background="@drawable/widget_background"
+        android:backgroundTint="@color/bubble_color"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/md_margin">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/sharedFavouriteIcon"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            app:srcCompat="@drawable/ic_not_favorite" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/sharedFavouriteCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/sm_margin"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textColor="@color/white_1000"
+            android:textStyle="bold"
+            tools:text="11.6K" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </com.google.android.material.card.MaterialCardView>

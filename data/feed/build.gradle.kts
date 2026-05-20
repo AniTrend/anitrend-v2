@@ -27,6 +27,8 @@ dependencies {
         exclude("stax", "stax-api")
         exclude("stax", "stax")
     }
+
+    testImplementation(kotlin("test-junit5"))
 }
 
 android {

@@ -19,6 +19,7 @@ package co.anitrend.data.edge.navigation.converters
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
 import co.anitrend.data.edge.navigation.entity.EdgeNavigationEntity
+import co.anitrend.data.edge.navigation.entity.EdgeNavigationGroupEntity
 import co.anitrend.data.edge.navigation.model.EdgeNavigationModel
 
 internal class EdgeNavigationModelConverter(
@@ -29,7 +30,7 @@ internal class EdgeNavigationModelConverter(
             i18n = it.i18n,
             icon = it.icon,
             group =
-                EdgeNavigationEntity.Group(
+                EdgeNavigationGroupEntity(
                     authenticated = it.group.authenticated,
                     i18n = it.group.i18n,
                 ),
