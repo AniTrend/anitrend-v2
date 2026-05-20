@@ -18,6 +18,8 @@ package co.anitrend.data.edge.config.converters
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
+import co.anitrend.data.edge.config.entity.EdgeConfigImageEntity
+import co.anitrend.data.edge.config.entity.EdgeConfigSettingsEntity
 import co.anitrend.data.edge.config.entity.view.EdgeConfigViewEntity
 import co.anitrend.data.edge.config.model.remote.EdgeConfigModel
 import co.anitrend.domain.config.entity.Config
@@ -26,12 +28,12 @@ internal class EdgeConfigModelConverter(
     override val fromType: (EdgeConfigModel) -> EdgeConfigEntity = {
         EdgeConfigEntity(
             settings =
-                EdgeConfigEntity.Settings(
+                EdgeConfigSettingsEntity(
                     analyticsEnabled = it.config.settings.analyticsEnabled,
                     platformSource = it.config.settings.platformSource,
                 ),
             image =
-                EdgeConfigEntity.Image(
+                EdgeConfigImageEntity(
                     banner = it.config.image.banner,
                     poster = it.config.image.poster,
                     loading = it.config.image.loading,

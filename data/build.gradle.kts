@@ -22,6 +22,7 @@ import kotlin.jvm.java
 plugins {
     id("co.anitrend.plugin")
     id("kotlinx-serialization")
+    alias(libs.plugins.androidx.room)
     alias(libs.plugins.google.devtools.ksp)
 }
 
@@ -49,9 +50,15 @@ dependencies {
     implementation(libs.anitrend.querybuilder.core)
     implementation(libs.anitrend.querybuilder.core.ext)
     ksp(libs.anitrend.querybuilder.processor)
+
+    testImplementation(kotlin("test-junit5"))
 }
 
 android {
     buildFeatures.buildConfig = true
     namespace = "co.anitrend.data"
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }

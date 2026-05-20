@@ -22,6 +22,30 @@ import androidx.room.Entity
 import co.anitrend.data.feed.contract.RssLocale
 import co.anitrend.domain.common.entity.contract.IEntity
 
+data class EpisodeCoverImageEntity(
+    @ColumnInfo(name = "large") val large: String?,
+    @ColumnInfo(name = "medium") val medium: String?,
+)
+
+data class EpisodeAvailabilityEntity(
+    @ColumnInfo(name = "free_time") val freeTime: Long,
+    @ColumnInfo(name = "premium_time") val premiumTime: Long,
+)
+
+data class EpisodeInformationEntity(
+    @ColumnInfo(name = "episode_duration") val episodeDuration: String,
+    @ColumnInfo(name = "episode_title") val episodeTitle: String?,
+    @ColumnInfo(name = "episode_number") val episodeNumber: String?,
+)
+
+data class EpisodeSeriesEntity(
+    @ColumnInfo(name = "title") val seriesTitle: String,
+    @ColumnInfo(name = "publisher") val seriesPublisher: String?,
+    @ColumnInfo(name = "season") val seriesSeason: String?,
+    @ColumnInfo(name = "keywords") val keywords: List<String>,
+    @ColumnInfo(name = "rating") val rating: String?,
+)
+
 @Entity(
     tableName = "episode",
     primaryKeys = ["id"],
@@ -32,33 +56,10 @@ data class EpisodeEntity(
     @ColumnInfo(name = "media_id") val mediaId: Long,
     @ColumnInfo(name = "description") val description: String?,
     @ColumnInfo(name = "sub_titles") val subtitles: List<RssLocale>,
-    @Embedded(prefix = "series_") val series: Series,
-    @Embedded(prefix = "thumbnail_") val coverImage: CoverImage?,
-    @Embedded(prefix = "available_") val availability: Availability,
-    @Embedded(prefix = "info_") val about: Information,
+    @Embedded(prefix = "series_") val series: EpisodeSeriesEntity,
+    @Embedded(prefix = "thumbnail_") val coverImage: EpisodeCoverImageEntity?,
+    @Embedded(prefix = "available_") val availability: EpisodeAvailabilityEntity,
+    @Embedded(prefix = "info_") val about: EpisodeInformationEntity,
     @ColumnInfo(name = "id") override val id: Long,
 ) : IEntity {
-    data class CoverImage(
-        @ColumnInfo(name = "large") val large: String?,
-        @ColumnInfo(name = "medium") val medium: String?,
-    )
-
-    data class Availability(
-        @ColumnInfo(name = "free_time") val freeTime: Long,
-        @ColumnInfo(name = "premium_time") val premiumTime: Long,
-    )
-
-    data class Information(
-        @ColumnInfo(name = "episode_duration") val episodeDuration: String,
-        @ColumnInfo(name = "episode_title") val episodeTitle: String?,
-        @ColumnInfo(name = "episode_number") val episodeNumber: String?,
-    )
-
-    data class Series(
-        @ColumnInfo(name = "title") val seriesTitle: String,
-        @ColumnInfo(name = "publisher") val seriesPublisher: String?,
-        @ColumnInfo(name = "season") val seriesSeason: String?,
-        @ColumnInfo(name = "keywords") val keywords: List<String>,
-        @ColumnInfo(name = "rating") val rating: String?,
-    )
 }

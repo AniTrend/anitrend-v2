@@ -40,6 +40,8 @@ dependencies {
     implementation(libs.anitrend.querybuilder.annotation)
     implementation(libs.anitrend.querybuilder.core)
     implementation(libs.anitrend.querybuilder.core.ext)
+
+    testImplementation(kotlin("test-junit5"))
 }
 
 android {

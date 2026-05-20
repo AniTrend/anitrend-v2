@@ -18,7 +18,7 @@ package co.anitrend.data.feed.episode.converter
 
 import co.anitrend.data.feed.episode.converter.EpisodeModelConverter.Companion.durationFormatted
 import co.anitrend.data.feed.episode.converter.EpisodeModelConverter.Companion.toCoverImage
-import co.anitrend.data.feed.episode.entity.EpisodeEntity.CoverImage
+import co.anitrend.data.feed.episode.entity.EpisodeCoverImageEntity
 import co.anitrend.data.feed.episode.model.EpisodeModelItem
 import io.mockk.every
 import io.mockk.mockk
@@ -55,7 +55,7 @@ class EpisodeModelConverterTest {
 
     @Test
     fun `to cover image converter`() {
-        val expected = CoverImage(
+        val expected = EpisodeCoverImageEntity(
             large = "https://img.thumb.1080",
             medium = "https://img.thumb.720"
         )

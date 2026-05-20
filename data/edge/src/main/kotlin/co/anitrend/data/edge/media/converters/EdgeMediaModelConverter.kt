@@ -17,7 +17,12 @@
 package co.anitrend.data.edge.media.converters
 
 import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.edge.media.entity.EdgeMediaCoverEntity
 import co.anitrend.data.edge.media.entity.EdgeMediaEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaExternalIdsEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaScheduleEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaScheduleEpisodeEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaTitleEntity
 import co.anitrend.data.edge.media.model.remote.EdgeMediaModel
 import co.anitrend.domain.media.enums.MediaType
 
@@ -26,7 +31,7 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Series,
         EdgeMediaEntity(
             id = model.mediaId.asEntityId(),
             title =
-                EdgeMediaEntity.Title(
+                EdgeMediaTitleEntity(
                     romaji = model.title.romaji,
                     english = model.title.english,
                     japanese = model.title.japanese,
@@ -45,7 +50,7 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Series,
             source = model.source,
             schedule =
                 model.schedule?.let {
-                    EdgeMediaEntity.Schedule(
+                    EdgeMediaScheduleEntity(
                         firstAirDate = it.firstAirDate,
                         lastAirDate = it.lastAirDate,
                         nextEpisodeId = it.nextEpisodeToAir?.id,
@@ -55,7 +60,7 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Series,
                     )
                 },
             cover =
-                EdgeMediaEntity.Cover(
+                EdgeMediaCoverEntity(
                     medium = model.cover.medium,
                     large = model.cover.large,
                     extraLarge = model.cover.extraLarge,
@@ -70,7 +75,7 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Series,
             publishedFrom = model.publishedFrom,
             publishedTo = model.publishedTo,
             externalIds =
-                EdgeMediaEntity.ExternalIds(
+                EdgeMediaExternalIdsEntity(
                     aniDb = model.mediaId.aniDb,
                     aniList = model.mediaId.aniList,
                     animePlanet = model.mediaId.animePlanet,
@@ -104,7 +109,7 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Series,
             ?: throw IllegalStateException("Series payload did not contain a stable identifier in mediaId")
 
     private fun EdgeMediaModel.SeriesScheduleEpisodeType.toScheduleEpisode() =
-        EdgeMediaEntity.ScheduleEpisode(
+        EdgeMediaScheduleEpisodeEntity(
             id = id,
             airDate = airDate,
             episodeNumber = episodeNumber,

@@ -20,7 +20,10 @@ import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.common.extension.asFuzzyDate
 import co.anitrend.data.core.extensions.koinOf
+import co.anitrend.data.edge.media.entity.EdgeMediaExternalIdsEntity
 import co.anitrend.data.edge.media.entity.EdgeMediaEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaScheduleEntity
+import co.anitrend.data.edge.media.entity.EdgeMediaScheduleEpisodeEntity
 import co.anitrend.data.edge.media.entity.view.EdgeMediaEntityView
 import co.anitrend.data.link.entity.LinkEntity
 import co.anitrend.data.media.entity.MediaEntity
@@ -93,7 +96,7 @@ internal class MediaEntityViewConverter(
                 else -> emptyList()
             }
 
-        private fun EdgeMediaEntity.ExternalIds?.toSourceId(fallbackAniList: Long) =
+        private fun EdgeMediaExternalIdsEntity?.toSourceId(fallbackAniList: Long) =
             MediaSourceId(
                 aniDb = this?.aniDb,
                 aniList = this?.aniList ?: fallbackAniList,
@@ -176,7 +179,7 @@ internal class MediaEntityViewConverter(
             }.distinctBy(MediaGalleryImage::url)
         }
 
-        private fun EdgeMediaEntity.ScheduleEpisode?.toDomainEpisode() =
+        private fun EdgeMediaScheduleEpisodeEntity?.toDomainEpisode() =
             this?.let {
                 Media.Category.Anime.ScheduleDetails.Episode(
                     id = it.id,
@@ -207,7 +210,7 @@ internal class MediaEntityViewConverter(
             )
 
         private fun EdgeMediaEntityView.createScheduleEpisodes(
-            schedule: EdgeMediaEntity.Schedule?,
+            schedule: EdgeMediaScheduleEntity?,
         ): List<Media.Category.Anime.ScheduleDetails.Episode> =
             buildList {
                 addAll(episodes.map { it.toDomainEpisode() })

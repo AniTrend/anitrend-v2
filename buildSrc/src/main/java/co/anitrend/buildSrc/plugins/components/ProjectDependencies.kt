@@ -41,6 +41,7 @@ import co.anitrend.buildSrc.extensions.matchesFeatureModule
 import co.anitrend.buildSrc.extensions.matchesTaskModule
 import co.anitrend.buildSrc.extensions.releaseImplementation
 import co.anitrend.buildSrc.extensions.runtime
+import co.anitrend.buildSrc.extensions.test
 import co.anitrend.buildSrc.module.Modules
 import co.anitrend.buildSrc.plugins.strategy.DependencyStrategy
 import org.gradle.api.Project
@@ -428,6 +429,7 @@ internal fun Project.configureDependencies() {
             include("*.jar")
         }
     )
+    dependencies.test(libs.jetbrains.kotlin.test.junit5)
     DependencyStrategy(project).applyDependenciesOn(dependencies)
 
     if (isAppModule()) applyAppModuleDependencies()
