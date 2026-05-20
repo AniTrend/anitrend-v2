@@ -16,13 +16,9 @@
  */
 package co.anitrend.android.navigation.drawer.model.internal
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.IdRes
-import androidx.annotation.StringRes
 import co.anitrend.android.navigation.drawer.R
 
 internal object DrawerResourceRegistry {
-    @StringRes
     val titleResByKey =
         mapOf(
             "navigation_home" to R.string.navigation_home,
@@ -44,7 +40,6 @@ internal object DrawerResourceRegistry {
             "navigation_header_support" to R.string.navigation_header_support,
         )
 
-    @DrawableRes
     val iconResByKey =
         mapOf(
             "ic_deck_24dp" to R.drawable.ic_deck_24dp,
@@ -62,7 +57,6 @@ internal object DrawerResourceRegistry {
             "ic_help_24dp" to R.drawable.ic_help_24dp,
         )
 
-    @IdRes
     val groupIdByKey =
         mapOf(
             "navigation_header_general" to R.id.navigation_group_general,

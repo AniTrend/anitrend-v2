@@ -61,5 +61,4 @@ data class EpisodeEntity(
     @Embedded(prefix = "available_") val availability: EpisodeAvailabilityEntity,
     @Embedded(prefix = "info_") val about: EpisodeInformationEntity,
     @ColumnInfo(name = "id") override val id: Long,
-) : IEntity {
-}
+) : IEntity
