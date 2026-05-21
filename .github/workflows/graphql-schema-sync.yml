@@ -1,0 +1,103 @@
+name: GraphQL Schema Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Schema target to refresh
+        required: true
+        default: both
+        type: choice
+        options:
+          - anilist
+          - anitrend
+          - both
+  repository_dispatch:
+    types: [graphql-schema-sync]
+  schedule:
+    - cron: '0 6 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: graphql-schema-sync
+  cancel-in-progress: false
+
+jobs:
+  sync-schemas:
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          ref: develop
+          token: ${{ steps.app-token.outputs.token }}
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Normalize target
+        id: target
+        env:
+          DISPATCH_TARGET: ${{ inputs.target }}
+          PAYLOAD_TARGET: ${{ github.event.client_payload.target }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          case "$EVENT_NAME" in
+            workflow_dispatch)
+              target="$DISPATCH_TARGET"
+              ;;
+            repository_dispatch)
+              target="$PAYLOAD_TARGET"
+              ;;
+            schedule)
+              target="both"
+              ;;
+            *)
+              printf 'Unsupported event: %s\n' "$EVENT_NAME" >&2
+              exit 1
+              ;;
+          esac
+
+          case "$target" in
+            anilist|anitrend|both)
+              printf 'target=%s\n' "$target" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              printf 'Invalid target: %s\n' "$target" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Refresh GraphQL schemas
+        run: bash .github/scripts/sync-graphql-schemas.sh "${{ steps.target.outputs.target }}"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          signoff: true
+          delete-branch: true
+          commit-message: "ci(graphql): refresh GraphQL schemas"
+          title: "ci(graphql): refresh GraphQL schemas"
+          body: |
+            This PR refreshes the tracked GraphQL schema files.
+          branch: ci/update-graphql-schemas
+          base: develop
+          labels: ":skateboard: skip-changelog"
+          add-paths: |
+            data/schema.graphql
+            data/anitrend.schema.graphql

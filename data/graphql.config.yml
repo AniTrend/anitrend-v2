@@ -17,7 +17,7 @@ extensions:
       headers:
         User-Agent: "JS GraphQL"
         Accept: "*/*"
-        HOST: "api.anitrend.co"
+        Host: "api.anitrend.co"
         Accept-Encoding: "gzip, deflate, br"
         Content-Type: "application/json"
-      introspect: true
+      introspect: false
