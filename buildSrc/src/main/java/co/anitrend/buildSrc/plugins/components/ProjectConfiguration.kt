@@ -132,7 +132,7 @@ internal fun Project.configureAndroid() {
             }
 
             sourceSets.all {
-                java.setSrcDirs(listOf("src/$name/java", "src/$name/kotlin"))
+                java.srcDirs("src/$name/java", "src/$name/kotlin")
             }
 
             testOptions {
@@ -220,7 +220,7 @@ internal fun Project.configureAndroid() {
             }
 
             sourceSets.all {
-                java.setSrcDirs(listOf("src/$name/java", "src/$name/kotlin"))
+                java.srcDirs("src/$name/java", "src/$name/kotlin")
             }
 
             testOptions {
