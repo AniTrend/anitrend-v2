@@ -20,4 +20,4 @@ extensions:
         Host: "api.anitrend.co"
         Accept-Encoding: "gzip, deflate, br"
         Content-Type: "application/json"
-      introspect: false
+      introspect: true
