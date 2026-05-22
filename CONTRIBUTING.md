@@ -10,33 +10,54 @@ Please ensure your **issues** adheres to the following guidelines:
 
 - Search previous suggestions for duplicates before making a new one.
 - Individual issues for each suggestion, bug or feature.
-- Titles should be [sentence case](http://grammar.yourdictionary.com/capitalization/rules-for-capitalization-in-titles.html)
+- Titles should use a scoped prefix so ownership is visible at a glance, for example `[data] Harden join-table upserts` or `[android:navigation] Align Compose drawer animation`
+- Prefer existing scope families already used in the repository, such as `[data]`, `[feature-media]`, `[testing]`, `[build]`, or `[android:navigation]`
+- Use labels for taxonomy such as feature, bug fix, refactor, or docs rather than encoding taxonomy into the issue title itself
 
 Please ensure your **pull request** adheres to the following guidelines:
 
 - Make an individual pull requests for each issue, and make sure the issue is linked to the PR
-- Titles should be based off of the branch name (e.g. `feat/106-add-new-fancy-feature`)
+- Titles should follow the conventional format `<type>(<scope>): <small summary>` and stay aligned with the branch intent
 - Be sure not to stage any files excluded in any of the `.gitignore` files
 - Assure that your commits mention any relevant **issues** or other **pull requests**
+- Automated pull requests should follow the same branch naming rules as contributor pull requests
 
 
 ## Quality Standards
 
 For any pull requests created exhaustive unit tests are mandatory, showcasing the test cases you've guarded against and the extent of your use case coverage. If you have any questions regarding this please feel free to ask. In addition to these standards please follow the following
 
-- **Branch Naming Convention**: Create branches with the prefix matching the change type, following the format `<type>/<description>` where type is one of:
+- **Branch Naming Convention**: Create branches with the prefix matching the change type, following the format `<type>/<issue>-<short-description>` when an issue already exists. If there is no issue number yet, use `<type>/<short-description>` temporarily and link the branch back to the issue as soon as it exists.
+- Supported branch prefixes should stay aligned with `.github/release-drafter-config.yml`, which drives branch-based auto-labeling and release categorization
+- Current supported primary prefixes are:
   - `feat` - A new feature
   - `fix` - A bug fix
-  - `chore` - Routine tasks (build processes, dependencies)
+  - `chore` - Routine tasks, dependencies, and maintenance
   - `docs` - Documentation only changes
   - `refactor` - Code change that neither fixes a bug nor adds a feature
   - `test` - Adding missing tests or correcting existing tests
   - `build` - Changes that affect the build system or dependencies
-  - `ci` - Changes to CI configuration files
+  - `ci` - Changes to CI configuration files or automation
   - `revert` - Reverting a previous commit
-  - Examples: `feat/add-login-feature`, `fix/bug-in-login`, `chore/update-dependencies`
+- Branch examples:
+  - `feat/1208-anime-themes-source-migration`
+  - `fix/1177-room-ksp-migration-failure`
+  - `docs/1234-update-contributing-guidelines`
+  - `ci/update-graphql-schemas`
+- **Commit Message Convention**: Use the format `<type>(<scope>): <brief summary>` when a clear scope exists. Scope should be a module, package, feature area, or build surface.
+- Commit examples:
+  - `chore(buildSrc): align plugin dependency versions`
+  - `fix(data): guard empty cache writes`
+  - `docs(contributing): clarify branch and PR naming`
+  - `ci(graphql): refresh GraphQL schemas`
+- **Pull Request Title Convention**: Use the format `<type>(<scope>): <small summary>` and keep the title consistent with the branch intent and changed area.
+- Pull request title examples:
+  - `feat(media): add anime themes enrichment`
+  - `refactor(data): standardize module-owned embed mappers`
+  - `ci(graphql): refresh GraphQL schemas`
 - Assign yourself to an issue prior to picking up any work to ensure that multiple people don't start working on the same thing
 - Use [discussions](https://github.com/AniTrend/anitrend-v2/discussions) for general development related queries or planning information to keep our issues clutter free
+- CI-generated maintenance updates should use the same conventions as contributor work. Example branch: `ci/update-graphql-schemas`, example commit: `ci(graphql): refresh GraphQL schemas`
 
 ### Setting up Git Hooks
 
