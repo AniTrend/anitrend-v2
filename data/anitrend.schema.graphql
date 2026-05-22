@@ -1,23 +1,16 @@
-# This file was generated. Do not edit manually.
+directive @enum(subgraph: String, value: String) on ENUM_VALUE
 
-schema {
-  query: Query
-}
+directive @extraSchemaDefinitionDirective(directives: _DirectiveExtensions) on OBJECT
 
-directive @enum(subgraph: String, value: String) repeatable on ENUM_VALUE
+directive @httpOperation(httpMethod: HTTPMethod, isBinary: Boolean, jsonApiFields: Boolean, operationSpecificHeaders: [[String]], path: String, queryParamArgMap: ObjMap, queryStringOptions: ObjMap, queryStringOptionsByParam: ObjMap, requestBaseBody: ObjMap, subgraph: String) on FIELD_DEFINITION
 
-directive @extraSchemaDefinitionDirective(directives: _DirectiveExtensions) repeatable on OBJECT
+directive @length(max: Int, min: Int, subgraph: String) on SCALAR
 
-directive @httpOperation(httpMethod: HTTPMethod, isBinary: Boolean, jsonApiFields: Boolean, operationSpecificHeaders: [[String]], path: String, queryParamArgMap: ObjMap, queryStringOptions: ObjMap, queryStringOptionsByParam: ObjMap, requestBaseBody: ObjMap, subgraph: String) repeatable on FIELD_DEFINITION
+directive @transport(headers: [[String]], kind: String, location: String, queryParams: [[String]], queryStringOptions: ObjMap, subgraph: String) on SCHEMA
 
-directive @length(max: Int, min: Int, subgraph: String) repeatable on SCALAR
-
-"Indicates exactly one field must be supplied and this field must not be `null`."
-directive @oneOf on INPUT_OBJECT
-
-directive @transport(headers: [[String]], kind: String, location: String, queryParams: [[String]], queryStringOptions: ObjMap, subgraph: String) repeatable on SCHEMA
-
-"Fictional character metadata resolved from Jikan (MAL), including media and voice-actor relations"
+"""
+Fictional character metadata resolved from Jikan (MAL), including media and voice-actor relations
+"""
 type Character {
   about: String
   anime: [query_character_anime_items]
@@ -33,7 +26,7 @@ type Character {
   voices: [query_character_voices_items]
 }
 
-"Client configuration"
+"""Client configuration"""
 type Config {
   genres: [query_config_genres_items]
   id: String!
@@ -42,7 +35,7 @@ type Config {
   settings: query_config_settings!
 }
 
-"Paginated episode listing with cursor navigation"
+"""Paginated episode listing with cursor navigation"""
 type Episodes {
   count: Float!
   data: [query_episodes_data_items]!
@@ -51,7 +44,24 @@ type Episodes {
   total: Float!
 }
 
-"Schema representing a news document."
+enum HTTPMethod {
+  CONNECT
+  DELETE
+  GET
+  HEAD
+  OPTIONS
+  PATCH
+  POST
+  PUT
+  TRACE
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""Schema representing a news document."""
 type News {
   area: String
   category: String
@@ -66,7 +76,7 @@ type News {
   title: String!
 }
 
-"Paged response for news documents."
+"""Paged response for news documents."""
 type NewsPaging {
   count: NonNegativeFloat!
   data: [query_news_data_items]!
@@ -74,7 +84,15 @@ type NewsPaging {
   last: String
 }
 
-"Anime staff or voice actor metadata resolved from Jikan (MAL)"
+"""A string that cannot be passed as an empty value"""
+scalar NonEmptyString
+
+"""Floats that will have a value of 0 or more."""
+scalar NonNegativeFloat
+
+scalar ObjMap
+
+"""Anime staff or voice actor metadata resolved from Jikan (MAL)"""
 type Person {
   about: String
   alternateNames: [String]
@@ -90,6 +108,12 @@ type Person {
   websiteUrl: String
 }
 
+"""Floats that will have a value greater than 0."""
+scalar PositiveFloat
+
+"""Integers that will have a value greater than 0."""
+scalar PositiveInt
+
 type Query {
   character(malId: Int, name: NonEmptyString): Character
   config: Config
@@ -97,7 +121,7 @@ type Query {
   index: JSON
   news(after: String, before: String, limit: PositiveFloat = 15): NewsPaging
   newsFeed(
-    "Locale for the news feed, e.g., en-GB, de-DE, fr-FR."
+    """Locale for the news feed, e.g., en-GB, de-DE, fr-FR."""
     locale: queryInput_newsFeed_locale
   ): [News]
   person(malId: Int, name: NonEmptyString): Person
@@ -105,10 +129,11 @@ type Query {
   studio(malId: Int, name: NonEmptyString): Studio
 }
 
-"Aggregated of media entities from multiple sources"
+"""Aggregated of media entities from multiple sources"""
 type Series {
   ageRating: String
   airedEpisodes: Float
+  animethemes: [query_series_animethemes_items]!
   banner: String
   broadcast: String
   chapters: Float
@@ -130,14 +155,13 @@ type Series {
   schedule: query_series_schedule
   source: JSON
   status: JSON
-  themeSongs: [JSON]!
   title: query_series_title!
   trailers: [query_series_trailers_items]!
   updatedAt: Float!
   volumes: Float
 }
 
-"Animation studio metadata resolved from Jikan (MAL)"
+"""Animation studio metadata resolved from Jikan (MAL)"""
 type Studio {
   about: String
   animeCount: Float
@@ -150,6 +174,25 @@ type Studio {
   name: String!
   titles: [query_studio_titles_items]
 }
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
+scalar _DirectiveExtensions
+
+enum queryInput_episodes_kind {
+  filler
+  main
+  ona
+  ova
+  recap
+  special
+}
+
+"""Locale for the news feed, e.g., en-GB, de-DE, fr-FR."""
+scalar queryInput_newsFeed_locale
 
 type query_character_anime_items {
   imageUrl: String
@@ -232,6 +275,15 @@ type query_episodes_data_items {
   url: String
 }
 
+enum query_episodes_data_items_kind {
+  filler
+  main
+  ona
+  ova
+  recap
+  special
+}
+
 type query_episodes_data_items_themes {
   endings: [String]
   openings: [String]
@@ -257,6 +309,54 @@ type query_news_data_items {
   title: String!
 }
 
+type query_series_animethemes_items {
+  animethemeentries: [query_series_animethemes_items_animethemeentries_items]
+  id: Float!
+  sequence: Float
+  slug: String!
+  song: query_series_animethemes_items_song
+  type: query_series_animethemes_items_type!
+}
+
+type query_series_animethemes_items_animethemeentries_items {
+  episodes: String
+  id: Float!
+  notes: String
+  nsfw: Boolean!
+  spoiler: Boolean!
+  version: Float
+  videos: [query_series_animethemes_items_animethemeentries_items_videos_items]
+}
+
+type query_series_animethemes_items_animethemeentries_items_videos_items {
+  audio: query_series_animethemes_items_animethemeentries_items_videos_items_audio
+  id: Float!
+  link: URL!
+  lyrics: Boolean!
+  nc: Boolean!
+  overlap: String
+  resolution: Float
+  source: String
+  subbed: Boolean!
+  tags: String
+  uncen: Boolean!
+}
+
+type query_series_animethemes_items_animethemeentries_items_videos_items_audio {
+  id: Float!
+  link: URL!
+}
+
+type query_series_animethemes_items_song {
+  id: Float!
+  title: String
+}
+
+enum query_series_animethemes_items_type {
+  ED
+  OP
+}
+
 type query_series_cover {
   color: String
   extraLarge: String
@@ -270,6 +370,17 @@ type query_series_images_items {
   type: query_series_images_items_type!
   url: String!
   width: Float!
+}
+
+enum query_series_images_items_type {
+  BACKDROP
+  LOGO
+  POSTER
+}
+
+enum query_series_kind {
+  ANIME
+  MANGA
 }
 
 type query_series_mediaId {
@@ -298,6 +409,11 @@ type query_series_networks_items {
   logoPath: String
   name: String!
   originCountry: String!
+}
+
+enum query_series_networks_items_category {
+  DISTRIBUTION
+  PRODUCTION
 }
 
 type query_series_schedule {
@@ -352,74 +468,3 @@ type query_studio_titles_items {
   title: String
   type: String
 }
-
-enum HTTPMethod {
-  CONNECT
-  DELETE
-  GET
-  HEAD
-  OPTIONS
-  PATCH
-  POST
-  PUT
-  TRACE
-}
-
-enum queryInput_episodes_kind {
-  filler
-  main
-  ona
-  ova
-  recap
-  special
-}
-
-enum query_episodes_data_items_kind {
-  filler
-  main
-  ona
-  ova
-  recap
-  special
-}
-
-enum query_series_images_items_type {
-  BACKDROP
-  LOGO
-  POSTER
-}
-
-enum query_series_kind {
-  ANIME
-  MANGA
-}
-
-enum query_series_networks_items_category {
-  DISTRIBUTION
-  PRODUCTION
-}
-
-"The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf)."
-scalar JSON
-
-"A string that cannot be passed as an empty value"
-scalar NonEmptyString
-
-"Floats that will have a value of 0 or more."
-scalar NonNegativeFloat
-
-scalar ObjMap
-
-"Floats that will have a value greater than 0."
-scalar PositiveFloat
-
-"Integers that will have a value greater than 0."
-scalar PositiveInt
-
-"A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt."
-scalar URL
-
-scalar _DirectiveExtensions
-
-"Locale for the news feed, e.g., en-GB, de-DE, fr-FR."
-scalar queryInput_newsFeed_locale
