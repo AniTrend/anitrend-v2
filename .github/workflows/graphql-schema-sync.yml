@@ -14,8 +14,8 @@ on:
           - both
   repository_dispatch:
     types: [graphql-schema-sync]
-  schedule:
-    - cron: '0 6 * * 1'
+#  schedule:
+#    - cron: '0 6 * * 1'
 
 permissions:
   contents: read
