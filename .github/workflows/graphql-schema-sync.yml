@@ -85,6 +85,27 @@ jobs:
       - name: Refresh GraphQL schemas
         run: bash .github/scripts/sync-graphql-schemas.sh "${{ steps.target.outputs.target }}"
 
+      - name: Collect changed schema files
+        id: changed-files
+        run: |
+          files=$(git diff --name-only -- data/schema.graphql data/anitrend.schema.graphql)
+
+          if [ -n "$files" ]; then
+            {
+              printf 'markdown<<EOF\n'
+              for file in $files; do
+                printf -- '- `%s`\n' "$file"
+              done
+              printf 'EOF\n'
+            } >> "$GITHUB_OUTPUT"
+          else
+            {
+              printf 'markdown<<EOF\n'
+              printf -- '- (no schema file changes detected)\n'
+              printf 'EOF\n'
+            } >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
@@ -94,7 +115,24 @@ jobs:
           commit-message: "ci(graphql): refresh GraphQL schemas"
           title: "ci(graphql): refresh GraphQL schemas"
           body: |
-            This PR refreshes the tracked GraphQL schema files.
+            ## Description
+
+            Automated GraphQL schema refresh for `${{ steps.target.outputs.target }}`.
+
+            - Trigger event: `${{ github.event_name }}`
+            - Updated files:
+
+            ${{ steps.changed-files.outputs.markdown }}
+
+            ## Screenshots:
+
+            N/A (schema-only update)
+
+            ## Types of changes
+
+            - [ ] Bug fix (non-breaking change which fixes an issue)
+            - [ ] New feature (non-breaking change which adds functionality)
+            - [x] Enhancement (Improves existing functionality)
           branch: ci/update-graphql-schemas
           base: develop
           labels: ":skateboard: skip-changelog"
