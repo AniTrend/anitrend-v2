@@ -18,14 +18,23 @@ package co.anitrend.data.edge.theme.datasource
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Upsert
 import co.anitrend.data.android.source.local.AbstractLocalSource
+import co.anitrend.data.edge.theme.entity.EdgeThemeEntryEntity
 import co.anitrend.data.edge.theme.entity.EdgeThemeEntity
+import co.anitrend.data.edge.theme.entity.EdgeThemeVideoEntity
 
 @Dao
 abstract class EdgeThemeLocalSource : AbstractLocalSource<EdgeThemeEntity>() {
-    @Query("select count(id) from edge_media_theme_song")
+    @Query("select count(id) from edge_anime_theme")
     abstract override suspend fun count(): Int
 
-    @Query("delete from edge_media_theme_song")
+    @Query("delete from edge_anime_theme")
     abstract override suspend fun clear()
+
+    @Upsert
+    abstract suspend fun upsertEntries(entities: List<EdgeThemeEntryEntity>)
+
+    @Upsert
+    abstract suspend fun upsertVideos(entities: List<EdgeThemeVideoEntity>)
 }

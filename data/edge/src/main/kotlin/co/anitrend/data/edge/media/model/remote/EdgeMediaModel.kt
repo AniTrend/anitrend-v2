@@ -19,7 +19,6 @@ package co.anitrend.data.edge.media.model.remote
 import co.anitrend.data.edge.image.model.EdgeImageModel
 import co.anitrend.data.edge.network.model.EdgeNetworkModel
 import co.anitrend.data.edge.theme.model.EdgeThemeModel
-import co.anitrend.data.edge.theme.model.serializer.EdgeThemeListSerializer
 import co.anitrend.data.edge.trailer.model.EdgeTrailerModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -55,7 +54,7 @@ internal class EdgeMediaModel(
      * @param images Collection of images for the media (backdrops, logos, posters).
      * @param schedule Airing schedule information for the media.
      * @param networks List of networks associated with the media.
-     * @param themeSongs List of theme songs (openings and endings).
+     * @param animethemes List of typed anime themes (openings and endings).
      * @param trailers List of trailers for the media.
      * @param updatedAt Timestamp of when the media information was last updated (epoch seconds).
      */
@@ -84,8 +83,7 @@ internal class EdgeMediaModel(
         @SerialName("images") val images: List<EdgeImageModel> = emptyList(),
         @SerialName("schedule") val schedule: SeriesScheduleType? = null,
         @SerialName("networks") val networks: List<EdgeNetworkModel> = emptyList(),
-        @Serializable(with = EdgeThemeListSerializer::class)
-        @SerialName("themeSongs") val themeSongs: List<EdgeThemeModel> = emptyList(),
+        @SerialName("animethemes") val animethemes: List<EdgeThemeModel> = emptyList(),
         @SerialName("trailers") val trailers: List<EdgeTrailerModel> = emptyList(),
         @SerialName("updatedAt") val updatedAt: Long,
     )

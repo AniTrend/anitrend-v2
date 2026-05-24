@@ -20,15 +20,33 @@ import co.anitrend.data.android.mapper.EmbedMapper
 import co.anitrend.data.edge.theme.EdgeThemeEmbedded
 import co.anitrend.data.edge.theme.converter.EdgeThemeConverter
 import co.anitrend.data.edge.theme.datasource.EdgeThemeLocalSource
+import co.anitrend.data.edge.theme.entity.EdgeThemeEntryEntity
 import co.anitrend.data.edge.theme.entity.EdgeThemeEntity
+import co.anitrend.data.edge.theme.entity.EdgeThemeVideoEntity
 
 internal class EdgeThemeMapper(
     override val localSource: EdgeThemeLocalSource,
     override val converter: EdgeThemeConverter,
 ) : EmbedMapper<EdgeThemeEmbedded, EdgeThemeEntity>() {
+    private var pendingEntries: List<EdgeThemeEntryEntity> = emptyList()
+    private var pendingVideos: List<EdgeThemeVideoEntity> = emptyList()
+
     override suspend fun persist(data: List<EdgeThemeEntity>) {
         localSource.upsert(data)
+        if (pendingEntries.isNotEmpty()) {
+            localSource.upsertEntries(pendingEntries)
+        }
+        if (pendingVideos.isNotEmpty()) {
+            localSource.upsertVideos(pendingVideos)
+        }
+        pendingEntries = emptyList()
+        pendingVideos = emptyList()
     }
 
-    override suspend fun onResponseMapFrom(source: List<EdgeThemeEmbedded>): List<EdgeThemeEntity> = source.map(converter::convertFrom)
+    override suspend fun onResponseMapFrom(source: List<EdgeThemeEmbedded>): List<EdgeThemeEntity> {
+        val mapped = source.mapNotNull(converter::convertFromOrNull)
+        pendingEntries = mapped.flatMap { it.entries }
+        pendingVideos = mapped.flatMap { it.videos }
+        return mapped.map { it.theme }
+    }
 }

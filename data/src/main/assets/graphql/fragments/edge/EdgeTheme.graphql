@@ -1,13 +1,34 @@
-fragment EdgeTheme on EdgeMediaTheme {
-  name
+fragment EdgeTheme on query_series_animethemes_items {
   id
-  audio
-  meta {
-    ... on EdgeMediaThemeMeta {
-      number
-      type
-      version
+  sequence
+  slug
+  type
+  song {
+    id
+    title
+  }
+  animethemeentries {
+    id
+    episodes
+    notes
+    nsfw
+    spoiler
+    version
+    videos {
+      id
+      link
+      lyrics
+      nc
+      overlap
+      resolution
+      source
+      subbed
+      tags
+      uncen
+      audio {
+        id
+        link
+      }
     }
   }
-  video
 }
