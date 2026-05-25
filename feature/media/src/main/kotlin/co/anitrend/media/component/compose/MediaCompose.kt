@@ -636,6 +636,7 @@ private fun MediaDetailContent(
             item {
                 MediaThemeSection(
                     themes = media.themes,
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
         }

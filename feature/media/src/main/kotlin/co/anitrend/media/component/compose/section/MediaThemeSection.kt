@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -41,6 +42,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,39 +61,93 @@ import co.anitrend.domain.media.entity.attribute.theme.MediaTheme
 import co.anitrend.media.R
 
 private const val THEME_PREVIEW_COUNT = 2
+private const val PREVIEW_LINE_LIMIT = 2
 
-private fun MediaTheme.hasAudioAsset(): Boolean = !audio.isNullOrBlank()
+internal fun MediaTheme.hasAudioAsset(): Boolean = !audio.isNullOrBlank()
 
-private fun MediaTheme.hasVideoAsset(): Boolean = video.isNotBlank()
+internal fun MediaTheme.hasVideoAsset(): Boolean = video.isNotBlank()
 
-private fun MediaTheme.metaBadgeLabel(): String? {
+internal fun MediaTheme.metaTypeLabel(): String? =
+    meta
+        ?.type
+        ?.trim()
+        ?.takeIf(String::isNotBlank)
+        ?.uppercase()
+
+internal fun MediaTheme.metaVersionLabel(): String? =
+    meta
+        ?.version
+        ?.takeIf { it > 1 }
+        ?.let { version -> "v$version" }
+
+private fun MediaTheme.typeSortRank(): Int =
+    when (metaTypeLabel()) {
+        "OP" -> 0
+        "ED" -> 1
+        else -> 2
+    }
+
+private fun MediaTheme.versionSortValue(): Int = meta?.version ?: 0
+
+internal fun List<MediaTheme>.sortedForDisplay(): List<MediaTheme> =
+    sortedWith(
+        compareBy<MediaTheme>(
+            { it.typeSortRank() },
+            { it.meta?.number ?: Int.MAX_VALUE },
+            { it.versionSortValue() },
+            { it.name.lowercase() },
+        ),
+    )
+
+internal fun MediaTheme.Preview.mediaTagTokens(): List<String> =
+    buildList {
+        resolution?.takeIf { it > 0 }?.let { add("${it}P") }
+        source?.takeIf(String::isNotBlank)?.let { add(it.uppercase()) }
+        addAll(tags)
+    }
+
+internal fun MediaTheme.Variant.variantLabel(): String =
+    if (version > 0) {
+        "v$version"
+    } else {
+        "-"
+    }
+
+internal fun MediaTheme.Variant.previewSummaryText(): String? =
+    previews
+        .firstOrNull()
+        ?.mediaTagTokens()
+        ?.takeIf { it.isNotEmpty() }
+        ?.joinToString(" ")
+
+internal fun MediaTheme.metaBadgeLabel(): String? {
     val themeMeta = meta ?: return null
+    val typeLabel = metaTypeLabel()
+    val versionLabel = metaVersionLabel()
 
     return buildList {
-        themeMeta.type.trim().takeIf(String::isNotBlank)?.let {
-            add(it.uppercase())
+        typeLabel?.let {
+            add(it)
         }
         themeMeta.number.takeIf { it > 0 }?.let {
             add(it.toString())
         }
-        themeMeta.version.takeIf { it > 1 }?.let {
-            add("v$it")
-        }
+        versionLabel?.let(::add)
     }.takeIf { it.isNotEmpty() }?.joinToString(" ")
 }
 
+@StringRes
+internal fun MediaTheme.availabilitySummaryResId(): Int =
+    when {
+        hasAudioAsset() && hasVideoAsset() -> R.string.label_media_theme_section_audio_video_available
+        hasAudioAsset() -> R.string.label_media_theme_section_audio_available
+        hasVideoAsset() -> R.string.label_media_theme_section_video_available
+        else -> R.string.label_media_theme_section_details_only
+    }
+
 @Composable
 private fun MediaTheme.availabilitySummary(): String =
-    when {
-        hasAudioAsset() && hasVideoAsset() ->
-            stringResource(R.string.label_media_theme_section_audio_video_available)
-        hasAudioAsset() ->
-            stringResource(R.string.label_media_theme_section_audio_available)
-        hasVideoAsset() ->
-            stringResource(R.string.label_media_theme_section_video_available)
-        else ->
-            stringResource(R.string.label_media_theme_section_details_only)
-    }
+    stringResource(availabilitySummaryResId())
 
 @Composable
 private fun ThemeBadge(
@@ -211,6 +267,44 @@ private fun MediaThemeItem(
 }
 
 @Composable
+private fun ThemeVariantRow(
+    variant: MediaTheme.Variant,
+    modifier: Modifier = Modifier,
+) {
+    val previewSummary = variant.previewSummaryText()
+
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            ThemeBadge(label = variant.variantLabel())
+            variant.episodes
+                ?.takeIf(String::isNotBlank)
+                ?.let { episodes ->
+                    Text(
+                        text = stringResource(R.string.label_media_theme_sheet_episodes_value, episodes),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+        }
+
+        previewSummary?.let { summary ->
+            Text(
+                text = summary,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = PREVIEW_LINE_LIMIT,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+@Composable
 private fun MediaThemeDetailSheet(
     theme: MediaTheme,
     onDismiss: () -> Unit,
@@ -264,15 +358,78 @@ private fun MediaThemeDetailSheet(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier.fillMaxWidth(),
             ) {
+                theme.metaTypeLabel()?.let { type ->
+                    MediaThemeInfoRow(
+                        label = stringResource(R.string.label_media_theme_sheet_type),
+                        value = type,
+                    )
+                }
+
                 theme.meta
-                    ?.version
-                    ?.takeIf { it > 1 }
-                    ?.let { version ->
+                    ?.number
+                    ?.takeIf { it > 0 }
+                    ?.let { number ->
                         MediaThemeInfoRow(
-                            label = stringResource(R.string.label_media_theme_sheet_version),
-                            value = "v$version",
+                            label = stringResource(R.string.label_media_theme_sheet_number),
+                            value = number.toString(),
                         )
                     }
+
+                theme.meta
+                    ?.let {
+                        theme.metaVersionLabel()
+                    }?.let { version ->
+                        MediaThemeInfoRow(
+                            label = stringResource(R.string.label_media_theme_sheet_version),
+                            value = version,
+                        )
+                    }
+
+                MediaThemeInfoRow(
+                    label = stringResource(R.string.label_media_theme_sheet_audio),
+                    value =
+                        stringResource(
+                            if (hasAudio) {
+                                R.string.label_media_theme_sheet_available
+                            } else {
+                                R.string.label_media_theme_sheet_not_available
+                            },
+                        ),
+                )
+
+                MediaThemeInfoRow(
+                    label = stringResource(R.string.label_media_theme_sheet_video),
+                    value =
+                        stringResource(
+                            if (hasVideo) {
+                                R.string.label_media_theme_sheet_available
+                            } else {
+                                R.string.label_media_theme_sheet_not_available
+                            },
+                        ),
+                )
+            }
+
+            if (theme.variants.isNotEmpty()) {
+                HorizontalDivider()
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(
+                        text = stringResource(R.string.label_media_theme_sheet_versions),
+                        style = MaterialTheme.typography.titleSmall,
+                    )
+
+                    theme.variants.forEachIndexed { index, variant ->
+                        if (index > 0) {
+                            Spacer(modifier = Modifier.height(2.dp))
+                        }
+
+                        ThemeVariantRow(variant = variant)
+                    }
+                }
             }
 
             HorizontalDivider()
@@ -352,13 +509,15 @@ fun MediaThemeSection(
     modifier: Modifier = Modifier,
     collapsedCount: Int = THEME_PREVIEW_COUNT,
 ) {
-    if (themes.isEmpty()) {
+    val orderedThemes = remember(themes) { themes.sortedForDisplay() }
+
+    if (orderedThemes.isEmpty()) {
         return
     }
 
-    var showAll by rememberSaveable(themes.size) { mutableStateOf(false) }
-    val canExpand = themes.size > collapsedCount
-    val visibleThemes = if (canExpand && !showAll) themes.take(collapsedCount) else themes
+    var showAll by rememberSaveable(orderedThemes.size) { mutableStateOf(false) }
+    val canExpand = orderedThemes.size > collapsedCount
+    val visibleThemes = if (canExpand && !showAll) orderedThemes.take(collapsedCount) else orderedThemes
 
     MediaHubSection(
         title = stringResource(R.string.label_media_extended_details_themes),

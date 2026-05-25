@@ -23,10 +23,25 @@ data class MediaTheme(
     val audio: String?,
     val video: String,
     val meta: Meta?,
+    val variants: List<Variant> = emptyList(),
 ) {
     data class Meta(
         val number: Int,
         val type: String,
         val version: Int,
+    )
+
+    data class Variant(
+        val version: Int,
+        val episodes: String?,
+        val previews: List<Preview>,
+    )
+
+    data class Preview(
+        val video: String,
+        val audio: String?,
+        val resolution: Int?,
+        val source: String?,
+        val tags: List<String> = emptyList(),
     )
 }

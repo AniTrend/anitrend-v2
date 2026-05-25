@@ -195,6 +195,23 @@ internal data class MediaComposePreviewProvider(
                             audio = "https://example.com/audio.mp3",
                             video = "",
                             meta = MediaTheme.Meta(number = 1, type = "OP", version = 1),
+                            variants =
+                                listOf(
+                                    MediaTheme.Variant(
+                                        version = 1,
+                                        episodes = "1-13",
+                                        previews =
+                                            listOf(
+                                                MediaTheme.Preview(
+                                                    video = "https://example.com/video-1080.webm",
+                                                    audio = "https://example.com/audio.mp3",
+                                                    resolution = 1080,
+                                                    source = "BD",
+                                                    tags = listOf("NC"),
+                                                ),
+                                            ),
+                                    ),
+                                ),
                         ),
                         MediaTheme(
                             mediaId = "1",
@@ -203,6 +220,22 @@ internal data class MediaComposePreviewProvider(
                             audio = null,
                             video = "https://example.com/video.mp4",
                             meta = MediaTheme.Meta(number = 1, type = "ED", version = 1),
+                            variants =
+                                listOf(
+                                    MediaTheme.Variant(
+                                        version = 1,
+                                        episodes = "2-25",
+                                        previews =
+                                            listOf(
+                                                MediaTheme.Preview(
+                                                    video = "https://example.com/video.mp4",
+                                                    audio = null,
+                                                    resolution = 720,
+                                                    source = "WEB",
+                                                ),
+                                            ),
+                                    ),
+                                ),
                         ),
                     ),
                 ageRating = "PG-13",

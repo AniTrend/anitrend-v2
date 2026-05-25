@@ -434,6 +434,30 @@ internal class MediaEntityViewConverter(
                                     ?.map {
                                         val firstVideo = it.entries.firstNotNullOfOrNull { entry -> entry.videos.firstOrNull() }
                                         val version = it.entries.firstOrNull()?.entry?.version ?: 0
+                                        val variants =
+                                            it.entries.map { entryView ->
+                                                MediaTheme.Variant(
+                                                    version = entryView.entry.version,
+                                                    episodes = entryView.entry.episodes,
+                                                    previews =
+                                                        entryView.videos.map { video ->
+                                                            MediaTheme.Preview(
+                                                                video = video.link,
+                                                                audio = video.audioLink,
+                                                                resolution = video.resolution,
+                                                                source = video.source,
+                                                                tags =
+                                                                    buildList {
+                                                                        if (video.nc) add("NC")
+                                                                        if (video.subbed) add("SUB")
+                                                                        if (video.lyrics) add("LYRICS")
+                                                                        if (video.uncen) add("UNCEN")
+                                                                    },
+                                                            )
+                                                        },
+                                                )
+                                            }
+
                                         MediaTheme(
                                             mediaId = it.theme.mediaId,
                                             themeId = it.theme.themeId,
@@ -446,6 +470,7 @@ internal class MediaEntityViewConverter(
                                                     type = it.theme.type,
                                                     version = version,
                                                 ),
+                                            variants = variants,
                                         )
                                     }.orEmpty(),
                             trailers = edgeTrailers,
