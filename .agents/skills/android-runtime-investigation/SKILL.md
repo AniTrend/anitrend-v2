@@ -46,8 +46,13 @@ Decision point:
 
 ```bash
 adb logcat -c
+adb shell am start -n <package-name>/co.anitrend.android.deeplink.component.screen.DeepLinkScreen
 adb shell pidof -s <package-name>
 ```
+
+AniTrend launcher note:
+- Prefer explicit `am start` for `DeepLinkScreen` instead of `monkey` when reproducing after clear-data.
+- `monkey` can open LeakCanary launcher activities in debug builds and pollute the repro path.
 
 Decision point:
 - If a PID exists, continue with pid-scoped logs.
@@ -81,6 +86,51 @@ Examples:
 Decision point:
 - If the bug already has a stack trace or request error, follow that evidence before looking at local databases.
 - If the UI is wrong but logs are clean, inspect recorded network responses next.
+
+### 4a. Post-clear-data navigation sequence (AniTrend specific)
+
+After `pm clear`, the app typically starts on onboarding before the main shell. Use this sequence to reach the drawer quickly:
+
+```bash
+# launch app explicitly
+adb shell am start -n <package-name>/co.anitrend.android.deeplink.component.screen.DeepLinkScreen
+
+# move through onboarding pages
+adb shell input swipe 900 1700 200 1700 300
+adb shell input swipe 900 1700 200 1700 300
+adb shell input swipe 900 1700 200 1700 300
+adb shell input swipe 900 1700 200 1700 300
+
+# tap "Get Started"
+adb shell input tap 540 2280
+
+# allow notifications prompt when shown
+adb shell input tap 540 1285
+
+# open drawer using nav button region
+adb shell input tap 84 2240
+```
+
+If coordinates drift by emulator profile, re-derive with a UIAutomator dump before tapping.
+
+### 4b. UIAutomator + screenshot evidence loop
+
+Capture structural proof (hierarchy) and visual proof (PNG) together:
+
+```bash
+adb shell uiautomator dump /sdcard/window_dump.xml
+adb pull /sdcard/window_dump.xml /tmp/window_dump.xml
+
+adb exec-out screencap -p > /tmp/screen.png
+```
+
+Quickly inspect expected labels from the hierarchy:
+
+```bash
+grep -E "General|Catalogs|Support|Home|Discover|News|Forums|Episodes" /tmp/window_dump.xml
+```
+
+Use this when UI appears truncated or when you need reproducible before/after evidence in a handover.
 
 5. Verify Chucker is available in the installed build before assuming debug traffic exists.
 
