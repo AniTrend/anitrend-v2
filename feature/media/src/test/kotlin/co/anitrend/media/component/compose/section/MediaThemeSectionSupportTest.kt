@@ -351,6 +351,33 @@ class MediaThemeSectionSupportTest {
         assertTrue(theme.hasSelectableVideoAsset())
     }
 
+    @Test
+    fun `selectableVideoAvailability reports true for video-only variant previews`() {
+        val theme =
+            theme(
+                themeId = "theme-1",
+                video = "",
+                variants =
+                    listOf(
+                        MediaTheme.Variant(
+                            version = 1,
+                            episodes = "1-12",
+                            previews =
+                                listOf(
+                                    MediaTheme.Preview(
+                                        video = "https://cdn.example/video-only.webm",
+                                        audio = null,
+                                        resolution = 1080,
+                                        source = "web",
+                                    ),
+                                ),
+                        ),
+                    ),
+            )
+
+        assertTrue(theme.hasSelectableVideoAsset())
+    }
+
     private fun theme(
         themeId: String = "theme-1",
         name: String = "Sample Theme",

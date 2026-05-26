@@ -273,9 +273,12 @@ internal fun MediaTheme.heroPreviewSelections(): List<ThemePreviewSelectionState
 internal fun MediaTheme.preferredPreviewSelection(): ThemePreviewSelectionState? = heroPreviewSelections().firstOrNull()
 
 internal fun MediaTheme.hasSelectableVideoAsset(): Boolean =
-    heroPreviewSelections().any { selection ->
-        selection.preview.video.isNotBlank()
-    }
+    video.isNotBlank() ||
+        variants.any { variant ->
+            variant.previews.any { preview ->
+                preview.video.isNotBlank()
+            }
+        }
 
 @StringRes
 internal fun MediaTheme.availabilitySummaryResId(): Int =
@@ -717,7 +720,7 @@ private fun MediaThemeDetailSheet(
     val controller = remember { ThemePlaybackController(SheetThemePlaybackEngine) }
     val playbackState by controller.uiState.collectAsStateWithLifecycle()
     val hasAudio = previewSelections.any { !it.preview.audio.isNullOrBlank() }
-    val hasVideo = previewSelections.any { it.preview.video.isNotBlank() }
+    val hasVideo = theme.hasSelectableVideoAsset()
     val metadataLabel = theme.metaBadgeLabel()
     val context = LocalContext.current
 
