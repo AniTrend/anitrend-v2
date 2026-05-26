@@ -190,6 +190,63 @@ class MediaThemeSectionSupportTest {
         assertEquals("1-15", selection.variant.episodes)
     }
 
+    @Test
+    fun `heroPreviewSelections keeps playable variants in order for hero switcher`() {
+        val theme =
+            theme(
+                themeId = "theme-1",
+                variants =
+                    listOf(
+                        MediaTheme.Variant(
+                            version = 1,
+                            episodes = "1-15",
+                            previews =
+                                listOf(
+                                    MediaTheme.Preview(
+                                        video = "",
+                                        audio = "https://cdn.example/audio-a.mp3",
+                                        resolution = 1080,
+                                        source = "web",
+                                    ),
+                                ),
+                        ),
+                        MediaTheme.Variant(
+                            version = 2,
+                            episodes = "16-24",
+                            previews =
+                                listOf(
+                                    MediaTheme.Preview(
+                                        video = "https://cdn.example/video-b.webm",
+                                        audio = "https://cdn.example/audio-b.mp3",
+                                        resolution = 720,
+                                        source = "bd",
+                                    ),
+                                ),
+                        ),
+                        MediaTheme.Variant(
+                            version = 3,
+                            episodes = "25",
+                            previews =
+                                listOf(
+                                    MediaTheme.Preview(
+                                        video = "https://cdn.example/video-c.webm",
+                                        audio = null,
+                                        resolution = 480,
+                                        source = "tv",
+                                    ),
+                                ),
+                        ),
+                    ),
+            )
+
+        val selections = theme.heroPreviewSelections()
+
+        assertEquals(2, selections.size)
+        assertEquals("theme-1:v1:https://cdn.example/audio-a.mp3", selections.first().previewKey)
+        assertEquals("theme-1:v2:https://cdn.example/video-b.webm", selections.last().previewKey)
+        assertEquals("16-24", selections.last().variant.episodes)
+    }
+
     private fun theme(
         themeId: String = "theme-1",
         name: String = "Sample Theme",

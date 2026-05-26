@@ -57,4 +57,9 @@ class ThemePlaybackController(
                 isBuffering = isBuffering,
             )
     }
+
+    fun release() {
+        engine.release()
+        mutableUiState.value = ThemePlaybackUiState()
+    }
 }

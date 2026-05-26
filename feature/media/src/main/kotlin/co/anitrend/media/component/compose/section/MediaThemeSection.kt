@@ -169,7 +169,7 @@ private object SheetThemePlaybackEngine : ThemePlaybackEngine {
 
 private fun MediaTheme.Preview.mediaIdentity(): String = video.takeIf(String::isNotBlank) ?: audio.orEmpty()
 
-private fun MediaTheme.previewSelections(): List<ThemePreviewSelectionState> =
+internal fun MediaTheme.heroPreviewSelections(): List<ThemePreviewSelectionState> =
     variants.mapNotNull { variant ->
         variant.previews.firstOrNull { !it.audio.isNullOrBlank() }?.let { preview ->
             ThemePreviewSelection(
@@ -180,7 +180,7 @@ private fun MediaTheme.previewSelections(): List<ThemePreviewSelectionState> =
         }
     }
 
-internal fun MediaTheme.preferredPreviewSelection(): ThemePreviewSelectionState? = previewSelections().firstOrNull()
+internal fun MediaTheme.preferredPreviewSelection(): ThemePreviewSelectionState? = heroPreviewSelections().firstOrNull()
 
 @StringRes
 internal fun MediaTheme.availabilitySummaryResId(): Int =
@@ -411,8 +411,10 @@ private fun ThemeIdentityBlock(
 
 @Composable
 private fun ThemeHeroPreviewCard(
+    selections: List<ThemePreviewSelectionState>,
     selection: ThemePreviewSelectionState?,
     playbackState: ThemePlaybackUiState,
+    onSelectionClick: (ThemePreviewSelectionState) -> Unit,
     onPlayPauseClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
@@ -430,6 +432,32 @@ private fun ThemeHeroPreviewCard(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            if (selections.isNotEmpty()) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    selections.forEach { item ->
+                        ThemeBadge(
+                            label = item.variant.variantLabel(),
+                            modifier = Modifier.clickable { onSelectionClick(item) },
+                            containerColor =
+                                if (item.previewKey == selection?.previewKey) {
+                                    MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.58f)
+                                } else {
+                                    MaterialTheme.colorScheme.surface.copy(alpha = 0.72f)
+                                },
+                            contentColor =
+                                if (item.previewKey == selection?.previewKey) {
+                                    MaterialTheme.colorScheme.onSecondaryContainer
+                                } else {
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                },
+                        )
+                    }
+                }
+            }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -517,7 +545,7 @@ private fun MediaThemeDetailSheet(
     theme: MediaTheme,
     onDismiss: () -> Unit,
 ) {
-    val previewSelections = remember(theme) { theme.previewSelections() }
+    val previewSelections = remember(theme) { theme.heroPreviewSelections() }
     var selectedPreviewKey by remember(theme) { mutableStateOf(theme.preferredPreviewSelection()?.previewKey) }
     val selectedSelection =
         remember(previewSelections, selectedPreviewKey) {
@@ -531,7 +559,7 @@ private fun MediaThemeDetailSheet(
 
     DisposableEffect(controller) {
         onDispose {
-            SheetThemePlaybackEngine.release()
+            controller.release()
         }
     }
 
@@ -545,8 +573,12 @@ private fun MediaThemeDetailSheet(
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
             ThemeHeroPreviewCard(
+                selections = previewSelections,
                 selection = selectedSelection,
                 playbackState = playbackState,
+                onSelectionClick = { selection ->
+                    selectedPreviewKey = selection.previewKey
+                },
                 onPlayPauseClick =
                     selectedSelection
                         ?.takeIf { !it.preview.audio.isNullOrBlank() }
