@@ -52,11 +52,54 @@ class ThemePlaybackControllerTest {
         assertFalse(state.isPlaying)
         assertFalse(state.isBuffering)
     }
+
+    @Test
+    fun `playback controller pauses active preview through intent api`() {
+        val player = RecordingPlayer()
+        val controller = ThemePlaybackController(player)
+
+        controller.play(
+            ThemePlaybackRequest(
+                previewKey = "theme-1:v1:https://cdn.example/audio.mp3",
+                audioUrl = "https://cdn.example/audio.mp3",
+                title = "Gurenge",
+            ),
+        )
+
+        controller.pause()
+
+        val state = controller.uiState.value
+        assertEquals(1, player.pauseCalls)
+        assertFalse(state.isPlaying)
+        assertFalse(state.isBuffering)
+    }
+
+    @Test
+    fun `playback controller can select another preview without starting playback`() {
+        val player = RecordingPlayer()
+        val controller = ThemePlaybackController(player)
+
+        controller.select(
+            ThemePlaybackRequest(
+                previewKey = "theme-1:v2:https://cdn.example/audio-b.mp3",
+                audioUrl = "https://cdn.example/audio-b.mp3",
+                title = "Gurenge",
+            ),
+            playWhenSelected = false,
+        )
+
+        val state = controller.uiState.value
+        assertEquals("theme-1:v2:https://cdn.example/audio-b.mp3", state.activePreviewKey)
+        assertEquals("Gurenge", state.activeTitle)
+        assertTrue(player.sourceHistory.isEmpty())
+        assertFalse(state.isPlaying)
+    }
 }
 
 private class RecordingPlayer : ThemePlaybackEngine {
     val sourceHistory = mutableListOf<String>()
     var playCalls = 0
+    var pauseCalls = 0
 
     override fun setSource(url: String) {
         sourceHistory += url
@@ -66,7 +109,9 @@ private class RecordingPlayer : ThemePlaybackEngine {
         playCalls += 1
     }
 
-    override fun pause() = Unit
+    override fun pause() {
+        pauseCalls += 1
+    }
 
     override fun seekTo(positionMs: Long) = Unit
 

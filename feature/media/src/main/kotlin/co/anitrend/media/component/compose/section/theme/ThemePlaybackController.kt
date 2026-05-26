@@ -47,6 +47,42 @@ class ThemePlaybackController(
             )
     }
 
+    fun pause() {
+        engine.pause()
+        mutableUiState.value =
+            mutableUiState.value.copy(
+                isPlaying = false,
+                isBuffering = false,
+            )
+    }
+
+    fun select(
+        request: ThemePlaybackRequest,
+        playWhenSelected: Boolean = mutableUiState.value.isPlaying,
+    ) {
+        if (playWhenSelected) {
+            play(request)
+        } else {
+            mutableUiState.value =
+                mutableUiState.value.copy(
+                    activePreviewKey = request.previewKey,
+                    activeTitle = request.title,
+                    isPlaying = false,
+                    isBuffering = false,
+                    errorMessage = null,
+                )
+        }
+    }
+
+    fun toggle(request: ThemePlaybackRequest) {
+        val activePreviewKey = mutableUiState.value.activePreviewKey
+        if (mutableUiState.value.isPlaying && activePreviewKey == request.previewKey) {
+            pause()
+        } else {
+            play(request)
+        }
+    }
+
     fun updatePlaybackState(
         isPlaying: Boolean = mutableUiState.value.isPlaying,
         isBuffering: Boolean = mutableUiState.value.isBuffering,

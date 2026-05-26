@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -40,7 +41,6 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.annotation.StringRes
@@ -178,6 +178,20 @@ internal fun MediaTheme.heroPreviewSelections(): List<ThemePreviewSelectionState
                 previewKey = "$themeId:v${variant.version}:${preview.mediaIdentity()}",
             )
         }
+    }.ifEmpty {
+        audio
+            ?.takeIf(String::isNotBlank)
+            ?.let { audioUrl ->
+                val fallbackVariant = MediaTheme.Variant(version = meta?.version ?: 0, episodes = null, previews = emptyList())
+                val fallbackPreview = MediaTheme.Preview(video = video, audio = audioUrl, resolution = null, source = null)
+                listOf(
+                    ThemePreviewSelection(
+                        variant = fallbackVariant,
+                        preview = fallbackPreview,
+                        previewKey = "$themeId:v${fallbackVariant.version}:${fallbackPreview.mediaIdentity()}",
+                    ),
+                )
+            }.orEmpty()
     }
 
 internal fun MediaTheme.preferredPreviewSelection(): ThemePreviewSelectionState? = heroPreviewSelections().firstOrNull()
@@ -212,30 +226,6 @@ private fun ThemeBadge(
             text = label,
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-        )
-    }
-}
-
-@Composable
-private fun MediaThemeInfoRow(
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(0.34f),
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.weight(0.66f),
         )
     }
 }
@@ -434,6 +424,7 @@ private fun ThemeHeroPreviewCard(
         ) {
             if (selections.isNotEmpty()) {
                 Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -553,7 +544,7 @@ private fun MediaThemeDetailSheet(
         }
     val controller = remember { ThemePlaybackController(SheetThemePlaybackEngine) }
     val playbackState by controller.uiState.collectAsStateWithLifecycle()
-    val hasAudio = previewSelections.isNotEmpty() || theme.hasAudioAsset()
+    val hasAudio = previewSelections.any { !it.preview.audio.isNullOrBlank() }
     val hasVideo = theme.hasVideoAsset()
     val metadataLabel = theme.metaBadgeLabel()
 
@@ -578,23 +569,28 @@ private fun MediaThemeDetailSheet(
                 playbackState = playbackState,
                 onSelectionClick = { selection ->
                     selectedPreviewKey = selection.previewKey
+                    controller.select(
+                        request =
+                            ThemePlaybackRequest(
+                                previewKey = selection.previewKey,
+                                audioUrl = selection.preview.audio.orEmpty(),
+                                title = theme.name,
+                            ),
+                        playWhenSelected = playbackState.isPlaying,
+                    )
                 },
                 onPlayPauseClick =
                     selectedSelection
                         ?.takeIf { !it.preview.audio.isNullOrBlank() }
                         ?.let { selection ->
                             {
-                                if (playbackState.activePreviewKey == selection.previewKey && playbackState.isPlaying) {
-                                    controller.updatePlaybackState(isPlaying = false, isBuffering = false)
-                                } else {
-                                    controller.play(
-                                        ThemePlaybackRequest(
-                                            previewKey = selection.previewKey,
-                                            audioUrl = selection.preview.audio.orEmpty(),
-                                            title = theme.name,
-                                        ),
-                                    )
-                                }
+                                controller.toggle(
+                                    ThemePlaybackRequest(
+                                        previewKey = selection.previewKey,
+                                        audioUrl = selection.preview.audio.orEmpty(),
+                                        title = theme.name,
+                                    ),
+                                )
                             }
                         },
             )
@@ -653,15 +649,15 @@ private fun MediaThemeDetailSheet(
                                 variantSelection?.let { selection ->
                                     {
                                         selectedPreviewKey = selection.previewKey
-                                        if (playbackState.isPlaying) {
-                                            controller.play(
+                                        controller.select(
+                                            request =
                                                 ThemePlaybackRequest(
                                                     previewKey = selection.previewKey,
                                                     audioUrl = selection.preview.audio.orEmpty(),
                                                     title = theme.name,
                                                 ),
-                                            )
-                                        }
+                                            playWhenSelected = playbackState.isPlaying,
+                                        )
                                     }
                                 },
                         )

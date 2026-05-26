@@ -247,6 +247,40 @@ class MediaThemeSectionSupportTest {
         assertEquals("16-24", selections.last().variant.episodes)
     }
 
+    @Test
+    fun `preferredPreview falls back to theme level audio when variants are not playable`() {
+        val theme =
+            theme(
+                themeId = "theme-1",
+                audio = "https://cdn.example/fallback-audio.mp3",
+                video = "https://cdn.example/fallback-video.webm",
+                meta = MediaTheme.Meta(number = 1, type = "op", version = 2),
+                variants =
+                    listOf(
+                        MediaTheme.Variant(
+                            version = 1,
+                            episodes = "1-12",
+                            previews =
+                                listOf(
+                                    MediaTheme.Preview(
+                                        video = "https://cdn.example/video.webm",
+                                        audio = null,
+                                        resolution = 1080,
+                                        source = "web",
+                                    ),
+                                ),
+                        ),
+                    ),
+            )
+
+        val selection = theme.preferredPreviewSelection()
+
+        assertTrue(selection != null)
+        assertEquals("https://cdn.example/fallback-audio.mp3", selection.preview.audio)
+        assertEquals("theme-1:v2:https://cdn.example/fallback-video.webm", selection.previewKey)
+        assertNull(selection.variant.episodes)
+    }
+
     private fun theme(
         themeId: String = "theme-1",
         name: String = "Sample Theme",
