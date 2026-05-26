@@ -281,6 +281,33 @@ class MediaThemeSectionSupportTest {
         assertNull(selection.variant.episodes)
     }
 
+    @Test
+    fun `selectableVideoAvailability reports variant preview video when top level video is blank`() {
+        val theme =
+            theme(
+                themeId = "theme-1",
+                video = "",
+                variants =
+                    listOf(
+                        MediaTheme.Variant(
+                            version = 1,
+                            episodes = "1-12",
+                            previews =
+                                listOf(
+                                    MediaTheme.Preview(
+                                        video = "https://cdn.example/variant-video.webm",
+                                        audio = "https://cdn.example/variant-audio.mp3",
+                                        resolution = 1080,
+                                        source = "web",
+                                    ),
+                                ),
+                        ),
+                    ),
+            )
+
+        assertTrue(theme.hasSelectableVideoAsset())
+    }
+
     private fun theme(
         themeId: String = "theme-1",
         name: String = "Sample Theme",
