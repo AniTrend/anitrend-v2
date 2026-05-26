@@ -33,6 +33,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.MusicNote
+import androidx.compose.material.icons.rounded.Pause
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
@@ -44,6 +45,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,9 +58,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.anitrend.common.shared.ui.compose.sheet.ListBottomSheet
 import co.anitrend.domain.media.entity.attribute.theme.MediaTheme
 import co.anitrend.media.R
+import co.anitrend.media.component.compose.section.theme.ThemePlaybackController
+import co.anitrend.media.component.compose.section.theme.ThemePlaybackEngine
+import co.anitrend.media.component.compose.section.theme.ThemePlaybackRequest
+import co.anitrend.media.component.compose.section.theme.ThemePlaybackUiState
 
 private const val THEME_PREVIEW_COUNT = 2
 private const val PREVIEW_LINE_LIMIT = 2
@@ -135,6 +142,45 @@ internal fun MediaTheme.metaBadgeLabel(): String? {
         versionLabel?.let(::add)
     }.takeIf { it.isNotEmpty() }?.joinToString(" ")
 }
+
+internal interface ThemePreviewSelectionState {
+    val variant: MediaTheme.Variant
+    val preview: MediaTheme.Preview
+    val previewKey: String
+}
+
+private data class ThemePreviewSelection(
+    override val variant: MediaTheme.Variant,
+    override val preview: MediaTheme.Preview,
+    override val previewKey: String,
+) : ThemePreviewSelectionState
+
+private object SheetThemePlaybackEngine : ThemePlaybackEngine {
+    override fun setSource(url: String) = Unit
+
+    override fun play() = Unit
+
+    override fun pause() = Unit
+
+    override fun seekTo(positionMs: Long) = Unit
+
+    override fun release() = Unit
+}
+
+private fun MediaTheme.Preview.mediaIdentity(): String = video.takeIf(String::isNotBlank) ?: audio.orEmpty()
+
+private fun MediaTheme.previewSelections(): List<ThemePreviewSelectionState> =
+    variants.mapNotNull { variant ->
+        variant.previews.firstOrNull { !it.audio.isNullOrBlank() }?.let { preview ->
+            ThemePreviewSelection(
+                variant = variant,
+                preview = preview,
+                previewKey = "$themeId:v${variant.version}:${preview.mediaIdentity()}",
+            )
+        }
+    }
+
+internal fun MediaTheme.preferredPreviewSelection(): ThemePreviewSelectionState? = previewSelections().firstOrNull()
 
 @StringRes
 internal fun MediaTheme.availabilitySummaryResId(): Int =
@@ -269,37 +315,199 @@ private fun MediaThemeItem(
 @Composable
 private fun ThemeVariantRow(
     variant: MediaTheme.Variant,
+    selection: ThemePreviewSelectionState?,
+    isSelected: Boolean,
+    isActive: Boolean,
+    onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    val previewSummary = variant.previewSummaryText()
+    val previewSummary = selection?.preview?.mediaTagTokens()?.takeIf { it.isNotEmpty() }?.joinToString(" ") ?: variant.previewSummaryText()
 
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+    Surface(
+        color = if (isSelected || isActive) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.36f) else MaterialTheme.colorScheme.surface.copy(alpha = 0.72f),
+        contentColor = MaterialTheme.colorScheme.onSurface,
+        shape = RoundedCornerShape(18.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = if (isSelected || isActive) 0.7f else 0.35f)),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .let { base ->
+                    if (onClick != null) {
+                        base.clickable(onClick = onClick)
+                    } else {
+                        base
+                    }
+                },
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
-            ThemeBadge(label = variant.variantLabel())
-            variant.episodes
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                ThemeBadge(label = variant.variantLabel())
+                variant.episodes
+                    ?.takeIf(String::isNotBlank)
+                    ?.let { episodes ->
+                        Text(
+                            text = stringResource(R.string.label_media_theme_sheet_episodes_value, episodes),
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    }
+            }
+
+            previewSummary?.let { summary ->
+                Text(
+                    text = summary,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = PREVIEW_LINE_LIMIT,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ThemeIdentityBlock(
+    theme: MediaTheme,
+    selection: ThemePreviewSelectionState?,
+    modifier: Modifier = Modifier,
+) {
+    val supportingLine =
+        buildString {
+            theme.metaBadgeLabel()?.let(::append)
+            selection?.variant?.episodes
                 ?.takeIf(String::isNotBlank)
                 ?.let { episodes ->
-                    Text(
-                        text = stringResource(R.string.label_media_theme_sheet_episodes_value, episodes),
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
+                    if (isNotEmpty()) {
+                        append(" • ")
+                    }
+                    append(stringResource(R.string.label_media_theme_sheet_episodes_value, episodes))
                 }
         }
 
-        previewSummary?.let { summary ->
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Text(
+            text = theme.name,
+            style = MaterialTheme.typography.titleLarge,
+        )
+
+        if (supportingLine.isNotBlank()) {
             Text(
-                text = summary,
-                style = MaterialTheme.typography.bodySmall,
+                text = supportingLine,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = PREVIEW_LINE_LIMIT,
-                overflow = TextOverflow.Ellipsis,
             )
+        }
+    }
+}
+
+@Composable
+private fun ThemeHeroPreviewCard(
+    selection: ThemePreviewSelectionState?,
+    playbackState: ThemePlaybackUiState,
+    onPlayPauseClick: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
+    val previewSummary = selection?.preview?.mediaTagTokens()?.takeIf { it.isNotEmpty() }?.joinToString(" ")
+    val isActiveSelection = selection?.previewKey == playbackState.activePreviewKey
+    val canPlay = selection?.preview?.audio?.isNotBlank() == true
+
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.48f),
+        contentColor = MaterialTheme.colorScheme.onSurface,
+        shape = RoundedCornerShape(24.dp),
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        text = selection?.variant?.variantLabel() ?: stringResource(R.string.label_media_theme_sheet_not_available),
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                    selection?.variant?.episodes
+                        ?.takeIf(String::isNotBlank)
+                        ?.let { episodes ->
+                            Text(
+                                text = stringResource(R.string.label_media_theme_sheet_episodes_value, episodes),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                }
+
+                FilledTonalButton(
+                    onClick = { onPlayPauseClick?.invoke() },
+                    enabled = canPlay,
+                    shape = RoundedCornerShape(18.dp),
+                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                ) {
+                    Icon(
+                        imageVector = if (isActiveSelection && playbackState.isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
+                        contentDescription = null,
+                    )
+                    Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                    Text(
+                        text =
+                            stringResource(
+                                if (canPlay) {
+                                    R.string.label_media_theme_sheet_available
+                                } else {
+                                    R.string.label_media_theme_sheet_not_available
+                                },
+                            ),
+                    )
+                }
+            }
+
+            previewSummary?.let { summary ->
+                Text(
+                    text = summary,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                ThemeBadge(
+                    label =
+                        stringResource(
+                            if (canPlay) {
+                                R.string.label_media_theme_section_audio_available
+                            } else {
+                                R.string.label_media_theme_sheet_not_available
+                            },
+                        ),
+                )
+                if (isActiveSelection && playbackState.isPlaying) {
+                    ThemeBadge(
+                        label = stringResource(R.string.label_media_theme_sheet_available),
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.58f),
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                    )
+                }
+            }
         }
     }
 }
@@ -309,9 +517,23 @@ private fun MediaThemeDetailSheet(
     theme: MediaTheme,
     onDismiss: () -> Unit,
 ) {
-    val hasAudio = theme.hasAudioAsset()
+    val previewSelections = remember(theme) { theme.previewSelections() }
+    var selectedPreviewKey by remember(theme) { mutableStateOf(theme.preferredPreviewSelection()?.previewKey) }
+    val selectedSelection =
+        remember(previewSelections, selectedPreviewKey) {
+            previewSelections.firstOrNull { it.previewKey == selectedPreviewKey } ?: previewSelections.firstOrNull()
+        }
+    val controller = remember { ThemePlaybackController(SheetThemePlaybackEngine) }
+    val playbackState by controller.uiState.collectAsStateWithLifecycle()
+    val hasAudio = previewSelections.isNotEmpty() || theme.hasAudioAsset()
     val hasVideo = theme.hasVideoAsset()
     val metadataLabel = theme.metaBadgeLabel()
+
+    DisposableEffect(controller) {
+        onDispose {
+            SheetThemePlaybackEngine.release()
+        }
+    }
 
     ListBottomSheet(onDismiss = onDismiss) {
         Column(
@@ -322,19 +544,33 @@ private fun MediaThemeDetailSheet(
                     .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(6.dp),
-            ) {
-                Text(
-                    text = theme.name,
-                    style = MaterialTheme.typography.titleLarge,
-                )
-                Text(
-                    text = stringResource(R.string.subtitle_media_theme_sheet),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
+            ThemeHeroPreviewCard(
+                selection = selectedSelection,
+                playbackState = playbackState,
+                onPlayPauseClick =
+                    selectedSelection
+                        ?.takeIf { !it.preview.audio.isNullOrBlank() }
+                        ?.let { selection ->
+                            {
+                                if (playbackState.activePreviewKey == selection.previewKey && playbackState.isPlaying) {
+                                    controller.updatePlaybackState(isPlaying = false, isBuffering = false)
+                                } else {
+                                    controller.play(
+                                        ThemePlaybackRequest(
+                                            previewKey = selection.previewKey,
+                                            audioUrl = selection.preview.audio.orEmpty(),
+                                            title = theme.name,
+                                        ),
+                                    )
+                                }
+                            }
+                        },
+            )
+
+            ThemeIdentityBlock(
+                theme = theme,
+                selection = selectedSelection,
+            )
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -352,62 +588,9 @@ private fun MediaThemeDetailSheet(
                 if (hasVideo) {
                     ThemeBadge(label = stringResource(R.string.label_media_theme_section_video_available))
                 }
-            }
-
-            Column(
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                theme.metaTypeLabel()?.let { type ->
-                    MediaThemeInfoRow(
-                        label = stringResource(R.string.label_media_theme_sheet_type),
-                        value = type,
-                    )
+                selectedSelection?.preview?.mediaTagTokens()?.takeIf { it.isNotEmpty() }?.let { tokens ->
+                    ThemeBadge(label = tokens.joinToString(" "))
                 }
-
-                theme.meta
-                    ?.number
-                    ?.takeIf { it > 0 }
-                    ?.let { number ->
-                        MediaThemeInfoRow(
-                            label = stringResource(R.string.label_media_theme_sheet_number),
-                            value = number.toString(),
-                        )
-                    }
-
-                theme.meta
-                    ?.let {
-                        theme.metaVersionLabel()
-                    }?.let { version ->
-                        MediaThemeInfoRow(
-                            label = stringResource(R.string.label_media_theme_sheet_version),
-                            value = version,
-                        )
-                    }
-
-                MediaThemeInfoRow(
-                    label = stringResource(R.string.label_media_theme_sheet_audio),
-                    value =
-                        stringResource(
-                            if (hasAudio) {
-                                R.string.label_media_theme_sheet_available
-                            } else {
-                                R.string.label_media_theme_sheet_not_available
-                            },
-                        ),
-                )
-
-                MediaThemeInfoRow(
-                    label = stringResource(R.string.label_media_theme_sheet_video),
-                    value =
-                        stringResource(
-                            if (hasVideo) {
-                                R.string.label_media_theme_sheet_available
-                            } else {
-                                R.string.label_media_theme_sheet_not_available
-                            },
-                        ),
-                )
             }
 
             if (theme.variants.isNotEmpty()) {
@@ -423,44 +606,34 @@ private fun MediaThemeDetailSheet(
                     )
 
                     theme.variants.forEachIndexed { index, variant ->
+                        val variantSelection = previewSelections.firstOrNull { it.variant == variant }
+
                         if (index > 0) {
                             Spacer(modifier = Modifier.height(2.dp))
                         }
 
-                        ThemeVariantRow(variant = variant)
+                        ThemeVariantRow(
+                            variant = variant,
+                            selection = variantSelection,
+                            isSelected = variantSelection?.previewKey == selectedSelection?.previewKey,
+                            isActive = variantSelection?.previewKey == playbackState.activePreviewKey,
+                            onClick =
+                                variantSelection?.let { selection ->
+                                    {
+                                        selectedPreviewKey = selection.previewKey
+                                        if (playbackState.isPlaying) {
+                                            controller.play(
+                                                ThemePlaybackRequest(
+                                                    previewKey = selection.previewKey,
+                                                    audioUrl = selection.preview.audio.orEmpty(),
+                                                    title = theme.name,
+                                                ),
+                                            )
+                                        }
+                                    }
+                                },
+                        )
                     }
-                }
-            }
-
-            HorizontalDivider()
-
-            if (hasAudio) {
-                FilledTonalButton(
-                    onClick = {},
-                    enabled = false,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.MusicNote,
-                        contentDescription = null,
-                    )
-                    Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                    Text(text = stringResource(R.string.action_media_theme_sheet_preview_audio_coming_soon))
-                }
-            }
-
-            if (hasVideo) {
-                OutlinedButton(
-                    onClick = {},
-                    enabled = false,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.PlayArrow,
-                        contentDescription = null,
-                    )
-                    Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                    Text(text = stringResource(R.string.action_media_theme_sheet_preview_video_coming_soon))
                 }
             }
 

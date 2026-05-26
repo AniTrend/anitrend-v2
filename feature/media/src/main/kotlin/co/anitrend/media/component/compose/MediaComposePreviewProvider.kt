@@ -211,6 +211,19 @@ internal data class MediaComposePreviewProvider(
                                                 ),
                                             ),
                                     ),
+                                    MediaTheme.Variant(
+                                        version = 2,
+                                        episodes = "14-25",
+                                        previews =
+                                            listOf(
+                                                MediaTheme.Preview(
+                                                    video = "https://example.com/video-720.webm",
+                                                    audio = "https://example.com/audio-alt.mp3",
+                                                    resolution = 720,
+                                                    source = "WEB",
+                                                ),
+                                            ),
+                                    ),
                                 ),
                         ),
                         MediaTheme(

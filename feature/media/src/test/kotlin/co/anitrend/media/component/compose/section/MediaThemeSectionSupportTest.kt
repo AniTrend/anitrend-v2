@@ -159,19 +159,52 @@ class MediaThemeSectionSupportTest {
         assertContentEquals(listOf("BD"), preview.mediaTagTokens())
     }
 
+    @Test
+    fun `preferredPreview selects first playable variant preview and builds stable key`() {
+        val theme =
+            theme(
+                themeId = "theme-1",
+                variants =
+                    listOf(
+                        MediaTheme.Variant(
+                            version = 1,
+                            episodes = "1-15",
+                            previews =
+                                listOf(
+                                    MediaTheme.Preview(
+                                        video = "",
+                                        audio = "https://cdn.example/audio.mp3",
+                                        resolution = 1080,
+                                        source = "web",
+                                    ),
+                                ),
+                        ),
+                    ),
+            )
+
+        val selection = theme.preferredPreviewSelection()
+
+        assertTrue(selection != null)
+        assertTrue(selection.previewKey.startsWith("theme-1:v1:"))
+        assertTrue(selection.previewKey.endsWith("https://cdn.example/audio.mp3"))
+        assertEquals("1-15", selection.variant.episodes)
+    }
+
     private fun theme(
+        themeId: String = "theme-1",
         name: String = "Sample Theme",
         audio: String? = null,
         video: String = "",
         meta: MediaTheme.Meta? = null,
+        variants: List<MediaTheme.Variant> = emptyList(),
     ) =
         MediaTheme(
             mediaId = "media-1",
-            themeId = "theme-1",
+            themeId = themeId,
             name = name,
             audio = audio,
             video = video,
             meta = meta,
-            variants = emptyList(),
+            variants = variants,
         )
 }
