@@ -33,6 +33,8 @@ dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.markdown))
 
     implementation(libs.androidx.browser)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
     implementation(libs.androidx.paging.compose)
 }
 
