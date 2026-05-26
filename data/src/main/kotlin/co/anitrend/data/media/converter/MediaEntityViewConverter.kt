@@ -433,7 +433,11 @@ internal class MediaEntityViewConverter(
                                     ?.themes
                                     ?.map {
                                         val firstVideo = it.entries.firstNotNullOfOrNull { entry -> entry.videos.firstOrNull() }
-                                        val version = it.entries.firstOrNull()?.entry?.version ?: 0
+                                        val version =
+                                            it.entries
+                                                .firstOrNull()
+                                                ?.entry
+                                                ?.version ?: 0
                                         val variants =
                                             it.entries.map { entryView ->
                                                 MediaTheme.Variant(
