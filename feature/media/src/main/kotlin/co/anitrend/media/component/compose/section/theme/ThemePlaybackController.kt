@@ -12,6 +12,7 @@ data class ThemePlaybackRequest(
 
 data class ThemePlaybackUiState(
     val activePreviewKey: String? = null,
+    val activeTitle: String? = null,
     val isPlaying: Boolean = false,
     val isBuffering: Boolean = false,
     val positionMs: Long = 0L,
@@ -39,9 +40,21 @@ class ThemePlaybackController(
         mutableUiState.value =
             mutableUiState.value.copy(
                 activePreviewKey = request.previewKey,
+                activeTitle = request.title,
                 isPlaying = true,
                 isBuffering = true,
                 errorMessage = null,
+            )
+    }
+
+    fun updatePlaybackState(
+        isPlaying: Boolean = mutableUiState.value.isPlaying,
+        isBuffering: Boolean = mutableUiState.value.isBuffering,
+    ) {
+        mutableUiState.value =
+            mutableUiState.value.copy(
+                isPlaying = isPlaying,
+                isBuffering = isBuffering,
             )
     }
 }
