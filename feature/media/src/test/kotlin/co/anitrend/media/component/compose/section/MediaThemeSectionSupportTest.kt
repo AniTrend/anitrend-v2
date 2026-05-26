@@ -12,6 +12,44 @@ import kotlin.test.assertTrue
 class MediaThemeSectionSupportTest {
 
     @Test
+    fun `formatDuration renders m_ss and unknown duration`() {
+        assertEquals("0:00", formatDuration(0L))
+        assertEquals("1:05", formatDuration(65_000L))
+        assertEquals("--:--", formatDuration(-1L))
+    }
+
+    @Test
+    fun `previewRowState applies active matching and seek eligibility semantics`() {
+        val activePlaying =
+            previewRowState(
+                activePreviewKey = "theme-1:v1:https://cdn.example/audio.mp3",
+                previewKey = "theme-1:v1:https://cdn.example/audio.mp3",
+                isPlaying = true,
+            )
+        val activePaused =
+            previewRowState(
+                activePreviewKey = "theme-1:v1:https://cdn.example/audio.mp3",
+                previewKey = "theme-1:v1:https://cdn.example/audio.mp3",
+                isPlaying = false,
+            )
+        val inactive =
+            previewRowState(
+                activePreviewKey = "theme-1:v1:https://cdn.example/audio.mp3",
+                previewKey = "theme-1:v2:https://cdn.example/audio-b.mp3",
+                isPlaying = true,
+            )
+
+        assertTrue(activePlaying.isActive)
+        assertTrue(activePlaying.canSeek)
+        assertTrue(activePlaying.hasVideo)
+        assertTrue(activePaused.isActive)
+        assertFalse(activePaused.canSeek)
+        assertFalse(inactive.isActive)
+        assertFalse(inactive.canSeek)
+        assertTrue(inactive.hasVideo)
+    }
+
+    @Test
     fun `availabilitySummaryResId maps asset combinations to expected copy`() {
         assertEquals(
             R.string.label_media_theme_section_audio_video_available,

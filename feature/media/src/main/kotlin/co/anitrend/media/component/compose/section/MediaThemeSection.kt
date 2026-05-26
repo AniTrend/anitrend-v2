@@ -197,6 +197,23 @@ internal fun formatDuration(ms: Long): String {
     return "%d:%02d".format(minutes, seconds)
 }
 
+internal data class PreviewRowState(
+    val isActive: Boolean,
+    val canSeek: Boolean,
+    val hasVideo: Boolean,
+)
+
+internal fun previewRowState(
+    activePreviewKey: String?,
+    previewKey: String,
+    isPlaying: Boolean,
+): PreviewRowState =
+    PreviewRowState(
+        isActive = activePreviewKey == previewKey,
+        canSeek = activePreviewKey == previewKey && isPlaying,
+        hasVideo = previewKey.isNotBlank(),
+    )
+
 private fun sliderValue(positionMs: Long, durationMs: Long): Float {
     if (durationMs < MIN_DURATION_MS) {
         return 0f
@@ -719,6 +736,14 @@ private fun MediaThemeDetailSheet(
         }
     val controller = remember { ThemePlaybackController(SheetThemePlaybackEngine) }
     val playbackState by controller.uiState.collectAsStateWithLifecycle()
+    val selectedRowState =
+        selectedSelection?.let { selection ->
+            previewRowState(
+                activePreviewKey = playbackState.activePreviewKey,
+                previewKey = selection.previewKey,
+                isPlaying = playbackState.isPlaying,
+            )
+        }
     val hasAudio = previewSelections.any { !it.preview.audio.isNullOrBlank() }
     val hasVideo = theme.hasSelectableVideoAsset()
     val metadataLabel = theme.metaBadgeLabel()
@@ -772,7 +797,7 @@ private fun MediaThemeDetailSheet(
                         },
                 onSeek =
                     selectedSelection
-                        ?.takeIf { playbackState.activePreviewKey == it.previewKey }
+                        ?.takeIf { selectedRowState?.canSeek == true }
                         ?.let {
                             { positionMs ->
                                 controller.seekTo(positionMs)
@@ -826,6 +851,14 @@ private fun MediaThemeDetailSheet(
                     theme.variants.forEachIndexed { index, variant ->
                         val variantSelection = previewSelections.firstOrNull { it.variant == variant }
                         val videoSelection = variant.videoPreviewSelection(theme.themeId)
+                        val rowState =
+                            variantSelection?.let { selection ->
+                                previewRowState(
+                                    activePreviewKey = playbackState.activePreviewKey,
+                                    previewKey = selection.previewKey,
+                                    isPlaying = playbackState.isPlaying,
+                                )
+                            }
 
                         if (index > 0) {
                             Spacer(modifier = Modifier.height(2.dp))
@@ -835,7 +868,7 @@ private fun MediaThemeDetailSheet(
                             variant = variant,
                             selection = variantSelection,
                             isSelected = variantSelection?.previewKey == selectedSelection?.previewKey,
-                            isActive = variantSelection?.previewKey == playbackState.activePreviewKey,
+                            isActive = rowState?.isActive == true,
                             onClick =
                                 variantSelection?.let { selection ->
                                     {
