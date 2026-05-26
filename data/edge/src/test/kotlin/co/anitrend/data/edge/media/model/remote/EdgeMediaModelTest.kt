@@ -31,7 +31,7 @@ class EdgeMediaModelTest {
         }
 
     @Test
-    fun `series payload decodes typed themes from json array`() {
+    fun `series payload decodes typed animethemes from json array`() {
         val payload =
             """
             {
@@ -49,17 +49,32 @@ class EdgeMediaModelTest {
                   "anilist": 15125,
                   "notify": "notify-id"
                 },
-                "themeSongs": [
+                "animethemes": [
                   {
-                    "id": "theme-1",
-                    "name": "OP 1",
-                    "audio": "audio.mp3",
-                    "video": "video.mp4",
-                    "meta": {
-                      "number": 1,
-                      "type": "OP",
-                      "version": 1
-                    }
+                    "id": 1,
+                    "sequence": 1,
+                    "slug": "opening-1",
+                    "type": "OP",
+                    "song": {
+                      "id": 50,
+                      "title": "OP 1"
+                    },
+                    "animethemeentries": [
+                      {
+                        "id": 100,
+                        "version": 1,
+                        "videos": [
+                          {
+                            "id": 1000,
+                            "link": "video.mp4",
+                            "audio": {
+                              "id": 9000,
+                              "link": "audio.mp3"
+                            }
+                          }
+                        ]
+                      }
+                    ]
                   }
                 ],
                 "trailers": [],
@@ -71,9 +86,9 @@ class EdgeMediaModelTest {
         val result = json.decodeFromString<EdgeMediaModel>(payload)
 
         val series = assertNotNull(result.series)
-        assertEquals(1, series.themeSongs.size)
-        assertEquals("theme-1", series.themeSongs.first().id)
-        assertEquals("OP 1", series.themeSongs.first().name)
+        assertEquals(1, series.animethemes.size)
+        assertEquals(1L, series.animethemes.first().id)
+        assertEquals("OP 1", series.animethemes.first().name)
     }
 
     @Test
@@ -93,7 +108,7 @@ class EdgeMediaModelTest {
                   "anilist": 15125,
                   "slug": "sample-series"
                 },
-                "themeSongs": [],
+                "animethemes": [],
                 "trailers": [],
                 "updatedAt": 1710000000
               }
@@ -126,21 +141,19 @@ class EdgeMediaModelTest {
                   "anilist": 15125,
                   "notify": "notify-id"
                 },
-                "themeSongs": [
+                "animethemes": [
                   {
-                    "name": "OP 1",
-                    "meta": {
-                      "number": 1,
-                      "type": "OP",
-                      "version": 1
+                    "sequence": 1,
+                    "type": "OP",
+                    "song": {
+                      "title": "OP 1"
                     }
                   },
                   {
-                    "name": "ED 1",
-                    "meta": {
-                      "number": 1,
-                      "type": "ED",
-                      "version": 1
+                    "sequence": 1,
+                    "type": "ED",
+                    "song": {
+                      "title": "ED 1"
                     }
                   }
                 ],
@@ -153,7 +166,7 @@ class EdgeMediaModelTest {
         val result = json.decodeFromString<EdgeMediaModel>(payload)
         val series = assertNotNull(result.series)
 
-        assertEquals(2, series.themeSongs.size)
-        assertEquals(listOf("OP 1", "ED 1"), series.themeSongs.map { it.name })
+        assertEquals(2, series.animethemes.size)
+        assertEquals(listOf("OP 1", "ED 1"), series.animethemes.map { it.name })
     }
 }

@@ -52,7 +52,7 @@ internal class EdgeMediaMapper(
         imageMapper.onEmbedded(mediaId = entity.id, sources = model.images)
         networkMapper.onEmbedded(source = model.networks.map { entity.id to it })
         trailerMapper.onEmbedded(mediaId = entity.id, sources = model.trailers)
-        themeMapper.onEmbedded(source = model.themeSongs.filter(EdgeThemeModel::isPersistable).map { entity.id to it })
+        themeMapper.onEmbedded(source = model.animethemes.filter(EdgeThemeModel::isPersistable).map { entity.id to it })
         return entity
     }
 }

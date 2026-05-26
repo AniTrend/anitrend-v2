@@ -17,6 +17,7 @@ androidx-glance = "1.1.1"
 androidx-lifecycle = "2.10.0"
 androidx-lifecycle-compose = "2.10.0"
 androidx-lifecycle-extensions = "2.2.0"
+androidx-media3 = "1.8.0"
 androidx-navigation-compose = "2.9.8"
 androidx-paging = "3.5.0"
 androidx-paging-compose = "3.5.0"
@@ -140,6 +141,9 @@ androidx-lifecycle-livedata-ktx =  { module = "androidx.lifecycle:lifecycle-live
 androidx-lifecycle-viewmodel-ktx =  { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-livedata-core-ktx =  { module = "androidx.lifecycle:lifecycle-livedata-core-ktx", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel-compose =  { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle-compose" }
+
+androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "androidx-media3" }
+androidx-media3-ui = { module = "androidx.media3:media3-ui", version.ref = "androidx-media3" }
 
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation-compose" }
 

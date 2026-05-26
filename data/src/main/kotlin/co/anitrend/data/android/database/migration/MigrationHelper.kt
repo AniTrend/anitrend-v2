@@ -275,4 +275,20 @@ internal val MIGRATIONS =
                 "CREATE UNIQUE INDEX IF NOT EXISTS `index_user_statistic_voice_actor_user_id_media_type_staff_id` ON `user_statistic_voice_actor` (`user_id`, `media_type`, `staff_id`)",
             )
         },
+        migrationOfStatements(21, 22) {
+            arrayOf(
+                "DROP TABLE IF EXISTS `edge_media_theme_song`",
+                "CREATE TABLE IF NOT EXISTS `edge_anime_theme` (`media_id` TEXT NOT NULL, `theme_id` TEXT NOT NULL, `slug` TEXT, `type` TEXT NOT NULL, `sequence` INTEGER NOT NULL, `song_id` INTEGER, `song_title` TEXT NOT NULL, `id` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`media_id`) REFERENCES `edge_media`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+                "CREATE UNIQUE INDEX IF NOT EXISTS `index_edge_anime_theme_media_id_theme_id` ON `edge_anime_theme` (`media_id`, `theme_id`)",
+                "CREATE UNIQUE INDEX IF NOT EXISTS `index_edge_anime_theme_theme_id` ON `edge_anime_theme` (`theme_id`)",
+                "CREATE INDEX IF NOT EXISTS `index_edge_anime_theme_media_id` ON `edge_anime_theme` (`media_id`)",
+                "CREATE TABLE IF NOT EXISTS `edge_anime_theme_entry` (`theme_id` TEXT NOT NULL, `entry_id` TEXT NOT NULL, `episodes` TEXT, `notes` TEXT, `nsfw` INTEGER NOT NULL, `spoiler` INTEGER NOT NULL, `version` INTEGER NOT NULL, `id` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`theme_id`) REFERENCES `edge_anime_theme`(`theme_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+                "CREATE UNIQUE INDEX IF NOT EXISTS `index_edge_anime_theme_entry_theme_id_entry_id` ON `edge_anime_theme_entry` (`theme_id`, `entry_id`)",
+                "CREATE UNIQUE INDEX IF NOT EXISTS `index_edge_anime_theme_entry_entry_id` ON `edge_anime_theme_entry` (`entry_id`)",
+                "CREATE INDEX IF NOT EXISTS `index_edge_anime_theme_entry_theme_id` ON `edge_anime_theme_entry` (`theme_id`)",
+                "CREATE TABLE IF NOT EXISTS `edge_anime_theme_video` (`entry_id` TEXT NOT NULL, `video_id` TEXT NOT NULL, `link` TEXT NOT NULL, `resolution` INTEGER, `source` TEXT, `subbed` INTEGER NOT NULL, `lyrics` INTEGER NOT NULL, `nc` INTEGER NOT NULL, `uncen` INTEGER NOT NULL, `tags` TEXT, `overlap` TEXT, `audio_id` INTEGER, `audio_link` TEXT, `id` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`entry_id`) REFERENCES `edge_anime_theme_entry`(`entry_id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+                "CREATE UNIQUE INDEX IF NOT EXISTS `index_edge_anime_theme_video_entry_id_video_id` ON `edge_anime_theme_video` (`entry_id`, `video_id`)",
+                "CREATE INDEX IF NOT EXISTS `index_edge_anime_theme_video_entry_id` ON `edge_anime_theme_video` (`entry_id`)",
+            )
+        },
     )

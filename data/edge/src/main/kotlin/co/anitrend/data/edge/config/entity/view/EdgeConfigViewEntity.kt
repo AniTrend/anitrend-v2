@@ -26,12 +26,12 @@ data class EdgeConfigViewEntity(
     @Embedded val config: EdgeConfigEntity,
     @Relation(
         parentColumn = "id",
-        entityColumn = "id",
+        entityColumn = "config_id",
     )
     val genres: List<EdgeGenreEntity>,
     @Relation(
         parentColumn = "id",
-        entityColumn = "id",
+        entityColumn = "config_id",
     )
     val navigation: List<EdgeNavigationEntity>,
 )

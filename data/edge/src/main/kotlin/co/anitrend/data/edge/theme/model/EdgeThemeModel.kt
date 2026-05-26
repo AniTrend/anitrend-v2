@@ -19,43 +19,78 @@ package co.anitrend.data.edge.theme.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * Theme song (OP/ED) information for an anime media item.
- *
- * Mirrors the original `AnimeThemeType` in the former nested structure.
- * Each entry represents a single theme (opening/ending) and includes a nested meta block
- * describing ordering and variant details.
- *
- * @param audio Optional URL to an audio stream/sample of the theme.
- * @param id Unique identifier of the theme (upstream source id or composite key).
- * @param meta Metadata describing sequencing and classification of the theme.
- * @param name Display/title name of the theme.
- * @param video URL to a video (MV, creditless OP/ED, etc.). May reference streaming host.
- */
 @Serializable
 internal data class EdgeThemeModel(
-    @SerialName("audio") val audio: String? = null,
-    @SerialName("id") val id: String? = null,
-    @SerialName("meta") val meta: EdgeThemeMetaModel? = null,
-    @SerialName("name") val name: String? = null,
-    @SerialName("video") val video: String? = null,
+    @SerialName("id") val id: Long? = null,
+    @SerialName("sequence") val sequence: Int? = null,
+    @SerialName("slug") val slug: String? = null,
+    @SerialName("type") val type: String? = null,
+    @SerialName("song") val song: SongModel? = null,
+    @SerialName("animethemeentries") val entries: List<EntryModel> = emptyList(),
 ) {
     val isPersistable: Boolean
-        get() = !name.isNullOrBlank()
+        get() = !name.isNullOrBlank() || !video.isNullOrBlank()
 
-    /**
-     * Metadata for a theme song.
-     *
-     * Mirrors the former `AnimeThemeMetaType`.
-     *
-     * @param number Ordinal number of the theme (e.g. second OP => 2).
-     * @param type Theme category (e.g. OP, ED, INSERT).
-     * @param version Version/revision of the same numbered theme (e.g., creditless variant).
-     */
+    val name: String?
+        get() = song?.title
+
+    val audio: String?
+        get() =
+            entries.firstNotNullOfOrNull { entry ->
+                entry.videos
+                    .firstOrNull()
+                    ?.audio
+                    ?.link
+            }
+
+    val video: String?
+        get() = entries.firstNotNullOfOrNull { entry -> entry.videos.firstOrNull()?.link }
+
+    val meta: EdgeThemeMetaModel?
+        get() = EdgeThemeMetaModel(number = sequence, type = type, version = entries.firstOrNull()?.version)
+
     @Serializable
     data class EdgeThemeMetaModel(
         @SerialName("number") val number: Int? = null,
         @SerialName("type") val type: String? = null,
         @SerialName("version") val version: Int? = null,
+    )
+
+    @Serializable
+    data class SongModel(
+        @SerialName("id") val id: Long? = null,
+        @SerialName("title") val title: String? = null,
+    )
+
+    @Serializable
+    data class EntryModel(
+        @SerialName("id") val id: Long? = null,
+        @SerialName("episodes") val episodes: String? = null,
+        @SerialName("notes") val notes: String? = null,
+        @SerialName("nsfw") val nsfw: Boolean = false,
+        @SerialName("spoiler") val spoiler: Boolean = false,
+        @SerialName("version") val version: Int? = null,
+        @SerialName("videos") val videos: List<VideoModel> = emptyList(),
+    )
+
+    @Serializable
+    data class VideoModel(
+        @SerialName("id") val id: Long? = null,
+        @SerialName("link") val link: String? = null,
+        @SerialName("audio") val audio: AudioModel? = null,
+        @SerialName("lyrics") val lyrics: Boolean = false,
+        @SerialName("nc") val nc: Boolean = false,
+        @SerialName("overlap") val overlap: String? = null,
+        @SerialName("resolution") val resolution: Int? = null,
+        @SerialName("source") val source: String? = null,
+        @SerialName("subbed") val subbed: Boolean = false,
+        @SerialName("tags") val tags: String? = null,
+        @SerialName("uncen") val uncen: Boolean = false,
+    )
+
+    @Serializable
+    data class AudioModel(
+        @SerialName("id") val id: Long? = null,
+        @SerialName("link") val link: String? = null,
     )
 }

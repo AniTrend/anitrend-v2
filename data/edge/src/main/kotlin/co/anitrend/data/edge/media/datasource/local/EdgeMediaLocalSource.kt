@@ -28,7 +28,9 @@ import co.anitrend.data.edge.media.entity.EdgeMediaEntity
 import co.anitrend.data.edge.media.entity.view.EdgeMediaEntityView
 import co.anitrend.data.edge.network.entity.EdgeNetworkEntity
 import co.anitrend.data.edge.season.entity.EdgeSeasonEntity
+import co.anitrend.data.edge.theme.entity.EdgeThemeEntryEntity
 import co.anitrend.data.edge.theme.entity.EdgeThemeEntity
+import co.anitrend.data.edge.theme.entity.EdgeThemeVideoEntity
 import co.anitrend.data.edge.trailer.entity.EdgeTrailerEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -60,6 +62,8 @@ abstract class EdgeMediaLocalSource : AbstractLocalSource<EdgeMediaEntity>() {
             EdgeEpisodeEntity::class,
             EdgeSeasonEntity::class,
             EdgeThemeEntity::class,
+            EdgeThemeEntryEntity::class,
+            EdgeThemeVideoEntity::class,
         ],
     )
     abstract fun rawFlow(query: SupportSQLiteQuery): Flow<EdgeMediaEntityView?>

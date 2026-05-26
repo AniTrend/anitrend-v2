@@ -192,17 +192,78 @@ internal data class MediaComposePreviewProvider(
                             mediaId = "1",
                             themeId = "op1",
                             name = "Odd Future",
-                            audio = "https://example.com/audio.mp3",
-                            video = "",
+                            audio = "https://cdn.example/op1/audio-v1.mp3",
+                            video = "https://cdn.example/op1/video-v1.webm",
                             meta = MediaTheme.Meta(number = 1, type = "OP", version = 1),
+                            variants =
+                                listOf(
+                                    MediaTheme.Variant(
+                                        version = 1,
+                                        episodes = "1-13",
+                                        previews =
+                                            listOf(
+                                                MediaTheme.Preview(
+                                                    video = "https://cdn.example/op1/video-v1.webm",
+                                                    audio = "https://cdn.example/op1/audio-v1.mp3",
+                                                    resolution = 1080,
+                                                    source = "BD",
+                                                    tags = listOf("NC"),
+                                                ),
+                                            ),
+                                    ),
+                                    MediaTheme.Variant(
+                                        version = 2,
+                                        episodes = "14-25",
+                                        previews =
+                                            listOf(
+                                                MediaTheme.Preview(
+                                                    video = "https://cdn.example/op1/video-v2.webm",
+                                                    audio = "https://cdn.example/op1/audio-v2.mp3",
+                                                    resolution = 720,
+                                                    source = "WEB",
+                                                    tags = listOf("TV"),
+                                                ),
+                                            ),
+                                    ),
+                                    MediaTheme.Variant(
+                                        version = 3,
+                                        episodes = "26-38",
+                                        previews =
+                                            listOf(
+                                                MediaTheme.Preview(
+                                                    video = "https://cdn.example/op1/video-v3.webm",
+                                                    audio = null,
+                                                    resolution = 1080,
+                                                    source = "WEB",
+                                                    tags = listOf("TV", "CREDITLESS"),
+                                                ),
+                                            ),
+                                    ),
+                                ),
                         ),
                         MediaTheme(
                             mediaId = "1",
                             themeId = "ed1",
                             name = "Update",
                             audio = null,
-                            video = "https://example.com/video.mp4",
+                            video = "https://cdn.example/ed1/video-v1.mp4",
                             meta = MediaTheme.Meta(number = 1, type = "ED", version = 1),
+                            variants =
+                                listOf(
+                                    MediaTheme.Variant(
+                                        version = 1,
+                                        episodes = "2-25",
+                                        previews =
+                                            listOf(
+                                                MediaTheme.Preview(
+                                                    video = "https://cdn.example/ed1/video-v1.mp4",
+                                                    audio = null,
+                                                    resolution = 720,
+                                                    source = "WEB",
+                                                ),
+                                            ),
+                                    ),
+                                ),
                         ),
                     ),
                 ageRating = "PG-13",

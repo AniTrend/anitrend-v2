@@ -47,6 +47,30 @@ class AniTrendStoreMigrationTest {
         helper.runMigrationsAndValidate(TEST_DB, 21, true, *MIGRATIONS)
     }
 
+    @Test
+    fun migrate21To22() {
+        helper.createDatabase(TEST_DB, 21).apply {
+            execSQL(
+                """
+                CREATE TABLE IF NOT EXISTS `edge_media_theme_song` (
+                    `media_id` TEXT NOT NULL,
+                    `theme_id` TEXT NOT NULL,
+                    `name` TEXT NOT NULL,
+                    `audio` TEXT,
+                    `video` TEXT NOT NULL,
+                    `meta_number` INTEGER NOT NULL,
+                    `meta_type` TEXT NOT NULL,
+                    `meta_version` INTEGER NOT NULL,
+                    `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
+                )
+                """.trimIndent(),
+            )
+            close()
+        }
+
+        helper.runMigrationsAndValidate(TEST_DB, 22, true, *MIGRATIONS)
+    }
+
     private companion object {
         const val TEST_DB = "migration-test"
     }

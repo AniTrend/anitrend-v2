@@ -432,18 +432,49 @@ internal class MediaEntityViewConverter(
                                 edge
                                     ?.themes
                                     ?.map {
+                                        val firstVideo = it.entries.firstNotNullOfOrNull { entry -> entry.videos.firstOrNull() }
+                                        val version =
+                                            it.entries
+                                                .firstOrNull()
+                                                ?.entry
+                                                ?.version ?: 0
+                                        val variants =
+                                            it.entries.map { entryView ->
+                                                MediaTheme.Variant(
+                                                    version = entryView.entry.version,
+                                                    episodes = entryView.entry.episodes,
+                                                    previews =
+                                                        entryView.videos.map { video ->
+                                                            MediaTheme.Preview(
+                                                                video = video.link,
+                                                                audio = video.audioLink,
+                                                                resolution = video.resolution,
+                                                                source = video.source,
+                                                                tags =
+                                                                    buildList {
+                                                                        if (video.nc) add("NC")
+                                                                        if (video.subbed) add("SUB")
+                                                                        if (video.lyrics) add("LYRICS")
+                                                                        if (video.uncen) add("UNCEN")
+                                                                    },
+                                                            )
+                                                        },
+                                                )
+                                            }
+
                                         MediaTheme(
-                                            mediaId = it.mediaId,
-                                            themeId = it.themeId,
-                                            name = it.name,
-                                            audio = it.audio,
-                                            video = it.video,
+                                            mediaId = it.theme.mediaId,
+                                            themeId = it.theme.themeId,
+                                            name = it.theme.songTitle,
+                                            audio = firstVideo?.audioLink,
+                                            video = firstVideo?.link.orEmpty(),
                                             meta =
                                                 MediaTheme.Meta(
-                                                    number = it.meta.number,
-                                                    type = it.meta.type,
-                                                    version = it.meta.version,
+                                                    number = it.theme.sequence,
+                                                    type = it.theme.type,
+                                                    version = version,
                                                 ),
+                                            variants = variants,
                                         )
                                     }.orEmpty(),
                             trailers = edgeTrailers,

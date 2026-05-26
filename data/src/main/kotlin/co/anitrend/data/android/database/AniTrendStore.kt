@@ -43,7 +43,9 @@ import co.anitrend.data.edge.navigation.entity.EdgeNavigationEntity
 import co.anitrend.data.edge.network.entity.EdgeNetworkEntity
 import co.anitrend.data.edge.news.entity.EdgeNewsEntity
 import co.anitrend.data.edge.season.entity.EdgeSeasonEntity
+import co.anitrend.data.edge.theme.entity.EdgeThemeEntryEntity
 import co.anitrend.data.edge.theme.entity.EdgeThemeEntity
+import co.anitrend.data.edge.theme.entity.EdgeThemeVideoEntity
 import co.anitrend.data.edge.trailer.entity.EdgeTrailerEntity
 import co.anitrend.data.feed.episode.entity.EpisodeEntity
 import co.anitrend.data.feed.episode.entity.fts.EpisodeFtsEntity
@@ -127,6 +129,7 @@ import co.anitrend.data.user.entity.statistic.UserWithStatisticEntity
         EdgeMediaEntity::class, EdgeNavigationEntity::class,
         EdgeNetworkEntity::class, EdgeNewsEntity::class,
         EdgeSeasonEntity::class, EdgeThemeEntity::class,
+        EdgeThemeEntryEntity::class, EdgeThemeVideoEntity::class,
         EdgeTrailerEntity::class,
     ],
     views = [MediaListCountView::class, CustomListCountView::class],
@@ -152,7 +155,7 @@ internal abstract class AniTrendStore :
     RoomDatabase(),
     IAniTrendStore {
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 21
+        const val DATABASE_SCHEMA_VERSION = 22
 
         internal fun create(applicationContext: Context): IAniTrendStore =
             Room

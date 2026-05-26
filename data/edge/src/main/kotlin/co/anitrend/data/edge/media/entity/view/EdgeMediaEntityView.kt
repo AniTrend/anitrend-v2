@@ -23,8 +23,30 @@ import co.anitrend.data.edge.image.entity.EdgeMediaImageEntity
 import co.anitrend.data.edge.media.entity.EdgeMediaEntity
 import co.anitrend.data.edge.network.entity.EdgeNetworkEntity
 import co.anitrend.data.edge.season.entity.EdgeSeasonEntity
+import co.anitrend.data.edge.theme.entity.EdgeThemeEntryEntity
 import co.anitrend.data.edge.theme.entity.EdgeThemeEntity
+import co.anitrend.data.edge.theme.entity.EdgeThemeVideoEntity
 import co.anitrend.data.edge.trailer.entity.EdgeTrailerEntity
+
+data class EdgeThemeEntryEntityView(
+    @Embedded val entry: EdgeThemeEntryEntity,
+    @Relation(
+        parentColumn = "entry_id",
+        entity = EdgeThemeVideoEntity::class,
+        entityColumn = "entry_id",
+    )
+    val videos: List<EdgeThemeVideoEntity>,
+)
+
+data class EdgeThemeEntityView(
+    @Embedded val theme: EdgeThemeEntity,
+    @Relation(
+        parentColumn = "theme_id",
+        entity = EdgeThemeEntryEntity::class,
+        entityColumn = "theme_id",
+    )
+    val entries: List<EdgeThemeEntryEntityView>,
+)
 
 data class EdgeMediaEntityView(
     @Embedded val media: EdgeMediaEntity,
@@ -55,7 +77,8 @@ data class EdgeMediaEntityView(
     val seasons: List<EdgeSeasonEntity>,
     @Relation(
         parentColumn = "id",
+        entity = EdgeThemeEntity::class,
         entityColumn = "media_id",
     )
-    val themes: List<EdgeThemeEntity>,
+    val themes: List<EdgeThemeEntityView>,
 )

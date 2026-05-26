@@ -35,7 +35,9 @@ query GetMediaById($id: Int!) {
     networks {
       ... EdgeNetwork
     }
-    themeSongs
+    animethemes {
+      ... EdgeTheme
+    }
     trailers {
       ... EdgeTrailer
     }

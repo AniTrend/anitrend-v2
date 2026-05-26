@@ -36,6 +36,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 | Layered module plumbing | `.github/instructions/context.instructions.md` | `.github/skills/layered-module-patterns/SKILL.md` |
 | UI navigation architecture | `.github/instructions/context.instructions.md` | `.github/skills/navigation-architecture/SKILL.md` |
 | Android platform/helper reuse | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
+| Runtime UI capture with ADB, explicit launch intents, UIAutomator dumps, and screenshots | `.github/instructions/guides.instructions.md` | `.agents/skills/android-ui-automator-preview/SKILL.md` |
 | Build system conventions | `.github/instructions/build-system.instructions.md` | `.github/skills/new-module-checklist/SKILL.md` |
 | DataState / UiState behavior | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
 | Koin DI wiring | `.github/instructions/context.instructions.md` | `.github/skills/koin-module-wiring/SKILL.md` |
@@ -59,6 +60,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 | Reuse or extend an internal Android helper API | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
 | Work on deep-link entry or parser registration | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
 | Work on drawer or app-shell navigation helpers | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
+| Capture emulator/device UI evidence (XML + PNG) for repro/debug handover | `.github/instructions/guides.instructions.md` | `.agents/skills/android-ui-automator-preview/SKILL.md` |
 | Work on theme, configuration, notification, context, or fragment helpers | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
 | Add a new repository or source | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
 | Convert a fixed-size detail read to offline-first | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
