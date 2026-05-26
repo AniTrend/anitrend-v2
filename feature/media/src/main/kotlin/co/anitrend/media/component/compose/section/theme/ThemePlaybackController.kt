@@ -35,7 +35,9 @@ class ThemePlaybackController(
     val uiState: StateFlow<ThemePlaybackUiState> = mutableUiState.asStateFlow()
 
     fun play(request: ThemePlaybackRequest) {
-        engine.setSource(request.audioUrl)
+        if (mutableUiState.value.activePreviewKey != request.previewKey) {
+            engine.setSource(request.audioUrl)
+        }
         engine.play()
         mutableUiState.value =
             mutableUiState.value.copy(
@@ -56,41 +58,30 @@ class ThemePlaybackController(
             )
     }
 
-    fun select(
-        request: ThemePlaybackRequest,
-        playWhenSelected: Boolean = mutableUiState.value.isPlaying,
-    ) {
-        if (playWhenSelected) {
-            play(request)
-        } else {
-            mutableUiState.value =
-                mutableUiState.value.copy(
-                    activePreviewKey = request.previewKey,
-                    activeTitle = request.title,
-                    isPlaying = false,
-                    isBuffering = false,
-                    errorMessage = null,
-                )
-        }
+    fun seekTo(positionMs: Long) {
+        engine.seekTo(positionMs)
+        mutableUiState.value = mutableUiState.value.copy(positionMs = positionMs)
     }
 
-    fun toggle(request: ThemePlaybackRequest) {
-        val activePreviewKey = mutableUiState.value.activePreviewKey
-        if (mutableUiState.value.isPlaying && activePreviewKey == request.previewKey) {
-            pause()
-        } else {
-            play(request)
-        }
-    }
-
-    fun updatePlaybackState(
-        isPlaying: Boolean = mutableUiState.value.isPlaying,
+    fun updatePlayback(
+        positionMs: Long = mutableUiState.value.positionMs,
+        durationMs: Long = mutableUiState.value.durationMs,
         isBuffering: Boolean = mutableUiState.value.isBuffering,
     ) {
         mutableUiState.value =
             mutableUiState.value.copy(
-                isPlaying = isPlaying,
+                positionMs = positionMs,
+                durationMs = durationMs,
                 isBuffering = isBuffering,
+            )
+    }
+
+    fun onError(message: String) {
+        mutableUiState.value =
+            mutableUiState.value.copy(
+                isPlaying = false,
+                isBuffering = false,
+                errorMessage = message,
             )
     }
 

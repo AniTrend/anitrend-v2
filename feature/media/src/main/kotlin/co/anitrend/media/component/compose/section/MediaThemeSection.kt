@@ -16,6 +16,10 @@
  */
 package co.anitrend.media.component.compose.section
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -41,6 +45,7 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.annotation.StringRes
@@ -54,6 +59,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
@@ -69,6 +75,8 @@ import co.anitrend.media.component.compose.section.theme.ThemePlaybackUiState
 
 private const val THEME_PREVIEW_COUNT = 2
 private const val PREVIEW_LINE_LIMIT = 2
+
+private const val MIN_DURATION_MS = 1L
 
 internal fun MediaTheme.hasAudioAsset(): Boolean = !audio.isNullOrBlank()
 
@@ -168,6 +176,60 @@ private object SheetThemePlaybackEngine : ThemePlaybackEngine {
 }
 
 private fun MediaTheme.Preview.mediaIdentity(): String = video.takeIf(String::isNotBlank) ?: audio.orEmpty()
+
+internal fun formatDuration(ms: Long): String {
+    if (ms < 0L) {
+        return "--:--"
+    }
+    val totalSeconds = ms / 1000L
+    val minutes = totalSeconds / 60L
+    val seconds = totalSeconds % 60L
+    return "%d:%02d".format(minutes, seconds)
+}
+
+private fun sliderValue(positionMs: Long, durationMs: Long): Float {
+    if (durationMs < MIN_DURATION_MS) {
+        return 0f
+    }
+    return (positionMs.coerceIn(0L, durationMs).toFloat() / durationMs.toFloat()).coerceIn(0f, 1f)
+}
+
+private fun seekPositionFromSlider(value: Float, durationMs: Long): Long {
+    if (durationMs < MIN_DURATION_MS) {
+        return 0L
+    }
+    return (durationMs.toFloat() * value.coerceIn(0f, 1f)).toLong()
+}
+
+internal fun openVideoPreview(context: Context, url: String): Boolean {
+    val rawUrl = url.trim()
+    if (rawUrl.isBlank()) {
+        return false
+    }
+    val parsedUri = runCatching { Uri.parse(rawUrl) }.getOrNull() ?: return false
+    val scheme = parsedUri.scheme?.lowercase()
+    if (scheme != "http" && scheme != "https") {
+        return false
+    }
+
+    val viewIntent =
+        Intent(Intent.ACTION_VIEW, parsedUri).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+    val chooserIntent =
+        Intent.createChooser(viewIntent, null).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+
+    return try {
+        context.startActivity(chooserIntent)
+        true
+    } catch (_: ActivityNotFoundException) {
+        false
+    } catch (_: SecurityException) {
+        false
+    }
+}
 
 internal fun MediaTheme.heroPreviewSelections(): List<ThemePreviewSelectionState> =
     variants.mapNotNull { variant ->
@@ -314,6 +376,8 @@ private fun ThemeVariantRow(
     isSelected: Boolean,
     isActive: Boolean,
     onClick: (() -> Unit)?,
+    onPlayPreview: (() -> Unit)?,
+    onOpenVideo: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val previewSummary = selection?.preview?.mediaTagTokens()?.takeIf { it.isNotEmpty() }?.joinToString(" ") ?: variant.previewSummaryText()
@@ -362,6 +426,95 @@ private fun ThemeVariantRow(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                FilledTonalButton(
+                    onClick = { onPlayPreview?.invoke() },
+                    enabled = onPlayPreview != null,
+                    shape = RoundedCornerShape(14.dp),
+                ) {
+                    Icon(
+                        imageVector = if (isActive) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
+                        contentDescription = null,
+                    )
+                    Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                    Text(text = stringResource(R.string.label_media_theme_sheet_audio))
+                }
+
+                FilledTonalButton(
+                    onClick = { onOpenVideo?.invoke() },
+                    enabled = onOpenVideo != null,
+                    shape = RoundedCornerShape(14.dp),
+                ) {
+                    Text(text = stringResource(R.string.label_media_theme_sheet_video))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ThemeAudioPreviewControls(
+    isPlaying: Boolean,
+    isBuffering: Boolean,
+    positionMs: Long,
+    durationMs: Long,
+    onPlayPauseClick: () -> Unit,
+    onSeek: (Long) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val resolvedDuration = if (durationMs > 0L) durationMs else 0L
+    val sliderPosition = sliderValue(positionMs = positionMs, durationMs = resolvedDuration)
+
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        FilledTonalButton(
+            onClick = onPlayPauseClick,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = !isBuffering,
+        ) {
+            Icon(
+                imageVector = if (isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
+                contentDescription = null,
+            )
+            Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+            Text(
+                text =
+                    stringResource(
+                        if (isPlaying) {
+                            R.string.label_media_theme_sheet_not_available
+                        } else {
+                            R.string.label_media_theme_sheet_available
+                        },
+                    ),
+            )
+        }
+
+        Slider(
+            value = sliderPosition,
+            onValueChange = { value ->
+                onSeek(seekPositionFromSlider(value = value, durationMs = resolvedDuration))
+            },
+            enabled = resolvedDuration > 0L,
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = formatDuration(positionMs),
+                style = MaterialTheme.typography.labelMedium,
+            )
+            Text(
+                text = formatDuration(resolvedDuration),
+                style = MaterialTheme.typography.labelMedium,
+            )
         }
     }
 }
@@ -411,6 +564,7 @@ private fun ThemeHeroPreviewCard(
     playbackState: ThemePlaybackUiState,
     onSelectionClick: (ThemePreviewSelectionState) -> Unit,
     onPlayPauseClick: (() -> Unit)?,
+    onSeek: ((Long) -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val previewSummary = selection?.preview?.mediaTagTokens()?.takeIf { it.isNotEmpty() }?.joinToString(" ")
@@ -478,28 +632,16 @@ private fun ThemeHeroPreviewCard(
                         }
                 }
 
-                FilledTonalButton(
-                    onClick = { onPlayPauseClick?.invoke() },
-                    enabled = canPlay,
-                    shape = RoundedCornerShape(18.dp),
-                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-                ) {
-                    Icon(
-                        imageVector = if (isActiveSelection && playbackState.isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
-                        contentDescription = null,
-                    )
-                    Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                    Text(
-                        text =
-                            stringResource(
-                                if (canPlay) {
-                                    R.string.label_media_theme_sheet_available
-                                } else {
-                                    R.string.label_media_theme_sheet_not_available
-                                },
-                            ),
-                    )
-                }
+                ThemeBadge(
+                    label =
+                        stringResource(
+                            if (canPlay) {
+                                R.string.label_media_theme_sheet_available
+                            } else {
+                                R.string.label_media_theme_sheet_not_available
+                            },
+                        ),
+                )
             }
 
             previewSummary?.let { summary ->
@@ -532,6 +674,17 @@ private fun ThemeHeroPreviewCard(
                     )
                 }
             }
+
+            if (canPlay && onPlayPauseClick != null && onSeek != null) {
+                ThemeAudioPreviewControls(
+                    isPlaying = isActiveSelection && playbackState.isPlaying,
+                    isBuffering = isActiveSelection && playbackState.isBuffering,
+                    positionMs = if (isActiveSelection) playbackState.positionMs else 0L,
+                    durationMs = if (isActiveSelection) playbackState.durationMs else 0L,
+                    onPlayPauseClick = onPlayPauseClick,
+                    onSeek = onSeek,
+                )
+            }
         }
     }
 }
@@ -552,6 +705,7 @@ private fun MediaThemeDetailSheet(
     val hasAudio = previewSelections.any { !it.preview.audio.isNullOrBlank() }
     val hasVideo = previewSelections.any { it.preview.video.isNotBlank() }
     val metadataLabel = theme.metaBadgeLabel()
+    val context = LocalContext.current
 
     DisposableEffect(controller) {
         onDispose {
@@ -574,27 +728,45 @@ private fun MediaThemeDetailSheet(
                 playbackState = playbackState,
                 onSelectionClick = { selection ->
                     selectedPreviewKey = selection.previewKey
-                    controller.select(
-                        request =
+                    if (playbackState.isPlaying) {
+                        controller.play(
                             ThemePlaybackRequest(
                                 previewKey = selection.previewKey,
                                 audioUrl = selection.preview.audio.orEmpty(),
                                 title = theme.name,
                             ),
-                        playWhenSelected = playbackState.isPlaying,
-                    )
+                        )
+                    }
                 },
                 onPlayPauseClick =
                     selectedSelection
                         ?.takeIf { !it.preview.audio.isNullOrBlank() }
                         ?.let { selection ->
                             {
-                                controller.toggle(
-                                    ThemePlaybackRequest(
-                                        previewKey = selection.previewKey,
-                                        audioUrl = selection.preview.audio.orEmpty(),
-                                        title = theme.name,
-                                    ),
+                                selectedPreviewKey = selection.previewKey
+                                if (playbackState.isPlaying && playbackState.activePreviewKey == selection.previewKey) {
+                                    controller.pause()
+                                } else {
+                                    controller.play(
+                                        ThemePlaybackRequest(
+                                            previewKey = selection.previewKey,
+                                            audioUrl = selection.preview.audio.orEmpty(),
+                                            title = theme.name,
+                                        ),
+                                    )
+                                }
+                            }
+                        },
+                onSeek =
+                    selectedSelection
+                        ?.takeIf { playbackState.activePreviewKey == it.previewKey }
+                        ?.let {
+                            { positionMs ->
+                                controller.seekTo(positionMs)
+                                controller.updatePlayback(
+                                    positionMs = positionMs,
+                                    durationMs = playbackState.durationMs,
+                                    isBuffering = playbackState.isBuffering,
                                 )
                             }
                         },
@@ -654,15 +826,31 @@ private fun MediaThemeDetailSheet(
                                 variantSelection?.let { selection ->
                                     {
                                         selectedPreviewKey = selection.previewKey
-                                        controller.select(
-                                            request =
+                                    }
+                                },
+                            onPlayPreview =
+                                variantSelection?.takeIf { !it.preview.audio.isNullOrBlank() }?.let { selection ->
+                                    {
+                                        selectedPreviewKey = selection.previewKey
+                                        if (playbackState.isPlaying && playbackState.activePreviewKey == selection.previewKey) {
+                                            controller.pause()
+                                        } else {
+                                            controller.play(
                                                 ThemePlaybackRequest(
                                                     previewKey = selection.previewKey,
                                                     audioUrl = selection.preview.audio.orEmpty(),
                                                     title = theme.name,
                                                 ),
-                                            playWhenSelected = playbackState.isPlaying,
-                                        )
+                                            )
+                                        }
+                                    }
+                                },
+                            onOpenVideo =
+                                variantSelection?.takeIf { it.preview.video.isNotBlank() }?.let { selection ->
+                                    {
+                                        if (!openVideoPreview(context = context, url = selection.preview.video)) {
+                                            controller.onError(message = "Unable to open video preview")
+                                        }
                                     }
                                 },
                         )

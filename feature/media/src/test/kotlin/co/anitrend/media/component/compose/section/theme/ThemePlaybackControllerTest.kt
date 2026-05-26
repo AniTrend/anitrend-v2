@@ -43,14 +43,17 @@ class ThemePlaybackControllerTest {
             ),
         )
 
-        controller.updatePlaybackState(
-            isPlaying = false,
+        controller.updatePlayback(
+            positionMs = 12_000L,
+            durationMs = 96_000L,
             isBuffering = false,
         )
 
         val state = controller.uiState.value
-        assertFalse(state.isPlaying)
+        assertTrue(state.isPlaying)
         assertFalse(state.isBuffering)
+        assertEquals(12_000L, state.positionMs)
+        assertEquals(96_000L, state.durationMs)
     }
 
     @Test
@@ -75,24 +78,91 @@ class ThemePlaybackControllerTest {
     }
 
     @Test
-    fun `playback controller can select another preview without starting playback`() {
+    fun `playback controller switches sources only when a different preview is selected`() {
         val player = RecordingPlayer()
         val controller = ThemePlaybackController(player)
 
-        controller.select(
+        controller.play(
+            ThemePlaybackRequest(
+                previewKey = "theme-1:v1:https://cdn.example/audio-a.mp3",
+                audioUrl = "https://cdn.example/audio-a.mp3",
+                title = "A",
+            ),
+        )
+        controller.play(
+            ThemePlaybackRequest(
+                previewKey = "theme-1:v1:https://cdn.example/audio-a.mp3",
+                audioUrl = "https://cdn.example/audio-a.mp3",
+                title = "A",
+            ),
+        )
+        controller.play(
             ThemePlaybackRequest(
                 previewKey = "theme-1:v2:https://cdn.example/audio-b.mp3",
                 audioUrl = "https://cdn.example/audio-b.mp3",
-                title = "Gurenge",
+                title = "B",
             ),
-            playWhenSelected = false,
         )
 
+        assertEquals(
+            listOf("https://cdn.example/audio-a.mp3", "https://cdn.example/audio-b.mp3"),
+            player.sourceHistory,
+        )
+        assertEquals("theme-1:v2:https://cdn.example/audio-b.mp3", controller.uiState.value.activePreviewKey)
+    }
+
+    @Test
+    fun `seek and error transitions update playback state`() {
+        val player = RecordingPlayer()
+        val controller = ThemePlaybackController(player)
+
+        controller.play(
+            ThemePlaybackRequest(
+                previewKey = "theme-1:v1:https://cdn.example/audio.mp3",
+                audioUrl = "https://cdn.example/audio.mp3",
+                title = "Gurenge",
+            ),
+        )
+
+        controller.seekTo(positionMs = 42_000L)
+        controller.onError(message = "Unable to open preview")
+
         val state = controller.uiState.value
-        assertEquals("theme-1:v2:https://cdn.example/audio-b.mp3", state.activePreviewKey)
-        assertEquals("Gurenge", state.activeTitle)
-        assertTrue(player.sourceHistory.isEmpty())
+        assertEquals(42_000L, player.seekPositionMs)
+        assertEquals(42_000L, state.positionMs)
         assertFalse(state.isPlaying)
+        assertFalse(state.isBuffering)
+        assertEquals("Unable to open preview", state.errorMessage)
+    }
+
+    @Test
+    fun `release clears active playback state and releases engine`() {
+        val player = RecordingPlayer()
+        val controller = ThemePlaybackController(player)
+
+        controller.play(
+            ThemePlaybackRequest(
+                previewKey = "theme-1:v1:https://cdn.example/audio.mp3",
+                audioUrl = "https://cdn.example/audio.mp3",
+                title = "A",
+            ),
+        )
+        controller.updatePlayback(
+            positionMs = 12_000L,
+            durationMs = 96_000L,
+            isBuffering = true,
+        )
+
+        controller.release()
+
+        val state = controller.uiState.value
+        assertEquals(1, player.releaseCalls)
+        assertNull(state.activePreviewKey)
+        assertNull(state.activeTitle)
+        assertFalse(state.isPlaying)
+        assertFalse(state.isBuffering)
+        assertEquals(0L, state.positionMs)
+        assertEquals(0L, state.durationMs)
     }
 }
 
@@ -100,6 +170,8 @@ private class RecordingPlayer : ThemePlaybackEngine {
     val sourceHistory = mutableListOf<String>()
     var playCalls = 0
     var pauseCalls = 0
+    var seekPositionMs = 0L
+    var releaseCalls = 0
 
     override fun setSource(url: String) {
         sourceHistory += url
@@ -113,7 +185,11 @@ private class RecordingPlayer : ThemePlaybackEngine {
         pauseCalls += 1
     }
 
-    override fun seekTo(positionMs: Long) = Unit
+    override fun seekTo(positionMs: Long) {
+        seekPositionMs = positionMs
+    }
 
-    override fun release() = Unit
+    override fun release() {
+        releaseCalls += 1
+    }
 }
