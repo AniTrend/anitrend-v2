@@ -35,7 +35,13 @@ internal data class EdgeThemeModel(
         get() = song?.title
 
     val audio: String?
-        get() = entries.firstNotNullOfOrNull { entry -> entry.videos.firstOrNull()?.audio?.link }
+        get() =
+            entries.firstNotNullOfOrNull { entry ->
+                entry.videos
+                    .firstOrNull()
+                    ?.audio
+                    ?.link
+            }
 
     val video: String?
         get() = entries.firstNotNullOfOrNull { entry -> entry.videos.firstOrNull()?.link }

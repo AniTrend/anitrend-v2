@@ -214,14 +214,20 @@ internal fun previewRowState(
         hasVideo = previewKey.isNotBlank(),
     )
 
-private fun sliderValue(positionMs: Long, durationMs: Long): Float {
+private fun sliderValue(
+    positionMs: Long,
+    durationMs: Long,
+): Float {
     if (durationMs < MIN_DURATION_MS) {
         return 0f
     }
     return (positionMs.coerceIn(0L, durationMs).toFloat() / durationMs.toFloat()).coerceIn(0f, 1f)
 }
 
-private fun seekPositionFromSlider(value: Float, durationMs: Long): Long {
+private fun seekPositionFromSlider(
+    value: Float,
+    durationMs: Long,
+): Long {
     if (durationMs < MIN_DURATION_MS) {
         return 0L
     }
@@ -237,7 +243,10 @@ internal fun isOpenVideoPreviewUrlSupported(url: String): Boolean {
     return scheme == "http" || scheme == "https"
 }
 
-internal fun openVideoPreview(context: Context, url: String): Boolean {
+internal fun openVideoPreview(
+    context: Context,
+    url: String,
+): Boolean {
     if (!isOpenVideoPreviewUrlSupported(url)) {
         return false
     }
@@ -263,29 +272,30 @@ internal fun openVideoPreview(context: Context, url: String): Boolean {
 }
 
 internal fun MediaTheme.heroPreviewSelections(): List<ThemePreviewSelectionState> =
-    variants.mapNotNull { variant ->
-        variant.previews.firstOrNull { !it.audio.isNullOrBlank() }?.let { preview ->
-            ThemePreviewSelection(
-                variant = variant,
-                preview = preview,
-                previewKey = "$themeId:v${variant.version}:${preview.mediaIdentity()}",
-            )
-        }
-    }.ifEmpty {
-        audio
-            ?.takeIf(String::isNotBlank)
-            ?.let { audioUrl ->
-                val fallbackVariant = MediaTheme.Variant(version = meta?.version ?: 0, episodes = null, previews = emptyList())
-                val fallbackPreview = MediaTheme.Preview(video = video, audio = audioUrl, resolution = null, source = null)
-                listOf(
-                    ThemePreviewSelection(
-                        variant = fallbackVariant,
-                        preview = fallbackPreview,
-                        previewKey = "$themeId:v${fallbackVariant.version}:${fallbackPreview.mediaIdentity()}",
-                    ),
+    variants
+        .mapNotNull { variant ->
+            variant.previews.firstOrNull { !it.audio.isNullOrBlank() }?.let { preview ->
+                ThemePreviewSelection(
+                    variant = variant,
+                    preview = preview,
+                    previewKey = "$themeId:v${variant.version}:${preview.mediaIdentity()}",
                 )
-            }.orEmpty()
-    }
+            }
+        }.ifEmpty {
+            audio
+                ?.takeIf(String::isNotBlank)
+                ?.let { audioUrl ->
+                    val fallbackVariant = MediaTheme.Variant(version = meta?.version ?: 0, episodes = null, previews = emptyList())
+                    val fallbackPreview = MediaTheme.Preview(video = video, audio = audioUrl, resolution = null, source = null)
+                    listOf(
+                        ThemePreviewSelection(
+                            variant = fallbackVariant,
+                            preview = fallbackPreview,
+                            previewKey = "$themeId:v${fallbackVariant.version}:${fallbackPreview.mediaIdentity()}",
+                        ),
+                    )
+                }.orEmpty()
+        }
 
 internal fun MediaTheme.preferredPreviewSelection(): ThemePreviewSelectionState? = heroPreviewSelections().firstOrNull()
 
@@ -307,8 +317,7 @@ internal fun MediaTheme.availabilitySummaryResId(): Int =
     }
 
 @Composable
-private fun MediaTheme.availabilitySummary(): String =
-    stringResource(availabilitySummaryResId())
+private fun MediaTheme.availabilitySummary(): String = stringResource(availabilitySummaryResId())
 
 @Composable
 private fun ThemeBadge(
@@ -414,10 +423,22 @@ private fun ThemeVariantRow(
     onOpenVideo: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    val previewSummary = selection?.preview?.mediaTagTokens()?.takeIf { it.isNotEmpty() }?.joinToString(" ") ?: variant.previewSummaryText()
+    val previewSummary =
+        selection
+            ?.preview
+            ?.mediaTagTokens()
+            ?.takeIf { it.isNotEmpty() }
+            ?.joinToString(" ") ?: variant.previewSummaryText()
 
     Surface(
-        color = if (isSelected || isActive) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.36f) else MaterialTheme.colorScheme.surface.copy(alpha = 0.72f),
+        color =
+            if (isSelected ||
+                isActive
+            ) {
+                MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.36f)
+            } else {
+                MaterialTheme.colorScheme.surface.copy(alpha = 0.72f)
+            },
         contentColor = MaterialTheme.colorScheme.onSurface,
         shape = RoundedCornerShape(18.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = if (isSelected || isActive) 0.7f else 0.35f)),
@@ -562,7 +583,9 @@ private fun ThemeIdentityBlock(
     val supportingLine =
         buildString {
             theme.metaBadgeLabel()?.let(::append)
-            selection?.variant?.episodes
+            selection
+                ?.variant
+                ?.episodes
                 ?.takeIf(String::isNotBlank)
                 ?.let { episodes ->
                     if (isNotEmpty()) {
@@ -601,7 +624,12 @@ private fun ThemeHeroPreviewCard(
     onSeek: ((Long) -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
-    val previewSummary = selection?.preview?.mediaTagTokens()?.takeIf { it.isNotEmpty() }?.joinToString(" ")
+    val previewSummary =
+        selection
+            ?.preview
+            ?.mediaTagTokens()
+            ?.takeIf { it.isNotEmpty() }
+            ?.joinToString(" ")
     val isActiveSelection = selection?.previewKey == playbackState.activePreviewKey
     val canPlay = selection?.preview?.audio?.isNotBlank() == true
 
@@ -655,7 +683,9 @@ private fun ThemeHeroPreviewCard(
                         text = selection?.variant?.variantLabel() ?: stringResource(R.string.label_media_theme_sheet_not_available),
                         style = MaterialTheme.typography.labelLarge,
                     )
-                    selection?.variant?.episodes
+                    selection
+                        ?.variant
+                        ?.episodes
                         ?.takeIf(String::isNotBlank)
                         ?.let { episodes ->
                             Text(
