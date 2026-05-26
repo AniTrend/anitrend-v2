@@ -248,6 +248,49 @@ class MediaThemeSectionSupportTest {
     }
 
     @Test
+    fun `variantVideoSelection finds video-only preview for chooser action`() {
+        val theme =
+            theme(
+                themeId = "theme-1",
+                variants =
+                    listOf(
+                        MediaTheme.Variant(
+                            version = 1,
+                            episodes = "1-12",
+                            previews =
+                                listOf(
+                                    MediaTheme.Preview(
+                                        video = "https://cdn.example/video-only.webm",
+                                        audio = null,
+                                        resolution = 1080,
+                                        source = "web",
+                                    ),
+                                ),
+                        ),
+                    ),
+            )
+
+        val selection = theme.variants.first().videoPreviewSelection(theme.themeId)
+
+        assertTrue(selection != null)
+        assertEquals("https://cdn.example/video-only.webm", selection.preview.video)
+        assertEquals("theme-1:v1:https://cdn.example/video-only.webm", selection.previewKey)
+    }
+
+    @Test
+    fun `openVideoPreviewUrl rejects blank and non-http schemes`() {
+        assertFalse(isOpenVideoPreviewUrlSupported(" "))
+        assertFalse(isOpenVideoPreviewUrlSupported("ftp://cdn.example/video.webm"))
+        assertFalse(isOpenVideoPreviewUrlSupported("javascript:alert(1)"))
+    }
+
+    @Test
+    fun `openVideoPreviewUrl accepts http and https schemes`() {
+        assertTrue(isOpenVideoPreviewUrlSupported("http://cdn.example/video.webm"))
+        assertTrue(isOpenVideoPreviewUrlSupported("https://cdn.example/video.webm"))
+    }
+
+    @Test
     fun `preferredPreview falls back to theme level audio when variants are not playable`() {
         val theme =
             theme(

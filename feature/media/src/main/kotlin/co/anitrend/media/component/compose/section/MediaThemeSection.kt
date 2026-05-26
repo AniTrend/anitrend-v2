@@ -20,6 +20,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import java.net.URI
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -177,6 +178,15 @@ private object SheetThemePlaybackEngine : ThemePlaybackEngine {
 
 private fun MediaTheme.Preview.mediaIdentity(): String = video.takeIf(String::isNotBlank) ?: audio.orEmpty()
 
+internal fun MediaTheme.Variant.videoPreviewSelection(themeId: String): ThemePreviewSelectionState? =
+    previews.firstOrNull { it.video.isNotBlank() }?.let { preview ->
+        ThemePreviewSelection(
+            variant = this,
+            preview = preview,
+            previewKey = "$themeId:v$version:${preview.mediaIdentity()}",
+        )
+    }
+
 internal fun formatDuration(ms: Long): String {
     if (ms < 0L) {
         return "--:--"
@@ -201,16 +211,20 @@ private fun seekPositionFromSlider(value: Float, durationMs: Long): Long {
     return (durationMs.toFloat() * value.coerceIn(0f, 1f)).toLong()
 }
 
-internal fun openVideoPreview(context: Context, url: String): Boolean {
+internal fun isOpenVideoPreviewUrlSupported(url: String): Boolean {
     val rawUrl = url.trim()
     if (rawUrl.isBlank()) {
         return false
     }
-    val parsedUri = runCatching { Uri.parse(rawUrl) }.getOrNull() ?: return false
-    val scheme = parsedUri.scheme?.lowercase()
-    if (scheme != "http" && scheme != "https") {
+    val scheme = runCatching { URI(rawUrl).scheme?.lowercase() }.getOrNull()
+    return scheme == "http" || scheme == "https"
+}
+
+internal fun openVideoPreview(context: Context, url: String): Boolean {
+    if (!isOpenVideoPreviewUrlSupported(url)) {
         return false
     }
+    val parsedUri = Uri.parse(url.trim())
 
     val viewIntent =
         Intent(Intent.ACTION_VIEW, parsedUri).apply {
@@ -728,15 +742,15 @@ private fun MediaThemeDetailSheet(
                 playbackState = playbackState,
                 onSelectionClick = { selection ->
                     selectedPreviewKey = selection.previewKey
-                    if (playbackState.isPlaying) {
-                        controller.play(
+                    controller.select(
+                        request =
                             ThemePlaybackRequest(
                                 previewKey = selection.previewKey,
                                 audioUrl = selection.preview.audio.orEmpty(),
                                 title = theme.name,
                             ),
-                        )
-                    }
+                        playWhenSelected = playbackState.isPlaying,
+                    )
                 },
                 onPlayPauseClick =
                     selectedSelection
@@ -744,17 +758,13 @@ private fun MediaThemeDetailSheet(
                         ?.let { selection ->
                             {
                                 selectedPreviewKey = selection.previewKey
-                                if (playbackState.isPlaying && playbackState.activePreviewKey == selection.previewKey) {
-                                    controller.pause()
-                                } else {
-                                    controller.play(
-                                        ThemePlaybackRequest(
-                                            previewKey = selection.previewKey,
-                                            audioUrl = selection.preview.audio.orEmpty(),
-                                            title = theme.name,
-                                        ),
-                                    )
-                                }
+                                controller.toggle(
+                                    ThemePlaybackRequest(
+                                        previewKey = selection.previewKey,
+                                        audioUrl = selection.preview.audio.orEmpty(),
+                                        title = theme.name,
+                                    ),
+                                )
                             }
                         },
                 onSeek =
@@ -812,6 +822,7 @@ private fun MediaThemeDetailSheet(
 
                     theme.variants.forEachIndexed { index, variant ->
                         val variantSelection = previewSelections.firstOrNull { it.variant == variant }
+                        val videoSelection = variant.videoPreviewSelection(theme.themeId)
 
                         if (index > 0) {
                             Spacer(modifier = Modifier.height(2.dp))
@@ -832,21 +843,17 @@ private fun MediaThemeDetailSheet(
                                 variantSelection?.takeIf { !it.preview.audio.isNullOrBlank() }?.let { selection ->
                                     {
                                         selectedPreviewKey = selection.previewKey
-                                        if (playbackState.isPlaying && playbackState.activePreviewKey == selection.previewKey) {
-                                            controller.pause()
-                                        } else {
-                                            controller.play(
-                                                ThemePlaybackRequest(
-                                                    previewKey = selection.previewKey,
-                                                    audioUrl = selection.preview.audio.orEmpty(),
-                                                    title = theme.name,
-                                                ),
-                                            )
-                                        }
+                                        controller.toggle(
+                                            ThemePlaybackRequest(
+                                                previewKey = selection.previewKey,
+                                                audioUrl = selection.preview.audio.orEmpty(),
+                                                title = theme.name,
+                                            ),
+                                        )
                                     }
                                 },
                             onOpenVideo =
-                                variantSelection?.takeIf { it.preview.video.isNotBlank() }?.let { selection ->
+                                videoSelection?.let { selection ->
                                     {
                                         if (!openVideoPreview(context = context, url = selection.preview.video)) {
                                             controller.onError(message = "Unable to open video preview")

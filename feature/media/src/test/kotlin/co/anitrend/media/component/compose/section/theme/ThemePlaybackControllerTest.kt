@@ -78,6 +78,48 @@ class ThemePlaybackControllerTest {
     }
 
     @Test
+    fun `select keeps chosen preview when not auto-playing`() {
+        val player = RecordingPlayer()
+        val controller = ThemePlaybackController(player)
+
+        controller.select(
+            request =
+                ThemePlaybackRequest(
+                    previewKey = "theme-1:v2:https://cdn.example/audio-b.mp3",
+                    audioUrl = "https://cdn.example/audio-b.mp3",
+                    title = "B",
+                ),
+            playWhenSelected = false,
+        )
+
+        val state = controller.uiState.value
+        assertEquals("theme-1:v2:https://cdn.example/audio-b.mp3", state.activePreviewKey)
+        assertEquals("B", state.activeTitle)
+        assertFalse(state.isPlaying)
+        assertTrue(player.sourceHistory.isEmpty())
+    }
+
+    @Test
+    fun `toggle pauses active preview otherwise plays request`() {
+        val player = RecordingPlayer()
+        val controller = ThemePlaybackController(player)
+        val request =
+            ThemePlaybackRequest(
+                previewKey = "theme-1:v1:https://cdn.example/audio-a.mp3",
+                audioUrl = "https://cdn.example/audio-a.mp3",
+                title = "A",
+            )
+
+        controller.toggle(request)
+        assertEquals(1, player.playCalls)
+        assertTrue(controller.uiState.value.isPlaying)
+
+        controller.toggle(request)
+        assertEquals(1, player.pauseCalls)
+        assertFalse(controller.uiState.value.isPlaying)
+    }
+
+    @Test
     fun `playback controller switches sources only when a different preview is selected`() {
         val player = RecordingPlayer()
         val controller = ThemePlaybackController(player)
