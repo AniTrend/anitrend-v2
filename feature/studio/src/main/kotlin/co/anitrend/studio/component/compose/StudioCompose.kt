@@ -16,26 +16,29 @@
  */
 package co.anitrend.studio.component.compose
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.common.shared.ui.compose.DefaultScaffold
+import co.anitrend.domain.studio.entity.StudioDetailData
 
 @Composable
-private fun StudioContent(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-    }
-}
-
-@Composable
-fun StudioScreenContent(onBackPress: () -> Unit) {
+fun StudioScreenContent(
+    state: StudioDetailData?,
+    loadState: LoadState?,
+    onBackPress: () -> Unit,
+    onRetry: () -> Unit,
+) {
     DefaultScaffold(onBackPress = onBackPress) {
-        StudioContent(
+        StudioDetailContent(
+            state = state,
+            loadState = loadState,
+            onRetry = onRetry,
             modifier = Modifier.padding(it),
         )
     }
@@ -47,6 +50,10 @@ private fun StudioScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
     PreviewTheme {
-        StudioContent()
+        StudioDetailContent(
+            state = null,
+            loadState = LoadState.Loading(),
+            onRetry = {},
+        )
     }
 }

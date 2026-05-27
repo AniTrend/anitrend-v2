@@ -20,6 +20,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.edge.network.entity.EdgeNetworkEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 abstract class EdgeNetworkLocalSource : AbstractLocalSource<EdgeNetworkEntity>() {
@@ -31,4 +32,7 @@ abstract class EdgeNetworkLocalSource : AbstractLocalSource<EdgeNetworkEntity>()
 
     @Query("delete from edge_media_network where media_id = :mediaId")
     abstract suspend fun deleteByMediaId(mediaId: String)
+
+    @Query("select * from edge_media_network")
+    abstract fun allFlow(): Flow<List<EdgeNetworkEntity>>
 }

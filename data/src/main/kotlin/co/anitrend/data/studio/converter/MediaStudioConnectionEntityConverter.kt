@@ -19,7 +19,9 @@ package co.anitrend.data.studio.converter
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.studio.entity.connection.MediaStudioConnectionEntity
+import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.domain.media.entity.MediaStudioEntry
+import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.studio.entity.Studio
 
 internal class MediaStudioConnectionEntityConverter(
@@ -40,6 +42,19 @@ internal class MediaStudioConnectionEntityConverter(
                         siteUrl = source.studioSiteUrl,
                         id = source.studioId,
                     ),
+                mediaTitle = source.mediaTitle ?: "",
+                mediaCoverImage =
+                    if (source.mediaCoverImageLarge != null || source.mediaCoverImageMedium != null) {
+                        CoverImage(
+                            large = source.mediaCoverImageLarge,
+                            medium = source.mediaCoverImageMedium,
+                        )
+                    } else {
+                        null
+                    },
+                mediaFormat = source.mediaFormat?.let { runCatching { MediaFormat.valueOf(it) }.getOrNull() },
+                mediaStartYear = source.mediaStartYear,
+                mediaAverageScore = source.mediaAverageScore,
                 isMain = source.isMain,
                 id = source.entryId,
             )

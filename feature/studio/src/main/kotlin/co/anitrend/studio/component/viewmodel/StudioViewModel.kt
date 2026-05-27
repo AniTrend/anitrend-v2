@@ -14,27 +14,29 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.studio.koin
+package co.anitrend.studio.component.viewmodel
 
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.core.component.viewmodel.state.AniTrendViewModelState
 import co.anitrend.data.studio.StudioDetailInteractor
+import co.anitrend.domain.studio.entity.StudioDetailData
+import co.anitrend.domain.studio.model.StudioParam
 import co.anitrend.navigation.StudioRouter
-import co.anitrend.studio.component.viewmodel.StudioViewModel
-import co.anitrend.studio.provider.FeatureProvider
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
 
-private val featureModule =
-    module {
-        factory<StudioRouter.Provider> {
-            FeatureProvider()
-        }
-        viewModel {
-            StudioViewModel(interactor = get<StudioDetailInteractor>())
-        }
+class StudioViewModel(
+    private val interactor: StudioDetailInteractor,
+) : AniTrendViewModelState<StudioDetailData>() {
+    private var studioId: Long? = null
+
+    operator fun invoke(parameter: StudioRouter.StudioParam) {
+        val id = parameter.id ?: return
+        studioId = id
+        val result = interactor.getStudio(StudioParam.Detail(id = id))
+        state.postValue(result)
     }
 
-internal val moduleHelper =
-    DynamicFeatureModuleHelper(
-        listOf(featureModule),
-    )
+    fun retryCurrent() {
+        val id = studioId ?: return
+        val result = interactor.getStudio(StudioParam.Detail(id = id))
+        state.postValue(result)
+    }
+}

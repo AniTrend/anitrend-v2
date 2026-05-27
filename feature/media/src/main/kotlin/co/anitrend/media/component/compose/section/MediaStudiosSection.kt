@@ -403,9 +403,9 @@ private fun previewStudio(
     siteUrl: String? = null,
     image: CoverImage? = null,
     networkMatch: MediaStudioEntry.StudioNetworkMatch? = null,
-) = MediaStudioEntry(
-    studio =
-        Studio.Core(
+    ) = MediaStudioEntry(
+        studio =
+            Studio.Core(
             favourites = favourites,
             isFavourite = false,
             isFavouriteBlocked = false,
@@ -413,12 +413,17 @@ private fun previewStudio(
             image = image,
             isAnimationStudio = isAnimationStudio,
             siteUrl = siteUrl,
-            id = id,
-        ),
-    isMain = isMain,
-    networkMatch = networkMatch,
-    id = id,
-)
+                id = id,
+            ),
+        mediaTitle = "",
+        mediaCoverImage = null,
+        mediaFormat = null,
+        mediaStartYear = null,
+        mediaAverageScore = null,
+        isMain = isMain,
+        networkMatch = networkMatch,
+        id = id,
+    )
 
 @AniTrendPreview.Default
 @Composable

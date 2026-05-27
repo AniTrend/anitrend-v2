@@ -18,11 +18,24 @@ package co.anitrend.studio.component.screen
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.arch.extension.ext.extra
 import co.anitrend.core.component.screen.AniTrendScreen
+import co.anitrend.navigation.StudioRouter
+import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.studio.component.compose.StudioScreenContent
+import co.anitrend.studio.component.viewmodel.StudioViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class StudioScreen : AniTrendScreen() {
+    private val viewModel by viewModel<StudioViewModel>()
+
+    private val param by extra<StudioRouter.StudioParam>(
+        key = nameOf<StudioRouter.StudioParam>(),
+    )
+
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]
@@ -30,14 +43,20 @@ class StudioScreen : AniTrendScreen() {
      * @param savedInstanceState
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
+        param?.let(viewModel::invoke)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AniTrendTheme3 {
+                val state by viewModel.model.observeAsState()
+                val loadState by viewModel.loadState.observeAsState()
                 StudioScreenContent(
+                    state = state,
+                    loadState = loadState,
                     onBackPress = onBackPressedDispatcher::onBackPressed,
+                    onRetry = viewModel::retryCurrent,
                 )
             }
         }

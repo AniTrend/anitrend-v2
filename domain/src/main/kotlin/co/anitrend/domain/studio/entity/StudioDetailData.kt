@@ -14,31 +14,15 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.domain.media.entity
+package co.anitrend.domain.studio.entity
 
 import co.anitrend.domain.common.entity.contract.IEntity
 import co.anitrend.domain.common.entity.shared.CoverImage
-import co.anitrend.domain.media.enums.MediaFormat
-import co.anitrend.domain.studio.entity.Studio
+import co.anitrend.domain.media.entity.MediaStudioEntry
 
-data class MediaStudioEntry(
+data class StudioDetailData(
     val studio: Studio,
-    val mediaTitle: String,
-    val mediaCoverImage: CoverImage?,
-    val mediaFormat: MediaFormat?,
-    val mediaStartYear: Int?,
-    val mediaAverageScore: Int?,
-    val isMain: Boolean,
-    val networkMatch: StudioNetworkMatch? = null,
+    val mediaEntries: List<MediaStudioEntry>,
+    val networkLogo: CoverImage? = null,
     override val id: Long,
-) : IEntity {
-    data class StudioNetworkMatch(
-        val networkId: Long,
-        val name: String,
-        val category: String,
-        val originCountry: String,
-        val logoPath: String?,
-        val isPrimary: Boolean,
-        val similarity: Float,
-    )
-}
+) : IEntity

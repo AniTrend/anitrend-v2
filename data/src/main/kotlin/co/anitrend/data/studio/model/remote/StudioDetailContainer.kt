@@ -14,27 +14,20 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.studio.koin
+package co.anitrend.data.studio.model.remote
 
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
-import co.anitrend.data.studio.StudioDetailInteractor
-import co.anitrend.navigation.StudioRouter
-import co.anitrend.studio.component.viewmodel.StudioViewModel
-import co.anitrend.studio.provider.FeatureProvider
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
+import co.anitrend.data.media.model.connection.MediaConnection
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-private val featureModule =
-    module {
-        factory<StudioRouter.Provider> {
-            FeatureProvider()
-        }
-        viewModel {
-            StudioViewModel(interactor = get<StudioDetailInteractor>())
-        }
-    }
-
-internal val moduleHelper =
-    DynamicFeatureModuleHelper(
-        listOf(featureModule),
-    )
+@Serializable
+internal data class StudioDetailContainer(
+    @SerialName("favourites") val favourites: Int? = null,
+    @SerialName("isAnimationStudio") val isAnimationStudio: Boolean,
+    @SerialName("isFavourite") val isFavourite: Boolean,
+    @SerialName("isFavouriteBlocked") val isFavouriteBlocked: Boolean? = null,
+    @SerialName("name") val name: String,
+    @SerialName("siteUrl") val siteUrl: String,
+    @SerialName("id") val id: Long,
+    @SerialName("media") val media: MediaConnection? = null,
+)
