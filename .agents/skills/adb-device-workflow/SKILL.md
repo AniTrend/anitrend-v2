@@ -1,6 +1,6 @@
 ---
 name: adb-device-workflow
-description: 'Use ADB to connect devices, install Android debug builds, inspect logs, and troubleshoot deployment failures. Use for device detection errors, install failures, launch failures, package selection across flavors, and first-pass pid-scoped logcat capture.'
+description: 'Use ADB to connect devices, install Android debug builds, and troubleshoot deployment failures. Use for device detection errors, install failures, launch failures, package selection across flavors, and first-pass process checks. For deeper runtime investigation, prefer the Argent workflow.'
 argument-hint: 'Describe the ADB task, target variant, and whether device is USB or wireless'
 ---
 
@@ -108,10 +108,11 @@ Quality check:
 
 9. Escalate to the deeper runtime workflow when logs alone are insufficient.
 
-Use the `android-runtime-investigation` skill when you need to:
+Use the `android-runtime-investigation` skill (Argent-first) when you need to:
 - correlate UI failures with recorded HTTP responses
-- inspect debug-only Chucker traffic
-- pull evidence from the app sandbox before changing serializers or mappers
+- inspect JS and native network traffic beyond basic logcat
+- map suspicious UI nodes back to source files
+- pull Chucker evidence only as an optional fallback
 
 ## Wireless ADB Branch
 

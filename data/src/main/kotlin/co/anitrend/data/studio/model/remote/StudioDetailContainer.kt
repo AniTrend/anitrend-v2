@@ -22,12 +22,17 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class StudioDetailContainer(
-    @SerialName("favourites") val favourites: Int? = null,
-    @SerialName("isAnimationStudio") val isAnimationStudio: Boolean,
-    @SerialName("isFavourite") val isFavourite: Boolean,
-    @SerialName("isFavouriteBlocked") val isFavouriteBlocked: Boolean? = null,
-    @SerialName("name") val name: String,
-    @SerialName("siteUrl") val siteUrl: String,
-    @SerialName("id") val id: Long,
-    @SerialName("media") val media: MediaConnection? = null,
-)
+    @SerialName("Studio") val studio: Studio? = null,
+) {
+    @Serializable
+    internal data class Studio(
+        @SerialName("favourites") val favourites: Int? = null,
+        @SerialName("isAnimationStudio") val isAnimationStudio: Boolean,
+        @SerialName("isFavourite") val isFavourite: Boolean,
+        @SerialName("isFavouriteBlocked") val isFavouriteBlocked: Boolean? = null,
+        @SerialName("name") val name: String,
+        @SerialName("siteUrl") val siteUrl: String,
+        @SerialName("id") val id: Long,
+        @SerialName("media") val media: MediaConnection.Studio? = null,
+    )
+}

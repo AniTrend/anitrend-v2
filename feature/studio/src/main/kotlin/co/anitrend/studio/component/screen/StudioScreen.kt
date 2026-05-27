@@ -36,12 +36,6 @@ class StudioScreen : AniTrendScreen() {
         key = nameOf<StudioRouter.StudioParam>(),
     )
 
-    /**
-     * Additional initialization to be done in this method, this is called in during
-     * [androidx.fragment.app.FragmentActivity.onPostCreate]
-     *
-     * @param savedInstanceState
-     */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         param?.let(viewModel::invoke)
     }

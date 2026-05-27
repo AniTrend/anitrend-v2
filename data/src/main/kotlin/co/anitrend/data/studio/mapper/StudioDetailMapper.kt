@@ -17,7 +17,6 @@
 package co.anitrend.data.studio.mapper
 
 import co.anitrend.data.android.mapper.DefaultMapper
-import co.anitrend.data.media.model.connection.MediaConnection
 import co.anitrend.data.studio.datasource.local.StudioLocalSource
 import co.anitrend.data.studio.datasource.local.connection.MediaStudioConnectionLocalSource
 import co.anitrend.data.studio.entity.StudioEntity
@@ -35,27 +34,29 @@ internal class StudioDetailMapper(
     }
 
     override suspend fun onResponseMapFrom(source: StudioDetailContainer): StudioDetailPersistenceData {
+        val studio = requireNotNull(source.studio)
+
         val studioEntity = StudioEntity(
-            favourites = source.favourites ?: 0,
-            isAnimationStudio = source.isAnimationStudio,
-            isFavourite = source.isFavourite,
-            isFavouriteBlocked = source.isFavouriteBlocked ?: false,
-            name = source.name,
-            siteUrl = source.siteUrl,
-            id = source.id,
+            favourites = studio.favourites ?: 0,
+            isAnimationStudio = studio.isAnimationStudio,
+            isFavourite = studio.isFavourite,
+            isFavouriteBlocked = studio.isFavouriteBlocked ?: false,
+            name = studio.name,
+            siteUrl = studio.siteUrl,
+            id = studio.id,
         )
 
-        val mediaConnections = (source.media as? MediaConnection.Studio)?.edges.orEmpty().mapIndexedNotNull { index, edge ->
+        val mediaConnections = studio.media?.edges.orEmpty().mapIndexedNotNull { index, edge ->
             val node = edge.node ?: return@mapIndexedNotNull null
 
             MediaStudioConnectionEntity(
                 mediaId = node.id,
                 entryId = edge.id,
-                studioId = source.id,
-                studioName = source.name,
-                studioFavourites = source.favourites,
-                studioIsAnimationStudio = source.isAnimationStudio,
-                studioSiteUrl = source.siteUrl,
+                studioId = studio.id,
+                studioName = studio.name,
+                studioFavourites = studio.favourites,
+                studioIsAnimationStudio = studio.isAnimationStudio,
+                studioSiteUrl = studio.siteUrl,
                 mediaTitle = node.title?.userPreferred ?: node.title?.english ?: node.title?.romaji ?: node.title?.native,
                 mediaCoverImageLarge = node.coverImage?.large,
                 mediaCoverImageMedium = node.coverImage?.medium,

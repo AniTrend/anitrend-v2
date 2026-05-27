@@ -38,9 +38,15 @@ class GraphNetworkClient<R>(
 ) : DeferrableNetworkClient<GraphQLResponse<R>>() {
     private fun getGraphQLError(errorBodyString: String?): GraphQLResponse<R> {
         val body = requireNotNull(errorBodyString)
-        val type = typeToken<GraphQLResponse<R>>().type
+        val type = typeToken<GraphQLResponse<Any?>>().type
         return runCatching {
-            gson.fromJson<GraphQLResponse<R>>(body, type)
+            gson.fromJson<GraphQLResponse<Any?>>(body, type)
+                .let { response ->
+                    GraphQLResponse<R>(
+                        errors = response.errors,
+                        extensions = response.extensions,
+                    )
+                }
         }.onFailure(Timber::w)
             .getOrDefault(
                 GraphQLResponse(

@@ -16,6 +16,7 @@
  */
 package co.anitrend.studio.component.compose
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,8 +29,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,13 +40,16 @@ import androidx.compose.material.icons.outlined.BrokenImage
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -72,13 +75,9 @@ private sealed interface StudioDetailUiState {
 
     data object Empty : StudioDetailUiState
 
-    data class Error(
-        val message: String,
-    ) : StudioDetailUiState
+    data class Error(val message: String) : StudioDetailUiState
 
-    data class Populated(
-        val data: StudioDetailData,
-    ) : StudioDetailUiState
+    data class Populated(val data: StudioDetailData) : StudioDetailUiState
 }
 
 @Composable
@@ -86,15 +85,18 @@ internal fun StudioDetailContent(
     state: StudioDetailData?,
     loadState: LoadState?,
     onRetry: () -> Unit,
+    onSeeAllMediaClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     val uiState = studioDetailUiState(state = state, loadState = loadState)
 
     when (uiState) {
-        is StudioDetailUiState.Populated -> StudioPopulatedContent(data = uiState.data, modifier = modifier)
+        is StudioDetailUiState.Populated ->
+            StudioPopulatedContent(data = uiState.data, onSeeAllMediaClick = onSeeAllMediaClick, modifier = modifier)
         StudioDetailUiState.Loading -> StudioLoadingState(modifier = modifier)
         StudioDetailUiState.Empty -> StudioInfoState(text = "No studio details available.", modifier = modifier)
-        is StudioDetailUiState.Error -> StudioErrorState(text = uiState.message, onRetry = onRetry, modifier = modifier)
+        is StudioDetailUiState.Error ->
+            StudioErrorState(text = uiState.message, onRetry = onRetry, modifier = modifier)
     }
 }
 
@@ -115,125 +117,178 @@ private fun studioDetailUiState(
 @Composable
 private fun StudioPopulatedContent(
     data: StudioDetailData,
+    onSeeAllMediaClick: (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(bottom = 32.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        item {
+            StudioHeroSection(data = data)
+        }
+
+        item {
+            MediaSection(
+                entries = data.mediaEntries,
+                entryCount = data.mediaEntries.size,
+                onSeeAllClick = onSeeAllMediaClick,
+            )
+        }
+    }
+}
+
+@Composable
+private fun StudioHeroSection(
+    data: StudioDetailData,
     modifier: Modifier = Modifier,
 ) {
     val uriHandler = LocalUriHandler.current
 
-    Column(
-        modifier =
-            modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(26.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.30f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.18f)),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
     ) {
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant,
+        Column(
+            modifier = Modifier.padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                val studioImage = data.studio.image
-                if (studioImage != null) {
-                    AniTrendImage(
-                        image = studioImage,
-                        imageType = RequestImage.Media.ImageType.POSTER,
-                        modifier =
-                            Modifier
-                                .size(80.dp)
-                                .clip(CircleShape),
-                    )
-                } else {
-                    Surface(
-                        modifier = Modifier.size(80.dp),
-                        shape = CircleShape,
-                        color = MaterialTheme.colorScheme.surface,
-                    ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Icon(
-                                imageVector = Icons.Outlined.BrokenImage,
-                                contentDescription = "No studio image",
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                }
-
-                Text(
-                    text = data.studio.name,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Center,
+            val studioImage = data.studio.image
+            if (studioImage != null) {
+                AniTrendImage(
+                    image = studioImage,
+                    imageType = RequestImage.Media.ImageType.POSTER,
+                    modifier = Modifier.size(80.dp).clip(CircleShape),
                 )
-                Text(
-                    text = "Favourites: ${data.studio.favourites}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                if (data.studio.isAnimationStudio) {
-                    Surface(
-                        shape = RoundedCornerShape(50),
-                        color = MaterialTheme.colorScheme.secondaryContainer,
-                    ) {
-                        Text(
-                            text = "Animation studio",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        )
-                    }
-                }
-                data.studio.siteUrl?.let { siteUrl ->
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    ) {
+            } else {
+                Surface(
+                    modifier = Modifier.size(80.dp),
+                    shape = CircleShape,
+                    color = MaterialTheme.colorScheme.surface,
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
                         Icon(
-                            imageVector = Icons.Outlined.Public,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                        )
-                        Text(
-                            text = siteUrl,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.primary,
-                            textAlign = TextAlign.Center,
-                            textDecoration = TextDecoration.Underline,
-                            modifier = Modifier.clickable { uriHandler.openUri(siteUrl) },
+                            imageVector = Icons.Outlined.BrokenImage,
+                            contentDescription = "No studio image",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
             }
-        }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
             Text(
-                text = "Media",
-                style = MaterialTheme.typography.titleLarge,
+                text = data.studio.name,
+                style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center,
             )
+
             Text(
-                text = "${data.mediaEntries.size} entries",
-                style = MaterialTheme.typography.labelLarge,
+                text = "Favourites: ${data.studio.favourites}",
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-        }
 
-        if (data.mediaEntries.isEmpty()) {
-            Surface(
+            if (data.studio.isAnimationStudio) {
+                SuggestionChip(
+                    onClick = {},
+                    label = {
+                        Text(
+                            text = "Animation studio",
+                            style = MaterialTheme.typography.labelMedium,
+                        )
+                    },
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)),
+                )
+            }
+
+            data.studio.siteUrl?.let { siteUrl ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Public,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                    Text(
+                        text = siteUrl.replace("https://", "").trimEnd('/'),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        textDecoration = TextDecoration.Underline,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.clickable { uriHandler.openUri(siteUrl) },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MediaSection(
+    entries: List<MediaStudioEntry>,
+    entryCount: Int,
+    onSeeAllClick: (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(26.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.08f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.24f)),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+        ) {
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(14.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.Top,
             ) {
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        text = "Media",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Text(
+                        text = "$entryCount ${if (entryCount == 1) "entry" else "entries"}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                if (onSeeAllClick != null && entryCount > 0) {
+                TextButton(
+                    onClick = onSeeAllClick,
+                    contentPadding = PaddingValues(horizontal = 6.dp, vertical = 2.dp),
+                ) {
+                    Text(
+                        text = "See all",
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                }
+            }
+            }
+
+            if (entries.isEmpty()) {
                 Box(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 28.dp, horizontal = 16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
@@ -243,15 +298,15 @@ private fun StudioPopulatedContent(
                         textAlign = TextAlign.Center,
                     )
                 }
-            }
-        } else {
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 2.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                items(data.mediaEntries, key = { it.id }) { entry ->
-                    StudioMediaPosterCard(entry = entry)
+            } else {
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(horizontal = 2.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    items(entries, key = { it.id }) { entry ->
+                        StudioMediaPosterCard(entry = entry)
+                    }
                 }
             }
         }
@@ -267,6 +322,8 @@ private fun StudioMediaPosterCard(
         modifier = modifier.width(120.dp),
         shape = RoundedCornerShape(14.dp),
         color = MaterialTheme.colorScheme.surfaceVariant,
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
     ) {
         Column(
             modifier = Modifier.padding(10.dp),
@@ -302,11 +359,12 @@ private fun StudioMediaPosterCard(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
+
             val details =
                 listOfNotNull(
                     entry.mediaFormat?.toDisplayLabel(),
                     entry.mediaStartYear?.toString(),
-                ).joinToString(separator = " • ")
+                ).joinToString(separator = " \u2022 ")
             Text(
                 text = details.ifBlank { if (entry.isMain) "Main studio" else "Support studio" },
                 style = MaterialTheme.typography.labelMedium,
@@ -314,6 +372,7 @@ private fun StudioMediaPosterCard(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
+
             Text(
                 text = "Score ${entry.mediaAverageScore?.toString() ?: "-"}",
                 style = MaterialTheme.typography.labelMedium,
@@ -324,64 +383,73 @@ private fun StudioMediaPosterCard(
 }
 
 private fun MediaFormat.toDisplayLabel(): String =
-    name
-        .lowercase()
-        .split('_')
-        .joinToString(" ") { part -> part.replaceFirstChar(Char::titlecaseChar) }
+    name.lowercase().split('_').joinToString(" ") { part -> part.replaceFirstChar(Char::titlecaseChar) }
 
 @Composable
-private fun StudioLoadingState(
-    modifier: Modifier = Modifier,
-) {
+private fun StudioLoadingState(modifier: Modifier = Modifier) {
     val placeholderColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.7f)
 
-    Column(
-        modifier =
-            modifier
-                .fillMaxSize()
-                .padding(16.dp),
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(bottom = 32.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surfaceVariant,
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+        item {
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(26.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.30f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.18f)),
             ) {
-                Surface(modifier = Modifier.size(80.dp), shape = CircleShape, color = placeholderColor) {}
-                Surface(modifier = Modifier.width(160.dp).height(20.dp), shape = RoundedCornerShape(8.dp), color = placeholderColor) {}
-                Surface(modifier = Modifier.width(110.dp).height(16.dp), shape = RoundedCornerShape(8.dp), color = placeholderColor) {}
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    Surface(modifier = Modifier.size(80.dp), shape = CircleShape, color = placeholderColor) {}
+                    Surface(modifier = Modifier.width(160.dp).height(22.dp), shape = RoundedCornerShape(10.dp), color = placeholderColor) {}
+                    Surface(modifier = Modifier.width(110.dp).height(16.dp), shape = RoundedCornerShape(10.dp), color = placeholderColor) {}
+                }
             }
         }
 
-        Surface(modifier = Modifier.width(96.dp).height(24.dp), shape = RoundedCornerShape(8.dp), color = placeholderColor) {}
-
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(horizontal = 2.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            items(3) {
-                Surface(
-                    modifier = Modifier.width(120.dp),
-                    shape = RoundedCornerShape(14.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant,
+        item {
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(26.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.08f),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.24f)),
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp),
+                    verticalArrangement = Arrangement.spacedBy(14.dp),
                 ) {
-                    Column(
-                        modifier = Modifier.padding(10.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    Surface(modifier = Modifier.width(96.dp).height(24.dp), shape = RoundedCornerShape(8.dp), color = placeholderColor) {}
+
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
-                        Surface(
-                            modifier = Modifier.fillMaxWidth().aspectRatio(2f / 3f),
-                            shape = RoundedCornerShape(10.dp),
-                            color = placeholderColor,
-                        ) {}
-                        Surface(modifier = Modifier.fillMaxWidth().height(16.dp), shape = RoundedCornerShape(8.dp), color = placeholderColor) {}
-                        Surface(modifier = Modifier.width(72.dp).height(14.dp), shape = RoundedCornerShape(8.dp), color = placeholderColor) {}
+                        items(3) {
+                            Surface(
+                                modifier = Modifier.width(120.dp),
+                                shape = RoundedCornerShape(14.dp),
+                                color = MaterialTheme.colorScheme.surfaceVariant,
+                            ) {
+                                Column(
+                                    modifier = Modifier.padding(10.dp),
+                                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                                ) {
+                                    Surface(
+                                        modifier = Modifier.fillMaxWidth().aspectRatio(2f / 3f),
+                                        shape = RoundedCornerShape(10.dp),
+                                        color = placeholderColor,
+                                    ) {}
+                                    Surface(modifier = Modifier.fillMaxWidth().height(16.dp), shape = RoundedCornerShape(8.dp), color = placeholderColor) {}
+                                    Surface(modifier = Modifier.width(72.dp).height(14.dp), shape = RoundedCornerShape(8.dp), color = placeholderColor) {}
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -419,8 +487,9 @@ private fun StudioInfoState(
 ) {
     Surface(
         modifier = modifier.fillMaxSize(),
-        shape = RoundedCornerShape(14.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant,
+        shape = RoundedCornerShape(26.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.30f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.18f)),
     ) {
         Column(
             modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -535,6 +604,7 @@ private fun StudioContentLoadingPreview(
             state = null,
             loadState = LoadState.Loading(),
             onRetry = {},
+            onSeeAllMediaClick = {},
         )
     }
 }
@@ -549,6 +619,7 @@ private fun StudioContentPopulatedPreview(
             state = previewPopulatedState,
             loadState = null,
             onRetry = {},
+            onSeeAllMediaClick = {},
         )
     }
 }
@@ -563,6 +634,7 @@ private fun StudioContentNoMediaPreview(
             state = previewNoMediaState,
             loadState = null,
             onRetry = {},
+            onSeeAllMediaClick = {},
         )
     }
 }
@@ -577,32 +649,37 @@ private fun StudioContentErrorPreview(
             state = null,
             loadState = LoadState.Error(details = IllegalStateException("Studio preview failed")),
             onRetry = {},
+            onSeeAllMediaClick = {},
         )
     }
 }
 
-@AniTrendPreview.Default
+@AniTrendPreview.Mobile
 @Composable
-private fun StudioContentNoImageCardPreview(
+private fun StudioContentMobilePopulatedPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
-    val noImageState =
-        previewPopulatedState.copy(
-            mediaEntries =
-                listOf(
-                    previewPopulatedState.mediaEntries.first().copy(
-                        mediaCoverImage = null,
-                        mediaTitle = "No Image Example",
-                    ),
-                ),
-        )
-
     PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
         StudioDetailContent(
-            state = noImageState,
+            state = previewPopulatedState,
             loadState = null,
             onRetry = {},
-            modifier = Modifier.size(width = 220.dp, height = 420.dp),
+            onSeeAllMediaClick = {},
+        )
+    }
+}
+
+@AniTrendPreview.Mobile
+@Composable
+private fun StudioContentMobileNoMediaPreview(
+    @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
+) {
+    PreviewTheme(darkTheme = darkTheme, wrapInSurface = true) {
+        StudioDetailContent(
+            state = previewNoMediaState,
+            loadState = null,
+            onRetry = {},
+            onSeeAllMediaClick = {},
         )
     }
 }

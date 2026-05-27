@@ -32,6 +32,7 @@ import co.anitrend.data.studio.source.contract.StudioDetailSource
 import co.anitrend.domain.common.entity.shared.CoverImage
 import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.studio.entity.StudioDetailData
 import io.github.wax911.library.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
@@ -109,7 +110,12 @@ internal class StudioDetailSourceImpl(
 
     override suspend fun getStudio(callback: RequestCallback): Boolean {
         val queryBuilder = QueryContainerBuilder()
-        queryBuilder.putVariables(mapOf("id" to param.id))
+        queryBuilder.putVariables(
+            mapOf(
+                "id" to param.id,
+                "scoreFormat" to ScoreFormat.POINT_100,
+            ),
+        )
 
         val deferred =
             deferred {
