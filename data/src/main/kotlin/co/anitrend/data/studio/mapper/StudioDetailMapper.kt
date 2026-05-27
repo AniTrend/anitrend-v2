@@ -36,37 +36,39 @@ internal class StudioDetailMapper(
     override suspend fun onResponseMapFrom(source: StudioDetailContainer): StudioDetailPersistenceData {
         val studio = requireNotNull(source.studio)
 
-        val studioEntity = StudioEntity(
-            favourites = studio.favourites ?: 0,
-            isAnimationStudio = studio.isAnimationStudio,
-            isFavourite = studio.isFavourite,
-            isFavouriteBlocked = studio.isFavouriteBlocked ?: false,
-            name = studio.name,
-            siteUrl = studio.siteUrl,
-            id = studio.id,
-        )
-
-        val mediaConnections = studio.media?.edges.orEmpty().mapIndexedNotNull { index, edge ->
-            val node = edge.node ?: return@mapIndexedNotNull null
-
-            MediaStudioConnectionEntity(
-                mediaId = node.id,
-                entryId = edge.id,
-                studioId = studio.id,
-                studioName = studio.name,
-                studioFavourites = studio.favourites,
-                studioIsAnimationStudio = studio.isAnimationStudio,
-                studioSiteUrl = studio.siteUrl,
-                mediaTitle = node.title?.userPreferred ?: node.title?.english ?: node.title?.romaji ?: node.title?.native,
-                mediaCoverImageLarge = node.coverImage?.large,
-                mediaCoverImageMedium = node.coverImage?.medium,
-                mediaFormat = node.format?.name,
-                mediaStartYear = node.startDate?.year,
-                mediaAverageScore = node.averageScore,
-                isMain = edge.isMainStudio,
-                sortIndex = index,
+        val studioEntity =
+            StudioEntity(
+                favourites = studio.favourites ?: 0,
+                isAnimationStudio = studio.isAnimationStudio,
+                isFavourite = studio.isFavourite,
+                isFavouriteBlocked = studio.isFavouriteBlocked ?: false,
+                name = studio.name,
+                siteUrl = studio.siteUrl,
+                id = studio.id,
             )
-        }
+
+        val mediaConnections =
+            studio.media?.edges.orEmpty().mapIndexedNotNull { index, edge ->
+                val node = edge.node ?: return@mapIndexedNotNull null
+
+                MediaStudioConnectionEntity(
+                    mediaId = node.id,
+                    entryId = edge.id,
+                    studioId = studio.id,
+                    studioName = studio.name,
+                    studioFavourites = studio.favourites,
+                    studioIsAnimationStudio = studio.isAnimationStudio,
+                    studioSiteUrl = studio.siteUrl,
+                    mediaTitle = node.title?.userPreferred ?: node.title?.english ?: node.title?.romaji ?: node.title?.native,
+                    mediaCoverImageLarge = node.coverImage?.large,
+                    mediaCoverImageMedium = node.coverImage?.medium,
+                    mediaFormat = node.format?.name,
+                    mediaStartYear = node.startDate?.year,
+                    mediaAverageScore = node.averageScore,
+                    isMain = edge.isMainStudio,
+                    sortIndex = index,
+                )
+            }
 
         return StudioDetailPersistenceData(
             studio = studioEntity,

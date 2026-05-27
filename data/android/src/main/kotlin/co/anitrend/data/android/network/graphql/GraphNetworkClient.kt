@@ -40,7 +40,8 @@ class GraphNetworkClient<R>(
         val body = requireNotNull(errorBodyString)
         val type = typeToken<GraphQLResponse<Any?>>().type
         return runCatching {
-            gson.fromJson<GraphQLResponse<Any?>>(body, type)
+            gson
+                .fromJson<GraphQLResponse<Any?>>(body, type)
                 .let { response ->
                     GraphQLResponse<R>(
                         errors = response.errors,
