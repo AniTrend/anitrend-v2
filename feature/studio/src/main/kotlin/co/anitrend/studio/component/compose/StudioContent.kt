@@ -42,7 +42,6 @@ import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -175,10 +174,17 @@ private fun StudioPopulatedContent(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 if (data.studio.isAnimationStudio) {
-                    SuggestionChip(
-                        onClick = {},
-                        label = { Text(text = "Animation studio") },
-                    )
+                    Surface(
+                        shape = RoundedCornerShape(50),
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                    ) {
+                        Text(
+                            text = "Animation studio",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        )
+                    }
                 }
                 data.studio.siteUrl?.let { siteUrl ->
                     Row(
@@ -354,8 +360,12 @@ private fun StudioLoadingState(
 
         Surface(modifier = Modifier.width(96.dp).height(24.dp), shape = RoundedCornerShape(8.dp), color = placeholderColor) {}
 
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            repeat(3) {
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 2.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            items(3) {
                 Surface(
                     modifier = Modifier.width(120.dp),
                     shape = RoundedCornerShape(14.dp),

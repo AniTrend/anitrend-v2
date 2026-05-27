@@ -49,7 +49,7 @@ fun StudioScreenContent(
 private fun StudioScreenPreview(
     @PreviewParameter(DarkThemeProvider::class) darkTheme: Boolean,
 ) {
-    PreviewTheme {
+    PreviewTheme(darkTheme = darkTheme) {
         StudioDetailContent(
             state = null,
             loadState = LoadState.Loading(),
