@@ -75,9 +75,13 @@ private sealed interface StudioDetailUiState {
 
     data object Empty : StudioDetailUiState
 
-    data class Error(val message: String) : StudioDetailUiState
+    data class Error(
+        val message: String,
+    ) : StudioDetailUiState
 
-    data class Populated(val data: StudioDetailData) : StudioDetailUiState
+    data class Populated(
+        val data: StudioDetailData,
+    ) : StudioDetailUiState
 }
 
 @Composable
@@ -274,16 +278,16 @@ private fun MediaSection(
                     )
                 }
                 if (onSeeAllClick != null && entryCount > 0) {
-                TextButton(
-                    onClick = onSeeAllClick,
-                    contentPadding = PaddingValues(horizontal = 6.dp, vertical = 2.dp),
-                ) {
-                    Text(
-                        text = "See all",
-                        style = MaterialTheme.typography.labelLarge,
-                    )
+                    TextButton(
+                        onClick = onSeeAllClick,
+                        contentPadding = PaddingValues(horizontal = 6.dp, vertical = 2.dp),
+                    ) {
+                        Text(
+                            text = "See all",
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                    }
                 }
-            }
             }
 
             if (entries.isEmpty()) {
@@ -445,8 +449,16 @@ private fun StudioLoadingState(modifier: Modifier = Modifier) {
                                         shape = RoundedCornerShape(10.dp),
                                         color = placeholderColor,
                                     ) {}
-                                    Surface(modifier = Modifier.fillMaxWidth().height(16.dp), shape = RoundedCornerShape(8.dp), color = placeholderColor) {}
-                                    Surface(modifier = Modifier.width(72.dp).height(14.dp), shape = RoundedCornerShape(8.dp), color = placeholderColor) {}
+                                    Surface(
+                                        modifier = Modifier.fillMaxWidth().height(16.dp),
+                                        shape = RoundedCornerShape(8.dp),
+                                        color = placeholderColor,
+                                    ) {}
+                                    Surface(
+                                        modifier = Modifier.width(72.dp).height(14.dp),
+                                        shape = RoundedCornerShape(8.dp),
+                                        color = placeholderColor,
+                                    ) {}
                                 }
                             }
                         }
