@@ -35,4 +35,7 @@ abstract class EdgeNetworkLocalSource : AbstractLocalSource<EdgeNetworkEntity>()
 
     @Query("select * from edge_media_network")
     abstract fun allFlow(): Flow<List<EdgeNetworkEntity>>
+
+    @Query("select * from edge_media_network where media_id in (:mediaIds)")
+    abstract fun byMediaIdsFlow(mediaIds: List<String>): Flow<List<EdgeNetworkEntity>>
 }

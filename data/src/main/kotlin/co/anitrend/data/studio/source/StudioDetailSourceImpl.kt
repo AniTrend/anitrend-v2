@@ -38,7 +38,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 
 internal class StudioDetailSourceImpl(
     private val remoteSource: StudioRemoteSource,
@@ -56,41 +59,52 @@ internal class StudioDetailSourceImpl(
         combine(
             localSource.studioByIdFlow(param.id).filterNotNull(),
             connectionLocalSource.entriesByStudioIdFlow(param.id),
-            edgeNetworkLocalSource.allFlow(),
-        ) { studioEntity, connections, networks ->
-            val studio = entityConverter.convertFrom(studioEntity)
-
-            val mediaEntries =
-                connections.map { connection ->
-                    MediaStudioEntry(
-                        studio = studio,
-                        mediaTitle = connection.mediaTitle.orEmpty(),
-                        mediaCoverImage =
-                            if (connection.mediaCoverImageLarge != null || connection.mediaCoverImageMedium != null) {
-                                CoverImage(
-                                    large = connection.mediaCoverImageLarge,
-                                    medium = connection.mediaCoverImageMedium,
-                                )
-                            } else {
-                                null
-                            },
-                        mediaFormat = connection.mediaFormat?.let { runCatching { MediaFormat.valueOf(it) }.getOrNull() },
-                        mediaStartYear = connection.mediaStartYear,
-                        mediaAverageScore = connection.mediaAverageScore,
-                        isMain = connection.isMain,
-                        id = connection.entryId,
-                    )
+        ) { studioEntity, connections ->
+            studioEntity to connections
+        }.flatMapLatest { (studioEntity, connections) ->
+            val mediaIds = connections.map { it.mediaId.toString() }.distinct()
+            val networksFlow =
+                if (mediaIds.isEmpty()) {
+                    flowOf(emptyList())
+                } else {
+                    edgeNetworkLocalSource.byMediaIdsFlow(mediaIds)
                 }
 
-            val enriched = enricher.enrich(mediaEntries, networks)
-            val networkLogoPath = enriched.firstNotNullOfOrNull { it.networkMatch?.logoPath }
+            networksFlow.map { networks ->
+                val studio = entityConverter.convertFrom(studioEntity)
 
-            StudioDetailData(
-                studio = studio,
-                mediaEntries = enriched,
-                networkLogo = networkLogoPath?.let { CoverImage(large = it, medium = it) },
-                id = studio.id,
-            )
+                val mediaEntries =
+                    connections.map { connection ->
+                        MediaStudioEntry(
+                            studio = studio,
+                            mediaTitle = connection.mediaTitle.orEmpty(),
+                            mediaCoverImage =
+                                if (connection.mediaCoverImageLarge != null || connection.mediaCoverImageMedium != null) {
+                                    CoverImage(
+                                        large = connection.mediaCoverImageLarge,
+                                        medium = connection.mediaCoverImageMedium,
+                                    )
+                                } else {
+                                    null
+                                },
+                            mediaFormat = connection.mediaFormat?.let { runCatching { MediaFormat.valueOf(it) }.getOrNull() },
+                            mediaStartYear = connection.mediaStartYear,
+                            mediaAverageScore = connection.mediaAverageScore,
+                            isMain = connection.isMain,
+                            id = connection.entryId,
+                        )
+                    }
+
+                val enriched = enricher.enrich(mediaEntries, networks)
+                val networkLogoPath = enriched.firstNotNullOfOrNull { it.networkMatch?.logoPath }
+
+                StudioDetailData(
+                    studio = studio,
+                    mediaEntries = enriched,
+                    networkLogo = networkLogoPath?.let { CoverImage(large = it, medium = it) },
+                    id = studio.id,
+                )
+            }
         }.flowOn(dispatcher.io)
 
     override suspend fun getStudio(callback: RequestCallback): Boolean {
@@ -110,6 +124,7 @@ internal class StudioDetailSourceImpl(
         clearDataHelper(context) {
             cachePolicy.invalidateLastRequest(cacheIdentity)
             localSource.clearById(param.id)
+            connectionLocalSource.clearByStudioId(param.id)
         }
     }
 }
