@@ -33,6 +33,9 @@ import com.android.build.api.dsl.LibraryExtension
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.gradle.api.tasks.testing.Test
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -235,6 +238,11 @@ internal fun Project.configureAndroid() {
                 targetCompatibility = JavaVersion.VERSION_21
             }
         }
+    }
+
+    with(project.extensions.getByType(JavaPluginExtension::class.java).toolchain) {
+        languageVersion.set(JavaLanguageVersion.of(21))
+        vendor.set(JvmVendorSpec.ADOPTIUM)
     }
 
     tasks.withType(KotlinJvmCompile::class.java) {
