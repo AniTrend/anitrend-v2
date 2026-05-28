@@ -49,9 +49,26 @@ internal abstract class MediaStudioConnectionLocalSource : AbstractLocalSource<M
 
     @Query(
         """
+        select * from media_studio_connection
+        where studio_id = :studioId
+        order by sort_index asc
+        """,
+    )
+    abstract fun entriesByStudioIdFlow(studioId: Long): Flow<List<MediaStudioConnectionEntity>>
+
+    @Query(
+        """
         delete from media_studio_connection
         where media_id = :mediaId
         """,
     )
     abstract suspend fun clearByMediaId(mediaId: Long)
+
+    @Query(
+        """
+        delete from media_studio_connection
+        where studio_id = :studioId
+        """,
+    )
+    abstract suspend fun clearByStudioId(studioId: Long)
 }

@@ -155,7 +155,7 @@ internal abstract class AniTrendStore :
     RoomDatabase(),
     IAniTrendStore {
     companion object {
-        const val DATABASE_SCHEMA_VERSION = 22
+        const val DATABASE_SCHEMA_VERSION = 23
 
         internal fun create(applicationContext: Context): IAniTrendStore =
             Room

@@ -16,4 +16,21 @@
  */
 package co.anitrend.data.studio.datasource.remote
 
-internal interface StudioRemoteSource
+import co.anitrend.data.core.GRAPHQL
+import co.anitrend.data.core.api.factory.contract.IEndpointType
+import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.data.studio.model.remote.StudioDetailContainer
+import io.github.wax911.library.annotation.GraphQuery
+import io.github.wax911.library.model.request.QueryContainerBuilder
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.POST
+
+internal interface StudioRemoteSource {
+    @GRAPHQL
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetStudioDetail")
+    suspend fun getStudioDetail(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<StudioDetailContainer>>
+}

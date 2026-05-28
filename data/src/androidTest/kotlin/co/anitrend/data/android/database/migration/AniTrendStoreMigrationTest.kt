@@ -19,6 +19,7 @@ package co.anitrend.data.android.database.migration
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry
+import kotlin.test.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -69,6 +70,30 @@ class AniTrendStoreMigrationTest {
         }
 
         helper.runMigrationsAndValidate(TEST_DB, 22, true, *MIGRATIONS)
+    }
+
+    @Test
+    fun migrate22To23AddsStudioMediaSnapshotColumns() {
+        helper.createDatabase(TEST_DB, 22).apply {
+            close()
+        }
+
+        val migrated = helper.runMigrationsAndValidate(TEST_DB, 23, true, *MIGRATIONS)
+        val columns = mutableSetOf<String>()
+
+        migrated.query("PRAGMA table_info(`media_studio_connection`)").use { cursor ->
+            val nameIndex = cursor.getColumnIndex("name")
+            while (cursor.moveToNext()) {
+                columns += cursor.getString(nameIndex)
+            }
+        }
+
+        assertTrue(columns.contains("media_title"))
+        assertTrue(columns.contains("media_cover_image_large"))
+        assertTrue(columns.contains("media_cover_image_medium"))
+        assertTrue(columns.contains("media_format"))
+        assertTrue(columns.contains("media_start_year"))
+        assertTrue(columns.contains("media_average_score"))
     }
 
     private companion object {

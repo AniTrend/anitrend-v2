@@ -16,17 +16,51 @@
  */
 package co.anitrend.data.studio.koin
 
+import co.anitrend.data.android.extensions.cacheLocalSource
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
+import co.anitrend.data.studio.StudioDetailInteractor
+import co.anitrend.data.studio.StudioDetailRepository
+import co.anitrend.data.studio.cache.StudioCache
 import co.anitrend.data.studio.converter.MediaStudioConnectionEntityConverter
 import co.anitrend.data.studio.converter.MediaStudioEntryEnricher
 import co.anitrend.data.studio.converter.StudioConverter
 import co.anitrend.data.studio.converter.StudioEntityConverter
 import co.anitrend.data.studio.converter.StudioModelConverter
 import co.anitrend.data.studio.mapper.MediaStudioMapper
+import co.anitrend.data.studio.mapper.StudioDetailMapper
+import co.anitrend.data.studio.repository.StudioDetailRepository as StudioDetailRepositoryImpl
+import co.anitrend.data.studio.source.StudioDetailSourceImpl
+import co.anitrend.data.studio.source.contract.StudioDetailSource
+import co.anitrend.data.studio.usecase.StudioDetailUseCaseImpl
 import org.koin.dsl.module
 
 private val sourceModule =
     module {
+        factory<StudioDetailSource> {
+            StudioDetailSourceImpl(
+                remoteSource = aniListApi(),
+                localSource = store().studioDao(),
+                connectionLocalSource = store().mediaStudioConnectionDao(),
+                edgeNetworkLocalSource = store().edgeNetworkDao(),
+                controller = graphQLController(mapper = get<StudioDetailMapper>()),
+                clearDataHelper = get(),
+                entityConverter = get(),
+                enricher = get(),
+                cachePolicy = get<StudioCache>(),
+                dispatcher = get(),
+            )
+        }
+    }
+
+private val cacheModule =
+    module {
+        factory {
+            StudioCache(
+                localSource = cacheLocalSource(),
+            )
+        }
     }
 
 private val converterModule =
@@ -55,18 +89,35 @@ private val mapperModule =
                 localSource = store().mediaStudioConnectionDao(),
             )
         }
+        factory {
+            StudioDetailMapper(
+                studioLocalSource = store().studioDao(),
+                connectionLocalSource = store().mediaStudioConnectionDao(),
+            )
+        }
     }
 
 private val useCaseModule =
     module {
+        factory<StudioDetailInteractor> {
+            StudioDetailUseCaseImpl(
+                repository = get(),
+            )
+        }
     }
 
 private val repositoryModule =
     module {
+        factory<StudioDetailRepository> {
+            StudioDetailRepositoryImpl(
+                source = get(),
+            )
+        }
     }
 
 internal val studioModules =
     listOf(
+        cacheModule,
         sourceModule,
         converterModule,
         mapperModule,

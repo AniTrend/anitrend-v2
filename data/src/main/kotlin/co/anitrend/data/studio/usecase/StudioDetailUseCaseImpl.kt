@@ -14,27 +14,11 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.studio.koin
+package co.anitrend.data.studio.usecase
 
-import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.data.studio.StudioDetailInteractor
-import co.anitrend.navigation.StudioRouter
-import co.anitrend.studio.component.viewmodel.StudioViewModel
-import co.anitrend.studio.provider.FeatureProvider
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
+import co.anitrend.data.studio.StudioDetailRepository
 
-private val featureModule =
-    module {
-        factory<StudioRouter.Provider> {
-            FeatureProvider()
-        }
-        viewModel {
-            StudioViewModel(interactor = get<StudioDetailInteractor>())
-        }
-    }
-
-internal val moduleHelper =
-    DynamicFeatureModuleHelper(
-        listOf(featureModule),
-    )
+internal class StudioDetailUseCaseImpl(
+    repository: StudioDetailRepository,
+) : StudioDetailInteractor(repository)

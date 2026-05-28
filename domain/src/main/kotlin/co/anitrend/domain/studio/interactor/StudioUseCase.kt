@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 AniTrend
+ * Copyright (C) 2026 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,16 +14,14 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.data.studio
+package co.anitrend.domain.studio.interactor
 
-import co.anitrend.arch.data.state.DataState
-import co.anitrend.data.android.controller.graphql.GraphQLController
-import co.anitrend.data.studio.mapper.StudioDetailPersistenceData
-import co.anitrend.data.studio.model.remote.StudioDetailContainer
-import co.anitrend.domain.studio.entity.StudioDetailData
-import co.anitrend.domain.studio.interactor.StudioUseCase
+import co.anitrend.arch.domain.state.UiState
+import co.anitrend.domain.studio.model.StudioParam
 import co.anitrend.domain.studio.repository.IStudioRepository
 
-internal typealias MediaStudioDetailController = GraphQLController<StudioDetailContainer, StudioDetailPersistenceData>
-internal typealias StudioDetailRepository = IStudioRepository<DataState<StudioDetailData>>
-typealias StudioDetailInteractor = StudioUseCase<DataState<StudioDetailData>>
+abstract class StudioUseCase<State : UiState<*>>(
+    protected val repository: IStudioRepository<State>,
+) {
+    fun getStudio(param: StudioParam.Detail) = repository.getStudio(param)
+}

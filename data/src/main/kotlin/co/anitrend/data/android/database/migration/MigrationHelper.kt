@@ -291,4 +291,14 @@ internal val MIGRATIONS =
                 "CREATE INDEX IF NOT EXISTS `index_edge_anime_theme_video_entry_id` ON `edge_anime_theme_video` (`entry_id`)",
             )
         },
+        migrationOfStatements(22, 23) {
+            arrayOf(
+                "ALTER TABLE `media_studio_connection` ADD COLUMN `media_title` TEXT",
+                "ALTER TABLE `media_studio_connection` ADD COLUMN `media_cover_image_large` TEXT",
+                "ALTER TABLE `media_studio_connection` ADD COLUMN `media_cover_image_medium` TEXT",
+                "ALTER TABLE `media_studio_connection` ADD COLUMN `media_format` TEXT",
+                "ALTER TABLE `media_studio_connection` ADD COLUMN `media_start_year` INTEGER",
+                "ALTER TABLE `media_studio_connection` ADD COLUMN `media_average_score` INTEGER",
+            )
+        },
     )
