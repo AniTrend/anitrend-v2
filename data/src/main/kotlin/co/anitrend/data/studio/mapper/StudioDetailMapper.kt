@@ -47,28 +47,32 @@ internal class StudioDetailMapper(
                 id = studio.id,
             )
 
-        val mediaConnections =
-            studio.media?.edges.orEmpty().mapIndexedNotNull { index, edge ->
-                val node = edge.node ?: return@mapIndexedNotNull null
-
-                MediaStudioConnectionEntity(
-                    mediaId = node.id,
-                    entryId = edge.id,
-                    studioId = studio.id,
-                    studioName = studio.name,
-                    studioFavourites = studio.favourites,
-                    studioIsAnimationStudio = studio.isAnimationStudio,
-                    studioSiteUrl = studio.siteUrl,
-                    mediaTitle = node.title?.userPreferred ?: node.title?.english ?: node.title?.romaji ?: node.title?.native,
-                    mediaCoverImageLarge = node.coverImage?.large,
-                    mediaCoverImageMedium = node.coverImage?.medium,
-                    mediaFormat = node.format?.name,
-                    mediaStartYear = node.startDate?.year,
-                    mediaAverageScore = node.averageScore,
-                    isMain = edge.isMainStudio,
-                    sortIndex = index,
-                )
+        val mediaConnections = studio.media?.edges.orEmpty()
+            .mapIndexed { index, edge ->
+                val node = edge.node
+                if (node == null) {
+                    null
+                } else {
+                    MediaStudioConnectionEntity(
+                        mediaId = node.id,
+                        entryId = edge.id,
+                        studioId = studio.id,
+                        studioName = studio.name,
+                        studioFavourites = studio.favourites,
+                        studioIsAnimationStudio = studio.isAnimationStudio,
+                        studioSiteUrl = studio.siteUrl,
+                        mediaTitle = node.title?.userPreferred ?: node.title?.english ?: node.title?.romaji ?: node.title?.native,
+                        mediaCoverImageLarge = node.coverImage?.large,
+                        mediaCoverImageMedium = node.coverImage?.medium,
+                        mediaFormat = node.format?.name,
+                        mediaStartYear = node.startDate?.year,
+                        mediaAverageScore = node.averageScore,
+                        isMain = edge.isMainStudio,
+                        sortIndex = index,
+                    )
+                }
             }
+            .filterNotNull()
 
         return StudioDetailPersistenceData(
             studio = studioEntity,

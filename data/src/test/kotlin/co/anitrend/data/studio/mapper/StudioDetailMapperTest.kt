@@ -51,36 +51,39 @@ class StudioDetailMapperTest {
     fun `onResponseMapFrom maps studio media fields used by detail source`() {
         val source =
             StudioDetailContainer(
-                favourites = 15,
-                isAnimationStudio = true,
-                isFavourite = false,
-                isFavouriteBlocked = null,
-                name = "Orange",
-                siteUrl = "https://anilist.co/studio/42",
-                id = 42L,
-                media =
-                    MediaConnection.Studio(
-                        edges =
-                            listOf(
-                                MediaEdge.Studio(
-                                    isMainStudio = true,
-                                    id = 6L,
-                                    node =
-                                        MediaModel.Core(
-                                            isReviewBlocked = false,
-                                            type = MediaType.ANIME,
-                                            favourites = 10,
-                                            siteUrl = "https://anilist.co/anime/6",
+                studio =
+                    StudioDetailContainer.Studio(
+                        favourites = 15,
+                        isAnimationStudio = true,
+                        isFavourite = false,
+                        isFavouriteBlocked = null,
+                        name = "Orange",
+                        siteUrl = "https://anilist.co/studio/42",
+                        id = 42L,
+                        media =
+                            MediaConnection.Studio(
+                                edges =
+                                    listOf(
+                                        MediaEdge.Studio(
+                                            isMainStudio = true,
                                             id = 6L,
-                                            title = MediaModel.Title(userPreferred = "Beastars"),
-                                            coverImage = MediaModel.CoverImage(large = "large.jpg", medium = "medium.jpg"),
-                                            format = MediaFormat.TV,
-                                            startDate = FuzzyDateModel(year = 2019),
-                                            averageScore = 82,
+                                            node =
+                                                MediaModel.Core(
+                                                    isReviewBlocked = false,
+                                                    type = MediaType.ANIME,
+                                                    favourites = 10,
+                                                    siteUrl = "https://anilist.co/anime/6",
+                                                    id = 6L,
+                                                    title = MediaModel.Title(userPreferred = "Beastars"),
+                                                    coverImage = MediaModel.CoverImage(large = "large.jpg", medium = "medium.jpg"),
+                                                    format = MediaFormat.TV,
+                                                    startDate = FuzzyDateModel(year = 2019),
+                                                    averageScore = 82,
+                                                ),
                                         ),
-                                ),
+                                    ),
+                                pageInfo = null,
                             ),
-                        pageInfo = null,
                     ),
             )
 
