@@ -30,6 +30,7 @@ import co.anitrend.data.user.GetAuthenticatedInteractor
 import co.anitrend.data.user.GetProfileFeedInteractor
 import co.anitrend.data.user.GetProfileInteractor
 import co.anitrend.data.user.GetProfileOverviewInteractor
+import co.anitrend.data.user.GetSearchUserInteractor
 import co.anitrend.data.user.GetProfileStatisticInteractor
 import co.anitrend.data.user.UserProfileStatisticController
 import co.anitrend.data.user.mapper.UserProfileConnectionMapper
@@ -42,6 +43,7 @@ import co.anitrend.data.user.UserIdentifierRepository
 import co.anitrend.data.user.UserProfileFeedRepository
 import co.anitrend.data.user.UserProfileOverviewRepository
 import co.anitrend.data.user.UserProfileRepository
+import co.anitrend.data.user.UserSearchRepository
 import co.anitrend.data.user.UserProfileStatisticRepository
 import co.anitrend.data.user.UserUpdateRepository
 import co.anitrend.data.user.cache.UserCache
@@ -115,6 +117,13 @@ private val sourceModule =
                     ),
                 converter = get(),
                 cachePolicy = get<UserCache.Profile>(),
+                dispatcher = get(),
+            )
+        }
+        factory<UserSource.Search> {
+            UserSourceImpl.Search(
+                localSource = store().userDao(),
+                converter = get(),
                 dispatcher = get(),
             )
         }
@@ -395,6 +404,11 @@ private val useCaseModule =
                 repository = get(),
             )
         }
+        factory<GetSearchUserInteractor> {
+            UserInteractor.Search(
+                repository = get(),
+            )
+        }
         factory<GetAuthenticatedInteractor> {
             UserInteractor.Authenticated(
                 repository = get(),
@@ -441,6 +455,11 @@ private val repositoryModule =
         }
         factory<UserProfileRepository> {
             UserRepository.Profile(
+                source = get(),
+            )
+        }
+        factory<UserSearchRepository> {
+            UserRepository.Search(
                 source = get(),
             )
         }

@@ -203,6 +203,21 @@ internal class UserSourceImpl {
         }
     }
 
+    class Search(
+        private val localSource: UserLocalSource,
+        private val converter: UserEntityConverter,
+        override val dispatcher: ISupportDispatcher,
+    ) : UserSource.Search() {
+        override fun observable(): Flow<User> =
+            localSource
+                .userByNameFlow(query.param.search)
+                .flowOn(dispatcher.io)
+                .filterNotNull()
+                .map(converter::convertFrom)
+                .distinctUntilChanged()
+                .flowOn(dispatcher.computation)
+    }
+
     class Statistic(
         private val remoteSource: UserRemoteSource,
         private val localSource: UserLocalSource,

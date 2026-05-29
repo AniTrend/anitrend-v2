@@ -17,11 +17,14 @@
 package co.anitrend.search.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.data.media.GetPagingMediaInteractor
 import co.anitrend.navigation.SearchRouter
 import co.anitrend.search.component.presenter.SearchPresenter
 import co.anitrend.search.component.screen.SearchScreen
+import co.anitrend.search.component.viewmodel.SearchViewModel
 import co.anitrend.search.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 private val presenterModule =
@@ -38,6 +41,11 @@ private val presenterModule =
 
 private val viewModelModule =
     module {
+        viewModel {
+            SearchViewModel(
+                mediaInteractor = get<GetPagingMediaInteractor>(),
+            )
+        }
     }
 
 private val featureModule =
@@ -49,5 +57,5 @@ private val featureModule =
 
 internal val moduleHelper =
     DynamicFeatureModuleHelper(
-        listOf(presenterModule, featureModule),
+        listOf(presenterModule, viewModelModule, featureModule),
     )

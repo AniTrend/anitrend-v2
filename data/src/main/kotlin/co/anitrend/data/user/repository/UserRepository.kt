@@ -23,6 +23,7 @@ import co.anitrend.data.user.UserIdentifierRepository
 import co.anitrend.data.user.UserProfileFeedRepository
 import co.anitrend.data.user.UserProfileOverviewRepository
 import co.anitrend.data.user.UserProfileRepository
+import co.anitrend.data.user.UserSearchRepository
 import co.anitrend.data.user.UserProfileStatisticRepository
 import co.anitrend.data.user.UserUpdateRepository
 import co.anitrend.data.user.source.contract.UserSource
@@ -48,6 +49,13 @@ internal interface UserRepository {
     ) : UserRepository,
         UserProfileRepository {
         override suspend fun getProfile(param: UserParam.Profile) = source create source(param)
+    }
+
+    class Search(
+        private val source: UserSource.Search,
+    ) : UserRepository,
+        UserSearchRepository {
+        override suspend fun getPaged(param: UserParam.Search) = source create source(param)
     }
 
     class Statistic(

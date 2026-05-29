@@ -119,6 +119,21 @@ internal class UserSource {
         }
     }
 
+    abstract class Search : AbstractCoreDataSource() {
+        protected lateinit var query: UserQuery.Search
+
+        protected abstract fun observable(): Flow<User>
+
+        operator fun invoke(param: UserParam.Search): Flow<User> {
+            query = UserQuery.Search(param)
+            return observable()
+        }
+
+        override suspend fun clearDataSource(context: CoroutineDispatcher) {
+            // not supported
+        }
+    }
+
     abstract class Statistic : AbstractCoreDataSource() {
         protected lateinit var query: UserQuery.Statistic
 

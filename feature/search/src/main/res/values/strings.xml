@@ -19,4 +19,16 @@
 <resources>
     <string name="search_place_holder_text">@string/action_search</string>
     <string name="title_activity_search_screen">@string/action_search</string>
+    <string name="action_search_see_all">See all</string>
+    <string name="label_search_loading_title">Loading results</string>
+    <string name="message_search_loading">Fetching the latest results for your query.</string>
+    <string name="label_search_error_title">Search unavailable</string>
+    <string name="message_search_error">Something went wrong while loading this section.</string>
+    <string name="label_search_empty_title">No results yet</string>
+    <string name="message_search_empty">Try a different title or keyword.</string>
+    <string name="label_search_media_all">Top media</string>
+    <string name="label_search_media_anime">Anime</string>
+    <string name="label_search_media_manga">Manga</string>
+    <string name="label_search_user_preview_title">Users</string>
+    <string name="message_search_user_preview_unavailable">User search is being prepared and will land in the next phase.</string>
 </resources>
