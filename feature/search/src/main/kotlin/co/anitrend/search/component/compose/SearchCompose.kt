@@ -260,9 +260,7 @@ private fun SearchDrillDown(
 }
 
 @Composable
-private fun UserPreviewSection(
-    state: UserPreviewState,
-) {
+private fun UserPreviewSection(state: UserPreviewState) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
         Text(
             text = stringResource(R.string.label_search_user_preview_title),
@@ -304,9 +302,7 @@ private fun UserPreviewSection(
 }
 
 @Composable
-private fun UserPreviewRow(
-    user: User,
-) {
+private fun UserPreviewRow(user: User) {
     SearchState(
         title = user.name.toString(),
         subtitle = stringResource(R.string.message_search_user_preview_ready),
