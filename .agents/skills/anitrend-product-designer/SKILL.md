@@ -1,10 +1,10 @@
 ---
-name: product-designer
-description: 'Use when planning or refining AniTrend Compose screens, settings surfaces, interaction-heavy UI, layout hierarchy, component decomposition, preview strategy, Material3 layering, or incremental product-facing refactors before coding.'
+name: anitrend-product-designer
+description: 'Use when planning or thinking of aniTrend's brand identity UI & UX covering compose screens, various surfaces, interaction-heavy UI, layout hierarchy, component decomposition, preview strategy, Material3 layering, or incremental product-facing refactors before coding.'
 argument-hint: 'Describe the screen, product problem, desired UX outcome, and any constraints or non-goals.'
 ---
 
-# Skill: Product Designer
+# Skill: AniTrend Product Designer
 
 ## Purpose
 
