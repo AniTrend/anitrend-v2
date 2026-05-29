@@ -56,10 +56,12 @@ import co.anitrend.common.media.ui.compose.item.MediaPosterListItem
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.user.entity.User
 import co.anitrend.navigation.model.common.IParam
 import co.anitrend.search.R
 import co.anitrend.search.component.viewmodel.SearchScope
 import co.anitrend.search.component.viewmodel.SearchViewModel
+import co.anitrend.search.component.viewmodel.UserPreviewState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -258,6 +260,60 @@ private fun SearchDrillDown(
 }
 
 @Composable
+private fun UserPreviewSection(
+    state: UserPreviewState,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(R.string.label_search_user_preview_title),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+        )
+
+        when (state) {
+            UserPreviewState.Idle ->
+                SearchState(
+                    title = stringResource(R.string.label_search_user_preview_title),
+                    subtitle = stringResource(R.string.message_search_user_preview_hint),
+                )
+
+            UserPreviewState.Loading ->
+                SearchState(
+                    title = stringResource(R.string.label_search_loading_title),
+                    subtitle = stringResource(R.string.message_search_loading),
+                )
+
+            UserPreviewState.Empty ->
+                SearchState(
+                    title = stringResource(R.string.label_search_empty_title),
+                    subtitle = stringResource(R.string.message_search_empty),
+                )
+
+            is UserPreviewState.Error ->
+                SearchState(
+                    title = stringResource(R.string.label_search_error_title),
+                    subtitle = state.message ?: stringResource(R.string.message_search_error),
+                )
+
+            is UserPreviewState.Content ->
+                UserPreviewRow(
+                    user = state.user,
+                )
+        }
+    }
+}
+
+@Composable
+private fun UserPreviewRow(
+    user: User,
+) {
+    SearchState(
+        title = user.name.toString(),
+        subtitle = stringResource(R.string.message_search_user_preview_ready),
+    )
+}
+
+@Composable
 fun SearchScreenContent(
     settings: IUserSettings,
     viewModel: SearchViewModel,
@@ -269,6 +325,7 @@ fun SearchScreenContent(
     val query = viewModel.query.collectAsStateWithLifecycle()
     val scope = viewModel.scope.collectAsStateWithLifecycle()
     val scoreFormat = settings.scoreFormat.flow.collectAsStateWithLifecycle(initialValue = settings.scoreFormat.value)
+    val userPreviewState = viewModel.userPreviewState.collectAsStateWithLifecycle()
 
     val allMedia = viewModel.mediaAll.collectAsLazyPagingItems()
     val animeMedia = viewModel.mediaAnime.collectAsLazyPagingItems()
@@ -298,7 +355,6 @@ fun SearchScreenContent(
 
             when (scope.value) {
                 SearchScope.HOME -> {
-                    val isUserSearchReady = false
                     SearchSection(
                         title = stringResource(R.string.label_search_media_all),
                         items = allMedia,
@@ -320,12 +376,7 @@ fun SearchScreenContent(
                         onMediaItemClick = onMediaItemClick,
                         onSeeAllClick = { onSeeAllClick(SearchScope.MANGA) },
                     )
-                    if (!isUserSearchReady) {
-                        SearchState(
-                            title = stringResource(R.string.label_search_user_preview_title),
-                            subtitle = stringResource(R.string.message_search_user_preview_unavailable),
-                        )
-                    }
+                    UserPreviewSection(state = userPreviewState.value)
                 }
 
                 SearchScope.ALL ->

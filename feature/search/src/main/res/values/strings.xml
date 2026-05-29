@@ -30,5 +30,6 @@
     <string name="label_search_media_anime">Anime</string>
     <string name="label_search_media_manga">Manga</string>
     <string name="label_search_user_preview_title">Users</string>
-    <string name="message_search_user_preview_unavailable">User search is being prepared and will land in the next phase.</string>
+    <string name="message_search_user_preview_hint">Search by username to preview a matching profile.</string>
+    <string name="message_search_user_preview_ready">Profile match</string>
 </resources>
