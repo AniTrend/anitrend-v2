@@ -23,7 +23,7 @@ query GetCharacterPaged(
             sort: $sort,
             isBirthday: $isBirthday
         ) {
-            ... StudioCore
+            ... CharacterCore
         }
     }
 }
