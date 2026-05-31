@@ -28,8 +28,14 @@ import co.anitrend.common.media.ui.controller.extensions.handleMediaItemNavigati
 import co.anitrend.core.component.FeatureReady
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
+import co.anitrend.navigation.CharacterRouter
+import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.SearchRouter
+import co.anitrend.navigation.StaffRouter
+import co.anitrend.navigation.StudioRouter
+import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.nameOf
+import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.navigation.model.common.IParam
 import co.anitrend.search.component.compose.SearchScreenContent
 import co.anitrend.search.component.presenter.SearchPresenter
@@ -70,6 +76,30 @@ class SearchScreen : AniTrendScreen() {
                             handleMediaItemNavigation(
                                 param = navigationParam,
                                 settings = settings,
+                            )
+                        },
+                        onUserClick = { param ->
+                            ProfileRouter.startActivity(
+                                context = this@SearchScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onStudioClick = { param ->
+                            StudioRouter.startActivity(
+                                context = this@SearchScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onStaffClick = { param ->
+                            StaffRouter.startActivity(
+                                context = this@SearchScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onCharacterClick = { param ->
+                            CharacterRouter.startActivity(
+                                context = this@SearchScreen,
+                                navPayload = param.asNavPayload(),
                             )
                         },
                     )

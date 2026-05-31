@@ -30,9 +30,10 @@ import co.anitrend.data.user.GetAuthenticatedInteractor
 import co.anitrend.data.user.GetProfileFeedInteractor
 import co.anitrend.data.user.GetProfileInteractor
 import co.anitrend.data.user.GetProfileOverviewInteractor
-import co.anitrend.data.user.GetSearchUserInteractor
 import co.anitrend.data.user.GetProfileStatisticInteractor
+import co.anitrend.data.user.UserPagedController
 import co.anitrend.data.user.UserProfileStatisticController
+import co.anitrend.data.user.entity.filter.UserQueryFilter
 import co.anitrend.data.user.mapper.UserProfileConnectionMapper
 import co.anitrend.data.user.GetUserInteractor
 import co.anitrend.data.user.ToggleFollowInteractor
@@ -120,10 +121,18 @@ private val sourceModule =
                 dispatcher = get(),
             )
         }
-        factory<UserSource.Search> {
-            UserSourceImpl.Search(
+        factory<UserSource.Paging> {
+            UserSourceImpl.Paging(
+                remoteSource = aniListApi(),
                 localSource = store().userDao(),
+                controller =
+                    graphQLController(
+                        mapper = get<UserMapper.Paged>(),
+                        strategy = offline(),
+                    ),
                 converter = get(),
+                clearDataHelper = get(),
+                filter = get(),
                 dispatcher = get(),
             )
         }
@@ -233,6 +242,18 @@ private val cacheModule =
                 localSource = cacheLocalSource(),
             )
         }
+        factory {
+            UserCache.Paged(
+                localSource = cacheLocalSource(),
+            )
+        }
+    }
+
+private val filterModule =
+    module {
+        factory {
+            UserQueryFilter.Search()
+        }
     }
 
 private val converterModule =
@@ -259,6 +280,12 @@ private val converterModule =
 
 private val mapperModule =
     module {
+        factory {
+            UserMapper.Paged(
+                localSource = store().userDao(),
+                converter = get(),
+            )
+        }
         factory {
             UserMapper.Profile(
                 generalOptionMapper = get(),
@@ -404,11 +431,6 @@ private val useCaseModule =
                 repository = get(),
             )
         }
-        factory<GetSearchUserInteractor> {
-            UserInteractor.Search(
-                repository = get(),
-            )
-        }
         factory<GetAuthenticatedInteractor> {
             UserInteractor.Authenticated(
                 repository = get(),
@@ -458,8 +480,8 @@ private val repositoryModule =
                 source = get(),
             )
         }
-        factory<UserSearchRepository> {
-            UserRepository.Search(
+        factory<UserProfileRepository> {
+            UserRepository.Profile(
                 source = get(),
             )
         }
@@ -496,6 +518,7 @@ internal val userModules =
             converterModule,
             sourceModule,
             cacheModule,
+            filterModule,
             mapperModule,
             useCaseModule,
             repositoryModule,

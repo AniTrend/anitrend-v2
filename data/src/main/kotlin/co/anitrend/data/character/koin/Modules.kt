@@ -16,13 +16,51 @@
  */
 package co.anitrend.data.character.koin
 
+import co.anitrend.data.android.cache.model.CacheRequest
+import co.anitrend.data.android.extensions.cacheLocalSource
+import co.anitrend.data.android.extensions.graphQLController
+import co.anitrend.data.android.extensions.offline
+import co.anitrend.data.character.CharacterSearchRepository
+import co.anitrend.data.character.GetSearchCharacterInteractor
+import co.anitrend.data.character.cache.CharacterCache
 import co.anitrend.data.character.converter.CharacterConverter
 import co.anitrend.data.character.converter.CharacterEntityConverter
 import co.anitrend.data.character.converter.CharacterModelConverter
+import co.anitrend.data.character.mapper.CharacterMapper
+import co.anitrend.data.character.repository.CharacterRepository
+import co.anitrend.data.character.source.CharacterSourceImpl
+import co.anitrend.data.character.source.contract.CharacterSource
+import co.anitrend.data.character.usecase.CharacterInteractor
+import co.anitrend.data.core.extensions.aniListApi
+import co.anitrend.data.core.extensions.store
 import org.koin.dsl.module
 
 private val sourceModule =
     module {
+        factory<CharacterSource.Search> {
+            CharacterSourceImpl.Search(
+                remoteSource = aniListApi(),
+                localSource = store().characterDao(),
+                controller =
+                    graphQLController(
+                        mapper = get<CharacterMapper.Paged>(),
+                        strategy = offline(),
+                    ),
+                converter = get(),
+                clearDataHelper = get(),
+                dispatcher = get(),
+            )
+        }
+    }
+
+private val cacheModule =
+    module {
+        factory {
+            CharacterCache(
+                localSource = cacheLocalSource(),
+                request = CacheRequest.CHARACTER,
+            )
+        }
     }
 
 private val converterModule =
@@ -40,21 +78,40 @@ private val converterModule =
 
 private val mapperModule =
     module {
+        factory {
+            CharacterMapper.Paged(
+                localSource = store().characterDao(),
+                converter = get(),
+            )
+        }
     }
 
 private val useCaseModule =
     module {
+        factory<GetSearchCharacterInteractor> {
+            CharacterInteractor.Search(
+                repository = get(),
+            )
+        }
     }
 
 private val repositoryModule =
     module {
+        factory<CharacterSearchRepository> {
+            CharacterRepository.Search(
+                source = get(),
+            )
+        }
     }
 
 internal val characterModules =
-    listOf(
-        sourceModule,
-        converterModule,
-        mapperModule,
-        useCaseModule,
-        repositoryModule,
-    )
+    module {
+        includes(
+            sourceModule,
+            cacheModule,
+            converterModule,
+            mapperModule,
+            useCaseModule,
+            repositoryModule,
+        )
+    }

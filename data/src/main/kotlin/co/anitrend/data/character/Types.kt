@@ -15,3 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 package co.anitrend.data.character
+
+import androidx.paging.PagingData
+import co.anitrend.data.android.controller.graphql.GraphQLController
+import co.anitrend.data.character.entity.CharacterEntity
+import co.anitrend.data.character.model.container.CharacterContainer
+import co.anitrend.domain.character.entity.Character
+import co.anitrend.domain.character.interactor.CharacterUseCase
+import co.anitrend.domain.character.repository.ICharacterRepository
+import kotlinx.coroutines.flow.Flow
+
+internal typealias CharacterPagedController = GraphQLController<CharacterContainer.Paged, List<CharacterEntity>>
+
+internal typealias CharacterSearchRepository = ICharacterRepository.Search<Flow<PagingData<Character>>>
+
+typealias GetSearchCharacterInteractor = CharacterUseCase.GetSearch<Flow<PagingData<Character>>>

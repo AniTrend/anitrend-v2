@@ -16,6 +16,7 @@
  */
 package co.anitrend.data.user
 
+import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.user.converter.UserStatisticPayload
@@ -27,10 +28,12 @@ import co.anitrend.domain.user.entity.profile.ProfileFeed
 import co.anitrend.domain.user.entity.profile.ProfileOverview
 import co.anitrend.domain.user.interactor.UserUseCase
 import co.anitrend.domain.user.repository.IUserRepository
+import kotlinx.coroutines.flow.Flow
 
 internal typealias UserAuthController = GraphQLController<UserModelContainer.Viewer, UserEntity>
 internal typealias UserProfileController = GraphQLController<UserModelContainer.Profile, UserEntity>
 internal typealias UserController = GraphQLController<UserModelContainer.User, UserEntity>
+internal typealias UserPagedController = GraphQLController<UserModelContainer.Paged, List<UserEntity>>
 internal typealias UserProfileStatisticController =
     GraphQLController<UserModelContainer.WithStatistic, UserStatisticPayload>
 internal typealias UserProfileOverviewController =

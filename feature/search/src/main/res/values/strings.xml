@@ -29,6 +29,10 @@
     <string name="label_search_media_all">Top media</string>
     <string name="label_search_media_anime">Anime</string>
     <string name="label_search_media_manga">Manga</string>
+    <string name="label_search_users">Users</string>
+    <string name="label_search_studios">Studios</string>
+    <string name="label_search_staff">Staff</string>
+    <string name="label_search_characters">Characters</string>
     <string name="label_search_user_preview_title">Users</string>
     <string name="message_search_user_preview_hint">Search by username to preview a matching profile.</string>
     <string name="message_search_user_preview_ready">Profile match</string>

@@ -16,14 +16,22 @@
  */
 package co.anitrend.data.studio
 
+import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.android.controller.graphql.GraphQLController
+import co.anitrend.data.studio.entity.StudioEntity
 import co.anitrend.data.studio.mapper.StudioDetailPersistenceData
 import co.anitrend.data.studio.model.remote.StudioDetailContainer
+import co.anitrend.data.studio.model.remote.StudioPagedContainer
+import co.anitrend.domain.studio.entity.Studio
 import co.anitrend.domain.studio.entity.StudioDetailData
 import co.anitrend.domain.studio.interactor.StudioUseCase
 import co.anitrend.domain.studio.repository.IStudioRepository
+import kotlinx.coroutines.flow.Flow
 
 internal typealias MediaStudioDetailController = GraphQLController<StudioDetailContainer, StudioDetailPersistenceData>
+internal typealias StudioPagedController = GraphQLController<StudioPagedContainer, List<StudioEntity>>
 internal typealias StudioDetailRepository = IStudioRepository<DataState<StudioDetailData>>
+internal typealias StudioSearchRepository = IStudioRepository.Search<Flow<PagingData<Studio>>>
 typealias StudioDetailInteractor = StudioUseCase<DataState<StudioDetailData>>
+typealias GetSearchStudioInteractor = StudioUseCase.GetSearch<Flow<PagingData<Studio>>>

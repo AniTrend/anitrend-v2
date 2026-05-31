@@ -20,7 +20,6 @@ import co.anitrend.data.user.GetAuthenticatedInteractor
 import co.anitrend.data.user.GetProfileFeedInteractor
 import co.anitrend.data.user.GetProfileOverviewInteractor
 import co.anitrend.data.user.GetProfileInteractor
-import co.anitrend.data.user.GetSearchUserInteractor
 import co.anitrend.data.user.GetProfileStatisticInteractor
 import co.anitrend.data.user.GetUserInteractor
 import co.anitrend.data.user.ToggleFollowInteractor
@@ -31,9 +30,10 @@ import co.anitrend.data.user.UserIdentifierRepository
 import co.anitrend.data.user.UserProfileFeedRepository
 import co.anitrend.data.user.UserProfileOverviewRepository
 import co.anitrend.data.user.UserProfileRepository
-import co.anitrend.data.user.UserSearchRepository
 import co.anitrend.data.user.UserProfileStatisticRepository
 import co.anitrend.data.user.UserUpdateRepository
+import co.anitrend.data.user.repository.UserRepository
+import co.anitrend.domain.user.model.UserParam
 
 internal interface UserInteractor {
     class Identifier(
@@ -45,8 +45,10 @@ internal interface UserInteractor {
     ) : GetProfileInteractor(repository)
 
     class Search(
-        repository: UserSearchRepository,
-    ) : GetSearchUserInteractor(repository)
+        private val repository: UserRepository.Search,
+    ) {
+        suspend operator fun invoke(param: UserParam.Search) = repository.getPaged(param)
+    }
 
     class Statistic(
         repository: UserProfileStatisticRepository,

@@ -16,6 +16,8 @@
  */
 package co.anitrend.data.user.source.contract
 
+import androidx.paging.PagingData
+import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
@@ -119,18 +121,15 @@ internal class UserSource {
         }
     }
 
-    abstract class Search : AbstractCoreDataSource() {
+    abstract class Paging {
         protected lateinit var query: UserQuery.Search
 
-        protected abstract fun observable(): Flow<User>
+        abstract operator fun invoke(param: UserParam.Search): Flow<PagingData<User>>
 
-        operator fun invoke(param: UserParam.Search): Flow<User> {
+        abstract val pagingMediator: IDataSource
+
+        protected fun assignQuery(param: UserParam.Search) {
             query = UserQuery.Search(param)
-            return observable()
-        }
-
-        override suspend fun clearDataSource(context: CoroutineDispatcher) {
-            // not supported
         }
     }
 

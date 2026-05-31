@@ -17,7 +17,10 @@
 package co.anitrend.search.koin
 
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
+import co.anitrend.data.character.GetSearchCharacterInteractor
 import co.anitrend.data.media.GetPagingMediaInteractor
+import co.anitrend.data.staff.GetPagingStaffInteractor
+import co.anitrend.data.studio.GetSearchStudioInteractor
 import co.anitrend.data.user.GetSearchUserInteractor
 import co.anitrend.navigation.SearchRouter
 import co.anitrend.search.component.presenter.SearchPresenter
@@ -46,6 +49,9 @@ private val viewModelModule =
             SearchViewModel(
                 mediaInteractor = get<GetPagingMediaInteractor>(),
                 userSearchInteractor = get<GetSearchUserInteractor>(),
+                studioInteractor = get<GetSearchStudioInteractor>(),
+                staffInteractor = get<GetPagingStaffInteractor>(),
+                characterInteractor = get<GetSearchCharacterInteractor>(),
             )
         }
     }

@@ -20,6 +20,7 @@ import co.anitrend.data.android.cache.datasource.CacheLocalSource
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.model.CacheRequest
 import co.anitrend.data.android.cache.repository.CacheStorePolicy
+import co.anitrend.domain.studio.model.StudioParam
 import org.threeten.bp.Instant
 
 internal class StudioCache(
@@ -31,10 +32,23 @@ internal class StudioCache(
         expiresAfter: Instant,
     ): Boolean = isRequestBefore(identity, expiresAfter)
 
-    enum class Identity(
-        override val id: Long,
-        override val key: String,
-    ) : CacheIdentity {
-        DETAIL(10L, "studio_detail"),
+    sealed class Identity : CacheIdentity {
+        data object DETAIL : Identity() {
+            override val id: Long = 10L
+            override val key: String = "studio_detail"
+        }
+
+        data class Search(
+            val param: StudioParam.Find? = null,
+            override val id: Long = param.cacheIdentityValue(),
+            override val key: String = "studio_search",
+        ) : Identity()
     }
 }
+
+private fun StudioParam.Find?.cacheIdentityValue(): Long =
+    this
+        ?.toString()
+        ?.hashCode()
+        ?.toLong()
+        ?: 0L

@@ -21,4 +21,8 @@ import co.anitrend.domain.studio.model.StudioParam
 
 interface IStudioRepository<State : UiState<*>> {
     fun getStudio(param: StudioParam.Detail): State
+
+    interface Search<State> {
+        fun getStudioPaged(param: StudioParam.Find): State
+    }
 }

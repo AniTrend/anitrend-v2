@@ -46,4 +46,5 @@ enum class CacheRequest(
     MEDIA_STATS("media_stats"),
     MEDIA_RELATIONS("media_relations"),
     MEDIA_RECOMMENDATIONS("media_recommendations"),
+    USER_SEARCH("user_search"),
 }

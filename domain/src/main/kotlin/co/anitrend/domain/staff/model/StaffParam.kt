@@ -36,4 +36,13 @@ sealed class StaffParam {
         val id_not_in: List<Long>?,
         val sort: List<StaffSort>?,
     ) : StaffParam()
+
+    data class Paged(
+        val id_in: List<Long>? = null,
+        val id_not: Long? = null,
+        val id_not_in: List<Long>? = null,
+        val search: String? = null,
+        val sort: List<StaffSort>? = null,
+        val isBirthday: Boolean? = null,
+    ) : StaffParam()
 }

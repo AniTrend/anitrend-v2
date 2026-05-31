@@ -16,9 +16,12 @@
  */
 package co.anitrend.data.user.datasource.local
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Transaction
+import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.view.UserEntityView
@@ -101,6 +104,9 @@ internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
     """,
     )
     abstract fun userByNameFlow(userName: String): Flow<UserEntity?>
+
+    @RawQuery(observedEntities = [UserEntity::class])
+    abstract fun rawPagingSource(query: SupportSQLiteQuery): PagingSource<Int, UserEntity>
 
     @Query(
         """

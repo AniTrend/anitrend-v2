@@ -18,16 +18,26 @@ package co.anitrend.search.component.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import co.anitrend.data.character.GetSearchCharacterInteractor
 import co.anitrend.data.media.GetPagingMediaInteractor
+import co.anitrend.data.staff.GetPagingStaffInteractor
+import co.anitrend.data.studio.GetSearchStudioInteractor
 import co.anitrend.data.user.GetSearchUserInteractor
+import co.anitrend.domain.character.entity.Character
+import co.anitrend.domain.character.model.CharacterParam
 import co.anitrend.domain.user.entity.User
 import co.anitrend.domain.user.model.UserParam
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.media.model.MediaParam
+import co.anitrend.domain.staff.entity.Staff
+import co.anitrend.domain.staff.model.StaffParam
+import co.anitrend.domain.studio.entity.Studio
+import co.anitrend.domain.studio.model.StudioParam
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,6 +46,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -46,6 +58,9 @@ import kotlinx.coroutines.flow.SharingStarted
 class SearchViewModel(
     private val mediaInteractor: GetPagingMediaInteractor,
     private val userSearchInteractor: GetSearchUserInteractor,
+    private val studioInteractor: GetSearchStudioInteractor,
+    private val staffInteractor: GetPagingStaffInteractor,
+    private val characterInteractor: GetSearchCharacterInteractor,
 ) : ViewModel() {
     private val mutableQuery = MutableStateFlow("")
     val query: StateFlow<String> = mutableQuery.asStateFlow()
@@ -58,6 +73,12 @@ class SearchViewModel(
     val mediaAll: Flow<PagingData<Media>> = buildMediaFlow(type = null)
     val mediaAnime: Flow<PagingData<Media>> = buildMediaFlow(type = MediaType.ANIME)
     val mediaManga: Flow<PagingData<Media>> = buildMediaFlow(type = MediaType.MANGA)
+
+    val studios: Flow<PagingData<Studio>> = buildStudioFlow()
+    val staff: Flow<PagingData<Staff>> = buildStaffFlow()
+    val characters: Flow<PagingData<Character>> = buildCharacterFlow()
+    val users: Flow<PagingData<User>> = buildUserFlow()
+
     val userPreviewState: StateFlow<UserPreviewState> =
         submittedQuery
             .map(String::trim)
@@ -107,6 +128,63 @@ class SearchViewModel(
                         type = type,
                     ),
                 )
+            }.cachedIn(viewModelScope)
+
+    private fun buildStudioFlow(): Flow<PagingData<Studio>> =
+        submittedQuery
+            .map(String::trim)
+            .distinctUntilChanged()
+            .flatMapLatest { searchQuery ->
+                studioInteractor.getStudioPaged(
+                    StudioParam.Find(
+                        search = searchQuery.ifBlank { null },
+                    ),
+                )
+            }.cachedIn(viewModelScope)
+
+    private fun buildStaffFlow(): Flow<PagingData<Staff>> =
+        submittedQuery
+            .map(String::trim)
+            .distinctUntilChanged()
+            .flatMapLatest { searchQuery ->
+                staffInteractor(
+                    StaffParam.Paged(
+                        search = searchQuery.ifBlank { null },
+                    ),
+                )
+            }.cachedIn(viewModelScope)
+
+    private fun buildCharacterFlow(): Flow<PagingData<Character>> =
+        submittedQuery
+            .map(String::trim)
+            .distinctUntilChanged()
+            .flatMapLatest { searchQuery ->
+                characterInteractor(
+                    CharacterParam.Find(
+                        search = searchQuery.ifBlank { null },
+                    ),
+                )
+            }.cachedIn(viewModelScope)
+
+    @OptIn(ExperimentalPagingApi::class)
+    private fun buildUserFlow(): Flow<PagingData<User>> =
+        submittedQuery
+            .map(String::trim)
+            .distinctUntilChanged()
+            .flatMapLatest { searchQuery ->
+                if (searchQuery.isBlank()) {
+                    flowOf(PagingData.empty())
+                } else {
+                    val dataState =
+                        userSearchInteractor(
+                            UserParam.Search(search = searchQuery),
+                        )
+                    flow {
+                        dataState.model.collect { user ->
+                            emit(PagingData.from(listOfNotNull(user)))
+                        }
+                    }
+                }
             }.cachedIn(viewModelScope)
 
     private suspend fun buildUserPreviewFlow(searchQuery: String): Flow<UserPreviewState> {
@@ -159,4 +237,8 @@ enum class SearchScope {
     ALL,
     ANIME,
     MANGA,
+    USERS,
+    STUDIOS,
+    STAFF,
+    CHARACTERS,
 }

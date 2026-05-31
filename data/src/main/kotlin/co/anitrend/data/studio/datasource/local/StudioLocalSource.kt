@@ -16,6 +16,7 @@
  */
 package co.anitrend.data.studio.datasource.local
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
@@ -53,4 +54,12 @@ internal abstract class StudioLocalSource : AbstractLocalSource<StudioEntity>() 
     """,
     )
     abstract fun studioByIdFlow(id: Long): Flow<StudioEntity?>
+
+    @Query(
+        """
+        select * from studio
+        order by name asc
+    """,
+    )
+    abstract fun studioPagingSource(): PagingSource<Int, StudioEntity>
 }
