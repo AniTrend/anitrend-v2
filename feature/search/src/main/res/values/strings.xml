@@ -33,7 +33,12 @@
     <string name="label_search_studios">Studios</string>
     <string name="label_search_staff">Staff</string>
     <string name="label_search_characters">Characters</string>
-    <string name="label_search_user_preview_title">Users</string>
-    <string name="message_search_user_preview_hint">Search by username to preview a matching profile.</string>
-    <string name="message_search_user_preview_ready">Profile match</string>
+    <string name="label_search_scope_home">Home</string>
+    <string name="label_search_scope_all">All</string>
+    <string name="label_search_scope_anime">Anime</string>
+    <string name="label_search_scope_manga">Manga</string>
+    <string name="label_search_scope_users">Users</string>
+    <string name="label_search_scope_studios">Studios</string>
+    <string name="label_search_scope_staff">Staff</string>
+    <string name="label_search_scope_characters">Characters</string>
 </resources>

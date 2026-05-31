@@ -21,6 +21,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.data.character.GetSearchCharacterInteractor
 import co.anitrend.data.media.GetPagingMediaInteractor
 import co.anitrend.data.staff.GetPagingStaffInteractor
@@ -28,9 +29,6 @@ import co.anitrend.data.studio.GetSearchStudioInteractor
 import co.anitrend.data.user.GetSearchUserInteractor
 import co.anitrend.domain.character.entity.Character
 import co.anitrend.domain.character.model.CharacterParam
-import co.anitrend.domain.user.entity.User
-import co.anitrend.domain.user.model.UserParam
-import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.media.model.MediaParam
@@ -38,8 +36,11 @@ import co.anitrend.domain.staff.entity.Staff
 import co.anitrend.domain.staff.model.StaffParam
 import co.anitrend.domain.studio.entity.Studio
 import co.anitrend.domain.studio.model.StudioParam
+import co.anitrend.domain.user.entity.User
+import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -53,7 +54,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.SharingStarted
 
 class SearchViewModel(
     private val mediaInteractor: GetPagingMediaInteractor,
@@ -65,7 +65,7 @@ class SearchViewModel(
     private val mutableQuery = MutableStateFlow("")
     val query: StateFlow<String> = mutableQuery.asStateFlow()
 
-    private val submittedQuery = MutableStateFlow("")
+    internal val submittedQuery = MutableStateFlow("")
 
     private val mutableScope = MutableStateFlow(SearchScope.HOME)
     val scope: StateFlow<SearchScope> = mutableScope.asStateFlow()

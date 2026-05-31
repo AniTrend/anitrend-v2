@@ -94,7 +94,6 @@ import co.anitrend.navigation.model.common.IParam
 import co.anitrend.search.R
 import co.anitrend.search.component.viewmodel.SearchScope
 import co.anitrend.search.component.viewmodel.SearchViewModel
-import co.anitrend.search.component.viewmodel.UserPreviewState
 
 @Composable
 private fun SearchBarContent(
@@ -983,7 +982,7 @@ private fun StaffSearchSection(
 
         when {
             items.itemCount > 0 -> {
-                val previewItems = remember(items.itemCount) { List(items.itemCount) { index -> items[index] }.filterNotNull().take(4) }
+                val previewItems = remember(items.itemCount) { List(items.itemCount) { index -> items[index] }.filterNotNull().take(6) }
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp), contentPadding = PaddingValues(vertical = 4.dp)) {
                     items(items = previewItems, key = { it.id }) { staff ->
                         StaffSearchCard(
@@ -1233,56 +1232,6 @@ private fun AvatarImageBadge(
     }
 }
 
-// ── UserPreviewSection (kept for backward compat) ─────────────────────────────────
-
-@Composable
-private fun UserPreviewSection(state: UserPreviewState) {
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = stringResource(R.string.label_search_user_preview_title),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-        )
-
-        when (state) {
-            UserPreviewState.Idle ->
-                SearchState(
-                    title = stringResource(R.string.label_search_user_preview_title),
-                    subtitle = stringResource(R.string.message_search_user_preview_hint),
-                )
-
-            UserPreviewState.Loading ->
-                SearchState(
-                    title = stringResource(R.string.label_search_loading_title),
-                    subtitle = stringResource(R.string.message_search_loading),
-                )
-
-            UserPreviewState.Empty ->
-                SearchState(
-                    title = stringResource(R.string.label_search_empty_title),
-                    subtitle = stringResource(R.string.message_search_empty),
-                )
-
-            is UserPreviewState.Error ->
-                SearchState(
-                    title = stringResource(R.string.label_search_error_title),
-                    subtitle = state.message ?: stringResource(R.string.message_search_error),
-                )
-
-            is UserPreviewState.Content ->
-                UserPreviewRow(user = state.user)
-        }
-    }
-}
-
-@Composable
-private fun UserPreviewRow(user: User) {
-    SearchState(
-        title = user.name.toString(),
-        subtitle = stringResource(R.string.message_search_user_preview_ready),
-    )
-}
-
 // ── Main screen content ───────────────────────────────────────────────────────────
 
 @Composable
@@ -1335,6 +1284,9 @@ fun SearchScreenContent(
             )
 
             when (scope.value) {
+                // TODO: Replace Column+verticalScroll with LazyColumn for better
+                //       scroll performance when many sections are visible. The search
+                //       bar and scope chips should use stickyHeader {} items.
                 SearchScope.HOME -> {
                     Column(
                         modifier =
@@ -1364,17 +1316,11 @@ fun SearchScreenContent(
                             onMediaItemClick = onMediaItemClick,
                             onSeeAllClick = { onSeeAllClick(SearchScope.MANGA) },
                         )
-                        UserSearchSection(
-                            title = stringResource(R.string.label_search_users),
-                            items = userItems,
-                            onUserClick = onUserClick,
-                            onSeeAllClick = { onSeeAllClick(SearchScope.USERS) },
-                        )
-                        StudioSearchSection(
-                            title = stringResource(R.string.label_search_studios),
-                            items = studioItems,
-                            onStudioClick = onStudioClick,
-                            onSeeAllClick = { onSeeAllClick(SearchScope.STUDIOS) },
+                        CharacterSearchSection(
+                            title = stringResource(R.string.label_search_characters),
+                            items = characterItems,
+                            onCharacterClick = onCharacterClick,
+                            onSeeAllClick = { onSeeAllClick(SearchScope.CHARACTERS) },
                         )
                         StaffSearchSection(
                             title = stringResource(R.string.label_search_staff),
@@ -1382,11 +1328,17 @@ fun SearchScreenContent(
                             onStaffClick = onStaffClick,
                             onSeeAllClick = { onSeeAllClick(SearchScope.STAFF) },
                         )
-                        CharacterSearchSection(
-                            title = stringResource(R.string.label_search_characters),
-                            items = characterItems,
-                            onCharacterClick = onCharacterClick,
-                            onSeeAllClick = { onSeeAllClick(SearchScope.CHARACTERS) },
+                        StudioSearchSection(
+                            title = stringResource(R.string.label_search_studios),
+                            items = studioItems,
+                            onStudioClick = onStudioClick,
+                            onSeeAllClick = { onSeeAllClick(SearchScope.STUDIOS) },
+                        )
+                        UserSearchSection(
+                            title = stringResource(R.string.label_search_users),
+                            items = userItems,
+                            onUserClick = onUserClick,
+                            onSeeAllClick = { onSeeAllClick(SearchScope.USERS) },
                         )
                     }
                 }
@@ -1447,16 +1399,17 @@ fun SearchScreenContent(
     }
 }
 
+@Composable
 private fun SearchScope.label(): String =
     when (this) {
-        SearchScope.HOME -> "Home"
-        SearchScope.ALL -> "All"
-        SearchScope.ANIME -> "Anime"
-        SearchScope.MANGA -> "Manga"
-        SearchScope.USERS -> "Users"
-        SearchScope.STUDIOS -> "Studios"
-        SearchScope.STAFF -> "Staff"
-        SearchScope.CHARACTERS -> "Characters"
+        SearchScope.HOME -> stringResource(R.string.label_search_scope_home)
+        SearchScope.ALL -> stringResource(R.string.label_search_scope_all)
+        SearchScope.ANIME -> stringResource(R.string.label_search_scope_anime)
+        SearchScope.MANGA -> stringResource(R.string.label_search_scope_manga)
+        SearchScope.USERS -> stringResource(R.string.label_search_scope_users)
+        SearchScope.STUDIOS -> stringResource(R.string.label_search_scope_studios)
+        SearchScope.STAFF -> stringResource(R.string.label_search_scope_staff)
+        SearchScope.CHARACTERS -> stringResource(R.string.label_search_scope_characters)
     }
 
 @AniTrendPreview.Default
