@@ -44,7 +44,7 @@ internal typealias UserProfileFeedController =
 internal typealias UserIdentifierRepository = IUserRepository.User<DataState<User>>
 internal typealias UserAuthenticatedRepository = IUserRepository.Authenticated<DataState<User>>
 internal typealias UserProfileRepository = IUserRepository.Profile<DataState<User>>
-internal typealias UserSearchRepository = IUserRepository.Search<DataState<User>>
+internal typealias UserSearchRepository = IUserRepository.Search<Flow<PagingData<User>>>
 internal typealias UserProfileStatisticRepository = IUserRepository.Statistic<DataState<User.WithStats>>
 internal typealias UserProfileOverviewRepository = IUserRepository.Overview<DataState<ProfileOverview>>
 internal typealias UserProfileFeedRepository = IUserRepository.Feed<DataState<ProfileFeed>>
@@ -53,7 +53,7 @@ internal typealias UserUpdateRepository = IUserRepository.Update<DataState<User>
 
 typealias GetUserInteractor = UserUseCase.GetUser<DataState<User>>
 typealias GetProfileInteractor = UserUseCase.GetProfile<DataState<User>>
-typealias GetSearchUserInteractor = UserUseCase.GetPaged<DataState<User>>
+typealias GetSearchUserInteractor = UserUseCase.GetSearch<Flow<PagingData<User>>>
 typealias GetProfileStatisticInteractor = UserUseCase.Statistic<DataState<User.WithStats>>
 typealias GetProfileOverviewInteractor = UserUseCase.Overview<DataState<ProfileOverview>>
 typealias GetProfileFeedInteractor = UserUseCase.Feed<DataState<ProfileFeed>>

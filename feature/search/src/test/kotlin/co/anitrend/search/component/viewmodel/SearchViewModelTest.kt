@@ -21,7 +21,6 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModelTest {
@@ -41,6 +40,7 @@ class SearchViewModelTest {
         Dispatchers.setMain(testDispatcher)
 
         every { mediaInteractor.invoke(any()) } returns flowOf(PagingData.empty())
+        every { userSearchInteractor.getPaged(any()) } returns flowOf(PagingData.empty())
         every { studioInteractor.getStudioPaged(any()) } returns flowOf(PagingData.empty())
         every { staffInteractor.invoke(any()) } returns flowOf(PagingData.empty())
         every { characterInteractor.invoke(any()) } returns flowOf(PagingData.empty())
@@ -167,19 +167,6 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun `UserPreviewState is Idle when query is blank`() {
-        assertEquals(UserPreviewState.Idle, viewModel.userPreviewState.value)
-    }
-
-    @Test
-    fun `UserPreviewState is Idle after submitting blank query`() {
-        viewModel.onQueryChange("test")
-        viewModel.submitSearch("")
-        testDispatcher.scheduler.advanceUntilIdle()
-        assertEquals(UserPreviewState.Idle, viewModel.userPreviewState.value)
-    }
-
-    @Test
     fun `all entity flows are not null`() {
         assertNotNull(viewModel.mediaAll)
         assertNotNull(viewModel.mediaAnime)
@@ -198,6 +185,7 @@ class SearchViewModelTest {
         val character = mockk<GetSearchCharacterInteractor>()
 
         every { media.invoke(any()) } returns flowOf(PagingData.empty())
+        every { user.getPaged(any()) } returns flowOf(PagingData.empty())
         every { studio.getStudioPaged(any()) } returns flowOf(PagingData.empty())
         every { staff.invoke(any()) } returns flowOf(PagingData.empty())
         every { character.invoke(any()) } returns flowOf(PagingData.empty())

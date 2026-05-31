@@ -57,8 +57,9 @@ internal interface UserRepository {
 
     class Search(
         private val source: UserSource.Paging,
-    ) : UserRepository {
-        suspend fun getPaged(param: UserParam.Search): Flow<PagingData<User>> = source(param)
+    ) : UserRepository,
+        UserSearchRepository {
+        override fun getPaged(param: UserParam.Search): Flow<PagingData<User>> = source(param)
     }
 
     class Statistic(

@@ -17,6 +17,7 @@
 package co.anitrend.data.user.usecase
 
 import co.anitrend.data.user.GetAuthenticatedInteractor
+import co.anitrend.data.user.GetSearchUserInteractor
 import co.anitrend.data.user.GetProfileFeedInteractor
 import co.anitrend.data.user.GetProfileOverviewInteractor
 import co.anitrend.data.user.GetProfileInteractor
@@ -31,9 +32,8 @@ import co.anitrend.data.user.UserProfileFeedRepository
 import co.anitrend.data.user.UserProfileOverviewRepository
 import co.anitrend.data.user.UserProfileRepository
 import co.anitrend.data.user.UserProfileStatisticRepository
+import co.anitrend.data.user.UserSearchRepository
 import co.anitrend.data.user.UserUpdateRepository
-import co.anitrend.data.user.repository.UserRepository
-import co.anitrend.domain.user.model.UserParam
 
 internal interface UserInteractor {
     class Identifier(
@@ -45,10 +45,8 @@ internal interface UserInteractor {
     ) : GetProfileInteractor(repository)
 
     class Search(
-        private val repository: UserRepository.Search,
-    ) {
-        suspend operator fun invoke(param: UserParam.Search) = repository.getPaged(param)
-    }
+        repository: UserSearchRepository,
+    ) : GetSearchUserInteractor(repository)
 
     class Statistic(
         repository: UserProfileStatisticRepository,

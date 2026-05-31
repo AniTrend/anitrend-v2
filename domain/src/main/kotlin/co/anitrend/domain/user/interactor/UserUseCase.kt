@@ -35,10 +35,10 @@ sealed class UserUseCase {
         suspend operator fun invoke() = repository.getProfile()
     }
 
-    abstract class GetPaged<State : UiState<*>>(
+    abstract class GetSearch<State>(
         protected val repository: IUserRepository.Search<State>,
     ) : UserUseCase() {
-        suspend operator fun invoke(param: UserParam.Search) = repository.getPaged(param)
+        fun getPaged(param: UserParam.Search) = repository.getPaged(param)
     }
 
     abstract class GetProfile<State : UiState<*>>(

@@ -17,28 +17,52 @@
   -->
 
 <resources>
-    <string name="search_place_holder_text">@string/action_search</string>
+    <!-- Placeholder text shown in the search bar; references the global search action label -->
+    <string name="placeholder_search_query">@string/action_search</string>
+    <!-- Title for the search screen activity; references the global search action label -->
     <string name="title_activity_search_screen">@string/action_search</string>
+    <!-- Button label to navigate from a section preview to the full results for that entity type -->
     <string name="action_search_see_all">See all</string>
+    <!-- Heading shown above a loading indicator while search results are being fetched -->
     <string name="label_search_loading_title">Loading results</string>
+    <!-- Body text below the loading heading explaining that results are being fetched -->
     <string name="message_search_loading">Fetching the latest results for your query.</string>
+    <!-- Heading shown when a search section encounters an error -->
     <string name="label_search_error_title">Search unavailable</string>
+    <!-- Body text below the error heading explaining that something went wrong -->
     <string name="message_search_error">Something went wrong while loading this section.</string>
+    <!-- Heading shown when a search section returns no results -->
     <string name="label_search_empty_title">No results yet</string>
+    <!-- Body text below the empty heading suggesting alternative search terms -->
     <string name="message_search_empty">Try a different title or keyword.</string>
+    <!-- Section heading for blended media results (anime + manga combined) -->
     <string name="label_search_media_all">Top media</string>
+    <!-- Section heading for anime-only search results -->
     <string name="label_search_media_anime">Anime</string>
+    <!-- Section heading for manga-only search results -->
     <string name="label_search_media_manga">Manga</string>
+    <!-- Section heading for user search results -->
     <string name="label_search_users">Users</string>
+    <!-- Section heading for studio search results -->
     <string name="label_search_studios">Studios</string>
+    <!-- Section heading for staff search results -->
     <string name="label_search_staff">Staff</string>
+    <!-- Section heading for character search results -->
     <string name="label_search_characters">Characters</string>
+    <!-- Scope chip label for the blended home view showing all entity types -->
     <string name="label_search_scope_home">Home</string>
+    <!-- Scope chip label for the all-media drill-down view -->
     <string name="label_search_scope_all">All</string>
+    <!-- Scope chip label for the anime drill-down view -->
     <string name="label_search_scope_anime">Anime</string>
+    <!-- Scope chip label for the manga drill-down view -->
     <string name="label_search_scope_manga">Manga</string>
+    <!-- Scope chip label for the users drill-down view -->
     <string name="label_search_scope_users">Users</string>
+    <!-- Scope chip label for the studios drill-down view -->
     <string name="label_search_scope_studios">Studios</string>
+    <!-- Scope chip label for the staff drill-down view -->
     <string name="label_search_scope_staff">Staff</string>
+    <!-- Scope chip label for the characters drill-down view -->
     <string name="label_search_scope_characters">Characters</string>
 </resources>

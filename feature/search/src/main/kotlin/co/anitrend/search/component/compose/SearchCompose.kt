@@ -130,12 +130,12 @@ private fun SearchBarContent(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Search,
-                    contentDescription = stringResource(R.string.search_place_holder_text),
+                    contentDescription = stringResource(R.string.placeholder_search_query),
                 )
             }
         },
         placeholder = {
-            Text(text = stringResource(co.anitrend.search.R.string.search_place_holder_text))
+            Text(text = stringResource(co.anitrend.search.R.string.placeholder_search_query))
         },
         modifier = modifier,
     )

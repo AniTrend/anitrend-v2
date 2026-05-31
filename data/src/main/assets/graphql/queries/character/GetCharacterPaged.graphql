@@ -5,8 +5,7 @@ query GetCharacterPaged(
     $id_not: Int,
     $id_not_in: [Int],
     $search: String,
-    $sort: [CharacterSort],
-    $isBirthday: Boolean
+    $sort: [CharacterSort]
 ) {
     Page(
         page: $page,
@@ -20,8 +19,7 @@ query GetCharacterPaged(
             id_not: $id_not,
             id_not_in: $id_not_in,
             search: $search,
-            sort: $sort,
-            isBirthday: $isBirthday
+            sort: $sort
         ) {
             ... CharacterCore
         }

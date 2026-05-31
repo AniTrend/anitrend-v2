@@ -18,10 +18,8 @@ package co.anitrend.search.component.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.data.character.GetSearchCharacterInteractor
 import co.anitrend.data.media.GetPagingMediaInteractor
 import co.anitrend.data.staff.GetPagingStaffInteractor
@@ -43,17 +41,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 
 class SearchViewModel(
     private val mediaInteractor: GetPagingMediaInteractor,
@@ -78,17 +72,6 @@ class SearchViewModel(
     val staff: Flow<PagingData<Staff>> = buildStaffFlow()
     val characters: Flow<PagingData<Character>> = buildCharacterFlow()
     val users: Flow<PagingData<User>> = buildUserFlow()
-
-    val userPreviewState: StateFlow<UserPreviewState> =
-        submittedQuery
-            .map(String::trim)
-            .distinctUntilChanged()
-            .flatMapLatest(::buildUserPreviewFlow)
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = UserPreviewState.Idle,
-            )
 
     init {
         query
@@ -166,7 +149,6 @@ class SearchViewModel(
                 )
             }.cachedIn(viewModelScope)
 
-    @OptIn(ExperimentalPagingApi::class)
     private fun buildUserFlow(): Flow<PagingData<User>> =
         submittedQuery
             .map(String::trim)
@@ -175,61 +157,11 @@ class SearchViewModel(
                 if (searchQuery.isBlank()) {
                     flowOf(PagingData.empty())
                 } else {
-                    val dataState =
-                        userSearchInteractor(
-                            UserParam.Search(search = searchQuery),
-                        )
-                    flow {
-                        dataState.model.collect { user ->
-                            emit(PagingData.from(listOfNotNull(user)))
-                        }
-                    }
+                    userSearchInteractor.getPaged(
+                        UserParam.Search(search = searchQuery),
+                    )
                 }
             }.cachedIn(viewModelScope)
-
-    private suspend fun buildUserPreviewFlow(searchQuery: String): Flow<UserPreviewState> {
-        if (searchQuery.isBlank()) {
-            return MutableStateFlow(UserPreviewState.Idle)
-        }
-
-        val dataState =
-            userSearchInteractor(
-                UserParam.Search(
-                    search = searchQuery,
-                ),
-            )
-
-        return combine(
-            dataState.model
-                .map<User, User?> { it }
-                .onStart { emit(null) },
-            dataState.loadState,
-        ) { user, loadState ->
-            when {
-                user != null -> UserPreviewState.Content(user)
-                loadState is LoadState.Loading -> UserPreviewState.Loading
-                loadState is LoadState.Error -> UserPreviewState.Error(loadState.details.message)
-                loadState is LoadState.Success -> UserPreviewState.Empty
-                else -> UserPreviewState.Idle
-            }
-        }
-    }
-}
-
-sealed interface UserPreviewState {
-    data object Idle : UserPreviewState
-
-    data object Loading : UserPreviewState
-
-    data object Empty : UserPreviewState
-
-    data class Content(
-        val user: User,
-    ) : UserPreviewState
-
-    data class Error(
-        val message: String?,
-    ) : UserPreviewState
 }
 
 enum class SearchScope {
