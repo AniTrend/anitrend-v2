@@ -105,12 +105,16 @@ class SearchViewModel(
             .map(String::trim)
             .distinctUntilChanged()
             .flatMapLatest { searchQuery ->
-                mediaInteractor(
-                    MediaParam.Find(
-                        search = searchQuery.ifBlank { null },
-                        type = type,
-                    ),
-                )
+                if (searchQuery.isBlank()) {
+                    flowOf(PagingData.empty())
+                } else {
+                    mediaInteractor(
+                        MediaParam.Find(
+                            search = searchQuery,
+                            type = type,
+                        ),
+                    )
+                }
             }.cachedIn(viewModelScope)
 
     private fun buildStudioFlow(): Flow<PagingData<Studio>> =
@@ -118,11 +122,15 @@ class SearchViewModel(
             .map(String::trim)
             .distinctUntilChanged()
             .flatMapLatest { searchQuery ->
-                studioInteractor.getStudioPaged(
-                    StudioParam.Find(
-                        search = searchQuery.ifBlank { null },
-                    ),
-                )
+                if (searchQuery.isBlank()) {
+                    flowOf(PagingData.empty())
+                } else {
+                    studioInteractor.getStudioPaged(
+                        StudioParam.Find(
+                            search = searchQuery,
+                        ),
+                    )
+                }
             }.cachedIn(viewModelScope)
 
     private fun buildStaffFlow(): Flow<PagingData<Staff>> =
@@ -130,11 +138,15 @@ class SearchViewModel(
             .map(String::trim)
             .distinctUntilChanged()
             .flatMapLatest { searchQuery ->
-                staffInteractor(
-                    StaffParam.Paged(
-                        search = searchQuery.ifBlank { null },
-                    ),
-                )
+                if (searchQuery.isBlank()) {
+                    flowOf(PagingData.empty())
+                } else {
+                    staffInteractor(
+                        StaffParam.Paged(
+                            search = searchQuery,
+                        ),
+                    )
+                }
             }.cachedIn(viewModelScope)
 
     private fun buildCharacterFlow(): Flow<PagingData<Character>> =
@@ -142,11 +154,15 @@ class SearchViewModel(
             .map(String::trim)
             .distinctUntilChanged()
             .flatMapLatest { searchQuery ->
-                characterInteractor(
-                    CharacterParam.Find(
-                        search = searchQuery.ifBlank { null },
-                    ),
-                )
+                if (searchQuery.isBlank()) {
+                    flowOf(PagingData.empty())
+                } else {
+                    characterInteractor(
+                        CharacterParam.Find(
+                            search = searchQuery,
+                        ),
+                    )
+                }
             }.cachedIn(viewModelScope)
 
     private fun buildUserFlow(): Flow<PagingData<User>> =

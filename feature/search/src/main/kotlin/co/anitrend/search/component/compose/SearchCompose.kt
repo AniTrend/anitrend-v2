@@ -172,8 +172,11 @@ private fun SearchScopeChips(
     scope: SearchScope,
     onScopeClick: (SearchScope) -> Unit,
 ) {
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
-        SearchScope.entries.forEach { option ->
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 4.dp),
+    ) {
+        items(SearchScope.entries) { option ->
             FilterChip(
                 selected = scope == option,
                 onClick = { onScopeClick(option) },
@@ -643,38 +646,40 @@ private fun StudioSearchCompactRow(
     Surface(
         modifier =
             modifier
-                .fillMaxWidth()
+                .width(148.dp)
                 .clickable(onClick = onClick),
         color = MaterialTheme.colorScheme.surface.copy(alpha = 0.72f),
         shape = RoundedCornerShape(18.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.24f)),
         onClick = onClick,
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        Column(
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             AvatarImageBadge(
                 image = item.image,
                 name = item.name,
                 modifier = Modifier.size(42.dp),
             )
-            Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = item.name,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Medium,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+            )
+            if (item.isAnimationStudio) {
                 Text(
-                    text = item.name,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Medium,
+                    text = "Animation Studio",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Center,
                 )
-                if (item.isAnimationStudio) {
-                    Text(
-                        text = "Animation Studio",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
             }
         }
     }

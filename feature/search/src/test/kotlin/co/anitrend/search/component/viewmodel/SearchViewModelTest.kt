@@ -8,6 +8,7 @@ import co.anitrend.data.studio.GetSearchStudioInteractor
 import co.anitrend.data.user.GetSearchUserInteractor
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -175,6 +176,32 @@ class SearchViewModelTest {
         assertNotNull(viewModel.staff)
         assertNotNull(viewModel.characters)
         assertNotNull(viewModel.users)
+    }
+
+    @Test
+    fun `blank query does not trigger media interactor`() = runTest {
+        val media = mockk<GetPagingMediaInteractor>(relaxed = true)
+        val user = mockk<GetSearchUserInteractor>(relaxed = true)
+        val studio = mockk<GetSearchStudioInteractor>(relaxed = true)
+        val staff = mockk<GetPagingStaffInteractor>(relaxed = true)
+        val character = mockk<GetSearchCharacterInteractor>(relaxed = true)
+
+        val testVm = SearchViewModel(
+            mediaInteractor = media,
+            userSearchInteractor = user,
+            studioInteractor = studio,
+            staffInteractor = staff,
+            characterInteractor = character,
+        )
+
+        // submittedQuery starts blank — no interactor should be invoked
+        advanceUntilIdle()
+
+        verify(exactly = 0) { media.invoke(any()) }
+        verify(exactly = 0) { user.getPaged(any()) }
+        verify(exactly = 0) { studio.getStudioPaged(any()) }
+        verify(exactly = 0) { staff.invoke(any()) }
+        verify(exactly = 0) { character.invoke(any()) }
     }
 
     private fun createViewModel(): SearchViewModel {
