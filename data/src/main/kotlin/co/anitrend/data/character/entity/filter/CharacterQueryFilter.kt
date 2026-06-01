@@ -37,9 +37,11 @@ internal sealed class CharacterQueryFilter<T> : FilterQueryBuilder<T>() {
         private fun searchSelection(filter: CharacterParam.Find) {
             filter.search?.trim()?.takeIf(String::isNotEmpty)?.also { term ->
                 requireBuilder() whereAnd {
-                    (fullName.like(term) or
-                        userPreferredName.like(term) or
-                        originalName.like(term))
+                    (
+                        fullName.like(term) or
+                            userPreferredName.like(term) or
+                            originalName.like(term)
+                    )
                 }
             }
         }
