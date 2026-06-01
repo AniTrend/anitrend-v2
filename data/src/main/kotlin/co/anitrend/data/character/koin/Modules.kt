@@ -26,6 +26,7 @@ import co.anitrend.data.character.cache.CharacterCache
 import co.anitrend.data.character.converter.CharacterConverter
 import co.anitrend.data.character.converter.CharacterEntityConverter
 import co.anitrend.data.character.converter.CharacterModelConverter
+import co.anitrend.data.character.entity.filter.CharacterQueryFilter
 import co.anitrend.data.character.mapper.CharacterMapper
 import co.anitrend.data.character.repository.CharacterRepository
 import co.anitrend.data.character.source.CharacterSourceImpl
@@ -48,8 +49,16 @@ private val sourceModule =
                     ),
                 converter = get(),
                 clearDataHelper = get(),
+                filter = get(),
                 dispatcher = get(),
             )
+        }
+    }
+
+private val filterModule =
+    module {
+        factory {
+            CharacterQueryFilter.Search()
         }
     }
 
@@ -108,6 +117,7 @@ internal val characterModules =
     module {
         includes(
             sourceModule,
+            filterModule,
             cacheModule,
             converterModule,
             mapperModule,

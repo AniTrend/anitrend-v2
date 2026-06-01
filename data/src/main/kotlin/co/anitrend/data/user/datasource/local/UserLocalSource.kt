@@ -68,7 +68,7 @@ internal abstract class UserLocalSource : AbstractLocalSource<UserEntity>() {
     @Query(
         """
         delete from user
-        where user_name match :userName
+        where user_name like '%' || :userName || '%'
         """,
     )
     abstract suspend fun clearByMatch(userName: String)

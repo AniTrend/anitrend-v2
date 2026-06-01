@@ -22,7 +22,6 @@ import androidx.paging.LoadType.PREPEND
 import androidx.paging.LoadType.REFRESH
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import androidx.sqlite.db.SimpleSQLiteQuery
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.callback.RequestCallback
@@ -36,6 +35,7 @@ import co.anitrend.data.character.CharacterPagedController
 import co.anitrend.data.character.datasource.local.CharacterLocalSource
 import co.anitrend.data.character.datasource.remote.CharacterRemoteSource
 import co.anitrend.data.character.entity.CharacterEntity
+import co.anitrend.data.character.entity.filter.CharacterQueryFilter
 import co.anitrend.data.character.model.query.CharacterQuery
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
@@ -48,14 +48,13 @@ internal class CharacterPagingSource(
     private val localSource: CharacterLocalSource,
     private val controller: CharacterPagedController,
     private val clearDataHelper: IClearDataHelper,
+    private val filter: CharacterQueryFilter.Search,
     private val query: CharacterQuery,
     override val dispatcher: ISupportDispatcher,
 ) : AbstractPagingMediator<Int, CharacterEntity>() {
     fun pagingSourceFactory(): () -> PagingSource<Int, CharacterEntity> =
         {
-            localSource.rawPagingSource(
-                SimpleSQLiteQuery("SELECT * FROM character"),
-            )
+            localSource.rawPagingSource(filter.build(query.param))
         }
 
     private suspend fun getCharacter(requestCallback: RequestCallback) {

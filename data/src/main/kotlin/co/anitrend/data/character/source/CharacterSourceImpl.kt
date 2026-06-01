@@ -28,6 +28,7 @@ import co.anitrend.data.character.cache.CharacterCache
 import co.anitrend.data.character.converter.CharacterEntityConverter
 import co.anitrend.data.character.datasource.local.CharacterLocalSource
 import co.anitrend.data.character.datasource.remote.CharacterRemoteSource
+import co.anitrend.data.character.entity.filter.CharacterQueryFilter
 import co.anitrend.data.character.model.query.CharacterQuery
 import co.anitrend.data.character.source.contract.CharacterSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
@@ -43,6 +44,7 @@ internal class CharacterSourceImpl {
         private val controller: CharacterPagedController,
         private val converter: CharacterEntityConverter,
         private val clearDataHelper: IClearDataHelper,
+        private val filter: CharacterQueryFilter.Search,
         private val dispatcher: ISupportDispatcher,
     ) : CharacterSource.Search() {
         override fun invoke(param: CharacterParam.Find): Flow<PagingData<Character>> {
@@ -55,6 +57,7 @@ internal class CharacterSourceImpl {
                     localSource = localSource,
                     controller = controller,
                     clearDataHelper = clearDataHelper,
+                    filter = filter,
                     query = CharacterQuery(param),
                     dispatcher = dispatcher,
                 )

@@ -1253,6 +1253,7 @@ fun SearchScreenContent(
     onCharacterClick: (IParam) -> Unit,
 ) {
     val query = viewModel.query.collectAsStateWithLifecycle()
+    val hasSearchQuery = query.value.isNotBlank()
     val scope = viewModel.scope.collectAsStateWithLifecycle()
     val scoreFormat = settings.scoreFormat.flow.collectAsStateWithLifecycle(initialValue = settings.scoreFormat.value)
 
@@ -1293,6 +1294,14 @@ fun SearchScreenContent(
                 //       scroll performance when many sections are visible. The search
                 //       bar and scope chips should use stickyHeader {} items.
                 SearchScope.HOME -> {
+                    if (!hasSearchQuery) {
+                        SearchState(
+                            title = stringResource(R.string.label_search_idle_title),
+                            subtitle = stringResource(R.string.message_search_idle),
+                        )
+                        return@Column
+                    }
+
                     Column(
                         modifier =
                             Modifier
@@ -1349,56 +1358,112 @@ fun SearchScreenContent(
                 }
 
                 SearchScope.ALL ->
-                    SearchDrillDown(
-                        items = allMedia,
-                        mediaPreferenceData = mediaPreferenceData,
-                        onMediaItemClick = onMediaItemClick,
-                        modifier = Modifier.weight(1f),
-                    )
+                    if (!hasSearchQuery) {
+                        SearchState(
+                            title = stringResource(R.string.label_search_idle_title),
+                            subtitle = stringResource(R.string.message_search_idle),
+                            modifier = Modifier.weight(1f),
+                        )
+                    } else {
+                        SearchDrillDown(
+                            items = allMedia,
+                            mediaPreferenceData = mediaPreferenceData,
+                            onMediaItemClick = onMediaItemClick,
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
 
                 SearchScope.ANIME ->
-                    SearchDrillDown(
-                        items = animeMedia,
-                        mediaPreferenceData = mediaPreferenceData,
-                        onMediaItemClick = onMediaItemClick,
-                        modifier = Modifier.weight(1f),
-                    )
+                    if (!hasSearchQuery) {
+                        SearchState(
+                            title = stringResource(R.string.label_search_idle_title),
+                            subtitle = stringResource(R.string.message_search_idle),
+                            modifier = Modifier.weight(1f),
+                        )
+                    } else {
+                        SearchDrillDown(
+                            items = animeMedia,
+                            mediaPreferenceData = mediaPreferenceData,
+                            onMediaItemClick = onMediaItemClick,
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
 
                 SearchScope.MANGA ->
-                    SearchDrillDown(
-                        items = mangaMedia,
-                        mediaPreferenceData = mediaPreferenceData,
-                        onMediaItemClick = onMediaItemClick,
-                        modifier = Modifier.weight(1f),
-                    )
+                    if (!hasSearchQuery) {
+                        SearchState(
+                            title = stringResource(R.string.label_search_idle_title),
+                            subtitle = stringResource(R.string.message_search_idle),
+                            modifier = Modifier.weight(1f),
+                        )
+                    } else {
+                        SearchDrillDown(
+                            items = mangaMedia,
+                            mediaPreferenceData = mediaPreferenceData,
+                            onMediaItemClick = onMediaItemClick,
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
 
                 SearchScope.USERS ->
-                    UserDrillDown(
-                        items = userItems,
-                        onUserClick = onUserClick,
-                        modifier = Modifier.weight(1f),
-                    )
+                    if (!hasSearchQuery) {
+                        SearchState(
+                            title = stringResource(R.string.label_search_idle_title),
+                            subtitle = stringResource(R.string.message_search_idle),
+                            modifier = Modifier.weight(1f),
+                        )
+                    } else {
+                        UserDrillDown(
+                            items = userItems,
+                            onUserClick = onUserClick,
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
 
                 SearchScope.STUDIOS ->
-                    StudioDrillDown(
-                        items = studioItems,
-                        onStudioClick = onStudioClick,
-                        modifier = Modifier.weight(1f),
-                    )
+                    if (!hasSearchQuery) {
+                        SearchState(
+                            title = stringResource(R.string.label_search_idle_title),
+                            subtitle = stringResource(R.string.message_search_idle),
+                            modifier = Modifier.weight(1f),
+                        )
+                    } else {
+                        StudioDrillDown(
+                            items = studioItems,
+                            onStudioClick = onStudioClick,
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
 
                 SearchScope.STAFF ->
-                    StaffDrillDown(
-                        items = staffItems,
-                        onStaffClick = onStaffClick,
-                        modifier = Modifier.weight(1f),
-                    )
+                    if (!hasSearchQuery) {
+                        SearchState(
+                            title = stringResource(R.string.label_search_idle_title),
+                            subtitle = stringResource(R.string.message_search_idle),
+                            modifier = Modifier.weight(1f),
+                        )
+                    } else {
+                        StaffDrillDown(
+                            items = staffItems,
+                            onStaffClick = onStaffClick,
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
 
                 SearchScope.CHARACTERS ->
-                    CharacterDrillDown(
-                        items = characterItems,
-                        onCharacterClick = onCharacterClick,
-                        modifier = Modifier.weight(1f),
-                    )
+                    if (!hasSearchQuery) {
+                        SearchState(
+                            title = stringResource(R.string.label_search_idle_title),
+                            subtitle = stringResource(R.string.message_search_idle),
+                            modifier = Modifier.weight(1f),
+                        )
+                    } else {
+                        CharacterDrillDown(
+                            items = characterItems,
+                            onCharacterClick = onCharacterClick,
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
             }
         }
     }

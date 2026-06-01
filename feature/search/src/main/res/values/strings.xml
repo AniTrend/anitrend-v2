@@ -27,6 +27,10 @@
     <string name="label_search_loading_title">Loading results</string>
     <!-- Body text below the loading heading explaining that results are being fetched -->
     <string name="message_search_loading">Fetching the latest results for your query.</string>
+    <!-- Heading shown when search is idle and waiting for the user to submit a query -->
+    <string name="label_search_idle_title">Start searching</string>
+    <!-- Body text shown for idle search before any query is submitted -->
+    <string name="message_search_idle">Enter a title, character, studio, staff, or user to begin.</string>
     <!-- Heading shown when a search section encounters an error -->
     <string name="label_search_error_title">Search unavailable</string>
     <!-- Body text below the error heading explaining that something went wrong -->

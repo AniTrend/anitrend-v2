@@ -20,7 +20,7 @@ import co.anitrend.data.android.filter.FilterQueryBuilder
 import co.anitrend.data.user.entity.UserEntitySchema
 import co.anitrend.domain.user.enums.UserSort
 import co.anitrend.domain.user.model.UserParam
-import co.anitrend.support.query.builder.core.criteria.extensions.match
+import co.anitrend.support.query.builder.core.criteria.extensions.like
 import co.anitrend.support.query.builder.core.from.extentions.asTable
 import co.anitrend.support.query.builder.core.projection.extensions.asColumn
 import co.anitrend.support.query.builder.dsl.from
@@ -37,7 +37,7 @@ internal sealed class UserQueryFilter<T> : FilterQueryBuilder<T>() {
         private fun searchSelection(filter: UserParam.Search) {
             val term = filter.search
             requireBuilder() whereAnd {
-                userNameColumn.match(term)
+                userNameColumn.like(term)
             }
         }
 

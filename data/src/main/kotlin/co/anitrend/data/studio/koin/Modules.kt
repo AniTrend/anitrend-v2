@@ -31,6 +31,7 @@ import co.anitrend.data.studio.converter.MediaStudioEntryEnricher
 import co.anitrend.data.studio.converter.StudioConverter
 import co.anitrend.data.studio.converter.StudioEntityConverter
 import co.anitrend.data.studio.converter.StudioModelConverter
+import co.anitrend.data.studio.entity.filter.StudioQueryFilter
 import co.anitrend.data.studio.mapper.MediaStudioMapper
 import co.anitrend.data.studio.mapper.StudioDetailMapper
 import co.anitrend.data.studio.mapper.StudioPagedMapper
@@ -71,8 +72,16 @@ private val sourceModule =
                     ),
                 converter = get(),
                 clearDataHelper = get(),
+                filter = get(),
                 dispatcher = get(),
             )
+        }
+    }
+
+private val filterModule =
+    module {
+        factory {
+            StudioQueryFilter.Search()
         }
     }
 
@@ -155,6 +164,7 @@ private val repositoryModule =
 internal val studioModules =
     listOf(
         cacheModule,
+        filterModule,
         sourceModule,
         converterModule,
         mapperModule,

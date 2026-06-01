@@ -36,6 +36,7 @@ import co.anitrend.data.studio.StudioPagedController
 import co.anitrend.data.studio.datasource.local.StudioLocalSource
 import co.anitrend.data.studio.datasource.remote.StudioRemoteSource
 import co.anitrend.data.studio.entity.StudioEntity
+import co.anitrend.data.studio.entity.filter.StudioQueryFilter
 import co.anitrend.data.studio.model.query.StudioQuery
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
@@ -47,12 +48,13 @@ internal class StudioPagingSource(
     private val localSource: StudioLocalSource,
     private val controller: StudioPagedController,
     private val clearDataHelper: IClearDataHelper,
+    private val filter: StudioQueryFilter.Search,
     private val query: StudioQuery,
     override val dispatcher: ISupportDispatcher,
 ) : AbstractPagingMediator<Int, StudioEntity>() {
     fun pagingSourceFactory(): () -> PagingSource<Int, StudioEntity> =
         {
-            localSource.studioPagingSource()
+            localSource.rawPagingSource(filter.build(query.param))
         }
 
     private suspend fun getStudio(requestCallback: RequestCallback) {

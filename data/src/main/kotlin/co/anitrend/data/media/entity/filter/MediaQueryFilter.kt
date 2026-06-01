@@ -37,7 +37,6 @@ import co.anitrend.support.query.builder.core.criteria.extensions.greaterThan
 import co.anitrend.support.query.builder.core.criteria.extensions.`in`
 import co.anitrend.support.query.builder.core.criteria.extensions.lesserThan
 import co.anitrend.support.query.builder.core.criteria.extensions.like
-import co.anitrend.support.query.builder.core.criteria.extensions.match
 import co.anitrend.support.query.builder.core.criteria.extensions.notEqual
 import co.anitrend.support.query.builder.core.criteria.extensions.notIn
 import co.anitrend.support.query.builder.core.criteria.extensions.or
@@ -340,10 +339,7 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
         private fun searchSelection(filter: MediaParam.Find) {
             filter.search?.also {
                 requireBuilder() whereAnd {
-                    MediaEntitySchema.titleUser_preferred.match(it) or
-                        MediaEntitySchema.titleEnglish.match(it) or
-                        MediaEntitySchema.titleOriginal.match(it) or
-                        MediaEntitySchema.titleRomaji.match(it)
+                    MediaEntitySchema.titleUser_preferred.like(it)
                 }
             }
         }
@@ -522,7 +518,7 @@ internal sealed class MediaQueryFilter<T> : FilterQueryBuilder<T>() {
             }
             filter.type?.also {
                 requireBuilder() whereAnd {
-                    MediaEntitySchema.type equal it.name
+                    MediaEntitySchema.type.asColumn(mediaTable) equal it.name
                 }
             }
             filter.countryOfOrigin?.also {

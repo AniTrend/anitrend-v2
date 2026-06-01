@@ -28,6 +28,7 @@ import co.anitrend.data.studio.cache.StudioCache
 import co.anitrend.data.studio.converter.StudioEntityConverter
 import co.anitrend.data.studio.datasource.local.StudioLocalSource
 import co.anitrend.data.studio.datasource.remote.StudioRemoteSource
+import co.anitrend.data.studio.entity.filter.StudioQueryFilter
 import co.anitrend.data.studio.model.query.StudioQuery
 import co.anitrend.data.studio.source.contract.StudioSource
 import co.anitrend.domain.studio.entity.Studio
@@ -42,6 +43,7 @@ internal class StudioSourceImpl {
         private val controller: StudioPagedController,
         private val converter: StudioEntityConverter,
         private val clearDataHelper: IClearDataHelper,
+        private val filter: StudioQueryFilter.Search,
         private val dispatcher: ISupportDispatcher,
     ) : StudioSource.Search() {
         override fun invoke(param: StudioParam.Find): Flow<PagingData<Studio>> {
@@ -54,6 +56,7 @@ internal class StudioSourceImpl {
                     localSource = localSource,
                     controller = controller,
                     clearDataHelper = clearDataHelper,
+                    filter = filter,
                     query = StudioQuery(param),
                     dispatcher = dispatcher,
                 )
