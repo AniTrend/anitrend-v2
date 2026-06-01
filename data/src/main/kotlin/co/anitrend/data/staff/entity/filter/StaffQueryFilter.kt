@@ -36,9 +36,11 @@ internal sealed class StaffQueryFilter<T> : FilterQueryBuilder<T>() {
         private fun searchSelection(filter: StaffParam.Paged) {
             filter.search?.trim()?.takeIf(String::isNotEmpty)?.also { term ->
                 requireBuilder() whereAnd {
-                    (fullName.like(term) or
-                        userPreferredName.like(term) or
-                        originalName.like(term))
+                    (
+                        fullName.like(term) or
+                            userPreferredName.like(term) or
+                            originalName.like(term)
+                    )
                 }
             }
         }
