@@ -232,6 +232,3 @@ below governs.
   `loadState` flow via the base-class error helper rather than returning `false` silently.
   Returning `false` is reserved for expected cache-miss or empty-result conditions.
 - Non-paged repository streams return `DataState<T>`.
-- Paged repository contracts may return `Flow<PagingData<T>>` through the existing paging
-  interactor aliases. Do not convert paging flows to `DataState` unless the existing module
-  pattern already does so.

@@ -4,11 +4,25 @@ on:
   pull_request:
     branches: [develop]
     paths:
+      - "AGENTS.md"
       - ".agents/skills/**"
+      - ".github/scripts/validate-skills.js"
+      - ".github/workflows/skill-audit.yml"
+      - "docs/support-arch/**"
+      - "docs/superpowers/**"
+      - "package.json"
+      - "package-lock.json"
   push:
     branches: [develop, master]
     paths:
+      - "AGENTS.md"
       - ".agents/skills/**"
+      - ".github/scripts/validate-skills.js"
+      - ".github/workflows/skill-audit.yml"
+      - "docs/support-arch/**"
+      - "docs/superpowers/**"
+      - "package.json"
+      - "package-lock.json"
   workflow_dispatch:
   schedule:
     - cron: "0 8 * * 1" # Every Monday at 08:00 UTC
@@ -26,7 +40,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install gray-matter
+        run: npm ci
 
       - name: Run skill validator
         run: node .github/scripts/validate-skills.js

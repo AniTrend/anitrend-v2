@@ -330,10 +330,10 @@ mappers, or UI assumptions. Use ADB and Chucker fallback only when Argent eviden
 If global skills are installed under `~/.agents/skills`, prefer these before using the matching
 MCP tools directly:
 
-- `code-review-graph-explore`
-- `code-review-graph-debug`
-- `code-review-graph-refactor`
-- `code-review-graph-review`
+- code-review-graph-explore
+- code-review-graph-debug
+- code-review-graph-refactor
+- code-review-graph-review
 
 These are optional global skills. Do not treat them as repository-local files.
 

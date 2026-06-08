@@ -1,6 +1,6 @@
 ---
 name: android-runtime-investigation
-description: 'Investigate Android runtime bugs with evidence-first Argent workflows. Use for emulator targeting, runtime console/network inspection, UI hierarchy capture, optional native traffic inspection, and root-cause analysis before changing code.'
+description: 'Investigate Android runtime bugs with evidence-first workflows. Use for emulator targeting, logcat/AndroidRuntime/Timber inspection, Chucker HTTP/GraphQL payloads, UIAutomator hierarchy capture, Room database forensics, and root-cause analysis before changing code.'
 argument-hint: 'Describe the failing screen or behavior, installed variant, and whether logs, network payloads, or local data look suspicious'
 ---
 
@@ -254,15 +254,16 @@ See [chucker-sqlite-queries.md](./references/chucker-sqlite-queries.md) for comm
 ## Completion Checklist
 
 - The correct emulator target and package were identified explicitly.
-- Runtime debugger logs were captured for the repro window.
-- JS network logs were checked before code changes.
-- Native network logs were checked when JS logs were insufficient.
+- Runtime logcat evidence was captured for the repro window, including `AndroidRuntime` and `Timber` output.
+- Chucker HTTP/GraphQL payloads were inspected when response shape mattered.
+- Room database state was inspected when cache or local persistence was suspected.
+- UIAutomator dump and screenshot were captured when rendering or visibility was questioned.
 - Chucker inspection (if used) was attempted only on a debuggable build.
 - Database schema was inspected before assuming table names.
 - The proposed fix is backed by runtime evidence, not only by code reading.
 
 ## Fast Invocation Examples
 
-- "Investigate this AniTrend runtime regression with Argent debugger logs and network evidence"
+- "Investigate this AniTrend runtime regression with logcat, Chucker, UIAutomator, and Room evidence"
 - "Find the root cause of this broken media screen on device before changing serializers"
-- "Use Argent JS/native network logs to confirm whether response shape or UI mapping is wrong"
+- "Confirm whether this broken media screen is caused by payload shape, persistence, or UI mapping"
