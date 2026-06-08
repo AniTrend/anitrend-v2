@@ -27,13 +27,22 @@ also consult the official Android guidance: https://developer.android.com/guide/
 
 ## Procedure
 
-1. Open the touched `strings.xml` file and inspect the full edited block, not just the newest line.
-2. Add an XML comment immediately above each touched resource block.
+1. Open the touched `strings.xml` file and inspect every resource element that was added or
+	 modified in this edit.
+2. Add an XML comment immediately above each touched resource element.
 3. Write comments for translators, not engineers.
 4. Explain placeholders such as `%1$s` or `%2$d`, plus any tone or space constraints.
-5. Keep comments one resource above the matching block; do not use one comment for several unrelated entries.
+5. Write one comment per resource element; do not reuse one comment for multiple resources.
 6. Re-read the edited section and confirm no new resource was left uncommented.
-7. If the miss happened because repo guidance was weak, update the relevant instruction and string-resource skill in the same change.
+7. If repo guidance was the root cause, stop after fixing the XML comments and update the relevant
+	 instruction or this skill in a separate follow-up change.
+
+## When Repo Guidance Is the Root Cause
+
+- Use this section only when the current XML edit is correct but the instruction set was too weak
+	to make the correct behavior obvious.
+- Keep the follow-up update minimal: clarify the specific rule that failed, do not rewrite the
+	whole skill, and do not mix the documentation fix into the XML comment pass.
 
 ## Comment Patterns
 

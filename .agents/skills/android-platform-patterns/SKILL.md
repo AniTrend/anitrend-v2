@@ -46,9 +46,13 @@ real code path to copy.
 4. If the behavior starts from an external URI, inspect `android/deeplink` before touching a
    feature module.
 5. Only add a new internal API when reuse would break ownership boundaries or force an awkward
-   abstraction that is less clear than a new platform-local helper.
+  abstraction that would require changing more than one existing public interface in the platform
+  layer or would force a dependency that the consuming module is not allowed to take.
 
 ## Decision rules
+
+Apply the Reuse-first workflow first. The decision rules below are the constraints that govern the
+workflow steps.
 
 - Do not recreate context or fragment lookup helpers if
   `android/core/src/main/kotlin/co/anitrend/android/core/extensions/ContextExtensions.kt` or
@@ -60,6 +64,9 @@ real code path to copy.
 - Do not bypass router and provider contracts with direct intent construction when
   `:app:navigation`, `:android:navigation`, or `:android:deeplink` already owns the route.
 - Keep platform-wide helpers in `:android:*`; keep feature-specific logic in the owning feature.
+- If an existing helper/controller/provider already covers the required behavior without changing
+  any existing method signatures or callers, extend that surface in place instead of cloning the
+  API in `feature`, `common`, or `task`.
 
 ## Canonical files
 

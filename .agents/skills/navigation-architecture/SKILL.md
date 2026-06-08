@@ -141,14 +141,19 @@ Examples:
 6. If the route must be deep-linkable, add a `Route` implementation and register it in
    `android/deeplink/src/main/kotlin/co/anitrend/android/deeplink/koin/Modules.kt`.
 
+Apply the Decision Rules first to scope the change, then follow the Procedure steps within that
+scope.
+
 ## Decision Rules
 
 - If the user comes from a browser or app link, go through `DeepLinkScreen` and route objects.
 - If one feature opens another feature, use the shared router contract, not direct activity imports.
 - If the feature already hosts a fragment via `FragmentItemHost`, keep that boundary unless the
   task explicitly migrates the feature.
-- If the change is only inside one Compose screen, prefer the feature-local `NavHost` and keep it
-  scoped there.
+- If the change is only inside one Compose screen, use the feature-local `NavHost` only when that
+   feature already owns a Compose `NavHost`. When creating a brand-new feature, default to the
+   fragment-backed or activity-only pattern unless the task explicitly says the feature is
+   Compose-first.
 - Do not replace current router or fragment patterns with Navigation 3 assumptions. This repo is
   still on the existing AndroidX Navigation Compose setup where Compose is incremental, not the
   global navigation authority.

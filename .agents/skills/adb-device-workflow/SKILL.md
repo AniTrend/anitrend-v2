@@ -83,8 +83,12 @@ adb -s <serial> shell pidof -s <package-name>
 ```
 
 Decision point:
-- If more than one AniTrend package is installed, pick the exact package that matches the variant you just installed.
-- If the process exits too quickly to keep a PID, fall back to unscoped `adb logcat -d` immediately after repro.
+- If more than one AniTrend package is installed, match the package name to the flavor segment in
+	the package name. If that is still ambiguous, ask the user to confirm the exact package name
+	before proceeding.
+- If the process exits too quickly to keep a PID, start a background capture with
+	`adb -s <serial> logcat -c && adb -s <serial> logcat > /tmp/anitrend.log &`, reproduce the
+	failure, then stop the capture and inspect `/tmp/anitrend.log`.
 
 7. Capture focused logs for startup/debug failures.
 
@@ -148,8 +152,12 @@ adb -s <serial> install app/build/outputs/apk/github/debug/app-github-debug.apk
 - Signature mismatch or stale state:
 
 ```bash
-adb -s <serial> shell pm clear co.anitrend
+adb -s <serial> uninstall co.anitrend
+adb -s <serial> install app/build/outputs/apk/github/debug/app-github-debug.apk
 ```
+
+Use `pm clear` only when the user has agreed to lose app data and the install/uninstall path does
+not resolve the stale state.
 
 ## Completion Checklist
 

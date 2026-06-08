@@ -34,9 +34,14 @@ load [Android string resource best practices](./references/android-string-resour
 - Use **underscores** to separate words: `media_list_editor` not `medialisteditor`.
 - Be specific but concise: `media_list` not `medialist`, `episode_progress` not `progress`.
 - Include feature/module context for feature-specific strings.
-- Use generic context for shared strings: `label_loading`, `action_save`, `error_network`.
+- A string is shared only if it is used by more than one unrelated feature module or belongs to a
+	common/core module with no single owning feature; all other strings are feature-specific and must
+	include a module context segment.
+- Use generic context only for shared strings such as `label_loading`, `action_save`, and
+	`error_network`.
 - Prefer positional placeholders such as `%1$s` and `%2$d` for translatable formatted strings.
-- Add `formatted="true"` for strings with parameters (e.g., `%1$s`, `%1$d`).
+- Add `formatted="true"` only when the string contains one or more printf-style placeholders such
+	as `%1$s` or `%1$d`. Do not add it for escaped percent signs without real parameters.
 
 ## Platform best practices
 
@@ -73,9 +78,10 @@ load [Android string resource best practices](./references/android-string-resour
 Always add an XML comment immediately before each string resource. POEditor displays these to
 community translators.
 
-This is mandatory for every touched resource block in `strings.xml`, including `<string>`,
-`<plurals>`, and `<string-array>`. Do not add a single shared comment for multiple unrelated
-resources, and do not leave new strings uncommented at the end of a file.
+This is mandatory for every resource block in `strings.xml` that is newly added or modified in the
+current edit, including `<string>`, `<plurals>`, and `<string-array>`. A touched resource block is
+one resource element whose name, value, or attributes changed in the edit. Write one comment per
+resource element and do not share a comment across multiple resources.
 
 **Format:**
 ```xml

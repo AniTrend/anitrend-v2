@@ -15,6 +15,9 @@ For cross-layer Koin anchors, including Android platform modules, use the
 [layer example matrix](../reference-map/references/layer-example-matrix.md). Pair Android helper
 work with [android-platform-patterns](../android-platform-patterns/SKILL.md).
 
+Registration precedence: register bindings in the `Modules.kt` file that belongs to the immediate
+parent Gradle module first, then add that parent aggregator to `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt` when the parent module is a new top-level module that must be loaded at startup.
+
 ## Key files to read
 
 - `app/core/src/main/kotlin/co/anitrend/core/initializer/injector/InjectorInitializer.kt` —
@@ -51,9 +54,10 @@ work with [android-platform-patterns](../android-platform-patterns/SKILL.md).
    - `worker { scope -> XxxWorker(context = androidContext(), parameters = scope.get(), interactor = get()) }`
    - Android platform helpers: bind controllers, helpers, providers, or shell fragments in the
      owning `:android:*` module instead of a feature module
-4. Add the local module to the nearest feature / data aggregator so it gets loaded transitively.
-5. If the module is a new `:data:*` or `:feature:*` top-level module, also add its loader to
-   `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt`.
+4. Add the local module to the `Modules.kt` file in its immediate parent Gradle module so it gets
+  loaded transitively.
+5. If that parent Gradle module is new and must be loaded at app startup, also add its loader to
+  `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt`.
 6. Add or update a Koin resolution test for the changed binding. For central `:data` wiring,
    prefer a focused `src/test` case that starts Koin with the relevant modules and resolves the
    exact contract you changed.
@@ -62,18 +66,16 @@ work with [android-platform-patterns](../android-platform-patterns/SKILL.md).
 
 - Every public dependency must be exposed through Koin — no direct instantiation in feature code.
 - In data modules, default to `factory` for sources, mappers, converters, repositories, and
-  interactors unless the dependency is intentionally app-wide state or configuration. Mirror the
-  surrounding module instead of forcing `single`.
+  interactors unless the dependency is intentionally app-wide state or configuration. Use `single`
+  only when the type is intentionally shared app-wide and an existing sibling module already binds
+  it that way.
 - Use `get()` to resolve transitive dependencies; never import concrete data-layer classes into a
   feature or task module's Koin file except for the worker or ViewModel class being declared.
 - When binding reusable Android-side helpers, keep the binding in `:android:*` and let
   `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt` include the Android aggregator.
-- When a binding depends on a generic contract such as `graphQLController(mapper = ...)`, prefer
-  explicit typed lookup like `get<ConcreteMapper>()` instead of bare `get()` so Koin does not have
-  to infer an ambiguous generic mapper.
-- When a constructor parameter is declared as a broad interface or typealias, do not assume bare
-  `get()` will resolve the intended implementation. If the module owns a concrete embed mapper or
-  writer binding, request it explicitly with `get<ConcreteType>()` and cover that path with a Koin
-  resolution test.
+- When a binding depends on a generic contract such as `graphQLController(mapper = ...)` or a
+  constructor parameter is declared as a broad interface or typealias, request the concrete
+  dependency explicitly with `get<ConcreteType>()` instead of bare `get()`. Cover that path with a
+  Koin resolution test.
 - Task Koin files should bind workers and router providers only. Repository, source, mapper, and
   controller bindings stay in the owning data module.

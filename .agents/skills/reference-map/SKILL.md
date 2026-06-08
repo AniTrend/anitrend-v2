@@ -16,6 +16,8 @@ skills:
 The goal is to reduce documentation drift and avoid brittle SHA-pinned GitHub links.
 Use repo-relative paths only.
 
+Routing precedence: use the Task-first routing table for new work, use the Legacy topic map only when migrating existing documentation, and use AI-Native SDLC Packs only for cross-module operational tasks that span at least two distinct layer boundaries or affect repository-wide infrastructure.
+
 The concrete example inventory lives in
 [layer-example-matrix.md](./references/layer-example-matrix.md). Use it when you need stable file
 anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, and `buildSrc`.
@@ -24,6 +26,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 
 1. Start from `AGENTS.md`.
 2. Jump to the linked skill file for implementation details.
+  If a linked skill file cannot be resolved, stop and report the missing path before proceeding.
 3. Open [layer-example-matrix.md](./references/layer-example-matrix.md) when you need concrete
    cross-layer examples or stable file anchors.
 4. Validate any changed references and formatting before opening a PR.
@@ -68,6 +71,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 | Add DI bindings | `AGENTS.md` | `.agents/skills/koin-module-wiring/SKILL.md` |
 | Add or update Room entities | `AGENTS.md` | `.agents/skills/room-entity-pattern/SKILL.md` |
 | Debug empty-UI / silent cache bypass | `AGENTS.md` | `.agents/skills/cache-request-isolation/SKILL.md` |
+| Add a new GraphQL-backed repository or source | `AGENTS.md` | `.agents/skills/data-state-pattern/SKILL.md` then `.agents/skills/graphql-query-pattern/SKILL.md` |
 | Add or change GraphQL query flow | `AGENTS.md` | `.agents/skills/graphql-query-pattern/SKILL.md` |
 | Understand `ControllerStrategy`, choose `OnlineStrategy` vs `OfflineStrategy`, or understand `ScopeExtensions` / Data Android infrastructure | `AGENTS.md` | `.agents/skills/data-android-infrastructure/SKILL.md` |
 | Add or change GraphQL fragments, model variants, or remote source wiring | `AGENTS.md` | `.agents/skills/mapping-graphql-models/SKILL.md` |
@@ -78,7 +82,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 ## AI-Native SDLC Packs
 
 These support-arch prompt packs are repo-local execution playbooks for autonomous operational work.
-Use them alongside `AGENTS.md` and repo-local skills when the task is broader than one module.
+Use them alongside `AGENTS.md` and repo-local skills when the task spans two or more distinct layer boundaries, requires coordination across unrelated modules, or affects repository-wide infrastructure.
 
 - CI/CD pipeline intervention:
   `docs/support-arch/instructions/ci-pipeline-intervention.md` and

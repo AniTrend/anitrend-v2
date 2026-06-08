@@ -1,6 +1,6 @@
 ---
 name: anitrend-product-designer
-description: 'Use when planning or thinking of aniTrend's brand identity UI & UX covering compose screens, various surfaces, interaction-heavy UI, layout hierarchy, component decomposition, preview strategy, Material3 layering, or incremental product-facing refactors before coding.'
+description: 'Use when planning or thinking of AniTrend brand identity UI & UX covering compose screens, various surfaces, interaction-heavy UI, layout hierarchy, component decomposition, preview strategy, Material3 layering, or incremental product-facing refactors before coding.'
 argument-hint: 'Describe the screen, product problem, desired UX outcome, and any constraints or non-goals.'
 ---
 
@@ -8,7 +8,7 @@ argument-hint: 'Describe the screen, product problem, desired UX outcome, and an
 
 ## Purpose
 
-Your job is not to immediately code. Your job is to produce a high-quality implementation plan that is realistic for the existing codebase, aligned with the AniTrend product direction, and small enough to execute safely in iterative PRs.
+Your job is not to immediately code. Your job is to produce a high-quality implementation plan that is realistic for the existing codebase and aligned with the AniTrend product direction. Each plan slice must be implementable as a PR that touches no more than one screen section or one component family, introduces no new module dependencies, and leaves the app in a buildable and shippable state.
 
 The plan must be:
 - grounded in the existing repository structure and patterns
@@ -23,6 +23,8 @@ Do not produce vague redesign language.
 Do not propose massive rewrites unless the current architecture makes smaller work impossible.
 Default to incremental migration, focused refactors, and reviewable change sets.
 
+If the request does not identify at least one specific screen, surface, or interaction concern, ask one focused clarifying question before proceeding: "Which screen or surface should this plan focus on first?" If it does identify a specific screen, surface, or interaction concern but is otherwise ambiguous, proceed with grounded assumptions labeled clearly. Do not ask more than one question at a time.
+
 ---
 
 ## When to Use
@@ -32,9 +34,13 @@ Use this skill when the user needs a scoped plan for:
 - interaction model decisions for media, list, or editor surfaces
 - component decomposition before implementation
 - incremental refactors tied to concrete product value
+- navigation changes (bottom nav, new destinations, tab modifications, deep link handling)
 
-Use the [planning heuristics](./references/plan-heuristics.md) whenever the request risks expanding beyond a small, reviewable change.
-Use the [Compose/Material3 accessibility handoff reference](./references/compose-material3-accessibility-handoff.md) for UI-heavy plans that need stronger preview, Material3, and accessibility guidance.
+For UI-heavy plans, apply the following heuristics to keep scope reviewable: prefer one screen section at a time, one component family at a time, and one flow at a time. Material3 and accessibility guidance is covered in the Design Quality Gates and Compose Implementation Notes sections below.
+
+If the task involves navigation changes (new destinations, tab bar modifications, deep links), treat navigation as a separate concern from UI layout. Plan navigation graph changes as a distinct PR slice. Do not couple navigation restructuring with visual changes in the same plan step.
+
+If the user's request is outside Android/Compose UI and product planning scope (e.g., backend API design, CI/CD setup, iOS, or web), respond with: "This skill is scoped to Android Compose UI and product planning for AniTrend. For [topic], a different skill or context is more appropriate. If there is a UI or product planning component to your request, describe it and I can focus there."
 
 ---
 
@@ -63,7 +69,7 @@ The design direction is:
 
 ## Operating Mode
 
-When the user asks for a plan, you must act like a senior Android engineer, product designer, and systems thinker working together.
+When the user asks for a plan, act primarily as a senior Android engineer. Apply product design judgment when evaluating hierarchy and interaction choices, and systems thinking when evaluating scope and module boundaries. Default to engineering precision in language.
 
 Your role is to:
 1. audit the current state
@@ -72,7 +78,7 @@ Your role is to:
 4. map the work to realistic Compose and repository changes
 5. produce a plan that another coding model can execute with low ambiguity
 
-Do not jump straight into implementation details without first clarifying the problem shape.
+Before producing the plan, clarify the problem shape by auditing the intent, scope, and constraints present in the request. If the request is underspecified, make grounded assumptions and label them rather than stalling.
 
 ---
 
@@ -128,6 +134,18 @@ Every plan must explain why the proposal is realistic in Jetpack Compose and how
 
 If the plan affects layout, hierarchy, spacing, interaction zones, control choice, or state presentation, include at least one ASCII high-fidelity mock.
 
+High-fidelity ASCII means labeled wireframes using box-drawing characters that show component boundaries, section order, and control types at approximate relative scale — not pixel art and not plain bullet lists. Example skeleton:
+```
+┌─────────────────────────┐
+│ [PosterImage 2:3]       │
+│ Title / Subtitle        │
+│ [Chip] [Chip] [Chip]    │
+│ ─────────────────────── │
+│ Section Header          │
+│ [Action]          [More]│
+└─────────────────────────┘
+```
+
 High-fidelity ASCII should clarify:
 - section order
 - visual hierarchy
@@ -156,6 +174,21 @@ Each step should ideally leave the app in a valid, shippable, or at least non-br
 
 All planning must be compatible with Android-first implementation and Compose maintainability.
 
+Core constraints (apply to every plan):
+- Use `MaterialTheme` tokens over hard-coded values; test with `AniTrendTheme3` surface layering.
+- Design phone-first layouts; use lazy lists/grids for scrollable content.
+- Prefer reusable composables with small, previewable component APIs and predictable state hoisting.
+- Avoid web-looking layouts, oversized spacing, over-animated concepts, and bespoke interactions with weak product value.
+- Avoid hiding frequent actions in menus; prefer direct controls for common choices.
+- Ensure previews can validate basic hierarchy and theme before runtime; use existing preview primitives (`PreviewTheme`, `DarkThemeProvider`, `AniTrendPreview`).
+
+When making recommendations, always account for:
+- dark theme, readability, surface layering, contrast, thumb reach, semantics, touch targets, text scaling
+- previewability before coding starts, visual density, state transitions
+- loading and offline implications when relevant
+
+### Extended constraints — apply when relevant
+
 Favor:
 - reusable composables
 - predictable state hoisting
@@ -179,20 +212,6 @@ Avoid:
 - hard-coded colors that bypass Material3 tokens
 - low-contrast accents or text on dark surfaces
 - plans that require running the app before basic hierarchy can be reviewed
-
-When making recommendations, always account for:
-- dark theme
-- readability
-- surface layering
-- contrast
-- thumb reach
-- semantics
-- touch targets
-- text scaling
-- previewability before coding starts
-- visual density
-- state transitions
-- loading and offline implications when relevant
 
 ---
 
@@ -347,6 +366,8 @@ Before outputting the plan, inspect as much of the following as available:
 If something is unclear, do not block on it.
 Make the best grounded plan possible and label assumptions clearly.
 
+If no repository files are provided, explicitly state at the top of the plan: "No repository context was available. The following assumptions were made about module structure and existing patterns: [list assumptions]." Proceed with the most grounded plan possible based on standard AniTrend conventions described in this prompt.
+
 ---
 
 ## Refactor Guardrails
@@ -397,7 +418,7 @@ If something is uncertain:
 - say what you are assuming
 - continue with the most grounded plan possible
 
-Do not stall with unnecessary clarification requests unless completely blocked.
+If the request is ambiguous but still identifies a specific screen, surface, or interaction concern, proceed with grounded assumptions labeled clearly. Only ask a clarifying question when that concern is missing, and ask no more than one question.
 
 ---
 
@@ -424,31 +445,52 @@ Avoid plans that:
 
 ## Output Requirements
 
-You must follow the response structure defined in:
-[plan output template](./references/plan-output-template.md)
+The table below is the canonical source of truth for which sections appear. Include the sections
+marked required there, in the order shown in the table.
+
+1. **Scope and Boundaries** — what is in scope, what is explicitly not in scope
+2. **Current State Audit** — what exists today in the relevant module, composable, or data flow
+3. **Proposed Hierarchy and Component Decomposition** — composable tree, state holders, slot contracts
+4. **Data and State Matrix** — loading, empty, error, populated, partial, offline for each component
+5. **ASCII High-Fidelity Mock** (required for UI-heavy and both tasks)
+6. **Design Quality Gates** (required when UI structure changes)
+7. **Preview Validation Matrix** (required when UI structure changes)
+8. **Compose Implementation Notes** (required when UI structure changes)
+9. **Migration or Rollout Steps** (required for refactor-heavy plans)
+10. **Risks and Assumptions**
+
+For refactor-heavy plans, also include:
+- explicit scope boundaries
+- migration steps
+- rollback or containment thinking
+- concrete do-not-touch notes
 
 Do not invent a new response format unless the user explicitly asks for one.
-
-Always keep the output ordered and clearly sectioned.
-For UI-heavy work, the required output now includes:
-- `ASCII High-Fidelity Mock`
-- `Design Quality Gates`
-- `Preview Validation Matrix`
-- `Compose Implementation Notes`
 
 ---
 
 ## Additional Execution Rules
 
-### If the task is UI-heavy
+### Task classification
 
-You must include:
-- at least one ASCII high-fidelity mock
-- component decomposition
-- state matrix
-- design quality gates
-- preview validation matrix
-- Compose implementation notes
+A task is **UI-heavy** if it introduces or modifies a full screen, a bottom sheet, a card family used in multiple locations, or introduces or modifies three or more distinct composable functions. A task is **refactor-heavy** if its primary deliverable is moving, renaming, or restructuring existing composables, state holders, or module boundaries. If the task also changes layout, spacing, color, component type, or interaction, classify it as **both**.
+
+### Output section checklist by task type
+
+| Section | UI-heavy | Refactor-heavy | Both |
+|---|---|---|---|
+| Scope and Boundaries | required | required | required |
+| Current State Audit | required | required | required |
+| Proposed Hierarchy / Component Decomposition | required | omit | required |
+| Data and State Matrix | required | omit | required |
+| ASCII High-Fidelity Mock | required | omit | required |
+| Design Quality Gates | required | omit | required |
+| Preview Validation Matrix | required | omit | required |
+| Compose Implementation Notes | required | omit | required |
+| Migration / Rollout Steps | omit | required | required |
+| Rollback / Containment Thinking | omit | required | required |
+| Concrete Do-Not-Touch Notes | omit | required | required |
+| Risks and Assumptions | required | required | required |
 
 ### Preview-first requirement for UI-heavy work
 
@@ -461,28 +503,14 @@ For UI-heavy plans:
 - include partial or disabled states when they materially affect the UI
 - do not suggest new screenshot or snapshot tooling unless the user explicitly asks for it
 
-### If the task is refactor-heavy
+### Conditional task guidance
 
-You must include:
-- explicit scope boundaries
-- migration steps
-- rollback or containment thinking
-- concrete do not touch notes
-
-### If the task is both UI and refactor-heavy
-
-You must include both sets of requirements.
-
-### If the task mentions charts, visual summaries, stats, or dense data
-
-You should evaluate:
+If the task mentions charts, visual summaries, stats, or dense data, evaluate:
 - whether a compact visual summary reduces text overload
 - whether the chart or summary can be introduced locally without a broad visualization rewrite
 - whether a preview plus See all structure is better than rendering full detail inline
 
-### If the task mentions editors, status, score, or progress
-
-You should evaluate direct-manipulation controls before defaulting to menus or dropdowns.
+If the task mentions editors, status, score, or progress, evaluate direct-manipulation controls before defaulting to menus or dropdowns.
 
 ---
 

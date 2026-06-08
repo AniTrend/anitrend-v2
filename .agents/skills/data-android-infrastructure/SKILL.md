@@ -39,7 +39,7 @@ capturing and `RequestCallback` signalling.
 | Strategy | When to use |
 |---|---|
 | `OnlineStrategy` | Default. Checks `ISupportConnectivity.isConnected` before executing. Throws `RequestError(connectivityError)` if offline. Use for any source that makes a live network call. |
-| `OfflineStrategy` | Skips the connectivity check. Use for sources backed by network-level caching (cache-control headers, OkHttp interceptor cache) where the network client handles offline fallback transparently. |
+| `OfflineStrategy` | Use only when the endpoint is backed by OkHttp cache or cache-control headers so the client can serve a cached response without a live connection. Do not use it for endpoints that have no network-level cache. |
 
 Both strategies:
 - Catch all `Throwable`s from the block and convert them to `RequestError` via
@@ -76,8 +76,14 @@ fun <T> Scope.offline(): OfflineStrategy<T>
 fun Scope.cacheLocalSource(): CacheDao
 ```
 
-Always prefer `get<ConcreteMapper>()` over bare `get()` inside `graphQLController(...)` Koin
-bindings so generic type resolution stays explicit.
+## Controller choice
+
+- Use `graphQLController(...)` when the source returns `Response<GraphQLResponse<*>>` from a
+  `@GRAPHQL` Retrofit method.
+- Use `defaultController(...)` for plain REST responses that are not wrapped in a GraphQL
+  envelope.
+- When passing a mapper argument inside either controller binding, always use
+  `get<ConcreteMapper>()` instead of bare `get()`.
 
 ## `data/android` as a transitive dependency
 

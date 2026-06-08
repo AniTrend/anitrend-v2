@@ -38,7 +38,9 @@ Use Argent device discovery first:
 - If no ready Android target exists, boot one with `argent_boot-device` using an AVD from `avds`.
 
 Decision point:
-- If multiple emulators are booted, pick one serial and keep it stable for the entire investigation.
+- If multiple emulators are booted, pick the one whose AVD name or API level most closely matches
+  the failure environment. If no match is determinable, select the first device returned by
+  `argent_list-devices` and state the chosen serial in the summary.
 
 2. Launch the app explicitly on the target emulator.
 
@@ -66,7 +68,8 @@ Quality check:
 - `argent_debugger-log-registry`
 
 Decision point:
-- If logs already show a crash, request error, or serializer exception, follow that signal first.
+- If logs already show a crash, request error, or serializer exception, record that line as the
+  primary evidence and continue to component tree inspection so you can confirm the UI state.
 - If logs are quiet but UI is wrong, move to network and state inspection.
 
 6. Inspect JS-level network requests tied to the repro.
@@ -91,7 +94,8 @@ Decision point:
 - If native logs confirm backend shape mismatch, fix contract/mapping.
 - If payload is correct but UI state is wrong, fix ViewModel/state/rendering logic.
 
-9. Optional fallback: Chucker DB export path (only when explicitly needed).
+9. Optional fallback: Chucker DB export path (only when explicitly needed and after steps 5-8 do
+  not name the root cause).
 
 Use this only when Argent evidence is insufficient and debug DB inspection is required.
 
@@ -129,7 +133,9 @@ The summary should name:
 
 When fallback DB inspection is used, keep these repo-specific checks.
 
-5. Verify Chucker is available in the installed build before assuming debug traffic exists.
+### Availability check
+
+- Verify Chucker is available in the installed build before assuming debug traffic exists.
 
 Repo-specific context:
 - AniTrend includes Chucker only in debug builds.
@@ -148,7 +154,9 @@ Decision point:
 - If `run-as` fails, you are likely not on a debuggable build or not targeting the right package.
 - If no Chucker database is present, continue with logs and app data relevant to the failing module.
 
-6. Pull Chucker database files from the app sandbox without rooting the device.
+### Export
+
+- Pull Chucker database files from the app sandbox without rooting the device.
 
 Preferred path:
 
@@ -183,7 +191,9 @@ Quality check:
 - The copied main database file should be non-empty.
 - Keep the `-wal` file when present so recent writes are not lost.
 
-7. Query the exported database before dropping to ad-hoc SQL.
+### Query
+
+- Query the exported database before dropping to ad-hoc SQL.
 
 Preferred path:
 
@@ -206,7 +216,9 @@ This helper:
 - supports keyword filtering without hardcoding one schema version
 - prints the resolved database, table, and selected columns before the rows
 
-8. Inspect the schema before assuming table names.
+### Schema
+
+- Inspect the schema before assuming table names.
 
 ```bash
 sqlite3 /tmp/anitrend-chucker/<db-name> ".tables"

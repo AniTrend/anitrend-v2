@@ -45,12 +45,20 @@ Retrofit interface method (suspend fun)
 ## Adding a new GraphQL query
 
 1. Define a Retrofit `interface` method annotated with `@GraphQuery("OperationName")` (from the
-   `retrofit-graphql` library). Place it next to the existing API interfaces in the relevant data
-   module.
+  `retrofit-graphql` library). Place it in the same package as the existing API interfaces for
+  that feature module, typically `data/src/main/kotlin/co/anitrend/data/<feature>/source/remote/`.
 2. Write the `.graphql` query file in the `assets/graphql/` directory of the same module.
-3. Create or reuse a `GraphQLController` instance, passing the mapper and dispatcher.
+3. Inject a new `GraphQLController` instance via Koin for each data source class; do not share one
+  controller instance across unrelated source classes.
 4. In the data source `invoke()` / `getX()` method, call the Retrofit method then feed the result
    to the controller.
+
+## Controller choice
+
+- Use `graphQLController(...)` when the endpoint returns `Response<GraphQLResponse<*>>` and the
+  source is annotated with `@GRAPHQL`.
+- Use `defaultController(...)` for REST endpoints that return a plain response body instead of a
+  GraphQL envelope.
 
 ## Remote source binding — annotation and type contract
 
@@ -97,8 +105,9 @@ suspend fun getMediaDetail(
   `:domain`; the data module should implement and wire them rather than inventing local contracts.
 - Keep the module `Types.kt` limited to aliases. Put concrete use-case subclasses in the module
   `usecase/` package.
-- When wiring `graphQLController(...)` in Koin, prefer `get<ConcreteMapper>()` over bare `get()`
-  so generic mapper/controller resolution stays explicit and stable.
+- When wiring `graphQLController(...)` or `defaultController(...)` in Koin, prefer
+  `get<ConcreteMapper>()` over bare `get()` for mapper arguments so generic resolution stays
+  explicit and stable. Do not apply this rule to dispatcher or strategy arguments.
 
 ## Edge modeling rules
 

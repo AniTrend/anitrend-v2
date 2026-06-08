@@ -76,7 +76,8 @@ UNION ALL SELECT 'media_recommendation_connection', count(*) FROM media_recommen
 "
 ```
 
-If all counts are **zero** with a non-trivial WAL checkpoint result, data never reached Room. Proceed to Step 4.
+If all counts are **zero** regardless of the WAL checkpoint result, data never reached Room. Proceed
+to Step 4.
 
 ---
 
@@ -91,12 +92,15 @@ sqlite3 /tmp/anitrend-db/anitrend-db \
 ```
 
 **Collision confirmed** when:
-- A `MEDIA|<id>` row exists (written by the `Media.Detail` source), **and**
-- No rows exist for the expected new request types (e.g., `MEDIA_STUDIOS|<id>`, `MEDIA_STATS|<id>`).
+- A row exists with `request = 'MEDIA'` and `cache_item_id = <id>` (written by the
+  `Media.Detail` source), **and**
+- No rows exist with `request IN ('MEDIA_STUDIOS', 'MEDIA_STATS', 'MEDIA_RELATIONS',
+  'MEDIA_RECOMMENDATIONS')` for the same `cache_item_id`.
 
 This means the new source variants checked `shouldRefresh("MEDIA", id)`, found the Detail entry, and skipped the network entirely.
 
-**No entries at all** for the ID → source `invoke()` may not be called from the UI. Check ViewModel/LaunchedEffect wiring.
+**No entries at all** for the ID → source `invoke()` may not be called from the UI. Stop the
+runbook and check ViewModel/LaunchedEffect wiring instead.
 
 ---
 
