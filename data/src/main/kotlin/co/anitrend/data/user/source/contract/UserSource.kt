@@ -16,6 +16,8 @@
  */
 package co.anitrend.data.user.source.contract
 
+import androidx.paging.PagingData
+import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.data.android.cache.extensions.invoke
@@ -116,6 +118,18 @@ internal class UserSource {
                 block = ::getProfile,
             )
             return observable()
+        }
+    }
+
+    abstract class Paging {
+        protected lateinit var query: UserQuery.Search
+
+        abstract operator fun invoke(param: UserParam.Search): Flow<PagingData<User>>
+
+        abstract val pagingMediator: IDataSource
+
+        protected fun assignQuery(param: UserParam.Search) {
+            query = UserQuery.Search(param)
         }
     }
 

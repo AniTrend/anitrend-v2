@@ -83,8 +83,12 @@ adb -s <serial> shell pidof -s <package-name>
 ```
 
 Decision point:
-- If more than one AniTrend package is installed, pick the exact package that matches the variant you just installed.
-- If the process exits too quickly to keep a PID, fall back to unscoped `adb logcat -d` immediately after repro.
+- If more than one AniTrend package is installed, match the package name to the flavor segment in
+	the package name. If that is still ambiguous, ask the user to confirm the exact package name
+	before proceeding.
+- If the process exits too quickly to keep a PID, start a background capture with
+	`adb -s <serial> logcat -c && adb -s <serial> logcat > /tmp/anitrend.log &`, reproduce the
+	failure, then stop the capture and inspect `/tmp/anitrend.log`.
 
 7. Capture focused logs for startup/debug failures.
 
@@ -108,11 +112,11 @@ Quality check:
 
 9. Escalate to the deeper runtime workflow when logs alone are insufficient.
 
-Use the `android-runtime-investigation` skill (Argent-first) when you need to:
-- correlate UI failures with recorded HTTP responses
-- inspect JS and native network traffic beyond basic logcat
-- map suspicious UI nodes back to source files
-- pull Chucker evidence only as an optional fallback
+Use the `android-runtime-investigation` skill when you need to:
+- correlate UI failures with recorded HTTP responses via Chucker
+- inspect network traffic captured by the debug HTTP inspector
+- map suspicious UI nodes back to source files via UIAutomator dumps
+- pull Chucker or Room database evidence for deeper inspection
 
 ## Wireless ADB Branch
 
@@ -148,8 +152,12 @@ adb -s <serial> install app/build/outputs/apk/github/debug/app-github-debug.apk
 - Signature mismatch or stale state:
 
 ```bash
-adb -s <serial> shell pm clear co.anitrend
+adb -s <serial> uninstall co.anitrend
+adb -s <serial> install app/build/outputs/apk/github/debug/app-github-debug.apk
 ```
+
+Use `pm clear` only when the user has agreed to lose app data and the install/uninstall path does
+not resolve the stale state.
 
 ## Completion Checklist
 

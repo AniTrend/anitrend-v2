@@ -22,18 +22,31 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import co.anitrend.arch.extension.ext.extra
 import co.anitrend.android.core.compose.design.ContentWrapper
+import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.common.media.ui.controller.extensions.handleMediaItemNavigation
 import co.anitrend.core.component.FeatureReady
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
+import co.anitrend.navigation.CharacterRouter
+import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.SearchRouter
+import co.anitrend.navigation.StaffRouter
+import co.anitrend.navigation.StudioRouter
+import co.anitrend.navigation.extensions.asNavPayload
 import co.anitrend.navigation.extensions.nameOf
+import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.navigation.model.common.IParam
 import co.anitrend.search.component.compose.SearchScreenContent
 import co.anitrend.search.component.presenter.SearchPresenter
+import co.anitrend.search.component.viewmodel.SearchScope
+import co.anitrend.search.component.viewmodel.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchScreen : AniTrendScreen() {
     private val presenter by inject<SearchPresenter>()
+    private val settings by inject<Settings>()
+    private val viewModel by viewModel<SearchViewModel>()
     private val param by extra(
         key = nameOf<SearchRouter.SearchParam>(),
         default = SearchRouter::SearchParam,
@@ -47,15 +60,47 @@ class SearchScreen : AniTrendScreen() {
                     stateFlow = FeatureReady.loadState,
                     config = FeatureReady.config,
                     param = param,
+                    onLoad = {
+                        viewModel.initialize(param)
+                    },
                     onClick = {},
                 ) {
                     SearchScreenContent(
-                        query = param.query.orEmpty(),
-                        onQueryChange = {},
-                        onSearch = {},
-                        active = false,
-                        onActiveChange = {},
+                        settings = settings,
+                        viewModel = viewModel,
                         onBackClick = onBackPressedDispatcher::onBackPressed,
+                        onSeeAllClick = viewModel::showScope,
+                        onExitScope = viewModel::showHome,
+                        onMediaItemClick = { navigationParam ->
+                            handleMediaItemNavigation(
+                                param = navigationParam,
+                                settings = settings,
+                            )
+                        },
+                        onUserClick = { param ->
+                            ProfileRouter.startActivity(
+                                context = this@SearchScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onStudioClick = { param ->
+                            StudioRouter.startActivity(
+                                context = this@SearchScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onStaffClick = { param ->
+                            StaffRouter.startActivity(
+                                context = this@SearchScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
+                        onCharacterClick = { param ->
+                            CharacterRouter.startActivity(
+                                context = this@SearchScreen,
+                                navPayload = param.asNavPayload(),
+                            )
+                        },
                     )
                 }
             }
@@ -81,7 +126,8 @@ class SearchScreen : AniTrendScreen() {
             Intent.ACTION_SEARCH, GOOGLE_ACTION_SEARCH -> {
                 val query = intent.getStringExtra(SearchManager.QUERY)
                 if (!query.isNullOrEmpty()) {
-                    // TODO: Add view model event to emit to for a new search query
+                    viewModel.showScope(SearchScope.HOME)
+                    viewModel.submitSearch(query)
                     return
                 }
             }

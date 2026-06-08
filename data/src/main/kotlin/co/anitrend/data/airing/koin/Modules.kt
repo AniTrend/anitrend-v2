@@ -24,8 +24,6 @@ import co.anitrend.data.airing.converters.AiringEntityConverter
 import co.anitrend.data.airing.converters.AiringModelConverter
 import co.anitrend.data.airing.entity.filter.AiringQueryFilter
 import co.anitrend.data.airing.mapper.AiringMapper
-import co.anitrend.data.airing.mapper.AiringWriter
-import co.anitrend.data.airing.mapper.AiringWriterContract
 import co.anitrend.data.airing.repository.AiringScheduleRepository
 import co.anitrend.data.airing.source.AiringScheduleSourceImpl
 import co.anitrend.data.airing.source.contract.AiringScheduleSource
@@ -88,12 +86,6 @@ private val converterModule =
 
 private val mapperModule =
     module {
-        factory<AiringWriterContract> {
-            AiringWriter(
-                mediaPersistence = get<co.anitrend.data.media.mapper.MediaMapper.Embed>(),
-                localSource = store().airingScheduleDao(),
-            )
-        }
         factory {
             AiringMapper.Airing(
                 localSource = store().airingScheduleDao(),
@@ -103,7 +95,6 @@ private val mapperModule =
         factory {
             AiringMapper.Paged(
                 mediaMapper = get(),
-                writer = get(),
                 localSource = store().airingScheduleDao(),
                 converter = get(),
             )

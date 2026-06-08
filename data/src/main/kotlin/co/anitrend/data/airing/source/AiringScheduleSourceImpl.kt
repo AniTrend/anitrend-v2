@@ -51,7 +51,7 @@ internal class AiringScheduleSourceImpl {
         override fun invoke(param: AiringParam.Find): Flow<PagingData<Media>> {
             val source =
                 AiringSchedulePagingSource(
-                    cacheIdentity = AiringCache.Identity.Paged(),
+                    cacheIdentity = AiringCache.Identity.Paged(param),
                     remoteSource = remoteSource,
                     localSource = localSource,
                     mediaLocalSource = mediaLocalSource,

@@ -34,8 +34,8 @@ interface IUserRepository {
         suspend fun getProfile(param: UserParam.Profile): State
     }
 
-    interface Search<State : UiState<*>> {
-        suspend fun getPaged(param: UserParam.Search): State
+    interface Search<State> {
+        fun getPaged(param: UserParam.Search): State
     }
 
     interface ToggleFollow<State : UiState<*>> : IUserRepository {

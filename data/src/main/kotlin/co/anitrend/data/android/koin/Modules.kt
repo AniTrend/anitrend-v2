@@ -40,6 +40,7 @@ import co.anitrend.data.auth.helper.AuthenticationHelper
 import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import co.anitrend.data.auth.koin.authModules
 import co.anitrend.data.carousel.koin.carouselModules
+import co.anitrend.data.character.koin.characterModules
 import co.anitrend.data.core.api.converter.AniTrendConverterFactory
 import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import co.anitrend.data.core.api.factory.AniListApiFactory
@@ -58,6 +59,7 @@ import co.anitrend.data.media.koin.mediaModules
 import co.anitrend.data.medialist.koin.mediaListModules
 import co.anitrend.data.rank.koin.rankModules
 import co.anitrend.data.review.koin.reviewModules
+import co.anitrend.data.staff.koin.staffModules
 import co.anitrend.data.status.model.StatusModel
 import co.anitrend.data.tag.koin.tagModules
 import co.anitrend.data.recommendation.koin.recommendationModules
@@ -243,6 +245,7 @@ val dataModules =
             genreModules,
             mediaModules,
             carouselModules,
+            characterModules,
             authModules,
             accountModules,
             userModules,
@@ -256,6 +259,7 @@ val dataModules =
             reviewModules,
             *studioModules.toTypedArray(),
             *recommendationModules.toTypedArray(),
+            *staffModules.toTypedArray(),
             edgeModules,
         )
     }

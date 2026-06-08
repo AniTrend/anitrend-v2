@@ -27,18 +27,19 @@ abstract class EmbedMapper<S, D> :
     protected abstract val converter: SupportConverter<S, D>
 
     open suspend fun onEmbedded(source: List<S>) {
-        entities = onResponseMapFrom(source)
+        entities = entities.orEmpty() + onResponseMapFrom(source)
     }
 
     open suspend fun onEmbedded(source: S?) {
         if (source != null) {
-            entities = onResponseMapFrom(listOf(source))
+            entities = entities.orEmpty() + onResponseMapFrom(listOf(source))
         }
     }
 
     open override suspend fun persistEmbedded() {
-        onResponseDatabaseInsert(entities.orEmpty())
+        val pending = entities.orEmpty()
         entities = null
+        onResponseDatabaseInsert(pending)
     }
 
     /**

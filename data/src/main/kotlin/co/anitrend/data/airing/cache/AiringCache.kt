@@ -20,6 +20,7 @@ import co.anitrend.data.android.cache.datasource.CacheLocalSource
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.model.CacheRequest
 import co.anitrend.data.android.cache.repository.CacheStorePolicy
+import co.anitrend.domain.airing.model.AiringParam
 import org.threeten.bp.Instant
 
 internal class AiringCache(
@@ -39,8 +40,32 @@ internal class AiringCache(
 
     sealed class Identity : CacheIdentity {
         class Paged(
-            override val id: Long = 0,
+            val param: AiringParam.Find,
+            override val id: Long = param.cacheIdentityValue(),
             override val key: String = "airing_schedule_paged",
         ) : Identity()
     }
 }
+
+private fun AiringParam.Find.cacheIdentityValue(): Long =
+    listOf(
+        id,
+        mediaId,
+        episode,
+        airingAt,
+        notYetAired,
+        id_not,
+        id_in,
+        id_not_in,
+        mediaId_not,
+        mediaId_in,
+        mediaId_not_in,
+        episode_not,
+        episode_in,
+        episode_not_in,
+        episode_greater,
+        episode_lesser,
+        airingAt_greater,
+        airingAt_lesser,
+        sort,
+    ).toString().hashCode().toLong()

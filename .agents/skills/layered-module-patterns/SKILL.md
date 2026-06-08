@@ -15,6 +15,9 @@ Use this skill to choose the closest existing pattern before adding or documenti
 For the concrete `review` spine and Android helper anchors, use the
 [layer example matrix](../reference-map/references/layer-example-matrix.md).
 
+The Rules section below is authoritative. If a rule conflicts with the pattern matrix or the notes,
+the Rules section wins.
+
 ## Pattern matrix
 
 | Pattern | Reference module | When to copy it | Domain shape | Data shape | Entry-point shape |
@@ -62,27 +65,45 @@ other Android helper APIs, stop here and pair this matrix with
 
 ## Rules
 
+### Layer boundary rules
+
 - Keep params, repository contracts, and abstract use cases in `:domain`.
 - Keep concrete repositories, sources, controllers, converters, mappers, and Koin bindings in
   `:data`.
-- Keep `Types.kt` lean: controller aliases, repository aliases, and interactor aliases only.
+- Keep `Types.kt` limited to controller aliases, repository aliases, and interactor aliases only.
+- Use `tag` as the smallest baseline only. Do not treat it as the canonical pattern for media,
+  review, or other mutation-heavy modules.
+
+### Source wiring rules
+
 - For offline-first non-paged read flows, wire the repository as `source create source(param)`
   over a source that extends `AbstractCoreDataSource` and returns a local observable flow.
 - For offline-first paged read flows, wire the repository as `source create source(param)` over a
-  source that reads from Room via `observable(): Flow<PagedList<T>>`. Do not keep a separate
-  factory-based network paging path once a local source-of-truth exists.
+  source that reads from Room via `observable(): Flow<PagedList<T>>`. The source may coordinate
+  refresh timing and paging triggers, but it should not convert remote payloads into domain models
+  inline or keep a separate network-only paging path when a local source-of-truth exists.
+- Mappers own persistence. If the local table shape depends on request context such as a parent id
+  or page number, pass that context into the mapper before invoking the controller.
+- Converters own projection from local entity or view types into domain models consumed by the
+  `FlowPagedListBuilder` pipeline.
+
+### Import boundary rules
+
 - Imports like `co.anitrend.data.review.GetReviewPagedInteractor` in `feature` or `task` modules
   are acceptable because they alias domain use cases. Imports of `ReviewRepository`,
   `ReviewSourceImpl`, `ReviewMapper`, or remote models are not.
-- Split repository contracts by operation when the module mixes detail/paged/sync/save/delete/rate
-  behavior. Do not collapse unrelated flows into one broad repository API.
-- Prefer task-backed mutation flows when the existing user flow already uses WorkManager or when
-  the write should survive process transitions. `medialist`, `review`, and `favourite` are the
-  current references.
 - Do not recreate reusable Android-side helpers in `:feature:*`, `:common:*`, or `:task:*` when
   `:android:*` or `:app:core` already owns the platform abstraction.
-- Use `tag` as the smallest baseline only. Do not treat it as the canonical pattern for media,
-  review, or other mutation-heavy modules.
+
+### Design heuristics
+
+- Split repository contracts by operation when the module mixes detail/paged/sync/save/delete/rate
+  behavior. Do not collapse unrelated flows into one broad repository API.
+- A module is hybrid when it performs both read operations and write operations within the same
+  feature boundary.
+- Prefer task-backed mutation flows when the existing user flow already uses WorkManager or when
+  the write must survive process death. `medialist`, `review`, and `favourite` are the current
+  references.
 
 ## Offline-first read notes
 
@@ -97,7 +118,9 @@ other Android helper APIs, stop here and pair this matrix with
 - `observable()` should read Room-backed local state and project it with converters, typically
   across IO and computation dispatcher boundaries.
 - Multi-context entity families should model distinct source variants as inner classes instead of
-  collapsing unrelated query contexts into one broad source contract.
+  collapsing unrelated query contexts into one broad source contract. A family is multi-context
+  when the same entity type is fetched through at least two structurally different query shapes,
+  such as a detail lookup by id and a paged list filtered by criteria.
 - Mutation-only variants such as review save/rate/delete or user follow/update are separate
   source shapes and should not be used as the baseline for non-paged read contracts.
 

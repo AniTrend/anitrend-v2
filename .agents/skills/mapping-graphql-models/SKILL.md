@@ -74,7 +74,8 @@ Interpretation rule:
 
 - `fragments/*` define reusable payload subsets.
 - Model classes under `data/*/model` mirror fragment shape by responsibility and variant.
-- Keep 1:1 shape intent where practical:
+- Keep 1:1 shape intent unless a fragment explicitly extends another via spread, in which case the
+  child variant inherits the parent fields and must only add its own exclusive fields:
   - Base fragment maps to base model contract fields.
   - Core fragment maps to `Core` variant.
   - Extended fragment maps to `Extended` variant.
@@ -82,14 +83,17 @@ Interpretation rule:
 ### 3. Query and Mutation Composition Rule
 
 - Queries should compose fragments that correspond to the model variant consumed by the source path.
-- Mutations should request all fields needed to update local state, not just mutation success flags.
+- Mutations should request only the fields that will be written back to local state as a direct
+  result of the mutation, not just mutation success flags.
 - Operation files in `queries/*` and `mutations/*` should avoid redundant inline field sets when an existing fragment expresses the same shape.
 
 ### 4. Remote Datasource Binding Rule
 
 - Remote datasource `@GraphQuery` value must match operation document name.
 - Response generic container must match operation root and nested fragment shape.
-- If a query returns sidecar payloads, use sidecar model container types rather than overloading primary model containers.
+- A sidecar payload is a secondary object returned alongside the primary result, such as `pageInfo`
+  alongside a list of items. If a query returns sidecar payloads, use dedicated sidecar model
+  container types rather than overloading primary model containers.
 
 ### 5. Source Boundary Rule
 

@@ -157,4 +157,21 @@ internal sealed class UserCache : CacheStorePolicy() {
             override val expiresAt: Instant = instantInPast(minutes = 15),
         ) : CacheIdentity
     }
+
+    class Paged(
+        override val localSource: CacheLocalSource,
+        override val request: CacheRequest = CacheRequest.USER_SEARCH,
+    ) : UserCache() {
+        override suspend fun shouldRefresh(
+            identity: CacheIdentity,
+            expiresAfter: Instant,
+        ): Boolean = isRequestBefore(identity, expiresAfter)
+
+        class Identity(
+            val param: UserParam.Search,
+            override val id: Long = param.search.hashCode().toLong(),
+            override val key: String = "user_search",
+            override val expiresAt: Instant = instantInPast(minutes = 5),
+        ) : CacheIdentity
+    }
 }

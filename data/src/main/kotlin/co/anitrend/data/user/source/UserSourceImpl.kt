@@ -16,7 +16,13 @@
  */
 package co.anitrend.data.user.source
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
+import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
@@ -26,25 +32,30 @@ import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.user.UserAuthController
 import co.anitrend.data.user.UserController
+import co.anitrend.data.user.UserPagedController
 import co.anitrend.data.user.UserProfileFeedController
 import co.anitrend.data.user.UserProfileOverviewController
 import co.anitrend.data.user.UserProfileController
+import co.anitrend.data.user.cache.UserCache
 import co.anitrend.data.user.converter.UserEntityConverter
 import co.anitrend.data.user.converter.UserProfileFeedConverter
 import co.anitrend.data.user.converter.UserProfileOverviewConverter
 import co.anitrend.data.user.converter.UserStatisticPayload
+import co.anitrend.data.user.entity.filter.UserQueryFilter
 import co.anitrend.data.status.datasource.local.StatusLocalSource
 import co.anitrend.data.user.datasource.local.connection.UserProfileFavouriteMediaLocalSource
 import co.anitrend.data.user.datasource.local.connection.UserProfileReviewLocalSource
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.remote.UserRemoteSource
 import co.anitrend.data.user.model.container.UserModelContainer
+import co.anitrend.data.user.model.query.UserQuery
 import co.anitrend.data.user.converter.UserViewEntityConverter
 import co.anitrend.data.user.source.contract.UserSource
 import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.user.entity.User
 import co.anitrend.domain.user.entity.profile.ProfileFeed
 import co.anitrend.domain.user.entity.profile.ProfileOverview
+import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -200,6 +211,51 @@ internal class UserSourceImpl {
                     localSource.clearByUserName(requireNotNull(query.param.name))
                 }
             }
+        }
+    }
+
+    class Paging(
+        private val remoteSource: UserRemoteSource,
+        private val localSource: UserLocalSource,
+        private val controller: UserPagedController,
+        private val converter: UserEntityConverter,
+        private val clearDataHelper: IClearDataHelper,
+        private val filter: UserQueryFilter.Search,
+        private val dispatcher: ISupportDispatcher,
+    ) : UserSource.Paging() {
+        private val _pagingMediator =
+            UserPagingSource(
+                cacheIdentity = UserCache.Paged.Identity(UserParam.Search("")),
+                remoteSource = remoteSource,
+                localSource = localSource,
+                controller = controller,
+                clearDataHelper = clearDataHelper,
+                filter = filter,
+                query = UserQuery.Search(UserParam.Search("")),
+                dispatcher = dispatcher,
+            )
+
+        override val pagingMediator: IDataSource
+            get() = _pagingMediator
+
+        override fun invoke(param: UserParam.Search): Flow<PagingData<User>> {
+            assignQuery(param)
+            _pagingMediator.apply {
+                cacheIdentity = UserCache.Paged.Identity(param)
+                query = UserQuery.Search(param)
+            }
+
+            return Pager(
+                config =
+                    PagingConfig(
+                        pageSize = DEFAULT_PAGE_SIZE,
+                        initialLoadSize = DEFAULT_PAGE_SIZE,
+                        prefetchDistance = DEFAULT_PAGE_SIZE,
+                        enablePlaceholders = false,
+                    ),
+                remoteMediator = _pagingMediator,
+                pagingSourceFactory = _pagingMediator.pagingSourceFactory(),
+            ).flow.map { pagingData -> pagingData.map { entity -> converter.convertFrom(entity) } }
         }
     }
 

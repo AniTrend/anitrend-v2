@@ -21,11 +21,13 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import co.anitrend.data.common.FuzzyDateInt
 import co.anitrend.data.core.common.IEntityId
+import co.anitrend.support.query.builder.annotation.EntitySchema
 
 @Entity(
     tableName = "character",
     primaryKeys = ["id"],
 )
+@EntitySchema
 internal data class CharacterEntity(
     @ColumnInfo(name = "age") val age: Int?,
     @ColumnInfo(name = "date_of_birth") val dateOfBirth: FuzzyDateInt?,

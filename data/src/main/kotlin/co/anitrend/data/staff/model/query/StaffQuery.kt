@@ -19,19 +19,32 @@ package co.anitrend.data.staff.model.query
 import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.staff.model.StaffParam
 
-internal data class StaffQuery(
-    val param: StaffParam.Find,
-) : IGraphPayload {
-    /**
-     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
-     */
-    override fun toMap() =
-        mapOf(
-            "id" to param.id,
-            "search" to param.search,
-            "id_not" to param.id_not,
-            "id_in" to param.id_in,
-            "id_not_in" to param.id_not_in,
-            "sort" to param.sort,
-        )
+internal sealed class StaffQuery : IGraphPayload {
+    data class Find(
+        val param: StaffParam.Find,
+    ) : StaffQuery() {
+        override fun toMap() =
+            mapOf(
+                "id" to param.id,
+                "search" to param.search,
+                "id_not" to param.id_not,
+                "id_in" to param.id_in,
+                "id_not_in" to param.id_not_in,
+                "sort" to param.sort,
+            )
+    }
+
+    data class Paged(
+        val param: StaffParam.Paged,
+    ) : StaffQuery() {
+        override fun toMap() =
+            mapOf(
+                "id_in" to param.id_in,
+                "id_not" to param.id_not,
+                "id_not_in" to param.id_not_in,
+                "search" to param.search,
+                "sort" to param.sort,
+                "isBirthday" to param.isBirthday,
+            )
+    }
 }

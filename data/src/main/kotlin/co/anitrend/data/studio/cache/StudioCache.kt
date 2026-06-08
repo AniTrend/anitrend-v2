@@ -19,7 +19,9 @@ package co.anitrend.data.studio.cache
 import co.anitrend.data.android.cache.datasource.CacheLocalSource
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.model.CacheRequest
+import co.anitrend.data.android.cache.helper.CanonicalCacheIdentity
 import co.anitrend.data.android.cache.repository.CacheStorePolicy
+import co.anitrend.domain.studio.model.StudioParam
 import org.threeten.bp.Instant
 
 internal class StudioCache(
@@ -31,10 +33,52 @@ internal class StudioCache(
         expiresAfter: Instant,
     ): Boolean = isRequestBefore(identity, expiresAfter)
 
-    enum class Identity(
-        override val id: Long,
-        override val key: String,
-    ) : CacheIdentity {
-        DETAIL(10L, "studio_detail"),
+    sealed class Identity : CacheIdentity {
+        data object DETAIL : Identity() {
+            override val id: Long = 10L
+            override val key: String = "studio_detail"
+        }
+
+        data class Search(
+            val param: StudioParam.Find? = null,
+            override val id: Long = param.cacheIdentityValue(),
+            override val key: String = "studio_search",
+        ) : Identity()
     }
+}
+
+private fun StudioParam.Find?.cacheIdentityValue(): Long =
+    this
+        ?.toCanonicalKey()
+        ?.let(CanonicalCacheIdentity::idFromCanonicalKey)
+        ?: 0L
+
+private fun StudioParam.Find.toCanonicalKey(): String {
+    val entries =
+        buildMap<String, String> {
+            id?.let { put("id", it.toString()) }
+            id_not?.let { put("id_not", it.toString()) }
+            id_in
+                ?.sorted()
+                ?.takeIf(List<Long>::isNotEmpty)
+                ?.let { put("id_in", it.joinToString(",")) }
+            id_not_in
+                ?.sorted()
+                ?.takeIf(List<Long>::isNotEmpty)
+                ?.let { put("id_not_in", it.joinToString(",")) }
+            sort
+                ?.map { it.name }
+                ?.takeIf(List<String>::isNotEmpty)
+                ?.let { put("sort", it.joinToString(",")) }
+            search
+                ?.trim()
+                ?.lowercase()
+                ?.takeIf(String::isNotBlank)
+                ?.let { put("search", it) }
+        }
+
+    return entries
+        .toSortedMap()
+        .entries
+        .joinToString("|") { (key, value) -> "$key=$value" }
 }

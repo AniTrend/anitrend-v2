@@ -29,8 +29,16 @@ argument-hint: '[what are you testing, for example: converter, mapper, use case,
 4. Use `every` and `verify` for regular calls.
 5. Use `coEvery` and `coVerify` for suspend calls.
 6. Pair MockK with Turbine when validating `Flow` or `DataState` emissions.
-7. Use Koin's `MockProviderRule.create { mockk() }` for DI graph tests instead of building custom fake modules first.
+7. Use Koin's `MockProviderRule.create { mockk() }` for DI graph tests when the test is in
+   `androidTest` and validates the real module graph.
 8. Finish with meaningful assertions or verification, then use `confirmVerified` when interaction coverage matters.
+
+## Source set decision
+
+- Place tests in `src/test` by default.
+- Move to `androidTest` only when the code under test directly invokes Room, ContentResolver,
+  WorkManager scheduling, or another Android runtime dependency that requires a device or emulator
+  to instantiate.
 
 ## Workflow
 
@@ -38,14 +46,17 @@ argument-hint: '[what are you testing, for example: converter, mapper, use case,
    Use a pure unit test for converters, mappers, state holders, use cases, and most repository helpers.
    Use `androidTest` only when Android APIs, startup wiring, or integration behavior requires it.
 2. Check the closest repo reference before inventing a pattern.
-   Read [project wiring](./references/project-wiring.md) for where MockK is injected and where current tests live.
+   Read [project wiring](./references/project-wiring.md) and [MockK API notes](./references/mockk-api-notes.md)
+   for where MockK is injected and how the repo currently stubs collaborators.
 3. Choose the smallest useful mock surface.
    Mock interfaces, gateways, DAOs, helpers, or repositories.
    Keep data fixtures real unless the type is too expensive or awkward to construct.
 4. Stub with the matching API.
    Use `every { ... } returns ...` for synchronous members.
    Use `coEvery { ... } returns ...` for suspending collaborators.
-   Use `just Runs` or `just Awaits` only when the return type or behavior requires it.
+   Use `just Runs` for non-suspending functions that return `Unit`. Use `just Awaits` for
+   suspending functions that return `Unit`. For all other return types, provide an explicit return
+   value with `returns`.
 5. Execute under the standard test runtime.
    Use `runTest` for suspend paths.
    Use Turbine for `Flow` assertions.
@@ -61,9 +72,12 @@ argument-hint: '[what are you testing, for example: converter, mapper, use case,
 
 - Use MockK to control upstream collaborators.
 - Use Turbine to assert emissions.
-- Prefer asserting the emission sequence the UI or caller depends on, not every internal transformation.
+- Assert every emission that a downstream collector would act on, typically `Loading`, `Success`,
+  and `Error`. Skip internal buffering or operator-level intermediate values that are not part of
+  the public contract.
 - If the stream is long-lived, end with `cancelAndIgnoreRemainingEvents()` or use `expectMostRecentItem()` when that matches the contract better.
-- Start with a unit test when the flow can be exercised without Android runtime. Use `androidTest` only when the source depends on Room, a `ContentResolver`, or another Android integration point.
+- Start with a unit test when the flow can be exercised without Android runtime. Use `androidTest`
+   only when the source depends on Room, a `ContentResolver`, or another Android integration point.
 
 ### Worker logic
 

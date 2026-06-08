@@ -17,10 +17,10 @@ or device.
   auto-adds JUnit, MockK, Turbine, and coroutines-test to every module's test configurations
 - `buildSrc/src/main/java/co/anitrend/buildSrc/plugins/components/ProjectDependencies.kt` —
   shows where WorkManager test utilities are referenced (currently commented out)
-- `.github/skills/mockk-testing-patterns/SKILL.md` — repo-specific MockK workflow, decision
+- `.agents/skills/mockk-testing-patterns/SKILL.md` — repo-specific MockK workflow, decision
   points, plus extended examples for flow assertions, worker logic coverage, and Koin module validation
-- `.github/skills/koin-module-wiring/SKILL.md` — binding patterns and module aggregation rules
-- `.github/skills/testing-guidelines/references/koin-testing.md` — Koin test primitives and the
+- `.agents/skills/koin-module-wiring/SKILL.md` — binding patterns and module aggregation rules
+- `.agents/skills/testing-guidelines/references/koin-testing.md` — Koin test primitives and the
   repo's current DI graph verification pattern
 
 ## Unit tests (`test/`)
@@ -36,30 +36,35 @@ or device.
       cancelAndIgnoreRemainingEvents()
   }
   ```
-- Use `kotlinx-coroutines-test` (`runTest`, `TestCoroutineDispatcher`) for any suspend-function
-  tests.
+- Use `kotlinx-coroutines-test` (`runTest`, `StandardTestDispatcher`, or
+  `UnconfinedTestDispatcher`) for any suspend-function tests.
 - All test dependencies are injected automatically — no manual `testImplementation` declarations
   needed for the standard stack.
+
+## Source set decision
+
+- Place tests in `src/test` by default.
+- Move to `androidTest` only when the code under test directly invokes Room, ContentResolver,
+  WorkManager scheduling, or another Android runtime dependency that cannot be instantiated in a
+  plain JVM test.
 
 ## Koin testing
 
 - Use `KoinTest` when the test needs Koin-backed lookup via `get()` or `by inject()`.
 - For data-layer DI changes, add a focused `src/test` resolution test for the changed binding or
-  writer path, not just a broad graph check. The test should start Koin with the narrow module set,
-  provide mocks for unrelated collaborators, and assert that the concrete binding under change
+  writer path. Start Koin with only the module(s) that directly declare or aggregate the binding
+  under test, provide mocks for unrelated collaborators, and assert that the concrete binding
   resolves successfully.
-- For DI graph validation, follow the repo's current pattern from
-  `data/src/androidTest/kotlin/co/anitrend/data/android/koin/ModulesTest.kt`:
-  use `MockProviderRule.create { mockk() }` with `checkModules { modules(...) }`.
-- Treat the `androidTest` graph check as a secondary safety net. It is too broad and too far from
-  normal `testDebugUnitTest` coverage to be the only guard for central `:data` Koin wiring.
+- Use the `androidTest` graph-check pattern from
+  `data/src/androidTest/kotlin/co/anitrend/data/android/koin/ModulesTest.kt` as a secondary
+  regression guard for central `:data` wiring and app-wide aggregators.
 - When a test needs to replace one binding inside an active Koin context, prefer Koin test
   utilities such as `declareMock` or `declare` instead of editing production modules just for test
   coverage.
 - Use Koin graph checks to validate that module wiring resolves correctly; use regular unit tests
   to validate behavior of the resolved objects.
-- Keep graph verification narrow. Load only the module set relevant to the feature, data package,
-  or task being tested.
+- Keep graph verification narrow. Load only the module(s) that directly declare or aggregate the
+  binding under test, plus the minimum stub modules needed to satisfy its declared dependencies.
 - If you add or refactor a module aggregator, writer factory, embed mapper dependency, or worker
   binding, add or update a Koin validation test alongside it.
 

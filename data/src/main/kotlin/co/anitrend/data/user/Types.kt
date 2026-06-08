@@ -16,6 +16,7 @@
  */
 package co.anitrend.data.user
 
+import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.android.controller.graphql.GraphQLController
 import co.anitrend.data.user.converter.UserStatisticPayload
@@ -27,10 +28,12 @@ import co.anitrend.domain.user.entity.profile.ProfileFeed
 import co.anitrend.domain.user.entity.profile.ProfileOverview
 import co.anitrend.domain.user.interactor.UserUseCase
 import co.anitrend.domain.user.repository.IUserRepository
+import kotlinx.coroutines.flow.Flow
 
 internal typealias UserAuthController = GraphQLController<UserModelContainer.Viewer, UserEntity>
 internal typealias UserProfileController = GraphQLController<UserModelContainer.Profile, UserEntity>
 internal typealias UserController = GraphQLController<UserModelContainer.User, UserEntity>
+internal typealias UserPagedController = GraphQLController<UserModelContainer.Paged, List<UserEntity>>
 internal typealias UserProfileStatisticController =
     GraphQLController<UserModelContainer.WithStatistic, UserStatisticPayload>
 internal typealias UserProfileOverviewController =
@@ -41,6 +44,7 @@ internal typealias UserProfileFeedController =
 internal typealias UserIdentifierRepository = IUserRepository.User<DataState<User>>
 internal typealias UserAuthenticatedRepository = IUserRepository.Authenticated<DataState<User>>
 internal typealias UserProfileRepository = IUserRepository.Profile<DataState<User>>
+internal typealias UserSearchRepository = IUserRepository.Search<Flow<PagingData<User>>>
 internal typealias UserProfileStatisticRepository = IUserRepository.Statistic<DataState<User.WithStats>>
 internal typealias UserProfileOverviewRepository = IUserRepository.Overview<DataState<ProfileOverview>>
 internal typealias UserProfileFeedRepository = IUserRepository.Feed<DataState<ProfileFeed>>
@@ -49,6 +53,7 @@ internal typealias UserUpdateRepository = IUserRepository.Update<DataState<User>
 
 typealias GetUserInteractor = UserUseCase.GetUser<DataState<User>>
 typealias GetProfileInteractor = UserUseCase.GetProfile<DataState<User>>
+typealias GetSearchUserInteractor = UserUseCase.GetSearch<Flow<PagingData<User>>>
 typealias GetProfileStatisticInteractor = UserUseCase.Statistic<DataState<User.WithStats>>
 typealias GetProfileOverviewInteractor = UserUseCase.Overview<DataState<ProfileOverview>>
 typealias GetProfileFeedInteractor = UserUseCase.Feed<DataState<ProfileFeed>>

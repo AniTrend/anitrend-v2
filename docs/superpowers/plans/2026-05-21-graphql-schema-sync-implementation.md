@@ -4,7 +4,7 @@
 
 **Goal:** Replace live AniTrend GraphQL introspection with a repo-owned schema sync script and workflow that refreshes `data/schema.graphql` and `data/anitrend.schema.graphql`, while aligning automation naming with the repository contribution conventions.
 
-**Architecture:** Keep the schema generation logic in one parameterized shell script under `.github/scripts/`, and keep the workflow focused on trigger normalization, runtime setup, credentials, and PR creation. Reuse the existing repository automation pattern of app-token checkout plus `peter-evans/create-pull-request`, and remove the temporary `data/package.json`-based tooling in favor of a workflow-local CLI install.
+**Architecture:** Keep the schema generation logic in one parameterized shell script under `.github/scripts/`, and keep the workflow focused on trigger normalization, runtime setup, credentials, and PR creation. Reuse the existing repository automation pattern of app-token checkout plus `peter-evans/create-pull-request`, and remove the temporary data/package.json-based tooling in favor of a workflow-local CLI install.
 
 **Tech Stack:** GitHub Actions, shell scripting, Node.js with `@graphql-inspector/cli`, GraphQL schema introspection, repository docs in Markdown.
 
@@ -18,9 +18,9 @@
   - Single entrypoint that accepts `anilist`, `anitrend`, or `both` and writes schema files into `data/`.
 - Modify: `.github/workflows/graphql-schema-sync.yml`
   - Convert the draft workflow into the final trigger contract for `workflow_dispatch`, `repository_dispatch`, and `schedule`.
-- Delete: `data/package.json`
+- Delete: data/package.json
   - Remove the temporary local-only CLI wrapper introduced during exploration.
-- Delete: `data/package-lock.json`
+- Delete: data/package-lock.json
   - Remove the lockfile paired with the temporary package manifest.
 - Modify: `data/schema.graphql`
   - Refresh generated AniList schema.
@@ -31,8 +31,8 @@
 
 **Files:**
 - Modify: `data/graphql.config.yml:14-23`
-- Delete: `data/package.json`
-- Delete: `data/package-lock.json`
+- Delete: data/package.json
+- Delete: data/package-lock.json
 
 - [ ] **Step 1: Confirm the current config and temporary tooling state**
 
@@ -57,7 +57,7 @@ Update the AniTrend endpoint block in `data/graphql.config.yml` so it matches th
       introspect: false
 ```
 
-Delete `data/package.json` and `data/package-lock.json` entirely once the workflow-local script approach is ready to replace them.
+Delete data/package.json and data/package-lock.json entirely once the workflow-local script approach is ready to replace them.
 
 - [ ] **Step 3: Verify the config change and tooling cleanup**
 

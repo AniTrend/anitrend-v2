@@ -15,3 +15,18 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 package co.anitrend.data.staff
+
+import androidx.paging.PagingData
+import co.anitrend.data.android.controller.graphql.GraphQLController
+import co.anitrend.data.staff.entity.StaffEntity
+import co.anitrend.data.staff.model.container.StaffModelContainer
+import co.anitrend.domain.staff.entity.Staff
+import co.anitrend.domain.staff.interactor.StaffUseCase
+import co.anitrend.domain.staff.repository.IStaffRepository
+import kotlinx.coroutines.flow.Flow
+
+internal typealias StaffPagedController = GraphQLController<StaffModelContainer.Paged, List<StaffEntity>>
+
+internal typealias StaffPagingRepository = IStaffRepository.Paged<Flow<PagingData<Staff>>>
+
+typealias GetPagingStaffInteractor = StaffUseCase.GetPaged<Flow<PagingData<Staff>>>

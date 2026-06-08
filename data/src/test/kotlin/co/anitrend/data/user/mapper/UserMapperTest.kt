@@ -16,6 +16,9 @@
  */
 package co.anitrend.data.user.mapper
 
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
+import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.android.database.common.TransactionRunner
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
@@ -210,6 +213,18 @@ class UserMapperTest {
         override fun userByIdFlow(id: Long): Flow<UserEntity?> = flowOf(null)
 
         override fun userByNameFlow(userName: String): Flow<UserEntity?> = flowOf(null)
+
+        override fun rawPagingSource(query: SupportSQLiteQuery): PagingSource<Int, UserEntity> =
+            object : PagingSource<Int, UserEntity>() {
+                override fun getRefreshKey(state: PagingState<Int, UserEntity>): Int? = null
+
+                override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UserEntity> =
+                    LoadResult.Page(
+                        data = emptyList(),
+                        prevKey = null,
+                        nextKey = null,
+                    )
+            }
 
         override fun userAuthenticated(userId: Long): Flow<UserEntityView.Authenticated?> = flowOf(null)
 

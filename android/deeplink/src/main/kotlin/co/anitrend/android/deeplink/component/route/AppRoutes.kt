@@ -30,6 +30,9 @@ import co.anitrend.navigation.AboutRouter
 import co.anitrend.navigation.AiringRouter
 import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.MainRouter
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.navigation.NavigationDrawerRouter
 import co.anitrend.navigation.ProfileRouter
 import co.anitrend.navigation.SearchRouter
@@ -159,7 +162,8 @@ internal object SearchPageRoute : Route("search") {
         env: Environment,
     ): Intent? {
         super.run(uri, params, env)
-        return SearchRouter.forActivity(env.context)
+        val payload = uri.toSearchParam(destination = SearchRouter.Destination.HOME).asNavPayload()
+        return SearchRouter.forActivity(env.context, payload)
     }
 }
 
@@ -245,3 +249,29 @@ internal object OAuthRoute : Route(
         )
     }
 }
+
+private fun DeepLinkUri.toSearchParam(destination: SearchRouter.Destination): SearchRouter.SearchParam =
+    SearchRouter.SearchParam(
+        query = queryParameter("search") ?: queryParameter("query"),
+        genres =
+            queryParameter("genres")
+                ?.split(",")
+                ?.map(String::trim)
+                ?.filter(String::isNotEmpty),
+        year = queryParameter("year")?.toIntOrNull(),
+        season = queryParameter("season").enumValueOrNull<MediaSeason>(),
+        format = queryParameter("format").enumValueOrNull<MediaFormat>(),
+        status =
+            (
+                queryParameter("status")
+                    ?: queryParameter("airing status")
+            ).enumValueOrNull<MediaStatus>(),
+        destination = destination,
+    )
+
+private inline fun <reified T : Enum<T>> String?.enumValueOrNull(): T? =
+    this
+        ?.trim()
+        ?.takeIf(String::isNotEmpty)
+        ?.uppercase()
+        ?.let { value -> runCatching { enumValueOf<T>(value) }.getOrNull() }

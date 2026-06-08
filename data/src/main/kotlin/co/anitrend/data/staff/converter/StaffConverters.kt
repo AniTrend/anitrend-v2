@@ -19,6 +19,7 @@ package co.anitrend.data.staff.converter
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.arch.data.transformer.ISupportTransformer
 import co.anitrend.data.common.extension.asFuzzyDate
+import co.anitrend.data.common.extension.toFuzzyDateInt
 import co.anitrend.data.staff.entity.StaffEntity
 import co.anitrend.data.staff.model.StaffModel
 import co.anitrend.domain.common.entity.shared.CoverImage
@@ -125,9 +126,42 @@ internal class StaffModelConverter(
     override val toType: (StaffEntity) -> StaffModel = { throw NotImplementedError() },
 ) : SupportConverter<StaffModel, StaffEntity>() {
     private companion object : ISupportTransformer<StaffModel, StaffEntity> {
-        override fun transform(source: StaffModel): StaffEntity {
-            TODO("Not yet implemented")
-        }
+        override fun transform(source: StaffModel): StaffEntity =
+            StaffEntity(
+                attribute =
+                    StaffEntity.Attribute(
+                        age = source.age,
+                        dateOfBirth = source.dateOfBirth?.toFuzzyDateInt(),
+                        dateOfDeath = source.dateOfDeath?.toFuzzyDateInt(),
+                        gender = source.gender,
+                        bloodType = source.bloodType,
+                        homeTown = source.homeTown,
+                        primaryOccupations = source.primaryOccupations,
+                        yearActiveStart = source.yearsActive.firstOrNull(),
+                        yearActiveEnd = source.yearsActive.lastOrNull(),
+                    ),
+                description = source.description,
+                favourites = source.favourites,
+                image =
+                    StaffEntity.CoverImage(
+                        large = source.image?.large,
+                        medium = source.image?.medium,
+                    ),
+                isFavourite = source.isFavourite,
+                language = source.language,
+                name =
+                    StaffEntity.Name(
+                        alternatives = source.name?.alternative,
+                        first = source.name?.first,
+                        full = source.name?.full,
+                        last = source.name?.last,
+                        original = source.name?.native,
+                        userPreferred = source.name?.userPreferred,
+                    ),
+                siteUrl = source.siteUrl.orEmpty(),
+                updatedAt = source.updatedAt,
+                id = source.id,
+            )
     }
 }
 
@@ -136,8 +170,51 @@ internal class StaffEntityConverter(
     override val toType: (Staff) -> StaffEntity = { throw NotImplementedError() },
 ) : SupportConverter<StaffEntity, Staff>() {
     private companion object : ISupportTransformer<StaffEntity, Staff> {
-        override fun transform(source: StaffEntity): Staff {
-            TODO("Not yet implemented")
-        }
+        override fun transform(source: StaffEntity): Staff =
+            Staff.Core(
+                age = source.attribute?.age,
+                dateOfBirth = source.attribute?.dateOfBirth?.asFuzzyDate(),
+                dateOfDeath = source.attribute?.dateOfDeath?.asFuzzyDate(),
+                gender = source.attribute?.gender,
+                homeTown = source.attribute?.homeTown,
+                bloodType = source.attribute?.bloodType,
+                primaryOccupations = source.attribute?.primaryOccupations.orEmpty(),
+                yearsActive =
+                    Staff.ActiveYearPeriod(
+                        start = source.attribute?.yearActiveStart,
+                        end = source.attribute?.yearActiveEnd,
+                    ),
+                description = source.description,
+                favourites = source.favourites,
+                image =
+                    source.image.let { image ->
+                        if (image.large != null || image.medium != null) {
+                            CoverImage(
+                                large = image.large,
+                                medium = image.medium,
+                            )
+                        } else {
+                            null
+                        }
+                    },
+                isFavourite = source.isFavourite,
+                isFavouriteBlocked = false,
+                language = source.language,
+                name =
+                    source.name.let { name ->
+                        CoverName(
+                            alternative = name.alternatives.orEmpty(),
+                            alternativeSpoiler = emptyList(),
+                            first = name.first,
+                            full = name.full,
+                            last = name.last,
+                            middle = null,
+                            native = name.original,
+                            userPreferred = name.userPreferred,
+                        )
+                    },
+                siteUrl = source.siteUrl,
+                id = source.id,
+            )
     }
 }

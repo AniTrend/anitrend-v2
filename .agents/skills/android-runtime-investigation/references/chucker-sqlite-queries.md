@@ -7,19 +7,19 @@ Use this reference after exporting a database with [export-chucker-db.sh](../scr
 Export a likely database from the device:
 
 ```bash
-.github/skills/android-runtime-investigation/scripts/export-chucker-db.sh --package <package-name>
+.agents/skills/android-runtime-investigation/scripts/export-chucker-db.sh --package <package-name>
 ```
 
 Query the latest likely request rows:
 
 ```bash
-.github/skills/android-runtime-investigation/scripts/query-chucker-db.sh --export-dir /tmp/anitrend-chucker/<export-dir>
+.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh --export-dir /tmp/anitrend-chucker/<export-dir>
 ```
 
 Query rows matching a screen or endpoint keyword:
 
 ```bash
-.github/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
+.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
   --export-dir /tmp/anitrend-chucker/<export-dir> \
   --filter media
 ```
@@ -27,7 +27,7 @@ Query rows matching a screen or endpoint keyword:
 Include response-like body columns when they exist:
 
 ```bash
-.github/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
+.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
   --export-dir /tmp/anitrend-chucker/<export-dir> \
   --filter recommendation \
   --show-response

@@ -24,4 +24,10 @@ abstract class StudioUseCase<State : UiState<*>>(
     protected val repository: IStudioRepository<State>,
 ) {
     fun getStudio(param: StudioParam.Detail) = repository.getStudio(param)
+
+    abstract class GetSearch<State>(
+        protected val repository: IStudioRepository.Search<State>,
+    ) {
+        fun getStudioPaged(param: StudioParam.Find) = repository.getStudioPaged(param)
+    }
 }

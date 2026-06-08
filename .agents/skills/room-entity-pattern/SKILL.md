@@ -26,7 +26,8 @@ many-to-many join tables and local-only caches). They do **not** apply to entiti
 server-provided.
 
 - Declare the surrogate PK as nullable: `@PrimaryKey(autoGenerate = true) val id: Long? = null`.
-- Implement `IEntity<Long>` (or `IEntity<Int>`) for the entity.
+- Implement `IEntity<Long>` when the surrogate PK is `Long?`; implement `IEntity<Int>` only when
+  the surrogate PK is explicitly `Int?`.
 - Define a composite unique index over the logical relationship columns:
   `@Index(value = ["tag_id", "media_id"], unique = true)`.
 - Use `@Insert(onConflict = REPLACE)` for batch upserts keyed by the composite columns, **not**
@@ -39,7 +40,9 @@ server-provided.
 When making schema-impacting changes:
 
 1. Bump `DATABASE_SCHEMA_VERSION` in the Room database class.
-2. Declare `@AutoMigration(from = X, to = Y)` or provide a manual `Migration` object.
+2. Use `@AutoMigration(from = X, to = Y)` for additive-only changes such as new tables or new
+  columns with safe defaults. Provide a manual `Migration` object for renames, type changes,
+  constraint changes, or any data transform that `@AutoMigration` cannot express.
 3. Export and inspect the schema JSON at `data/schemas/.../AniTrendStore/<version>.json`; verify
    nullability, indices, and identity hash are as expected.
 4. Build the module to confirm annotation processing and schema export succeed cleanly.

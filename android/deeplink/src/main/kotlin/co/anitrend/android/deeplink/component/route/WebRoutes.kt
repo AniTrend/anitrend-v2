@@ -248,16 +248,13 @@ internal object SearchRoute : Route(
         env: Environment,
     ): Intent? {
         super.run(uri, params, env)
-        val payload =
-            SearchRouter
-                .SearchParam(
-                    query = uri.queryParameter("search"),
-                    genres = uri.queryParameter("genres")?.split(","),
-                    year = uri.queryParameter("year")?.toInt(),
-                    season = uri.queryParameter("season")?.let { MediaSeason.valueOf(it) },
-                    format = uri.queryParameter("format")?.let { MediaFormat.valueOf(it) },
-                    status = uri.queryParameter("airing status")?.let { MediaStatus.valueOf(it) },
-                ).asNavPayload()
+        val destination =
+            when (uri.pathSegments().lastOrNull()) {
+                "anime" -> SearchRouter.Destination.ANIME
+                "manga" -> SearchRouter.Destination.MANGA
+                else -> SearchRouter.Destination.HOME
+            }
+        val payload = uri.toSearchParam(destination = destination).asNavPayload()
         return SearchRouter.forActivity(env.context, payload)
     }
 }
@@ -423,6 +420,32 @@ internal object NotificationRoute : Route(
         return NotificationRouter.forActivity(env.context)
     }
 }
+
+private fun DeepLinkUri.toSearchParam(destination: SearchRouter.Destination): SearchRouter.SearchParam =
+    SearchRouter.SearchParam(
+        query = queryParameter("search") ?: queryParameter("query"),
+        genres =
+            queryParameter("genres")
+                ?.split(",")
+                ?.map(String::trim)
+                ?.filter(String::isNotEmpty),
+        year = queryParameter("year")?.toIntOrNull(),
+        season = queryParameter("season").enumValueOrNull<MediaSeason>(),
+        format = queryParameter("format").enumValueOrNull<MediaFormat>(),
+        status =
+            (
+                queryParameter("status")
+                    ?: queryParameter("airing status")
+            ).enumValueOrNull<MediaStatus>(),
+        destination = destination,
+    )
+
+private inline fun <reified T : Enum<T>> String?.enumValueOrNull(): T? =
+    this
+        ?.trim()
+        ?.takeIf(String::isNotEmpty)
+        ?.uppercase()
+        ?.let { value -> runCatching { enumValueOf<T>(value) }.getOrNull() }
 
 object FallbackAction : Action<Intent?> {
     override fun run(

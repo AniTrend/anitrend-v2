@@ -16,4 +16,21 @@
  */
 package co.anitrend.data.staff.datasource.remote
 
-internal interface StaffRemoteSource
+import co.anitrend.data.core.GRAPHQL
+import co.anitrend.data.core.api.factory.contract.IEndpointType
+import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.data.staff.model.container.StaffModelContainer
+import io.github.wax911.library.annotation.GraphQuery
+import io.github.wax911.library.model.request.QueryContainerBuilder
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.POST
+
+internal interface StaffRemoteSource {
+    @GRAPHQL
+    @POST(IEndpointType.BASE_ENDPOINT_PATH)
+    @GraphQuery("GetStaffPaged")
+    suspend fun getStaffPaged(
+        @Body queryContainer: QueryContainerBuilder,
+    ): Response<GraphQLResponse<StaffModelContainer.Paged>>
+}

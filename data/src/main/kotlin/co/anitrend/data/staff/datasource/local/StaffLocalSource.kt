@@ -16,8 +16,11 @@
  */
 package co.anitrend.data.staff.datasource.local
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.RawQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.staff.entity.StaffEntity
 import kotlinx.coroutines.flow.Flow
@@ -61,4 +64,7 @@ internal abstract class StaffLocalSource : AbstractLocalSource<StaffEntity>() {
     """,
     )
     abstract fun staffByIdFlow(id: Long): Flow<StaffEntity?>
+
+    @RawQuery(observedEntities = [StaffEntity::class])
+    abstract fun rawPagingSource(query: SupportSQLiteQuery): PagingSource<Int, StaffEntity>
 }

@@ -23,7 +23,7 @@ tests before accepting a migration patch.
 - `data/src/main/kotlin/co/anitrend/data/android/database/AniTrendStore.kt`
 - `data/src/main/kotlin/co/anitrend/data/android/database/migration/MigrationHelper.kt`
 - `data/schemas/co.anitrend.data.android.database.AniTrendStore/`
-- `.github/instructions/data.guides.instructions.md`
+- `AGENTS.md`
 
 ## Execution Steps
 

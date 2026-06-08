@@ -28,20 +28,22 @@ import co.anitrend.data.review.mapper.ReviewMapper
 import co.anitrend.data.status.mapper.StatusMapper
 import co.anitrend.data.user.GetAuthenticatedInteractor
 import co.anitrend.data.user.GetProfileFeedInteractor
-import co.anitrend.data.user.GetProfileInteractor
 import co.anitrend.data.user.GetProfileOverviewInteractor
+import co.anitrend.data.user.GetProfileInteractor
 import co.anitrend.data.user.GetProfileStatisticInteractor
-import co.anitrend.data.user.UserProfileStatisticController
-import co.anitrend.data.user.mapper.UserProfileConnectionMapper
+import co.anitrend.data.user.GetSearchUserInteractor
 import co.anitrend.data.user.GetUserInteractor
 import co.anitrend.data.user.ToggleFollowInteractor
 import co.anitrend.data.user.UpdateProfileInteractor
+import co.anitrend.data.user.UserPagedController
 import co.anitrend.data.user.UserAuthenticatedRepository
 import co.anitrend.data.user.UserFollowRepository
 import co.anitrend.data.user.UserIdentifierRepository
 import co.anitrend.data.user.UserProfileFeedRepository
 import co.anitrend.data.user.UserProfileOverviewRepository
 import co.anitrend.data.user.UserProfileRepository
+import co.anitrend.data.user.UserProfileStatisticController
+import co.anitrend.data.user.UserSearchRepository
 import co.anitrend.data.user.UserProfileStatisticRepository
 import co.anitrend.data.user.UserUpdateRepository
 import co.anitrend.data.user.cache.UserCache
@@ -51,7 +53,9 @@ import co.anitrend.data.user.converter.UserMediaOptionModelConverter
 import co.anitrend.data.user.converter.UserModelConverter
 import co.anitrend.data.user.converter.UserStatisticModelConverter
 import co.anitrend.data.user.converter.UserViewEntityConverter
+import co.anitrend.data.user.entity.filter.UserQueryFilter
 import co.anitrend.data.user.mapper.UserMapper
+import co.anitrend.data.user.mapper.UserProfileConnectionMapper
 import co.anitrend.data.user.mapper.UserProfileFeedMapper
 import co.anitrend.data.user.mapper.UserProfileWriter
 import co.anitrend.data.user.mapper.UserProfileWriterContract
@@ -115,6 +119,21 @@ private val sourceModule =
                     ),
                 converter = get(),
                 cachePolicy = get<UserCache.Profile>(),
+                dispatcher = get(),
+            )
+        }
+        factory<UserSource.Paging> {
+            UserSourceImpl.Paging(
+                remoteSource = aniListApi(),
+                localSource = store().userDao(),
+                controller =
+                    graphQLController(
+                        mapper = get<UserMapper.Paged>(),
+                        strategy = offline(),
+                    ),
+                converter = get(),
+                clearDataHelper = get(),
+                filter = get(),
                 dispatcher = get(),
             )
         }
@@ -224,6 +243,18 @@ private val cacheModule =
                 localSource = cacheLocalSource(),
             )
         }
+        factory {
+            UserCache.Paged(
+                localSource = cacheLocalSource(),
+            )
+        }
+    }
+
+private val filterModule =
+    module {
+        factory {
+            UserQueryFilter.Search()
+        }
     }
 
 private val converterModule =
@@ -250,6 +281,12 @@ private val converterModule =
 
 private val mapperModule =
     module {
+        factory {
+            UserMapper.Paged(
+                localSource = store().userDao(),
+                converter = get(),
+            )
+        }
         factory {
             UserMapper.Profile(
                 generalOptionMapper = get(),
@@ -390,6 +427,11 @@ private val useCaseModule =
                 repository = get(),
             )
         }
+        factory<GetSearchUserInteractor> {
+            UserInteractor.Search(
+                repository = get(),
+            )
+        }
         factory<GetProfileInteractor> {
             UserInteractor.Profile(
                 repository = get(),
@@ -429,6 +471,11 @@ private val useCaseModule =
 
 private val repositoryModule =
     module {
+        factory<UserSearchRepository> {
+            UserRepository.Search(
+                source = get(),
+            )
+        }
         factory<UserIdentifierRepository> {
             UserRepository.Identifier(
                 source = get(),
@@ -436,6 +483,11 @@ private val repositoryModule =
         }
         factory<UserAuthenticatedRepository> {
             UserRepository.Authenticated(
+                source = get(),
+            )
+        }
+        factory<UserProfileRepository> {
+            UserRepository.Profile(
                 source = get(),
             )
         }
@@ -477,6 +529,7 @@ internal val userModules =
             converterModule,
             sourceModule,
             cacheModule,
+            filterModule,
             mapperModule,
             useCaseModule,
             repositoryModule,

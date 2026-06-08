@@ -392,9 +392,9 @@ Expected: PASS, including the focused Koin resolution tests for auth, user, medi
 Run: `./gradlew :app:core:testDebugUnitTest --no-daemon`
 Expected: PASS, including `CoreModulesResolutionTest`.
 
-- [ ] **Step 3: Run docs audit if any skill or instruction text changed while implementing**
+- [ ] **Step 3: Re-check doc links and paths if any skill or instruction text changed while implementing**
 
-Run: `.github/scripts/audit-instruction-refs.sh`
+Run targeted `rg` or file-existence checks for any edited doc references.
 Expected: `No issues found.`
 
 - [ ] **Step 4: Review final diff and create the Phase 1 implementation commit**

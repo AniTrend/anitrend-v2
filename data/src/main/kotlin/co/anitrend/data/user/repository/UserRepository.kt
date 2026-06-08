@@ -16,6 +16,8 @@
  */
 package co.anitrend.data.user.repository
 
+import androidx.paging.PagingData
+import co.anitrend.arch.data.state.DataState
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.data.user.UserAuthenticatedRepository
 import co.anitrend.data.user.UserFollowRepository
@@ -23,10 +25,13 @@ import co.anitrend.data.user.UserIdentifierRepository
 import co.anitrend.data.user.UserProfileFeedRepository
 import co.anitrend.data.user.UserProfileOverviewRepository
 import co.anitrend.data.user.UserProfileRepository
+import co.anitrend.data.user.UserSearchRepository
 import co.anitrend.data.user.UserProfileStatisticRepository
 import co.anitrend.data.user.UserUpdateRepository
 import co.anitrend.data.user.source.contract.UserSource
+import co.anitrend.domain.user.entity.User
 import co.anitrend.domain.user.model.UserParam
+import kotlinx.coroutines.flow.Flow
 
 internal interface UserRepository {
     class Identifier(
@@ -48,6 +53,13 @@ internal interface UserRepository {
     ) : UserRepository,
         UserProfileRepository {
         override suspend fun getProfile(param: UserParam.Profile) = source create source(param)
+    }
+
+    class Search(
+        private val source: UserSource.Paging,
+    ) : UserRepository,
+        UserSearchRepository {
+        override fun getPaged(param: UserParam.Search): Flow<PagingData<User>> = source(param)
     }
 
     class Statistic(
