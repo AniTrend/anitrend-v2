@@ -17,6 +17,7 @@
 package co.anitrend.data.character.cache
 
 import co.anitrend.data.android.cache.datasource.CacheLocalSource
+import co.anitrend.data.android.cache.helper.CanonicalCacheIdentity
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.model.CacheRequest
 import co.anitrend.data.android.cache.repository.CacheStorePolicy
@@ -47,4 +48,35 @@ internal class CharacterCache(
     }
 }
 
-private fun CharacterParam.Find.cacheIdentityValue(): Long = toString().hashCode().toLong()
+private fun CharacterParam.Find.cacheIdentityValue(): Long =
+    toCanonicalKey().let(CanonicalCacheIdentity::idFromCanonicalKey)
+
+private fun CharacterParam.Find.toCanonicalKey(): String {
+    val entries =
+        buildMap<String, String> {
+            id?.let { put("id", it.toString()) }
+            search
+                ?.trim()
+                ?.lowercase()
+                ?.takeIf(String::isNotBlank)
+                ?.let { put("search", it) }
+            id_not?.let { put("id_not", it.toString()) }
+            id_in
+                ?.sorted()
+                ?.takeIf(List<Long>::isNotEmpty)
+                ?.let { put("id_in", it.joinToString(",")) }
+            id_not_in
+                ?.sorted()
+                ?.takeIf(List<Long>::isNotEmpty)
+                ?.let { put("id_not_in", it.joinToString(",")) }
+            sort
+                ?.map { it.name }
+                ?.takeIf(List<String>::isNotEmpty)
+                ?.let { put("sort", it.joinToString(",")) }
+        }
+
+    return entries
+        .toSortedMap()
+        .entries
+        .joinToString("|") { (key, value) -> "$key=$value" }
+}

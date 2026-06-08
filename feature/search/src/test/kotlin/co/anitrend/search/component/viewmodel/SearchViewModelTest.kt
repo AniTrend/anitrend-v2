@@ -6,6 +6,11 @@ import co.anitrend.data.media.GetPagingMediaInteractor
 import co.anitrend.data.staff.GetPagingStaffInteractor
 import co.anitrend.data.studio.GetSearchStudioInteractor
 import co.anitrend.data.user.GetSearchUserInteractor
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.domain.media.enums.MediaStatus
+import co.anitrend.domain.media.enums.MediaType
+import co.anitrend.navigation.SearchRouter
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -78,19 +83,19 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun `onQueryChange trims whitespace via submitSearch call in init`() = runTest {
+    fun `submitSearch trims whitespace and updates submitted search`() = runTest {
         val testVm = createViewModel()
         testVm.onQueryChange("  Bleach  ")
         testVm.submitSearch()
         assertEquals("Bleach", testVm.query.value)
-        assertEquals("Bleach", testVm.submittedQuery.value)
+        assertEquals("Bleach", testVm.submittedSearch.value.query)
     }
 
     @Test
-    fun `submitSearch sets both query and submittedQuery`() {
+    fun `submitSearch sets both query and submitted search query`() {
         viewModel.submitSearch("One Piece")
         assertEquals("One Piece", viewModel.query.value)
-        assertEquals("One Piece", viewModel.submittedQuery.value)
+        assertEquals("One Piece", viewModel.submittedSearch.value.query)
     }
 
     @Test
@@ -98,31 +103,41 @@ class SearchViewModelTest {
         viewModel.onQueryChange("Dragon Ball")
         viewModel.submitSearch()
         assertEquals("Dragon Ball", viewModel.query.value)
-        assertEquals("Dragon Ball", viewModel.submittedQuery.value)
+        assertEquals("Dragon Ball", viewModel.submittedSearch.value.query)
     }
 
     @Test
-    fun `debounced submit receives trimmed query after delay`() = runTest {
+    fun `onQueryChange does not auto submit search`() = runTest {
         val testVm = createViewModel()
         testVm.onQueryChange("  Attack on Titan  ")
-        assertEquals("", testVm.submittedQuery.value)
-
         testScheduler.advanceUntilIdle()
-        assertEquals("Attack on Titan", testVm.submittedQuery.value)
+
+        assertEquals("", testVm.submittedSearch.value.query)
     }
 
     @Test
-    fun `debounced submit ignores rapid intermediate changes`() = runTest {
+    fun `initialize applies deeplink filters and destination`() {
         val testVm = createViewModel()
-        testVm.onQueryChange("N")
-        testVm.onQueryChange("Na")
-        testVm.onQueryChange("Nar")
-        testVm.onQueryChange("Naruto")
+        testVm.initialize(
+            SearchRouter.SearchParam(
+                query = "Cowboy Bebop",
+                genres = listOf("Action", "Sci-Fi"),
+                year = 1998,
+                season = MediaSeason.SPRING,
+                format = MediaFormat.TV,
+                status = MediaStatus.FINISHED,
+                destination = SearchRouter.Destination.ANIME,
+            ),
+        )
 
-        assertEquals("", testVm.submittedQuery.value)
-
-        testScheduler.advanceUntilIdle()
-        assertEquals("Naruto", testVm.submittedQuery.value)
+        assertEquals("Cowboy Bebop", testVm.query.value)
+        assertEquals("Cowboy Bebop", testVm.submittedSearch.value.query)
+        assertEquals(listOf("Action", "Sci-Fi"), testVm.submittedSearch.value.genres)
+        assertEquals(1998, testVm.submittedSearch.value.year)
+        assertEquals(MediaSeason.SPRING, testVm.submittedSearch.value.season)
+        assertEquals(MediaFormat.TV, testVm.submittedSearch.value.format)
+        assertEquals(MediaStatus.FINISHED, testVm.submittedSearch.value.status)
+        assertEquals(SearchScope.ANIME, testVm.scope.value)
     }
 
     @Test
@@ -202,6 +217,39 @@ class SearchViewModelTest {
         verify(exactly = 0) { studio.getStudioPaged(any()) }
         verify(exactly = 0) { staff.invoke(any()) }
         verify(exactly = 0) { character.invoke(any()) }
+    }
+
+    @Test
+    fun `submitting search preserves deeplink media filters in submitted state`() = runTest {
+        val testVm =
+            SearchViewModel(
+                mediaInteractor = mediaInteractor,
+                userSearchInteractor = userSearchInteractor,
+                studioInteractor = studioInteractor,
+                staffInteractor = staffInteractor,
+                characterInteractor = characterInteractor,
+            )
+
+        testVm.initialize(
+            SearchRouter.SearchParam(
+                genres = listOf("Action"),
+                year = 2020,
+                season = MediaSeason.FALL,
+                format = MediaFormat.TV,
+                status = MediaStatus.RELEASING,
+                destination = SearchRouter.Destination.ANIME,
+            ),
+        )
+        advanceUntilIdle()
+
+        val mediaParam = testVm.submittedSearch.value.toMediaParam(type = MediaType.ANIME)
+
+        assertEquals(listOf("Action"), mediaParam.genre_in)
+        assertEquals(2020, mediaParam.seasonYear)
+        assertEquals(MediaSeason.FALL, mediaParam.season)
+        assertEquals(MediaFormat.TV, mediaParam.format)
+        assertEquals(MediaStatus.RELEASING, mediaParam.status)
+        assertEquals(MediaType.ANIME, mediaParam.type)
     }
 
     private fun createViewModel(): SearchViewModel {

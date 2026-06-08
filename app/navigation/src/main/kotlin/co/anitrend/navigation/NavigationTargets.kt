@@ -106,6 +106,13 @@ object SearchRouter : NavigationRouter() {
 
     interface Provider : INavigationProvider
 
+    enum class Destination {
+        HOME,
+        ALL,
+        ANIME,
+        MANGA,
+    }
+
     @Parcelize
     data class SearchParam(
         val query: String? = null,
@@ -114,6 +121,7 @@ object SearchRouter : NavigationRouter() {
         val season: MediaSeason? = null,
         val format: MediaFormat? = null,
         val status: MediaStatus? = null,
+        val destination: Destination = Destination.HOME,
     ) : IParam
 }
 

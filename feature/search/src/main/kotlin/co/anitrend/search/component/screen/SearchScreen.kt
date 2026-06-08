@@ -61,8 +61,7 @@ class SearchScreen : AniTrendScreen() {
                     config = FeatureReady.config,
                     param = param,
                     onLoad = {
-                        viewModel.onQueryChange(param.query.orEmpty())
-                        viewModel.submitSearch()
+                        viewModel.initialize(param)
                     },
                     onClick = {},
                 ) {

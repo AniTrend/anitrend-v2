@@ -673,7 +673,7 @@ private fun StudioSearchCompactRow(
             )
             if (item.isAnimationStudio) {
                 Text(
-                    text = "Animation Studio",
+                    text = stringResource(R.string.label_search_studio_animation),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
@@ -721,14 +721,14 @@ private fun StudioSearchListRow(
                 )
                 if (item.isAnimationStudio) {
                     Text(
-                        text = "Animation Studio",
+                        text = stringResource(R.string.label_search_studio_animation),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 if (item.favourites > 0) {
                     Text(
-                        text = "${item.favourites} favourites",
+                        text = stringResource(R.string.label_search_studio_favourites, item.favourites),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -743,7 +743,7 @@ private fun StudioSearchListRow(
 private fun characterDisplayName(item: DomainCharacter): String =
     item.name?.userPreferred
         ?: item.name?.full
-        ?: "Unknown"
+        ?: ""
 
 @Composable
 private fun CharacterSearchSection(
@@ -970,9 +970,11 @@ private fun CharacterSearchListItem(
 private fun staffDisplayName(item: Staff): String =
     item.name?.userPreferred
         ?: item.name?.full
-        ?: "Unknown"
+        ?: ""
 
-private fun staffRoleLabel(item: Staff): String = item.primaryOccupations.firstOrNull() ?: "Staff"
+@Composable
+private fun staffRoleLabel(item: Staff): String =
+    item.primaryOccupations.firstOrNull() ?: stringResource(R.string.label_search_staff_fallback_role)
 
 @Composable
 private fun StaffSearchSection(
@@ -1253,7 +1255,8 @@ fun SearchScreenContent(
     onCharacterClick: (IParam) -> Unit,
 ) {
     val query = viewModel.query.collectAsStateWithLifecycle()
-    val hasSearchQuery = query.value.isNotBlank()
+    val hasSubmittedSearch = viewModel.hasSubmittedSearch.collectAsStateWithLifecycle()
+    val hasSubmittedQuery = viewModel.hasSubmittedQuery.collectAsStateWithLifecycle()
     val scope = viewModel.scope.collectAsStateWithLifecycle()
     val scoreFormat = settings.scoreFormat.flow.collectAsStateWithLifecycle(initialValue = settings.scoreFormat.value)
 
@@ -1294,7 +1297,7 @@ fun SearchScreenContent(
                 //       scroll performance when many sections are visible. The search
                 //       bar and scope chips should use stickyHeader {} items.
                 SearchScope.HOME -> {
-                    if (!hasSearchQuery) {
+                    if (!hasSubmittedSearch.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
                             subtitle = stringResource(R.string.message_search_idle),
@@ -1330,35 +1333,37 @@ fun SearchScreenContent(
                             onMediaItemClick = onMediaItemClick,
                             onSeeAllClick = { onSeeAllClick(SearchScope.MANGA) },
                         )
-                        CharacterSearchSection(
-                            title = stringResource(R.string.label_search_characters),
-                            items = characterItems,
-                            onCharacterClick = onCharacterClick,
-                            onSeeAllClick = { onSeeAllClick(SearchScope.CHARACTERS) },
-                        )
-                        StaffSearchSection(
-                            title = stringResource(R.string.label_search_staff),
-                            items = staffItems,
-                            onStaffClick = onStaffClick,
-                            onSeeAllClick = { onSeeAllClick(SearchScope.STAFF) },
-                        )
-                        StudioSearchSection(
-                            title = stringResource(R.string.label_search_studios),
-                            items = studioItems,
-                            onStudioClick = onStudioClick,
-                            onSeeAllClick = { onSeeAllClick(SearchScope.STUDIOS) },
-                        )
-                        UserSearchSection(
-                            title = stringResource(R.string.label_search_users),
-                            items = userItems,
-                            onUserClick = onUserClick,
-                            onSeeAllClick = { onSeeAllClick(SearchScope.USERS) },
-                        )
+                        if (hasSubmittedQuery.value) {
+                            CharacterSearchSection(
+                                title = stringResource(R.string.label_search_characters),
+                                items = characterItems,
+                                onCharacterClick = onCharacterClick,
+                                onSeeAllClick = { onSeeAllClick(SearchScope.CHARACTERS) },
+                            )
+                            StaffSearchSection(
+                                title = stringResource(R.string.label_search_staff),
+                                items = staffItems,
+                                onStaffClick = onStaffClick,
+                                onSeeAllClick = { onSeeAllClick(SearchScope.STAFF) },
+                            )
+                            StudioSearchSection(
+                                title = stringResource(R.string.label_search_studios),
+                                items = studioItems,
+                                onStudioClick = onStudioClick,
+                                onSeeAllClick = { onSeeAllClick(SearchScope.STUDIOS) },
+                            )
+                            UserSearchSection(
+                                title = stringResource(R.string.label_search_users),
+                                items = userItems,
+                                onUserClick = onUserClick,
+                                onSeeAllClick = { onSeeAllClick(SearchScope.USERS) },
+                            )
+                        }
                     }
                 }
 
                 SearchScope.ALL ->
-                    if (!hasSearchQuery) {
+                    if (!hasSubmittedSearch.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
                             subtitle = stringResource(R.string.message_search_idle),
@@ -1374,7 +1379,7 @@ fun SearchScreenContent(
                     }
 
                 SearchScope.ANIME ->
-                    if (!hasSearchQuery) {
+                    if (!hasSubmittedSearch.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
                             subtitle = stringResource(R.string.message_search_idle),
@@ -1390,7 +1395,7 @@ fun SearchScreenContent(
                     }
 
                 SearchScope.MANGA ->
-                    if (!hasSearchQuery) {
+                    if (!hasSubmittedSearch.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
                             subtitle = stringResource(R.string.message_search_idle),
@@ -1406,7 +1411,7 @@ fun SearchScreenContent(
                     }
 
                 SearchScope.USERS ->
-                    if (!hasSearchQuery) {
+                    if (!hasSubmittedQuery.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
                             subtitle = stringResource(R.string.message_search_idle),
@@ -1421,7 +1426,7 @@ fun SearchScreenContent(
                     }
 
                 SearchScope.STUDIOS ->
-                    if (!hasSearchQuery) {
+                    if (!hasSubmittedQuery.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
                             subtitle = stringResource(R.string.message_search_idle),
@@ -1436,7 +1441,7 @@ fun SearchScreenContent(
                     }
 
                 SearchScope.STAFF ->
-                    if (!hasSearchQuery) {
+                    if (!hasSubmittedQuery.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
                             subtitle = stringResource(R.string.message_search_idle),
@@ -1451,7 +1456,7 @@ fun SearchScreenContent(
                     }
 
                 SearchScope.CHARACTERS ->
-                    if (!hasSearchQuery) {
+                    if (!hasSubmittedQuery.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
                             subtitle = stringResource(R.string.message_search_idle),

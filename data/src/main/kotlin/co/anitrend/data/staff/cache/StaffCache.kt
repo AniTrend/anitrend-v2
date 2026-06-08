@@ -17,6 +17,7 @@
 package co.anitrend.data.staff.cache
 
 import co.anitrend.data.android.cache.datasource.CacheLocalSource
+import co.anitrend.data.android.cache.helper.CanonicalCacheIdentity
 import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.model.CacheRequest
 import co.anitrend.data.android.cache.repository.CacheStorePolicy
@@ -43,7 +44,36 @@ internal class StaffCache(
 
 private fun StaffParam.Paged?.cacheIdentityValue(): Long =
     this
-        ?.toString()
-        ?.hashCode()
-        ?.toLong()
+        ?.toCanonicalKey()
+        ?.let(CanonicalCacheIdentity::idFromCanonicalKey)
         ?: 0L
+
+private fun StaffParam.Paged.toCanonicalKey(): String {
+    val entries =
+        buildMap<String, String> {
+            id_in
+                ?.sorted()
+                ?.takeIf(List<Long>::isNotEmpty)
+                ?.let { put("id_in", it.joinToString(",")) }
+            id_not?.let { put("id_not", it.toString()) }
+            id_not_in
+                ?.sorted()
+                ?.takeIf(List<Long>::isNotEmpty)
+                ?.let { put("id_not_in", it.joinToString(",")) }
+            search
+                ?.trim()
+                ?.lowercase()
+                ?.takeIf(String::isNotBlank)
+                ?.let { put("search", it) }
+            sort
+                ?.map { it.name }
+                ?.takeIf(List<String>::isNotEmpty)
+                ?.let { put("sort", it.joinToString(",")) }
+            isBirthday?.let { put("is_birthday", it.toString()) }
+        }
+
+    return entries
+        .toSortedMap()
+        .entries
+        .joinToString("|") { (key, value) -> "$key=$value" }
+}

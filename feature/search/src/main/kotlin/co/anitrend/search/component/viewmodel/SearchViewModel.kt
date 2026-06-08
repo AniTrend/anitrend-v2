@@ -28,6 +28,9 @@ import co.anitrend.data.user.GetSearchUserInteractor
 import co.anitrend.domain.character.entity.Character
 import co.anitrend.domain.character.model.CharacterParam
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.enums.MediaFormat
+import co.anitrend.domain.media.enums.MediaSeason
+import co.anitrend.domain.media.enums.MediaStatus
 import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.domain.staff.entity.Staff
@@ -36,18 +39,16 @@ import co.anitrend.domain.studio.entity.Studio
 import co.anitrend.domain.studio.model.StudioParam
 import co.anitrend.domain.user.entity.User
 import co.anitrend.domain.user.model.UserParam
+import co.anitrend.navigation.SearchRouter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 
 class SearchViewModel(
     private val mediaInteractor: GetPagingMediaInteractor,
@@ -59,10 +60,28 @@ class SearchViewModel(
     private val mutableQuery = MutableStateFlow("")
     val query: StateFlow<String> = mutableQuery.asStateFlow()
 
-    internal val submittedQuery = MutableStateFlow("")
+    internal val submittedSearch = MutableStateFlow(SearchSubmission())
 
     private val mutableScope = MutableStateFlow(SearchScope.HOME)
     val scope: StateFlow<SearchScope> = mutableScope.asStateFlow()
+
+    internal val hasSubmittedSearch: StateFlow<Boolean> =
+        submittedSearch
+            .map(SearchSubmission::hasAnyCriteria)
+            .stateIn(
+                scope = viewModelScope,
+                started = kotlinx.coroutines.flow.SharingStarted.Eagerly,
+                initialValue = false,
+            )
+
+    internal val hasSubmittedQuery: StateFlow<Boolean> =
+        submittedSearch
+            .map { it.query.isNotBlank() }
+            .stateIn(
+                scope = viewModelScope,
+                started = kotlinx.coroutines.flow.SharingStarted.Eagerly,
+                initialValue = false,
+            )
 
     val mediaAll: Flow<PagingData<Media>> = buildMediaFlow(type = null)
     val mediaAnime: Flow<PagingData<Media>> = buildMediaFlow(type = MediaType.ANIME)
@@ -73,15 +92,6 @@ class SearchViewModel(
     val characters: Flow<PagingData<Character>> = buildCharacterFlow()
     val users: Flow<PagingData<User>> = buildUserFlow()
 
-    init {
-        query
-            .map(String::trim)
-            .debounce(400)
-            .onEach { debounced ->
-                submittedQuery.value = debounced
-            }.launchIn(viewModelScope)
-    }
-
     fun onQueryChange(value: String) {
         mutableQuery.value = value
     }
@@ -89,7 +99,17 @@ class SearchViewModel(
     fun submitSearch(value: String = query.value) {
         val trimmed = value.trim()
         mutableQuery.value = trimmed
-        submittedQuery.value = trimmed
+        submittedSearch.value =
+            submittedSearch.value.copy(
+                query = trimmed,
+            )
+    }
+
+    fun initialize(param: SearchRouter.SearchParam) {
+        val initialQuery = param.query?.trim().orEmpty()
+        mutableQuery.value = initialQuery
+        submittedSearch.value = SearchSubmission.from(param, initialQuery)
+        mutableScope.value = param.destination.toSearchScope()
     }
 
     fun showHome() {
@@ -101,25 +121,20 @@ class SearchViewModel(
     }
 
     private fun buildMediaFlow(type: MediaType?): Flow<PagingData<Media>> =
-        submittedQuery
-            .map(String::trim)
-            .distinctUntilChanged()
-            .flatMapLatest { searchQuery ->
-                if (searchQuery.isBlank()) {
+        submittedSearch
+            .flatMapLatest { submission ->
+                if (!submission.hasMediaCriteria()) {
                     flowOf(PagingData.empty())
                 } else {
                     mediaInteractor(
-                        MediaParam.Find(
-                            search = searchQuery,
-                            type = type,
-                        ),
+                        submission.toMediaParam(type = type),
                     )
                 }
             }.cachedIn(viewModelScope)
 
     private fun buildStudioFlow(): Flow<PagingData<Studio>> =
-        submittedQuery
-            .map(String::trim)
+        submittedSearch
+            .map { it.query }
             .distinctUntilChanged()
             .flatMapLatest { searchQuery ->
                 if (searchQuery.isBlank()) {
@@ -134,8 +149,8 @@ class SearchViewModel(
             }.cachedIn(viewModelScope)
 
     private fun buildStaffFlow(): Flow<PagingData<Staff>> =
-        submittedQuery
-            .map(String::trim)
+        submittedSearch
+            .map { it.query }
             .distinctUntilChanged()
             .flatMapLatest { searchQuery ->
                 if (searchQuery.isBlank()) {
@@ -150,8 +165,8 @@ class SearchViewModel(
             }.cachedIn(viewModelScope)
 
     private fun buildCharacterFlow(): Flow<PagingData<Character>> =
-        submittedQuery
-            .map(String::trim)
+        submittedSearch
+            .map { it.query }
             .distinctUntilChanged()
             .flatMapLatest { searchQuery ->
                 if (searchQuery.isBlank()) {
@@ -166,8 +181,8 @@ class SearchViewModel(
             }.cachedIn(viewModelScope)
 
     private fun buildUserFlow(): Flow<PagingData<User>> =
-        submittedQuery
-            .map(String::trim)
+        submittedSearch
+            .map { it.query }
             .distinctUntilChanged()
             .flatMapLatest { searchQuery ->
                 if (searchQuery.isBlank()) {
@@ -180,6 +195,51 @@ class SearchViewModel(
             }.cachedIn(viewModelScope)
 }
 
+internal data class SearchSubmission(
+    val query: String = "",
+    val genres: List<String> = emptyList(),
+    val year: Int? = null,
+    val season: MediaSeason? = null,
+    val format: MediaFormat? = null,
+    val status: MediaStatus? = null,
+) {
+    fun hasAnyCriteria(): Boolean =
+        query.isNotBlank() ||
+            genres.isNotEmpty() ||
+            year != null ||
+            season != null ||
+            format != null ||
+            status != null
+
+    fun hasMediaCriteria(): Boolean = hasAnyCriteria()
+
+    fun toMediaParam(type: MediaType?): MediaParam.Find =
+        MediaParam.Find(
+            search = query.ifBlank { null },
+            genre_in = genres.ifEmpty { null },
+            seasonYear = year,
+            season = season,
+            format = format,
+            status = status,
+            type = type,
+        )
+
+    companion object {
+        fun from(
+            param: SearchRouter.SearchParam,
+            initialQuery: String = param.query?.trim().orEmpty(),
+        ): SearchSubmission =
+            SearchSubmission(
+                query = initialQuery,
+                genres = param.genres.orEmpty(),
+                year = param.year,
+                season = param.season,
+                format = param.format,
+                status = param.status,
+            )
+    }
+}
+
 enum class SearchScope {
     HOME,
     ALL,
@@ -190,3 +250,11 @@ enum class SearchScope {
     STAFF,
     CHARACTERS,
 }
+
+private fun SearchRouter.Destination.toSearchScope(): SearchScope =
+    when (this) {
+        SearchRouter.Destination.HOME -> SearchScope.HOME
+        SearchRouter.Destination.ALL -> SearchScope.ALL
+        SearchRouter.Destination.ANIME -> SearchScope.ANIME
+        SearchRouter.Destination.MANGA -> SearchScope.MANGA
+    }

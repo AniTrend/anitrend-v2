@@ -69,4 +69,10 @@
     <string name="label_search_scope_staff">Staff</string>
     <!-- Scope chip label for the characters drill-down view -->
     <string name="label_search_scope_characters">Characters</string>
+    <!-- Small metadata label shown on studio result cards when the studio is marked as an animation studio -->
+    <string name="label_search_studio_animation">Animation Studio</string>
+    <!-- Supporting metadata shown on studio result rows; %1$d is the studio favourite count -->
+    <string name="label_search_studio_favourites" formatted="true">%1$d favourites</string>
+    <!-- Fallback role label used when a staff result has no primary occupation metadata -->
+    <string name="label_search_staff_fallback_role">Staff</string>
 </resources>

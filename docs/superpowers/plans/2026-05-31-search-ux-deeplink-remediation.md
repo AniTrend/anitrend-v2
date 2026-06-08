@@ -1,5 +1,7 @@
 # Search UX + Deeplink Remediation Implementation Plan
 
+> Superseded by `docs/superpowers/plans/2026-06-08-search-consistency-remediation.md`.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Make Search states deterministic (idle vs loading vs empty), remove stale partial-result behavior, and verify item/deeplink navigation for all entities.
