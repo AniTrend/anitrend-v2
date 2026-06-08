@@ -200,8 +200,8 @@ import co.anitrend.data.android.cache.model.CacheRequest
 
 ## Related Skills
 
-- `.github/skills/android-runtime-investigation/SKILL.md` — broader evidence-first ADB workflow
-- `.github/skills/adb-device-workflow/SKILL.md` — device connection, install, logcat
-- `.github/skills/room-entity-pattern/SKILL.md` — entity/DAO/mapper patterns
-- `.github/skills/koin-module-wiring/SKILL.md` — Koin DI patterns for data modules
-- `.github/skills/data-state-pattern/SKILL.md` — DataState and cache policy contracts
+- `.agents/skills/android-runtime-investigation/SKILL.md` — broader evidence-first ADB workflow
+- `.agents/skills/adb-device-workflow/SKILL.md` — device connection, install, logcat
+- `.agents/skills/room-entity-pattern/SKILL.md` — entity/DAO/mapper patterns
+- `.agents/skills/koin-module-wiring/SKILL.md` — Koin DI patterns for data modules
+- `.agents/skills/data-state-pattern/SKILL.md` — DataState and cache policy contracts

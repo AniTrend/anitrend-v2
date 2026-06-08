@@ -29,7 +29,7 @@ Android utility work often extends those modules rather than introducing a new m
 
 ### 0. Placement decision
 - [ ] If the change is a platform/helper concern, inspect `:android:*`, `:app:core`, and
-  `.github/skills/android-platform-patterns/SKILL.md` first.
+  `.agents/skills/android-platform-patterns/SKILL.md` first.
 - [ ] Only create a new module when an existing module cannot own the change cleanly.
 
 ### 1. File system
@@ -43,7 +43,7 @@ Android utility work often extends those modules rather than introducing a new m
   (`Feature`, `Data`, `Common`, `Android`, `Task`, etc.).
 
 ### 3. Dependency injection (Koin)
-- [ ] Create `<module>/src/main/kotlin/.../koin/Modules.kt` (see `.github/skills/koin-module-wiring/SKILL.md`).
+- [ ] Create `<module>/src/main/kotlin/.../koin/Modules.kt` (see `.agents/skills/koin-module-wiring/SKILL.md`).
 - [ ] Add the module loader to the nearest aggregator (or to
   `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt` for top-level modules, including
   `:android:*` modules).
@@ -62,7 +62,7 @@ Android utility work often extends those modules rather than introducing a new m
 - [ ] If writes should be background-safe or follow existing mutation routing, add the matching
   `:task:*` worker and router plumbing instead of calling the mutation interactor directly from
   feature code.
-- [ ] Follow the four-file entity pattern if adding persistence (see `.github/skills/room-entity-pattern/SKILL.md`).
+- [ ] Follow the four-file entity pattern if adding persistence (see `.agents/skills/room-entity-pattern/SKILL.md`).
 
 ### 5. Validation
 - [ ] Run `./gradlew :your:new:module:assembleDebug` to verify plugin and dependency resolution.

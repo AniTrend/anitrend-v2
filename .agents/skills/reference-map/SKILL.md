@@ -7,13 +7,14 @@ description: 'Instruction-to-skill navigation map. Use when routing tasks to the
 
 ## Why this file exists
 
-This repository moved from monolithic instruction files to a split model:
+This repository now routes repository policy through `AGENTS.md` and keeps implementation depth in
+skills:
 
-- **Instructions** provide stable, high-level policy and architecture constraints.
+- **`AGENTS.md`** provides stable, high-level policy and architecture constraints.
 - **Skills** provide focused, task-oriented deep dives.
 
 The goal is to reduce documentation drift and avoid brittle SHA-pinned GitHub links.
-Use repo-relative paths only, then run `.github/scripts/audit-instruction-refs.sh`.
+Use repo-relative paths only.
 
 The concrete example inventory lives in
 [layer-example-matrix.md](./references/layer-example-matrix.md). Use it when you need stable file
@@ -21,63 +22,63 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 
 ## How to use the split
 
-1. Start from the instruction file that matches your scope (`.github/instructions/*.instructions.md`).
+1. Start from `AGENTS.md`.
 2. Jump to the linked skill file for implementation details.
 3. Open [layer-example-matrix.md](./references/layer-example-matrix.md) when you need concrete
    cross-layer examples or stable file anchors.
-4. Validate references and formatting before opening a PR.
+4. Validate any changed references and formatting before opening a PR.
 
 ## Legacy topic to new location map
 
-| Legacy topic | Primary instruction | Primary skill |
+| Legacy topic | Repository policy | Primary skill |
 |---|---|---|
-| Compose screen planning and product-heavy UI refinement | `.github/instructions/context.instructions.md` | `.github/skills/product-designer/SKILL.md` |
-| Architecture boundaries | `.github/instructions/context.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
-| Layered module plumbing | `.github/instructions/context.instructions.md` | `.github/skills/layered-module-patterns/SKILL.md` |
-| UI navigation architecture | `.github/instructions/context.instructions.md` | `.github/skills/navigation-architecture/SKILL.md` |
-| Android platform/helper reuse | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
-| Runtime UI capture with ADB, explicit launch intents, UIAutomator dumps, and screenshots | `.github/instructions/guides.instructions.md` | `.agents/skills/android-ui-automator-preview/SKILL.md` |
-| Build system conventions | `.github/instructions/build-system.instructions.md` | `.github/skills/new-module-checklist/SKILL.md` |
-| DataState / UiState behavior | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
-| Koin DI wiring | `.github/instructions/context.instructions.md` | `.github/skills/koin-module-wiring/SKILL.md` |
-| Room entity + migration pattern | `.github/instructions/guides.instructions.md` | `.github/skills/room-entity-pattern/SKILL.md` |
-| CacheRequest collision / empty UI with no crash | `.github/instructions/guides.instructions.md` | `.github/skills/cache-request-isolation/SKILL.md` |
-| GraphQL controller lifecycle, `@GraphQuery`, `@GRAPHQL`, `QueryContainerBuilder`, `Response<GraphQLResponse<*>>` | `.github/instructions/guides.instructions.md` | `.github/skills/graphql-query-pattern/SKILL.md` |
-| Data Android infrastructure role, `ControllerStrategy`, `OnlineStrategy`, `OfflineStrategy`, `ScopeExtensions`, `graphQLController` Koin wiring | `.github/instructions/guides.instructions.md` | `.github/skills/data-android-infrastructure/SKILL.md` |
-| GraphQL fragment-to-model mapping and remote source wiring | `.github/instructions/guides.instructions.md` | `.github/skills/mapping-graphql-models/SKILL.md` |
-| String naming and POEditor context | `.github/instructions/guides.instructions.md` | `.github/skills/string-resources-convention/SKILL.md` |
-| Test strategy and commands | `.github/instructions/guides.instructions.md` | `.github/skills/testing-guidelines/SKILL.md` |
-| Library stack and integrations | `.github/instructions/project-scope.instructions.md` | `.github/skills/key-libraries/SKILL.md` |
+| Compose screen planning and product-heavy UI refinement | `AGENTS.md` | `.agents/skills/anitrend-product-designer/SKILL.md` |
+| Architecture boundaries | `AGENTS.md` | `.agents/skills/data-state-pattern/SKILL.md` |
+| Layered module plumbing | `AGENTS.md` | `.agents/skills/layered-module-patterns/SKILL.md` |
+| UI navigation architecture | `AGENTS.md` | `.agents/skills/navigation-architecture/SKILL.md` |
+| Android platform/helper reuse | `AGENTS.md` | `.agents/skills/android-platform-patterns/SKILL.md` |
+| Runtime UI capture with ADB, explicit launch intents, UIAutomator dumps, and screenshots | `AGENTS.md` | `.agents/skills/android-ui-automator-preview/SKILL.md` |
+| Build system conventions | `AGENTS.md` | `.agents/skills/new-module-checklist/SKILL.md` |
+| DataState / UiState behavior | `AGENTS.md` | `.agents/skills/data-state-pattern/SKILL.md` |
+| Koin DI wiring | `AGENTS.md` | `.agents/skills/koin-module-wiring/SKILL.md` |
+| Room entity + migration pattern | `AGENTS.md` | `.agents/skills/room-entity-pattern/SKILL.md` |
+| CacheRequest collision / empty UI with no crash | `AGENTS.md` | `.agents/skills/cache-request-isolation/SKILL.md` |
+| GraphQL controller lifecycle, `@GraphQuery`, `@GRAPHQL`, `QueryContainerBuilder`, `Response<GraphQLResponse<*>>` | `AGENTS.md` | `.agents/skills/graphql-query-pattern/SKILL.md` |
+| Data Android infrastructure role, `ControllerStrategy`, `OnlineStrategy`, `OfflineStrategy`, `ScopeExtensions`, `graphQLController` Koin wiring | `AGENTS.md` | `.agents/skills/data-android-infrastructure/SKILL.md` |
+| GraphQL fragment-to-model mapping and remote source wiring | `AGENTS.md` | `.agents/skills/mapping-graphql-models/SKILL.md` |
+| String naming and POEditor context | `AGENTS.md` | `.agents/skills/string-resources-convention/SKILL.md` |
+| Test strategy and commands | `AGENTS.md` | `.agents/skills/testing-guidelines/SKILL.md` |
+| Library stack and integrations | `AGENTS.md` | `.agents/skills/key-libraries/SKILL.md` |
 
 ## Task-first routing
 
 | If your task is... | Read this first | Then read |
 |---|---|---|
-| Plan or refine a Compose screen, settings surface, or interaction-heavy UI | `.github/instructions/context.instructions.md` | `.github/skills/product-designer/SKILL.md` |
-| Add a new feature module | `.github/instructions/context.instructions.md` | `.github/skills/new-module-checklist/SKILL.md` |
-| Evaluate or add domain/data/feature/task plumbing | `.github/instructions/context.instructions.md` | `.github/skills/layered-module-patterns/SKILL.md` |
-| Trace or add screen navigation | `.github/instructions/context.instructions.md` | `.github/skills/navigation-architecture/SKILL.md` |
-| Reuse or extend an internal Android helper API | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
-| Work on deep-link entry or parser registration | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
-| Work on drawer or app-shell navigation helpers | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
-| Capture emulator/device UI evidence (XML + PNG) for repro/debug handover | `.github/instructions/guides.instructions.md` | `.agents/skills/android-ui-automator-preview/SKILL.md` |
-| Work on theme, configuration, notification, context, or fragment helpers | `.github/instructions/context.instructions.md` | `.github/skills/android-platform-patterns/SKILL.md` |
-| Add a new repository or source | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
-| Convert a fixed-size detail read to offline-first | `.github/instructions/guides.instructions.md` | `.github/skills/data-state-pattern/SKILL.md` |
-| Add DI bindings | `.github/instructions/context.instructions.md` | `.github/skills/koin-module-wiring/SKILL.md` |
-| Add or update Room entities | `.github/instructions/data.guides.instructions.md` | `.github/skills/room-entity-pattern/SKILL.md` |
-| Debug empty-UI / silent cache bypass | `.github/instructions/guides.instructions.md` | `.github/skills/cache-request-isolation/SKILL.md` |
-| Add or change GraphQL query flow | `.github/instructions/guides.instructions.md` | `.github/skills/graphql-query-pattern/SKILL.md` |
-| Understand `ControllerStrategy`, choose `OnlineStrategy` vs `OfflineStrategy`, or understand `ScopeExtensions` / Data Android infrastructure | `.github/instructions/guides.instructions.md` | `.github/skills/data-android-infrastructure/SKILL.md` |
-| Add or change GraphQL fragments, model variants, or remote source wiring | `.github/instructions/guides.instructions.md` | `.github/skills/mapping-graphql-models/SKILL.md` |
-| Update user-facing strings | `.github/instructions/context.instructions.md` | `.github/skills/string-resources-convention/SKILL.md` |
-| Add tests for data/domain logic | `.github/instructions/guides.instructions.md` | `.github/skills/testing-guidelines/SKILL.md` |
-| Update dependencies or build logic | `.github/instructions/build-system.instructions.md` | `.github/skills/key-libraries/SKILL.md` |
+| Plan or refine a Compose screen, settings surface, or interaction-heavy UI | `AGENTS.md` | `.agents/skills/anitrend-product-designer/SKILL.md` |
+| Add a new feature module | `AGENTS.md` | `.agents/skills/new-module-checklist/SKILL.md` |
+| Evaluate or add domain/data/feature/task plumbing | `AGENTS.md` | `.agents/skills/layered-module-patterns/SKILL.md` |
+| Trace or add screen navigation | `AGENTS.md` | `.agents/skills/navigation-architecture/SKILL.md` |
+| Reuse or extend an internal Android helper API | `AGENTS.md` | `.agents/skills/android-platform-patterns/SKILL.md` |
+| Work on deep-link entry or parser registration | `AGENTS.md` | `.agents/skills/android-platform-patterns/SKILL.md` |
+| Work on drawer or app-shell navigation helpers | `AGENTS.md` | `.agents/skills/android-platform-patterns/SKILL.md` |
+| Capture emulator/device UI evidence (XML + PNG) for repro/debug handover | `AGENTS.md` | `.agents/skills/android-ui-automator-preview/SKILL.md` |
+| Work on theme, configuration, notification, context, or fragment helpers | `AGENTS.md` | `.agents/skills/android-platform-patterns/SKILL.md` |
+| Add a new repository or source | `AGENTS.md` | `.agents/skills/data-state-pattern/SKILL.md` |
+| Convert a fixed-size detail read to offline-first | `AGENTS.md` | `.agents/skills/data-state-pattern/SKILL.md` |
+| Add DI bindings | `AGENTS.md` | `.agents/skills/koin-module-wiring/SKILL.md` |
+| Add or update Room entities | `AGENTS.md` | `.agents/skills/room-entity-pattern/SKILL.md` |
+| Debug empty-UI / silent cache bypass | `AGENTS.md` | `.agents/skills/cache-request-isolation/SKILL.md` |
+| Add or change GraphQL query flow | `AGENTS.md` | `.agents/skills/graphql-query-pattern/SKILL.md` |
+| Understand `ControllerStrategy`, choose `OnlineStrategy` vs `OfflineStrategy`, or understand `ScopeExtensions` / Data Android infrastructure | `AGENTS.md` | `.agents/skills/data-android-infrastructure/SKILL.md` |
+| Add or change GraphQL fragments, model variants, or remote source wiring | `AGENTS.md` | `.agents/skills/mapping-graphql-models/SKILL.md` |
+| Update user-facing strings | `AGENTS.md` | `.agents/skills/string-resources-convention/SKILL.md` |
+| Add tests for data/domain logic | `AGENTS.md` | `.agents/skills/testing-guidelines/SKILL.md` |
+| Update dependencies or build logic | `AGENTS.md` | `.agents/skills/key-libraries/SKILL.md` |
 
 ## AI-Native SDLC Packs
 
 These support-arch prompt packs are repo-local execution playbooks for autonomous operational work.
-Use them alongside the `.github` instructions and skills when the task is broader than one module.
+Use them alongside `AGENTS.md` and repo-local skills when the task is broader than one module.
 
 - CI/CD pipeline intervention:
   `docs/support-arch/instructions/ci-pipeline-intervention.md` and
@@ -129,10 +130,9 @@ Use these as concrete implementation references. For the curated cross-layer lis
 
 ## Maintenance checklist for docs changes
 
-- Keep architecture intent in instruction files.
+- Keep architecture intent in `AGENTS.md`.
 - Keep implementation detail in skill files.
 - Prefer adding concrete examples to [layer-example-matrix.md](./references/layer-example-matrix.md)
   instead of repeating large file inventories across multiple skills.
 - Prefer adding links to this map instead of duplicating long prose.
 - Never add SHA-pinned `github.com/.../blob/<sha>/...#L..` links.
-- Run `.github/scripts/audit-instruction-refs.sh` before merging.

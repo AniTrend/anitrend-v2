@@ -98,13 +98,13 @@ Use this only when Argent evidence is insufficient and debug DB inspection is re
 Preferred path:
 
 ```bash
-.github/skills/android-runtime-investigation/scripts/export-chucker-db.sh --package <package-name>
+.agents/skills/android-runtime-investigation/scripts/export-chucker-db.sh --package <package-name>
 ```
 
 Then query via helper:
 
 ```bash
-.github/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
+.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
   --export-dir /tmp/anitrend-chucker/<export-dir> \
   --filter <screen-or-endpoint-keyword>
 ```
@@ -153,7 +153,7 @@ Decision point:
 Preferred path:
 
 ```bash
-.github/skills/android-runtime-investigation/scripts/export-chucker-db.sh --package <package-name>
+.agents/skills/android-runtime-investigation/scripts/export-chucker-db.sh --package <package-name>
 ```
 
 This helper:
@@ -188,7 +188,7 @@ Quality check:
 Preferred path:
 
 ```bash
-.github/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
+.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
   --export-dir /tmp/anitrend-chucker/<export-dir> \
   --filter <screen-or-endpoint-keyword>
 ```
@@ -196,8 +196,8 @@ Preferred path:
 Useful variants:
 
 ```bash
-.github/skills/android-runtime-investigation/scripts/query-chucker-db.sh --db /path/to/chucker.db --limit 20
-.github/skills/android-runtime-investigation/scripts/query-chucker-db.sh --db /path/to/chucker.db --filter graphql --show-response
+.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh --db /path/to/chucker.db --limit 20
+.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh --db /path/to/chucker.db --filter graphql --show-response
 ```
 
 This helper:

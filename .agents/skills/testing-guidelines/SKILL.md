@@ -17,10 +17,10 @@ or device.
   auto-adds JUnit, MockK, Turbine, and coroutines-test to every module's test configurations
 - `buildSrc/src/main/java/co/anitrend/buildSrc/plugins/components/ProjectDependencies.kt` —
   shows where WorkManager test utilities are referenced (currently commented out)
-- `.github/skills/mockk-testing-patterns/SKILL.md` — repo-specific MockK workflow, decision
+- `.agents/skills/mockk-testing-patterns/SKILL.md` — repo-specific MockK workflow, decision
   points, plus extended examples for flow assertions, worker logic coverage, and Koin module validation
-- `.github/skills/koin-module-wiring/SKILL.md` — binding patterns and module aggregation rules
-- `.github/skills/testing-guidelines/references/koin-testing.md` — Koin test primitives and the
+- `.agents/skills/koin-module-wiring/SKILL.md` — binding patterns and module aggregation rules
+- `.agents/skills/testing-guidelines/references/koin-testing.md` — Koin test primitives and the
   repo's current DI graph verification pattern
 
 ## Unit tests (`test/`)

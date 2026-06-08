@@ -1022,7 +1022,7 @@ internal val moduleHelper = DynamicFeatureModuleHelper(listOf(featureModule))
 - Run: `./gradlew lint spotlessCheck`
 - Run: `./gradlew :data:testDebugUnitTest --no-daemon` (data layer)
 - Run: `./gradlew :feature:studio:testDebugUnitTest --no-daemon` (feature layer)
-- Run: `.github/scripts/audit-instruction-refs.sh`
+- Run targeted `rg` or file-existence checks for any edited doc references.
 
 - [ ] **Run formatting and checks**: `git add -A && ./gradlew spotlessApply && git commit -m "chore: spotlessApply formatting"`
 - [ ] **Run tests**: `./gradlew testDebugUnitTest --no-daemon`

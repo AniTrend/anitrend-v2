@@ -13,7 +13,7 @@ libraries. All versions are centrally managed in `gradle/libs.versions.toml`; us
 
 For AniTrend's repo-specific Android wrappers around system services, theme/configuration helpers,
 notifications, deep links, and app-shell behavior, read
-`.github/skills/android-platform-patterns/SKILL.md` before adding a new helper API.
+`.agents/skills/android-platform-patterns/SKILL.md` before adding a new helper API.
 
 ## Jetpack components
 
@@ -60,7 +60,7 @@ All versions are declared in `gradle/libs.versions.toml`.
 
 ## Dependency injection
 
-- **Koin** — loaded at startup via `InjectorInitializer`. See `.github/skills/koin-module-wiring/SKILL.md`
+- **Koin** — loaded at startup via `InjectorInitializer`. See `.agents/skills/koin-module-wiring/SKILL.md`
   for wiring conventions.
 
 ## Logging and analytics

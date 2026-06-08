@@ -21,7 +21,7 @@ artifact capture, and targeted reruns over blanket `|| true`.
 ## Repo Anchors
 
 - `.github/workflows/ci.yml`
-- `.github/workflows/gradle-cache-cleanup.yaml`
+- `.github/workflows/gradle-cache-cleanup.yml`
 - `.github/actions/android/action.yml`
 - `.github/scripts/staging-config.sh`
 
@@ -128,7 +128,7 @@ gh run watch <run-id> --compact --exit-status
 ### 6. Clear stale Gradle caches only when CI-specific corruption is likely
 
 ```bash
-gh workflow run gradle-cache-cleanup.yaml -f branch=<branch> -f allCaches=false
+gh workflow run gradle-cache-cleanup.yml -f branch=<branch> -f allCaches=false
 ```
 
 ## Guardrails
