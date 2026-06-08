@@ -31,7 +31,7 @@
 
 **Files:**
 - Modify: `feature/search/src/main/kotlin/co/anitrend/search/component/viewmodel/SearchViewModel.kt`
-- Modify: `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchCompose.kt`
+- Modify: `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchScreenContent.kt`
 - Modify: `feature/search/src/main/res/values/strings.xml`
 - Test: `feature/search/src/test/kotlin/co/anitrend/search/component/viewmodel/SearchViewModelTest.kt`
 
@@ -44,7 +44,7 @@
 ### Task 3: HOME blended partial-results behavior
 
 **Files:**
-- Modify: `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchCompose.kt`
+- Modify: `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchMediaSections.kt`
 
 - [ ] Collapse empty sections in HOME blended view (hide section block when non-critical and empty).
 - [ ] Keep populated sections visible while sibling sections are loading/error/empty.

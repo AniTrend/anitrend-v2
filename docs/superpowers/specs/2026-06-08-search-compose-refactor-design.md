@@ -15,7 +15,7 @@ Approved direction: **ownership-first split within the existing `component.compo
 
 ## Current State
 
-- `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchCompose.kt` is a single large Compose file.
+- The previous `SearchCompose` monolith in `feature/search/.../component/compose` was a single large Compose file before this refactor.
 - The file currently mixes:
   - top-level screen orchestration
   - query and scope controls

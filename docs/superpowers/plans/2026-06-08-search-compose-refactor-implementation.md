@@ -27,7 +27,7 @@
 ### Modify
 
 - `feature/search/src/main/kotlin/co/anitrend/search/component/screen/SearchScreen.kt` — import remains `SearchScreenContent`; only touch if a temporary import breaks during extraction.
-- `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchCompose.kt` — temporary extraction source; delete when empty.
+- `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchScreenContent.kt` — coordinator target after decomposition.
 
 ### Test / Verify
 
@@ -39,7 +39,7 @@
 - Create: `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchScreenContent.kt`
 - Create: `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchChrome.kt`
 - Create: `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchState.kt`
-- Modify: `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchCompose.kt`
+- Modify: `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchScreenContent.kt`
 
 - [ ] **Step 1: Capture the current safety baseline**
 

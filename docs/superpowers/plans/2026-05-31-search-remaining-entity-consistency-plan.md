@@ -46,7 +46,7 @@
 ### Task 3: Unify search media UI with `common/media`
 
 **Files:**
-- Modify: `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchCompose.kt`
+- Modify: `feature/search/src/main/kotlin/co/anitrend/search/component/compose/SearchMediaSections.kt`
 - Reuse from: `common/media/src/main/kotlin/co/anitrend/common/media/ui/compose/item/MediaCompactItem.kt`
 - Reuse from: `common/media/src/main/kotlin/co/anitrend/common/media/ui/compose/item/MediaPosterListItem.kt`
 - Test: `feature/search/src/test/kotlin/co/anitrend/search/component/compose/*` (if compose tests exist)
