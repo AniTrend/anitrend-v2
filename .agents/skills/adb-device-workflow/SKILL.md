@@ -112,11 +112,11 @@ Quality check:
 
 9. Escalate to the deeper runtime workflow when logs alone are insufficient.
 
-Use the `android-runtime-investigation` skill (Argent-first) when you need to:
-- correlate UI failures with recorded HTTP responses
-- inspect JS and native network traffic beyond basic logcat
-- map suspicious UI nodes back to source files
-- pull Chucker evidence only as an optional fallback
+Use the `android-runtime-investigation` skill when you need to:
+- correlate UI failures with recorded HTTP responses via Chucker
+- inspect network traffic captured by the debug HTTP inspector
+- map suspicious UI nodes back to source files via UIAutomator dumps
+- pull Chucker or Room database evidence for deeper inspection
 
 ## Wireless ADB Branch
 

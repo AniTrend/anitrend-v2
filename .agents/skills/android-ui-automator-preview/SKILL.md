@@ -31,9 +31,12 @@ argument-hint: 'Provide the full application ID, target screen, and whether app 
 
 ```bash
 adb devices -l
-# clear app data only when the user explicitly asked for a fresh state
-adb shell pm clear <package-name>
 adb logcat -c
+```
+
+```bash
+# Only run when the user explicitly asks to clear app data:
+# adb shell pm clear <package-name>
 ```
 
 2. Launch the intended activity explicitly.
@@ -49,19 +52,25 @@ Why:
 
 3. Drive onboarding and permission prompts (AniTrend profile).
 
+These coordinates are a recorded baseline for 1080x2400 @ 420dpi only.
+Re-derive coordinates from a fresh `uiautomator dump` before using them on a
+different device or resolution.
+
 ```bash
-adb shell input swipe 900 1700 200 1700 300  # onboarding page 1 -> 2
-adb shell input swipe 900 1700 200 1700 300  # onboarding page 2 -> 3
-adb shell input swipe 900 1700 200 1700 300  # onboarding page 3 -> 4
-adb shell input swipe 900 1700 200 1700 300  # onboarding page 4 -> 5
-adb shell input tap 540 2280                # tap Get Started
-adb shell input tap 540 1285                # tap Allow
+# Recorded baseline only - re-derive for your device:
+# adb shell input swipe 900 1700 200 1700 300  # onboarding page 1 -> 2
+# adb shell input swipe 900 1700 200 1700 300  # onboarding page 2 -> 3
+# adb shell input swipe 900 1700 200 1700 300  # onboarding page 3 -> 4
+# adb shell input swipe 900 1700 200 1700 300  # onboarding page 4 -> 5
+# adb shell input tap 540 2280                # tap Get Started
+# adb shell input tap 540 1285                # tap Allow
 ```
 
 4. Open target UI (example: drawer nav button region).
 
 ```bash
-adb shell input tap 84 2240
+# Recorded baseline only - re-derive for your device:
+# adb shell input tap 84 2240
 ```
 
 5. Capture XML and screenshot.

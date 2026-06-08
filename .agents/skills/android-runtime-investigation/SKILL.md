@@ -10,7 +10,8 @@ argument-hint: 'Describe the failing screen or behavior, installed variant, and 
 
 - A repeatable, evidence-first workflow for Android bug investigation on emulator-first environments.
 - A narrowed emulator and app target before reading logs.
-- Correlated runtime evidence from React runtime logs, JS network captures, and optional native network traffic.
+- Correlated runtime evidence from logcat/AndroidRuntime/Timber, Chucker HTTP payloads, and
+  UI hierarchy captures.
 - A root-cause hypothesis tied to concrete evidence instead of guesswork.
 - A reusable export helper for pulling Chucker database files from the app sandbox with [export-chucker-db.sh](./scripts/export-chucker-db.sh).
 - A reusable query helper for inspecting exported databases with [query-chucker-db.sh](./scripts/query-chucker-db.sh).
@@ -20,92 +21,74 @@ argument-hint: 'Describe the failing screen or behavior, installed variant, and 
 
 - A screen regressed after a data-contract or UI change and the failure is only visible at runtime.
 - You need to confirm whether a bug is caused by rendering, serialization, GraphQL payload shape, or stale local data.
-- AniTrend debug builds are installed and the app can be inspected through Argent tools.
+- AniTrend debug builds are installed and the app can be inspected through ADB.
 - The app has multiple installed flavors and you need to target the right package before collecting runtime evidence.
 
 ## Host Requirements
 
-- Argent MCP tools are available in the current session.
-- Optional fallback path: ADB + Chucker scripts remain available when app-level DB export is explicitly required.
+- ADB is available and a device or emulator is connected.
+- The target build is a debug variant that includes Chucker.
+- Optional: Argent MCP tools are available in the current session for device discovery and
+  screenshot capture.
 
 ## Procedure
 
 1. Discover the emulator target and boot if needed.
 
-Use Argent device discovery first:
-
-- `argent_list-devices`
-- If no ready Android target exists, boot one with `argent_boot-device` using an AVD from `avds`.
+```bash
+adb devices -l
+```
 
 Decision point:
-- If multiple emulators are booted, pick the one whose AVD name or API level most closely matches
+- If no Android target exists, boot an emulator or connect a device.
+- If multiple devices are connected, pick the one whose AVD name or API level most closely matches
   the failure environment. If no match is determinable, select the first device returned by
-  `argent_list-devices` and state the chosen serial in the summary.
+  `adb devices -l` and state the chosen serial in the summary.
 
 2. Launch the app explicitly on the target emulator.
 
-- Use `argent_launch-app` with package id (`bundleId` field for Android package names).
-- Prefer explicit launch over home-screen tapping to avoid launcher ambiguity.
+```bash
+adb -s <serial> shell monkey -p <package-name> -c android.intent.category.LAUNCHER 1
+```
 
 3. Capture immediate UI baseline before interactions.
 
-- `argent_describe` for accessibility hierarchy snapshot.
-- `argent_screenshot` for visual baseline.
+```bash
+adb -s <serial> shell uiautomator dump /sdcard/window_dump.xml
+adb -s <serial> pull /sdcard/window_dump.xml /tmp/window_dump.xml
+adb -s <serial> exec-out screencap -p > /tmp/screen.png
+```
 
 Quality check:
 - Baseline should show current screen state and interactive targets before repro steps.
 
-4. Reproduce the failing flow with deterministic Argent actions.
+4. Reproduce the failing flow with deterministic actions.
 
-- Use `argent_gesture-tap`, `argent_gesture-swipe`, `argent_keyboard`, and `argent_button`.
-- Use `argent_debugger-component-tree` for React Native target coordinates before tapping.
-- Re-capture `argent_screenshot` after each major transition.
+- Use `adb shell input tap <x> <y>` and `adb shell input swipe <x1> <y1> <x2> <y2> <duration>`.
+- Re-derive coordinates from a fresh `uiautomator dump` before each tap sequence.
+- Re-capture a screenshot after each major transition.
 
-5. Connect runtime debugger and gather logs first.
+5. Capture logcat evidence.
 
-- `argent_debugger-connect`
-- `argent_debugger-status`
-- `argent_debugger-log-registry`
+```bash
+adb -s <serial> logcat -c
+adb -s <serial> logcat | grep -E "AndroidRuntime|FATAL EXCEPTION|Timber|anitrend"
+```
 
 Decision point:
-- If logs already show a crash, request error, or serializer exception, record that line as the
-  primary evidence and continue to component tree inspection so you can confirm the UI state.
+- If logs show a crash, request error, or serializer exception, record that line as the
+  primary evidence and continue to UI inspection so you can confirm the screen state.
 - If logs are quiet but UI is wrong, move to network and state inspection.
 
-6. Inspect JS-level network requests tied to the repro.
+6. Export and inspect Chucker HTTP/GraphQL payloads for the repro window.
 
-- `argent_view-network-logs` (list recent requests)
-- `argent_view-network-request-details` (inspect suspicious request ids)
-
-What to look for:
-- GraphQL field mismatches, nullability surprises, status/error payloads, stale responses.
-
-7. Inspect React component tree and source mapping at failure points.
-
-- `argent_debugger-component-tree` for visible component text and tap coordinates.
-- `argent_debugger-inspect-element` on suspicious coordinates to map to source file/line.
-
-8. If JS network evidence is incomplete, collect native traffic.
-
-- `argent_native-devtools-status` (confirm injection readiness)
-- `argent_native-network-logs` (captures native-side requests beyond JS fetch)
-
-Decision point:
-- If native logs confirm backend shape mismatch, fix contract/mapping.
-- If payload is correct but UI state is wrong, fix ViewModel/state/rendering logic.
-
-9. Optional fallback: Chucker DB export path (only when explicitly needed and after steps 5-8 do
-  not name the root cause).
-
-Use this only when Argent evidence is insufficient and debug DB inspection is required.
-
-Preferred path:
+Use the export helper to pull the Chucker database:
 
 ```bash
 .agents/skills/android-runtime-investigation/scripts/export-chucker-db.sh --package <package-name>
 ```
 
-Then query via helper:
+Then query for the relevant endpoint or screen:
 
 ```bash
 .agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
@@ -113,25 +96,56 @@ Then query via helper:
   --filter <screen-or-endpoint-keyword>
 ```
 
-10. Correlate evidence before changing code.
+What to look for:
+- GraphQL field mismatches, nullability surprises, status/error payloads, stale responses.
+
+7. Capture UI hierarchy and screenshot at the failure point.
+
+```bash
+adb -s <serial> shell uiautomator dump /sdcard/window_dump.xml
+adb -s <serial> pull /sdcard/window_dump.xml /tmp/window_dump.xml
+adb -s <serial> exec-out screencap -p > /tmp/screen.png
+```
+
+- Use `grep` against the XML dump to verify expected labels, text content, or missing nodes.
+- Cross-reference the screenshot with the dump to confirm layout and visibility.
+
+8. Inspect Room database when cache or local persistence is suspected.
+
+```bash
+adb -s <serial> shell run-as <package-name> ls databases
+adb -s <serial> shell run-as <package-name> cat databases/anitrend-store > /tmp/anitrend-store.db
+```
+
+- Use `sqlite3 /tmp/anitrend-store.db ".tables"` to list tables.
+- Query the relevant entity or connection table to check row count, nullability, and expected data.
+- If WAL mode may hide recent writes, copy the `-wal` and `-shm` sidecar files as well.
+
+Decision point:
+- If the local table has zero rows but the remote payload was correct, the cache identity or
+  mapper persistence path is likely wrong.
+- If the local table has stale data, the cache policy or refresh gating is likely wrong.
+
+9. Correlate evidence before changing code.
 
 Use this order of confidence:
-1. Runtime exception/request error in debugger logs.
-2. Raw response shape from JS network logs or native network logs.
-3. Mapper/serializer contract in code.
-4. UI rendering assumptions.
+1. Runtime exception or request error in logcat.
+2. Raw response shape from Chucker HTTP/GraphQL payloads.
+3. Room database row state confirming persistence or staleness.
+4. Mapper/serializer contract in code.
+5. UI rendering assumptions from the hierarchy dump and screenshot.
 
-11. Finish with a root-cause summary, not just a symptom description.
+10. Finish with a root-cause summary, not just a symptom description.
 
 The summary should name:
 - emulator target and app package inspected
-- evidence sources used (debugger logs, JS network logs, native network logs, optional Chucker DB)
+- evidence sources used (logcat, Chucker DB, UIAutomator dump, Room DB)
 - failing contract, state assumption, or rendering rule
 - smallest code change that addresses the root cause
 
 ## Optional Chucker Notes
 
-When fallback DB inspection is used, keep these repo-specific checks.
+When Chucker DB inspection is used, keep these repo-specific checks.
 
 ### Availability check
 
@@ -144,11 +158,9 @@ Repo-specific context:
 Fast checks:
 
 ```bash
-adb shell dumpsys package <package-name> | rg -i "com.chuckerteam.chucker|debuggable"
+adb shell dumpsys package <package-name> | grep -Ei "com.chuckerteam.chucker|debuggable"
 adb shell run-as <package-name> ls databases
 ```
-
-If `rg` is unavailable, use `grep -Ei` for the `dumpsys` filter.
 
 Decision point:
 - If `run-as` fails, you are likely not on a debuggable build or not targeting the right package.
@@ -169,14 +181,6 @@ This helper:
 - discovers likely Chucker database names dynamically
 - copies the main database plus `-wal` and `-shm` sidecars when present
 - prints the output directory and, when `sqlite3` is available, the discovered tables
-
-First discover likely database names dynamically:
-
-```bash
-adb shell run-as <package-name> ls databases | rg -i "chucker|http|traffic"
-```
-
-If `rg` is unavailable, use `grep -Ei "chucker|http|traffic"`.
 
 Then copy the main database and sidecar files to the host:
 

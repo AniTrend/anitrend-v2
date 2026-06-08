@@ -39,8 +39,9 @@ All versions are declared in `gradle/libs.versions.toml`.
 - **Retrofit + OkHttp** — HTTP client; shared configuration injected by `buildSrc`.
 - **`retrofit-graphql`** — AniTrend's custom Retrofit converter for GraphQL requests.
 - **Kotlinx Serialization** — JSON serialization; configured alongside Retrofit.
-- **Chucker** — Debug HTTP traffic inspector; only included in debug builds. When runtime evidence is needed, prefer inspecting recorded responses from the debug app sandbox before changing serializers, mappers, or UI assumptions.
-- **Chucker** — Debug HTTP traffic inspector; only included in debug builds. Before modifying a serializer, response mapper, or UI data assumption that depends on a live API response, inspect the response recorded by Chucker in the debug build to confirm the actual payload shape.
+- **Chucker** — Debug HTTP traffic inspector; only included in debug builds. Before modifying
+  a serializer, response mapper, or UI data assumption that depends on a live API response,
+  inspect the response recorded by Chucker in the debug build to confirm the actual payload shape.
 
 ## Image loading
 
@@ -77,7 +78,6 @@ All versions are declared in `gradle/libs.versions.toml`.
 - **JUnit 4** — base test runner.
 - **MockK** — Kotlin-idiomatic mocking; prefer mocking interfaces over concrete classes.
 - **Turbine** — Flow testing; use `turbine` to assert emissions from `DataState` flows.
-- **kotlinx-coroutines-test** — `TestCoroutineDispatcher` / `runTest` for coroutine tests.
 - **kotlinx-coroutines-test** — `runTest`, `StandardTestDispatcher`, or
   `UnconfinedTestDispatcher` for coroutine tests.
 - Test dependencies are auto-added to every module by `DependencyStrategy.kt`; no manual

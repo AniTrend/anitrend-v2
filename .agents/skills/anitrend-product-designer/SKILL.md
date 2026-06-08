@@ -187,32 +187,6 @@ When making recommendations, always account for:
 - previewability before coding starts, visual density, state transitions
 - loading and offline implications when relevant
 
-### Extended constraints — apply when relevant
-
-Favor:
-- reusable composables
-- predictable state hoisting
-- stable data models
-- small component APIs
-- layout patterns that work well on phones first
-- lazy lists or grids where appropriate
-- small surface-area migrations
-- patterns that are previewable and testable
-- `MaterialTheme` token usage over hard-coded values
-- surface layering that works with `AniTrendTheme3`
-- existing repo preview primitives such as `PreviewTheme`, `DarkThemeProvider`, and `AniTrendPreview`
-
-Avoid:
-- web-looking layouts
-- oversized empty spacing
-- over-animated concepts
-- bespoke interactions with weak product value
-- controls that are visually impressive but difficult to maintain
-- hidden interaction cost for common actions
-- hard-coded colors that bypass Material3 tokens
-- low-contrast accents or text on dark surfaces
-- plans that require running the app before basic hierarchy can be reviewed
-
 ---
 
 ## Design Quality Gates
@@ -361,7 +335,9 @@ Before outputting the plan, inspect as much of the following as available:
 - relevant GraphQL or domain models
 - existing loading, error, and empty patterns
 - existing editor patterns and shared controls
-- `.github` instructions, repo guidance, and feature-specific notes if present
+- AGENTS.md
+- relevant `.agents/skills/**`
+- feature-specific docs if present
 
 If something is unclear, do not block on it.
 Make the best grounded plan possible and label assumptions clearly.
@@ -471,46 +447,15 @@ Do not invent a new response format unless the user explicitly asks for one.
 
 ## Additional Execution Rules
 
-### Task classification
+See [execution-rules.md](./references/execution-rules.md) for the full task classification
+matrix, output section checklist, preview-first requirements, and conditional task guidance.
 
-A task is **UI-heavy** if it introduces or modifies a full screen, a bottom sheet, a card family used in multiple locations, or introduces or modifies three or more distinct composable functions. A task is **refactor-heavy** if its primary deliverable is moving, renaming, or restructuring existing composables, state holders, or module boundaries. If the task also changes layout, spacing, color, component type, or interaction, classify it as **both**.
-
-### Output section checklist by task type
-
-| Section | UI-heavy | Refactor-heavy | Both |
-|---|---|---|---|
-| Scope and Boundaries | required | required | required |
-| Current State Audit | required | required | required |
-| Proposed Hierarchy / Component Decomposition | required | omit | required |
-| Data and State Matrix | required | omit | required |
-| ASCII High-Fidelity Mock | required | omit | required |
-| Design Quality Gates | required | omit | required |
-| Preview Validation Matrix | required | omit | required |
-| Compose Implementation Notes | required | omit | required |
-| Migration / Rollout Steps | omit | required | required |
-| Rollback / Containment Thinking | omit | required | required |
-| Concrete Do-Not-Touch Notes | omit | required | required |
-| Risks and Assumptions | required | required | required |
-
-### Preview-first requirement for UI-heavy work
-
-For UI-heavy plans:
-- minimum preview matrix is `AniTrendPreview.Light` and `AniTrendPreview.Dark`
-- require `AniTrendPreview.Mobile` for full-screen or sheet work
-- require `AniTrendPreview.Foldable` or `AniTrendPreview.Tablet` only when width changes hierarchy, pane count, or sheet layout
-- prefer `PreviewTheme`, `DarkThemeProvider`, and preview providers or fake UI state over runtime-only validation
-- account for loading, empty, error, and populated states in the preview plan
-- include partial or disabled states when they materially affect the UI
-- do not suggest new screenshot or snapshot tooling unless the user explicitly asks for it
-
-### Conditional task guidance
-
-If the task mentions charts, visual summaries, stats, or dense data, evaluate:
-- whether a compact visual summary reduces text overload
-- whether the chart or summary can be introduced locally without a broad visualization rewrite
-- whether a preview plus See all structure is better than rendering full detail inline
-
-If the task mentions editors, status, score, or progress, evaluate direct-manipulation controls before defaulting to menus or dropdowns.
+Key rules summary:
+- **UI-heavy**: full screen, bottom sheet, card family, or 3+ composables changed.
+- **Refactor-heavy**: moving/renaming/restructuring existing composables, state holders, or
+  module boundaries.
+- Preview matrix: `Light` + `Dark` minimum; add `Mobile` for full-screen/sheet work.
+- Account for loading, empty, error, and populated states in the preview plan.
 
 ---
 
