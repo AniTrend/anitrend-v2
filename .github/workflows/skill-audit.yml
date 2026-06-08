@@ -1,0 +1,32 @@
+name: Skill Audit
+
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - ".agents/skills/**"
+  push:
+    branches: [develop, master]
+    paths:
+      - ".agents/skills/**"
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * 1" # Every Monday at 08:00 UTC
+
+jobs:
+  validate:
+    name: Validate skill files
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install gray-matter
+
+      - name: Run skill validator
+        run: node .github/scripts/validate-skills.js
