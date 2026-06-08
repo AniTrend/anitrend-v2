@@ -48,8 +48,7 @@ internal class CharacterCache(
     }
 }
 
-private fun CharacterParam.Find.cacheIdentityValue(): Long =
-    toCanonicalKey().let(CanonicalCacheIdentity::idFromCanonicalKey)
+private fun CharacterParam.Find.cacheIdentityValue(): Long = toCanonicalKey().let(CanonicalCacheIdentity::idFromCanonicalKey)
 
 private fun CharacterParam.Find.toCanonicalKey(): String {
     val entries =

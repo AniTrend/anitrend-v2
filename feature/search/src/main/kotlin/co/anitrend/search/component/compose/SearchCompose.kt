@@ -973,8 +973,7 @@ private fun staffDisplayName(item: Staff): String =
         ?: ""
 
 @Composable
-private fun staffRoleLabel(item: Staff): String =
-    item.primaryOccupations.firstOrNull() ?: stringResource(R.string.label_search_staff_fallback_role)
+private fun staffRoleLabel(item: Staff): String = item.primaryOccupations.firstOrNull() ?: stringResource(R.string.label_search_staff_fallback_role)
 
 @Composable
 private fun StaffSearchSection(

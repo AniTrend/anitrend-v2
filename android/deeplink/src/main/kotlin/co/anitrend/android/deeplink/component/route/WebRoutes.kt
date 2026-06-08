@@ -436,7 +436,7 @@ private fun DeepLinkUri.toSearchParam(destination: SearchRouter.Destination): Se
             (
                 queryParameter("status")
                     ?: queryParameter("airing status")
-                ).enumValueOrNull<MediaStatus>(),
+            ).enumValueOrNull<MediaStatus>(),
         destination = destination,
     )
 
