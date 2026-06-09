@@ -17,9 +17,11 @@
 package co.anitrend.about.koin
 
 import co.anitrend.about.component.viewmodel.AboutViewModel
+import co.anitrend.about.provider.AboutNavEntryProvider
 import co.anitrend.about.provider.FeatureProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.AboutRouter
+import co.anitrend.navigation.nav3.FeatureNavEntryProvider
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -27,6 +29,10 @@ private val featureModule =
     module {
         factory<AboutRouter.Provider> {
             FeatureProvider()
+        }
+
+        factory<FeatureNavEntryProvider> {
+            AboutNavEntryProvider()
         }
     }
 

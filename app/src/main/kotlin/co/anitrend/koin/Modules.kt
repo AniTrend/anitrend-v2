@@ -18,11 +18,13 @@ package co.anitrend.koin
 
 import co.anitrend.analytics.AnalyticsTree
 import co.anitrend.arch.analytics.contract.ISupportAnalytics
+import co.anitrend.app.navigation.nav3.AniTrendNavigationDispatcher
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.screen.MainScreen
 import co.anitrend.component.viewmodel.MainScreenViewModel
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.MainRouter
+import co.anitrend.navigation.nav3.NavigationDispatcher
 import co.anitrend.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
@@ -66,7 +68,18 @@ private val featureModule =
         }
     }
 
+private val navigationModule =
+    module {
+        single<AniTrendNavigationDispatcher> {
+            AniTrendNavigationDispatcher()
+        }
+
+        single<NavigationDispatcher> {
+            get<AniTrendNavigationDispatcher>()
+        }
+    }
+
 internal val appModules =
     DynamicFeatureModuleHelper(
-        listOf(analyticsModule, presenterModule, viewModelModule, featureModule),
+        listOf(analyticsModule, presenterModule, viewModelModule, featureModule, navigationModule),
     )

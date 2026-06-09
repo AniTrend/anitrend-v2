@@ -16,11 +16,16 @@
  */
 package co.anitrend.about.component.compose
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import co.anitrend.common.shared.ui.compose.DefaultScaffold
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.DarkThemeProvider
@@ -28,6 +33,19 @@ import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 
 @Composable
 private fun AboutContent(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Text(
+            text = "AniTrend",
+            style = MaterialTheme.typography.headlineMedium,
+        )
+        Text(
+            text = "Navigation 3 runtime-only feature spike",
+            style = MaterialTheme.typography.bodyMedium,
+        )
+    }
 }
 
 @Composable

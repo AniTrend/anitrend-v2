@@ -23,6 +23,10 @@
 		android:icon="@mipmap/ic_launcher"
 		android:roundIcon="@mipmap/ic_launcher_round">
 
+		<activity
+			android:name="co.anitrend.app.navigation.nav3.Nav3SpikeActivity"
+			android:exported="true" />
+
 		<provider
 			android:name="androidx.startup.InitializationProvider"
 			android:authorities="${applicationId}.androidx-startup"

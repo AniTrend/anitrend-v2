@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 AniTrend
+ * Copyright (C) 2024 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,24 +14,24 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package co.anitrend.app.navigation.nav3
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.fragment.app.FragmentActivity
+import co.anitrend.android.core.ui.theme.AniTrendTheme3
+import co.anitrend.navigation.nav3.Nav3SpikeHomeKey
 
-dependencies {
+class Nav3SpikeActivity : FragmentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    /** Material Design */
-    implementation(libs.google.android.material)
-
-    /** Navigation 3 UI for spike */
-    implementation(libs.androidx.navigation3.ui)
-
-    githubImplementation(libs.unifiedpush.connector)
-    googleImplementation(libs.google.android.gsm.playServicesOssLicenses)
-    googleImplementation(libs.google.firebase.messaging.ktx)
-}
-
-android {
-    namespace = "co.anitrend"
+        setContent {
+            AniTrendTheme3 {
+                AniTrendNav3Host(
+                    startKey = Nav3SpikeHomeKey,
+                )
+            }
+        }
+    }
 }
