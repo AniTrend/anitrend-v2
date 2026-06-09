@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 AniTrend
+ * Copyright (C) 2026 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,21 +14,15 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package co.anitrend.service
 
-plugins {
-    id("co.anitrend.plugin")
-}
+import android.app.Service
+import android.content.Intent
+import android.os.Binder
+import android.os.IBinder
 
-dependencies {
+class ForegroundService : Service() {
+    private val binder = Binder()
 
-    /** Material Design */
-    implementation(libs.google.android.material)
-
-    githubImplementation(libs.unifiedpush.connector)
-    googleImplementation(libs.google.android.gsm.playServicesOssLicenses)
-    googleImplementation(libs.google.firebase.messaging.ktx)
-}
-
-android {
-    namespace = "co.anitrend"
+    override fun onBind(intent: Intent): IBinder = binder
 }

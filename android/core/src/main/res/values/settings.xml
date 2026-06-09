@@ -50,6 +50,8 @@
   <string name="settings_notifications_enabled" translatable="false">_notificationsEnabled</string>
   <string name="settings_notifications_anilist_enabled" translatable="false">_notificationsAniListEnabled</string>
   <string name="settings_notifications_announcements_enabled" translatable="false">_notificationsAnnouncementsEnabled</string>
+  <string name="settings_notifications_unifiedpush_endpoint" translatable="false">_notificationsUnifiedPushEndpoint</string>
+  <string name="settings_notifications_unifiedpush_instance" translatable="false">_notificationsUnifiedPushInstance</string>
 
     <string name="settings_auto_heap_dump" translatable="false">_autoHeapDump</string>
     <string name="settings_show_leak_launcher" translatable="false">_showLeakLauncher</string>
