@@ -51,6 +51,7 @@ internal class PushRegistrationCoordinator(
                 Timber.i("UnifiedPush registration skipped because distributor selection requires user input")
         }
     }
+
     fun ensureRegistered(): PushRegistrationResult {
         if (connector.acknowledgedDistributor != null) {
             connector.register(messageForDistributor)
