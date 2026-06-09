@@ -17,10 +17,10 @@
 package co.anitrend.app.navigation.nav3
 
 import androidx.compose.runtime.Composable
+import co.anitrend.common.navigation.FeatureNavEntryProvider
+import co.anitrend.common.navigation.FeatureNavEntryScope
+import co.anitrend.common.navigation.FeatureNavRegistry
 import co.anitrend.navigation.nav3.AniTrendNavKey
-import co.anitrend.navigation.nav3.FeatureNavEntryProvider
-import co.anitrend.navigation.nav3.FeatureNavEntryScope
-import co.anitrend.navigation.nav3.FeatureNavRegistry
 import co.anitrend.navigation.nav3.NavigationDispatcher
 import kotlin.reflect.KClass
 import timber.log.Timber

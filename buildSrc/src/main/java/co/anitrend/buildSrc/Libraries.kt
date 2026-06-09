@@ -39,6 +39,7 @@ object Libraries {
             val tag = Modules.Common.Tag.path
 			val shared = Modules.Common.Shared.path
 			val markdown = Modules.Common.Markdown.path
+            val navigation = Modules.Common.Navigation.path
         }
 
         object Data {

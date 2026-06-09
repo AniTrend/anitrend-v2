@@ -40,8 +40,8 @@ plugins {
 dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.shared))
 
-    /** Nav3 spike: feature/about depends on app/navigation contracts only */
     implementation(project(":app:navigation"))
+    implementation(project(Libraries.AniTrend.CommonUi.navigation))
 }
 
 android {

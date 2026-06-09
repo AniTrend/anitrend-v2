@@ -86,6 +86,7 @@ include(
 	":common:shared",
 	":common:markdown",
 	":common:medialist",
+	":common:navigation",
     // Task modules
     ":task:character",
     ":task:forum",

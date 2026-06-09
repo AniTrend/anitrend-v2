@@ -15,6 +15,8 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import co.anitrend.buildSrc.Libraries
+
 plugins {
     id("co.anitrend.plugin")
 }
@@ -26,6 +28,9 @@ dependencies {
 
     /** Navigation 3 UI for spike */
     implementation(libs.androidx.navigation3.ui)
+
+    /** Nav3 common contracts */
+    implementation(project(Libraries.AniTrend.CommonUi.navigation))
 
     githubImplementation(libs.unifiedpush.connector)
     googleImplementation(libs.google.android.gsm.playServicesOssLicenses)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 AniTrend
+ * Copyright (C) 2025 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,26 +14,8 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.navigation.nav3
+package co.anitrend.common.navigation
 
-import androidx.compose.runtime.Composable
-import kotlin.reflect.KClass
-
-interface FeatureNavRegistry {
-    fun <T : AniTrendNavKey> register(
-        key: KClass<T>,
-        content: @Composable FeatureNavEntryScope.(T) -> Unit,
-    )
-}
-
-interface FeatureNavEntryScope {
-    val dispatcher: NavigationDispatcher
-
-    fun pop() {
-        dispatcher.pop()
-    }
-
-    fun navigate(key: AniTrendNavKey) {
-        dispatcher.navigate(key)
-    }
+interface FeatureNavEntryProvider {
+    fun register(registry: FeatureNavRegistry)
 }

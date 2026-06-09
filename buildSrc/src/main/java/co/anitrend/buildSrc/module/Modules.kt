@@ -80,7 +80,8 @@ internal object Modules {
         Genre("common:genre"),
         Tag("common:tag"),
         Shared("common:shared"),
-        Markdown("common:markdown")
+        Markdown("common:markdown"),
+        Navigation("common:navigation")
     }
 
     enum class Feature(override val id: String) : Module {

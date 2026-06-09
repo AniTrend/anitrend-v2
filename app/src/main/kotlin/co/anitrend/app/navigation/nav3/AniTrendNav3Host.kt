@@ -23,11 +23,11 @@ import androidx.compose.runtime.remember
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import co.anitrend.navigation.nav3.AniTrendNavKey
-import co.anitrend.navigation.nav3.FeatureNavEntryProvider
-import co.anitrend.navigation.nav3.NavCommand
+import co.anitrend.common.navigation.FeatureNavEntryProvider
 import co.anitrend.navigation.nav3.AboutNavKey
+import co.anitrend.navigation.nav3.AniTrendNavKey
 import co.anitrend.navigation.nav3.Nav3SpikeHomeKey
+import co.anitrend.navigation.nav3.NavCommand
 import org.koin.compose.koinInject
 import org.koin.core.context.GlobalContext
 

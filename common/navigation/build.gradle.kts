@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 AniTrend
+ * Copyright (C) 2025 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,19 +14,15 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.about.provider
 
-import co.anitrend.about.component.compose.AboutScreenContent
-import co.anitrend.common.navigation.FeatureNavEntryProvider
-import co.anitrend.common.navigation.FeatureNavRegistry
-import co.anitrend.navigation.nav3.AboutNavKey
+plugins {
+    id("co.anitrend.plugin")
+}
 
-internal class AboutNavEntryProvider : FeatureNavEntryProvider {
-    override fun register(registry: FeatureNavRegistry) {
-        registry.register(AboutNavKey::class) {
-            AboutScreenContent(
-                onBackPress = ::pop,
-            )
-        }
-    }
+dependencies {
+    implementation(project(":app:navigation"))
+}
+
+android {
+    namespace = "co.anitrend.common.navigation"
 }

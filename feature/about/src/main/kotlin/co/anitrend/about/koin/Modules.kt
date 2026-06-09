@@ -21,7 +21,7 @@ import co.anitrend.about.provider.AboutNavEntryProvider
 import co.anitrend.about.provider.FeatureProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.AboutRouter
-import co.anitrend.navigation.nav3.FeatureNavEntryProvider
+import co.anitrend.common.navigation.FeatureNavEntryProvider
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 

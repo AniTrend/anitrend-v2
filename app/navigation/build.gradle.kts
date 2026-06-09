@@ -19,7 +19,6 @@ import co.anitrend.buildSrc.Libraries
 plugins {
     id("co.anitrend.plugin")
     id("kotlinx-serialization")
-    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 dependencies {
@@ -33,8 +32,5 @@ dependencies {
 }
 
 android {
-    buildFeatures {
-        compose = true
-    }
     namespace = "co.anitrend.navigation"
 }
