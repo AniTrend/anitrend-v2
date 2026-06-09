@@ -52,6 +52,7 @@ import co.anitrend.data.settings.feature.IFeatureFlagSetting
 import co.anitrend.data.settings.notification.INotificationSettings
 import co.anitrend.data.settings.power.IPowerSettings
 import co.anitrend.data.settings.privacy.IPrivacySettings
+import co.anitrend.data.settings.push.IUnifiedPushSettings
 import co.anitrend.data.settings.refresh.IRefreshBehaviourSettings
 import co.anitrend.data.settings.sort.ISortOrderSettings
 import co.anitrend.data.settings.sync.ISyncSettings
@@ -82,6 +83,7 @@ private val coreModule =
                 IPowerSettings::class,
                 IConnectivitySettings::class,
                 INotificationSettings::class,
+                IUnifiedPushSettings::class,
                 IUserSettings::class,
                 ICacheSettings::class,
                 ISyncSettings::class,

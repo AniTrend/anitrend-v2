@@ -61,6 +61,7 @@ square-kotlinpoet = "2.3.0"
 square-leakcanary = "2.14"
 square-okhttp = "5.3.2"
 square-retrofit = "3.0.0"
+unifiedpush-connector = "3.3.2"
 
 google-devtools-ksp = "2.3.9"
 
@@ -232,6 +233,7 @@ google-firebase-analytics-ktx = { module = "com.google.firebase:firebase-analyti
 google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "20.0.6" }
 google-firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "3.0.7" }
 google-firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx", version = "24.1.2" }
+unifiedpush-connector = { module = "org.unifiedpush.android:connector", version.ref = "unifiedpush-connector" }
 
 google-flexbox = { module = "com.google.android.flexbox:flexbox", version = "3.0.0" }
 

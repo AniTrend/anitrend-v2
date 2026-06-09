@@ -27,6 +27,7 @@ import co.anitrend.arch.extension.settings.EnumSetting
 import co.anitrend.arch.extension.settings.FloatSetting
 import co.anitrend.arch.extension.settings.IntSetting
 import co.anitrend.arch.extension.settings.LongSetting
+import co.anitrend.arch.extension.settings.NullableStringSetting
 import co.anitrend.arch.extension.settings.SetSetting
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.auth.settings.IAuthenticationSettings.Companion.INVALID_USER_ID
@@ -40,6 +41,7 @@ import co.anitrend.data.settings.feature.IFeatureFlagSetting
 import co.anitrend.data.settings.notification.INotificationSettings
 import co.anitrend.data.settings.power.IPowerSettings
 import co.anitrend.data.settings.privacy.IPrivacySettings
+import co.anitrend.data.settings.push.IUnifiedPushSettings
 import co.anitrend.data.settings.refresh.IRefreshBehaviourSettings
 import co.anitrend.data.settings.sort.ISortOrderSettings
 import co.anitrend.data.settings.sync.ISyncSettings
@@ -64,7 +66,8 @@ class Settings(
     ICacheSettings,
     ISyncSettings,
     IDeveloperSettings,
-    IFeatureFlagSetting {
+    IFeatureFlagSetting,
+    IUnifiedPushSettings {
     override val locale =
         EnumSetting(
             key = R.string.settings_configuration_locale,
@@ -189,6 +192,22 @@ class Settings(
         BooleanSetting(
             key = R.string.settings_notifications_announcements_enabled,
             default = true,
+            resources = context.resources,
+            preference = this,
+        )
+
+    override val unifiedPushEndpoint =
+        NullableStringSetting(
+            key = R.string.settings_notifications_unifiedpush_endpoint,
+            default = null,
+            resources = context.resources,
+            preference = this,
+        )
+
+    override val unifiedPushInstance =
+        NullableStringSetting(
+            key = R.string.settings_notifications_unifiedpush_instance,
+            default = null,
             resources = context.resources,
             preference = this,
         )
