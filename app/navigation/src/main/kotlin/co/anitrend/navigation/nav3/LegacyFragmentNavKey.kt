@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 AniTrend
+ * Copyright (C) 2025 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -16,6 +16,16 @@
  */
 package co.anitrend.navigation.nav3
 
-import androidx.navigation3.runtime.NavKey
+import kotlinx.serialization.Serializable
 
-interface AniTrendNavKey : NavKey
+/**
+ * Compatibility key for legacy Fragment-based destinations not yet migrated to Nav3.
+ *
+ * Renders a Fragment host from Compose, allowing old Fragment destinations to function
+ * inside the Compose-first Nav3 shell without needing their own Activity.
+ */
+@Serializable
+data class LegacyFragmentNavKey(
+    val destination: String,
+    val args: Map<String, String> = emptyMap(),
+) : AniTrendNavKey
