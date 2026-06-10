@@ -14,13 +14,20 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package co.anitrend.app.navigation.nav3
+package co.anitrend.common.navigation
 
-import co.anitrend.common.navigation.FeatureNavEntryProvider
-import co.anitrend.common.navigation.FeatureNavEntryProviderRegistry
-import co.anitrend.common.navigation.FeatureNavEntryProviderRepository
+/**
+ * Central registry for Nav3 feature entry providers.
+ *
+ * Feature modules register their providers at startup (via Koin module definitions),
+ * and the app runtime reads them via [all].
+ */
+object FeatureNavEntryProviderRegistry {
+    private val providers = linkedSetOf<FeatureNavEntryProvider>()
 
-class KoinFeatureNavEntryProviderRepository : FeatureNavEntryProviderRepository {
-    override fun providers(): List<FeatureNavEntryProvider> =
-        FeatureNavEntryProviderRegistry.all()
+    fun register(provider: FeatureNavEntryProvider) {
+        providers.add(provider)
+    }
+
+    fun all(): List<FeatureNavEntryProvider> = providers.toList()
 }

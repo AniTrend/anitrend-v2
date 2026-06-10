@@ -19,9 +19,9 @@ package co.anitrend.about.koin
 import co.anitrend.about.component.viewmodel.AboutViewModel
 import co.anitrend.about.provider.AboutNavEntryProvider
 import co.anitrend.about.provider.FeatureProvider
+import co.anitrend.common.navigation.FeatureNavEntryProviderRegistry
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.AboutRouter
-import co.anitrend.common.navigation.FeatureNavEntryProvider
 import co.anitrend.navigation.nav3.NavigationDispatcher
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -33,15 +33,15 @@ private val featureModule =
                 nav3Dispatcher = getOrNull(),
             )
         }
-
-        factory<FeatureNavEntryProvider> {
-            AboutNavEntryProvider()
-        }
     }
 
 private val viewModelModule =
     module {
         viewModelOf(::AboutViewModel)
     }
+
+// Register Nav3 entry provider via central registry
+private val _aboutNavEntryRegistration =
+    FeatureNavEntryProviderRegistry.register(AboutNavEntryProvider())
 
 internal val moduleHelper = DynamicFeatureModuleHelper(listOf(featureModule, viewModelModule))

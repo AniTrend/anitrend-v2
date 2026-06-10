@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import co.anitrend.navigation.nav3.NavigationDispatcher
 import co.anitrend.navigation.nav3.AboutNavKey
 import co.anitrend.navigation.nav3.ImageViewerNavKey
+import co.anitrend.navigation.nav3.SettingsNavKey
 import org.koin.compose.koinInject
 
 @Composable
@@ -63,6 +64,12 @@ fun Nav3SpikeHome() {
             },
         ) {
             Text("Open ImageViewer via Nav3")
+        }
+
+        Button(
+            onClick = { dispatcher.navigate(SettingsNavKey()) },
+        ) {
+            Text("Open Settings via Nav3")
         }
     }
 }

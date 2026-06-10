@@ -16,6 +16,7 @@
  */
 package co.anitrend.settings.koin
 
+import co.anitrend.common.navigation.FeatureNavEntryProviderRegistry
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.SettingsRouter
 import co.anitrend.settings.component.builder.PreferenceBuilder
@@ -31,6 +32,7 @@ import co.anitrend.settings.component.content.theme.presenter.ThemePresenter
 import co.anitrend.settings.component.presenter.SettingsPresenter
 import co.anitrend.settings.component.screen.SettingsScreen
 import co.anitrend.settings.provider.FeatureProvider
+import co.anitrend.settings.provider.SettingsNavEntryProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -47,7 +49,6 @@ private val presenterModule =
             }
         }
 
-        // Presenter for synchronization screen
         factory {
             SynchronizationPresenter(
                 context = androidContext(),
@@ -56,7 +57,6 @@ private val presenterModule =
             )
         }
 
-        // Presenter for privacy screen
         factory {
             PrivacyPresenter(
                 context = androidContext(),
@@ -65,7 +65,6 @@ private val presenterModule =
             )
         }
 
-        // Presenter for power screen
         factory {
             PowerPresenter(
                 context = androidContext(),
@@ -74,7 +73,6 @@ private val presenterModule =
             )
         }
 
-        // Presenter for storage screen
         factory {
             StoragePresenter(
                 context = androidContext(),
@@ -84,7 +82,6 @@ private val presenterModule =
             )
         }
 
-        // Presenter for theme screen
         factory {
             ThemePresenter(
                 context = androidContext(),
@@ -93,7 +90,6 @@ private val presenterModule =
             )
         }
 
-        // Presenter for notification screen
         factory {
             NotificationPresenter(
                 context = androidContext(),
@@ -116,6 +112,10 @@ private val viewModelModule =
         viewModelOf(::TaskViewModel)
         viewModelOf(::LogViewModel)
     }
+
+// Register Nav3 entry provider via central registry
+private val _settingsNavEntryRegistration =
+    FeatureNavEntryProviderRegistry.register(SettingsNavEntryProvider())
 
 internal val moduleHelper =
     DynamicFeatureModuleHelper(

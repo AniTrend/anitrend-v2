@@ -24,6 +24,7 @@ dependencies {
     implementation(libs.androidx.preference.ktx)
     implementation(project(Libraries.AniTrend.CommonUi.markdown))
     implementation(project(Libraries.AniTrend.CommonUi.shared))
+    implementation(project(Libraries.AniTrend.CommonUi.navigation))
 }
 
 android {

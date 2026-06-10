@@ -29,6 +29,7 @@ import co.anitrend.navigation.nav3.AiringNavKey
 import co.anitrend.navigation.nav3.AniTrendNavKey
 import co.anitrend.navigation.nav3.ImageViewerNavKey
 import co.anitrend.navigation.nav3.Nav3SpikeHomeKey
+import co.anitrend.navigation.nav3.SettingsNavKey
 import co.anitrend.navigation.nav3.NavCommand
 import org.koin.compose.koinInject
 
@@ -85,6 +86,9 @@ fun AniTrendNav3Host(startKey: AniTrendNavKey) {
                     registry.ContentFor(key)
                 }
                 entry<ImageViewerNavKey> { key ->
+                    registry.ContentFor(key)
+                }
+                entry<SettingsNavKey> { key ->
                     registry.ContentFor(key)
                 }
             },
