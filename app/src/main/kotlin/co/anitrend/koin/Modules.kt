@@ -81,7 +81,7 @@ private val navigationModule =
         }
 
         single<FeatureNavEntryProviderRepository> {
-            KoinFeatureNavEntryProviderRepository()
+            KoinFeatureNavEntryProviderRepository(getKoin())
         }
     }
 

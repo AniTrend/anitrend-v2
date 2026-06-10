@@ -17,7 +17,7 @@
 package co.anitrend.viewer.koin
 
 import co.anitrend.arch.extension.ext.systemServiceOf
-import co.anitrend.common.navigation.FeatureNavEntryProviderRegistry
+import co.anitrend.common.navigation.FeatureNavEntryProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.viewer.component.viewmodel.ImageViewerViewModel
@@ -25,6 +25,7 @@ import co.anitrend.viewer.provider.FeatureProvider
 import co.anitrend.viewer.provider.ImageViewerNavEntryProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val viewModelModule =
@@ -41,11 +42,9 @@ private val featureModule =
         factory<ImageViewerRouter.Provider> {
             FeatureProvider()
         }
-    }
 
-// Register Nav3 entry provider via central registry (Koin 4.2.1 lacks bind)
-private val _viewerNavEntryRegistration =
-    FeatureNavEntryProviderRegistry.register(ImageViewerNavEntryProvider())
+        factory { ImageViewerNavEntryProvider() } bind FeatureNavEntryProvider::class
+    }
 
 internal val moduleHelper =
     DynamicFeatureModuleHelper(

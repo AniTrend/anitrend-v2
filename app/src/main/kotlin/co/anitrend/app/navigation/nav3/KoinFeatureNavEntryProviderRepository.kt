@@ -17,10 +17,12 @@
 package co.anitrend.app.navigation.nav3
 
 import co.anitrend.common.navigation.FeatureNavEntryProvider
-import co.anitrend.common.navigation.FeatureNavEntryProviderRegistry
 import co.anitrend.common.navigation.FeatureNavEntryProviderRepository
+import org.koin.core.Koin
 
-class KoinFeatureNavEntryProviderRepository : FeatureNavEntryProviderRepository {
+class KoinFeatureNavEntryProviderRepository(
+    private val koin: Koin,
+) : FeatureNavEntryProviderRepository {
     override fun providers(): List<FeatureNavEntryProvider> =
-        FeatureNavEntryProviderRegistry.all()
+        koin.getAll()
 }

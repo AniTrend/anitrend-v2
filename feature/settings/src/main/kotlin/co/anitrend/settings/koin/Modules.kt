@@ -16,7 +16,7 @@
  */
 package co.anitrend.settings.koin
 
-import co.anitrend.common.navigation.FeatureNavEntryProviderRegistry
+import co.anitrend.common.navigation.FeatureNavEntryProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.SettingsRouter
 import co.anitrend.settings.component.builder.PreferenceBuilder
@@ -35,6 +35,7 @@ import co.anitrend.settings.provider.FeatureProvider
 import co.anitrend.settings.provider.SettingsNavEntryProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val presenterModule =
@@ -49,54 +50,12 @@ private val presenterModule =
             }
         }
 
-        factory {
-            SynchronizationPresenter(
-                context = androidContext(),
-                settings = get(),
-                preferenceBuilder = PreferenceBuilder(),
-            )
-        }
-
-        factory {
-            PrivacyPresenter(
-                context = androidContext(),
-                settings = get(),
-                preferenceBuilder = PreferenceBuilder(),
-            )
-        }
-
-        factory {
-            PowerPresenter(
-                context = androidContext(),
-                settings = get(),
-                preferenceBuilder = PreferenceBuilder(),
-            )
-        }
-
-        factory {
-            StoragePresenter(
-                context = androidContext(),
-                settings = get(),
-                preferenceBuilder = PreferenceBuilder(),
-                storageController = get(),
-            )
-        }
-
-        factory {
-            ThemePresenter(
-                context = androidContext(),
-                settings = get(),
-                preferenceBuilder = PreferenceBuilder(),
-            )
-        }
-
-        factory {
-            NotificationPresenter(
-                context = androidContext(),
-                settings = get(),
-                preferenceBuilder = PreferenceBuilder(),
-            )
-        }
+        factory { SynchronizationPresenter(context = androidContext(), settings = get(), preferenceBuilder = PreferenceBuilder()) }
+        factory { PrivacyPresenter(context = androidContext(), settings = get(), preferenceBuilder = PreferenceBuilder()) }
+        factory { PowerPresenter(context = androidContext(), settings = get(), preferenceBuilder = PreferenceBuilder()) }
+        factory { StoragePresenter(context = androidContext(), settings = get(), preferenceBuilder = PreferenceBuilder(), storageController = get()) }
+        factory { ThemePresenter(context = androidContext(), settings = get(), preferenceBuilder = PreferenceBuilder()) }
+        factory { NotificationPresenter(context = androidContext(), settings = get(), preferenceBuilder = PreferenceBuilder()) }
     }
 
 private val featureModule =
@@ -104,6 +63,8 @@ private val featureModule =
         factory<SettingsRouter.Provider> {
             FeatureProvider()
         }
+
+        factory { SettingsNavEntryProvider() } bind FeatureNavEntryProvider::class
     }
 
 private val viewModelModule =
@@ -112,10 +73,6 @@ private val viewModelModule =
         viewModelOf(::TaskViewModel)
         viewModelOf(::LogViewModel)
     }
-
-// Register Nav3 entry provider via central registry
-private val _settingsNavEntryRegistration =
-    FeatureNavEntryProviderRegistry.register(SettingsNavEntryProvider())
 
 internal val moduleHelper =
     DynamicFeatureModuleHelper(
