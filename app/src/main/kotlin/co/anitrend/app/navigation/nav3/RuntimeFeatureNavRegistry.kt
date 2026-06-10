@@ -49,8 +49,9 @@ class RuntimeFeatureNavRegistry(
                 content(navKey as T)
             }
 
-        check(previous == null) {
-            "Duplicate Nav3 destination registered for key: ${key.qualifiedName}"
+        if (previous != null) {
+            Timber.w("Duplicate Nav3 destination registered for key: ${key.qualifiedName} — overwriting")
+            return
         }
 
         Timber.d("Registered Nav3 entry for key: ${key.qualifiedName}")
@@ -59,7 +60,7 @@ class RuntimeFeatureNavRegistry(
     fun install(providers: List<FeatureNavEntryProvider>) {
         Timber.d("Installing ${providers.size} Nav3 feature entry providers")
         providers.forEach { provider ->
-            Timber.d("-> ${provider::class.qualifiedName}")
+            Timber.d("-> ${provider::class.qualifiedName ?: provider::class.java.name}")
             provider.register(this)
         }
         Timber.d("${entries.size} Nav3 entries registered total")

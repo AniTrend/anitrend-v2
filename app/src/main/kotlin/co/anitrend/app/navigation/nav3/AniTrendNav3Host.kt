@@ -27,6 +27,7 @@ import co.anitrend.common.navigation.FeatureNavEntryProviderRepository
 import co.anitrend.navigation.nav3.AboutNavKey
 import co.anitrend.navigation.nav3.AiringNavKey
 import co.anitrend.navigation.nav3.AniTrendNavKey
+import co.anitrend.navigation.nav3.ImageViewerNavKey
 import co.anitrend.navigation.nav3.Nav3SpikeHomeKey
 import co.anitrend.navigation.nav3.NavCommand
 import org.koin.compose.koinInject
@@ -36,15 +37,10 @@ fun AniTrendNav3Host(startKey: AniTrendNavKey) {
     val dispatcher = koinInject<AniTrendNavigationDispatcher>()
     val providerRepository = koinInject<FeatureNavEntryProviderRepository>()
 
-    val providers =
-        remember(providerRepository) {
-            providerRepository.providers()
-        }
-
     val registry =
-        remember(dispatcher, providers) {
+        remember(dispatcher) {
             RuntimeFeatureNavRegistry(dispatcher).also { registry ->
-                registry.install(providers)
+                registry.install(providerRepository.providers())
             }
         }
 
@@ -86,6 +82,9 @@ fun AniTrendNav3Host(startKey: AniTrendNavKey) {
                     registry.ContentFor(key)
                 }
                 entry<AiringNavKey> { key ->
+                    registry.ContentFor(key)
+                }
+                entry<ImageViewerNavKey> { key ->
                     registry.ContentFor(key)
                 }
             },

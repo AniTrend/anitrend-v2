@@ -23,7 +23,6 @@ import co.anitrend.navigation.nav3.NavigationDispatcher
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 class RuntimeFeatureNavRegistryTest {
@@ -55,15 +54,17 @@ class RuntimeFeatureNavRegistryTest {
     }
 
     @Test
-    fun `given duplicate key registration then throws IllegalStateException`() {
+    fun `given duplicate key registration then second registration is silently ignored`() {
         val registry = createRegistry()
 
         val key = co.anitrend.navigation.nav3.AboutNavKey::class
         registry.register(key) {}
 
-        assertFailsWith<IllegalStateException> {
-            registry.register(key) {}
-        }
+        // Second registration should not throw — duplicate detection is a warning, not a crash
+        registry.register(key) {}
+
+        // Entry should still be present
+        assertTrue(registry.hasEntryFor(co.anitrend.navigation.nav3.AboutNavKey))
     }
 
     @Test
@@ -74,12 +75,31 @@ class RuntimeFeatureNavRegistryTest {
     }
 
     @Test
-    fun `given empty registry then providers returns zero entries and no provider crashes`() {
+    fun `given empty registry then install with empty list returns zero entries`() {
         val registry = createRegistry()
 
         registry.install(emptyList())
 
         assertEquals(0, registry.entryCount)
+    }
+
+    @Test
+    fun `given same providers installed twice then entries are not duplicated`() {
+        val registry = createRegistry()
+
+        val provider =
+            object : FeatureNavEntryProvider {
+                override fun register(registry: FeatureNavRegistry) {
+                    registry.register(co.anitrend.navigation.nav3.AboutNavKey::class) {}
+                }
+            }
+
+        registry.install(listOf(provider))
+        assertEquals(1, registry.entryCount)
+
+        // Second install should be a no-op (idempotent)
+        registry.install(listOf(provider))
+        assertEquals(1, registry.entryCount)
     }
 
     @Test

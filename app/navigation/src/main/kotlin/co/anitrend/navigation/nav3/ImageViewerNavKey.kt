@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 AniTrend
+ * Copyright (C) 2025 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,20 +14,18 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package co.anitrend.navigation.nav3
 
-import co.anitrend.buildSrc.Libraries
+import kotlinx.serialization.Serializable
 
-plugins {
-    id("co.anitrend.plugin")
-}
-
-dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.navigation))
-
-    implementation(libs.scalingImageView)
-    implementation(libs.coil)
-}
-
-android {
-    namespace = "co.anitrend.viewer"
-}
+/**
+ * Nav3 key for the image viewer screen.
+ *
+ * Carries a stable list of image URLs and an initial page index.
+ * URLs are kept compact — do not pass large base64 blobs through this key.
+ */
+@Serializable
+data class ImageViewerNavKey(
+    val imageSources: List<String>,
+    val initialIndex: Int = 0,
+) : AniTrendNavKey

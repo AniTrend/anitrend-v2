@@ -17,10 +17,12 @@
 package co.anitrend.viewer.koin
 
 import co.anitrend.arch.extension.ext.systemServiceOf
+import co.anitrend.common.navigation.FeatureNavEntryProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.ImageViewerRouter
 import co.anitrend.viewer.component.viewmodel.ImageViewerViewModel
 import co.anitrend.viewer.provider.FeatureProvider
+import co.anitrend.viewer.provider.ImageViewerNavEntryProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -38,6 +40,10 @@ private val featureModule =
     module {
         factory<ImageViewerRouter.Provider> {
             FeatureProvider()
+        }
+
+        factory<FeatureNavEntryProvider> {
+            ImageViewerNavEntryProvider()
         }
     }
 
