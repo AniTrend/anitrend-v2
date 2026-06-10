@@ -17,7 +17,9 @@
 package co.anitrend.airing.koin
 
 import co.anitrend.airing.component.viewmodel.AiringViewModel
+import co.anitrend.airing.provider.AiringNavEntryProvider
 import co.anitrend.airing.provider.FeatureProvider
+import co.anitrend.common.navigation.FeatureNavEntryProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.AiringRouter
 import org.koin.core.module.dsl.viewModel
@@ -37,6 +39,10 @@ private val featureModule =
     module {
         factory<AiringRouter.Provider> {
             FeatureProvider()
+        }
+
+        factory<FeatureNavEntryProvider> {
+            AiringNavEntryProvider()
         }
     }
 

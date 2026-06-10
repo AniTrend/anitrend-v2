@@ -26,8 +26,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Tv
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,19 +39,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.navigation.nav3.AboutNavKey
+import co.anitrend.navigation.nav3.AiringNavKey
 import co.anitrend.navigation.nav3.AniTrendNavKey
 import co.anitrend.navigation.nav3.Nav3SpikeHomeKey
+import co.anitrend.navigation.nav3.NavigationDispatcher
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 /**
  * Spike: Full Compose app shell demonstrating Nav3 host + drawer integration.
@@ -77,7 +76,7 @@ class MainComposeShellActivity : FragmentActivity() {
 private fun MainComposeShell() {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    var selectedKey by remember { mutableStateOf<AniTrendNavKey>(Nav3SpikeHomeKey) }
+    val dispatcher = koinInject<NavigationDispatcher>()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -88,18 +87,27 @@ private fun MainComposeShell() {
                     NavigationDrawerItem(
                         icon = { Icon(Icons.Default.Home, contentDescription = null) },
                         label = { Text("Home") },
-                        selected = selectedKey is Nav3SpikeHomeKey,
+                        selected = true,
                         onClick = {
-                            selectedKey = Nav3SpikeHomeKey
+                            dispatcher.pop()
                             scope.launch { drawerState.close() }
                         },
                     )
                     NavigationDrawerItem(
                         icon = { Icon(Icons.Default.Info, contentDescription = null) },
                         label = { Text("About") },
-                        selected = selectedKey is AboutNavKey,
+                        selected = false,
                         onClick = {
-                            selectedKey = AboutNavKey
+                            dispatcher.navigate(AboutNavKey)
+                            scope.launch { drawerState.close() }
+                        },
+                    )
+                    NavigationDrawerItem(
+                        icon = { Icon(Icons.Default.Tv, contentDescription = null) },
+                        label = { Text("Airing") },
+                        selected = false,
+                        onClick = {
+                            dispatcher.navigate(AiringNavKey)
                             scope.launch { drawerState.close() }
                         },
                     )
@@ -120,7 +128,7 @@ private fun MainComposeShell() {
             },
         ) { paddingValues ->
             Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
-                AniTrendNav3Host(startKey = selectedKey)
+                AniTrendNav3Host(startKey = Nav3SpikeHomeKey)
             }
         }
     }

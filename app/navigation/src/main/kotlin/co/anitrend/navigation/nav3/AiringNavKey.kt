@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 AniTrend
+ * Copyright (C) 2025 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,25 +14,9 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package co.anitrend.navigation.nav3
 
-import co.anitrend.buildSrc.Libraries
+import kotlinx.serialization.Serializable
 
-plugins {
-    id("co.anitrend.plugin")
-}
-
-dependencies {
-    implementation(project(Libraries.AniTrend.CommonUi.shared))
-    implementation(project(Libraries.AniTrend.CommonUi.genre))
-    implementation(project(Libraries.AniTrend.CommonUi.tag))
-
-    implementation(project(Libraries.AniTrend.CommonUi.media))
-
-    implementation(project(Libraries.AniTrend.CommonUi.navigation))
-
-    implementation(libs.androidx.paging.compose)
-}
-
-android {
-    namespace = "co.anitrend.airing"
-}
+@Serializable
+data object AiringNavKey : AniTrendNavKey

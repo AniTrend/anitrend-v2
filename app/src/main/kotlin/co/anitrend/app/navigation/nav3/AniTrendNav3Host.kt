@@ -25,6 +25,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import co.anitrend.common.navigation.FeatureNavEntryProviderRepository
 import co.anitrend.navigation.nav3.AboutNavKey
+import co.anitrend.navigation.nav3.AiringNavKey
 import co.anitrend.navigation.nav3.AniTrendNavKey
 import co.anitrend.navigation.nav3.Nav3SpikeHomeKey
 import co.anitrend.navigation.nav3.NavCommand
@@ -82,6 +83,9 @@ fun AniTrendNav3Host(startKey: AniTrendNavKey) {
                     Nav3SpikeHome()
                 }
                 entry<AboutNavKey> { key ->
+                    registry.ContentFor(key)
+                }
+                entry<AiringNavKey> { key ->
                     registry.ContentFor(key)
                 }
             },
