@@ -19,6 +19,8 @@ package co.anitrend.koin
 import co.anitrend.analytics.AnalyticsTree
 import co.anitrend.arch.analytics.contract.ISupportAnalytics
 import co.anitrend.app.navigation.nav3.AniTrendNavigationDispatcher
+import co.anitrend.app.navigation.nav3.KoinFeatureNavEntryProviderRepository
+import co.anitrend.common.navigation.FeatureNavEntryProviderRepository
 import co.anitrend.component.presenter.MainPresenter
 import co.anitrend.component.screen.MainScreen
 import co.anitrend.component.viewmodel.MainScreenViewModel
@@ -76,6 +78,10 @@ private val navigationModule =
 
         single<NavigationDispatcher> {
             get<AniTrendNavigationDispatcher>()
+        }
+
+        single<FeatureNavEntryProviderRepository> {
+            KoinFeatureNavEntryProviderRepository(getKoin())
         }
     }
 

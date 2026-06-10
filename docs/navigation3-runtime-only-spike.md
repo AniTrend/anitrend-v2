@@ -89,11 +89,23 @@ adb shell am start -n co.anitrend/co.anitrend.app.navigation.nav3.Nav3SpikeActiv
 # Press back again
 # Expected: activity exits
 
-# Process death test:
-# Open About via Nav3 > Background app > kill from recents or Android Studio
-# Reopen spike activity
-# Expected: no serialization crash; host should start from Nav3SpikeHomeKey
+# Process death test (verified 2025-06-10, emulator API 35):
+# Open About via Nav3 > am force-stop > relaunch spike
+# Result: no serialization crash; host starts from Nav3SpikeHomeKey ✅
 ```
+
+## PR 1 (complete): common:navigation split
+- `common:navigation` module created with `FeatureNavEntryProvider`, `FeatureNavRegistry`, `FeatureNavEntryScope`
+- Compose removed from `app:navigation` — now a pure contracts module
+- All imports updated, boundaries verified
+
+## PR 2 (complete): harden registry
+- `FeatureNavEntryProviderRepository` interface + `KoinFeatureNavEntryProviderRepository`
+- Duplicate key detection (`check(previous == null)`)
+- Provider/key logging with Timber
+- Replaced `GlobalContext.get().getAll()` with DI-injected repository
+- Unit tests: duplicate throws, missing key returns false, provider installs key, empty registry, multi-provider
+- Koin wiring added
 
 ## Decision
 **Proceed** to full About migration then next simple screen. The spike proves:

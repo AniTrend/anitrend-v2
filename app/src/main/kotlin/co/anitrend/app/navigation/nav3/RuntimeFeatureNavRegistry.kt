@@ -37,21 +37,32 @@ class RuntimeFeatureNavRegistry(
                 this@RuntimeFeatureNavRegistry.dispatcher
         }
 
+    val entryCount: Int get() = entries.size
+
     @Suppress("UNCHECKED_CAST")
     override fun <T : AniTrendNavKey> register(
         key: KClass<T>,
         content: @Composable FeatureNavEntryScope.(T) -> Unit,
     ) {
-        entries[key] = { navKey ->
-            content(navKey as T)
+        val previous =
+            entries.put(key) { navKey ->
+                content(navKey as T)
+            }
+
+        check(previous == null) {
+            "Duplicate Nav3 destination registered for key: ${key.qualifiedName}"
         }
+
+        Timber.d("Registered Nav3 entry for key: ${key.qualifiedName}")
     }
 
     fun install(providers: List<FeatureNavEntryProvider>) {
+        Timber.d("Installing ${providers.size} Nav3 feature entry providers")
         providers.forEach { provider ->
-            Timber.d("Installing Nav3 feature entry provider: ${provider::class.qualifiedName}")
+            Timber.d("-> ${provider::class.qualifiedName}")
             provider.register(this)
         }
+        Timber.d("${entries.size} Nav3 entries registered total")
     }
 
     @Composable
