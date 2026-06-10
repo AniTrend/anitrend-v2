@@ -52,6 +52,7 @@ import co.anitrend.data.settings.power.IPowerSettings
 import co.anitrend.data.settings.privacy.IPrivacySettings
 import co.anitrend.data.settings.sync.ISyncSettings
 import co.anitrend.navigation.AboutRouter
+import co.anitrend.navigation.extensions.startNav3OrActivity
 import co.anitrend.navigation.SettingsRouter
 import co.anitrend.navigation.UpdaterRouter
 import co.anitrend.navigation.extensions.startActivity
@@ -350,7 +351,7 @@ class SettingsPresenter(
                         description = context.getString(co.anitrend.settings.R.string.summary_settings_root_hint),
                         icon = Icons.Outlined.Interests,
                         actionLabel = context.getString(co.anitrend.settings.R.string.action_settings_learn_more),
-                        onClick = { AboutRouter.startActivity(context) },
+                        onClick = { AboutRouter.startNav3OrActivity(context) },
                     ),
                 ),
         )

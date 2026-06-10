@@ -22,13 +22,16 @@ import co.anitrend.about.provider.FeatureProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.AboutRouter
 import co.anitrend.common.navigation.FeatureNavEntryProvider
+import co.anitrend.navigation.nav3.NavigationDispatcher
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 private val featureModule =
     module {
         factory<AboutRouter.Provider> {
-            FeatureProvider()
+            FeatureProvider(
+                nav3Dispatcher = getOrNull(),
+            )
         }
 
         factory<FeatureNavEntryProvider> {

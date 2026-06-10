@@ -93,3 +93,22 @@ fun NavigationRouter.startActivity(
     action: String = Intent.ACTION_VIEW,
     options: Bundle? = null,
 ) = startActivity(view?.context, navPayload, flags, action, options)
+
+/**
+ * Attempt to navigate via Nav3 dispatcher, falling back to Activity intent.
+ * Only works when the provider implements [Nav3AwareProvider].
+ */
+fun NavigationRouter.startNav3OrActivity(
+    context: Context?,
+    navPayload: NavPayload? = null,
+    flags: Int = Intent.FLAG_ACTIVITY_NEW_TASK,
+    action: String = Intent.ACTION_VIEW,
+    options: Bundle? = null,
+) {
+    if (context == null) return
+    val p = provider
+    if (p is co.anitrend.navigation.nav3.Nav3AwareProvider && p.navigateViaNav3()) {
+        return
+    }
+    startActivity(context, navPayload, flags, action, options)
+}

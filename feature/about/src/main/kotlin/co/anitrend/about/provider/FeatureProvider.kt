@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 AniTrend
+ * Copyright (C) 2025 AniTrend
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -20,7 +20,21 @@ import android.content.Context
 import android.content.Intent
 import co.anitrend.about.component.screen.AboutScreen
 import co.anitrend.navigation.AboutRouter
+import co.anitrend.navigation.nav3.AboutNavKey
+import co.anitrend.navigation.nav3.Nav3AwareProvider
+import co.anitrend.navigation.nav3.NavigationDispatcher
+import timber.log.Timber
 
-internal class FeatureProvider : AboutRouter.Provider {
+internal class FeatureProvider(
+    private val nav3Dispatcher: NavigationDispatcher?,
+) : AboutRouter.Provider,
+    Nav3AwareProvider {
     override fun activity(context: Context?) = Intent(context, AboutScreen::class.java)
+
+    override fun navigateViaNav3(): Boolean {
+        val dispatcher = nav3Dispatcher ?: return false
+        Timber.d("Navigating to About via Nav3")
+        dispatcher.navigate(AboutNavKey)
+        return true
+    }
 }
