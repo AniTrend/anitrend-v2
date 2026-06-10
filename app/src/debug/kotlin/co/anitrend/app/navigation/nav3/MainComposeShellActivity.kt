@@ -47,17 +47,20 @@ import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.navigation.nav3.AboutNavKey
 import co.anitrend.navigation.nav3.AiringNavKey
 import co.anitrend.navigation.nav3.AniTrendNavKey
+import co.anitrend.navigation.nav3.DiscoverNavKey
+import co.anitrend.navigation.nav3.HomeNavKey
+import co.anitrend.navigation.nav3.ImageViewerNavKey
 import co.anitrend.navigation.nav3.Nav3SpikeHomeKey
 import co.anitrend.navigation.nav3.NavigationDispatcher
+import co.anitrend.navigation.nav3.NewsNavKey
+import co.anitrend.navigation.nav3.SettingsNavKey
+import co.anitrend.navigation.nav3.SocialNavKey
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 /**
- * Spike: Full Compose app shell demonstrating Nav3 host + drawer integration.
- *
- * This is a prototype for PR 5 — converting MainActivity to a Compose-first shell.
- * The real migration will replace the Activity/Fragment drawer with Compose NavigationDrawer
- * and wire Nav3NavHost as the primary content rendering surface.
+ * Spike: Full Compose app shell demonstrating Nav3 host + drawer integration
+ * with all primary navigation destinations.
  */
 class MainComposeShellActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,30 +87,66 @@ private fun MainComposeShell() {
             ModalDrawerSheet {
                 Column {
                     Text("AniTrend", modifier = Modifier.padding(16.dp))
-                    NavigationDrawerItem(
-                        icon = { Icon(Icons.Default.Home, contentDescription = null) },
-                        label = { Text("Home") },
-                        selected = true,
+
+                    DrawerNavItem(
+                        icon = Icons.Default.Home,
+                        label = "Home",
                         onClick = {
-                            dispatcher.pop()
+                            dispatcher.navigate(HomeNavKey)
                             scope.launch { drawerState.close() }
                         },
                     )
-                    NavigationDrawerItem(
-                        icon = { Icon(Icons.Default.Info, contentDescription = null) },
-                        label = { Text("About") },
-                        selected = false,
+
+                    DrawerNavItem(
+                        icon = Icons.Default.Menu,
+                        label = "Discover",
+                        onClick = {
+                            dispatcher.navigate(DiscoverNavKey)
+                            scope.launch { drawerState.close() }
+                        },
+                    )
+
+                    DrawerNavItem(
+                        icon = Icons.Default.Menu,
+                        label = "News",
+                        onClick = {
+                            dispatcher.navigate(NewsNavKey)
+                            scope.launch { drawerState.close() }
+                        },
+                    )
+
+                    DrawerNavItem(
+                        icon = Icons.Default.Menu,
+                        label = "Social",
+                        onClick = {
+                            dispatcher.navigate(SocialNavKey)
+                            scope.launch { drawerState.close() }
+                        },
+                    )
+
+                    DrawerNavItem(
+                        icon = Icons.Default.Menu,
+                        label = "Airing",
+                        onClick = {
+                            dispatcher.navigate(AiringNavKey)
+                            scope.launch { drawerState.close() }
+                        },
+                    )
+
+                    DrawerNavItem(
+                        icon = Icons.Default.Info,
+                        label = "About",
                         onClick = {
                             dispatcher.navigate(AboutNavKey)
                             scope.launch { drawerState.close() }
                         },
                     )
-                    NavigationDrawerItem(
-                        icon = { Icon(Icons.Default.Tv, contentDescription = null) },
-                        label = { Text("Airing") },
-                        selected = false,
+
+                    DrawerNavItem(
+                        icon = Icons.Default.Menu,
+                        label = "Settings",
                         onClick = {
-                            dispatcher.navigate(AiringNavKey)
+                            dispatcher.navigate(SettingsNavKey())
                             scope.launch { drawerState.close() }
                         },
                     )
@@ -132,4 +171,18 @@ private fun MainComposeShell() {
             }
         }
     }
+}
+
+@Composable
+private fun DrawerNavItem(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String,
+    onClick: () -> Unit,
+) {
+    NavigationDrawerItem(
+        icon = { Icon(icon, contentDescription = label) },
+        label = { Text(label) },
+        selected = false,
+        onClick = onClick,
+    )
 }

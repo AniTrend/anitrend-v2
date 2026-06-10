@@ -16,12 +16,23 @@
  */
 package co.anitrend.app.navigation.nav3
 
-import co.anitrend.common.navigation.FeatureNavEntryProvider
-import co.anitrend.common.navigation.FeatureNavEntryProviderRepository
-import org.koin.core.Koin
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 
-class KoinFeatureNavEntryProviderRepository(
-    private val koin: Koin,
-) : FeatureNavEntryProviderRepository {
-    override fun providers(): List<FeatureNavEntryProvider> = koin.getAll()
+@Composable
+fun DrawerPlaceholder(label: String) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = "$label — Nav3 placeholder",
+            textAlign = TextAlign.Center,
+        )
+    }
 }

@@ -27,9 +27,13 @@ import co.anitrend.common.navigation.FeatureNavEntryProviderRepository
 import co.anitrend.navigation.nav3.AboutNavKey
 import co.anitrend.navigation.nav3.AiringNavKey
 import co.anitrend.navigation.nav3.AniTrendNavKey
+import co.anitrend.navigation.nav3.DiscoverNavKey
+import co.anitrend.navigation.nav3.HomeNavKey
 import co.anitrend.navigation.nav3.ImageViewerNavKey
 import co.anitrend.navigation.nav3.Nav3SpikeHomeKey
+import co.anitrend.navigation.nav3.NewsNavKey
 import co.anitrend.navigation.nav3.SettingsNavKey
+import co.anitrend.navigation.nav3.SocialNavKey
 import co.anitrend.navigation.nav3.NavCommand
 import org.koin.compose.koinInject
 
@@ -90,6 +94,18 @@ fun AniTrendNav3Host(startKey: AniTrendNavKey) {
                 }
                 entry<SettingsNavKey> { key ->
                     registry.ContentFor(key)
+                }
+                entry<HomeNavKey> {
+                    DrawerPlaceholder("Home")
+                }
+                entry<DiscoverNavKey> {
+                    DrawerPlaceholder("Discover")
+                }
+                entry<NewsNavKey> {
+                    DrawerPlaceholder("News")
+                }
+                entry<SocialNavKey> {
+                    DrawerPlaceholder("Social")
                 }
             },
     )
