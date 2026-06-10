@@ -26,7 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Tv
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -46,10 +45,8 @@ import androidx.fragment.app.FragmentActivity
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.navigation.nav3.AboutNavKey
 import co.anitrend.navigation.nav3.AiringNavKey
-import co.anitrend.navigation.nav3.AniTrendNavKey
 import co.anitrend.navigation.nav3.DiscoverNavKey
 import co.anitrend.navigation.nav3.HomeNavKey
-import co.anitrend.navigation.nav3.ImageViewerNavKey
 import co.anitrend.navigation.nav3.Nav3SpikeHomeKey
 import co.anitrend.navigation.nav3.NavigationDispatcher
 import co.anitrend.navigation.nav3.NewsNavKey

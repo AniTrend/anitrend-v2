@@ -30,9 +30,6 @@ import android.net.Uri
  *   Deep link URI -> DeepLinkMapper -> AniTrendNavKey -> dispatcher.navigate()
  */
 object DeepLinkMapper {
-    /** AniList auth callback data keys */
-    private const val AUTH_CODE = "authorization_code"
-
     /**
      * Resolves a deep-link intent to a Nav3 key, or null if unrecognised.
      */
