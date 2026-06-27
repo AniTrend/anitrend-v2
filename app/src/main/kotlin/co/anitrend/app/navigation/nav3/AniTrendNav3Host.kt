@@ -27,13 +27,21 @@ import co.anitrend.common.navigation.FeatureNavEntryProviderRepository
 import co.anitrend.navigation.nav3.AboutNavKey
 import co.anitrend.navigation.nav3.AiringNavKey
 import co.anitrend.navigation.nav3.AniTrendNavKey
+import co.anitrend.navigation.nav3.AnimeListNavKey
 import co.anitrend.navigation.nav3.DiscoverNavKey
+import co.anitrend.navigation.nav3.EpisodesNavKey
+import co.anitrend.navigation.nav3.ForumsNavKey
 import co.anitrend.navigation.nav3.HomeNavKey
 import co.anitrend.navigation.nav3.ImageViewerNavKey
+import co.anitrend.navigation.nav3.MangaListNavKey
+import co.anitrend.navigation.nav3.MediaNavKey
 import co.anitrend.navigation.nav3.Nav3SpikeHomeKey
 import co.anitrend.navigation.nav3.NewsNavKey
+import co.anitrend.navigation.nav3.ProfileNavKey
+import co.anitrend.navigation.nav3.ReviewsNavKey
 import co.anitrend.navigation.nav3.SettingsNavKey
 import co.anitrend.navigation.nav3.SocialNavKey
+import co.anitrend.navigation.nav3.SuggestionsNavKey
 import co.anitrend.navigation.nav3.NavCommand
 import org.koin.compose.koinInject
 
@@ -96,16 +104,40 @@ fun AniTrendNav3Host(startKey: AniTrendNavKey) {
                     registry.ContentFor(key)
                 }
                 entry<HomeNavKey> {
-                    DrawerPlaceholder("Home")
+                    DrawerPlaceholder(title = "Home", onBack = { backStack.removeLast() })
                 }
                 entry<DiscoverNavKey> {
-                    DrawerPlaceholder("Discover")
+                    DrawerPlaceholder(title = "Discover", onBack = { backStack.removeLast() })
                 }
                 entry<NewsNavKey> {
-                    DrawerPlaceholder("News")
+                    DrawerPlaceholder(title = "News", onBack = { backStack.removeLast() })
                 }
                 entry<SocialNavKey> {
-                    DrawerPlaceholder("Social")
+                    DrawerPlaceholder(title = "Social", onBack = { backStack.removeLast() })
+                }
+                entry<EpisodesNavKey> {
+                    DrawerPlaceholder(title = "Episodes", onBack = { backStack.removeLast() })
+                }
+                entry<ReviewsNavKey> {
+                    DrawerPlaceholder(title = "Reviews", onBack = { backStack.removeLast() })
+                }
+                entry<SuggestionsNavKey> {
+                    DrawerPlaceholder(title = "Suggestions", onBack = { backStack.removeLast() })
+                }
+                entry<ForumsNavKey> {
+                    DrawerPlaceholder(title = "Forums", onBack = { backStack.removeLast() })
+                }
+                entry<MediaNavKey> { key ->
+                    DrawerPlaceholder(title = "Media", onBack = { backStack.removeLast() })
+                }
+                entry<ProfileNavKey> { key ->
+                    DrawerPlaceholder(title = "Profile", onBack = { backStack.removeLast() })
+                }
+                entry<AnimeListNavKey> { key ->
+                    DrawerPlaceholder(title = "Anime List", onBack = { backStack.removeLast() })
+                }
+                entry<MangaListNavKey> { key ->
+                    DrawerPlaceholder(title = "Manga List", onBack = { backStack.removeLast() })
                 }
             },
     )

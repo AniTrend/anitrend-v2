@@ -23,9 +23,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Forum
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Lightbulb
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -46,12 +56,17 @@ import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.navigation.nav3.AboutNavKey
 import co.anitrend.navigation.nav3.AiringNavKey
 import co.anitrend.navigation.nav3.DiscoverNavKey
+import co.anitrend.navigation.nav3.EpisodesNavKey
+import co.anitrend.navigation.nav3.ForumsNavKey
 import co.anitrend.navigation.nav3.HomeNavKey
+import co.anitrend.navigation.nav3.ImageViewerNavKey
 import co.anitrend.navigation.nav3.Nav3SpikeHomeKey
 import co.anitrend.navigation.nav3.NavigationDispatcher
 import co.anitrend.navigation.nav3.NewsNavKey
+import co.anitrend.navigation.nav3.ReviewsNavKey
 import co.anitrend.navigation.nav3.SettingsNavKey
 import co.anitrend.navigation.nav3.SocialNavKey
+import co.anitrend.navigation.nav3.SuggestionsNavKey
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -95,7 +110,7 @@ private fun MainComposeShell() {
                     )
 
                     DrawerNavItem(
-                        icon = Icons.Default.Menu,
+                        icon = Icons.Default.Search,
                         label = "Discover",
                         onClick = {
                             dispatcher.navigate(DiscoverNavKey)
@@ -104,7 +119,7 @@ private fun MainComposeShell() {
                     )
 
                     DrawerNavItem(
-                        icon = Icons.Default.Menu,
+                        icon = Icons.Default.Notifications,
                         label = "News",
                         onClick = {
                             dispatcher.navigate(NewsNavKey)
@@ -113,7 +128,7 @@ private fun MainComposeShell() {
                     )
 
                     DrawerNavItem(
-                        icon = Icons.Default.Menu,
+                        icon = Icons.Default.List,
                         label = "Social",
                         onClick = {
                             dispatcher.navigate(SocialNavKey)
@@ -122,7 +137,7 @@ private fun MainComposeShell() {
                     )
 
                     DrawerNavItem(
-                        icon = Icons.Default.Menu,
+                        icon = Icons.Default.DateRange,
                         label = "Airing",
                         onClick = {
                             dispatcher.navigate(AiringNavKey)
@@ -140,10 +155,55 @@ private fun MainComposeShell() {
                     )
 
                     DrawerNavItem(
-                        icon = Icons.Default.Menu,
+                        icon = Icons.Default.Settings,
                         label = "Settings",
                         onClick = {
                             dispatcher.navigate(SettingsNavKey())
+                            scope.launch { drawerState.close() }
+                        },
+                    )
+
+                    DrawerNavItem(
+                        icon = Icons.Default.Image,
+                        label = "Image Viewer",
+                        onClick = {
+                            dispatcher.navigate(ImageViewerNavKey(emptyList(), 0))
+                            scope.launch { drawerState.close() }
+                        },
+                    )
+
+                    DrawerNavItem(
+                        icon = Icons.Default.PlayArrow,
+                        label = "Episodes",
+                        onClick = {
+                            dispatcher.navigate(EpisodesNavKey)
+                            scope.launch { drawerState.close() }
+                        },
+                    )
+
+                    DrawerNavItem(
+                        icon = Icons.Default.Star,
+                        label = "Reviews",
+                        onClick = {
+                            dispatcher.navigate(ReviewsNavKey)
+                            scope.launch { drawerState.close() }
+                        },
+                    )
+
+                    DrawerNavItem(
+                        icon = Icons.Default.Lightbulb,
+                        label = "Suggestions",
+                        onClick = {
+                            dispatcher.navigate(SuggestionsNavKey)
+                            scope.launch { drawerState.close() }
+                        },
+                    )
+
+                    DrawerNavItem(
+                        icon = Icons.Default.Forum,
+                        label = "Forums",
+                        onClick = {
+                            dispatcher.navigate(ForumsNavKey)
                             scope.launch { drawerState.close() }
                         },
                     )
