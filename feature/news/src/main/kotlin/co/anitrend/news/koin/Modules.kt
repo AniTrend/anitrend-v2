@@ -17,6 +17,7 @@
 package co.anitrend.news.koin
 
 import co.anitrend.android.core.koin.MarkdownFlavour
+import co.anitrend.common.navigation.FeatureNavEntryProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.data.edge.news.NewsPagedInteractor
 import co.anitrend.navigation.NewsRouter
@@ -26,6 +27,7 @@ import co.anitrend.news.component.screen.viewmodel.NewsScreenViewModel
 import co.anitrend.news.plugin.NewsTagPlugin
 import co.anitrend.news.presenter.NewsPresenter
 import co.anitrend.news.provider.FeatureProvider
+import co.anitrend.news.provider.NewsNavEntryProvider
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonVisitor
@@ -36,6 +38,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import timber.log.Timber
 
@@ -98,7 +101,14 @@ private val featureModule =
         }
     }
 
+private val nav3Module =
+    module {
+        factory {
+            NewsNavEntryProvider()
+        } bind FeatureNavEntryProvider::class
+    }
+
 internal val moduleHelper =
     DynamicFeatureModuleHelper(
-        listOf(coreModule, fragmentModule, viewModelModule, presenterModule, featureModule),
+        listOf(coreModule, fragmentModule, viewModelModule, presenterModule, featureModule, nav3Module),
     )

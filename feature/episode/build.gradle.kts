@@ -25,6 +25,7 @@ dependencies {
     implementation(project(Libraries.AniTrend.Data.feed))
     implementation(project(Libraries.AniTrend.CommonUi.episode))
     implementation(project(Libraries.AniTrend.CommonUi.markdown))
+    implementation(project(Libraries.AniTrend.CommonUi.navigation))
 
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.browser)

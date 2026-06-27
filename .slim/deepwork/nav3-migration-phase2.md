@@ -32,8 +32,16 @@ R4: Per-provider tests ✓
 - [x] Verify: BUILD SUCCESSFUL, 3 files changed, no build files touched
 - Commit: e0e88d9
 
-### Phase 2b: Migrate Home + News + Episode (NEXT)
-Follow established PHASE_2B_PATTERN.
+### Phase 2b: Migrate Home + News + Episode (DONE)
+- [x] CarouselNavEntryProvider: wraps CarouselScreenContent in AniTrendTheme3 + ContentWrapper, legacy routing for item clicks
+- [x] NewsNavEntryProvider: wraps NewsCompose in AniTrendTheme3 + DefaultScaffold
+- [x] EpisodeNavEntryProvider: wraps EpisodeCompose in AniTrendTheme3 + Scaffold(TopAppBar), legacy EpisodeSheet dialog
+- [x] Added common:navigation dep to 3 build files
+- [x] Added Koin bindings (bind FeatureNavEntryProvider::class) in 3 Koin modules
+- [x] Replaced 3 placeholder entries in AniTrendNav3Host with registry.ContentFor(key)
+- [x] BUILD SUCCESSFUL, 10 files changed
+- Commit: 2bd46bf
+- [~] @oracle review pending
 
 ## Architecture Constraints
 - `feature/*` remain `runtimeOnly` from `app`

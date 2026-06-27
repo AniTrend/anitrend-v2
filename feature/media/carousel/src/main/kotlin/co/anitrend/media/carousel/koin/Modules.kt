@@ -16,14 +16,17 @@
  */
 package co.anitrend.media.carousel.koin
 
+import co.anitrend.common.navigation.FeatureNavEntryProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.carousel.component.content.CarouselContent
 import co.anitrend.media.carousel.component.content.controller.CarouselContentController
 import co.anitrend.media.carousel.component.viewmodel.CarouselViewModel
+import co.anitrend.media.carousel.provider.CarouselNavEntryProvider
 import co.anitrend.media.carousel.provider.FeatureProvider
 import co.anitrend.navigation.MediaCarouselRouter
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val controllerModule =
@@ -61,7 +64,14 @@ private val featureModule =
         }
     }
 
+private val nav3Module =
+    module {
+        factory {
+            CarouselNavEntryProvider()
+        } bind FeatureNavEntryProvider::class
+    }
+
 internal val moduleHelper =
     DynamicFeatureModuleHelper(
-        listOf(controllerModule, fragmentModule, viewModelModule, featureModule),
+        listOf(controllerModule, fragmentModule, viewModelModule, featureModule, nav3Module),
     )

@@ -103,20 +103,20 @@ fun AniTrendNav3Host(startKey: AniTrendNavKey) {
                 entry<SettingsNavKey> { key ->
                     registry.ContentFor(key)
                 }
-                entry<HomeNavKey> {
-                    DrawerPlaceholder(title = "Home", onBack = { backStack.removeLast() })
+                entry<HomeNavKey> { key ->
+                    registry.ContentFor(key)
                 }
                 entry<DiscoverNavKey> {
                     DrawerPlaceholder(title = "Discover", onBack = { backStack.removeLast() })
                 }
-                entry<NewsNavKey> {
-                    DrawerPlaceholder(title = "News", onBack = { backStack.removeLast() })
+                entry<NewsNavKey> { key ->
+                    registry.ContentFor(key)
                 }
                 entry<SocialNavKey> {
                     DrawerPlaceholder(title = "Social", onBack = { backStack.removeLast() })
                 }
-                entry<EpisodesNavKey> {
-                    DrawerPlaceholder(title = "Episodes", onBack = { backStack.removeLast() })
+                entry<EpisodesNavKey> { key ->
+                    registry.ContentFor(key)
                 }
                 entry<ReviewsNavKey> {
                     DrawerPlaceholder(title = "Reviews", onBack = { backStack.removeLast() })

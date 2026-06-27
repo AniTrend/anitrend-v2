@@ -16,15 +16,18 @@
  */
 package co.anitrend.episode.koin
 
+import co.anitrend.common.navigation.FeatureNavEntryProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.episode.component.content.EpisodeContent
 import co.anitrend.episode.component.content.viewmodel.EpisodeContentViewModel
 import co.anitrend.episode.component.sheet.EpisodeSheet
 import co.anitrend.episode.component.sheet.viewmodel.EpisodeSheetViewModel
+import co.anitrend.episode.provider.EpisodeNavEntryProvider
 import co.anitrend.episode.provider.FeatureProvider
 import co.anitrend.navigation.EpisodeRouter
 import org.koin.androidx.fragment.dsl.fragmentOf
 import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val fragmentModule =
@@ -54,7 +57,14 @@ private val featureModule =
         }
     }
 
+private val nav3Module =
+    module {
+        factory {
+            EpisodeNavEntryProvider()
+        } bind FeatureNavEntryProvider::class
+    }
+
 internal val moduleHelper =
     DynamicFeatureModuleHelper(
-        listOf(fragmentModule, viewModelModule, featureModule),
+        listOf(fragmentModule, viewModelModule, featureModule, nav3Module),
     )
