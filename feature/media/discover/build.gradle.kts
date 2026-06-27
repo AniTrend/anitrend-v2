@@ -22,9 +22,10 @@ plugins {
 }
 
 dependencies {
-	implementation(project(Libraries.AniTrend.CommonUi.shared))
-	implementation(project(Libraries.AniTrend.CommonUi.media))
-	implementation(libs.androidx.paging.compose)
+    implementation(project(Libraries.AniTrend.CommonUi.shared))
+    implementation(project(Libraries.AniTrend.CommonUi.media))
+    implementation(project(Libraries.AniTrend.CommonUi.navigation))
+    implementation(libs.androidx.paging.compose)
 }
 
 android {

@@ -24,6 +24,7 @@ plugins {
 dependencies {
     implementation(project(Libraries.AniTrend.CommonUi.review))
     implementation(project(Libraries.AniTrend.CommonUi.shared))
+    implementation(project(Libraries.AniTrend.CommonUi.navigation))
     implementation(libs.androidx.paging.compose)
 }
 

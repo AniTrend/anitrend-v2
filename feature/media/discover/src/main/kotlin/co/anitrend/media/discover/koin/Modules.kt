@@ -16,11 +16,14 @@
  */
 package co.anitrend.media.discover.koin
 
+import co.anitrend.common.navigation.FeatureNavEntryProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.media.discover.component.content.viewmodel.MediaDiscoverViewModel
+import co.anitrend.media.discover.provider.DiscoverNavEntryProvider
 import co.anitrend.media.discover.provider.FeatureProvider
 import co.anitrend.navigation.MediaDiscoverRouter
 import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val viewModelModule =
@@ -40,7 +43,14 @@ private val featureModule =
         }
     }
 
+private val nav3Module =
+    module {
+        factory {
+            DiscoverNavEntryProvider()
+        } bind FeatureNavEntryProvider::class
+    }
+
 internal val moduleHelper =
     DynamicFeatureModuleHelper(
-        listOf(viewModelModule, featureModule),
+        listOf(viewModelModule, featureModule, nav3Module),
     )
