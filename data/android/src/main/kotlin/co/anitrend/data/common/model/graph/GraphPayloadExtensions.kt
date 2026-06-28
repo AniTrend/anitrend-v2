@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.common.model.graph
 
-import io.github.wax911.library.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
 
 /**
  * Builds a query container from a constrained graph payload contract.

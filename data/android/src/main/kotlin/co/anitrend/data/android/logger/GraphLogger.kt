@@ -16,8 +16,8 @@
  */
 package co.anitrend.data.android.logger
 
-import io.github.wax911.library.logger.contract.ILogger.Level
-import io.github.wax911.library.logger.core.AbstractLogger
+import co.anitrend.retrofit.graphql.logger.contract.ILogger.Level
+import co.anitrend.retrofit.graphql.logger.core.AbstractLogger
 import timber.log.Timber
 
 /**

@@ -1,8 +1,8 @@
 package co.anitrend.data.core.api.converter.request
 
 import com.google.gson.Gson
-import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
-import io.github.wax911.library.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor
+import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
 import io.mockk.every
 import io.mockk.mockk
 import kotlin.test.Test

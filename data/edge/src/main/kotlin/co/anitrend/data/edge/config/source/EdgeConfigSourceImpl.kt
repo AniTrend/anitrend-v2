@@ -28,7 +28,7 @@ import co.anitrend.data.edge.config.datasource.remote.EdgeConfigRemoteSource
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
 import co.anitrend.data.edge.config.source.contract.EdgeConfigSource
 import co.anitrend.domain.config.entity.Config
-import io.github.wax911.library.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
