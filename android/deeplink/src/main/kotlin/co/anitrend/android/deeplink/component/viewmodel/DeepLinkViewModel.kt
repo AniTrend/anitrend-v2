@@ -22,12 +22,16 @@ import androidx.lifecycle.ViewModel
 import co.anitrend.android.deeplink.component.presenter.SplashPresenter
 import co.anitrend.android.deeplink.exception.DeepLinkException
 import co.anitrend.navigation.DeepLinkRouter
+import co.anitrend.navigation.nav3.AniTrendNavKey
+import co.anitrend.navigation.nav3.DeepLinkMapper
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 
 class DeepLinkViewModel : ViewModel() {
     val splashState: MutableStateFlow<SplashPresenter.State> = MutableStateFlow(SplashPresenter.State.RUNNING)
     var intentState: Intent? = null
+        private set
+    var navKey: AniTrendNavKey? = null
         private set
 
     operator fun invoke(uri: Uri?) {
@@ -42,6 +46,7 @@ class DeepLinkViewModel : ViewModel() {
                 } else {
                     intentState = intent
                 }
+                navKey = DeepLinkMapper.resolve(uri)
             }
         }
     }

@@ -36,8 +36,10 @@ import co.anitrend.android.deeplink.component.presenter.SplashPresenter
 import co.anitrend.android.deeplink.component.viewmodel.DeepLinkViewModel
 import co.anitrend.navigation.MainRouter
 import co.anitrend.navigation.extensions.startActivity
+import co.anitrend.navigation.nav3.NavigationDispatcher
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.compose.koinInject
 
 class DeepLinkScreen : AniTrendScreen() {
     private val viewModel by viewModel<DeepLinkViewModel>()
@@ -71,12 +73,16 @@ class DeepLinkScreen : AniTrendScreen() {
         setContent {
             AniTrendTheme3 {
                 val navController = rememberNavController()
+                val dispatcher = koinInject<NavigationDispatcher>()
                 DeepLinkScreenContent(
                     viewModel = viewModel,
                     splashPresenter = splashPresenter,
                     onBoardingPresenter = onBoardingPresenter,
                     navigationController = navController,
                     onNavigateTo = {
+                        viewModel.navKey?.also { key ->
+                            dispatcher.navigate(key)
+                        }
                         viewModel.intentState?.also(::startActivity) ?: MainRouter.startActivity(this)
                         ActivityCompat.finishAfterTransition(this)
                     },
