@@ -71,10 +71,10 @@ import com.chuckerteam.chucker.api.RetentionManager
 import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import io.github.wax911.library.annotation.processor.GraphProcessor
-import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
-import io.github.wax911.library.annotation.processor.plugin.AssetManagerDiscoveryPlugin
-import io.github.wax911.library.logger.contract.ILogger
+import co.anitrend.retrofit.graphql.annotation.processor.GraphProcessor
+import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor
+import co.anitrend.retrofit.graphql.annotation.processor.plugin.AssetManagerDiscoveryPlugin
+import co.anitrend.retrofit.graphql.logger.contract.ILogger
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic

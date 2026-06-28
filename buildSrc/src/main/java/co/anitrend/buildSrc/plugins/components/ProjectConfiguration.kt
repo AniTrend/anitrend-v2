@@ -70,7 +70,7 @@ private fun Project.configureLint() = applicationExtension().run {
 internal fun Project.configureAndroid() {
     if (isAppModule()) {
         applicationExtension().apply {
-            compileSdk = 36
+            compileSdk = 37
             defaultConfig {
                 minSdk = 24
                 targetSdk = 36
@@ -157,7 +157,7 @@ internal fun Project.configureAndroid() {
         }
     } else {
         libraryExtension().apply {
-            compileSdk = 36
+            compileSdk = 37
             defaultConfig {
                 minSdk = 24
                 testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

@@ -28,7 +28,7 @@ import co.anitrend.data.tag.datasource.remote.MediaTagRemoteSource
 import co.anitrend.data.tag.entity.filter.TagQueryFilter
 import co.anitrend.data.tag.source.contract.TagSource
 import co.anitrend.domain.tag.entity.Tag
-import io.github.wax911.library.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

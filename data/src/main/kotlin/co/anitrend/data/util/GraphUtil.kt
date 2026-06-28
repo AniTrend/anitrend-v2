@@ -22,7 +22,7 @@ import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.data.core.AniTrendExperimentalFeature
 import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.common.sort.order.SortOrder
-import io.github.wax911.library.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
 
 /**
  * Graph request helper class

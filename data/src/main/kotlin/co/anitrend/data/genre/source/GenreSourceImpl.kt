@@ -28,7 +28,7 @@ import co.anitrend.data.genre.datasource.remote.MediaGenreRemoteSource
 import co.anitrend.data.genre.entity.filter.GenreQueryFilter
 import co.anitrend.data.genre.source.contract.GenreSource
 import co.anitrend.domain.genre.entity.Genre
-import io.github.wax911.library.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

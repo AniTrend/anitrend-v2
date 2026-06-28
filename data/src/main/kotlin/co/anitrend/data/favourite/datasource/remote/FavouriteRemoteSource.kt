@@ -18,8 +18,8 @@ package co.anitrend.data.favourite.datasource.remote
 
 import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.model.GraphQLResponse
-import io.github.wax911.library.annotation.GraphQuery
-import io.github.wax911.library.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.annotation.GraphQuery
+import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

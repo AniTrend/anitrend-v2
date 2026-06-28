@@ -34,7 +34,7 @@ import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.studio.entity.StudioDetailData
-import io.github.wax911.library.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
