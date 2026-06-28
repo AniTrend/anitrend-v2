@@ -16,7 +16,7 @@
  */
 package co.anitrend.data.edge.core.api.interceptor
 
-import io.github.wax911.library.converter.GraphConverter
+import co.anitrend.retrofit.graphql.converter.GraphConverter
 import okhttp3.Interceptor
 import okhttp3.Response
 

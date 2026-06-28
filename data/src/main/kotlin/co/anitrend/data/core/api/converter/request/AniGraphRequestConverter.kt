@@ -20,12 +20,9 @@ import co.anitrend.data.BuildConfig
 import co.anitrend.data.core.AniTrendExperimentalFeature
 import co.anitrend.data.util.GraphUtil.minify
 import com.google.gson.Gson
-import io.github.wax911.library.annotation.processor.contract.AbstractGraphProcessor
-import io.github.wax911.library.converter.request.GraphRequestConverter
-import io.github.wax911.library.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor
+import co.anitrend.retrofit.graphql.converter.request.GraphRequestConverter
 import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 
 internal class AniRequestConverter(
     methodAnnotations: Array<out Annotation>,
@@ -33,22 +30,18 @@ internal class AniRequestConverter(
     gson: Gson,
 ) : GraphRequestConverter(methodAnnotations, processor, gson) {
     /**
-     * Converter for the request body, gets the GraphQL query from the method annotation
-     * and constructs a GraphQL request body to send over the network.
+     * Resolves the raw GraphQL query string from the method annotations,
+     * applying minification in release builds for smaller payloads.
      *
-     * @param containerBuilder The constructed builder method of your query with variables
+     * @return The resolved query string, or null if no query is found.
+     * @see GraphRequestConverter.resolveQuery
      */
     @OptIn(AniTrendExperimentalFeature::class)
-    override fun convert(containerBuilder: QueryContainerBuilder): RequestBody {
+    override fun resolveQuery(): String? {
         // we need structured line numbers if we're in the debug env otherwise we can minify queries
-        val query = graphProcessor.getQuery(methodAnnotations)?.minify(!BuildConfig.DEBUG)
-        val queryContainer =
-            containerBuilder
-                .setQuery(query)
-                .build()
-
-        val queryJson = gson.toJson(queryContainer)
-        return queryJson.toRequestBody(JSON_MIME_TYPE)
+        return graphProcessor
+            .getQuery(methodAnnotations)
+            ?.minify(!BuildConfig.DEBUG)
     }
 
     companion object {

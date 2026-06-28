@@ -17,7 +17,7 @@
 package co.anitrend.data.core.api.interceptor
 
 import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
-import io.github.wax911.library.converter.GraphConverter
+import co.anitrend.retrofit.graphql.converter.GraphConverter
 import okhttp3.Interceptor
 import okhttp3.Response
 
