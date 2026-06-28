@@ -16,6 +16,7 @@
  */
 package co.anitrend.navigation
 
+import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -69,6 +70,20 @@ object MainRouter : NavigationRouter() {
     override val provider by inject<Provider>()
 
     interface Provider : INavigationProvider
+
+    /**
+     * Builds an Intent for the Nav3 Compose shell [MainComposeActivity],
+     * usable from modules (e.g. :android:deeplink) that cannot directly
+     * reference the Activity class.
+     */
+    fun forNav3ComposeActivity(context: Context): Intent =
+        Intent(Intent.ACTION_VIEW)
+            .setClassName(
+                context.packageName,
+                "co.anitrend.app.navigation.nav3.MainComposeActivity",
+            ).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
 }
 
 object NavigationDrawerRouter : NavigationRouter() {

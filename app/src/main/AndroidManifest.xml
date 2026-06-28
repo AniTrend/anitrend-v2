@@ -52,6 +52,10 @@
             android:exported="true"
             android:launchMode="singleTop"/>
 
+        <activity android:name="co.anitrend.app.navigation.nav3.MainComposeActivity"
+            android:exported="false"
+            android:launchMode="singleTop" />
+
         <provider
             android:authorities="${applicationId}.provider"
             android:name=".arch.core.provider.SupportFileProvider"

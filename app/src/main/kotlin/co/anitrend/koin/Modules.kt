@@ -27,6 +27,7 @@ import co.anitrend.component.viewmodel.MainScreenViewModel
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.navigation.MainRouter
 import co.anitrend.navigation.nav3.NavigationDispatcher
+import co.anitrend.navigation.nav3.PendingNavKeyHolder
 import co.anitrend.provider.FeatureProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
@@ -82,6 +83,10 @@ private val navigationModule =
 
         single<FeatureNavEntryProviderRepository> {
             KoinFeatureNavEntryProviderRepository(getKoin())
+        }
+
+        single {
+            PendingNavKeyHolder()
         }
     }
 

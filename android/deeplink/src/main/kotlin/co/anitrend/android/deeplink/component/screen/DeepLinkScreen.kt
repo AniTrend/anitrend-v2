@@ -37,6 +37,7 @@ import co.anitrend.android.deeplink.component.viewmodel.DeepLinkViewModel
 import co.anitrend.navigation.MainRouter
 import co.anitrend.navigation.extensions.startActivity
 import co.anitrend.navigation.nav3.NavigationDispatcher
+import co.anitrend.navigation.nav3.PendingNavKeyHolder
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.compose.koinInject
@@ -45,6 +46,7 @@ class DeepLinkScreen : AniTrendScreen() {
     private val viewModel by viewModel<DeepLinkViewModel>()
     private val splashPresenter by inject<SplashPresenter>()
     private val onBoardingPresenter by inject<OnBoardingPresenter>()
+    private val pendingKeyHolder: PendingNavKeyHolder by inject()
 
     private fun setupSplashScreen(splashScreen: SplashScreen) {
         splashScreen.setKeepOnScreenCondition {
@@ -82,9 +84,13 @@ class DeepLinkScreen : AniTrendScreen() {
                     onNavigateTo = {
                         viewModel.navKey?.also { key ->
                             dispatcher.navigate(key)
+                            pendingKeyHolder.post(key)
+                            startActivity(MainRouter.forNav3ComposeActivity(this@DeepLinkScreen))
+                        } ?: run {
+                            viewModel.intentState?.also(::startActivity)
+                                ?: MainRouter.startActivity(this@DeepLinkScreen)
                         }
-                        viewModel.intentState?.also(::startActivity) ?: MainRouter.startActivity(this)
-                        ActivityCompat.finishAfterTransition(this)
+                        ActivityCompat.finishAfterTransition(this@DeepLinkScreen)
                     },
                 )
             }
