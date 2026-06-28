@@ -17,7 +17,6 @@
 package co.anitrend.medialist.provider
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.SavedStateHandle
 import co.anitrend.android.core.settings.Settings
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.common.navigation.FeatureNavEntryProvider
@@ -26,8 +25,6 @@ import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.medialist.component.compose.MediaListCompose
 import co.anitrend.medialist.component.container.viewmodel.UserViewModel
 import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
-import co.anitrend.navigation.MediaListRouter
-import co.anitrend.navigation.extensions.nameOf
 import co.anitrend.navigation.nav3.AnimeListNavKey
 import co.anitrend.navigation.nav3.MangaListNavKey
 import org.koin.compose.koinInject
@@ -58,16 +55,6 @@ private fun MediaListNavContent(
     userId: Long,
     onBackPress: () -> Unit,
 ) {
-    val savedStateHandle = koinInject<SavedStateHandle>()
-    val paramKey = nameOf<MediaListRouter.MediaListParam>()
-
-    // Pre-populate SavedStateHandle so ViewModels can read the param at construction
-    savedStateHandle[paramKey] =
-        MediaListRouter.MediaListParam(
-            type = mediaType,
-            userId = userId,
-        )
-
     val settings = koinInject<Settings>()
     val userViewModel = koinViewModel<UserViewModel>()
     val mediaViewModel = koinViewModel<MediaListViewModel>()

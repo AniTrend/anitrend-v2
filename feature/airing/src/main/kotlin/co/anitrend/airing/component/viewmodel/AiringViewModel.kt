@@ -35,11 +35,9 @@ class AiringViewModel(
     private val interactor: GetPagingAiringScheduleInteractor,
 ) : ViewModel() {
     val initialParam =
-        requireNotNull(
-            stateHandle.get<AiringRouter.AiringParam>(
-                nameOf<AiringRouter.AiringParam>(),
-            ),
-        )
+        stateHandle.get<AiringRouter.AiringParam>(
+            nameOf<AiringRouter.AiringParam>(),
+        ) ?: AiringRouter.AiringParam()
 
     val filter: StateFlow<AiringRouter.AiringParam> =
         stateHandle.getStateFlow(

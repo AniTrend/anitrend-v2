@@ -227,7 +227,7 @@ private fun AiringGrid(
     ) {
         items(
             count = airings.itemCount,
-            key = airings.itemKey { media -> media.id },
+            key = { index -> airings[index]?.let { "airing_${it.id}_$index" } ?: "airing_$index" },
             contentType = airings.itemContentType { "airing_grid_item" },
         ) { index ->
             val media = airings[index] ?: return@items

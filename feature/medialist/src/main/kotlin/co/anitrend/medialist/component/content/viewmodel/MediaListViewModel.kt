@@ -24,6 +24,7 @@ import androidx.paging.cachedIn
 import co.anitrend.data.medialist.GetPagingMediaListInteractor
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.domain.media.entity.Media
+import co.anitrend.domain.media.enums.MediaType
 import co.anitrend.domain.medialist.enums.MediaListStatus
 import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.domain.user.entity.attribute.MediaListInfo
@@ -42,7 +43,9 @@ class MediaListViewModel(
 ) : ViewModel() {
     private val savedStateKey = nameOf<MediaListRouter.MediaListParam>()
 
-    private val initialParam = requireNotNull(savedStateHandle.get<MediaListRouter.MediaListParam>(savedStateKey))
+    private val initialParam =
+        savedStateHandle.get<MediaListRouter.MediaListParam>(savedStateKey)
+            ?: MediaListRouter.MediaListParam(type = MediaType.ANIME)
 
     private val mutableParams = MutableStateFlow(initialParam.withDefaultSection())
 
