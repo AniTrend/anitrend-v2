@@ -26,6 +26,7 @@ enum class FeatureFlag(
     val key: String,
 ) {
     EXPERIMENTAL_COMPOSE_UI("experimental_compose_ui"),
+    NAV3_COMPOSE_SHELL("nav3_compose_shell"),
     ;
 
     companion object {

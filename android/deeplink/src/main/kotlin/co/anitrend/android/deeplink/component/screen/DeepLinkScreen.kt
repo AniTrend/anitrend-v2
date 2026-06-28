@@ -17,6 +17,7 @@
 package co.anitrend.android.deeplink.component.screen
 
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.core.app.ActivityCompat
@@ -30,6 +31,9 @@ import co.anitrend.arch.extension.ext.hideStatusBarAndNavigationBar
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.core.component.screen.AniTrendScreen
 import co.anitrend.core.ui.inject
+import co.anitrend.data.settings.feature.FeatureFlag
+import co.anitrend.data.settings.feature.FeatureFlags
+import co.anitrend.data.settings.feature.IFeatureFlagSetting
 import co.anitrend.android.deeplink.component.compose.DeepLinkScreenContent
 import co.anitrend.android.deeplink.component.presenter.OnBoardingPresenter
 import co.anitrend.android.deeplink.component.presenter.SplashPresenter
@@ -47,6 +51,7 @@ class DeepLinkScreen : AniTrendScreen() {
     private val splashPresenter by inject<SplashPresenter>()
     private val onBoardingPresenter by inject<OnBoardingPresenter>()
     private val pendingKeyHolder: PendingNavKeyHolder by inject()
+    private val featureFlagSetting: IFeatureFlagSetting by inject()
 
     private fun setupSplashScreen(splashScreen: SplashScreen) {
         splashScreen.setKeepOnScreenCondition {
@@ -82,11 +87,23 @@ class DeepLinkScreen : AniTrendScreen() {
                     onBoardingPresenter = onBoardingPresenter,
                     navigationController = navController,
                     onNavigateTo = {
-                        viewModel.navKey?.also { key ->
+                        val isDebugBuild =
+                            0 != applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE
+                        val useNav3Shell =
+                            viewModel.navKey != null &&
+                                (
+                                    isDebugBuild ||
+                                        FeatureFlags.isEnabled(
+                                            flags = featureFlagSetting.featureFlags.value,
+                                            flag = FeatureFlag.NAV3_COMPOSE_SHELL,
+                                        )
+                                )
+                        if (useNav3Shell) {
+                            val key = viewModel.navKey!!
                             dispatcher.navigate(key)
                             pendingKeyHolder.post(key)
                             startActivity(MainRouter.forNav3ComposeActivity(this@DeepLinkScreen))
-                        } ?: run {
+                        } else {
                             viewModel.intentState?.also(::startActivity)
                                 ?: MainRouter.startActivity(this@DeepLinkScreen)
                         }

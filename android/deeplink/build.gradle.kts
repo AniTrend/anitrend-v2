@@ -25,6 +25,7 @@ dependencies {
     implementation(libs.deeplink)
     implementation(libs.androidx.core.splashscreen)
     implementation(project(Libraries.AniTrend.CommonUi.shared))
+    implementation(project(Libraries.AniTrend.Data.settings))
 }
 
 android {
