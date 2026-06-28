@@ -124,8 +124,8 @@ fun AniTrendNav3Host(startKey: AniTrendNavKey) {
                 entry<SuggestionsNavKey> {
                     DrawerPlaceholder(title = "Suggestions", onBack = { backStack.removeLast() })
                 }
-                entry<ForumsNavKey> {
-                    DrawerPlaceholder(title = "Forums", onBack = { backStack.removeLast() })
+                entry<ForumsNavKey> { key ->
+                    registry.ContentFor(key)
                 }
                 entry<MediaNavKey> { key ->
                     DrawerPlaceholder(title = "Media", onBack = { backStack.removeLast() })
@@ -134,10 +134,10 @@ fun AniTrendNav3Host(startKey: AniTrendNavKey) {
                     DrawerPlaceholder(title = "Profile", onBack = { backStack.removeLast() })
                 }
                 entry<AnimeListNavKey> { key ->
-                    DrawerPlaceholder(title = "Anime List", onBack = { backStack.removeLast() })
+                    registry.ContentFor(key)
                 }
                 entry<MangaListNavKey> { key ->
-                    DrawerPlaceholder(title = "Manga List", onBack = { backStack.removeLast() })
+                    registry.ContentFor(key)
                 }
             },
     )

@@ -17,15 +17,18 @@
 package co.anitrend.medialist.koin
 
 import co.anitrend.android.core.settings.Settings
+import co.anitrend.common.navigation.FeatureNavEntryProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.data.medialist.GetPagingMediaListInteractor
 import co.anitrend.medialist.component.container.MediaListContainer
 import co.anitrend.medialist.component.container.viewmodel.UserViewModel
 import co.anitrend.medialist.component.content.viewmodel.MediaListViewModel
 import co.anitrend.medialist.provider.FeatureProvider
+import co.anitrend.medialist.provider.MediaListNavEntryProvider
 import co.anitrend.navigation.MediaListRouter
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val fragmentModule =
@@ -59,6 +62,8 @@ private val featureModule =
         factory<MediaListRouter.Provider> {
             FeatureProvider()
         }
+
+        factory { MediaListNavEntryProvider() } bind FeatureNavEntryProvider::class
     }
 
 internal val moduleHelper =

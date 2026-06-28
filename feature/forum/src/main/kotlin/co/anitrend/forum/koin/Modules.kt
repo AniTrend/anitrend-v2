@@ -16,13 +16,16 @@
  */
 package co.anitrend.forum.koin
 
+import co.anitrend.common.navigation.FeatureNavEntryProvider
 import co.anitrend.core.koin.helper.DynamicFeatureModuleHelper
 import co.anitrend.forum.component.content.ForumContent
 import co.anitrend.forum.component.viewmodel.ForumViewModel
 import co.anitrend.forum.provider.FeatureProvider
+import co.anitrend.forum.provider.ForumNavEntryProvider
 import co.anitrend.navigation.ForumRouter
 import org.koin.androidx.fragment.dsl.fragment
 import org.koin.core.module.dsl.viewModel
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 private val fragmentModule =
@@ -44,6 +47,8 @@ private val featureModule =
         factory<ForumRouter.Provider> {
             FeatureProvider()
         }
+
+        factory { ForumNavEntryProvider() } bind FeatureNavEntryProvider::class
     }
 
 internal val moduleHelper =

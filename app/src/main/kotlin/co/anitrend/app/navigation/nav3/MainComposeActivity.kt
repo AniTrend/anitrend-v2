@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
@@ -46,23 +47,28 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import co.anitrend.android.core.ui.theme.AniTrendTheme3
 import co.anitrend.navigation.nav3.AboutNavKey
 import co.anitrend.navigation.nav3.AiringNavKey
 import co.anitrend.navigation.nav3.AniTrendNavKey
+import co.anitrend.navigation.nav3.AnimeListNavKey
 import co.anitrend.navigation.nav3.DiscoverNavKey
 import co.anitrend.navigation.nav3.EpisodesNavKey
 import co.anitrend.navigation.nav3.HomeNavKey
 import co.anitrend.navigation.nav3.ImageViewerNavKey
+import co.anitrend.navigation.nav3.MangaListNavKey
 import co.anitrend.navigation.nav3.NewsNavKey
 import co.anitrend.navigation.nav3.ReviewsNavKey
 import co.anitrend.navigation.nav3.SettingsNavKey
 import co.anitrend.navigation.nav3.NavigationDispatcher
 import co.anitrend.navigation.nav3.PendingNavKeyHolder
+import co.anitrend.data.user.settings.IUserSettings
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.compose.koinInject
@@ -105,6 +111,13 @@ private fun MainComposeShell(startKey: AniTrendNavKey) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val dispatcher = koinInject<NavigationDispatcher>()
+    val userSettings = koinInject<IUserSettings>()
+    val isAuthenticated by userSettings.isAuthenticated
+        .flow
+        .collectAsStateWithLifecycle(initialValue = false)
+    val userId by userSettings.authenticatedUserId
+        .flow
+        .collectAsStateWithLifecycle(initialValue = -1L)
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -197,6 +210,25 @@ private fun MainComposeShell(startKey: AniTrendNavKey) {
                             scope.launch { drawerState.close() }
                         },
                     )
+
+                    if (isAuthenticated) {
+                        LiveDrawerItem(
+                            icon = Icons.Default.List,
+                            label = "Anime List",
+                            onClick = {
+                                dispatcher.navigate(AnimeListNavKey(userId))
+                                scope.launch { drawerState.close() }
+                            },
+                        )
+                        LiveDrawerItem(
+                            icon = Icons.Default.List,
+                            label = "Manga List",
+                            onClick = {
+                                dispatcher.navigate(MangaListNavKey(userId))
+                                scope.launch { drawerState.close() }
+                            },
+                        )
+                    }
                 }
             }
         },
