@@ -8,37 +8,194 @@ directive @length(max: Int, min: Int, subgraph: String) on SCALAR
 
 directive @transport(headers: [[String]], kind: String, location: String, queryParams: [[String]], queryStringOptions: ObjMap, subgraph: String) on SCHEMA
 
+"""Opening or ending theme with entries and song metadata"""
+type AnimeThemes {
+  animethemeentries: [AnimeThemesEntry]
+  id: Float!
+  sequence: Float
+  slug: String!
+  song: AnimeThemesSong
+  type: query_series_animethemes_items_type!
+}
+
+"""Audio resource for an anime theme"""
+type AnimeThemesAudio {
+  id: Float!
+  link: URL!
+}
+
+"""A single anime theme entry with version info and videos"""
+type AnimeThemesEntry {
+  episodes: String
+  id: Float!
+  notes: String
+  nsfw: Boolean!
+  spoiler: Boolean!
+  version: Float
+  videos: [AnimeThemesVideo]
+}
+
+"""Song metadata for an anime theme"""
+type AnimeThemesSong {
+  id: Float!
+  title: String
+}
+
+"""Video resource for an anime theme entry"""
+type AnimeThemesVideo {
+  audio: AnimeThemesAudio
+  id: Float!
+  link: URL!
+  lyrics: Boolean!
+  nc: Boolean!
+  overlap: String
+  resolution: Float
+  source: String
+  subbed: Boolean!
+  tags: String
+  uncen: Boolean!
+}
+
 """
 Fictional character metadata resolved from Jikan (MAL), including media and voice-actor relations
 """
 type Character {
   about: String
-  anime: [query_character_anime_items]
+  anime: [CharacterMediaRelation]
   expiresAt: Float!
   favorites: Float
   fetchedAt: Float!
   imageUrl: String
   malId: Int!
-  manga: [query_character_manga_items]
+  manga: [CharacterMediaRelation]
   name: String!
   nameKanji: String
   nicknames: [String]
-  voices: [query_character_voices_items]
+  voices: [CharacterVoiceRelation]
+}
+
+"""Media entity related to a character"""
+type CharacterMediaRelation {
+  imageUrl: String
+  malId: Int!
+  role: String
+  title: String!
+  url: String!
+}
+
+"""Voice actor relation for a character"""
+type CharacterVoiceRelation {
+  imageUrl: String
+  language: String
+  malId: Int!
+  name: String!
+  url: String!
 }
 
 """Client configuration"""
 type Config {
-  genres: [query_config_genres_items]
+  genres: [ConfigGenre]
   id: String!
-  image: query_config_image!
-  navigation: [query_config_navigation_items]
-  settings: query_config_settings!
+  image: ConfigImage!
+  navigation: [ConfigNavigationItem]
+  settings: ConfigSettings!
+}
+
+"""Genre entry linked to a media entity"""
+type ConfigGenre {
+  mediaId: PositiveFloat!
+  name: String!
+}
+
+"""Image URL configuration for the client"""
+type ConfigImage {
+  banner: URL!
+  default: URL!
+  error: URL!
+  info: URL!
+  loading: URL!
+  poster: URL!
+}
+
+"""Navigation item group classification"""
+type ConfigNavigationGroup {
+  authenticated: Boolean!
+  i18n: String!
+}
+
+"""A single navigation entry"""
+type ConfigNavigationItem {
+  criteria: String!
+  destination: String!
+  group: ConfigNavigationGroup!
+  i18n: String!
+  icon: String!
+
+  """
+  Stable identity for persistence, dedupe, and diffing. Must not change unless a deliberate migration is intended.
+  """
+  key: NonEmptyString!
+}
+
+"""Application settings configuration"""
+type ConfigSettings {
+  analyticsEnabled: Boolean!
+  platformSource: URL
+}
+
+"""Canonical episode data from multiple sources"""
+type Episode {
+  absoluteEpisodeNumber: Float
+  aired: Float
+  airedAfterEpisodeNumber: Float
+  airedAfterSeasonNumber: Float
+  airedBeforeEpisodeNumber: Float
+  airedBeforeSeasonNumber: Float
+  duration: Float
+  episodeNumber: Float
+  id: Float!
+  image: String
+  kind: EpisodeKind
+  number: Float
+  poster: String
+  score: Float
+  seasonNumber: Float
+  synopsis: String
+  themes: EpisodeThemes
+  title: EpisodeTitle
+  tmdbId: Float
+  tvdbId: Float
+  tvdbShowId: Float
+  url: String
+}
+
+"""Episode type classification"""
+enum EpisodeKind {
+  filler
+  main
+  ona
+  ova
+  recap
+  special
+}
+
+"""Opening and ending theme songs"""
+type EpisodeThemes {
+  endings: [String]
+  openings: [String]
+}
+
+"""Multi-language episode title"""
+type EpisodeTitle {
+  english: String
+  native: String
+  romanji: String
 }
 
 """Paginated episode listing with cursor navigation"""
 type Episodes {
   count: Float!
-  data: [query_episodes_data_items]!
+  data: [Episode]!
   first: String
   last: String
   total: Float!
@@ -76,10 +233,10 @@ type News {
   title: String!
 }
 
-"""Paged response for news documents."""
-type NewsPaging {
+"""Cursor-paged News connection"""
+type NewsConnection {
   count: NonNegativeFloat!
-  data: [query_news_data_items]!
+  data: [News]!
   first: String
   last: String
 }
@@ -119,46 +276,132 @@ type Query {
   config: Config
   episodes(after: String, before: String, end: Int, includeOrphans: Boolean, kind: queryInput_episodes_kind, limit: PositiveInt = 25, malId: Int!, specialsOnly: Boolean, start: Int): Episodes
   index: JSON
-  news(after: String, before: String, limit: PositiveFloat = 15): NewsPaging
+  news(after: String, before: String, limit: PositiveFloat = 15): NewsConnection
   newsFeed(
     """Locale for the news feed, e.g., en-GB, de-DE, fr-FR."""
-    locale: queryInput_newsFeed_locale
+    locale: queryInput_newsFeed_locale = "en-US"
   ): [News]
   person(malId: Int, name: NonEmptyString): Person
   series(anilist: Int, mal: Int, notify: NonEmptyString, slug: NonEmptyString, tmdb: Int, trakt: Int, tvdb: Int): Series
   studio(malId: Int, name: NonEmptyString): Studio
 }
 
-"""Aggregated of media entities from multiple sources"""
+"""Aggregated media entity from multiple sources"""
 type Series {
   ageRating: String
   airedEpisodes: Float
-  animethemes: [query_series_animethemes_items]!
+  animethemes: [AnimeThemes]!
   banner: String
   broadcast: String
   chapters: Float
-  classification: JSON
-  cover: query_series_cover!
+  classification: String
+  cover: SeriesCoverImage!
   description: String
   duration: Float
   fanart: String
-  format: JSON
+  format: query_series_format
   homepage: String
-  images: [query_series_images_items]!
+  images: [SeriesImageAttributes]!
   isAdult: Boolean
   kind: query_series_kind!
-  mediaId: query_series_mediaId!
+  mediaId: SeriesId!
   moreInfo: String
-  networks: [query_series_networks_items]!
+  networks: [SeriesNetwork]!
   publishedFrom: Float
   publishedTo: Float
-  schedule: query_series_schedule
-  source: JSON
-  status: JSON
-  title: query_series_title!
-  trailers: [query_series_trailers_items]!
+  schedule: SeriesSchedule
+  source: query_series_source
+  status: query_series_status
+  title: SeriesTitle!
+  trailers: [SeriesTrailer]!
   updatedAt: Float!
   volumes: Float
+}
+
+"""Cover image URLs at multiple sizes with dominant color"""
+type SeriesCoverImage {
+  color: String
+  extraLarge: String
+  large: String
+  medium: String
+}
+
+"""Provider identifiers for a media entity"""
+type SeriesId {
+  anidb: Float
+  anilist: Float
+  animePlanet: String
+  anisearch: Float
+  imdb: String
+  kitsu: Float
+  livechart: Float
+  myanimelist: Float
+  notify: String
+  shoboi: Float
+  slug: String
+  themoviedb: Float
+  trakt: Float
+  tvMazeId: Float
+  tvdb: Float
+  tvrage: String
+}
+
+"""Image metadata including dimensions and type"""
+type SeriesImageAttributes {
+  height: Float!
+  locale: String
+  type: query_series_images_items_type!
+  url: String!
+  width: Float!
+}
+
+"""Network or streaming service associated with the series"""
+type SeriesNetwork {
+  category: query_series_networks_items_category!
+  id: Float!
+  isPrimary: Boolean!
+  logoPath: String
+  name: String!
+  originCountry: String!
+}
+
+"""Air date schedule for the series"""
+type SeriesSchedule {
+  firstAirDate: Float
+  lastAirDate: Float
+  lastAiredEpisode: SeriesScheduleEpisode
+  nextEpisodeToAir: SeriesScheduleEpisode
+}
+
+"""A scheduled episode in the series"""
+type SeriesScheduleEpisode {
+  airDate: Float
+  episodeNumber: Float
+  id: Float!
+  image: String
+  name: String!
+  overview: String
+  productionCode: String
+  runtime: Float
+  seasonNumber: Float
+  tmdbId: Float
+}
+
+"""Multi-language titles for a media entity"""
+type SeriesTitle {
+  canonical: String
+  english: String
+  harigana: String
+  japanese: String
+  romaji: String
+  synonyms: [String]
+}
+
+"""Trailer resource link"""
+type SeriesTrailer {
+  id: String!
+  site: String!
+  thumbnail: String
 }
 
 """Animation studio metadata resolved from Jikan (MAL)"""
@@ -172,7 +415,13 @@ type Studio {
   imageUrl: String
   malId: Int!
   name: String!
-  titles: [query_studio_titles_items]
+  titles: [StudioTitle]
+}
+
+"""Studio alternate title"""
+type StudioTitle {
+  title: String
+  type: String
 }
 
 """
@@ -194,182 +443,17 @@ enum queryInput_episodes_kind {
 """Locale for the news feed, e.g., en-GB, de-DE, fr-FR."""
 scalar queryInput_newsFeed_locale
 
-type query_character_anime_items {
-  imageUrl: String
-  malId: Int!
-  role: String
-  title: String!
-  url: String!
-}
-
-type query_character_manga_items {
-  imageUrl: String
-  malId: Int!
-  role: String
-  title: String!
-  url: String!
-}
-
-type query_character_voices_items {
-  imageUrl: String
-  language: String
-  malId: Int!
-  name: String!
-  url: String!
-}
-
-type query_config_genres_items {
-  mediaId: PositiveFloat!
-  name: String!
-}
-
-type query_config_image {
-  banner: URL!
-  default: URL!
-  error: URL!
-  info: URL!
-  loading: URL!
-  poster: URL!
-}
-
-type query_config_navigation_items {
-  criteria: String!
-  destination: String!
-  group: query_config_navigation_items_group!
-  i18n: String!
-  icon: String!
-}
-
-type query_config_navigation_items_group {
-  authenticated: Boolean!
-  i18n: String!
-}
-
-type query_config_settings {
-  analyticsEnabled: Boolean!
-  platformSource: URL
-}
-
-type query_episodes_data_items {
-  absoluteEpisodeNumber: Float
-  aired: Float
-  airedAfterEpisodeNumber: Float
-  airedAfterSeasonNumber: Float
-  airedBeforeEpisodeNumber: Float
-  airedBeforeSeasonNumber: Float
-  duration: Float
-  episodeNumber: Float
-  id: Float!
-  image: String
-  kind: query_episodes_data_items_kind
-  number: Float
-  poster: String
-  score: Float
-  seasonNumber: Float
-  synopsis: String
-  themes: query_episodes_data_items_themes
-  title: query_episodes_data_items_title
-  tmdbId: Float
-  tvdbId: Float
-  tvdbShowId: Float
-  url: String
-}
-
-enum query_episodes_data_items_kind {
-  filler
-  main
-  ona
-  ova
-  recap
-  special
-}
-
-type query_episodes_data_items_themes {
-  endings: [String]
-  openings: [String]
-}
-
-type query_episodes_data_items_title {
-  english: String
-  native: String
-  romanji: String
-}
-
-type query_news_data_items {
-  area: String
-  category: String
-  content: String!
-  description: String!
-  genre: String
-  id: String!
-  image: URL
-  lang: String
-  link: URL!
-  publishedOn: Float!
-  title: String!
-}
-
-type query_series_animethemes_items {
-  animethemeentries: [query_series_animethemes_items_animethemeentries_items]
-  id: Float!
-  sequence: Float
-  slug: String!
-  song: query_series_animethemes_items_song
-  type: query_series_animethemes_items_type!
-}
-
-type query_series_animethemes_items_animethemeentries_items {
-  episodes: String
-  id: Float!
-  notes: String
-  nsfw: Boolean!
-  spoiler: Boolean!
-  version: Float
-  videos: [query_series_animethemes_items_animethemeentries_items_videos_items]
-}
-
-type query_series_animethemes_items_animethemeentries_items_videos_items {
-  audio: query_series_animethemes_items_animethemeentries_items_videos_items_audio
-  id: Float!
-  link: URL!
-  lyrics: Boolean!
-  nc: Boolean!
-  overlap: String
-  resolution: Float
-  source: String
-  subbed: Boolean!
-  tags: String
-  uncen: Boolean!
-}
-
-type query_series_animethemes_items_animethemeentries_items_videos_items_audio {
-  id: Float!
-  link: URL!
-}
-
-type query_series_animethemes_items_song {
-  id: Float!
-  title: String
-}
-
 enum query_series_animethemes_items_type {
   ED
   OP
 }
 
-type query_series_cover {
-  color: String
-  extraLarge: String
-  large: String
-  medium: String
-}
-
-type query_series_images_items {
-  height: Float!
-  locale: String
-  type: query_series_images_items_type!
-  url: String!
-  width: Float!
+enum query_series_format {
+  MOVIE
+  ONA
+  OVA
+  SPECIAL
+  TV
 }
 
 enum query_series_images_items_type {
@@ -383,88 +467,22 @@ enum query_series_kind {
   MANGA
 }
 
-type query_series_mediaId {
-  anidb: Float
-  anilist: Float
-  animePlanet: String
-  anisearch: Float
-  imdb: String
-  kitsu: Float
-  livechart: Float
-  myanimelist: Float
-  notify: String
-  shoboi: Float
-  slug: String
-  themoviedb: Float
-  trakt: Float
-  tvMazeId: Float
-  tvdb: Float
-  tvrage: String
-}
-
-type query_series_networks_items {
-  category: query_series_networks_items_category!
-  id: Float!
-  isPrimary: Boolean!
-  logoPath: String
-  name: String!
-  originCountry: String!
-}
-
 enum query_series_networks_items_category {
   DISTRIBUTION
   PRODUCTION
 }
 
-type query_series_schedule {
-  firstAirDate: Float
-  lastAirDate: Float
-  lastAiredEpisode: query_series_schedule_lastAiredEpisode
-  nextEpisodeToAir: query_series_schedule_nextEpisodeToAir
+enum query_series_source {
+  LIGHT_NOVEL
+  MANGA
+  ORIGINAL
+  OTHER
+  VIDEO_GAME
+  VISUAL_NOVEL
 }
 
-type query_series_schedule_lastAiredEpisode {
-  airDate: Float
-  episodeNumber: Float
-  id: Float!
-  image: String
-  name: String!
-  overview: String
-  productionCode: String
-  runtime: Float
-  seasonNumber: Float
-  tmdbId: Float
-}
-
-type query_series_schedule_nextEpisodeToAir {
-  airDate: Float
-  episodeNumber: Float
-  id: Float!
-  image: String
-  name: String!
-  overview: String
-  productionCode: String
-  runtime: Float
-  seasonNumber: Float
-  tmdbId: Float
-}
-
-type query_series_title {
-  canonical: String
-  english: String
-  harigana: String
-  japanese: String
-  romaji: String
-  synonyms: [String]
-}
-
-type query_series_trailers_items {
-  id: String!
-  site: String!
-  thumbnail: String
-}
-
-type query_studio_titles_items {
-  title: String
-  type: String
+enum query_series_status {
+  FINISHED
+  NOT_YET_RELEASED
+  RELEASING
 }
