@@ -1,0 +1,19 @@
+query GetCharacterWithMedia(
+    $page: Int,
+    $perPage: Int,
+    $id: Int,
+    $onList: Boolean,
+    $sort: [MediaSort],
+    $scoreFormat: ScoreFormat
+) {
+    Character(id: $id) {
+        media(
+            page: $page,
+            perPage: $perPage,
+            onList: $onList,
+            sort: $sort,
+        ) {
+            ... CharacterMediaConnection
+        }
+    }
+}

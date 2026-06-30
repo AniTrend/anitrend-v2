@@ -1,0 +1,5 @@
+query GetFeedText($id: Int!) {
+    Activity(id: $id, type: TEXT) {
+        ... FeedText
+    }
+}

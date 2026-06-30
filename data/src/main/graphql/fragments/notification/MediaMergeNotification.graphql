@@ -1,0 +1,11 @@
+fragment MediaMergeNotification on MediaMergeNotification {
+    id
+    type
+    createdAt
+    context
+    deletedMediaTitles
+    reason
+    media {
+        ... MediaCore
+    }
+}

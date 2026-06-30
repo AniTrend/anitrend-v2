@@ -38,7 +38,9 @@ import co.anitrend.data.character.entity.CharacterEntity
 import co.anitrend.data.character.entity.filter.CharacterQueryFilter
 import co.anitrend.data.character.model.query.CharacterQuery
 import co.anitrend.data.common.extension.from
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.data.graphql.anilist.GetCharacterPaged
+import co.anitrend.data.graphql.anilist.GetCharacterPagedVariables
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -60,11 +62,26 @@ internal class CharacterPagingSource(
     private suspend fun getCharacter(requestCallback: RequestCallback) {
         val deferred =
             deferred {
-                val queryBuilder =
-                    query.toQueryContainerBuilder(
-                        supportPagingHelper,
-                    )
-                remoteSource.getCharacterPaged(queryBuilder)
+                remoteSource.getCharacterPaged(
+                    GraphQLRequest(
+                        query = GetCharacterPaged.document,
+                        operationName = GetCharacterPaged.name,
+                        variables =
+                            GetCharacterPagedVariables(
+                                page = supportPagingHelper.page,
+                                perPage = supportPagingHelper.pageSize,
+                                id_in = query.param.id_in?.map { it.toInt() },
+                                id_not = query.param.id_not?.toInt(),
+                                id_not_in = query.param.id_not_in?.map { it.toInt() },
+                                search = query.param.search,
+                                sort =
+                                    query.param.sort?.map {
+                                        co.anitrend.data.graphql.anilist.CharacterSort
+                                            .valueOf(it.name)
+                                    },
+                            ),
+                    ),
+                )
             }
 
         controller(deferred, requestCallback) {

@@ -1,0 +1,31 @@
+fragment UserExtended on User {
+    ... UserCore
+    previousNames {
+        createdAt
+        name
+        updatedAt
+    }
+    options {
+        profileColor
+        titleLanguage
+        displayAdultContent
+    }
+    mediaListOptions {
+        animeList {
+            advancedScoring
+            advancedScoringEnabled
+            customLists
+            sectionOrder
+            splitCompletedSectionByFormat
+        }
+        mangaList {
+            advancedScoring
+            advancedScoringEnabled
+            customLists
+            sectionOrder
+            splitCompletedSectionByFormat
+        }
+        rowOrder
+        scoreFormat
+    }
+}

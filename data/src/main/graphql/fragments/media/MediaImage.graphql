@@ -1,0 +1,6 @@
+fragment MediaImage on MediaCoverImage {
+    color
+    extraLarge
+    large
+    medium
+}

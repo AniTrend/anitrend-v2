@@ -32,13 +32,14 @@ import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
 import co.anitrend.data.common.extension.from
+import co.anitrend.data.graphql.anilist.GetReviewPaged
 import co.anitrend.data.review.ReviewPagedController
 import co.anitrend.data.review.datasource.local.ReviewLocalSource
 import co.anitrend.data.review.datasource.remote.ReviewRemoteSource
 import co.anitrend.data.review.entity.filter.ReviewQueryFilter
 import co.anitrend.data.review.entity.view.ReviewEntityView
 import co.anitrend.data.review.model.query.ReviewQuery
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.common.sort.order.SortOrder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -60,11 +61,31 @@ internal class ReviewPagingSource(
     private suspend fun getReview(requestCallback: RequestCallback) {
         val deferred =
             deferred {
-                val queryBuilder =
-                    query.toQueryContainerBuilder(
-                        supportPagingHelper,
-                    )
-                remoteSource.getReviewPaged(queryBuilder)
+                remoteSource.getReviewPaged(
+                    GetReviewPaged.request(
+                        mediaId = query.param.mediaId?.toInt(),
+                        userId = query.param.userId?.toInt(),
+                        mediaType =
+                            query.param.mediaType?.let {
+                                co.anitrend.data.graphql.anilist.MediaType
+                                    .valueOf(it.name)
+                            },
+                        sort =
+                            query.param.sort?.map {
+                                val baseName = (it.sortable as Enum<*>).name
+                                val enumName =
+                                    if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
+                                co.anitrend.data.graphql.anilist.ReviewSort
+                                    .valueOf(enumName)
+                            },
+                        page = supportPagingHelper.page,
+                        perPage = supportPagingHelper.pageSize,
+                        scoreFormat =
+                            co.anitrend.data.graphql.anilist.ScoreFormat.valueOf(
+                                query.param.scoreFormat.name,
+                            ),
+                    ),
+                )
             }
 
         controller(deferred, requestCallback) {

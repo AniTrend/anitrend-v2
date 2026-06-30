@@ -22,6 +22,8 @@ import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.edge.network.datasource.EdgeNetworkLocalSource
+import co.anitrend.data.graphql.anilist.GetStudioDetail
+import co.anitrend.data.graphql.anilist.GetStudioDetailVariables
 import co.anitrend.data.studio.MediaStudioDetailController
 import co.anitrend.data.studio.converter.MediaStudioEntryEnricher
 import co.anitrend.data.studio.converter.StudioEntityConverter
@@ -34,7 +36,7 @@ import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.studio.entity.StudioDetailData
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -109,17 +111,21 @@ internal class StudioDetailSourceImpl(
         }.flowOn(dispatcher.io)
 
     override suspend fun getStudio(callback: RequestCallback): Boolean {
-        val queryBuilder = QueryContainerBuilder()
-        queryBuilder.putVariables(
-            mapOf(
-                "id" to param.id,
-                "scoreFormat" to ScoreFormat.POINT_100,
-            ),
-        )
-
         val deferred =
             deferred {
-                remoteSource.getStudioDetail(queryBuilder)
+                remoteSource.getStudioDetail(
+                    GraphQLRequest(
+                        query = GetStudioDetail.document,
+                        operationName = GetStudioDetail.name,
+                        variables =
+                            GetStudioDetailVariables(
+                                id = param.id.toInt(),
+                                scoreFormat =
+                                    co.anitrend.data.graphql.anilist.ScoreFormat
+                                        .valueOf(ScoreFormat.POINT_100.name),
+                            ),
+                    ),
+                )
             }
         val result = controller(deferred, callback)
 

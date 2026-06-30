@@ -47,8 +47,6 @@ internal class EdgeNewsSourceImpl(
     override val dispatcher: ISupportDispatcher,
 ) : EdgeNewsSource.Paging() {
     override fun invoke(param: NewsParam): Flow<PagingData<News>> {
-        assignQuery(param)
-
         val source = createPagingSource()
 
         return Pager(
@@ -66,8 +64,6 @@ internal class EdgeNewsSourceImpl(
 
     override fun sync(param: NewsParam): Flow<Boolean> =
         flow {
-            assignQuery(param)
-
             val result =
                 createPagingSource().load(
                     loadType = LoadType.REFRESH,
@@ -97,7 +93,6 @@ internal class EdgeNewsSourceImpl(
             controller = controller,
             converter = converter,
             clearDataHelper = clearDataHelper,
-            query = query,
             dispatcher = dispatcher,
         )
 

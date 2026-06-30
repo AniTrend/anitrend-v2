@@ -1,0 +1,11 @@
+fragment MediaCore on Media {
+    ... Media
+    trailer {
+        id
+        site
+        thumbnail
+    }
+    mediaListEntry {
+        ... MediaListCore
+    }
+}

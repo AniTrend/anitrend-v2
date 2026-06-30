@@ -18,8 +18,9 @@ package co.anitrend.data.favourite.datasource.remote
 
 import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.model.GraphQLResponse
-import co.anitrend.retrofit.graphql.annotation.GraphQuery
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
+import co.anitrend.data.graphql.anilist.ToggleAnimeFavouriteVariables
+import co.anitrend.data.graphql.anilist.ToggleMangaFavouriteVariables
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -27,15 +28,13 @@ import retrofit2.http.POST
 internal interface FavouriteRemoteSource {
     @GRAPHQL
     @POST
-    @GraphQuery("ToggleAnimeFavorite")
     suspend fun toggleAnimeFavorite(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<ToggleAnimeFavouriteVariables>,
     ): Response<GraphQLResponse<Boolean>>
 
     @GRAPHQL
     @POST
-    @GraphQuery("ToggleMangaFavorite")
     suspend fun toggleMangaFavorite(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<ToggleMangaFavouriteVariables>,
     ): Response<GraphQLResponse<Boolean>>
 }

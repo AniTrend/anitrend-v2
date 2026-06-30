@@ -31,7 +31,13 @@ import co.anitrend.data.common.model.date.FuzzyDateModel
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.entity.view.MediaEntityView
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.data.graphql.anilist.Carousel
+import co.anitrend.data.graphql.anilist.CarouselAnime
+import co.anitrend.data.graphql.anilist.CarouselAnimeVariables
+import co.anitrend.data.graphql.anilist.CarouselManga
+import co.anitrend.data.graphql.anilist.CarouselMangaVariables
+import co.anitrend.data.graphql.anilist.CarouselVariables
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.CoroutineDispatcher
@@ -180,11 +186,20 @@ internal class CarouselSourceImpl(
         }
 
     override suspend fun getMediaCarouselAnimeMeta(requestCallback: RequestCallback): Boolean {
-        val param = query.param.copy(type = MediaType.ANIME)
-        val queryBuilder = query.copy(param = param).toQueryContainerBuilder()
+        val request =
+            Carousel.request(
+                perPage = query.param.pageSize,
+                type = co.anitrend.data.graphql.anilist.MediaType.ANIME,
+                isAdult = query.param.isAdult,
+                scoreFormat =
+                    query.param.scoreFormat?.let {
+                        co.anitrend.data.graphql.anilist.ScoreFormat
+                            .valueOf(it.name)
+                    },
+            )
         val deferred =
             deferred {
-                val carousel = remoteSource.getCarousel(queryBuilder)
+                val carousel = remoteSource.getCarousel(request)
                 @Suppress("UNCHECKED_CAST")
                 carousel as Response<GraphQLResponse<CarouselModel>>
             }
@@ -194,11 +209,20 @@ internal class CarouselSourceImpl(
     }
 
     override suspend fun getMediaCarouselMangaMeta(requestCallback: RequestCallback): Boolean {
-        val param = query.param.copy(type = MediaType.MANGA)
-        val queryBuilder = query.copy(param = param).toQueryContainerBuilder()
+        val request =
+            Carousel.request(
+                perPage = query.param.pageSize,
+                type = co.anitrend.data.graphql.anilist.MediaType.MANGA,
+                isAdult = query.param.isAdult,
+                scoreFormat =
+                    query.param.scoreFormat?.let {
+                        co.anitrend.data.graphql.anilist.ScoreFormat
+                            .valueOf(it.name)
+                    },
+            )
         val deferred =
             deferred {
-                val carousel = remoteSource.getCarousel(queryBuilder)
+                val carousel = remoteSource.getCarousel(request)
                 @Suppress("UNCHECKED_CAST")
                 carousel as Response<GraphQLResponse<CarouselModel>>
             }
@@ -208,13 +232,30 @@ internal class CarouselSourceImpl(
     }
 
     override suspend fun getMediaCarouselAnime(requestCallback: RequestCallback): Boolean {
-        val queryBuilder =
-            query.toQueryContainerBuilder(
-                ignoreNulls = false,
+        val request =
+            CarouselAnime.request(
+                perPage = query.param.pageSize,
+                season =
+                    co.anitrend.data.graphql.anilist.MediaSeason.valueOf(
+                        query.param.season.name,
+                    ),
+                seasonYear = query.param.seasonYear,
+                nextSeason =
+                    co.anitrend.data.graphql.anilist.MediaSeason.valueOf(
+                        query.param.nextSeason.name,
+                    ),
+                nextSeasonYear = query.param.nextSeasonYear,
+                isAdult = query.param.isAdult,
+                currentTime = query.param.currentTime.toInt(),
+                scoreFormat =
+                    query.param.scoreFormat?.let {
+                        co.anitrend.data.graphql.anilist.ScoreFormat
+                            .valueOf(it.name)
+                    },
             )
         val deferred =
             deferred {
-                val carousel = remoteSource.getCarouselAnime(queryBuilder)
+                val carousel = remoteSource.getCarouselAnime(request)
                 @Suppress("UNCHECKED_CAST")
                 carousel as Response<GraphQLResponse<CarouselModel>>
             }
@@ -224,13 +265,19 @@ internal class CarouselSourceImpl(
     }
 
     override suspend fun getMediaCarouselManga(requestCallback: RequestCallback): Boolean {
-        val queryBuilder =
-            query.toQueryContainerBuilder(
-                ignoreNulls = false,
+        val request =
+            CarouselManga.request(
+                perPage = query.param.pageSize,
+                isAdult = query.param.isAdult,
+                scoreFormat =
+                    query.param.scoreFormat?.let {
+                        co.anitrend.data.graphql.anilist.ScoreFormat
+                            .valueOf(it.name)
+                    },
             )
         val deferred =
             deferred {
-                val carousel = remoteSource.getCarouselManga(queryBuilder)
+                val carousel = remoteSource.getCarouselManga(request)
                 @Suppress("UNCHECKED_CAST")
                 carousel as Response<GraphQLResponse<CarouselModel>>
             }

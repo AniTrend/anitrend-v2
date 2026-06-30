@@ -1,0 +1,6 @@
+fragment RecommendationCore on Recommendation {
+    ... Recommendation
+    mediaRecommendation {
+        ... MediaCore
+    }
+}

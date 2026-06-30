@@ -1,0 +1,9 @@
+fragment ThreadCommentReplyNotification on ThreadCommentReplyNotification {
+    id
+    type
+    createdAt
+    context
+    user {
+        ... UserCore
+    }
+}

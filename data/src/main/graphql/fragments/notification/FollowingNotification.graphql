@@ -1,0 +1,9 @@
+fragment FollowingNotification on FollowingNotification {
+    id
+    type
+    createdAt
+    context
+    user {
+        ... UserCore
+    }
+}

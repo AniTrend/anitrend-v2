@@ -1,0 +1,13 @@
+query GetCharacterFavourites(
+    $id: Int,
+    $page: Int,
+    $perPage: Int
+) {
+    User(id: $id) {
+        favourites {
+            characters(page: $page, perPage: $perPage) {
+                ... CharacterFavouriteConnection
+            }
+        }
+    }
+}

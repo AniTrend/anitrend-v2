@@ -25,6 +25,8 @@ import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
+import co.anitrend.data.graphql.anilist.GetMediaWithRelation
+import co.anitrend.data.graphql.anilist.GetMediaWithSuggestion
 import co.anitrend.data.media.MediaRecommendationsController
 import co.anitrend.data.media.MediaRelationsController
 import co.anitrend.data.media.converter.MediaRelationConnectionEntityConverter
@@ -35,7 +37,7 @@ import co.anitrend.data.media.source.contract.MediaConnectionSource
 import co.anitrend.data.recommendation.converter.MediaRecommendationConnectionEntityConverter
 import co.anitrend.data.recommendation.datasource.local.connection.MediaRecommendationConnectionLocalSource
 import co.anitrend.data.recommendation.mapper.MediaRecommendationMapper
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.entity.MediaRelationEntry
 import kotlinx.coroutines.CoroutineDispatcher
@@ -67,8 +69,14 @@ internal sealed class MediaConnectionSourceImpl {
         override suspend fun refreshRelations(requestCallback: RequestCallback): Boolean {
             val deferred =
                 deferred {
-                    val queryBuilder = query.toQueryContainerBuilder()
-                    remoteSource.getMediaRelations(queryBuilder)
+                    remoteSource.getMediaRelations(
+                        GetMediaWithRelation.request(
+                            id = query.param.id.toInt(),
+                            scoreFormat =
+                                co.anitrend.data.graphql.anilist.ScoreFormat
+                                    .valueOf(query.param.scoreFormat.name),
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)
@@ -105,8 +113,22 @@ internal sealed class MediaConnectionSourceImpl {
         override suspend fun refreshRecommendations(requestCallback: RequestCallback): Boolean {
             val deferred =
                 deferred {
-                    val queryBuilder = query.toQueryContainerBuilder()
-                    remoteSource.getMediaRecommendations(queryBuilder)
+                    remoteSource.getMediaRecommendations(
+                        GetMediaWithSuggestion.request(
+                            page = 1,
+                            perPage = 25,
+                            id = query.param.id.toInt(),
+                            scoreFormat =
+                                co.anitrend.data.graphql.anilist.ScoreFormat
+                                    .valueOf(query.param.scoreFormat.name),
+                            sort =
+                                query.param.sort?.map {
+                                    val baseName = it.name
+                                    co.anitrend.data.graphql.anilist.RecommendationSort
+                                        .valueOf(baseName)
+                                },
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)

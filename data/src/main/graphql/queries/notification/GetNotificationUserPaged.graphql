@@ -1,0 +1,19 @@
+query GetNotificationUserPaged(
+    $page: Int,
+    $perPage: Int
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        notifications(
+            type_in: [
+                FOLLOWING,
+                ACTIVITY_MESSAGE,
+            ]
+        ) {
+            ... FollowingNotification
+            ... ActivityMessageNotification
+        }
+    }
+}

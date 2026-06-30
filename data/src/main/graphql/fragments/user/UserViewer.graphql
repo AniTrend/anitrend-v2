@@ -1,0 +1,20 @@
+fragment UserViewer on User {
+    ... UserExtended
+    options {
+        airingNotifications
+        displayAdultContent
+        restrictMessagesToFollowing
+        notificationOptions {
+            enabled
+            type
+        }
+        disabledListActivity {
+            type
+            disabled
+        }
+        staffNameLanguage
+        timezone
+    }
+    isBlocked
+    unreadNotificationCount
+}

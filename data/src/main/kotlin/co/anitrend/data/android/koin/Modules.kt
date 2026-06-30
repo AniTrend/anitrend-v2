@@ -42,6 +42,7 @@ import co.anitrend.data.auth.koin.authModules
 import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.character.koin.characterModules
 import co.anitrend.data.core.api.converter.AniTrendConverterFactory
+import co.anitrend.data.core.api.converter.CompositeGraphQLDocumentRegistry
 import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import co.anitrend.data.core.api.factory.AniListApiFactory
 import co.anitrend.data.core.app.IAppInfo
@@ -75,6 +76,9 @@ import co.anitrend.retrofit.graphql.annotation.processor.GraphProcessor
 import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor
 import co.anitrend.retrofit.graphql.annotation.processor.plugin.AssetManagerDiscoveryPlugin
 import co.anitrend.retrofit.graphql.logger.contract.ILogger
+import co.anitrend.retrofit.graphql.model.GraphQLDocumentRegistry
+import co.anitrend.data.graphql.anilist.GeneratedGraphQLRegistry as AniListRegistry
+import co.anitrend.data.edge.graphql.GeneratedGraphQLRegistry as EdgeRegistry
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -120,6 +124,12 @@ private val coreModule =
 
 private val retrofitModule =
     module {
+        single<GraphQLDocumentRegistry> {
+            CompositeGraphQLDocumentRegistry(
+                primary = AniListRegistry,
+                fallback = EdgeRegistry,
+            )
+        }
         factory<AbstractGraphProcessor> {
             val level = if (BuildConfig.DEBUG) ILogger.Level.VERBOSE else ILogger.Level.ERROR
             GraphProcessor(
@@ -170,6 +180,7 @@ private val retrofitModule =
                 jsonFactory = defaultJsonFactory.asConverterFactory(mimeType),
                 graphFactory = get<Json>().asConverterFactory(mimeType),
                 xmlFactory = get<IFeedFactory>().provideConverterFactory(),
+                registry = get<GraphQLDocumentRegistry>(),
             )
         }
     }

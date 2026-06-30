@@ -1,0 +1,74 @@
+fragment Media on Media {
+    id
+    idMal
+    title {
+        ... MediaTitle
+    }
+    bannerImage
+    coverImage {
+        ... MediaImage
+    }
+    type
+    format
+    season
+    status(version: 2)
+    source(version: 3)
+    meanScore
+    description
+    averageScore
+    countryOfOrigin
+    trending
+    popularity
+    synonyms
+    favourites
+    hashtag
+    siteUrl
+    genres
+    tags {
+        ... Tag
+        rank
+        isMediaSpoiler
+    }
+    startDate {
+        ... FuzzyDate
+    }
+    endDate {
+        ... FuzzyDate
+    }
+    episodes
+    duration
+    chapters
+    volumes
+    isAdult
+    isLocked
+    isLicensed
+    isFavourite
+    isReviewBlocked
+    isRecommendationBlocked
+    updatedAt
+    nextAiringEpisode {
+        ... AiringScheduleCore
+    }
+    rankings {
+        id
+        allTime
+        context
+        format
+        rank
+        season
+        type
+        year
+    }
+    externalLinks {
+        id
+        site
+        url
+        color
+        icon
+        isDisabled
+        language
+        notes
+        siteId
+        type
+    }
+}

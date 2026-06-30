@@ -1,0 +1,23 @@
+query GetStudioDetail($id: Int, $scoreFormat: ScoreFormat) {
+    Studio(id: $id) {
+        favourites
+        isAnimationStudio
+        isFavourite
+        isFavouriteBlocked
+        name
+        siteUrl
+        id
+        media(isMain: true, sort: [POPULARITY_DESC], perPage: 30) {
+            edges {
+                node {
+                    ... MediaCore
+                }
+                isMainStudio
+                id
+            }
+            pageInfo {
+                ... PageInfo
+            }
+        }
+    }
+}

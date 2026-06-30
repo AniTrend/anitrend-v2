@@ -30,6 +30,10 @@ import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.edge.media.datasource.local.EdgeMediaLocalSource
 import co.anitrend.data.edge.media.source.contract.EdgeMediaSource
+import co.anitrend.data.graphql.anilist.GetMediaDetail
+import co.anitrend.data.graphql.anilist.GetMediaPaged
+import co.anitrend.data.graphql.anilist.GetMediaStats
+import co.anitrend.data.graphql.anilist.GetMediaWithStudio
 import co.anitrend.data.media.MediaDetailController
 import co.anitrend.data.media.MediaPagedController
 import co.anitrend.data.media.MediaStatsController
@@ -48,7 +52,7 @@ import co.anitrend.data.studio.converter.MediaStudioConnectionEntityConverter
 import co.anitrend.data.studio.converter.MediaStudioEntryEnricher
 import co.anitrend.data.studio.datasource.local.connection.MediaStudioConnectionLocalSource
 import co.anitrend.data.studio.mapper.MediaStudioMapper
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaStats
 import co.anitrend.domain.media.entity.MediaStudioEntry
@@ -91,8 +95,17 @@ internal class MediaSourceImpl {
 
             val deferred =
                 deferred {
-                    val queryBuilder = query.toQueryContainerBuilder()
-                    remoteSource.getMediaDetail(queryBuilder)
+                    remoteSource.getMediaDetail(
+                        GetMediaDetail.request(
+                            id = query.param.id.toInt(),
+                            type =
+                                co.anitrend.data.graphql.anilist.MediaType
+                                    .valueOf(query.param.type.name),
+                            scoreFormat =
+                                co.anitrend.data.graphql.anilist.ScoreFormat
+                                    .valueOf(query.param.scoreFormat.name),
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)
@@ -149,8 +162,19 @@ internal class MediaSourceImpl {
 
             val deferred =
                 deferred {
-                    val queryBuilder = query.toQueryContainerBuilder()
-                    remoteSource.getMediaStudios(queryBuilder)
+                    remoteSource.getMediaStudios(
+                        GetMediaWithStudio.request(
+                            id = query.param.id.toInt(),
+                            sort =
+                                query.param.sort?.map {
+                                    val baseName = (it.sortable as Enum<*>).name
+                                    val enumName = if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
+                                    co.anitrend.data.graphql.anilist.StudioSort
+                                        .valueOf(enumName)
+                                },
+                            isMain = query.param.isMain,
+                        ),
+                    )
                 }
 
             val result =
@@ -191,8 +215,11 @@ internal class MediaSourceImpl {
         override suspend fun refreshStats(requestCallback: RequestCallback): Boolean {
             val deferred =
                 deferred {
-                    val queryBuilder = query.toQueryContainerBuilder()
-                    remoteSource.getMediaStats(queryBuilder)
+                    remoteSource.getMediaStats(
+                        GetMediaStats.request(
+                            id = query.param.id.toInt(),
+                        ),
+                    )
                 }
 
             val result =

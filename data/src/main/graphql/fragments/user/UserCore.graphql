@@ -1,0 +1,17 @@
+fragment UserCore on User {
+    id
+    name
+    about
+    avatar {
+        ... UserAvatar
+    }
+    bannerImage
+    isFollowing
+    isFollower
+    isBlocked
+    donatorTier
+    donatorBadge
+    siteUrl
+    updatedAt
+    createdAt
+}

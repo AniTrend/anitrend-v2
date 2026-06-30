@@ -38,7 +38,10 @@ import co.anitrend.data.review.datasource.remote.ReviewRemoteSource
 import co.anitrend.data.review.entity.filter.ReviewQueryFilter
 import co.anitrend.data.review.model.query.ReviewQuery
 import co.anitrend.data.review.source.contract.ReviewSource
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.data.graphql.anilist.DeleteReview
+import co.anitrend.data.graphql.anilist.GetReview
+import co.anitrend.data.graphql.anilist.RateReview
+import co.anitrend.data.graphql.anilist.SaveReview
 import co.anitrend.domain.review.entity.Review
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -72,8 +75,15 @@ internal sealed class ReviewSourceImpl {
         override suspend fun getEntry(requestCallback: RequestCallback): Boolean {
             val deferred =
                 deferred {
-                    val queryBuilder = query.toQueryContainerBuilder()
-                    remoteSource.getReview(queryBuilder)
+                    remoteSource.getReview(
+                        GetReview.request(
+                            id = query.param.id.toInt(),
+                            scoreFormat =
+                                co.anitrend.data.graphql.anilist.ScoreFormat.valueOf(
+                                    query.param.scoreFormat.name,
+                                ),
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)
@@ -104,8 +114,15 @@ internal sealed class ReviewSourceImpl {
         override suspend fun rateEntry(requestCallback: RequestCallback) {
             val deferred =
                 deferred {
-                    val queryBuilder = mutation.toQueryContainerBuilder()
-                    remoteSource.rateReview(queryBuilder)
+                    remoteSource.rateReview(
+                        RateReview.request(
+                            id = mutation.param.id.toInt(),
+                            rating =
+                                co.anitrend.data.graphql.anilist.ReviewRating.valueOf(
+                                    mutation.param.rating.name,
+                                ),
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)
@@ -133,8 +150,11 @@ internal sealed class ReviewSourceImpl {
         override suspend fun deleteEntry(requestCallback: RequestCallback) {
             val deferred =
                 deferred {
-                    val queryBuilder = mutation.toQueryContainerBuilder()
-                    remoteSource.deleteReview(queryBuilder)
+                    remoteSource.deleteReview(
+                        DeleteReview.request(
+                            id = mutation.param.id.toInt(),
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)
@@ -163,8 +183,16 @@ internal sealed class ReviewSourceImpl {
         override suspend fun deleteEntry(requestCallback: RequestCallback) {
             val deferred =
                 deferred {
-                    val queryBuilder = mutation.toQueryContainerBuilder()
-                    remoteSource.saveReview(queryBuilder)
+                    remoteSource.saveReview(
+                        SaveReview.request(
+                            id = mutation.param.id?.toInt(),
+                            mediaId = mutation.param.mediaId.toInt(),
+                            body = mutation.param.body,
+                            summary = mutation.param.summary,
+                            score = mutation.param.score,
+                            `private` = mutation.param.private,
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)

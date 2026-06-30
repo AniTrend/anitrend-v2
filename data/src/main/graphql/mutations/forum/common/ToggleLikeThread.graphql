@@ -1,0 +1,5 @@
+mutation ToggleLikeThread($id: Int) {
+    ToggleLikeV2(id: $id, type: THREAD) {
+        ... ForumCore
+    }
+}

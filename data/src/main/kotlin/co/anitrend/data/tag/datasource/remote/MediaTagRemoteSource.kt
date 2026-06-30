@@ -20,8 +20,8 @@ import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.tag.model.remote.TagContainerModel
-import co.anitrend.retrofit.graphql.annotation.GraphQuery
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.EmptyGraphQLVariables
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -29,8 +29,7 @@ import retrofit2.http.POST
 internal interface MediaTagRemoteSource {
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetMediaTags")
     suspend fun getMediaTags(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<EmptyGraphQLVariables>,
     ): Response<GraphQLResponse<TagContainerModel>>
 }

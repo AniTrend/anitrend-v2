@@ -1,0 +1,26 @@
+query GetStudioWithMediaPaged(
+    $page: Int,
+    $perPage: Int,
+    $id: Int,
+    $isMain: Boolean,
+    $onList: Boolean,
+    $sort: [MediaSort],
+    $scoreFormat: ScoreFormat
+) {
+    Studio(id: $id) {
+        media(
+            page: $page,
+            perPage: $perPage,
+            isMain: $isMain,
+            onList: $onList,
+            sort: $sort,
+        ) {
+            pageInfo {
+                ... PageInfo
+            }
+            nodes {
+                ... MediaCore
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+fragment CharacterCore on Character {
+    age,
+    dateOfBirth {
+        ... FuzzyDate
+    }
+    gender
+    bloodType
+    description
+    favourites
+    id
+    image {
+        large
+        medium
+    }
+    isFavourite
+    isFavouriteBlocked
+    name {
+        alternative
+        alternativeSpoiler
+        first
+        full
+        last
+        middle
+        native
+    }
+    siteUrl
+}

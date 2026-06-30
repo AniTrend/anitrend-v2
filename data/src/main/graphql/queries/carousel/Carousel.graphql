@@ -1,0 +1,23 @@
+query Carousel(
+    $page: Int = 1,
+    $perPage: Int = 30,
+    $type: MediaType,
+    $isAdult: Boolean,
+    $scoreFormat: ScoreFormat
+) {
+    AllTimePopular: Page(page: $page, perPage: $perPage) {
+        media(sort: [POPULARITY_DESC], type: $type, isAdult: $isAdult) {
+            ... MediaCore
+        }
+    }
+    TrendingRightNow: Page(page: $page, perPage: $perPage) {
+        media(sort: [TRENDING_DESC], type: $type, isAdult: $isAdult) {
+            ... MediaCore
+        }
+    }
+    RecentlyAdded: Page(page: $page, perPage: $perPage) {
+        media(sort: [ID_DESC], type: $type, isAdult: $isAdult) {
+            ... MediaCore
+        }
+    }
+}

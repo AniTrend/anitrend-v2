@@ -1,0 +1,9 @@
+query GetMediaDetail(
+    $id: Int,
+    $type: MediaType,
+    $scoreFormat: ScoreFormat
+) {
+    Media(id: $id, type: $type) {
+        ... MediaExtended
+    }
+}

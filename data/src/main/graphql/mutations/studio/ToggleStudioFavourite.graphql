@@ -1,0 +1,16 @@
+mutation ToggleStudioFavourite($studioId: Int) {
+    ToggleFavourite(studioId: $studioId) {
+        studios {
+            edges {
+                favouriteOrder
+                node {
+                    ... StudioCore
+                }
+                id
+            }
+            pageInfo {
+                ... PageInfo
+            }
+        }
+    }
+}

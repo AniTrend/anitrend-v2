@@ -1,0 +1,11 @@
+fragment MediaAiringConnection on AiringScheduleConnection {
+    pageInfo {
+        ... PageInfo
+    }
+    edges {
+        id
+        node {
+            ... AiringScheduleCore
+        }
+    }
+}

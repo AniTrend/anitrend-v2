@@ -30,13 +30,15 @@ import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.common.extension.seedFromLocalCount
+import co.anitrend.data.graphql.anilist.GetMediaWithSuggestion
+import co.anitrend.data.graphql.anilist.GetMediaWithSuggestionVariables
 import co.anitrend.data.media.MediaRecommendationsController
 import co.anitrend.data.media.model.query.MediaConnectionQuery
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.recommendation.datasource.local.connection.MediaRecommendationConnectionLocalSource
 import co.anitrend.data.recommendation.entity.connection.MediaRecommendationConnectionEntity
 import co.anitrend.data.recommendation.mapper.MediaRecommendationMapper
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.flow.first
 import org.threeten.bp.Instant
 
@@ -115,7 +117,24 @@ internal class MediaRecommendationsRemoteMediator(
         val deferred =
             deferred {
                 remoteSource.getMediaRecommendations(
-                    query.toQueryContainerBuilder(supportPagingHelper),
+                    GraphQLRequest(
+                        query = GetMediaWithSuggestion.document,
+                        operationName = GetMediaWithSuggestion.name,
+                        variables =
+                            GetMediaWithSuggestionVariables(
+                                id = query.param.id.toInt(),
+                                page = supportPagingHelper.page,
+                                perPage = supportPagingHelper.pageSize,
+                                scoreFormat =
+                                    co.anitrend.data.graphql.anilist.ScoreFormat
+                                        .valueOf(query.param.scoreFormat.name),
+                                sort =
+                                    query.param.sort?.map {
+                                        co.anitrend.data.graphql.anilist.RecommendationSort
+                                            .valueOf(it.name)
+                                    },
+                            ),
+                    ),
                 )
             }
 

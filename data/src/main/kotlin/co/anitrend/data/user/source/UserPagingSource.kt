@@ -32,13 +32,14 @@ import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
 import co.anitrend.data.common.extension.from
+import co.anitrend.data.graphql.anilist.GetUserPaged
 import co.anitrend.data.user.UserPagedController
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.remote.UserRemoteSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.filter.UserQueryFilter
 import co.anitrend.data.user.model.query.UserQuery
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.common.sort.order.SortOrder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -60,11 +61,21 @@ internal class UserPagingSource(
     private suspend fun getUserSearch(requestCallback: RequestCallback) {
         val deferred =
             deferred {
-                val queryBuilder =
-                    query.toQueryContainerBuilder(
-                        supportPagingHelper,
-                    )
-                remoteSource.getUserPaged(queryBuilder)
+                remoteSource.getUserPaged(
+                    GetUserPaged.request(
+                        page = supportPagingHelper.page,
+                        perPage = supportPagingHelper.pageSize,
+                        search = query.param.search,
+                        sort =
+                            query.param.sort?.map {
+                                val baseName = (it.sortable as Enum<*>).name
+                                val enumName =
+                                    if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
+                                co.anitrend.data.graphql.anilist.UserSort
+                                    .valueOf(enumName)
+                            },
+                    ),
+                )
             }
 
         controller(deferred, requestCallback) {

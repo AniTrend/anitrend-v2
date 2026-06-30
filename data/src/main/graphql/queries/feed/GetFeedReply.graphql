@@ -1,0 +1,5 @@
+query GetFeedReply($id: Int) {
+  ActivityReply(id: $id) {
+    ... FeedReply
+  }
+}

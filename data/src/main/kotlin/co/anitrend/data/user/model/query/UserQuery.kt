@@ -29,7 +29,7 @@ internal sealed class UserQuery : IGraphPayload {
          */
         override fun toMap() =
             mapOf(
-                "name" to param.name,
+                "userName" to param.name,
                 "id" to param.id,
             )
     }
@@ -45,7 +45,7 @@ internal sealed class UserQuery : IGraphPayload {
         override fun toMap() =
             mapOf(
                 "id" to param.id,
-                "name" to param.name,
+                "userName" to param.name,
             )
     }
 

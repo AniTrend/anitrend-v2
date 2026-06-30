@@ -23,6 +23,7 @@ import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import com.google.gson.Gson
 import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor
 import co.anitrend.retrofit.graphql.converter.GraphConverter
+import co.anitrend.retrofit.graphql.model.GraphQLDocumentRegistry
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -36,7 +37,8 @@ internal class AniTrendConverterFactory(
     private val xmlFactory: Converter.Factory,
     processor: AbstractGraphProcessor,
     gson: Gson,
-) : GraphConverter(processor, gson) {
+    registry: GraphQLDocumentRegistry? = null,
+) : GraphConverter(processor, gson, registry) {
     /**
      * Response body converter delegates logic processing to a child class that handles
      * wrapping and deserialization of the json response data.

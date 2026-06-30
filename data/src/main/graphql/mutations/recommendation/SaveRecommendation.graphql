@@ -1,0 +1,14 @@
+mutation SaveRecommendation(
+    $mediaId: Int,
+    $mediaRecommendationId: Int,
+    $rating: RecommendationRating,
+    $scoreFormat: ScoreFormat
+) {
+    SaveRecommendation(
+        mediaId: $mediaId,
+        mediaRecommendationId: $mediaRecommendationId,
+        rating: $rating
+    ) {
+        ... RecommendationCore
+    }
+}

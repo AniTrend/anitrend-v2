@@ -1,0 +1,16 @@
+query NewsConnection($after: String, $before: String, $limit: PositiveFloat) {
+  news(after: $after, before: $before, limit: $limit) {
+    count
+    first
+    last
+    data {
+      id
+      title
+      link
+      image
+      description
+      content
+      publishedOn
+    }
+  }
+}

@@ -27,8 +27,10 @@ import co.anitrend.data.edge.config.datasource.local.EdgeConfigLocalSource
 import co.anitrend.data.edge.config.datasource.remote.EdgeConfigRemoteSource
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
 import co.anitrend.data.edge.config.source.contract.EdgeConfigSource
+import co.anitrend.data.edge.graphql.GetConfig
 import co.anitrend.domain.config.entity.Config
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.EmptyGraphQLVariables
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -58,7 +60,10 @@ internal class EdgeConfigSourceImpl(
         val deferred =
             deferred {
                 remoteSource.getConfig(
-                    QueryContainerBuilder(),
+                    GraphQLRequest<EmptyGraphQLVariables>(
+                        query = GetConfig.document,
+                        operationName = GetConfig.name,
+                    ),
                 )
             }
 

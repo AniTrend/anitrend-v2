@@ -1,0 +1,10 @@
+fragment MediaDataChangeNotification on MediaDataChangeNotification {
+    id
+    type
+    createdAt
+    context
+    reason
+    media {
+        ... MediaCore
+    }
+}

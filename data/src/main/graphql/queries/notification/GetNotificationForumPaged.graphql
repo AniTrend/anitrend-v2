@@ -1,0 +1,25 @@
+query GetNotificationForumPaged(
+    $page: Int,
+    $perPage: Int
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        notifications(
+            type_in: [
+                THREAD_COMMENT_LIKE,
+                THREAD_COMMENT_REPLY,
+                THREAD_COMMENT_MENTION,
+                THREAD_LIKE,
+                THREAD_SUBSCRIBED
+            ]
+        ) {
+            ... ThreadCommentLikeNotification
+            ... ThreadCommentMentionNotification
+            ... ThreadCommentReplyNotification
+            ... ThreadCommentSubscribedNotification
+            ... ThreadLikeNotification
+        }
+    }
+}

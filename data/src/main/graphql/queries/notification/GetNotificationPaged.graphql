@@ -1,0 +1,34 @@
+query GetNotificationPaged(
+    $page: Int,
+    $perPage: Int,
+    $type: NotificationType,
+    $type_in: [NotificationType],
+    $resetNotificationCount: Boolean,
+    $scoreFormat: ScoreFormat
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        notifications(
+            type: $type,
+            type_in: $type_in,
+            resetNotificationCount: $resetNotificationCount
+        ) {
+            ... ActivityLikeNotification
+            ... ActivityMentionNotification
+            ... ActivityMessageNotification
+            ... ActivityReplyLikeNotification
+            ... ActivityReplyNotification
+            ... ActivityReplySubscribedNotification
+            ... AiringNotification
+            ... FollowingNotification
+            ... RelatedMediaAdditionNotification
+            ... ThreadCommentLikeNotification
+            ... ThreadCommentMentionNotification
+            ... ThreadCommentReplyNotification
+            ... ThreadCommentSubscribedNotification
+            ... ThreadLikeNotification
+        }
+    }
+}

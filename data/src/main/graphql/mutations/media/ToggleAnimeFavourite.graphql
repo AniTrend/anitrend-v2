@@ -1,0 +1,16 @@
+mutation ToggleAnimeFavourite($animeId: Int, $scoreFormat: ScoreFormat) {
+    ToggleFavourite(animeId: $animeId) {
+        anime {
+            edges {
+                favouriteOrder
+                node {
+                    ... MediaCore
+                }
+                id
+            }
+            pageInfo {
+                ... PageInfo
+            }
+        }
+    }
+}

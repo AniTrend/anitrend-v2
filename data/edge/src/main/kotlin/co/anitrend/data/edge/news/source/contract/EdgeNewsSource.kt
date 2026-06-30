@@ -18,21 +18,14 @@ package co.anitrend.data.edge.news.source.contract
 
 import androidx.paging.PagingData
 import co.anitrend.data.android.source.AbstractCoreDataSource
-import co.anitrend.data.edge.news.model.query.NewsConnectionQuery
 import co.anitrend.domain.news.entity.News
 import co.anitrend.domain.news.model.NewsParam
 import kotlinx.coroutines.flow.Flow
 
 internal class EdgeNewsSource {
     abstract class Paging : AbstractCoreDataSource() {
-        protected lateinit var query: NewsConnectionQuery
-
         abstract operator fun invoke(param: NewsParam): Flow<PagingData<News>>
 
         abstract fun sync(param: NewsParam): Flow<Boolean>
-
-        protected fun assignQuery(param: NewsParam) {
-            query = NewsConnectionQuery()
-        }
     }
 }

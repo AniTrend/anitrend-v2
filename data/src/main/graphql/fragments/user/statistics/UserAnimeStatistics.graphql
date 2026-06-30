@@ -1,0 +1,99 @@
+fragment UserAnimeStatistics on UserStatistics {
+    count
+    meanScore
+    episodesWatched
+    minutesWatched
+    standardDeviation
+    countries(sort: $statisticsSort) {
+        country
+        minutesWatched
+        count
+        meanScore
+        mediaIds
+    }
+    formats(sort: $statisticsSort) {
+        format
+        minutesWatched
+        count
+        meanScore
+        mediaIds
+    }
+    genres(sort: $statisticsSort) {
+        genre
+        minutesWatched
+        count
+        meanScore
+        mediaIds
+    }
+    lengths(sort: $statisticsSort) {
+        length
+        minutesWatched
+        count
+        meanScore
+        mediaIds
+    }
+    releaseYears(sort: $statisticsSort) {
+        releaseYear
+        minutesWatched
+        count
+        meanScore
+        mediaIds
+    }
+    scores(sort: $statisticsSort) {
+        score
+        minutesWatched
+        count
+        meanScore
+        mediaIds
+    }
+    staff(sort: $statisticsSort) {
+        staff {
+            ... StaffCore
+        }
+        minutesWatched
+        count
+        meanScore
+        mediaIds
+    }
+    startYears(sort: $statisticsSort) {
+        startYear
+        minutesWatched
+        count
+        meanScore
+        mediaIds
+    }
+    statuses(sort: $statisticsSort) {
+        status
+        minutesWatched
+        count
+        meanScore
+        mediaIds
+    }
+    studios(sort: $statisticsSort) {
+        studio {
+            ... StudioCore
+        }
+        minutesWatched
+        count
+        meanScore
+        mediaIds
+    }
+    tags(sort: $statisticsSort) {
+        tag {
+            ... Tag
+        }
+        minutesWatched
+        count
+        meanScore
+        mediaIds
+    }
+    voiceActors(sort: $statisticsSort) {
+        voiceActor {
+            ... StaffCore
+        }
+        minutesWatched
+        count
+        meanScore
+        mediaIds
+    }
+}

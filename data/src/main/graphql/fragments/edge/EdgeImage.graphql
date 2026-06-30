@@ -1,0 +1,7 @@
+fragment EdgeImage on query_series_images_items {
+  height
+  locale
+  type
+  url
+  width
+}

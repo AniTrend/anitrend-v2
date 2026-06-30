@@ -1,0 +1,8 @@
+fragment EdgeNetwork on query_series_networks_items {
+  isPrimary
+  category
+  id
+  logoPath
+  name
+  originCountry
+}

@@ -71,6 +71,7 @@ google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "google-de
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrains-kotlin" }
 android-library = { id = "com.android.library", version.ref = "gradle-plugin" }
+retrofit-graphql-codegen = { id = "co.anitrend.retrofit.graphql.codegen", version.ref = "anitrend-retrofit" }
 
 
 [libraries]
@@ -199,6 +200,9 @@ anitrend-emojify-contract = { module = "com.github.anitrend.android-emojify:cont
 anitrend-emojify-kotlinx = { module = "com.github.anitrend.android-emojify:kotlinx", version.ref = "anitrend-emojify" }
 anitrend-markdown = { module = "com.github.anitrend:support-markdown", version.ref = "anitrend-markdown" }
 anitrend-retrofit-graphql = { module = "com.github.anitrend:retrofit-graphql", version.ref = "anitrend-retrofit" }
+anitrend-retrofit-graphql-runtime = { module = "com.github.AniTrend.retrofit-graphql:runtime", version.ref = "anitrend-retrofit" }
+anitrend-retrofit-graphql-api = { module = "com.github.AniTrend.retrofit-graphql:api", version.ref = "anitrend-retrofit" }
+anitrend-retrofit-graphql-annotations = { module = "com.github.AniTrend.retrofit-graphql:annotations", version.ref = "anitrend-retrofit" }
 
 anitrend-querybuilder-annotation = { module = "com.github.anitrend.support-query-builder:annotations", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-core = { module = "com.github.anitrend.support-query-builder:core", version.ref = "anitrend-querybuilder" }

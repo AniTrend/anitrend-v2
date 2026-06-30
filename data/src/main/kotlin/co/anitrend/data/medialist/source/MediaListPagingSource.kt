@@ -38,8 +38,8 @@ import co.anitrend.data.medialist.MediaListPagedController
 import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
 import co.anitrend.data.medialist.datasource.remote.MediaListRemoteSource
 import co.anitrend.data.medialist.entity.filter.MediaListQueryFilter
+import co.anitrend.data.graphql.anilist.GetMediaListPaged
 import co.anitrend.data.medialist.model.query.MediaListQuery
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -62,11 +62,82 @@ internal class MediaListPagingSource(
     private suspend fun getMediaList(requestCallback: RequestCallback) {
         val deferred =
             deferred {
-                val queryBuilder =
-                    query.toQueryContainerBuilder(
-                        supportPagingHelper,
-                    )
-                remoteSource.getMediaListPaged(queryBuilder)
+                remoteSource.getMediaListPaged(
+                    GetMediaListPaged.request(
+                        compareWithAuthList = query.param.compareWithAuthList,
+                        completedAt =
+                            query.param.completedAt
+                                ?.toString()
+                                ?.toIntOrNull(),
+                        completedAt_greater =
+                            query.param.completedAt_greater
+                                ?.toString()
+                                ?.toIntOrNull(),
+                        completedAt_lesser =
+                            query.param.completedAt_lesser
+                                ?.toString()
+                                ?.toIntOrNull(),
+                        completedAt_like = query.param.completedAt_like?.toString(),
+                        id = query.param.id?.toInt(),
+                        isFollowing = query.param.isFollowing,
+                        mediaId = query.param.mediaId?.toInt(),
+                        notes = query.param.notes,
+                        notes_like = query.param.notes_like,
+                        sort =
+                            query.param.sort?.map {
+                                val baseName = it.sortable.name
+                                val enumName = if (it.order == co.anitrend.domain.common.sort.order.SortOrder.DESC) baseName + "_DESC" else baseName
+                                co.anitrend.data.graphql.anilist.MediaListSort
+                                    .valueOf(enumName)
+                            },
+                        startedAt =
+                            query.param.startedAt
+                                ?.toString()
+                                ?.toIntOrNull(),
+                        startedAt_greater =
+                            query.param.startedAt_greater
+                                ?.toString()
+                                ?.toIntOrNull(),
+                        startedAt_lesser =
+                            query.param.startedAt_lesser
+                                ?.toString()
+                                ?.toIntOrNull(),
+                        startedAt_like = query.param.startedAt_like?.toString(),
+                        status =
+                            query.param.status?.let {
+                                co.anitrend.data.graphql.anilist.MediaListStatus
+                                    .valueOf(it.name)
+                            },
+                        status_in =
+                            query.param.status_in?.map {
+                                co.anitrend.data.graphql.anilist.MediaListStatus
+                                    .valueOf(it.name)
+                            },
+                        status_not =
+                            query.param.status_not?.let {
+                                co.anitrend.data.graphql.anilist.MediaListStatus
+                                    .valueOf(it.name)
+                            },
+                        status_not_in =
+                            query.param.status_not_in?.map {
+                                co.anitrend.data.graphql.anilist.MediaListStatus
+                                    .valueOf(it.name)
+                            },
+                        type =
+                            query.param.type?.let {
+                                co.anitrend.data.graphql.anilist.MediaType
+                                    .valueOf(it.name)
+                            },
+                        userId = query.param.userId?.toInt(),
+                        userName = query.param.userName,
+                        userId_in = query.param.userId_in?.map { it.toInt() },
+                        scoreFormat =
+                            co.anitrend.data.graphql.anilist.ScoreFormat
+                                .valueOf(query.param.scoreFormat.name),
+                        page = supportPagingHelper.page,
+                        perPage = supportPagingHelper.pageSize,
+                    ),
+                )
             }
 
         controller(deferred, requestCallback) {

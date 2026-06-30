@@ -1,0 +1,12 @@
+query GetUserWithStatistic(
+    $id: Int,
+    $userName: String,
+    $statisticsSort: [UserStatisticsSort]
+) {
+    User(id: $id, name: $userName) {
+        ... UserCore
+        statistics {
+            ... UserStatistics
+        }
+    }
+}

@@ -1,0 +1,17 @@
+mutation SendMessage(
+    $id: Int,
+    $locked: Boolean,
+    $message: String,
+    $private: Boolean,
+    $recipientId: Int
+) {
+    SaveMessageActivity(
+        id: $id,
+        locked: $locked,
+        message: $message,
+        private: $private,
+        recipientId: $recipientId,
+    ) {
+        ... FeedMessage
+    }
+}

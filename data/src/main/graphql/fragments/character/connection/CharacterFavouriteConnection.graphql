@@ -1,0 +1,12 @@
+fragment CharacterFavouriteConnection on CharacterConnection {
+    pageInfo {
+        ... PageInfo
+    }
+    edges {
+        id
+        favouriteOrder
+        node {
+            ... CharacterCore
+        }
+    }
+}

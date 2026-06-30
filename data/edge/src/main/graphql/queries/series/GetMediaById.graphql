@@ -1,0 +1,46 @@
+query GetMediaById($id: Int!) {
+  series(anilist: $id) {
+    title {
+      ... EdgeMediaTitle
+    }
+    cover {
+      ... EdgeCover
+    }
+    banner
+    description
+    fanart
+    format
+    source
+    status
+    ageRating
+    isAdult
+    homepage
+    airedEpisodes
+    broadcast
+    chapters
+    volumes
+    kind
+    moreInfo
+    publishedFrom
+    publishedTo
+    mediaId {
+      ... EdgeMediaId
+    }
+    images {
+      ... EdgeImage
+    }
+    schedule {
+      ... EdgeSchedule
+    }
+    networks {
+      ... EdgeNetwork
+    }
+    animethemes {
+      ... EdgeTheme
+    }
+    trailers {
+      ... EdgeTrailer
+    }
+    updatedAt
+  }
+}

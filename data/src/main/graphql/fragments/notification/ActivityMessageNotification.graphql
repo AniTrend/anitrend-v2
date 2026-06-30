@@ -1,0 +1,10 @@
+fragment ActivityMessageNotification on ActivityMessageNotification {
+    id
+    type
+    createdAt
+    context
+    activityId
+    user {
+        ... UserCore
+    }
+}

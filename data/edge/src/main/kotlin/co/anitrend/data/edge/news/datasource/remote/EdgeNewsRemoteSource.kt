@@ -19,18 +19,17 @@ package co.anitrend.data.edge.news.datasource.remote
 import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.edge.core.api.factory.EdgeApiFactory
+import co.anitrend.data.edge.graphql.NewsConnectionVariables
 import co.anitrend.data.edge.news.model.remote.EdgeNewsConnectionModel
-import co.anitrend.retrofit.graphql.annotation.GraphQuery
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface EdgeNewsRemoteSource {
     @GRAPHQL
-    @GraphQuery("NewsConnection")
     @POST(EdgeApiFactory.BASE_ENDPOINT_PATH)
     suspend fun getNewsConnection(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<NewsConnectionVariables>,
     ): Response<GraphQLResponse<EdgeNewsConnectionModel>>
 }

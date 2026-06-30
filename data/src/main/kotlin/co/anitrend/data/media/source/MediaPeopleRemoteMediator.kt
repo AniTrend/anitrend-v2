@@ -29,6 +29,10 @@ import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.common.extension.seedFromLocalCount
+import co.anitrend.data.graphql.anilist.GetMediaWithCharacter
+import co.anitrend.data.graphql.anilist.GetMediaWithCharacterVariables
+import co.anitrend.data.graphql.anilist.GetMediaWithStaff
+import co.anitrend.data.graphql.anilist.GetMediaWithStaffVariables
 import co.anitrend.data.media.MediaCharactersController
 import co.anitrend.data.media.MediaStaffController
 import co.anitrend.data.media.datasource.local.MediaLocalSource
@@ -37,8 +41,9 @@ import co.anitrend.data.media.entity.connection.MediaStaffConnectionEntity
 import co.anitrend.data.media.mapper.MediaPeopleMapper
 import co.anitrend.data.media.model.query.MediaPeopleQuery
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.entity.MediaPerson
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.flow.first
 import org.threeten.bp.Instant
 
@@ -122,7 +127,28 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
             val deferred =
                 deferred {
                     remoteSource.getMediaCharacters(
-                        query.toQueryContainerBuilder(supportPagingHelper),
+                        GraphQLRequest(
+                            query = GetMediaWithCharacter.document,
+                            operationName = GetMediaWithCharacter.name,
+                            variables =
+                                GetMediaWithCharacterVariables(
+                                    id = query.param.id.toInt(),
+                                    page = supportPagingHelper.page,
+                                    perPage = supportPagingHelper.pageSize,
+                                    role =
+                                        query.param.role?.let {
+                                            co.anitrend.data.graphql.anilist.CharacterRole
+                                                .valueOf(it.name)
+                                        },
+                                    sort =
+                                        query.param.sort?.map {
+                                            val baseName = (it.sortable as Enum<*>).name
+                                            val enumName = if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
+                                            co.anitrend.data.graphql.anilist.CharacterSort
+                                                .valueOf(enumName)
+                                        },
+                                ),
+                        ),
                     )
                 }
 
@@ -198,7 +224,23 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
             val deferred =
                 deferred {
                     remoteSource.getMediaStaff(
-                        query.toQueryContainerBuilder(supportPagingHelper),
+                        GraphQLRequest(
+                            query = GetMediaWithStaff.document,
+                            operationName = GetMediaWithStaff.name,
+                            variables =
+                                GetMediaWithStaffVariables(
+                                    id = query.param.id.toInt(),
+                                    page = supportPagingHelper.page,
+                                    perPage = supportPagingHelper.pageSize,
+                                    sort =
+                                        query.param.sort?.map {
+                                            val baseName = (it.sortable as Enum<*>).name
+                                            val enumName = if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
+                                            co.anitrend.data.graphql.anilist.StaffSort
+                                                .valueOf(enumName)
+                                        },
+                                ),
+                        ),
                     )
                 }
 

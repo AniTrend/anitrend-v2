@@ -1,0 +1,18 @@
+query GetUserPaged(
+    $page: Int,
+    $perPage: Int,
+    $search: String,
+    $sort: [UserSort]
+) {
+    Page(page: $page, perPage: $perPage) {
+        pageInfo {
+            ... PageInfo
+        }
+        users(
+            search: $search
+            sort: $sort
+        ) {
+            ... UserCore
+        }
+    }
+}

@@ -1,0 +1,5 @@
+query GetFeedMessage($id: Int!) {
+    Activity(id: $id, type: MESSAGE) {
+        ... FeedMessage
+    }
+}

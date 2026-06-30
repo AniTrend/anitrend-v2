@@ -1,0 +1,25 @@
+fragment EdgeEpisode on query_episodes_data_items {
+  absoluteEpisodeNumber
+  aired
+  airedAfterEpisodeNumber
+  airedAfterSeasonNumber
+  airedBeforeEpisodeNumber
+  airedBeforeSeasonNumber
+  duration
+  episodeNumber
+  id
+  image
+  kind
+  poster
+  seasonNumber
+  synopsis
+  title {
+    english
+    native
+    romanji
+  }
+  tmdbId
+  tvdbId
+  tvdbShowId
+  url
+}

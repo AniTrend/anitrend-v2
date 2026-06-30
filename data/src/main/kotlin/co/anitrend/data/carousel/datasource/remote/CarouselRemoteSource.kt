@@ -20,8 +20,10 @@ import co.anitrend.data.carousel.model.CarouselModel
 import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
-import co.anitrend.retrofit.graphql.annotation.GraphQuery
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
+import co.anitrend.data.graphql.anilist.CarouselAnimeVariables
+import co.anitrend.data.graphql.anilist.CarouselMangaVariables
+import co.anitrend.data.graphql.anilist.CarouselVariables
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -29,22 +31,19 @@ import retrofit2.http.POST
 internal interface CarouselRemoteSource {
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("Carousel")
     suspend fun getCarousel(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<CarouselVariables>,
     ): Response<GraphQLResponse<CarouselModel.Core>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("CarouselAnime")
     suspend fun getCarouselAnime(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<CarouselAnimeVariables>,
     ): Response<GraphQLResponse<CarouselModel.Anime>>
 
     @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("CarouselManga")
     suspend fun getCarouselManga(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<CarouselMangaVariables>,
     ): Response<GraphQLResponse<CarouselModel.Manga>>
 }

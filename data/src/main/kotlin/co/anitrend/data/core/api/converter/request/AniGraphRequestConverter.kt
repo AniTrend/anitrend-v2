@@ -38,9 +38,10 @@ internal class AniRequestConverter(
      */
     @OptIn(AniTrendExperimentalFeature::class)
     override fun resolveQuery(): String? {
-        // we need structured line numbers if we're in the debug env otherwise we can minify queries
-        return graphProcessor
-            .getQuery(methodAnnotations)
+        // Use parent's resolution (registry-first, then asset fallback),
+        // then apply minification in release builds
+        return super
+            .resolveQuery()
             ?.minify(!BuildConfig.DEBUG)
     }
 

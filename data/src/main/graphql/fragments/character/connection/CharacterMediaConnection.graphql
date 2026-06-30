@@ -1,0 +1,8 @@
+fragment CharacterMediaConnection on MediaConnection {
+    pageInfo {
+        ... PageInfo
+    }
+    nodes {
+        ... MediaCore
+    }
+}

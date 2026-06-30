@@ -19,89 +19,88 @@ package co.anitrend.data.user.datasource.remote
 import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.data.graphql.anilist.GetAnimeFavouritesVariables
+import co.anitrend.data.graphql.anilist.GetMangaFavouritesVariables
+import co.anitrend.data.graphql.anilist.GetUserPagedVariables
+import co.anitrend.data.graphql.anilist.GetUserProfileFeedVariables
+import co.anitrend.data.graphql.anilist.GetUserProfileOverviewVariables
+import co.anitrend.data.graphql.anilist.GetUserProfileVariables
+import co.anitrend.data.graphql.anilist.GetUserVariables
+import co.anitrend.data.graphql.anilist.GetUserWithStatisticVariables
+import co.anitrend.data.graphql.anilist.SaveToggleFollowUserVariables
+import co.anitrend.data.graphql.anilist.UpdateUserProfileVariables
 import co.anitrend.data.user.model.container.UserModelContainer
 import co.anitrend.data.user.model.container.UserSidecarModelContainer
-import co.anitrend.retrofit.graphql.annotation.GraphQuery
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.EmptyGraphQLVariables
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface UserRemoteSource {
     @GRAPHQL
-    @GraphQuery("GetUserByName")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserByName(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetUserVariables>,
     ): Response<GraphQLResponse<UserModelContainer.User>>
 
     @GRAPHQL
-    @GraphQuery("GetUserPaged")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserPaged(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetUserPagedVariables>,
     ): Response<GraphQLResponse<UserModelContainer.Paged>>
 
     @GRAPHQL
-    @GraphQuery("GetUserViewer")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserViewer(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<EmptyGraphQLVariables>,
     ): Response<GraphQLResponse<UserModelContainer.Viewer>>
 
     @GRAPHQL
-    @GraphQuery("GetUserProfile")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserProfile(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetUserProfileVariables>,
     ): Response<GraphQLResponse<UserModelContainer.Profile>>
 
     @GRAPHQL
-    @GraphQuery("GetUserWithStatistic")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserWithStatistic(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetUserWithStatisticVariables>,
     ): Response<GraphQLResponse<UserModelContainer.WithStatistic>>
 
     @GRAPHQL
-    @GraphQuery("GetUserProfileOverview")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserProfileOverview(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetUserProfileOverviewVariables>,
     ): Response<GraphQLResponse<UserSidecarModelContainer.Overview>>
 
     @GRAPHQL
-    @GraphQuery("GetUserProfileFeed")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserProfileFeed(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetUserProfileFeedVariables>,
     ): Response<GraphQLResponse<UserSidecarModelContainer.Feed>>
 
     @GRAPHQL
-    @GraphQuery("SaveToggleFollowUser")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun saveToggleFollow(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<SaveToggleFollowUserVariables>,
     ): Response<GraphQLResponse<UserModelContainer.User>>
 
     @GRAPHQL
-    @GraphQuery("UpdateUserProfile")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun updateUserProfile(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<UpdateUserProfileVariables>,
     ): Response<GraphQLResponse<UserModelContainer.Profile>>
 
     @GRAPHQL
-    @GraphQuery("GetAnimeFavourites")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getAnimeFavourites(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetAnimeFavouritesVariables>,
     ): Response<GraphQLResponse<UserSidecarModelContainer.AnimeFavourites>>
 
     @GRAPHQL
-    @GraphQuery("GetMangaFavourites")
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMangaFavourites(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetMangaFavouritesVariables>,
     ): Response<GraphQLResponse<UserSidecarModelContainer.MangaFavourites>>
 }
