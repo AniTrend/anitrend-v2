@@ -1,5 +1,0 @@
-mutation RateReview($id: Int, $rating: ReviewRating) {
-    RateReview(reviewId: $id, rating: $rating) {
-        ... ReviewCore
-    }
-}

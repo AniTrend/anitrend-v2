@@ -6,7 +6,7 @@ digraph mapping_graphql_models {
     owner [label="Owner schema known?"];
     kind [label="Read or write contract?"];
     variant [label="Variant ownership explicit?"];
-    remote [label="Operation and @GraphQuery aligned?"];
+    remote [label="Operation identity and generated request aligned?"];
     source [label="Source path uses correct operation?"];
 
     node [shape=box];

@@ -33,8 +33,9 @@ tasks.withType(KotlinCompilationTask::class.java) {
 dependencies {
     implementation(libs.jetbrains.kotlinx.serialization.json)
 
-    implementation(libs.anitrend.retrofit.graphql)
-
+    implementation(libs.anitrend.retrofit.graphql.runtime)
+    implementation(libs.anitrend.retrofit.graphql.api)
+    implementation(libs.anitrend.retrofit.graphql.annotations)
     implementation(libs.cash.copper)
 
     implementation(libs.anitrend.querybuilder.annotation)

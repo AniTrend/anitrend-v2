@@ -1,5 +1,0 @@
-query GetReview($id: Int!, $scoreFormat: ScoreFormat) {
-    Review(id: $id) {
-        ... ReviewExtended
-    }
-}

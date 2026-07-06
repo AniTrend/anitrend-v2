@@ -1,8 +1,0 @@
-fragment Tag on MediaTag {
-    category
-    description
-    id
-    isAdult
-    isGeneralSpoiler
-    name
-}

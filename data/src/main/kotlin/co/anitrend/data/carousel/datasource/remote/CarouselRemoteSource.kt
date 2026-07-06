@@ -17,7 +17,6 @@
 package co.anitrend.data.carousel.datasource.remote
 
 import co.anitrend.data.carousel.model.CarouselModel
-import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.CarouselAnimeVariables
@@ -29,19 +28,16 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface CarouselRemoteSource {
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getCarousel(
         @Body request: GraphQLRequest<CarouselVariables>,
     ): Response<GraphQLResponse<CarouselModel.Core>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getCarouselAnime(
         @Body request: GraphQLRequest<CarouselAnimeVariables>,
     ): Response<GraphQLResponse<CarouselModel.Anime>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getCarouselManga(
         @Body request: GraphQLRequest<CarouselMangaVariables>,

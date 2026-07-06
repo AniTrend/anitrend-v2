@@ -1,5 +1,0 @@
-query GetCharacter($id: Int) {
-    Character(id: $id) {
-        ... CharacterCore
-    }
-}

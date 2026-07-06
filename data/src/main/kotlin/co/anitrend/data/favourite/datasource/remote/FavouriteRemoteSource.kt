@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.favourite.datasource.remote
 
-import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.ToggleAnimeFavouriteVariables
 import co.anitrend.data.graphql.anilist.ToggleMangaFavouriteVariables
@@ -26,13 +25,11 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface FavouriteRemoteSource {
-    @GRAPHQL
     @POST
     suspend fun toggleAnimeFavorite(
         @Body request: GraphQLRequest<ToggleAnimeFavouriteVariables>,
     ): Response<GraphQLResponse<Boolean>>
 
-    @GRAPHQL
     @POST
     suspend fun toggleMangaFavorite(
         @Body request: GraphQLRequest<ToggleMangaFavouriteVariables>,

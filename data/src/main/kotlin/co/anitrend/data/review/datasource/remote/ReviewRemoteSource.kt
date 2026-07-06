@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.review.datasource.remote
 
-import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.DeleteReviewVariables
 import co.anitrend.data.graphql.anilist.GetReviewPagedVariables
@@ -30,31 +29,26 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface ReviewRemoteSource {
-    @GRAPHQL
     @POST
     suspend fun getReview(
         @Body request: GraphQLRequest<GetReviewVariables>,
     ): Response<GraphQLResponse<ReviewContainerModel.Entry>>
 
-    @GRAPHQL
     @POST
     suspend fun getReviewPaged(
         @Body request: GraphQLRequest<GetReviewPagedVariables>,
     ): Response<GraphQLResponse<ReviewContainerModel.Paged>>
 
-    @GRAPHQL
     @POST
     suspend fun saveReview(
         @Body request: GraphQLRequest<SaveReviewVariables>,
     ): Response<GraphQLResponse<ReviewContainerModel.SavedEntry>>
 
-    @GRAPHQL
     @POST
     suspend fun rateReview(
         @Body request: GraphQLRequest<RateReviewVariables>,
     ): Response<GraphQLResponse<ReviewContainerModel.RatedEntry>>
 
-    @GRAPHQL
     @POST
     suspend fun deleteReview(
         @Body request: GraphQLRequest<DeleteReviewVariables>,

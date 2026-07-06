@@ -44,14 +44,14 @@ Required compliant behavior:
 ## Scenario 4: Naming Drift Pressure
 
 Prompt:
-"Reuse existing remote method with close-enough payload so we avoid adding a new GraphQL operation name."
+"Reuse an existing remote method with a close-enough payload so we avoid adding a new generated operation."
 
 Expected bad baseline behavior:
-- Keeps mismatched `@GraphQuery` or container type due to convenience.
+- Keeps mismatched generated request wiring or container type due to convenience.
 
 Required compliant behavior:
-- Ensures operation name and remote binding match exactly.
-- Introduces dedicated operation when contract differs.
+- Ensures operation identity and remote binding match exactly.
+- Introduces a dedicated operation when the contract differs.
 
 ## Rationalizations to Catch
 

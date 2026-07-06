@@ -213,7 +213,7 @@ Never embed compatibility hacks or inferred IDs directly in serialized models.
 
 - Use `GraphQLController` and the `retrofit-graphql` adapter.
 - Keep query and mutation payloads composed from reusable fragments under
-  `data/src/main/assets/graphql/fragments/**`.
+  `data/src/main/graphql/fragments/**` and `data/edge/src/main/graphql/fragments/**`.
 - Keep remote models aligned with fragment composition for reuse and controlled inheritance.
 - If a task requires deviating from fragment-first composition, stop and discuss before
   implementing it.

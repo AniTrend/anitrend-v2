@@ -17,7 +17,6 @@
 package co.anitrend.data.character.datasource.remote
 
 import co.anitrend.data.character.model.container.CharacterContainer
-import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.GetCharacterPagedVariables
@@ -27,7 +26,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface CharacterRemoteSource {
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getCharacterPaged(
         @Body request: GraphQLRequest<GetCharacterPagedVariables>,

@@ -22,13 +22,15 @@ import co.anitrend.data.util.GraphUtil.minify
 import com.google.gson.Gson
 import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor
 import co.anitrend.retrofit.graphql.converter.request.GraphRequestConverter
+import co.anitrend.retrofit.graphql.model.GraphQLDocumentRegistry
 import okhttp3.MediaType.Companion.toMediaType
 
 internal class AniRequestConverter(
     methodAnnotations: Array<out Annotation>,
     processor: AbstractGraphProcessor,
     gson: Gson,
-) : GraphRequestConverter(methodAnnotations, processor, gson) {
+    registry: GraphQLDocumentRegistry? = null,
+) : GraphRequestConverter(methodAnnotations, processor, gson, registry) {
     /**
      * Resolves the raw GraphQL query string from the method annotations,
      * applying minification in release builds for smaller payloads.

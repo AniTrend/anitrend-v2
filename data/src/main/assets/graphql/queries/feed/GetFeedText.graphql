@@ -1,5 +1,0 @@
-query GetFeedMedia($id: Int!) {
-    Activity(id: $id, type: TEXT) {
-        ... FeedText
-    }
-}

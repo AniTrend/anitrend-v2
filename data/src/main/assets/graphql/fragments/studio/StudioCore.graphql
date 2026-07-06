@@ -1,8 +1,0 @@
-fragment StudioCore on Studio {
-    favourites
-    isAnimationStudio
-    isFavourite
-    name
-    siteUrl
-    id
-}

@@ -1,9 +1,0 @@
-fragment RelatedMediaAdditionNotification on RelatedMediaAdditionNotification {
-    id
-    type
-    createdAt
-    context
-    media {
-        ... MediaCore
-    }
-}

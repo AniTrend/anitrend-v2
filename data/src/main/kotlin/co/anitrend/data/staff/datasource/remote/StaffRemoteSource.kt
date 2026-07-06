@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.staff.datasource.remote
 
-import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.GetStaffPagedVariables
@@ -27,7 +26,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface StaffRemoteSource {
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getStaffPaged(
         @Body request: GraphQLRequest<GetStaffPagedVariables>,

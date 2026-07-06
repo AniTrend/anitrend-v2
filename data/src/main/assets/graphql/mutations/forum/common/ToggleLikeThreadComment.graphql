@@ -1,5 +1,0 @@
-mutation ToggleLikeThreadComment($id: Int) {
-    ToggleLikeV2(id: $id, type: THREAD_COMMENT) {
-        ... ForumCore
-    }
-}

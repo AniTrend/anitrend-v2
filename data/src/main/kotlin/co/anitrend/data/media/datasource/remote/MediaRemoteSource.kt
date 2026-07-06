@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.media.datasource.remote
 
-import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.GetMediaDetailVariables
@@ -37,49 +36,41 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface MediaRemoteSource {
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaPaged(
         @Body request: GraphQLRequest<GetMediaPagedVariables>,
     ): Response<GraphQLResponse<MediaModelContainer.Paged>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaDetail(
         @Body request: GraphQLRequest<GetMediaDetailVariables>,
     ): Response<GraphQLResponse<MediaModelContainer.Detail>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaCharacters(
         @Body request: GraphQLRequest<GetMediaWithCharacterVariables>,
     ): Response<GraphQLResponse<MediaPeopleModelContainer.Characters>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaStaff(
         @Body request: GraphQLRequest<GetMediaWithStaffVariables>,
     ): Response<GraphQLResponse<MediaPeopleModelContainer.Staff>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaRelations(
         @Body request: GraphQLRequest<GetMediaWithRelationVariables>,
     ): Response<GraphQLResponse<MediaConnectionModelContainer.Relations>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaRecommendations(
         @Body request: GraphQLRequest<GetMediaWithSuggestionVariables>,
     ): Response<GraphQLResponse<MediaConnectionModelContainer.Recommendations>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaStudios(
         @Body request: GraphQLRequest<GetMediaWithStudioVariables>,
     ): Response<GraphQLResponse<MediaSidecarModelContainer.Studios>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaStats(
         @Body request: GraphQLRequest<GetMediaStatsVariables>,

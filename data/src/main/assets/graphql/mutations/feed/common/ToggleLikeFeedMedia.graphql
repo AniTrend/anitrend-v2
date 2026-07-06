@@ -1,5 +1,0 @@
-mutation ToggleLikeFeedMedia($id: Int, $scoreFormat: ScoreFormat) {
-    ToggleLikeV2(id: $id, type: ACTIVITY) {
-        ... FeedMedia
-    }
-}

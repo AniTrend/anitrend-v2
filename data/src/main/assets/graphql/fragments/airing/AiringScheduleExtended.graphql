@@ -1,6 +1,0 @@
-fragment AiringScheduleExtended on AiringSchedule {
-    ... AiringScheduleCore
-    media {
-        ... MediaCore
-    }
-}

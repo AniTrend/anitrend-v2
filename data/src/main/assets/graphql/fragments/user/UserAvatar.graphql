@@ -1,4 +1,0 @@
-fragment UserAvatar on UserAvatar {
-    large
-    medium
-}

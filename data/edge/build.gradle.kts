@@ -24,7 +24,8 @@ plugins {
 dependencies {
     implementation(libs.threeTenBp)
 
-    implementation(libs.anitrend.retrofit.graphql)
+    implementation(libs.anitrend.retrofit.graphql.runtime)
+    implementation(libs.anitrend.retrofit.graphql.api)
 
     implementation(libs.jetbrains.kotlinx.serialization.json)
 

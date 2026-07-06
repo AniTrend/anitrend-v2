@@ -1,9 +1,0 @@
-query GetAnimeFavourites($id: Int!, $page: Int!, $perPage: Int!, $scoreFormat: ScoreFormat) {
-    User(id: $id) {
-        favourites {
-            anime(page: $page, perPage: $perPage) {
-                ... MediaFavouriteConnection
-            }
-        }
-    }
-}

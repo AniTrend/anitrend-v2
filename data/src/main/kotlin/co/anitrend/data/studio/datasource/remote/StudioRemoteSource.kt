@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.studio.datasource.remote
 
-import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.GetStudioDetailVariables
@@ -29,13 +28,11 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface StudioRemoteSource {
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getStudioDetail(
         @Body request: GraphQLRequest<GetStudioDetailVariables>,
     ): Response<GraphQLResponse<StudioDetailContainer>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getStudioPaged(
         @Body request: GraphQLRequest<GetStudioPagedVariables>,

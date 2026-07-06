@@ -1,26 +1,27 @@
 ---
 name: graphql-schema-contract-audit
 category: api-schema-validation
-trigger-intent: Use before generating UI or feature code from a GraphQL operation, when adding or editing .graphql assets, or when auditing paged contracts for alignment across domain, data, mapper, and repository layers.
+trigger-intent: Use before generating UI or feature code from a GraphQL operation, when adding or editing generated GraphQL documents, or when auditing paged contracts for alignment across domain, data, mapper, and repository layers.
 ---
 
 # GraphQL Schema Contract Audit
 
 ## Purpose
 
-Block UI implementation until the GraphQL contract is coherent from asset file to domain-facing
+Block UI implementation until the GraphQL contract is coherent from generated document to domain-facing
 `DataState` output.
 
 ## Trigger Intent
 
 - A new `.graphql` query or mutation is added.
 - A paged result or connection shape changes.
-- A remote source annotation, container model, or mapper changed and the contract needs auditing.
+- A remote source request type, generated variables type, container model, or mapper changed and the contract needs auditing.
 - A feature is being scaffolded from an API spec and the data contract must be proven first.
 
 ## Repo Anchors
 
-- `data/src/main/assets/graphql/`
+- `data/src/main/graphql/`
+- `data/edge/src/main/graphql/`
 - `data/src/main/kotlin/co/anitrend/data/**/datasource/remote/`
 - `data/src/main/kotlin/co/anitrend/data/**/model/container/`
 - `data/src/main/kotlin/co/anitrend/data/**/Types.kt`
@@ -31,18 +32,19 @@ Block UI implementation until the GraphQL contract is coherent from asset file t
 ### 1. Locate the operation and all references
 
 ```bash
-find data/src/main/assets/graphql -name '*.graphql' | sort
-rg -n '^(query|mutation|fragment) ' data/src/main/assets/graphql
-rg -n '<OperationName>' data/src/main/assets/graphql data/src/main/kotlin/co/anitrend/data data/src/main/kotlin/co/anitrend/domain
+find data/src/main/graphql data/edge/src/main/graphql -name '*.graphql' | sort
+rg -n '^(query|mutation|fragment) ' data/src/main/graphql data/edge/src/main/graphql
+rg -n '<OperationName>' data/src/main/graphql data/edge/src/main/graphql data/src/main/kotlin/co/anitrend/data data/src/main/kotlin/co/anitrend/domain
 ```
 
-### 2. Validate the remote-source annotation
+### 2. Validate the remote-source request contract
 
 ```bash
-rg -n '@GraphQuery\\("<OperationName>"\\)' data/src/main/kotlin/co/anitrend/data
+rg -n 'GraphQLRequest<|Response<GraphQLResponse<' data/src/main/kotlin/co/anitrend/data data/edge/src/main/kotlin/co/anitrend/data/edge
 ```
 
-The operation name in the asset must exactly match the `@GraphQuery("...")` annotation.
+The remote source must use the generated `GraphQLRequest<...Variables>` type and return the
+matching `Response<GraphQLResponse<...>>` payload expected by the controller.
 
 ### 3. Validate the container model contract
 
@@ -57,14 +59,14 @@ must map to the same payload shape expected by the controller.
 ### 4. Validate paged contracts strictly
 
 ```bash
-rg -n 'PageInfo|pageInfo|hasNextPage|currentPage|lastPage' data/src/main/assets/graphql
+rg -n 'PageInfo|pageInfo|hasNextPage|currentPage|lastPage' data/src/main/graphql data/edge/src/main/graphql
 rg -n 'PagedList<' data/src/main/kotlin/co/anitrend/data data/src/main/kotlin/co/anitrend/domain
 rg -n 'GraphQLController<' data/src/main/kotlin/co/anitrend/data
 ```
 
 For paged or connection results, confirm all of the following:
 
-- the GraphQL asset includes `pageInfo` or the equivalent pagination metadata
+- the GraphQL document includes `pageInfo` or the equivalent pagination metadata
 - the container model exposes the paged payload that the mapper expects
 - the controller alias resolves to the correct collection shape
 - the repository alias exposes `DataState<PagedList<DomainModel>>` or the intended paged type
@@ -74,7 +76,7 @@ For paged or connection results, confirm all of the following:
 Audit this chain in order:
 
 1. `.graphql` asset
-2. remote-source `@GraphQuery` method
+2. remote-source `GraphQLRequest<...Variables>` method
 3. container model `@SerialName`
 4. `Types.kt` controller alias
 5. mapper and persistence target
@@ -103,7 +105,7 @@ rg -n 'Param|entity|repository' data/src/main/kotlin/co/anitrend/domain
 
 Fail the audit if any of the following is true:
 
-- asset operation name and `@GraphQuery` name differ
+- operation name differs between the `.graphql` document and the generated request type
 - container-model `@SerialName` differs from the operation name
 - paged assets omit pagination metadata while repository contracts expose paged results
 - mapper/controller generics do not match the container-model payload

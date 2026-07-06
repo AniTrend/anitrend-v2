@@ -1,5 +1,0 @@
-mutation ToggleLikeFeedText($id: Int) {
-    ToggleLikeV2(id: $id, type: ACTIVITY) {
-        ... FeedText
-    }
-}

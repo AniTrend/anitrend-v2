@@ -1,9 +1,0 @@
-fragment ThreadCommentSubscribedNotification on ThreadCommentSubscribedNotification {
-    id
-    type
-    createdAt
-    context
-    user {
-        ... UserCore
-    }
-}

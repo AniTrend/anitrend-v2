@@ -1,9 +1,0 @@
-fragment ThreadLikeNotification on ThreadLikeNotification {
-    id
-    type
-    createdAt
-    context
-    user {
-        ... UserCore
-    }
-}

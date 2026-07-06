@@ -1,8 +1,0 @@
-fragment StaffMediaConnection on MediaConnection {
-    pageInfo {
-        ... PageInfo
-    }
-    nodes {
-        ... MediaCore
-    }
-}

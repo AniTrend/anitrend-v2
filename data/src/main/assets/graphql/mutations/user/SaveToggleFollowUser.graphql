@@ -1,5 +1,0 @@
-mutation SaveToggleFollowUser($userId: Int) {
-    ToggleFollow(userId: $userId) {
-        ... UserCore
-    }
-}

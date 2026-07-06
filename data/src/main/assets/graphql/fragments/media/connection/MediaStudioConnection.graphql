@@ -1,9 +1,0 @@
-fragment MediaStudioConnection on StudioConnection {
-    edges {
-        id
-        isMain
-        node {
-            ... StudioCore
-        }
-    }
-}

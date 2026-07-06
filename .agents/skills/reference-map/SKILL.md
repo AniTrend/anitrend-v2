@@ -46,7 +46,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 | Koin DI wiring | `AGENTS.md` | `.agents/skills/koin-module-wiring/SKILL.md` |
 | Room entity + migration pattern | `AGENTS.md` | `.agents/skills/room-entity-pattern/SKILL.md` |
 | CacheRequest collision / empty UI with no crash | `AGENTS.md` | `.agents/skills/cache-request-isolation/SKILL.md` |
-| GraphQL controller lifecycle, `@GraphQuery`, `@GRAPHQL`, `QueryContainerBuilder`, `Response<GraphQLResponse<*>>` | `AGENTS.md` | `.agents/skills/graphql-query-pattern/SKILL.md` |
+| GraphQL controller lifecycle, generated `GraphQLRequest<...Variables>`, registry-first converter wiring, `QueryContainerBuilder` compatibility, `Response<GraphQLResponse<*>>` | `AGENTS.md` | `.agents/skills/graphql-query-pattern/SKILL.md` |
 | Data Android infrastructure role, `ControllerStrategy`, `OnlineStrategy`, `OfflineStrategy`, `ScopeExtensions`, `graphQLController` Koin wiring | `AGENTS.md` | `.agents/skills/data-android-infrastructure/SKILL.md` |
 | GraphQL fragment-to-model mapping and remote source wiring | `AGENTS.md` | `.agents/skills/mapping-graphql-models/SKILL.md` |
 | String naming and POEditor context | `AGENTS.md` | `.agents/skills/string-resources-convention/SKILL.md` |
