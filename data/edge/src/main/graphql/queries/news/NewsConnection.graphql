@@ -4,6 +4,10 @@ query NewsConnection($after: String, $before: String, $limit: PositiveFloat) {
     first
     last
     data {
+      area
+      category
+      genre
+      lang
       id
       title
       link

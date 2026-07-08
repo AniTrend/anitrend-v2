@@ -1,4 +1,4 @@
-fragment EdgeCover on query_series_cover {
+fragment EdgeCover on SeriesCoverImage {
   color
   extraLarge
   large

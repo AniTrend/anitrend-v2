@@ -25,6 +25,7 @@ query GetConfig {
       }
       icon
       i18n
+      key
     }
   }
 }

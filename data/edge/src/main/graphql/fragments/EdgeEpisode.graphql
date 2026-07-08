@@ -1,4 +1,4 @@
-fragment EdgeEpisode on query_episodes_data_items {
+fragment EdgeEpisode on Episode {
   absoluteEpisodeNumber
   aired
   airedAfterEpisodeNumber

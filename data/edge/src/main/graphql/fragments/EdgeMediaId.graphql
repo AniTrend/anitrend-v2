@@ -1,4 +1,4 @@
-fragment EdgeMediaId on query_series_mediaId {
+fragment EdgeMediaId on SeriesId {
   anisearch
   animePlanet
   themoviedb

@@ -1,4 +1,4 @@
-fragment EdgeTrailer on query_series_trailers_items {
+fragment EdgeTrailer on SeriesTrailer {
   id
   thumbnail
   site

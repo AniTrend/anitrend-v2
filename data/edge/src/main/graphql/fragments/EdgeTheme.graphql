@@ -1,4 +1,4 @@
-fragment EdgeTheme on query_series_animethemes_items {
+fragment EdgeTheme on AnimeThemes {
   id
   sequence
   slug

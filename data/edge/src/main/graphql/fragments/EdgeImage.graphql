@@ -1,4 +1,4 @@
-fragment EdgeImage on query_series_images_items {
+fragment EdgeImage on SeriesImageAttributes {
   height
   locale
   type

@@ -1,4 +1,4 @@
-fragment EdgeSchedule on query_series_schedule {
+fragment EdgeSchedule on SeriesSchedule {
   lastAiredEpisode {
     airDate
     episodeNumber
