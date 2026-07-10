@@ -16,20 +16,8 @@
  */
 package co.anitrend.data.common.model.date.query
 
-import co.anitrend.data.common.model.graph.IGraphPayload
-
 internal data class FuzzyDateQuery(
     val year: Int,
     val month: Int,
     val day: Int,
-) : IGraphPayload {
-    /**
-     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
-     */
-    override fun toMap() =
-        mapOf(
-            "year" to year,
-            "month" to month,
-            "day" to day,
-        )
-}
+)

@@ -17,19 +17,18 @@
 package co.anitrend.data.studio.source.contract
 
 import androidx.paging.PagingData
-import co.anitrend.data.studio.model.query.StudioQuery
 import co.anitrend.domain.studio.entity.Studio
 import co.anitrend.domain.studio.model.StudioParam
 import kotlinx.coroutines.flow.Flow
 
 internal abstract class StudioSource {
     abstract class Search {
-        protected lateinit var query: StudioQuery
+        protected lateinit var query: StudioParam.Find
 
         abstract operator fun invoke(param: StudioParam.Find): Flow<PagingData<Studio>>
 
         protected fun assignQuery(param: StudioParam.Find) {
-            query = StudioQuery(param)
+            query = param
         }
     }
 }

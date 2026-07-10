@@ -59,7 +59,7 @@ internal sealed class MediaConnectionSourceImpl {
     ) : MediaConnectionSource.Relations() {
         override fun observable(): Flow<List<MediaRelationEntry>> =
             localSource
-                .entriesByMediaIdFlow(query.param.id)
+                .entriesByMediaIdFlow(query.id)
                 .flowOn(dispatcher.io)
                 .map { entries ->
                     entries.map(converter::convertFrom)
@@ -71,10 +71,10 @@ internal sealed class MediaConnectionSourceImpl {
                 deferred {
                     remoteSource.getMediaRelations(
                         GetMediaWithRelation.request(
-                            id = query.param.id.toInt(),
+                            id = query.id.toInt(),
                             scoreFormat =
                                 co.anitrend.data.graphql.anilist.ScoreFormat
-                                    .valueOf(query.param.scoreFormat.name),
+                                    .valueOf(query.scoreFormat.name),
                         ),
                     )
                 }
@@ -103,7 +103,7 @@ internal sealed class MediaConnectionSourceImpl {
     ) : MediaConnectionSource.Recommendations() {
         override fun observable(): Flow<List<MediaRecommendationEntry>> =
             localSource
-                .entriesByMediaIdFlow(query.param.id)
+                .entriesByMediaIdFlow(query.id)
                 .flowOn(dispatcher.io)
                 .map { entries ->
                     entries.map(converter::convertFrom)
@@ -117,12 +117,12 @@ internal sealed class MediaConnectionSourceImpl {
                         GetMediaWithSuggestion.request(
                             page = 1,
                             perPage = 25,
-                            id = query.param.id.toInt(),
+                            id = query.id.toInt(),
                             scoreFormat =
                                 co.anitrend.data.graphql.anilist.ScoreFormat
-                                    .valueOf(query.param.scoreFormat.name),
+                                    .valueOf(query.scoreFormat.name),
                             sort =
-                                query.param.sort?.map {
+                                query.sort?.map {
                                     val baseName = it.name
                                     co.anitrend.data.graphql.anilist.RecommendationSort
                                         .valueOf(baseName)
@@ -156,9 +156,9 @@ internal sealed class MediaConnectionSourceImpl {
             Pager(
                 config =
                     PagingConfig(
-                        pageSize = query.param.perPage,
-                        initialLoadSize = query.param.perPage,
-                        prefetchDistance = query.param.perPage,
+                        pageSize = query.perPage,
+                        initialLoadSize = query.perPage,
+                        prefetchDistance = query.perPage,
                         enablePlaceholders = false,
                     ),
                 remoteMediator =
@@ -172,13 +172,13 @@ internal sealed class MediaConnectionSourceImpl {
                         mapper = mapper,
                         dispatcher = dispatcher,
                     ),
-                pagingSourceFactory = { localSource.entriesByMediaIdPagingSource(query.param.id) },
+                pagingSourceFactory = { localSource.entriesByMediaIdPagingSource(query.id) },
             ).flow.map { pagingData ->
                 pagingData.map(converter::convertFrom)
             }
 
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
-            localSource.clearByMediaId(query.param.id)
+            localSource.clearByMediaId(query.id)
             cachePolicy.invalidateLastRequest(cacheIdentity)
         }
     }

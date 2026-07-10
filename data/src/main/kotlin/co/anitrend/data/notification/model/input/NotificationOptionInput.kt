@@ -16,16 +16,15 @@
  */
 package co.anitrend.data.notification.model.input
 
-import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.user.model.UserParam
 
 internal data class NotificationOptionInput(
     val param: UserParam.Update.NotificationOption,
-) : IGraphPayload {
+) {
     /**
      * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
      */
-    override fun toMap() =
+    fun toMap() =
         mapOf(
             "enabled" to param.enabled,
             "type" to param.type,

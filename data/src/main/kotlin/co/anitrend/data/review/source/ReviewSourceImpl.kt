@@ -36,7 +36,6 @@ import co.anitrend.data.review.converter.ReviewEntityViewConverter
 import co.anitrend.data.review.datasource.local.ReviewLocalSource
 import co.anitrend.data.review.datasource.remote.ReviewRemoteSource
 import co.anitrend.data.review.entity.filter.ReviewQueryFilter
-import co.anitrend.data.review.model.query.ReviewQuery
 import co.anitrend.data.review.source.contract.ReviewSource
 import co.anitrend.data.graphql.anilist.DeleteReview
 import co.anitrend.data.graphql.anilist.GetReview
@@ -65,7 +64,7 @@ internal sealed class ReviewSourceImpl {
         override fun observable(): Flow<Review> =
             localSource
                 .rawFlow(
-                    filter.build(query.param),
+                    filter.build(query),
                 ).flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
@@ -77,10 +76,10 @@ internal sealed class ReviewSourceImpl {
                 deferred {
                     remoteSource.getReview(
                         GetReview.request(
-                            id = query.param.id.toInt(),
+                            id = query.id.toInt(),
                             scoreFormat =
                                 co.anitrend.data.graphql.anilist.ScoreFormat.valueOf(
-                                    query.param.scoreFormat.name,
+                                    query.scoreFormat.name,
                                 ),
                         ),
                     )
@@ -116,10 +115,10 @@ internal sealed class ReviewSourceImpl {
                 deferred {
                     remoteSource.rateReview(
                         RateReview.request(
-                            id = mutation.param.id.toInt(),
+                            id = mutation.id.toInt(),
                             rating =
                                 co.anitrend.data.graphql.anilist.ReviewRating.valueOf(
-                                    mutation.param.rating.name,
+                                    mutation.rating.name,
                                 ),
                         ),
                     )
@@ -152,7 +151,7 @@ internal sealed class ReviewSourceImpl {
                 deferred {
                     remoteSource.deleteReview(
                         DeleteReview.request(
-                            id = mutation.param.id.toInt(),
+                            id = mutation.id.toInt(),
                         ),
                     )
                 }
@@ -168,7 +167,7 @@ internal sealed class ReviewSourceImpl {
          */
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
-                localSource.clearById(mutation.param.id)
+                localSource.clearById(mutation.id)
             }
         }
     }
@@ -185,12 +184,12 @@ internal sealed class ReviewSourceImpl {
                 deferred {
                     remoteSource.saveReview(
                         SaveReview.request(
-                            id = mutation.param.id?.toInt(),
-                            mediaId = mutation.param.mediaId.toInt(),
-                            body = mutation.param.body,
-                            summary = mutation.param.summary,
-                            score = mutation.param.score,
-                            `private` = mutation.param.private,
+                            id = mutation.id?.toInt(),
+                            mediaId = mutation.mediaId.toInt(),
+                            body = mutation.body,
+                            summary = mutation.summary,
+                            score = mutation.score,
+                            `private` = mutation.private,
                         ),
                     )
                 }
@@ -228,7 +227,7 @@ internal sealed class ReviewSourceImpl {
                     controller = controller,
                     filter = filter,
                     clearDataHelper = clearDataHelper,
-                    query = ReviewQuery.Paged(param),
+                    query = param,
                     dispatcher = dispatcher,
                 )
 

@@ -38,7 +38,7 @@ import co.anitrend.data.review.datasource.local.ReviewLocalSource
 import co.anitrend.data.review.datasource.remote.ReviewRemoteSource
 import co.anitrend.data.review.entity.filter.ReviewQueryFilter
 import co.anitrend.data.review.entity.view.ReviewEntityView
-import co.anitrend.data.review.model.query.ReviewQuery
+import co.anitrend.domain.review.model.ReviewParam
 import co.anitrend.domain.common.sort.order.SortOrder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -50,12 +50,12 @@ internal class ReviewPagingSource(
     private val controller: ReviewPagedController,
     private val filter: ReviewQueryFilter.Paged,
     private val clearDataHelper: IClearDataHelper,
-    private val query: ReviewQuery.Paged,
+    private val query: ReviewParam.Paged,
     override val dispatcher: ISupportDispatcher,
 ) : AbstractPagingMediator<Int, ReviewEntityView.Core>() {
     fun pagingSourceFactory(): () -> PagingSource<Int, ReviewEntityView.Core> =
         {
-            localSource.rawPagingSource(filter.build(query.param))
+            localSource.rawPagingSource(filter.build(query))
         }
 
     private suspend fun getReview(requestCallback: RequestCallback) {
@@ -63,15 +63,15 @@ internal class ReviewPagingSource(
             deferred {
                 remoteSource.getReviewPaged(
                     GetReviewPaged.request(
-                        mediaId = query.param.mediaId?.toInt(),
-                        userId = query.param.userId?.toInt(),
+                        mediaId = query.mediaId?.toInt(),
+                        userId = query.userId?.toInt(),
                         mediaType =
-                            query.param.mediaType?.let {
+                            query.mediaType?.let {
                                 co.anitrend.data.graphql.anilist.MediaType
                                     .valueOf(it.name)
                             },
                         sort =
-                            query.param.sort?.map {
+                            query.sort?.map {
                                 val baseName = (it.sortable as Enum<*>).name
                                 val enumName =
                                     if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
@@ -82,7 +82,7 @@ internal class ReviewPagingSource(
                         perPage = supportPagingHelper.pageSize,
                         scoreFormat =
                             co.anitrend.data.graphql.anilist.ScoreFormat.valueOf(
-                                query.param.scoreFormat.name,
+                                query.scoreFormat.name,
                             ),
                     ),
                 )

@@ -77,74 +77,72 @@ internal class MediaListSourceImpl {
                 deferred {
                     remoteSource.getMediaListCollection(
                         GetMediaListCollection.request(
-                            chunk = query.param.chunk,
+                            chunk = query.chunk,
                             completedAt =
-                                query.param.completedAt
+                                query.completedAt
                                     ?.toString()
                                     ?.toIntOrNull(),
                             completedAt_greater =
-                                query.param.completedAt_greater
+                                query.completedAt_greater
                                     ?.toString()
                                     ?.toIntOrNull(),
                             completedAt_lesser =
-                                query.param.completedAt_lesser
+                                query.completedAt_lesser
                                     ?.toString()
                                     ?.toIntOrNull(),
-                            completedAt_like = query.param.completedAt_like?.toString(),
-                            forceSingleCompletedList = query.param.forceSingleCompletedList,
-                            notes = query.param.notes,
-                            notes_like = query.param.notes_like,
-                            perChunk = query.param.perChunk,
+                            completedAt_like = query.completedAt_like?.toString(),
+                            forceSingleCompletedList = query.forceSingleCompletedList,
+                            notes = query.notes,
+                            notes_like = query.notes_like,
+                            perChunk = query.perChunk,
                             sort =
-                                query.param.sort?.map {
+                                query.sort?.map {
                                     val baseName = it.sortable.name
                                     val enumName = if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
                                     co.anitrend.data.graphql.anilist.MediaListSort
                                         .valueOf(enumName)
                                 },
                             startedAt =
-                                query.param.startedAt
+                                query.startedAt
                                     ?.toString()
                                     ?.toIntOrNull(),
                             startedAt_greater =
-                                query.param.startedAt_greater
+                                query.startedAt_greater
                                     ?.toString()
                                     ?.toIntOrNull(),
                             startedAt_lesser =
-                                query.param.startedAt_lesser
+                                query.startedAt_lesser
                                     ?.toString()
                                     ?.toIntOrNull(),
-                            startedAt_like = query.param.startedAt_like?.toString(),
+                            startedAt_like = query.startedAt_like?.toString(),
                             status =
-                                query.param.status?.let {
+                                query.status?.let {
                                     co.anitrend.data.graphql.anilist.MediaListStatus
                                         .valueOf(it.name)
                                 },
                             status_in =
-                                query.param.status_in?.map {
+                                query.status_in?.map {
                                     co.anitrend.data.graphql.anilist.MediaListStatus
                                         .valueOf(it.name)
                                 },
                             status_not =
-                                query.param.status_not?.let {
+                                query.status_not?.let {
                                     co.anitrend.data.graphql.anilist.MediaListStatus
                                         .valueOf(it.name)
                                 },
                             status_not_in =
-                                query.param.status_not_in?.map {
+                                query.status_not_in?.map {
                                     co.anitrend.data.graphql.anilist.MediaListStatus
                                         .valueOf(it.name)
                                 },
                             type =
-                                query.param.type?.let {
-                                    co.anitrend.data.graphql.anilist.MediaType
-                                        .valueOf(it.name)
-                                },
-                            userId = query.param.userId?.toInt(),
-                            userName = query.param.userName,
+                                co.anitrend.data.graphql.anilist.MediaType
+                                    .valueOf(query.type.name),
+                            userId = query.userId?.toInt(),
+                            userName = query.userName,
                             scoreFormat =
                                 co.anitrend.data.graphql.anilist.ScoreFormat
-                                    .valueOf(query.param.scoreFormat.name),
+                                    .valueOf(query.scoreFormat.name),
                         ),
                     )
                 }
@@ -176,7 +174,7 @@ internal class MediaListSourceImpl {
         override fun observable(): Flow<Media> =
             mediaLocalSource
                 .rawFlow(
-                    filter.build(query.param),
+                    filter.build(query),
                 ).flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
@@ -190,9 +188,9 @@ internal class MediaListSourceImpl {
                         GetMediaListEntry.request(
                             scoreFormat =
                                 co.anitrend.data.graphql.anilist.ScoreFormat
-                                    .valueOf(query.param.scoreFormat.name),
-                            mediaId = query.param.mediaId.toInt(),
-                            userId = query.param.userId.toInt(),
+                                    .valueOf(query.scoreFormat.name),
+                            mediaId = query.mediaId.toInt(),
+                            userId = query.userId.toInt(),
                         ),
                     )
                 }
@@ -210,8 +208,8 @@ internal class MediaListSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 localSource.clearByMediaId(
-                    mediaId = query.param.mediaId,
-                    userId = query.param.userId,
+                    mediaId = query.mediaId,
+                    userId = query.userId,
                 )
                 cachePolicy.invalidateLastRequest(cacheIdentity)
             }
@@ -270,27 +268,27 @@ internal class MediaListSourceImpl {
                 deferred {
                     remoteSource.saveMediaListEntry(
                         SaveMediaListEntry.request(
-                            id = mutation.param.id?.toInt(),
-                            mediaId = mutation.param.mediaId.toInt(),
+                            id = mutation.id?.toInt(),
+                            mediaId = mutation.mediaId.toInt(),
                             status =
                                 co.anitrend.data.graphql.anilist.MediaListStatus
-                                    .valueOf(mutation.param.status.name),
-                            score = mutation.param.score?.toDouble(),
-                            scoreRaw = mutation.param.scoreRaw,
-                            progress = mutation.param.progress,
-                            progressVolumes = mutation.param.progressVolumes,
-                            repeat = mutation.param.repeat,
-                            priority = mutation.param.priority,
-                            private = mutation.param.private,
-                            notes = mutation.param.notes,
-                            hiddenFromStatusLists = mutation.param.hiddenFromStatusLists,
-                            customLists = mutation.param.customLists,
-                            advancedScores = mutation.param.advancedScores?.map { it.toDouble() },
-                            startedAt = mutation.param.startedAt?.let { FuzzyDateInput(day = it.day, month = it.month, year = it.year) },
-                            completedAt = mutation.param.completedAt?.let { FuzzyDateInput(day = it.day, month = it.month, year = it.year) },
+                                    .valueOf(mutation.status.name),
+                            score = mutation.score?.toDouble(),
+                            scoreRaw = mutation.scoreRaw,
+                            progress = mutation.progress,
+                            progressVolumes = mutation.progressVolumes,
+                            repeat = mutation.repeat,
+                            priority = mutation.priority,
+                            private = mutation.private,
+                            notes = mutation.notes,
+                            hiddenFromStatusLists = mutation.hiddenFromStatusLists,
+                            customLists = mutation.customLists,
+                            advancedScores = mutation.advancedScores?.map { it.toDouble() },
+                            startedAt = mutation.startedAt?.let { FuzzyDateInput(day = it.day, month = it.month, year = it.year) },
+                            completedAt = mutation.completedAt?.let { FuzzyDateInput(day = it.day, month = it.month, year = it.year) },
                             scoreFormat =
                                 co.anitrend.data.graphql.anilist.ScoreFormat
-                                    .valueOf(mutation.param.scoreFormat.name),
+                                    .valueOf(mutation.scoreFormat.name),
                         ),
                     )
                 }
@@ -322,23 +320,23 @@ internal class MediaListSourceImpl {
                         SaveMediaListEntries.request(
                             status =
                                 co.anitrend.data.graphql.anilist.MediaListStatus
-                                    .valueOf(mutation.param.status.name),
-                            score = mutation.param.score?.toDouble(),
-                            scoreRaw = mutation.param.scoreRaw,
-                            progress = mutation.param.progress,
-                            progressVolumes = mutation.param.progressVolumes,
-                            repeat = mutation.param.repeat,
-                            priority = mutation.param.priority,
-                            private = mutation.param.private,
-                            notes = mutation.param.notes,
-                            hiddenFromStatusLists = mutation.param.hiddenFromStatusLists,
-                            advancedScores = mutation.param.advancedScores?.map { it.toDouble() },
-                            startedAt = mutation.param.startedAt?.let { FuzzyDateInput(day = it.day, month = it.month, year = it.year) },
-                            completedAt = mutation.param.completedAt?.let { FuzzyDateInput(day = it.day, month = it.month, year = it.year) },
-                            ids = mutation.param.ids.map { it.toInt() },
+                                    .valueOf(mutation.status.name),
+                            score = mutation.score?.toDouble(),
+                            scoreRaw = mutation.scoreRaw,
+                            progress = mutation.progress,
+                            progressVolumes = mutation.progressVolumes,
+                            repeat = mutation.repeat,
+                            priority = mutation.priority,
+                            private = mutation.private,
+                            notes = mutation.notes,
+                            hiddenFromStatusLists = mutation.hiddenFromStatusLists,
+                            advancedScores = mutation.advancedScores?.map { it.toDouble() },
+                            startedAt = mutation.startedAt?.let { FuzzyDateInput(day = it.day, month = it.month, year = it.year) },
+                            completedAt = mutation.completedAt?.let { FuzzyDateInput(day = it.day, month = it.month, year = it.year) },
+                            ids = mutation.ids.map { it.toInt() },
                             scoreFormat =
                                 co.anitrend.data.graphql.anilist.ScoreFormat
-                                    .valueOf(mutation.param.scoreFormat.name),
+                                    .valueOf(mutation.scoreFormat.name),
                         ),
                     )
                 }
@@ -371,7 +369,7 @@ internal class MediaListSourceImpl {
                 deferred {
                     remoteSource.deleteMediaListEntry(
                         DeleteMediaListItem.request(
-                            id = mutation.param.id.toInt(),
+                            id = mutation.id.toInt(),
                         ),
                     )
                 }
@@ -393,7 +391,7 @@ internal class MediaListSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 localSource.clearById(
-                    id = mutation.param.id,
+                    id = mutation.id,
                     userId = settings.authenticatedUserId.value,
                 )
             }
@@ -416,10 +414,10 @@ internal class MediaListSourceImpl {
                 deferred {
                     remoteSource.deleteCustomList(
                         co.anitrend.data.graphql.anilist.DeleteCustomList.request(
-                            customList = mutation.param.customList,
+                            customList = mutation.customList,
                             type =
                                 co.anitrend.data.graphql.anilist.MediaType
-                                    .valueOf(mutation.param.type.name),
+                                    .valueOf(mutation.type.name),
                         ),
                     )
                 }
@@ -444,7 +442,7 @@ internal class MediaListSourceImpl {
             clearDataHelper(context) {
                 val userId = settings.authenticatedUserId.value
                 localSource.clear(
-                    listName = mutation.param.customList,
+                    listName = mutation.customList,
                     userId = userId,
                 )
             }

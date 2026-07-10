@@ -16,11 +16,10 @@
  */
 package co.anitrend.data.account.action
 
-import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.domain.account.model.AccountParam
 
-internal sealed class AccountAction : IGraphPayload {
-    override fun toMap(): Map<String, Any?> = emptyMap()
+internal sealed class AccountAction {
+    open fun toMap(): Map<String, Any?> = emptyMap()
 
     data class SignIn(
         val param: AccountParam.SignIn,

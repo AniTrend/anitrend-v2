@@ -27,8 +27,6 @@ import co.anitrend.data.android.extensions.invoke
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.user.cache.UserCache
-import co.anitrend.data.user.model.mutation.UserMutation
-import co.anitrend.data.user.model.query.UserQuery
 import co.anitrend.domain.user.entity.User
 import co.anitrend.domain.user.entity.profile.ProfileFeed
 import co.anitrend.domain.user.entity.profile.ProfileOverview
@@ -42,15 +40,15 @@ internal class UserSource {
 
         protected abstract val cachePolicy: ICacheStorePolicy
 
-        protected lateinit var query: UserQuery.Identifier
+        protected lateinit var query: UserParam.Identifier
 
         protected abstract fun observable(): Flow<User>
 
         protected abstract suspend fun getUser(callback: RequestCallback): Boolean
 
         operator fun invoke(param: UserParam.Identifier): Flow<User> {
-            query = UserQuery.Identifier(param)
-            cacheIdentity = UserCache.Identifier.Identity(query.param)
+            query = param
+            cacheIdentity = UserCache.Identifier.Identity(query)
             cachePolicy(
                 scope = scope,
                 requestHelper = requestHelper,
@@ -68,12 +66,10 @@ internal class UserSource {
 
         protected abstract val cachePolicy: ICacheStorePolicy
 
-        protected val query: UserQuery.Viewer
+        protected val query: UserParam.Viewer
             get() {
                 val userId = settings.authenticatedUserId.value
-                return UserQuery.Viewer(
-                    UserParam.Viewer(userId),
-                )
+                return UserParam.Viewer(userId)
             }
 
         protected abstract fun observable(): Flow<User>
@@ -82,10 +78,10 @@ internal class UserSource {
 
         operator fun invoke(): Flow<User> {
             if (settings.isAuthenticated.value) {
-                require(query.isUserIdValid()) {
+                require(query.id != IAuthenticationSettings.INVALID_USER_ID) {
                     "User id for supplied query is invalid"
                 }
-                cacheIdentity = UserCache.Viewer.Identity(query.param.id)
+                cacheIdentity = UserCache.Viewer.Identity(query.id)
                 cachePolicy(
                     scope = scope,
                     requestHelper = requestHelper,
@@ -98,7 +94,7 @@ internal class UserSource {
     }
 
     abstract class Profile : AbstractCoreDataSource() {
-        protected lateinit var query: UserQuery.Profile
+        protected lateinit var query: UserParam.Profile
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -109,7 +105,7 @@ internal class UserSource {
         protected abstract suspend fun getProfile(callback: RequestCallback): Boolean
 
         suspend operator fun invoke(param: UserParam.Profile): Flow<User> {
-            query = UserQuery.Profile(param)
+            query = param
             cacheIdentity = UserCache.Profile.Identity(param)
             cachePolicy(
                 scope = scope,
@@ -122,19 +118,19 @@ internal class UserSource {
     }
 
     abstract class Paging {
-        protected lateinit var query: UserQuery.Search
+        protected lateinit var query: UserParam.Search
 
         abstract operator fun invoke(param: UserParam.Search): Flow<PagingData<User>>
 
         abstract val pagingMediator: IDataSource
 
         protected fun assignQuery(param: UserParam.Search) {
-            query = UserQuery.Search(param)
+            query = param
         }
     }
 
     abstract class Statistic : AbstractCoreDataSource() {
-        protected lateinit var query: UserQuery.Statistic
+        protected lateinit var query: UserParam.Statistic
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -145,7 +141,7 @@ internal class UserSource {
         protected abstract suspend fun getProfileStatistic(callback: RequestCallback): Boolean
 
         suspend operator fun invoke(param: UserParam.Statistic): Flow<User.WithStats> {
-            query = UserQuery.Statistic(param)
+            query = param
             cacheIdentity = UserCache.Statistic.Identity(param)
             cachePolicy(
                 scope = scope,
@@ -158,7 +154,7 @@ internal class UserSource {
     }
 
     abstract class Overview : AbstractCoreDataSource() {
-        protected lateinit var query: UserQuery.Overview
+        protected lateinit var query: UserParam.Overview
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -169,7 +165,7 @@ internal class UserSource {
         protected abstract suspend fun getProfileOverview(callback: RequestCallback): Boolean
 
         suspend operator fun invoke(param: UserParam.Overview): Flow<ProfileOverview> {
-            query = UserQuery.Overview(param)
+            query = param
             cacheIdentity = UserCache.Overview.Identity(param)
             cachePolicy(
                 scope = scope,
@@ -182,7 +178,7 @@ internal class UserSource {
     }
 
     abstract class Feed : AbstractCoreDataSource() {
-        protected lateinit var query: UserQuery.Feed
+        protected lateinit var query: UserParam.Feed
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -193,7 +189,7 @@ internal class UserSource {
         protected abstract suspend fun getProfileFeed(callback: RequestCallback): Boolean
 
         suspend operator fun invoke(param: UserParam.Feed): Flow<ProfileFeed> {
-            query = UserQuery.Feed(param)
+            query = param
             cacheIdentity = UserCache.Feed.Identity(param)
             cachePolicy(
                 scope = scope,
@@ -206,14 +202,14 @@ internal class UserSource {
     }
 
     abstract class ToggleFollow : AbstractCoreDataSource() {
-        protected lateinit var query: UserMutation.ToggleFollow
+        protected lateinit var query: UserParam.ToggleFollow
 
         protected abstract fun observable(): Flow<User>
 
         protected abstract suspend fun toggleFollow(callback: RequestCallback)
 
         operator fun invoke(param: UserParam.ToggleFollow): Flow<User> {
-            query = UserMutation.ToggleFollow(param)
+            query = param
             invoke(block = ::toggleFollow)
             return observable()
         }
@@ -229,14 +225,14 @@ internal class UserSource {
     }
 
     abstract class Update : AbstractCoreDataSource() {
-        protected lateinit var query: UserMutation.Update
+        protected lateinit var query: UserParam.Update
 
         protected abstract fun observable(): Flow<User>
 
         protected abstract suspend fun updateProfile(callback: RequestCallback)
 
         operator fun invoke(param: UserParam.Update): Flow<User> {
-            query = UserMutation.Update(param)
+            query = param
             invoke(block = ::updateProfile)
             return observable()
         }

@@ -23,7 +23,6 @@ import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.invoke
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.media.cache.MediaCache
-import co.anitrend.data.media.model.query.MediaConnectionQuery
 import androidx.paging.PagingData
 import co.anitrend.domain.media.entity.MediaRecommendationEntry
 import co.anitrend.domain.media.entity.MediaRelationEntry
@@ -32,7 +31,7 @@ import kotlinx.coroutines.flow.Flow
 
 internal class MediaConnectionSource {
     abstract class Relations : AbstractCoreDataSource() {
-        protected lateinit var query: MediaConnectionQuery.Relations
+        protected lateinit var query: MediaParam.Relations
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -43,7 +42,7 @@ internal class MediaConnectionSource {
         protected abstract suspend fun refreshRelations(requestCallback: RequestCallback): Boolean
 
         operator fun invoke(param: MediaParam.Relations): Flow<List<MediaRelationEntry>> {
-            query = MediaConnectionQuery.Relations(param)
+            query = param
             cacheIdentity = MediaCache.Identity.Relations(param)
             cachePolicy(
                 scope = scope,
@@ -56,7 +55,7 @@ internal class MediaConnectionSource {
     }
 
     abstract class Recommendations : AbstractCoreDataSource() {
-        protected lateinit var query: MediaConnectionQuery.Recommendations
+        protected lateinit var query: MediaParam.Recommendations
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -67,7 +66,7 @@ internal class MediaConnectionSource {
         protected abstract suspend fun refreshRecommendations(requestCallback: RequestCallback): Boolean
 
         operator fun invoke(param: MediaParam.Recommendations): Flow<List<MediaRecommendationEntry>> {
-            query = MediaConnectionQuery.Recommendations(param)
+            query = param
             cacheIdentity = MediaCache.Identity.Recommendations(param)
             cachePolicy(
                 scope = scope,
@@ -80,7 +79,7 @@ internal class MediaConnectionSource {
     }
 
     abstract class RecommendationsPaged : AbstractCoreDataSource() {
-        protected lateinit var query: MediaConnectionQuery.RecommendationsPaged
+        protected lateinit var query: MediaParam.Recommendations
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -89,7 +88,7 @@ internal class MediaConnectionSource {
         protected abstract fun observable(): Flow<PagingData<MediaRecommendationEntry>>
 
         operator fun invoke(param: MediaParam.Recommendations): Flow<PagingData<MediaRecommendationEntry>> {
-            query = MediaConnectionQuery.RecommendationsPaged(param)
+            query = param
             cacheIdentity = MediaCache.Identity.Recommendations(param)
             return observable()
         }

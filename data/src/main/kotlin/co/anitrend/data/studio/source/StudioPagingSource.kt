@@ -39,7 +39,7 @@ import co.anitrend.data.graphql.anilist.GetStudioPaged
 import co.anitrend.data.graphql.anilist.GetStudioPagedVariables
 import co.anitrend.data.studio.entity.StudioEntity
 import co.anitrend.data.studio.entity.filter.StudioQueryFilter
-import co.anitrend.data.studio.model.query.StudioQuery
+import co.anitrend.domain.studio.model.StudioParam
 import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -51,12 +51,12 @@ internal class StudioPagingSource(
     private val controller: StudioPagedController,
     private val clearDataHelper: IClearDataHelper,
     private val filter: StudioQueryFilter.Search,
-    private val query: StudioQuery,
+    private val query: StudioParam.Find,
     override val dispatcher: ISupportDispatcher,
 ) : AbstractPagingMediator<Int, StudioEntity>() {
     fun pagingSourceFactory(): () -> PagingSource<Int, StudioEntity> =
         {
-            localSource.rawPagingSource(filter.build(query.param))
+            localSource.rawPagingSource(filter.build(query))
         }
 
     private suspend fun getStudio(requestCallback: RequestCallback) {
@@ -70,12 +70,12 @@ internal class StudioPagingSource(
                             GetStudioPagedVariables(
                                 page = supportPagingHelper.page,
                                 perPage = supportPagingHelper.pageSize,
-                                id_in = query.param.id_in?.map { it.toInt() },
-                                id_not = query.param.id_not?.toInt(),
-                                id_not_in = query.param.id_not_in?.map { it.toInt() },
-                                search = query.param.search,
+                                id_in = query.id_in?.map { it.toInt() },
+                                id_not = query.id_not?.toInt(),
+                                id_not_in = query.id_not_in?.map { it.toInt() },
+                                search = query.search,
                                 sort =
-                                    query.param.sort?.map {
+                                    query.sort?.map {
                                         co.anitrend.data.graphql.anilist.StudioSort
                                             .valueOf(it.name)
                                     },

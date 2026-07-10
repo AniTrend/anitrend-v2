@@ -18,19 +18,18 @@ package co.anitrend.data.staff.source.contract
 
 import androidx.paging.PagingData
 import co.anitrend.data.android.source.AbstractCoreDataSource
-import co.anitrend.data.staff.model.query.StaffQuery
 import co.anitrend.domain.staff.entity.Staff
 import co.anitrend.domain.staff.model.StaffParam
 import kotlinx.coroutines.flow.Flow
 
 internal class StaffSource {
     abstract class Paging : AbstractCoreDataSource() {
-        protected lateinit var query: StaffQuery.Paged
+        protected lateinit var query: StaffParam.Paged
 
         abstract operator fun invoke(param: StaffParam.Paged): Flow<PagingData<Staff>>
 
         protected fun assignQuery(param: StaffParam.Paged) {
-            query = StaffQuery.Paged(param)
+            query = param
         }
     }
 }

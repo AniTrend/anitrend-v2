@@ -21,12 +21,12 @@ import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.favourite.FavouriteToggleController
 import co.anitrend.data.favourite.datasource.remote.FavouriteRemoteSource
-import co.anitrend.data.favourite.model.mutation.FavouriteMutation
 import co.anitrend.data.favourite.source.contract.FavouriteSource
 import co.anitrend.data.graphql.anilist.ToggleAnimeFavourite
 import co.anitrend.data.graphql.anilist.ToggleAnimeFavouriteVariables
 import co.anitrend.data.graphql.anilist.ToggleMangaFavourite
 import co.anitrend.data.graphql.anilist.ToggleMangaFavouriteVariables
+import co.anitrend.domain.favourite.model.FavouriteInput
 import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,16 +43,16 @@ internal class FavouriteSourceImpl {
             val deferred =
                 deferred {
                     when (val action = mutation) {
-                        is FavouriteMutation.ToggleAnime ->
+                        is FavouriteInput.ToggleAnime ->
                             remoteSource.toggleAnimeFavorite(
                                 ToggleAnimeFavourite.request(
-                                    animeId = action.param.animeId?.toInt(),
+                                    animeId = action.animeId?.toInt(),
                                 ),
                             )
-                        is FavouriteMutation.ToggleManga ->
+                        is FavouriteInput.ToggleManga ->
                             remoteSource.toggleMangaFavorite(
                                 ToggleMangaFavourite.request(
-                                    mangaId = action.param.mangaId?.toInt(),
+                                    mangaId = action.mangaId?.toInt(),
                                 ),
                             )
                         else -> error("Unsupported favourite mutation: ${action::class.simpleName}")

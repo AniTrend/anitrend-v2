@@ -17,19 +17,18 @@
 package co.anitrend.data.character.source.contract
 
 import androidx.paging.PagingData
-import co.anitrend.data.character.model.query.CharacterQuery
 import co.anitrend.domain.character.entity.Character
 import co.anitrend.domain.character.model.CharacterParam
 import kotlinx.coroutines.flow.Flow
 
 internal class CharacterSource {
     abstract class Search {
-        protected lateinit var query: CharacterQuery
+        protected lateinit var query: CharacterParam.Find
 
         abstract operator fun invoke(param: CharacterParam.Find): Flow<PagingData<Character>>
 
         protected fun assignQuery(param: CharacterParam.Find) {
-            query = CharacterQuery(param)
+            query = param
         }
     }
 }

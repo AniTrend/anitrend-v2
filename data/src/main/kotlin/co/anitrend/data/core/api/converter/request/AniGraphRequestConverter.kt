@@ -32,16 +32,15 @@ internal class AniRequestConverter(
     registry: GraphQLDocumentRegistry? = null,
 ) : GraphRequestConverter(methodAnnotations, processor, gson, registry) {
     /**
-     * Resolves the raw GraphQL query string from the method annotations,
-     * applying minification in release builds for smaller payloads.
+     * Resolves the raw GraphQL query string from the generated request payload,
+     * then applies minification in release builds for smaller payloads.
      *
      * @return The resolved query string, or null if no query is found.
      * @see GraphRequestConverter.resolveQuery
      */
     @OptIn(AniTrendExperimentalFeature::class)
     override fun resolveQuery(): String? {
-        // Use parent's resolution (registry-first, then asset fallback),
-        // then apply minification in release builds
+        // Use the parent resolver and then apply minification in release builds
         return super
             .resolveQuery()
             ?.minify(!BuildConfig.DEBUG)

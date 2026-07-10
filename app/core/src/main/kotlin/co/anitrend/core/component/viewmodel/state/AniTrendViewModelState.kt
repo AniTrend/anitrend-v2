@@ -64,6 +64,5 @@ abstract class AniTrendViewModelState<T> :
         viewModelScope.cancel(
             cause = CancellationException("onCleared"),
         )
-        super.onCleared()
     }
 }

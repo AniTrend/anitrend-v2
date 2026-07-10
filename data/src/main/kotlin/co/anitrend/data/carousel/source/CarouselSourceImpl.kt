@@ -73,8 +73,8 @@ internal class CarouselSourceImpl(
                     localSource
                         .airingSoonFlow(
                             mediaType = MediaType.ANIME,
-                            pageSize = query.param.pageSize,
-                            currentTime = query.param.currentTime,
+                            pageSize = query.pageSize,
+                            currentTime = query.currentTime,
                         ).flowOn(dispatcher.io)
                         .toMediaCarousel(
                             MediaType.ANIME,
@@ -83,7 +83,7 @@ internal class CarouselSourceImpl(
                     localSource
                         .allTimePopularFlow(
                             mediaType = MediaType.ANIME,
-                            pageSize = query.param.pageSize,
+                            pageSize = query.pageSize,
                         ).flowOn(dispatcher.io)
                         .toMediaCarousel(
                             MediaType.ANIME,
@@ -92,7 +92,7 @@ internal class CarouselSourceImpl(
                     localSource
                         .trendingNowFlow(
                             mediaType = MediaType.ANIME,
-                            pageSize = query.param.pageSize,
+                            pageSize = query.pageSize,
                         ).flowOn(dispatcher.io)
                         .toMediaCarousel(
                             MediaType.ANIME,
@@ -101,11 +101,11 @@ internal class CarouselSourceImpl(
                     localSource
                         .popularThisSeasonFlow(
                             mediaType = MediaType.ANIME,
-                            pageSize = query.param.pageSize,
-                            season = query.param.season,
+                            pageSize = query.pageSize,
+                            season = query.season,
                             seasonYear =
                                 FuzzyDateModel(
-                                    year = query.param.seasonYear,
+                                    year = query.seasonYear,
                                     month = FuzzyDateModel.UNKNOWN,
                                     day = FuzzyDateModel.UNKNOWN,
                                 ).toFuzzyDateLike(),
@@ -117,7 +117,7 @@ internal class CarouselSourceImpl(
                     localSource
                         .recentlyAddedFlow(
                             mediaType = MediaType.ANIME,
-                            pageSize = query.param.pageSize,
+                            pageSize = query.pageSize,
                         ).flowOn(dispatcher.io)
                         .toMediaCarousel(
                             MediaType.ANIME,
@@ -126,11 +126,11 @@ internal class CarouselSourceImpl(
                     localSource
                         .anticipatedNextSeasonFlow(
                             mediaType = MediaType.ANIME,
-                            pageSize = query.param.pageSize,
-                            season = query.param.nextSeason,
+                            pageSize = query.pageSize,
+                            season = query.nextSeason,
                             seasonYear =
                                 FuzzyDateModel(
-                                    year = query.param.nextSeasonYear,
+                                    year = query.nextSeasonYear,
                                     month = FuzzyDateModel.UNKNOWN,
                                     day = FuzzyDateModel.UNKNOWN,
                                 ).toFuzzyDateLike(),
@@ -142,7 +142,7 @@ internal class CarouselSourceImpl(
                     localSource
                         .allTimePopularFlow(
                             mediaType = MediaType.MANGA,
-                            pageSize = query.param.pageSize,
+                            pageSize = query.pageSize,
                         ).flowOn(dispatcher.io)
                         .toMediaCarousel(
                             MediaType.MANGA,
@@ -151,7 +151,7 @@ internal class CarouselSourceImpl(
                     localSource
                         .trendingNowFlow(
                             mediaType = MediaType.MANGA,
-                            pageSize = query.param.pageSize,
+                            pageSize = query.pageSize,
                         ).flowOn(dispatcher.io)
                         .toMediaCarousel(
                             MediaType.MANGA,
@@ -160,7 +160,7 @@ internal class CarouselSourceImpl(
                     localSource
                         .popularManhwaFlow(
                             mediaType = MediaType.MANGA,
-                            pageSize = query.param.pageSize,
+                            pageSize = query.pageSize,
                         ).flowOn(dispatcher.io)
                         .toMediaCarousel(
                             MediaType.MANGA,
@@ -169,7 +169,7 @@ internal class CarouselSourceImpl(
                     localSource
                         .recentlyAddedFlow(
                             mediaType = MediaType.MANGA,
-                            pageSize = query.param.pageSize,
+                            pageSize = query.pageSize,
                         ).flowOn(dispatcher.io)
                         .toMediaCarousel(
                             MediaType.MANGA,
@@ -188,11 +188,11 @@ internal class CarouselSourceImpl(
     override suspend fun getMediaCarouselAnimeMeta(requestCallback: RequestCallback): Boolean {
         val request =
             Carousel.request(
-                perPage = query.param.pageSize,
+                perPage = query.pageSize,
                 type = co.anitrend.data.graphql.anilist.MediaType.ANIME,
-                isAdult = query.param.isAdult,
+                isAdult = query.isAdult,
                 scoreFormat =
-                    query.param.scoreFormat?.let {
+                    query.scoreFormat?.let {
                         co.anitrend.data.graphql.anilist.ScoreFormat
                             .valueOf(it.name)
                     },
@@ -211,11 +211,11 @@ internal class CarouselSourceImpl(
     override suspend fun getMediaCarouselMangaMeta(requestCallback: RequestCallback): Boolean {
         val request =
             Carousel.request(
-                perPage = query.param.pageSize,
+                perPage = query.pageSize,
                 type = co.anitrend.data.graphql.anilist.MediaType.MANGA,
-                isAdult = query.param.isAdult,
+                isAdult = query.isAdult,
                 scoreFormat =
-                    query.param.scoreFormat?.let {
+                    query.scoreFormat?.let {
                         co.anitrend.data.graphql.anilist.ScoreFormat
                             .valueOf(it.name)
                     },
@@ -234,21 +234,21 @@ internal class CarouselSourceImpl(
     override suspend fun getMediaCarouselAnime(requestCallback: RequestCallback): Boolean {
         val request =
             CarouselAnime.request(
-                perPage = query.param.pageSize,
+                perPage = query.pageSize,
                 season =
                     co.anitrend.data.graphql.anilist.MediaSeason.valueOf(
-                        query.param.season.name,
+                        query.season.name,
                     ),
-                seasonYear = query.param.seasonYear,
+                seasonYear = query.seasonYear,
                 nextSeason =
                     co.anitrend.data.graphql.anilist.MediaSeason.valueOf(
-                        query.param.nextSeason.name,
+                        query.nextSeason.name,
                     ),
-                nextSeasonYear = query.param.nextSeasonYear,
-                isAdult = query.param.isAdult,
-                currentTime = query.param.currentTime.toInt(),
+                nextSeasonYear = query.nextSeasonYear,
+                isAdult = query.isAdult,
+                currentTime = query.currentTime.toInt(),
                 scoreFormat =
-                    query.param.scoreFormat?.let {
+                    query.scoreFormat?.let {
                         co.anitrend.data.graphql.anilist.ScoreFormat
                             .valueOf(it.name)
                     },
@@ -267,10 +267,10 @@ internal class CarouselSourceImpl(
     override suspend fun getMediaCarouselManga(requestCallback: RequestCallback): Boolean {
         val request =
             CarouselManga.request(
-                perPage = query.param.pageSize,
-                isAdult = query.param.isAdult,
+                perPage = query.pageSize,
+                isAdult = query.isAdult,
                 scoreFormat =
-                    query.param.scoreFormat?.let {
+                    query.scoreFormat?.let {
                         co.anitrend.data.graphql.anilist.ScoreFormat
                             .valueOf(it.name)
                     },

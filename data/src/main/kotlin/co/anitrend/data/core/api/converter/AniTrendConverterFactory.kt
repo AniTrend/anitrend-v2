@@ -25,7 +25,6 @@ import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphP
 import co.anitrend.retrofit.graphql.converter.GraphConverter
 import co.anitrend.retrofit.graphql.model.GraphQLDocumentRegistry
 import co.anitrend.retrofit.graphql.model.GraphQLRequest
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -48,8 +47,7 @@ internal class AniTrendConverterFactory(
 
     private fun isGraphRequestType(type: Type): Boolean {
         val rawType = getRawType(type)
-        return GraphQLRequest::class.java.isAssignableFrom(rawType) ||
-            QueryContainerBuilder::class.java.isAssignableFrom(rawType)
+        return GraphQLRequest::class.java.isAssignableFrom(rawType)
     }
 
     private fun isGraphResponseType(type: Type): Boolean = GraphQLResponse::class.java.isAssignableFrom(getRawType(type))

@@ -25,8 +25,6 @@ import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.invoke
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.review.cache.ReviewCache
-import co.anitrend.data.review.model.mutation.ReviewMutation
-import co.anitrend.data.review.model.query.ReviewQuery
 import co.anitrend.domain.review.entity.Review
 import co.anitrend.domain.review.model.ReviewParam
 import kotlinx.coroutines.flow.Flow
@@ -34,7 +32,7 @@ import kotlinx.coroutines.flow.filterNotNull
 
 internal class ReviewSource {
     abstract class Entry : AbstractCoreDataSource() {
-        protected lateinit var query: ReviewQuery.Entry
+        protected lateinit var query: ReviewParam.Entry
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -45,7 +43,7 @@ internal class ReviewSource {
         protected abstract suspend fun getEntry(requestCallback: RequestCallback): Boolean
 
         operator fun invoke(param: ReviewParam.Entry): Flow<Review> {
-            query = ReviewQuery.Entry(param)
+            query = param
             cacheIdentity = ReviewCache.Identity.Entry(param)
             cachePolicy(
                 scope = scope,
@@ -58,54 +56,54 @@ internal class ReviewSource {
     }
 
     abstract class Rate : AbstractCoreDataSource() {
-        protected lateinit var mutation: ReviewMutation.Rate
+        protected lateinit var mutation: ReviewParam.Rate
 
         protected abstract val observable: Flow<Boolean?>
 
         protected abstract suspend fun rateEntry(requestCallback: RequestCallback)
 
         operator fun invoke(param: ReviewParam.Rate): Flow<Boolean> {
-            mutation = ReviewMutation.Rate(param)
+            mutation = param
             invoke(block = ::rateEntry)
             return observable.filterNotNull()
         }
     }
 
     abstract class Delete : AbstractCoreDataSource() {
-        protected lateinit var mutation: ReviewMutation.Delete
+        protected lateinit var mutation: ReviewParam.Delete
 
         protected abstract val observable: Flow<Boolean?>
 
         protected abstract suspend fun deleteEntry(requestCallback: RequestCallback)
 
         operator fun invoke(param: ReviewParam.Delete): Flow<Boolean> {
-            mutation = ReviewMutation.Delete(param)
+            mutation = param
             invoke(block = ::deleteEntry)
             return observable.filterNotNull()
         }
     }
 
     abstract class Save : AbstractCoreDataSource() {
-        protected lateinit var mutation: ReviewMutation.Save
+        protected lateinit var mutation: ReviewParam.Save
 
         protected abstract val observable: Flow<Boolean?>
 
         protected abstract suspend fun deleteEntry(requestCallback: RequestCallback)
 
         operator fun invoke(param: ReviewParam.Save): Flow<Boolean> {
-            mutation = ReviewMutation.Save(param)
+            mutation = param
             invoke(block = ::deleteEntry)
             return observable.filterNotNull()
         }
     }
 
     abstract class Paging {
-        protected lateinit var query: ReviewQuery.Paged
+        protected lateinit var query: ReviewParam.Paged
 
         abstract operator fun invoke(param: ReviewParam.Paged): Flow<PagingData<Review>>
 
         protected fun assignQuery(param: ReviewParam.Paged) {
-            query = ReviewQuery.Paged(param)
+            query = param
         }
     }
 }

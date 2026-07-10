@@ -31,7 +31,6 @@ import co.anitrend.data.media.converter.MediaStaffConnectionEntityConverter
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.media.mapper.MediaPeopleMapper
-import co.anitrend.data.media.model.query.MediaPeopleQuery
 import co.anitrend.data.media.source.contract.MediaPeopleSource
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.model.MediaParam
@@ -49,7 +48,6 @@ internal class MediaPeopleSourceImpl {
         private val dispatcher: ISupportDispatcher,
     ) : MediaPeopleSource.Characters() {
         override fun invoke(param: MediaParam.Characters): Flow<PagingData<MediaPerson.Character>> {
-            val query = MediaPeopleQuery.Characters(param)
             val cacheIdentity = MediaCache.Identity.Characters(param)
 
             return Pager(
@@ -64,7 +62,7 @@ internal class MediaPeopleSourceImpl {
                     MediaPeopleRemoteMediator.Characters(
                         cacheIdentity = cacheIdentity,
                         cachePolicy = cachePolicy,
-                        query = query,
+                        query = param,
                         remoteSource = remoteSource,
                         localSource = localSource,
                         controller = controller,
@@ -88,7 +86,6 @@ internal class MediaPeopleSourceImpl {
         private val dispatcher: ISupportDispatcher,
     ) : MediaPeopleSource.Staff() {
         override fun invoke(param: MediaParam.Staff): Flow<PagingData<MediaPerson.Staff>> {
-            val query = MediaPeopleQuery.Staff(param)
             val cacheIdentity = MediaCache.Identity.Staff(param)
 
             return Pager(
@@ -103,7 +100,7 @@ internal class MediaPeopleSourceImpl {
                     MediaPeopleRemoteMediator.Staff(
                         cacheIdentity = cacheIdentity,
                         cachePolicy = cachePolicy,
-                        query = query,
+                        query = param,
                         remoteSource = remoteSource,
                         localSource = localSource,
                         controller = controller,

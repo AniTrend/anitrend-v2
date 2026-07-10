@@ -46,7 +46,6 @@ import co.anitrend.data.media.datasource.local.MediaStatsLocalSource
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.media.entity.filter.MediaQueryFilter
 import co.anitrend.data.media.mapper.MediaStatsMapper
-import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.data.media.source.contract.MediaSource
 import co.anitrend.data.studio.converter.MediaStudioConnectionEntityConverter
 import co.anitrend.data.studio.converter.MediaStudioEntryEnricher
@@ -88,22 +87,22 @@ internal class MediaSourceImpl {
 
         override suspend fun getMedia(requestCallback: RequestCallback): Boolean {
             runCatching {
-                edgeSource(id = query.param.id)
+                edgeSource(id = query.id)
             }.onFailure { throwable ->
-                Timber.w(throwable, "Unable to refresh edge media for id=%s", query.param.id)
+                Timber.w(throwable, "Unable to refresh edge media for id=%s", query.id)
             }
 
             val deferred =
                 deferred {
                     remoteSource.getMediaDetail(
                         GetMediaDetail.request(
-                            id = query.param.id.toInt(),
+                            id = query.id.toInt(),
                             type =
                                 co.anitrend.data.graphql.anilist.MediaType
-                                    .valueOf(query.param.type.name),
+                                    .valueOf(query.type.name),
                             scoreFormat =
                                 co.anitrend.data.graphql.anilist.ScoreFormat
-                                    .valueOf(query.param.scoreFormat.name),
+                                    .valueOf(query.scoreFormat.name),
                         ),
                     )
                 }
@@ -142,8 +141,8 @@ internal class MediaSourceImpl {
     ) : MediaSource.Studios() {
         override fun observable(): Flow<List<MediaStudioEntry>> =
             combine(
-                localSource.entriesByMediaIdFlow(query.param.id),
-                edgeLocalSource.mediaViewByIdFlow(query.param.id),
+                localSource.entriesByMediaIdFlow(query.id),
+                edgeLocalSource.mediaViewByIdFlow(query.id),
             ) { entries, edge ->
                 enricher.enrich(
                     entries = entries.map(converter::convertFrom),
@@ -155,24 +154,24 @@ internal class MediaSourceImpl {
 
         override suspend fun refreshStudios(requestCallback: RequestCallback): Boolean {
             runCatching {
-                edgeSource(id = query.param.id)
+                edgeSource(id = query.id)
             }.onFailure { throwable ->
-                Timber.w(throwable, "Unable to refresh edge media for studios id=%s", query.param.id)
+                Timber.w(throwable, "Unable to refresh edge media for studios id=%s", query.id)
             }
 
             val deferred =
                 deferred {
                     remoteSource.getMediaStudios(
                         GetMediaWithStudio.request(
-                            id = query.param.id.toInt(),
+                            id = query.id.toInt(),
                             sort =
-                                query.param.sort?.map {
+                                query.sort?.map {
                                     val baseName = (it.sortable as Enum<*>).name
                                     val enumName = if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
                                     co.anitrend.data.graphql.anilist.StudioSort
                                         .valueOf(enumName)
                                 },
-                            isMain = query.param.isMain,
+                            isMain = query.isMain,
                         ),
                     )
                 }
@@ -205,7 +204,7 @@ internal class MediaSourceImpl {
     ) : MediaSource.Stats() {
         override fun observable(): Flow<MediaStats> =
             localSource
-                .entryByMediaIdFlow(query.param.id)
+                .entryByMediaIdFlow(query.id)
                 .flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
@@ -217,7 +216,7 @@ internal class MediaSourceImpl {
                 deferred {
                     remoteSource.getMediaStats(
                         GetMediaStats.request(
-                            id = query.param.id.toInt(),
+                            id = query.id.toInt(),
                         ),
                     )
                 }
@@ -260,7 +259,7 @@ internal class MediaSourceImpl {
                     controller = controller,
                     clearDataHelper = clearDataHelper,
                     filter = filter,
-                    query = MediaQuery.Find(param),
+                    query = param,
                     dispatcher = dispatcher,
                 )
 

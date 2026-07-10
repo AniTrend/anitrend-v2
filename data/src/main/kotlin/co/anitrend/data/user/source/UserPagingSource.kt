@@ -38,8 +38,8 @@ import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.remote.UserRemoteSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.filter.UserQueryFilter
-import co.anitrend.data.user.model.query.UserQuery
 import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -50,12 +50,12 @@ internal class UserPagingSource(
     private val controller: UserPagedController,
     private val clearDataHelper: IClearDataHelper,
     private val filter: UserQueryFilter.Search,
-    internal var query: UserQuery.Search,
+    internal var query: UserParam.Search,
     override val dispatcher: ISupportDispatcher,
 ) : AbstractPagingMediator<Int, UserEntity>() {
     fun pagingSourceFactory(): () -> PagingSource<Int, UserEntity> =
         {
-            localSource.rawPagingSource(filter.build(query.param))
+            localSource.rawPagingSource(filter.build(query))
         }
 
     private suspend fun getUserSearch(requestCallback: RequestCallback) {
@@ -65,9 +65,9 @@ internal class UserPagingSource(
                     GetUserPaged.request(
                         page = supportPagingHelper.page,
                         perPage = supportPagingHelper.pageSize,
-                        search = query.param.search,
+                        search = query.search,
                         sort =
-                            query.param.sort?.map {
+                            query.sort?.map {
                                 val baseName = (it.sortable as Enum<*>).name
                                 val enumName =
                                     if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
@@ -116,7 +116,7 @@ internal class UserPagingSource(
 
     override suspend fun clearDataSource(context: CoroutineDispatcher) {
         clearDataHelper(context) {
-            localSource.clearByMatch(query.param.search)
+            localSource.clearByMatch(query.search)
         }
     }
 

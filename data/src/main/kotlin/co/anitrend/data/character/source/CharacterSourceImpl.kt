@@ -29,7 +29,6 @@ import co.anitrend.data.character.converter.CharacterEntityConverter
 import co.anitrend.data.character.datasource.local.CharacterLocalSource
 import co.anitrend.data.character.datasource.remote.CharacterRemoteSource
 import co.anitrend.data.character.entity.filter.CharacterQueryFilter
-import co.anitrend.data.character.model.query.CharacterQuery
 import co.anitrend.data.character.source.contract.CharacterSource
 import co.anitrend.domain.character.entity.Character
 import co.anitrend.domain.character.model.CharacterParam
@@ -57,7 +56,7 @@ internal class CharacterSourceImpl {
                     controller = controller,
                     clearDataHelper = clearDataHelper,
                     filter = filter,
-                    query = CharacterQuery(param),
+                    query = param,
                     dispatcher = dispatcher,
                 )
 

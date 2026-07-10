@@ -36,10 +36,10 @@ import co.anitrend.data.character.datasource.local.CharacterLocalSource
 import co.anitrend.data.character.datasource.remote.CharacterRemoteSource
 import co.anitrend.data.character.entity.CharacterEntity
 import co.anitrend.data.character.entity.filter.CharacterQueryFilter
-import co.anitrend.data.character.model.query.CharacterQuery
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.graphql.anilist.GetCharacterPaged
 import co.anitrend.data.graphql.anilist.GetCharacterPagedVariables
+import co.anitrend.domain.character.model.CharacterParam
 import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -51,12 +51,12 @@ internal class CharacterPagingSource(
     private val controller: CharacterPagedController,
     private val clearDataHelper: IClearDataHelper,
     private val filter: CharacterQueryFilter.Search,
-    private val query: CharacterQuery,
+    private val query: CharacterParam.Find,
     override val dispatcher: ISupportDispatcher,
 ) : AbstractPagingMediator<Int, CharacterEntity>() {
     fun pagingSourceFactory(): () -> PagingSource<Int, CharacterEntity> =
         {
-            localSource.rawPagingSource(filter.build(query.param))
+            localSource.rawPagingSource(filter.build(query))
         }
 
     private suspend fun getCharacter(requestCallback: RequestCallback) {
@@ -70,12 +70,12 @@ internal class CharacterPagingSource(
                             GetCharacterPagedVariables(
                                 page = supportPagingHelper.page,
                                 perPage = supportPagingHelper.pageSize,
-                                id_in = query.param.id_in?.map { it.toInt() },
-                                id_not = query.param.id_not?.toInt(),
-                                id_not_in = query.param.id_not_in?.map { it.toInt() },
-                                search = query.param.search,
+                                id_in = query.id_in?.map { it.toInt() },
+                                id_not = query.id_not?.toInt(),
+                                id_not_in = query.id_not_in?.map { it.toInt() },
+                                search = query.search,
                                 sort =
-                                    query.param.sort?.map {
+                                    query.sort?.map {
                                         co.anitrend.data.graphql.anilist.CharacterSort
                                             .valueOf(it.name)
                                     },

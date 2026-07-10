@@ -58,7 +58,6 @@ import co.anitrend.data.user.datasource.local.connection.UserProfileReviewLocalS
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.remote.UserRemoteSource
 import co.anitrend.data.user.model.container.UserModelContainer
-import co.anitrend.data.user.model.query.UserQuery
 import co.anitrend.data.user.converter.UserViewEntityConverter
 import co.anitrend.data.user.source.contract.UserSource
 import co.anitrend.domain.common.sort.order.SortOrder
@@ -88,9 +87,9 @@ internal class UserSourceImpl {
     ) : UserSource.Identifier() {
         override fun observable(): Flow<User> {
             val source =
-                query.param.id?.let {
+                query.id?.let {
                     localSource.userByIdFlow(it)
-                } ?: localSource.userByNameFlow(query.param.name)
+                } ?: localSource.userByNameFlow(query.name)
 
             return source
                 .flowOn(dispatcher.io)
@@ -105,8 +104,8 @@ internal class UserSourceImpl {
                 deferred {
                     val request =
                         GetUser.request(
-                            id = query.param.id?.toInt(),
-                            userName = query.param.name,
+                            id = query.id?.toInt(),
+                            userName = query.name,
                         )
                     remoteSource.getUserByName(request)
                 }
@@ -124,7 +123,7 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                localSource.clearByUserName(query.param.name)
+                localSource.clearByUserName(query.name)
             }
         }
     }
@@ -140,7 +139,7 @@ internal class UserSourceImpl {
         override val dispatcher: ISupportDispatcher,
     ) : UserSource.Viewer() {
         override fun observable(): Flow<User> {
-            val userId = query.param.id
+            val userId = query.id
 
             return localSource
                 .userAuthenticated(userId)
@@ -175,7 +174,7 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                localSource.clearById(requireNotNull(query.param.id))
+                localSource.clearById(requireNotNull(query.id))
             }
         }
     }
@@ -191,10 +190,10 @@ internal class UserSourceImpl {
     ) : UserSource.Profile() {
         override fun observable(): Flow<User> {
             val result =
-                if (query.param.id != null) {
-                    localSource.userByIdWithOptionsFlow(requireNotNull(query.param.id))
+                if (query.id != null) {
+                    localSource.userByIdWithOptionsFlow(requireNotNull(query.id))
                 } else {
-                    localSource.userByNameWithOptionsFlow(requireNotNull(query.param.name))
+                    localSource.userByNameWithOptionsFlow(requireNotNull(query.name))
                 }
 
             return result
@@ -210,8 +209,8 @@ internal class UserSourceImpl {
                 deferred {
                     val request =
                         GetUserProfile.request(
-                            id = query.param.id?.toInt(),
-                            userName = query.param.name,
+                            id = query.id?.toInt(),
+                            userName = query.name,
                         )
                     remoteSource.getUserProfile(request)
                 }
@@ -229,10 +228,10 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                if (query.param.id != null) {
-                    localSource.clearById(requireNotNull(query.param.id))
+                if (query.id != null) {
+                    localSource.clearById(requireNotNull(query.id))
                 } else {
-                    localSource.clearByUserName(requireNotNull(query.param.name))
+                    localSource.clearByUserName(requireNotNull(query.name))
                 }
             }
         }
@@ -255,7 +254,7 @@ internal class UserSourceImpl {
                 controller = controller,
                 clearDataHelper = clearDataHelper,
                 filter = filter,
-                query = UserQuery.Search(UserParam.Search("")),
+                query = UserParam.Search(""),
                 dispatcher = dispatcher,
             )
 
@@ -266,7 +265,7 @@ internal class UserSourceImpl {
             assignQuery(param)
             _pagingMediator.apply {
                 cacheIdentity = UserCache.Paged.Identity(param)
-                query = UserQuery.Search(param)
+                query = param
             }
 
             return Pager(
@@ -294,7 +293,7 @@ internal class UserSourceImpl {
     ) : UserSource.Statistic() {
         override fun observable(): Flow<User.WithStats> =
             localSource
-                .userByIdWithStatisticFlow(query.param.id)
+                .userByIdWithStatisticFlow(query.id)
                 .flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
@@ -307,9 +306,9 @@ internal class UserSourceImpl {
                 deferred {
                     val request =
                         GetUserWithStatistic.request(
-                            id = query.param.id.toInt(),
+                            id = query.id.toInt(),
                             statisticsSort =
-                                query.param.statisticsSort?.map {
+                                query.statisticsSort?.map {
                                     val baseName = (it.sortable as Enum<*>).name
                                     val enumName =
                                         if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
@@ -333,7 +332,7 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                localSource.clearById(query.param.id)
+                localSource.clearById(query.id)
             }
         }
     }
@@ -349,8 +348,8 @@ internal class UserSourceImpl {
     ) : UserSource.Overview() {
         override fun observable(): Flow<ProfileOverview> =
             favouriteMediaLocalSource
-                .entryByUserIdFlow(query.param.id)
-                .combine(statusLocalSource.listStatusByUserIdFlow(query.param.id)) { favourites, activities ->
+                .entryByUserIdFlow(query.id)
+                .combine(statusLocalSource.listStatusByUserIdFlow(query.id)) { favourites, activities ->
                     UserProfileOverviewConverter.toProfileOverview(favourites, activities)
                 }.flowOn(dispatcher.io)
                 .distinctUntilChanged()
@@ -361,7 +360,7 @@ internal class UserSourceImpl {
                 deferred {
                     val request =
                         GetUserProfileOverview.request(
-                            id = query.param.id.toInt(),
+                            id = query.id.toInt(),
                         )
                     remoteSource.getUserProfileOverview(request)
                 }
@@ -372,8 +371,8 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                favouriteMediaLocalSource.clearByUserId(query.param.id)
-                statusLocalSource.clearListStatusByUserId(query.param.id)
+                favouriteMediaLocalSource.clearByUserId(query.id)
+                statusLocalSource.clearListStatusByUserId(query.id)
             }
         }
     }
@@ -389,8 +388,8 @@ internal class UserSourceImpl {
     ) : UserSource.Feed() {
         override fun observable(): Flow<ProfileFeed> =
             reviewLocalSource
-                .entryByUserIdFlow(query.param.id)
-                .combine(statusLocalSource.listStatusByUserIdFlow(query.param.id)) { reviews, activities ->
+                .entryByUserIdFlow(query.id)
+                .combine(statusLocalSource.listStatusByUserIdFlow(query.id)) { reviews, activities ->
                     UserProfileFeedConverter.toProfileFeed(reviews, activities)
                 }.flowOn(dispatcher.io)
                 .distinctUntilChanged()
@@ -401,7 +400,7 @@ internal class UserSourceImpl {
                 deferred {
                     val request =
                         GetUserProfileFeed.request(
-                            id = query.param.id.toInt(),
+                            id = query.id.toInt(),
                         )
                     remoteSource.getUserProfileFeed(request)
                 }
@@ -412,8 +411,8 @@ internal class UserSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 cachePolicy.invalidateLastRequest(cacheIdentity)
-                reviewLocalSource.clearByUserId(query.param.id)
-                statusLocalSource.clearListStatusByUserId(query.param.id)
+                reviewLocalSource.clearByUserId(query.id)
+                statusLocalSource.clearListStatusByUserId(query.id)
             }
         }
     }
@@ -427,7 +426,7 @@ internal class UserSourceImpl {
     ) : UserSource.ToggleFollow() {
         override fun observable(): Flow<User> =
             localSource
-                .userByIdFlow(query.param.userId)
+                .userByIdFlow(query.userId)
                 .flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
@@ -439,7 +438,7 @@ internal class UserSourceImpl {
                 deferred {
                     val request =
                         SaveToggleFollowUser.request(
-                            userId = query.param.userId.toInt(),
+                            userId = query.userId.toInt(),
                         )
                     remoteSource.saveToggleFollow(request)
                 }
@@ -472,23 +471,23 @@ internal class UserSourceImpl {
                 deferred {
                     val request =
                         UpdateUserProfile.request(
-                            about = query.param.about,
+                            about = query.about,
                             titleLanguage =
                                 co.anitrend.data.graphql.anilist.UserTitleLanguage.valueOf(
-                                    query.param.titleLanguage.name,
+                                    query.titleLanguage.name,
                                 ),
-                            activityMergeTime = query.param.activityMergeTime,
-                            displayAdultContent = query.param.displayAdultContent,
-                            airingNotifications = query.param.airingNotifications,
+                            activityMergeTime = query.activityMergeTime,
+                            displayAdultContent = query.displayAdultContent,
+                            airingNotifications = query.airingNotifications,
                             scoreFormat =
                                 co.anitrend.data.graphql.anilist.ScoreFormat.valueOf(
-                                    query.param.scoreFormat.name,
+                                    query.scoreFormat.name,
                                 ),
-                            timezone = query.param.timeZone,
-                            rowOrder = query.param.rowOrder,
-                            profileColor = query.param.profileColor,
+                            timezone = query.timeZone,
+                            rowOrder = query.rowOrder,
+                            profileColor = query.profileColor,
                             disabledListActivity =
-                                query.param.disabledListActivity?.map {
+                                query.disabledListActivity?.map {
                                     ListActivityOptionInput(
                                         disabled = it.disabled,
                                         type =
@@ -496,9 +495,9 @@ internal class UserSourceImpl {
                                                 .valueOf(it.type.name),
                                     )
                                 },
-                            restrictMessagesToFollowing = query.param.restrictMessagesToFollowing,
+                            restrictMessagesToFollowing = query.restrictMessagesToFollowing,
                             notificationOptions =
-                                query.param.notificationOptions.map {
+                                query.notificationOptions.map {
                                     co.anitrend.data.graphql.anilist.NotificationOptionInput(
                                         enabled = it.enabled,
                                         type =
@@ -508,26 +507,26 @@ internal class UserSourceImpl {
                                 },
                             animeListOptions =
                                 MediaListOptionsInput(
-                                    sectionOrder = query.param.animeListOptions.sectionOrder,
+                                    sectionOrder = query.animeListOptions.sectionOrder,
                                     splitCompletedSectionByFormat =
-                                        query.param.animeListOptions.splitCompletedSectionByFormat,
-                                    customLists = query.param.animeListOptions.customLists,
-                                    advancedScoring = query.param.animeListOptions.advancedScoring,
+                                        query.animeListOptions.splitCompletedSectionByFormat,
+                                    customLists = query.animeListOptions.customLists,
+                                    advancedScoring = query.animeListOptions.advancedScoring,
                                     advancedScoringEnabled =
-                                        query.param.animeListOptions.advancedScoringEnabled,
+                                        query.animeListOptions.advancedScoringEnabled,
                                 ),
                             mangaListOptions =
                                 MediaListOptionsInput(
-                                    sectionOrder = query.param.mangaListOptions.sectionOrder,
+                                    sectionOrder = query.mangaListOptions.sectionOrder,
                                     splitCompletedSectionByFormat =
-                                        query.param.mangaListOptions.splitCompletedSectionByFormat,
-                                    customLists = query.param.mangaListOptions.customLists,
-                                    advancedScoring = query.param.mangaListOptions.advancedScoring,
+                                        query.mangaListOptions.splitCompletedSectionByFormat,
+                                    customLists = query.mangaListOptions.customLists,
+                                    advancedScoring = query.mangaListOptions.advancedScoring,
                                     advancedScoringEnabled =
-                                        query.param.mangaListOptions.advancedScoringEnabled,
+                                        query.mangaListOptions.advancedScoringEnabled,
                                 ),
                             staffNameLanguage =
-                                query.param.staffNameLanguage?.let {
+                                query.staffNameLanguage?.let {
                                     co.anitrend.data.graphql.anilist.UserStaffNameLanguage
                                         .valueOf(it.name)
                                 },

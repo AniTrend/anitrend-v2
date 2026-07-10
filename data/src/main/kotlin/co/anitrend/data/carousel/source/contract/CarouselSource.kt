@@ -22,13 +22,12 @@ import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.carousel.cache.CarouselCache
-import co.anitrend.data.carousel.model.query.CarouselQuery
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.carousel.model.CarouselParam
 import kotlinx.coroutines.flow.Flow
 
 internal abstract class CarouselSource : AbstractCoreDataSource() {
-    protected lateinit var query: CarouselQuery
+    protected lateinit var query: CarouselParam.Find
         private set
 
     protected abstract val cachePolicy: ICacheStorePolicy
@@ -49,7 +48,7 @@ internal abstract class CarouselSource : AbstractCoreDataSource() {
     protected abstract suspend fun getMediaCarouselManga(requestCallback: RequestCallback): Boolean
 
     suspend operator fun invoke(param: CarouselParam.Find): Flow<List<MediaCarousel>> {
-        query = CarouselQuery(param)
+        query = param
 
         cachePolicy(
             requestHelper = requestHelper,

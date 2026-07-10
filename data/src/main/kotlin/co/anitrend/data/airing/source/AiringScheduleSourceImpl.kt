@@ -27,7 +27,6 @@ import co.anitrend.data.airing.cache.AiringCache
 import co.anitrend.data.airing.datasource.local.AiringLocalSource
 import co.anitrend.data.airing.datasource.remote.AiringRemoteSource
 import co.anitrend.data.airing.entity.filter.AiringQueryFilter
-import co.anitrend.data.airing.model.query.AiringScheduleQuery
 import co.anitrend.data.airing.source.contract.AiringScheduleSource
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.media.converter.MediaEntityViewConverter
@@ -58,7 +57,7 @@ internal class AiringScheduleSourceImpl {
                     controller = controller,
                     clearDataHelper = clearDataHelper,
                     filter = filter,
-                    query = AiringScheduleQuery(param),
+                    query = param,
                     dispatcher = dispatcher,
                 )
 
