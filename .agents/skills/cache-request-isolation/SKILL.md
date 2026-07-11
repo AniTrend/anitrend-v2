@@ -127,7 +127,7 @@ sqlite3 /tmp/anitrend-chucker/chucker.db \
 
 ### 6a. Add new `CacheRequest` enum values
 
-File: `data/android/src/main/kotlin/co/anitrend/data/android/cache/model/CacheRequest.kt`
+File: `data/core/src/main/kotlin/co/anitrend/data/android/cache/model/CacheRequest.kt`
 
 Add one entry per new uniquely-fetchable resource:
 

@@ -47,7 +47,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 | Room entity + migration pattern | `AGENTS.md` | `.agents/skills/room-entity-pattern/SKILL.md` |
 | CacheRequest collision / empty UI with no crash | `AGENTS.md` | `.agents/skills/cache-request-isolation/SKILL.md` |
 | GraphQL controller lifecycle, generated `GraphQLRequest<...Variables>`, registry-first converter wiring, `QueryContainerBuilder` compatibility, `Response<GraphQLResponse<*>>` | `AGENTS.md` | `.agents/skills/graphql-query-pattern/SKILL.md` |
-| Data Android infrastructure role, `ControllerStrategy`, `OnlineStrategy`, `OfflineStrategy`, `ScopeExtensions`, `graphQLController` Koin wiring | `AGENTS.md` | `.agents/skills/data-android-infrastructure/SKILL.md` |
+| Shared data infrastructure role, `ControllerStrategy`, `OnlineStrategy`, `OfflineStrategy`, `ScopeExtensions`, `graphQLController` Koin wiring | `AGENTS.md` | `.agents/skills/data-android-infrastructure/SKILL.md` |
 | GraphQL fragment-to-model mapping and remote source wiring | `AGENTS.md` | `.agents/skills/mapping-graphql-models/SKILL.md` |
 | String naming and POEditor context | `AGENTS.md` | `.agents/skills/string-resources-convention/SKILL.md` |
 | Test strategy and commands | `AGENTS.md` | `.agents/skills/testing-guidelines/SKILL.md` |
@@ -73,7 +73,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 | Debug empty-UI / silent cache bypass | `AGENTS.md` | `.agents/skills/cache-request-isolation/SKILL.md` |
 | Add a new GraphQL-backed repository or source | `AGENTS.md` | `.agents/skills/data-state-pattern/SKILL.md` then `.agents/skills/graphql-query-pattern/SKILL.md` |
 | Add or change GraphQL query flow | `AGENTS.md` | `.agents/skills/graphql-query-pattern/SKILL.md` |
-| Understand `ControllerStrategy`, choose `OnlineStrategy` vs `OfflineStrategy`, or understand `ScopeExtensions` / Data Android infrastructure | `AGENTS.md` | `.agents/skills/data-android-infrastructure/SKILL.md` |
+| Understand `ControllerStrategy`, choose `OnlineStrategy` vs `OfflineStrategy`, or understand `ScopeExtensions` / shared data infrastructure | `AGENTS.md` | `.agents/skills/data-android-infrastructure/SKILL.md` |
 | Add or change GraphQL fragments, model variants, or remote source wiring | `AGENTS.md` | `.agents/skills/mapping-graphql-models/SKILL.md` |
 | Update user-facing strings | `AGENTS.md` | `.agents/skills/string-resources-convention/SKILL.md` |
 | Add tests for data/domain logic | `AGENTS.md` | `.agents/skills/testing-guidelines/SKILL.md` |
@@ -124,7 +124,7 @@ Use these as concrete implementation references. For the curated cross-layer lis
 - `task/medialist/src/main/kotlin/co/anitrend/task/medialist/`
 - `task/review/src/main/kotlin/co/anitrend/task/review/`
 - `task/favourite/src/main/kotlin/co/anitrend/task/favourite/`
-- `data/android/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
+- `data/core/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
 - `app/src/main/kotlin/co/anitrend/component/screen/MainScreen.kt`
 - `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt`
 - `app/core/src/main/kotlin/co/anitrend/core/ui/UiExtensions.kt`

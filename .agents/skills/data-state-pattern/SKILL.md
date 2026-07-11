@@ -16,7 +16,7 @@ covered in the mutation section and are exempt from the Room-first read contract
 
 ## Key files to read
 
-- `data/android/src/main/kotlin/co/anitrend/data/android/` - base data-source implementations
+- `data/core/src/main/kotlin/co/anitrend/data/android/` - base data-source implementations
 - `data/src/main/kotlin/co/anitrend/data/tag/repository/TagRepository.kt` - baseline example of a
   repository returning `DataState`
 - `domain/src/main/kotlin/co/anitrend/domain/tag/repository/ITagRepository.kt` - matching domain

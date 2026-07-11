@@ -1,20 +1,20 @@
 ---
 name: data-android-infrastructure
 description: >
-  data/android module reference. Use when working with ControllerStrategy, OnlineStrategy,
+  data/core module reference. Use when working with ControllerStrategy, OnlineStrategy,
   OfflineStrategy, ScopeExtensions, graphQLController Koin wiring, DefaultController,
-  DeferrableNetworkClient, ICacheStore, or when asking what the data/android module provides to
+  DeferrableNetworkClient, ICacheStore, or when asking what the data/core module provides to
   other data modules and why it is a shared dependency.
 ---
 
-# `data/android` , Shared Data Infrastructure
+# `data/core` , Shared Data Infrastructure
 
 ## Purpose
 
-`:data:android` is the shared Android infrastructure layer consumed transitively by every
+`:data:core` is the shared Android infrastructure layer consumed transitively by every
 `data:*` module. It is never imported directly from `:feature:*`, `:common:*`, or `:task:*`.
 Its role is to provide the reusable plumbing that keeps individual data modules thin. They
-import entities, sources, mappers, and repositories, while `data/android` provides the machinery
+import entities, sources, mappers, and repositories, while `data/core` provides the machinery
 those build on.
 
 ## Key residents
@@ -47,7 +47,7 @@ Both strategies:
 
 ## `ScopeExtensions` , Koin wiring helpers
 
-`ScopeExtensions.kt` lives in `data/android/extensions` and provides `Scope` extension functions
+`ScopeExtensions.kt` lives in `data/core/extensions` and provides `Scope` extension functions
 so individual module `KoinModule.kt` files do not repeat controller-construction boilerplate.
 
 ```kotlin
@@ -82,11 +82,11 @@ Key points:
 - `RegistryOnlyGraphProcessor` blocks runtime asset discovery fallback
 - `AniTrendConverterFactory` routes by request and response type, while preserving explicit JSON and XML converter overrides
 
-## `data/android` as a transitive dependency
+## `data/core` as a transitive dependency
 
-Individual `data:*` modules add `data:android` to their `build.gradle.kts` via the shared
+Individual `data:*` modules add `data:core` to their `build.gradle.kts` via the shared
 `applyDataDependencies()` helper in `ProjectDependencies.kt`. They do not re-declare Retrofit,
-OkHttp, or the `retrofit-graphql` converter themselves. Those come through `data:android`.
+OkHttp, or the `retrofit-graphql` converter themselves. Those come through `data:core`.
 
 ## Related skills
 

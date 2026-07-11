@@ -45,7 +45,7 @@ Follow instruction precedence in this order:
 | Android platform/helper reuse | `AGENTS.md` | `.agents/skills/android-platform-patterns/SKILL.md` |
 | Navigation, deep links, or router/provider flows | `AGENTS.md` | `.agents/skills/navigation-architecture/SKILL.md` |
 | Room entities and migrations | `AGENTS.md` | `.agents/skills/room-entity-pattern/SKILL.md` |
-| Shared `:data:android` infrastructure or controller strategy | `AGENTS.md` | `.agents/skills/data-android-infrastructure/SKILL.md` |
+| Shared `:data:core` infrastructure or controller strategy | `AGENTS.md` | `.agents/skills/data-android-infrastructure/SKILL.md` |
 | GraphQL query/controller updates | `AGENTS.md` | `.agents/skills/graphql-query-pattern/SKILL.md` |
 | GraphQL fragments, model variants, or mapping decisions | `AGENTS.md` | `.agents/skills/mapping-graphql-models/SKILL.md` |
 | Silent empty UI or `CacheRequest` collisions | `AGENTS.md` | `.agents/skills/cache-request-isolation/SKILL.md` |
@@ -394,6 +394,6 @@ If a required repo-local path is missing, stop and report the missing path befor
 - `task/medialist/src/main/kotlin/co/anitrend/task/medialist/`
 - `task/review/src/main/kotlin/co/anitrend/task/review/`
 - `task/favourite/src/main/kotlin/co/anitrend/task/favourite/`
-- `data/android/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
+- `data/core/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
 - `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt`
 - `buildSrc/src/main/java/co/anitrend/buildSrc/plugins/components/ProjectDependencies.kt`

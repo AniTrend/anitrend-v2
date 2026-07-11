@@ -20,7 +20,7 @@ source of truth.
 
 ## Key files to read
 
-- `data/android/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
+- `data/core/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
   for the response pipeline and error handling
 - `data/src/main/kotlin/co/anitrend/data/android/koin/Modules.kt`
   for registry-first GraphQL converter wiring

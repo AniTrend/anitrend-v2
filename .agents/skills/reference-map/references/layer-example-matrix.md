@@ -21,7 +21,7 @@ app/navigation router
     -> task/review provider + Koin + workers
     -> domain/review params + repository + use case
     -> data/review Types + interactor + repository + source + Koin
-    -> data/android GraphQLController
+    -> data/core GraphQLController
 ```
 
 ### Navigation contract
@@ -65,7 +65,7 @@ app/navigation router
 - `data/src/main/kotlin/co/anitrend/data/review/source/ReviewSourceImpl.kt`
 - `data/src/main/kotlin/co/anitrend/data/review/source/ReviewPagingSource.kt`
 - `data/src/main/kotlin/co/anitrend/data/review/koin/Modules.kt`
-- `data/android/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
+- `data/core/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
 
 ## Pattern variants
 

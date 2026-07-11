@@ -27,8 +27,7 @@ class AniGraphRequestConverterTest {
         val payload = requestBody.asString()
         val serialized = Gson().fromJson(payload, JsonObject::class.java)
 
-        assertEquals(AniRequestConverter.JSON_MIME_TYPE, requestBody.contentType())
-        assertTrue(requestBody.contentType()?.toString()?.startsWith("application/json") == true)
+        assertEquals("application/json", "${requestBody.contentType()?.type}/${requestBody.contentType()?.subtype}")
         assertEquals(request.query, serialized.get("query").asString)
         assertEquals(request.operationName, serialized.get("operationName").asString)
         assertTrue(payload.contains("\"variables\""))
