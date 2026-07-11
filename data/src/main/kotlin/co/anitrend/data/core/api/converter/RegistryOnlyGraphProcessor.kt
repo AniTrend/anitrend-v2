@@ -18,6 +18,9 @@ package co.anitrend.data.core.api.converter
 
 import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor
 import co.anitrend.retrofit.graphql.annotation.processor.fragment.FragmentPatcher
+import co.anitrend.retrofit.graphql.annotation.GraphQuery
+import co.anitrend.retrofit.graphql.logger.DefaultGraphLogger
+import co.anitrend.retrofit.graphql.logger.contract.ILogger
 import co.anitrend.retrofit.graphql.logger.core.AbstractLogger
 
 /**
@@ -27,19 +30,30 @@ import co.anitrend.retrofit.graphql.logger.core.AbstractLogger
  * or a generated registry entry is missing for the requested operation.
  */
 internal class RegistryOnlyGraphProcessor : AbstractGraphProcessor() {
-    override val defaultExtension: String = "graphql"
+    override val defaultExtension: String = ".graphql"
 
-    override val defaultDirectory: String = "src/main/graphql"
+    override val defaultDirectory: String = "graphql"
 
-    override val logger: AbstractLogger = error("Registry-only processor does not expose a logger")
+    override val logger: AbstractLogger = DefaultGraphLogger(ILogger.Level.NONE)
 
-    override val fragmentPatcher: FragmentPatcher =
-        error("Registry-only processor does not patch fragment assets")
+    override val fragmentPatcher: FragmentPatcher = FragmentPatcher(defaultExtension, logger = logger)
 
     override val graphFiles: Map<String, String> = emptyMap()
 
-    override fun getQuery(annotations: Array<out Annotation>): String? =
-        error("GraphQL asset fallback is disabled. Missing generated registry entry for annotations: ${annotations.joinToString()}")
+    override fun getQuery(annotations: Array<out Annotation>): String? {
+        val legacyAsset =
+            annotations
+                .filterIsInstance<GraphQuery>()
+                .firstOrNull()
+                ?.value
+                ?.takeIf(String::isNotBlank)
+
+        check(legacyAsset == null) {
+            "GraphQL asset fallback is disabled. Missing generated registry entry for asset path: $legacyAsset"
+        }
+
+        return null
+    }
 
     override fun patchQueries() = Unit
 }

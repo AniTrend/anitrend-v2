@@ -18,7 +18,7 @@ package co.anitrend.data.android.info
 
 import android.content.Context
 import android.os.Build
-import co.anitrend.data.android.BuildConfig
+import co.anitrend.data.core.BuildConfig
 import co.anitrend.data.core.app.IAppInfo
 import java.util.Locale
 
