@@ -301,4 +301,15 @@ internal val MIGRATIONS =
                 "ALTER TABLE `media_studio_connection` ADD COLUMN `media_average_score` INTEGER",
             )
         },
+        migrationOfStatements(23, 24) {
+            arrayOf(
+                "CREATE INDEX IF NOT EXISTS `index_user_statistic_staff_staff_id` ON `user_statistic_staff` (`staff_id`)",
+                "CREATE INDEX IF NOT EXISTS `index_user_statistic_studio_studio_id` ON `user_statistic_studio` (`studio_id`)",
+                "CREATE INDEX IF NOT EXISTS `index_user_statistic_tag_tag_id` ON `user_statistic_tag` (`tag_id`)",
+                "CREATE INDEX IF NOT EXISTS `index_user_statistic_voice_actor_staff_id` ON `user_statistic_voice_actor` (`staff_id`)",
+                "CREATE INDEX IF NOT EXISTS `index_user_profile_favourite_media_media_id` ON `user_profile_favourite_media` (`media_id`)",
+                "CREATE INDEX IF NOT EXISTS `index_user_profile_review_review_id` ON `user_profile_review` (`review_id`)",
+                "CREATE INDEX IF NOT EXISTS `index_user_profile_review_media_id` ON `user_profile_review` (`media_id`)",
+            )
+        },
     )

@@ -60,7 +60,7 @@ internal object UserProfileOverviewConverter {
             episodes = source.episodes ?: 0,
             chapters = source.chapters ?: 0,
             volumes = source.volumes ?: 0,
-            isFavourite = source.isFavourite ?: false,
+            isFavourite = source.isFavourite,
             meanScore = source.meanScore ?: 0,
             averageScore = source.averageScore ?: 0,
             siteUrl = source.siteUrl,
