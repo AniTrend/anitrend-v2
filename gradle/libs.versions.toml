@@ -202,7 +202,6 @@ anitrend-markdown = { module = "com.github.anitrend:support-markdown", version.r
 anitrend-retrofit-graphql-runtime = { module = "com.github.AniTrend.retrofit-graphql:runtime", version.ref = "anitrend-retrofit" }
 anitrend-retrofit-graphql-api = { module = "com.github.AniTrend.retrofit-graphql:api", version.ref = "anitrend-retrofit" }
 anitrend-retrofit-graphql-annotations = { module = "com.github.AniTrend.retrofit-graphql:annotations", version.ref = "anitrend-retrofit" }
-anitrend-retrofit-graphql-android-assets = { module = "com.github.AniTrend.retrofit-graphql:android-assets", version.ref = "anitrend-retrofit" }
 
 anitrend-querybuilder-annotation = { module = "com.github.anitrend.support-query-builder:annotations", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-core = { module = "com.github.anitrend.support-query-builder:core", version.ref = "anitrend-querybuilder" }

@@ -42,7 +42,6 @@ import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.character.koin.characterModules
 import co.anitrend.data.core.api.converter.AniTrendConverterFactory
 import co.anitrend.data.core.api.converter.CompositeGraphQLDocumentRegistry
-import co.anitrend.data.core.api.converter.RegistryOnlyGraphProcessor
 import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import co.anitrend.data.core.api.factory.AniListApiFactory
 import co.anitrend.data.core.app.IAppInfo
@@ -72,7 +71,6 @@ import com.chuckerteam.chucker.api.RetentionManager
 import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor
 import co.anitrend.retrofit.graphql.model.GraphQLDocumentRegistry
 import co.anitrend.data.graphql.anilist.GeneratedGraphQLRegistry as AniListRegistry
 import co.anitrend.data.edge.graphql.GeneratedGraphQLRegistry as EdgeRegistry
@@ -127,9 +125,6 @@ private val retrofitModule =
                 fallback = EdgeRegistry,
             )
         }
-        factory<AbstractGraphProcessor> {
-            RegistryOnlyGraphProcessor()
-        }
         single {
             GsonBuilder()
                 .setStrictness(Strictness.LENIENT)
@@ -165,12 +160,10 @@ private val retrofitModule =
                     isLenient = true
                 }
             AniTrendConverterFactory(
-                processor = get(),
                 gson = get(),
                 jsonFactory = defaultJsonFactory.asConverterFactory(mimeType),
                 graphFactory = get<Json>().asConverterFactory(mimeType),
                 xmlFactory = get<IFeedFactory>().provideConverterFactory(),
-                registry = get<GraphQLDocumentRegistry>(),
             )
         }
     }

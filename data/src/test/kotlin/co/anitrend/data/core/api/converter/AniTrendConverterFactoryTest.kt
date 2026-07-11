@@ -3,10 +3,7 @@ package co.anitrend.data.core.api.converter
 import co.anitrend.data.auth.datasource.remote.AuthRemoteSource
 import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
-import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor
-import co.anitrend.retrofit.graphql.model.GraphQLDocumentRegistry
 import com.google.gson.Gson
-import io.mockk.mockk
 import java.lang.reflect.Method
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
@@ -41,9 +38,7 @@ class AniTrendConverterFactoryTest {
             jsonFactory = StubFactory(responseConverter = jsonResponseConverter),
             graphFactory = StubFactory(responseConverter = graphResponseConverter),
             xmlFactory = StubFactory(responseConverter = xmlResponseConverter),
-            processor = mockk<AbstractGraphProcessor>(relaxed = true),
             gson = Gson(),
-            registry = mockk<GraphQLDocumentRegistry>(relaxed = true),
         )
 
     @Test
