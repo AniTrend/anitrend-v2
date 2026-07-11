@@ -230,7 +230,7 @@ google-gson = { module = "com.google.code.gson:gson", version = "2.14.0" }
 
 google-firebase-core = { module = "com.google.firebase:firebase-core", version = "21.1.1" }
 google-firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version = "22.5.0" }
-google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "20.0.6" }
+google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version = "20.1.0" }
 google-firebase-crashlytics-gradle = { module = "com.google.firebase:firebase-crashlytics-gradle", version = "3.0.7" }
 google-firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx", version = "24.1.2" }
 unifiedpush-connector = { module = "org.unifiedpush.android:connector", version.ref = "unifiedpush-connector" }
