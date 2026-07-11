@@ -1,5 +1,0 @@
-fragment EdgeTrailer on query_series_trailers_items {
-  id
-  thumbnail
-  site
-}

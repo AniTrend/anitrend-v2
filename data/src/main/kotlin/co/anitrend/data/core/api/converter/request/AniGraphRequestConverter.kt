@@ -20,33 +20,41 @@ import co.anitrend.data.BuildConfig
 import co.anitrend.data.core.AniTrendExperimentalFeature
 import co.anitrend.data.util.GraphUtil.minify
 import com.google.gson.Gson
-import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor
-import co.anitrend.retrofit.graphql.converter.request.GraphRequestConverter
-import co.anitrend.retrofit.graphql.model.GraphQLDocumentRegistry
+import co.anitrend.retrofit.graphql.converter.GraphConverter
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Converter
 
 internal class AniRequestConverter(
-    methodAnnotations: Array<out Annotation>,
-    processor: AbstractGraphProcessor,
-    gson: Gson,
-    registry: GraphQLDocumentRegistry? = null,
-) : GraphRequestConverter(methodAnnotations, processor, gson, registry) {
-    /**
-     * Resolves the raw GraphQL query string from the generated request payload,
-     * then applies minification in release builds for smaller payloads.
-     *
-     * @return The resolved query string, or null if no query is found.
-     * @see GraphRequestConverter.resolveQuery
-     */
+    private val gson: Gson,
+) : Converter<GraphQLRequest<*>, RequestBody> {
     @OptIn(AniTrendExperimentalFeature::class)
-    override fun resolveQuery(): String? {
-        // Use the parent resolver and then apply minification in release builds
-        return super
-            .resolveQuery()
-            ?.minify(!BuildConfig.DEBUG)
+    internal fun serialize(
+        value: GraphQLRequest<*>,
+        shrinkQuery: Boolean = !BuildConfig.DEBUG,
+    ): String = gson.toJson(normalize(value, shrinkQuery))
+
+    override fun convert(value: GraphQLRequest<*>): RequestBody = serialize(value).toRequestBody(JSON_MIME_TYPE)
+
+    @OptIn(AniTrendExperimentalFeature::class)
+    private fun normalize(
+        value: GraphQLRequest<*>,
+        shrinkQuery: Boolean,
+    ): GraphQLRequest<*> {
+        val operationName = value.operationName.ifBlank { "<unknown>" }
+        val normalizedQuery =
+            value.query
+                .takeIf(String::isNotBlank)
+                ?.minify(shrinkQuery)
+                ?: error("GraphQL request query is blank for operation: $operationName")
+
+        return value.copy(query = normalizedQuery)
     }
 
     companion object {
+        internal val GRAPHQL_MIME_TYPE = GraphConverter.MIME_TYPE.toMediaType()
         internal val JSON_MIME_TYPE = "application/json".toMediaType()
         internal val XML_MIME_TYPE = "application/xml".toMediaType()
     }

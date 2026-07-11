@@ -1,8 +1,0 @@
-fragment EdgeMediaTitle on query_series_title {
-  japanese
-  harigana
-  canonical
-  english
-  romaji
-  synonyms
-}

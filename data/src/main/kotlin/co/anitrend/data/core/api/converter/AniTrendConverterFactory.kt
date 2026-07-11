@@ -18,12 +18,9 @@ package co.anitrend.data.core.api.converter
 
 import co.anitrend.data.core.JSON
 import co.anitrend.data.core.XML
-import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.core.api.converter.request.AniRequestConverter
+import co.anitrend.data.core.api.model.GraphQLResponse
 import com.google.gson.Gson
-import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor
-import co.anitrend.retrofit.graphql.converter.GraphConverter
-import co.anitrend.retrofit.graphql.model.GraphQLDocumentRegistry
 import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -36,10 +33,8 @@ internal class AniTrendConverterFactory(
     private val jsonFactory: Converter.Factory,
     private val graphFactory: Converter.Factory,
     private val xmlFactory: Converter.Factory,
-    processor: AbstractGraphProcessor,
-    gson: Gson,
-    registry: GraphQLDocumentRegistry? = null,
-) : GraphConverter(processor, gson, registry) {
+    private val gson: Gson,
+) : Converter.Factory() {
     private fun hasAnnotation(
         annotations: Array<out Annotation>,
         type: Class<out Annotation>,
@@ -85,12 +80,7 @@ internal class AniTrendConverterFactory(
                     retrofit,
                 )
             isGraphRequestType(type) ->
-                AniRequestConverter(
-                    methodAnnotations,
-                    graphProcessor,
-                    gson,
-                    registry,
-                )
+                AniRequestConverter(gson = gson)
             else ->
                 GsonConverterFactory.create(gson).requestBodyConverter(
                     type,

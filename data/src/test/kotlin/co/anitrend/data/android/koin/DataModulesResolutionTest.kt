@@ -18,12 +18,15 @@ package co.anitrend.data.android.koin
 
 import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
 import co.anitrend.data.auth.settings.IAuthenticationSettings
+import co.anitrend.data.core.api.converter.AniTrendConverterFactory
 import co.anitrend.data.core.device.IDeviceInfo
 import co.anitrend.data.user.settings.IUserSettings
 import io.mockk.mockk
 import kotlin.test.AfterTest
 import kotlin.test.Test
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
+import org.koin.core.error.NoDefinitionFoundException
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
@@ -47,6 +50,22 @@ class DataModulesResolutionTest {
         }
 
         assertNotNull(getKoin().get<IAuthenticationHelper>())
+    }
+
+    @Test
+    fun dataModulesResolveAniTrendConverterFactoryWithoutAbstractGraphProcessorBinding() {
+        startKoin {
+            androidContext(mockk(relaxed = true))
+            modules(
+                dataModules,
+                testDataRootModule,
+            )
+        }
+
+        assertNotNull(getKoin().get<AniTrendConverterFactory>())
+        assertFailsWith<NoDefinitionFoundException> {
+            getKoin().get<co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor>()
+        }
     }
 }
 
