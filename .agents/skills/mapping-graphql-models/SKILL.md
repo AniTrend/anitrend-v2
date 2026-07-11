@@ -7,7 +7,7 @@ description: Use when adding or changing AniTrend data-layer GraphQL fragments, 
 
 ## Overview
 
-Treat GraphQL assets as the contract source and Kotlin Serializable models as the contract implementation shape.
+Treat generated GraphQL documents as the contract source and Kotlin Serializable models as the contract implementation shape.
 
 This skill prevents blind feature implementation by forcing a mapping-first flow:
 1. choose schema ownership,
@@ -33,8 +33,8 @@ Do not use this skill when:
 ## Quick Decision Flow
 
 1. Identify owner schema first:
-- AniList graph uses `data/schema.graphql` and the core `data/src/main/assets/graphql` fragments and operations.
-- Edge graph uses `data/anitrend.schema.graphql` with edge-focused queries and fragments.
+- AniList graph uses `data/schema.graphql` and `data/src/main/graphql/**` for fragments and operations.
+- Edge graph uses `data/anitrend.schema.graphql` and `data/edge/src/main/graphql/**` for edge-focused fragments and operations.
 
 2. Pick operation type:
 - Read model data: update fragments first, then query composition.
@@ -45,7 +45,7 @@ Do not use this skill when:
 - Variant-only payload fields map to specific nested variant classes, such as `Core` or `Extended`.
 
 4. Verify remote wiring:
-- `@GraphQuery("OperationName")` in remote datasource must match operation file name.
+- Generated request type and operation identity in the remote datasource must match the operation file name.
 - Return container generic type must align with payload root and variant mapping.
 
 5. Verify source orchestration:
@@ -55,9 +55,9 @@ Do not use this skill when:
 ## Canonical Example
 
 `MediaCore.graphql` to `MediaModel.Core` alignment:
-- `data/src/main/assets/graphql/fragments/media/MediaCore.graphql` composes `... Media` plus `trailer` and `mediaListEntry`.
+- `data/src/main/graphql/fragments/media/MediaCore.graphql` composes `... Media` plus `trailer` and `mediaListEntry`.
 - `data/src/main/kotlin/co/anitrend/data/media/model/MediaModel.kt` defines `MediaModel.Core` with shared base fields plus `trailer` and `mediaListEntry`.
-- `data/src/main/assets/graphql/fragments/media/MediaExtended.graphql` currently expands from `... MediaCore`, so `Extended` can stay shape-compatible when it intentionally matches or extends core shape.
+- `data/src/main/graphql/fragments/media/MediaExtended.graphql` currently expands from `... MediaCore`, so `Extended` can stay shape-compatible when it intentionally matches or extends core shape.
 
 Interpretation rule:
 - If a fragment adds fields that only one variant should own, do not silently stuff them into all variants. Add or adjust the targeted variant and update container typing and source usage accordingly.
@@ -89,7 +89,7 @@ Interpretation rule:
 
 ### 4. Remote Datasource Binding Rule
 
-- Remote datasource `@GraphQuery` value must match operation document name.
+- Remote datasource generated request type and operation identity must match the operation document name.
 - Response generic container must match operation root and nested fragment shape.
 - A sidecar payload is a secondary object returned alongside the primary result, such as `pageInfo`
   alongside a list of items. If a query returns sidecar payloads, use dedicated sidecar model
@@ -156,7 +156,7 @@ This section captures observed high-risk failure patterns that cause blind imple
 Stop and re-map before coding if any are true:
 - You cannot point to the exact fragment or operation that defines the new model field.
 - You are adding nullable fields across multiple variants "just in case".
-- `@GraphQuery` name does not match operation document naming.
+- Generated request type or operation identity does not match operation document naming.
 - Source code consumes edge payload fields but query targets AniList schema only.
 - Container type names no longer describe payload purpose.
 - A GraphQL operation variable is declared but the corresponding `toMap()` key is absent or misspelled.

@@ -16,21 +16,18 @@
  */
 package co.anitrend.data.genre.datasource.remote
 
-import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.genre.model.GenreCollection
-import co.anitrend.retrofit.graphql.annotation.GraphQuery
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.EmptyGraphQLVariables
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface MediaGenreRemoteSource {
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetMediaGenres")
     suspend fun getMediaGenres(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<EmptyGraphQLVariables>,
     ): Response<GraphQLResponse<GenreCollection>>
 }

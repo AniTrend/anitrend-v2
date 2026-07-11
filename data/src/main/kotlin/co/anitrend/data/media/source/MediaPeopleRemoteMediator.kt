@@ -29,16 +29,21 @@ import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.common.extension.seedFromLocalCount
+import co.anitrend.data.graphql.anilist.GetMediaWithCharacter
+import co.anitrend.data.graphql.anilist.GetMediaWithCharacterVariables
+import co.anitrend.data.graphql.anilist.GetMediaWithStaff
+import co.anitrend.data.graphql.anilist.GetMediaWithStaffVariables
 import co.anitrend.data.media.MediaCharactersController
 import co.anitrend.data.media.MediaStaffController
 import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.entity.connection.MediaCharacterConnectionEntity
 import co.anitrend.data.media.entity.connection.MediaStaffConnectionEntity
 import co.anitrend.data.media.mapper.MediaPeopleMapper
-import co.anitrend.data.media.model.query.MediaPeopleQuery
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.entity.MediaPerson
+import co.anitrend.domain.media.model.MediaParam
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.flow.first
 import org.threeten.bp.Instant
 
@@ -82,7 +87,7 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
     class Characters(
         cacheIdentity: CacheIdentity,
         cachePolicy: ICacheStorePolicy,
-        private val query: MediaPeopleQuery.Characters,
+        private val query: MediaParam.Characters,
         private val remoteSource: MediaRemoteSource,
         localSource: MediaLocalSource,
         private val controller: MediaCharactersController,
@@ -95,11 +100,11 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
             dispatcher = dispatcher,
         ) {
         override suspend fun initialize(): InitializeAction {
-            var itemCount = localSource.mediaCharactersCount(query.param.id)
-            val maxSortIndex = localSource.mediaCharactersMaxSortIndex(query.param.id)
+            var itemCount = localSource.mediaCharactersCount(query.id)
+            val maxSortIndex = localSource.mediaCharactersMaxSortIndex(query.id)
 
             if (isCorruptPagingCache(itemCount, maxSortIndex)) {
-                localSource.clearMediaCharactersByMediaId(query.param.id)
+                localSource.clearMediaCharactersByMediaId(query.id)
                 cachePolicy.invalidateLastRequest(cacheIdentity)
                 itemCount = 0
             } else {
@@ -115,14 +120,35 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
 
         private suspend fun refreshCharacters(requestCallback: RequestCallback) {
             mapper.onRequest(
-                mediaId = query.param.id,
+                mediaId = query.id,
                 page = supportPagingHelper.page,
             )
 
             val deferred =
                 deferred {
                     remoteSource.getMediaCharacters(
-                        query.toQueryContainerBuilder(supportPagingHelper),
+                        GraphQLRequest(
+                            query = GetMediaWithCharacter.document,
+                            operationName = GetMediaWithCharacter.name,
+                            variables =
+                                GetMediaWithCharacterVariables(
+                                    id = query.id.toInt(),
+                                    page = supportPagingHelper.page,
+                                    perPage = supportPagingHelper.pageSize,
+                                    role =
+                                        query.role?.let {
+                                            co.anitrend.data.graphql.anilist.CharacterRole
+                                                .valueOf(it.name)
+                                        },
+                                    sort =
+                                        query.sort?.map {
+                                            val baseName = (it.sortable as Enum<*>).name
+                                            val enumName = if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
+                                            co.anitrend.data.graphql.anilist.CharacterSort
+                                                .valueOf(enumName)
+                                        },
+                                ),
+                        ),
                     )
                 }
 
@@ -135,7 +161,7 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
         }
 
         override suspend fun clearDataSource(context: kotlinx.coroutines.CoroutineDispatcher) {
-            localSource.clearMediaCharactersByMediaId(query.param.id)
+            localSource.clearMediaCharactersByMediaId(query.id)
             cachePolicy.invalidateLastRequest(cacheIdentity)
         }
 
@@ -158,7 +184,7 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
     class Staff(
         cacheIdentity: CacheIdentity,
         cachePolicy: ICacheStorePolicy,
-        private val query: MediaPeopleQuery.Staff,
+        private val query: MediaParam.Staff,
         private val remoteSource: MediaRemoteSource,
         localSource: MediaLocalSource,
         private val controller: MediaStaffController,
@@ -171,11 +197,11 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
             dispatcher = dispatcher,
         ) {
         override suspend fun initialize(): InitializeAction {
-            var itemCount = localSource.mediaStaffCount(query.param.id)
-            val maxSortIndex = localSource.mediaStaffMaxSortIndex(query.param.id)
+            var itemCount = localSource.mediaStaffCount(query.id)
+            val maxSortIndex = localSource.mediaStaffMaxSortIndex(query.id)
 
             if (isCorruptPagingCache(itemCount, maxSortIndex)) {
-                localSource.clearMediaStaffByMediaId(query.param.id)
+                localSource.clearMediaStaffByMediaId(query.id)
                 cachePolicy.invalidateLastRequest(cacheIdentity)
                 itemCount = 0
             } else {
@@ -191,14 +217,30 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
 
         private suspend fun refreshStaff(requestCallback: RequestCallback) {
             mapper.onRequest(
-                mediaId = query.param.id,
+                mediaId = query.id,
                 page = supportPagingHelper.page,
             )
 
             val deferred =
                 deferred {
                     remoteSource.getMediaStaff(
-                        query.toQueryContainerBuilder(supportPagingHelper),
+                        GraphQLRequest(
+                            query = GetMediaWithStaff.document,
+                            operationName = GetMediaWithStaff.name,
+                            variables =
+                                GetMediaWithStaffVariables(
+                                    id = query.id.toInt(),
+                                    page = supportPagingHelper.page,
+                                    perPage = supportPagingHelper.pageSize,
+                                    sort =
+                                        query.sort?.map {
+                                            val baseName = (it.sortable as Enum<*>).name
+                                            val enumName = if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
+                                            co.anitrend.data.graphql.anilist.StaffSort
+                                                .valueOf(enumName)
+                                        },
+                                ),
+                        ),
                     )
                 }
 
@@ -211,7 +253,7 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
         }
 
         override suspend fun clearDataSource(context: kotlinx.coroutines.CoroutineDispatcher) {
-            localSource.clearMediaStaffByMediaId(query.param.id)
+            localSource.clearMediaStaffByMediaId(query.id)
             cachePolicy.invalidateLastRequest(cacheIdentity)
         }
 

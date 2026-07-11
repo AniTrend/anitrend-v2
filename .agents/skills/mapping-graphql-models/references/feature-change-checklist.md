@@ -10,7 +10,7 @@ Use this checklist before merging any GraphQL-model contract change.
 
 ## 2. Operation and Fragment Shape
 
-- [ ] Locate operation under `queries/**` or `mutations/**`.
+- [ ] Locate operation under `queries/**` or `mutations/**` in the generated source tree.
 - [ ] Add or update fragment instead of duplicating field sets inline.
 - [ ] Ensure operation includes required fragment.
 - [ ] Keep mutation selection set minimal but sufficient for local state reconciliation.
@@ -23,7 +23,7 @@ Use this checklist before merging any GraphQL-model contract change.
 
 ## 4. Remote and Source Wiring
 
-- [ ] Confirm `@GraphQuery("OperationName")` matches operation name.
+- [ ] Confirm the generated request type and operation name align.
 - [ ] Confirm remote method return type aligns with payload root and model container.
 - [ ] Confirm source path invokes the updated remote method.
 
@@ -37,4 +37,4 @@ Use this checklist before merging any GraphQL-model contract change.
 
 - [ ] Verify no unrelated variants received broad nullable compatibility fields.
 - [ ] Verify edge fields are not accidentally treated as AniList-native fields.
-- [ ] Verify operation names, file names, and query annotations remain aligned.
+- [ ] Verify operation names, file names, and generated request use sites remain aligned.

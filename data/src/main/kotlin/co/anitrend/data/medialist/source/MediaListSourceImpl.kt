@@ -43,9 +43,16 @@ import co.anitrend.data.medialist.cache.MediaListCache
 import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
 import co.anitrend.data.medialist.datasource.remote.MediaListRemoteSource
 import co.anitrend.data.medialist.entity.filter.MediaListQueryFilter
+import co.anitrend.data.graphql.anilist.DeleteCustomList
+import co.anitrend.data.graphql.anilist.DeleteMediaListItem
+import co.anitrend.data.graphql.anilist.FuzzyDateInput
+import co.anitrend.data.graphql.anilist.GetMediaListCollection
+import co.anitrend.data.graphql.anilist.GetMediaListEntry
+import co.anitrend.data.graphql.anilist.SaveMediaListEntries
+import co.anitrend.data.graphql.anilist.SaveMediaListEntry
 import co.anitrend.data.medialist.source.contract.MediaListSource
 import co.anitrend.data.user.source.contract.UserSource
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.medialist.model.MediaListParam
 import co.anitrend.domain.user.model.UserParam
@@ -68,8 +75,76 @@ internal class MediaListSourceImpl {
         override suspend fun getMediaList(requestCallback: RequestCallback) {
             val deferred =
                 deferred {
-                    val queryBuilder = query.toQueryContainerBuilder()
-                    remoteSource.getMediaListCollection(queryBuilder)
+                    remoteSource.getMediaListCollection(
+                        GetMediaListCollection.request(
+                            chunk = query.chunk,
+                            completedAt =
+                                query.completedAt
+                                    ?.toString()
+                                    ?.toIntOrNull(),
+                            completedAt_greater =
+                                query.completedAt_greater
+                                    ?.toString()
+                                    ?.toIntOrNull(),
+                            completedAt_lesser =
+                                query.completedAt_lesser
+                                    ?.toString()
+                                    ?.toIntOrNull(),
+                            completedAt_like = query.completedAt_like?.toString(),
+                            forceSingleCompletedList = query.forceSingleCompletedList,
+                            notes = query.notes,
+                            notes_like = query.notes_like,
+                            perChunk = query.perChunk,
+                            sort =
+                                query.sort?.map {
+                                    val baseName = it.sortable.name
+                                    val enumName = if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
+                                    co.anitrend.data.graphql.anilist.MediaListSort
+                                        .valueOf(enumName)
+                                },
+                            startedAt =
+                                query.startedAt
+                                    ?.toString()
+                                    ?.toIntOrNull(),
+                            startedAt_greater =
+                                query.startedAt_greater
+                                    ?.toString()
+                                    ?.toIntOrNull(),
+                            startedAt_lesser =
+                                query.startedAt_lesser
+                                    ?.toString()
+                                    ?.toIntOrNull(),
+                            startedAt_like = query.startedAt_like?.toString(),
+                            status =
+                                query.status?.let {
+                                    co.anitrend.data.graphql.anilist.MediaListStatus
+                                        .valueOf(it.name)
+                                },
+                            status_in =
+                                query.status_in?.map {
+                                    co.anitrend.data.graphql.anilist.MediaListStatus
+                                        .valueOf(it.name)
+                                },
+                            status_not =
+                                query.status_not?.let {
+                                    co.anitrend.data.graphql.anilist.MediaListStatus
+                                        .valueOf(it.name)
+                                },
+                            status_not_in =
+                                query.status_not_in?.map {
+                                    co.anitrend.data.graphql.anilist.MediaListStatus
+                                        .valueOf(it.name)
+                                },
+                            type =
+                                co.anitrend.data.graphql.anilist.MediaType
+                                    .valueOf(query.type.name),
+                            userId = query.userId?.toInt(),
+                            userName = query.userName,
+                            scoreFormat =
+                                co.anitrend.data.graphql.anilist.ScoreFormat
+                                    .valueOf(query.scoreFormat.name),
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)
@@ -99,7 +174,7 @@ internal class MediaListSourceImpl {
         override fun observable(): Flow<Media> =
             mediaLocalSource
                 .rawFlow(
-                    filter.build(query.param),
+                    filter.build(query),
                 ).flowOn(dispatcher.io)
                 .filterNotNull()
                 .map(converter::convertFrom)
@@ -109,8 +184,15 @@ internal class MediaListSourceImpl {
         override suspend fun getEntry(requestCallback: RequestCallback): Boolean {
             val deferred =
                 deferred {
-                    val queryBuilder = query.toQueryContainerBuilder()
-                    remoteSource.getMediaListEntry(queryBuilder)
+                    remoteSource.getMediaListEntry(
+                        GetMediaListEntry.request(
+                            scoreFormat =
+                                co.anitrend.data.graphql.anilist.ScoreFormat
+                                    .valueOf(query.scoreFormat.name),
+                            mediaId = query.mediaId.toInt(),
+                            userId = query.userId.toInt(),
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)
@@ -126,8 +208,8 @@ internal class MediaListSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 localSource.clearByMediaId(
-                    mediaId = query.param.mediaId,
-                    userId = query.param.userId,
+                    mediaId = query.mediaId,
+                    userId = query.userId,
                 )
                 cachePolicy.invalidateLastRequest(cacheIdentity)
             }
@@ -184,8 +266,31 @@ internal class MediaListSourceImpl {
         override suspend fun saveEntry(requestCallback: RequestCallback) {
             val deferred =
                 deferred {
-                    val queryBuilder = mutation.toQueryContainerBuilder()
-                    remoteSource.saveMediaListEntry(queryBuilder)
+                    remoteSource.saveMediaListEntry(
+                        SaveMediaListEntry.request(
+                            id = mutation.id?.toInt(),
+                            mediaId = mutation.mediaId.toInt(),
+                            status =
+                                co.anitrend.data.graphql.anilist.MediaListStatus
+                                    .valueOf(mutation.status.name),
+                            score = mutation.score?.toDouble(),
+                            scoreRaw = mutation.scoreRaw,
+                            progress = mutation.progress,
+                            progressVolumes = mutation.progressVolumes,
+                            repeat = mutation.repeat,
+                            priority = mutation.priority,
+                            private = mutation.private,
+                            notes = mutation.notes,
+                            hiddenFromStatusLists = mutation.hiddenFromStatusLists,
+                            customLists = mutation.customLists,
+                            advancedScores = mutation.advancedScores?.map { it.toDouble() },
+                            startedAt = mutation.startedAt?.let { FuzzyDateInput(day = it.day, month = it.month, year = it.year) },
+                            completedAt = mutation.completedAt?.let { FuzzyDateInput(day = it.day, month = it.month, year = it.year) },
+                            scoreFormat =
+                                co.anitrend.data.graphql.anilist.ScoreFormat
+                                    .valueOf(mutation.scoreFormat.name),
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)
@@ -211,8 +316,29 @@ internal class MediaListSourceImpl {
         override suspend fun saveEntries(requestCallback: RequestCallback) {
             val deferred =
                 deferred {
-                    val queryBuilder = mutation.toQueryContainerBuilder()
-                    remoteSource.saveMediaListEntries(queryBuilder)
+                    remoteSource.saveMediaListEntries(
+                        SaveMediaListEntries.request(
+                            status =
+                                co.anitrend.data.graphql.anilist.MediaListStatus
+                                    .valueOf(mutation.status.name),
+                            score = mutation.score?.toDouble(),
+                            scoreRaw = mutation.scoreRaw,
+                            progress = mutation.progress,
+                            progressVolumes = mutation.progressVolumes,
+                            repeat = mutation.repeat,
+                            priority = mutation.priority,
+                            private = mutation.private,
+                            notes = mutation.notes,
+                            hiddenFromStatusLists = mutation.hiddenFromStatusLists,
+                            advancedScores = mutation.advancedScores?.map { it.toDouble() },
+                            startedAt = mutation.startedAt?.let { FuzzyDateInput(day = it.day, month = it.month, year = it.year) },
+                            completedAt = mutation.completedAt?.let { FuzzyDateInput(day = it.day, month = it.month, year = it.year) },
+                            ids = mutation.ids.map { it.toInt() },
+                            scoreFormat =
+                                co.anitrend.data.graphql.anilist.ScoreFormat
+                                    .valueOf(mutation.scoreFormat.name),
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)
@@ -241,8 +367,11 @@ internal class MediaListSourceImpl {
         override suspend fun deleteEntry(requestCallback: RequestCallback) {
             val deferred =
                 deferred {
-                    val queryBuilder = mutation.toQueryContainerBuilder()
-                    remoteSource.deleteMediaListEntry(queryBuilder)
+                    remoteSource.deleteMediaListEntry(
+                        DeleteMediaListItem.request(
+                            id = mutation.id.toInt(),
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)
@@ -262,7 +391,7 @@ internal class MediaListSourceImpl {
         override suspend fun clearDataSource(context: CoroutineDispatcher) {
             clearDataHelper(context) {
                 localSource.clearById(
-                    id = mutation.param.id,
+                    id = mutation.id,
                     userId = settings.authenticatedUserId.value,
                 )
             }
@@ -283,8 +412,14 @@ internal class MediaListSourceImpl {
         override suspend fun deleteCustomList(requestCallback: RequestCallback) {
             val deferred =
                 deferred {
-                    val queryBuilder = mutation.toQueryContainerBuilder()
-                    remoteSource.deleteCustomList(queryBuilder)
+                    remoteSource.deleteCustomList(
+                        co.anitrend.data.graphql.anilist.DeleteCustomList.request(
+                            customList = mutation.customList,
+                            type =
+                                co.anitrend.data.graphql.anilist.MediaType
+                                    .valueOf(mutation.type.name),
+                        ),
+                    )
                 }
 
             val result = controller(deferred, requestCallback)
@@ -307,7 +442,7 @@ internal class MediaListSourceImpl {
             clearDataHelper(context) {
                 val userId = settings.authenticatedUserId.value
                 localSource.clear(
-                    listName = mutation.param.customList,
+                    listName = mutation.customList,
                     userId = userId,
                 )
             }

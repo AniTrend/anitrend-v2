@@ -29,7 +29,6 @@ import co.anitrend.data.studio.converter.StudioEntityConverter
 import co.anitrend.data.studio.datasource.local.StudioLocalSource
 import co.anitrend.data.studio.datasource.remote.StudioRemoteSource
 import co.anitrend.data.studio.entity.filter.StudioQueryFilter
-import co.anitrend.data.studio.model.query.StudioQuery
 import co.anitrend.data.studio.source.contract.StudioSource
 import co.anitrend.domain.studio.entity.Studio
 import co.anitrend.domain.studio.model.StudioParam
@@ -57,7 +56,7 @@ internal class StudioSourceImpl {
                     controller = controller,
                     clearDataHelper = clearDataHelper,
                     filter = filter,
-                    query = StudioQuery(param),
+                    query = param,
                     dispatcher = dispatcher,
                 )
 

@@ -32,13 +32,15 @@ import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
 import co.anitrend.data.common.extension.from
+import co.anitrend.data.graphql.anilist.GetStaffPaged
+import co.anitrend.data.graphql.anilist.GetStaffPagedVariables
 import co.anitrend.data.staff.StaffPagedController
 import co.anitrend.data.staff.datasource.local.StaffLocalSource
 import co.anitrend.data.staff.datasource.remote.StaffRemoteSource
 import co.anitrend.data.staff.entity.StaffEntity
 import co.anitrend.data.staff.entity.filter.StaffQueryFilter
-import co.anitrend.data.staff.model.query.StaffQuery
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.staff.model.StaffParam
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -49,22 +51,38 @@ internal class StaffPagingSource(
     private val controller: StaffPagedController,
     private val clearDataHelper: IClearDataHelper,
     private val filter: StaffQueryFilter.Paged,
-    private val query: StaffQuery.Paged,
+    private val query: StaffParam.Paged,
     override val dispatcher: ISupportDispatcher,
 ) : AbstractPagingMediator<Int, StaffEntity>() {
     fun pagingSourceFactory(): () -> PagingSource<Int, StaffEntity> =
         {
-            localSource.rawPagingSource(filter.build(query.param))
+            localSource.rawPagingSource(filter.build(query))
         }
 
     private suspend fun getStaff(requestCallback: RequestCallback) {
         val deferred =
             deferred {
-                val queryBuilder =
-                    query.toQueryContainerBuilder(
-                        supportPagingHelper,
-                    )
-                remoteSource.getStaffPaged(queryBuilder)
+                remoteSource.getStaffPaged(
+                    GraphQLRequest(
+                        query = GetStaffPaged.document,
+                        operationName = GetStaffPaged.name,
+                        variables =
+                            GetStaffPagedVariables(
+                                page = supportPagingHelper.page,
+                                perPage = supportPagingHelper.pageSize,
+                                id_in = query.id_in?.map { it.toInt() },
+                                id_not = query.id_not?.toInt(),
+                                id_not_in = query.id_not_in?.map { it.toInt() },
+                                search = query.search,
+                                sort =
+                                    query.sort?.map {
+                                        co.anitrend.data.graphql.anilist.StaffSort
+                                            .valueOf(it.name)
+                                    },
+                                isBirthday = query.isBirthday,
+                            ),
+                    ),
+                )
             }
 
         controller(deferred, requestCallback) {

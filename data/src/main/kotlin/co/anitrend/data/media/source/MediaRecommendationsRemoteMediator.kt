@@ -30,20 +30,22 @@ import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
 import co.anitrend.data.common.extension.from
 import co.anitrend.data.common.extension.seedFromLocalCount
+import co.anitrend.data.graphql.anilist.GetMediaWithSuggestion
+import co.anitrend.data.graphql.anilist.GetMediaWithSuggestionVariables
 import co.anitrend.data.media.MediaRecommendationsController
-import co.anitrend.data.media.model.query.MediaConnectionQuery
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.data.recommendation.datasource.local.connection.MediaRecommendationConnectionLocalSource
 import co.anitrend.data.recommendation.entity.connection.MediaRecommendationConnectionEntity
 import co.anitrend.data.recommendation.mapper.MediaRecommendationMapper
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.media.model.MediaParam
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.flow.first
 import org.threeten.bp.Instant
 
 internal class MediaRecommendationsRemoteMediator(
     private val cacheIdentity: CacheIdentity,
     private val cachePolicy: ICacheStorePolicy,
-    private val query: MediaConnectionQuery.RecommendationsPaged,
+    private val query: MediaParam.Recommendations,
     private val remoteSource: MediaRemoteSource,
     private val localSource: MediaRecommendationConnectionLocalSource,
     private val controller: MediaRecommendationsController,
@@ -53,7 +55,7 @@ internal class MediaRecommendationsRemoteMediator(
     override val supportPagingHelper =
         SupportPagingHelper(
             isPagingLimit = false,
-            pageSize = query.param.perPage,
+            pageSize = query.perPage,
         )
 
     private suspend fun shouldRefresh(hasLocalData: Boolean): Boolean =
@@ -88,11 +90,11 @@ internal class MediaRecommendationsRemoteMediator(
     }
 
     override suspend fun initialize(): InitializeAction {
-        var itemCount = localSource.countByMediaId(query.param.id)
-        val maxSortIndex = localSource.maxSortIndexByMediaId(query.param.id)
+        var itemCount = localSource.countByMediaId(query.id)
+        val maxSortIndex = localSource.maxSortIndexByMediaId(query.id)
 
         if (isCorruptPagingCache(itemCount, maxSortIndex)) {
-            localSource.clearByMediaId(query.param.id)
+            localSource.clearByMediaId(query.id)
             cachePolicy.invalidateLastRequest(cacheIdentity)
             itemCount = 0
         } else {
@@ -108,14 +110,31 @@ internal class MediaRecommendationsRemoteMediator(
 
     private suspend fun refreshRecommendations(requestCallback: RequestCallback) {
         mapper.onRequest(
-            mediaId = query.param.id,
+            mediaId = query.id,
             page = supportPagingHelper.page,
         )
 
         val deferred =
             deferred {
                 remoteSource.getMediaRecommendations(
-                    query.toQueryContainerBuilder(supportPagingHelper),
+                    GraphQLRequest(
+                        query = GetMediaWithSuggestion.document,
+                        operationName = GetMediaWithSuggestion.name,
+                        variables =
+                            GetMediaWithSuggestionVariables(
+                                id = query.id.toInt(),
+                                page = supportPagingHelper.page,
+                                perPage = supportPagingHelper.pageSize,
+                                scoreFormat =
+                                    co.anitrend.data.graphql.anilist.ScoreFormat
+                                        .valueOf(query.scoreFormat.name),
+                                sort =
+                                    query.sort?.map {
+                                        co.anitrend.data.graphql.anilist.RecommendationSort
+                                            .valueOf(it.name)
+                                    },
+                            ),
+                    ),
                 )
             }
 
@@ -128,7 +147,7 @@ internal class MediaRecommendationsRemoteMediator(
     }
 
     override suspend fun clearDataSource(context: kotlinx.coroutines.CoroutineDispatcher) {
-        localSource.clearByMediaId(query.param.id)
+        localSource.clearByMediaId(query.id)
         cachePolicy.invalidateLastRequest(cacheIdentity)
     }
 

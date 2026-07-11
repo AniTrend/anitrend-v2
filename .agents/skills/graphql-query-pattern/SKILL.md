@@ -1,113 +1,109 @@
 ---
 name: graphql-query-pattern
 description: >
-  GraphQL controller and query lifecycle guide. Use when adding or refactoring AniList GraphQL
-  requests, remote source bindings, mappers, and error propagation in the data layer. Covers
-  @GraphQuery annotation, @GRAPHQL tag, QueryContainerBuilder, Response<GraphQLResponse<*>>,
-  IGraphPayload.toMap(), and the full request-to-Room pipeline.
+  GraphQL controller and request lifecycle guide. Use when adding or refactoring AniList or Edge
+  GraphQL requests, generated operation wiring, mappers, and error propagation in the data layer.
+  Covers generated `GraphQLRequest<...Variables>` usage, registry-backed document resolution,
+  `QueryContainerBuilder` compatibility boundaries, `Response<GraphQLResponse<*>>`, and the full
+  request-to-Room pipeline.
 ---
 
 # Skill: GraphQL Query / Controller Pattern
 
 ## Overview
 
-All AniList API calls use a custom Retrofit + GraphQL converter. Network calls follow a controller
-pattern that wraps the raw `GraphQLResponse` into a standardised result handled by the data source.
+AniTrend GraphQL calls now use generated operation documents under `src/main/graphql/**` and
+registry-backed request resolution through the `retrofit-graphql` codegen plugin. Network calls
+still follow the same controller pattern: Retrofit returns `Response<GraphQLResponse<*>>`,
+`GraphQLController` validates and maps the payload, and mapper persistence keeps Room as the local
+source of truth.
 
 ## Key files to read
 
-- `data/android/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
-  — the core controller: validates the response, extracts errors, maps result, handles threading
-- `data/src/main/kotlin/co/anitrend/data/tag/source/` — example data source showing how a
-  controller is constructed and called
-- `data/src/main/kotlin/co/anitrend/data/medialist/` and
-  `data/src/main/kotlin/co/anitrend/data/review/` — reference mutation modules for save/delete/
-  rate flows, including source contracts, repository wiring, and concrete use-case bridges
-- `buildSrc/src/main/java/co/anitrend/buildSrc/plugins/components/ProjectDependencies.kt` —
-  where Retrofit, OkHttp, and the GraphQL converter are wired as shared data-module dependencies
+- `data/core/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
+  for the response pipeline and error handling
+- `data/src/main/kotlin/co/anitrend/data/android/koin/Modules.kt`
+  for registry-first GraphQL converter wiring
+- `data/src/main/kotlin/co/anitrend/data/core/api/converter/AniTrendConverterFactory.kt`
+  for request and response converter routing
+- `data/src/main/kotlin/co/anitrend/data/core/api/converter/request/AniGraphRequestConverter.kt`
+  for registry-backed document resolution and release minification
+- `data/src/main/graphql/**` and `data/edge/src/main/graphql/**`
+  for the generated AniList and Edge operation documents
+- `buildSrc/src/main/java/co/anitrend/buildSrc/plugins/components/ProjectDependencies.kt`
+  where shared data-module GraphQL dependencies are wired
 
 ## Request lifecycle
 
 ```
-Retrofit interface method (suspend fun)
-    → GraphQLController.invoke()
-        → validates GraphQLResponse (non-null, no errors)
-        → calls mapper.onResponseMapFrom()
-        → mapper.persist() writes to Room
-        → emits domain model to the DataState flow
+Generated operation document + variables
+    → GraphQLRequest<...Variables>
+        → AniTrendConverterFactory / AniGraphRequestConverter
+            → registry-backed document resolution
+            → GraphQLController.invoke()
+                → validates GraphQLResponse (non-null, no errors)
+                → calls mapper.onResponseMapFrom()
+                → mapper.persist() writes to Room
+                → emits domain model to the DataState flow
 ```
 
-- Errors are encapsulated as `RequestError` and emitted through the `DataState` error channel —
-  never thrown as raw exceptions to the ViewModel.
-- Threading is managed inside the controller/mapper; do not add extra `withContext` unless a
-  custom controller is used.
+- Errors are encapsulated as `RequestError` and emitted through the `DataState` error channel.
+- Threading is managed inside the controller and mapper pipeline. Do not add extra `withContext`
+  unless a custom controller is required.
 
-## Adding a new GraphQL query
+## Adding a new GraphQL operation
 
-1. Define a Retrofit `interface` method annotated with `@GraphQuery("OperationName")` (from the
-  `retrofit-graphql` library). Place it in the same package as the existing API interfaces for
-  that feature module, typically `data/src/main/kotlin/co/anitrend/data/<feature>/source/remote/`.
-2. Write the `.graphql` query file in the `assets/graphql/` directory of the same module.
-3. Inject a new `GraphQLController` instance via Koin for each data source class; do not share one
-  controller instance across unrelated source classes.
-4. In the data source `invoke()` / `getX()` method, call the Retrofit method then feed the result
-   to the controller.
+1. Write the `.graphql` operation under the generated source tree for the owning module:
+   - AniList: `data/src/main/graphql/**`
+   - Edge: `data/edge/src/main/graphql/**`
+2. Keep fragment composition under the matching `fragments/**` tree and prefer fragment reuse over
+   duplicated inline field sets.
+3. Let the codegen task generate the operation object and typed variables class.
+4. Define or update the Retrofit `interface` method in the existing remote source package, using a
+   generated `GraphQLRequest<...Variables>` body.
+5. Inject a `GraphQLController` per source class and feed the Retrofit response into it.
 
 ## Controller choice
 
-- Use `graphQLController(...)` when the endpoint returns `Response<GraphQLResponse<*>>` and the
-  source is annotated with `@GRAPHQL`.
-- Use `defaultController(...)` for REST endpoints that return a plain response body instead of a
-  GraphQL envelope.
+- Use `graphQLController(...)` when the endpoint returns `Response<GraphQLResponse<*>>`.
+- Use `defaultController(...)` for plain REST responses that are not wrapped in a GraphQL envelope.
 
-## Remote source binding — annotation and type contract
+## Remote source binding and type contract
 
-Every remote source method uses three cooperating pieces:
+### Generated `GraphQLRequest<...Variables>`
+A generated request object carries the operation name, document identity, and typed variables.
+This is the preferred production request shape for both AniList and Edge GraphQL calls.
 
-### `@GRAPHQL`
-A Retrofit tag annotation defined in `data/android`. It signals the `retrofit-graphql` converter
-to serialize the `QueryContainerBuilder` body as a GraphQL envelope
-`{ operationName, query, variables }` rather than as plain JSON.
+### Registry-backed document resolution
+Generated registries are composed in Koin and passed into the GraphQL converter. Production wiring
+is registry-first, and the repo-local `RegistryOnlyGraphProcessor` intentionally blocks runtime
+asset discovery fallback.
 
-### `@GraphQuery("OperationName")`
-Resolves and loads the matching `.graphql` asset file at runtime by operation name. The annotation
-processor injects `operationName` and the query string into the `QueryContainerBuilder` so the
-correct operation is sent to the server.
-
-### `@Body queryContainer: QueryContainerBuilder`
-`QueryContainerBuilder` carries the assembled `{ operationName, query, variables: Map }` envelope.
-The data source creates the variables map by calling `IGraphPayload.toMap()` on the query object
-(see Rule 6 in `mapping-graphql-models/SKILL.md`) and passes it to the builder before handing it
-to Retrofit. **All three annotations must stay in sync with each other and with the variables
-declared in the `.graphql` file.**
+### `QueryContainerBuilder` compatibility boundary
+`QueryContainerBuilder` is still supported by the converter for compatibility utilities, but it is
+no longer the preferred production request path for migrated remote sources. New GraphQL work
+should start from generated request types unless a documented compatibility gap requires otherwise.
 
 ### `Response<GraphQLResponse<*>>`
-- `Response<T>` is Retrofit's envelope — it exposes HTTP status code and headers while keeping the
-  deserialized body separate.
-- `GraphQLResponse<T>` is the standard GraphQL envelope `{ data: T?, errors: List<Error>? }` from
-  `retrofit-graphql`.
-- Both wrappers are stripped inside `GraphQLController` before the mapped domain type ever reaches
-  the repository or ViewModel. Data sources should never unwrap them manually.
+- `Response<T>` is Retrofit's HTTP envelope.
+- `GraphQLResponse<T>` is the GraphQL data and errors envelope.
+- Both wrappers are stripped inside `GraphQLController` before mapped domain types reach the
+  repository or presentation layers.
 
-A complete method signature looks like:
+A typical migrated method signature looks like:
 ```kotlin
-@GRAPHQL
-@GraphQuery("GetMediaDetail")
 @POST(IEndpointType.BASE_ENDPOINT_PATH)
 suspend fun getMediaDetail(
-    @Body queryContainer: QueryContainerBuilder,
+    @Body request: GraphQLRequest<GetMediaDetailVariables>,
 ): Response<GraphQLResponse<MediaModelContainer.Detail>>
 ```
 
 ## Mutation flow rules
 
-- For GraphQL mutation-only features, still define the repository contract and abstract use case in
-  `:domain`; the data module should implement and wire them rather than inventing local contracts.
-- Keep the module `Types.kt` limited to aliases. Put concrete use-case subclasses in the module
-  `usecase/` package.
+- For mutation-only features, still define repository contracts and abstract use cases in `:domain`.
+- Keep the module `Types.kt` limited to aliases. Put concrete use-case subclasses in `usecase/`.
 - When wiring `graphQLController(...)` or `defaultController(...)` in Koin, prefer
-  `get<ConcreteMapper>()` over bare `get()` for mapper arguments so generic resolution stays
-  explicit and stable. Do not apply this rule to dispatcher or strategy arguments.
+  `get<ConcreteMapper>()` over bare `get()` for mapper arguments.
 
 ## Edge modeling rules
 

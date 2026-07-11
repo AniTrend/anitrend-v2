@@ -1,8 +1,16 @@
 pluginManagement {
     repositories {
+        maven(url = uri("https://www.jitpack.io"))
         gradlePluginPortal()
         google()
         mavenCentral()
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "co.anitrend.retrofit.graphql.codegen") {
+                useModule("com.github.AniTrend.retrofit-graphql:gradle-plugin:${requested.version}")
+            }
+        }
     }
 }
 

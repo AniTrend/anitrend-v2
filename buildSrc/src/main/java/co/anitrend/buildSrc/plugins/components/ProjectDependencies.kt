@@ -214,7 +214,9 @@ private fun Project.applyDataModuleDependencies() {
     dependencies.implementation(libs.square.retrofit)
     dependencies.implementation(libs.square.retrofit.converter.gson)
 
-    dependencies.implementation(libs.anitrend.retrofit.graphql)
+    dependencies.implementation(libs.anitrend.retrofit.graphql.runtime)
+    dependencies.implementation(libs.anitrend.retrofit.graphql.api)
+    dependencies.implementation(libs.anitrend.retrofit.graphql.annotations)
     dependencies.implementation(libs.retrofitSerializer)
     dependencies.implementation(libs.threeTenBp)
 

@@ -23,7 +23,6 @@ import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.media.cache.MediaCache
-import co.anitrend.data.media.model.query.MediaQuery
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaStats
 import co.anitrend.domain.media.entity.MediaStudioEntry
@@ -32,7 +31,7 @@ import kotlinx.coroutines.flow.Flow
 
 internal class MediaSource {
     abstract class Detail : AbstractCoreDataSource() {
-        protected lateinit var query: MediaQuery.Detail
+        protected lateinit var query: MediaParam.Detail
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -43,7 +42,7 @@ internal class MediaSource {
         protected abstract suspend fun getMedia(requestCallback: RequestCallback): Boolean
 
         operator fun invoke(param: MediaParam.Detail): Flow<Media> {
-            query = MediaQuery.Detail(param)
+            query = param
             cacheIdentity = MediaCache.Identity.Detail(param)
             cachePolicy(
                 scope = scope,
@@ -56,7 +55,7 @@ internal class MediaSource {
     }
 
     abstract class Studios : AbstractCoreDataSource() {
-        protected lateinit var query: MediaQuery.Studios
+        protected lateinit var query: MediaParam.Studios
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -67,7 +66,7 @@ internal class MediaSource {
         protected abstract suspend fun refreshStudios(requestCallback: RequestCallback): Boolean
 
         operator fun invoke(param: MediaParam.Studios): Flow<List<MediaStudioEntry>> {
-            query = MediaQuery.Studios(param)
+            query = param
             cacheIdentity = MediaCache.Identity.Studios(param)
             cachePolicy(
                 scope = scope,
@@ -80,7 +79,7 @@ internal class MediaSource {
     }
 
     abstract class Stats : AbstractCoreDataSource() {
-        protected lateinit var query: MediaQuery.Stats
+        protected lateinit var query: MediaParam.Stats
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -91,7 +90,7 @@ internal class MediaSource {
         protected abstract suspend fun refreshStats(requestCallback: RequestCallback): Boolean
 
         operator fun invoke(param: MediaParam.Stats): Flow<MediaStats> {
-            query = MediaQuery.Stats(param)
+            query = param
             cacheIdentity = MediaCache.Identity.Stats(param)
             cachePolicy(
                 scope = scope,
@@ -104,12 +103,12 @@ internal class MediaSource {
     }
 
     abstract class Paging {
-        protected lateinit var query: MediaQuery.Find
+        protected lateinit var query: MediaParam.Find
 
         abstract operator fun invoke(param: MediaParam.Find): Flow<PagingData<Media>>
 
         protected fun assignQuery(param: MediaParam.Find) {
-            query = MediaQuery.Find(param)
+            query = param
         }
     }
 }

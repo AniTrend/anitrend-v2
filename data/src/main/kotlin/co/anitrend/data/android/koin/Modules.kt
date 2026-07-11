@@ -33,7 +33,6 @@ import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.android.extensions.cacheLocalSource
 import co.anitrend.data.android.info.AppInfo
 import co.anitrend.data.android.info.DeviceInfo
-import co.anitrend.data.android.logger.GraphLogger
 import co.anitrend.data.android.logger.OkHttpLogger
 import co.anitrend.data.android.network.cookie.ApplicationCookieJar
 import co.anitrend.data.auth.helper.AuthenticationHelper
@@ -42,6 +41,7 @@ import co.anitrend.data.auth.koin.authModules
 import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.character.koin.characterModules
 import co.anitrend.data.core.api.converter.AniTrendConverterFactory
+import co.anitrend.data.core.api.converter.CompositeGraphQLDocumentRegistry
 import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import co.anitrend.data.core.api.factory.AniListApiFactory
 import co.anitrend.data.core.app.IAppInfo
@@ -71,10 +71,9 @@ import com.chuckerteam.chucker.api.RetentionManager
 import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import co.anitrend.retrofit.graphql.annotation.processor.GraphProcessor
-import co.anitrend.retrofit.graphql.annotation.processor.contract.AbstractGraphProcessor
-import co.anitrend.retrofit.graphql.annotation.processor.plugin.AssetManagerDiscoveryPlugin
-import co.anitrend.retrofit.graphql.logger.contract.ILogger
+import co.anitrend.retrofit.graphql.model.GraphQLDocumentRegistry
+import co.anitrend.data.graphql.anilist.GeneratedGraphQLRegistry as AniListRegistry
+import co.anitrend.data.edge.graphql.GeneratedGraphQLRegistry as EdgeRegistry
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -120,14 +119,10 @@ private val coreModule =
 
 private val retrofitModule =
     module {
-        factory<AbstractGraphProcessor> {
-            val level = if (BuildConfig.DEBUG) ILogger.Level.VERBOSE else ILogger.Level.ERROR
-            GraphProcessor(
-                discoveryPlugin =
-                    AssetManagerDiscoveryPlugin(
-                        assetManager = androidContext().assets,
-                    ),
-                logger = GraphLogger(level),
+        single<GraphQLDocumentRegistry> {
+            CompositeGraphQLDocumentRegistry(
+                primary = AniListRegistry,
+                fallback = EdgeRegistry,
             )
         }
         single {
@@ -165,7 +160,6 @@ private val retrofitModule =
                     isLenient = true
                 }
             AniTrendConverterFactory(
-                processor = get(),
                 gson = get(),
                 jsonFactory = defaultJsonFactory.asConverterFactory(mimeType),
                 graphFactory = get<Json>().asConverterFactory(mimeType),

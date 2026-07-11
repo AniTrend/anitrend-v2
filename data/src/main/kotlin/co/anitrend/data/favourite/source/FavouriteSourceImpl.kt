@@ -21,9 +21,13 @@ import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.favourite.FavouriteToggleController
 import co.anitrend.data.favourite.datasource.remote.FavouriteRemoteSource
-import co.anitrend.data.favourite.model.mutation.FavouriteMutation
 import co.anitrend.data.favourite.source.contract.FavouriteSource
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.data.graphql.anilist.ToggleAnimeFavourite
+import co.anitrend.data.graphql.anilist.ToggleAnimeFavouriteVariables
+import co.anitrend.data.graphql.anilist.ToggleMangaFavourite
+import co.anitrend.data.graphql.anilist.ToggleMangaFavouriteVariables
+import co.anitrend.domain.favourite.model.FavouriteInput
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -38,11 +42,19 @@ internal class FavouriteSourceImpl {
         override suspend fun toggleFavourite(requestCallback: RequestCallback) {
             val deferred =
                 deferred {
-                    val queryBuilder = mutation.toQueryContainerBuilder(ignoreNulls = true)
-
                     when (val action = mutation) {
-                        is FavouriteMutation.ToggleAnime -> remoteSource.toggleAnimeFavorite(queryBuilder)
-                        is FavouriteMutation.ToggleManga -> remoteSource.toggleMangaFavorite(queryBuilder)
+                        is FavouriteInput.ToggleAnime ->
+                            remoteSource.toggleAnimeFavorite(
+                                ToggleAnimeFavourite.request(
+                                    animeId = action.animeId?.toInt(),
+                                ),
+                            )
+                        is FavouriteInput.ToggleManga ->
+                            remoteSource.toggleMangaFavorite(
+                                ToggleMangaFavourite.request(
+                                    mangaId = action.mangaId?.toInt(),
+                                ),
+                            )
                         else -> error("Unsupported favourite mutation: ${action::class.simpleName}")
                     }
                 }

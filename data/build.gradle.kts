@@ -24,6 +24,7 @@ plugins {
     id("kotlinx-serialization")
     alias(libs.plugins.androidx.room)
     alias(libs.plugins.google.devtools.ksp)
+    alias(libs.plugins.retrofit.graphql.codegen)
 }
 
 tasks.withType(KotlinCompilationTask::class.java) {
@@ -61,4 +62,30 @@ android {
 
 room {
     schemaDirectory("$projectDir/schemas")
+}
+
+retrofitGraphQL {
+    common {
+        generateVariables.set(true)
+    }
+    packageName.set("co.anitrend.data.graphql.anilist")
+    schema.set(file("schema.graphql"))
+    operations.from(fileTree("src/main/graphql") {
+        include("**/*.graphql")
+        exclude("mutations/feed/DeleteFeed.graphql")
+        exclude("mutations/feed/DeleteFeedReply.graphql")
+        exclude("mutations/feed/SaveTextFeed.graphql")
+        exclude("mutations/feed/ToggleFeedSubscription.graphql")
+        // Exclude edge-specific files (moved to :data:edge)
+        exclude("fragments/edge/**")
+        exclude("queries/episode/**")
+        exclude("queries/config/**")
+        exclude("queries/news/**")
+        exclude("queries/series/**")
+    })
+    scalars {
+        map("CountryCode", "kotlin.String")
+        map("FuzzyDateInt", "kotlin.Int")
+        map("Json", "kotlin.String")
+    }
 }

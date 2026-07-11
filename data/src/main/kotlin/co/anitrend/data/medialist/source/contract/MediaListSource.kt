@@ -24,8 +24,6 @@ import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.extensions.invoke
 import co.anitrend.data.android.source.AbstractCoreDataSource
 import co.anitrend.data.medialist.cache.MediaListCache
-import co.anitrend.data.medialist.model.mutation.MediaListMutation
-import co.anitrend.data.medialist.model.query.MediaListQuery
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.medialist.model.MediaListParam
 import kotlinx.coroutines.flow.Flow
@@ -33,21 +31,21 @@ import kotlinx.coroutines.flow.filterNotNull
 
 internal class MediaListSource {
     abstract class Sync : AbstractCoreDataSource() {
-        protected lateinit var query: MediaListQuery.Collection
+        protected lateinit var query: MediaListParam.Collection
 
         protected abstract val observable: Flow<Boolean?>
 
         protected abstract suspend fun getMediaList(requestCallback: RequestCallback)
 
         operator fun invoke(param: MediaListParam.Collection): Flow<Boolean> {
-            query = MediaListQuery.Collection(param)
+            query = param
             invoke(block = ::getMediaList)
             return observable.filterNotNull()
         }
     }
 
     abstract class Entry : AbstractCoreDataSource() {
-        protected lateinit var query: MediaListQuery.Entry
+        protected lateinit var query: MediaListParam.Entry
 
         protected lateinit var cacheIdentity: CacheIdentity
 
@@ -58,7 +56,7 @@ internal class MediaListSource {
         protected abstract suspend fun getEntry(requestCallback: RequestCallback): Boolean
 
         operator fun invoke(param: MediaListParam.Entry): Flow<Media> {
-            query = MediaListQuery.Entry(param)
+            query = param
             cacheIdentity = MediaListCache.Identity.Entry(param)
             cachePolicy(
                 scope = scope,
@@ -71,66 +69,66 @@ internal class MediaListSource {
     }
 
     abstract class Paging {
-        protected lateinit var query: MediaListQuery.Paged
+        protected lateinit var query: MediaListParam.Paged
 
         abstract operator fun invoke(param: MediaListParam.Paged): Flow<PagingData<Media>>
 
         protected fun assignQuery(param: MediaListParam.Paged) {
-            query = MediaListQuery.Paged(param)
+            query = param
         }
     }
 
     abstract class SaveEntry : AbstractCoreDataSource() {
-        protected lateinit var mutation: MediaListMutation.SaveEntry
+        protected lateinit var mutation: MediaListParam.SaveEntry
 
         protected abstract val observable: Flow<Boolean?>
 
         protected abstract suspend fun saveEntry(requestCallback: RequestCallback)
 
         operator fun invoke(param: MediaListParam.SaveEntry): Flow<Boolean> {
-            mutation = MediaListMutation.SaveEntry(param)
+            mutation = param
             invoke(block = ::saveEntry)
             return observable.filterNotNull()
         }
     }
 
     abstract class SaveEntries : AbstractCoreDataSource() {
-        protected lateinit var mutation: MediaListMutation.SaveEntries
+        protected lateinit var mutation: MediaListParam.SaveEntries
 
         protected abstract val observable: Flow<Boolean?>
 
         protected abstract suspend fun saveEntries(requestCallback: RequestCallback)
 
         operator fun invoke(param: MediaListParam.SaveEntries): Flow<Boolean> {
-            mutation = MediaListMutation.SaveEntries(param)
+            mutation = param
             invoke(block = ::saveEntries)
             return observable.filterNotNull()
         }
     }
 
     abstract class DeleteEntry : AbstractCoreDataSource() {
-        protected lateinit var mutation: MediaListMutation.DeleteEntry
+        protected lateinit var mutation: MediaListParam.DeleteEntry
 
         protected abstract val observable: Flow<Boolean?>
 
         protected abstract suspend fun deleteEntry(requestCallback: RequestCallback)
 
         operator fun invoke(param: MediaListParam.DeleteEntry): Flow<Boolean> {
-            mutation = MediaListMutation.DeleteEntry(param)
+            mutation = param
             invoke(block = ::deleteEntry)
             return observable.filterNotNull()
         }
     }
 
     abstract class DeleteCustomList : AbstractCoreDataSource() {
-        protected lateinit var mutation: MediaListMutation.DeleteCustomList
+        protected lateinit var mutation: MediaListParam.DeleteCustomList
 
         protected abstract val observable: Flow<Boolean?>
 
         protected abstract suspend fun deleteCustomList(requestCallback: RequestCallback)
 
         operator fun invoke(param: MediaListParam.DeleteCustomList): Flow<Boolean> {
-            mutation = MediaListMutation.DeleteCustomList(param)
+            mutation = param
             invoke(block = ::deleteCustomList)
             return observable.filterNotNull()
         }

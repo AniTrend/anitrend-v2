@@ -1,0 +1,8 @@
+fragment EdgeNetwork on SeriesNetwork {
+  isPrimary
+  category
+  id
+  logoPath
+  name
+  originCountry
+}

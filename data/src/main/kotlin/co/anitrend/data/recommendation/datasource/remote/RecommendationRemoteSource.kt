@@ -16,28 +16,24 @@
  */
 package co.anitrend.data.recommendation.datasource.remote
 
-import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.data.graphql.anilist.GetRecommendationPagedVariables
+import co.anitrend.data.graphql.anilist.SaveRecommendationVariables
 import co.anitrend.data.recommendation.model.container.RecommendationModelContainer
-import co.anitrend.retrofit.graphql.annotation.GraphQuery
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface RecommendationRemoteSource {
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetRecommendationPaged")
     suspend fun getRecommendationPaged(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetRecommendationPagedVariables>,
     ): Response<GraphQLResponse<RecommendationModelContainer.Paged>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("SaveRecommendation")
     suspend fun saveRecommendation(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<SaveRecommendationVariables>,
     ): Response<GraphQLResponse<RecommendationModelContainer.Detail>>
 }

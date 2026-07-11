@@ -16,73 +16,63 @@
  */
 package co.anitrend.data.media.datasource.remote
 
-import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.data.graphql.anilist.GetMediaDetailVariables
+import co.anitrend.data.graphql.anilist.GetMediaPagedVariables
+import co.anitrend.data.graphql.anilist.GetMediaStatsVariables
+import co.anitrend.data.graphql.anilist.GetMediaWithCharacterVariables
+import co.anitrend.data.graphql.anilist.GetMediaWithRelationVariables
+import co.anitrend.data.graphql.anilist.GetMediaWithStaffVariables
+import co.anitrend.data.graphql.anilist.GetMediaWithStudioVariables
+import co.anitrend.data.graphql.anilist.GetMediaWithSuggestionVariables
 import co.anitrend.data.media.model.container.MediaConnectionModelContainer
 import co.anitrend.data.media.model.container.MediaModelContainer
 import co.anitrend.data.media.model.container.MediaSidecarModelContainer
 import co.anitrend.data.media.model.container.MediaPeopleModelContainer
-import co.anitrend.retrofit.graphql.annotation.GraphQuery
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface MediaRemoteSource {
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetMediaPaged")
     suspend fun getMediaPaged(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetMediaPagedVariables>,
     ): Response<GraphQLResponse<MediaModelContainer.Paged>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetMediaDetail")
     suspend fun getMediaDetail(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetMediaDetailVariables>,
     ): Response<GraphQLResponse<MediaModelContainer.Detail>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetMediaWithCharacter")
     suspend fun getMediaCharacters(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetMediaWithCharacterVariables>,
     ): Response<GraphQLResponse<MediaPeopleModelContainer.Characters>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetMediaWithStaff")
     suspend fun getMediaStaff(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetMediaWithStaffVariables>,
     ): Response<GraphQLResponse<MediaPeopleModelContainer.Staff>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetMediaWithRelation")
     suspend fun getMediaRelations(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetMediaWithRelationVariables>,
     ): Response<GraphQLResponse<MediaConnectionModelContainer.Relations>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetMediaWithSuggestion")
     suspend fun getMediaRecommendations(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetMediaWithSuggestionVariables>,
     ): Response<GraphQLResponse<MediaConnectionModelContainer.Recommendations>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetMediaWithStudio")
     suspend fun getMediaStudios(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetMediaWithStudioVariables>,
     ): Response<GraphQLResponse<MediaSidecarModelContainer.Studios>>
 
-    @GRAPHQL
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetMediaStats")
     suspend fun getMediaStats(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetMediaStatsVariables>,
     ): Response<GraphQLResponse<MediaSidecarModelContainer.Stats>>
 }

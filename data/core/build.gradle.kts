@@ -20,11 +20,23 @@ plugins {
     id("kotlinx-serialization")
 }
 
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+
+tasks.withType(KotlinCompilationTask::class.java) {
+    compilerOptions {
+        optIn.add("kotlinx.serialization.ExperimentalSerializationApi")
+        optIn.add("kotlin.RequiresOptIn")
+    }
+}
 
 dependencies {
     implementation(libs.jetbrains.kotlinx.serialization.json)
 
     implementation(libs.androidx.collection.ktx)
+    implementation(libs.anitrend.retrofit.graphql.runtime)
+    implementation(libs.anitrend.retrofit.graphql.api)
+    implementation(libs.anitrend.retrofit.graphql.annotations)
+    implementation(libs.cash.copper)
 
     implementation(libs.anitrend.querybuilder.core)
     implementation(libs.anitrend.querybuilder.core.ext)

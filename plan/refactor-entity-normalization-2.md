@@ -311,8 +311,8 @@ present in the same file is sufficient for the edge/node shape).
 The sidecar refactor must include the GraphQL sources that enabled the drift.
 
 **Problem query families**:
-- `data/src/main/assets/graphql/queries/user/GetUserProfile*.graphql`
-- `data/src/main/assets/graphql/queries/media/connection/GetMediaWith*.graphql`
+- `data/src/main/graphql/queries/user/GetUserProfile*.graphql`
+- `data/src/main/graphql/queries/media/connection/GetMediaWith*.graphql`
 
 **Contract rules to enforce**:
 1. Query files represent module contracts, not screen contracts.
@@ -328,7 +328,7 @@ The sidecar refactor must include the GraphQL sources that enabled the drift.
 - Build a query inventory for both families and classify each file as `keep`, `merge`, or `delete`.
 - For media connection queries, consolidate repeated connection shapes behind shared fragments and shared mapper entry points.
 - For user profile queries, remove duplicated favourites/feed/overview shape layers that bypass existing local entities.
-- Update `@GraphQuery` bindings in remote sources to the consolidated set and remove orphan query assets.
+- Update generated GraphQL request bindings in remote sources to the consolidated set and remove orphan query assets.
 - Add a module-level checklist gate for data-layer PRs:
   - query placement follows `character`/`studio` family layout,
   - mapper path uses existing converters,

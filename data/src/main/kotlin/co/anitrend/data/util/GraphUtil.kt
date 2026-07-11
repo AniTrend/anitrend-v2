@@ -18,11 +18,9 @@ package co.anitrend.data.util
 
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.data.common.extension.toPageQuery
-import co.anitrend.data.common.model.graph.IGraphPayload
 import co.anitrend.data.core.AniTrendExperimentalFeature
 import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.common.sort.order.SortOrder
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
 
 /**
  * Graph request helper class
@@ -40,47 +38,6 @@ internal object GraphUtil {
      * Default per page loading limit for this application
      */
     const val PAGING_LIMIT = 30
-
-    /**
-     * Provides a default GraphQL Query and Variable Builder
-     *
-     * @param paging Optional paging helper
-     * @param settings Optional sort order settings
-     * @param ignoreNulls Ignore null values, defaults to false
-     */
-    internal fun IGraphPayload.toQueryContainerBuilder(
-        paging: SupportPagingHelper? = null,
-        ignoreNulls: Boolean = false,
-    ): QueryContainerBuilder {
-        val queryContainerBuilder = QueryContainerBuilder()
-        paging?.apply {
-            queryContainerBuilder.putVariables(toPageQuery().toMap())
-        }
-        // A better way might be to perform changes on the `toMap()` contract itself
-        val variables = toMap().toMutableMap()
-
-        variables
-            .filter { it.value is List<*> }
-            .forEach { entry ->
-                val mapped =
-                    (entry.value as List<*>).map {
-                        if (it is ISortWithOrder<*>) {
-                            return@map it.applySortOrderUsing()
-                        }
-                        it
-                    }
-                variables[entry.key] = mapped
-            }
-
-        queryContainerBuilder.putVariables(
-            if (ignoreNulls) {
-                variables.filterValues { it != null }
-            } else {
-                variables
-            },
-        )
-        return queryContainerBuilder
-    }
 
     /**
      * Compacts the request body aiding in the shrinkage of the request payload

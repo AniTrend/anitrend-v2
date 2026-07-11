@@ -19,27 +19,20 @@ package co.anitrend.data.favourite.source.contract
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.extensions.invoke
 import co.anitrend.data.android.source.AbstractCoreDataSource
-import co.anitrend.data.common.model.graph.IGraphPayload
-import co.anitrend.data.favourite.model.mutation.FavouriteMutation
 import co.anitrend.domain.favourite.model.FavouriteInput
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 
 internal class FavouriteSource {
     abstract class Toggle : AbstractCoreDataSource() {
-        protected lateinit var mutation: IGraphPayload
+        protected lateinit var mutation: FavouriteInput
 
         protected abstract val observable: Flow<Boolean?>
 
         protected abstract suspend fun toggleFavourite(requestCallback: RequestCallback)
 
         operator fun invoke(param: FavouriteInput): Flow<Boolean> {
-            mutation =
-                when (param) {
-                    is FavouriteInput.ToggleAnime -> FavouriteMutation.ToggleAnime(param)
-                    is FavouriteInput.ToggleManga -> FavouriteMutation.ToggleManga(param)
-                    else -> error("Unsupported favourite toggle param: ${param::class.simpleName}")
-                }
+            mutation = param
             invoke(block = ::toggleFavourite)
             return observable.filterNotNull()
         }

@@ -17,13 +17,15 @@
 plugins {
     id("co.anitrend.plugin")
     id("kotlinx-serialization")
+    alias(libs.plugins.retrofit.graphql.codegen)
 }
 
 
 dependencies {
     implementation(libs.threeTenBp)
 
-    implementation(libs.anitrend.retrofit.graphql)
+    implementation(libs.anitrend.retrofit.graphql.runtime)
+    implementation(libs.anitrend.retrofit.graphql.api)
 
     implementation(libs.jetbrains.kotlinx.serialization.json)
 
@@ -43,4 +45,26 @@ dependencies {
 android {
     buildFeatures.buildConfig = true
     namespace = "co.anitrend.data.edge"
+}
+
+retrofitGraphQL {
+    common {
+        generateVariables.set(true)
+    }
+    packageName.set("co.anitrend.data.edge.graphql")
+    schema.set(file("../anitrend.schema.graphql"))
+    operations.from(fileTree("src/main/graphql") {
+        include("**/*.graphql")
+    })
+    scalars {
+        map("JSON", "kotlin.String")
+        map("NonEmptyString", "kotlin.String")
+        map("NonNegativeFloat", "kotlin.Double")
+        map("ObjMap", "kotlin.String")
+        map("PositiveFloat", "kotlin.Double")
+        map("PositiveInt", "kotlin.Int")
+        map("URL", "kotlin.String")
+        map("_DirectiveExtensions", "kotlin.String")
+        map("queryInput_newsFeed_locale", "kotlin.String")
+    }
 }

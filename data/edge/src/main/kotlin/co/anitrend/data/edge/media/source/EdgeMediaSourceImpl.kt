@@ -21,12 +21,11 @@ import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.data.android.cache.repository.contract.ICacheStorePolicy
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
-import co.anitrend.data.common.model.graph.toQueryContainerBuilder
+import co.anitrend.data.edge.graphql.GetMediaById
 import co.anitrend.data.edge.media.EdgeMediaController
 import co.anitrend.data.edge.media.datasource.local.EdgeMediaLocalSource
 import co.anitrend.data.edge.media.datasource.remote.EdgeMediaRemoteSource
 import co.anitrend.data.edge.media.entity.EdgeMediaEntity
-import co.anitrend.data.edge.media.model.query.MediaByIdQuery
 import co.anitrend.data.edge.media.source.contract.EdgeMediaSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -52,11 +51,11 @@ internal class EdgeMediaSourceImpl(
     override suspend fun getMediaById(callback: RequestCallback): Boolean {
         val deferred =
             deferred {
-                val queryBuilder =
-                    MediaByIdQuery(
+                remoteSource.getMediaById(
+                    GetMediaById.request(
                         id = cacheIdentity.id.toInt(),
-                    ).toQueryContainerBuilder()
-                remoteSource.getMediaById(queryBuilder)
+                    ),
+                )
             }
         val result = controller(deferred, callback)
         return result != null

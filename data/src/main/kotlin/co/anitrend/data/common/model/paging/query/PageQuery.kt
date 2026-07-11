@@ -18,7 +18,6 @@ package co.anitrend.data.common.model.paging.query
 
 import androidx.annotation.IntRange
 import co.anitrend.arch.extension.util.pagination.contract.ISupportPagingHelper
-import co.anitrend.data.common.model.graph.IGraphPayload
 
 /** [Page query](https://anilist.github.io/ApiV2-GraphQL-Docs/query.doc.html)
  *
@@ -30,8 +29,7 @@ internal data class PageQuery(
     var page: Int,
     @IntRange(from = 0, to = 50)
     val perPage: Int = 30,
-) : IGraphPayload,
-    ISupportPagingHelper {
+) : ISupportPagingHelper {
     /**
      * Resets the paging parameters to their default
      */
@@ -57,13 +55,4 @@ internal data class PageQuery(
      * Checks if the current page and offset is the first
      */
     override fun isFirstPage() = page == 1
-
-    /**
-     * A map serializer to build maps out of objects to allow easier consumption in a GraphQL API
-     */
-    override fun toMap() =
-        mapOf(
-            "page" to page,
-            "perPage" to perPage,
-        )
 }

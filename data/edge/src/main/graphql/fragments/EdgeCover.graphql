@@ -1,0 +1,6 @@
+fragment EdgeCover on SeriesCoverImage {
+  color
+  extraLarge
+  large
+  medium
+}

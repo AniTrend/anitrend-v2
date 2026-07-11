@@ -16,33 +16,15 @@
  */
 package co.anitrend.data.util.graphql
 
-import co.anitrend.data.base.MockQuery
-import co.anitrend.data.common.model.paging.query.PageQuery
-import co.anitrend.data.util.GraphUtil
 import co.anitrend.data.util.GraphUtil.applySortOrderUsing
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
 import co.anitrend.domain.common.sort.SortWithOrder
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.medialist.enums.MediaListSort
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import kotlin.test.Test
 
 class GraphUtilTest {
-    @Test
-    fun `default query has required map keys and values`() {
-        val actual =
-            PageQuery(
-                page = 1,
-            ).toQueryContainerBuilder()
-
-        assertTrue(actual.containsKey("page"))
-        assertEquals(1, actual.getVariable("page"))
-        assertTrue(actual.containsKey("perPage"))
-        assertEquals(GraphUtil.PAGING_LIMIT, actual.getVariable("perPage"))
-    }
-
     @Test
     fun `sort order utility on enum attaches sort order correctly`() {
         val expected = "ADDED_TIME_DESC"
@@ -87,33 +69,4 @@ class GraphUtilTest {
         assertEquals(expected, actual)
     }
 
-    @Test
-    fun `mock query with sorting parameter produces mapped sorting order using sort order settings as descending`() {
-        val input =
-            listOf(MediaSort.SEARCH_MATCH, MediaSort.POPULARITY, MediaSort.TYPE)
-                .map { SortWithOrder(it, SortOrder.DESC) }
-        val mockQuery = MockQuery(sort = input)
-
-        val expected = listOf("SEARCH_MATCH", "POPULARITY_DESC", "TYPE_DESC")
-
-        val queryContainerBuilder = mockQuery.toQueryContainerBuilder()
-        val actual = queryContainerBuilder.getVariable("sort")
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `mock query with sorting parameter produces mapped sorting order using sort order settings as ascending`() {
-        val input =
-            listOf(MediaSort.SEARCH_MATCH, MediaSort.POPULARITY, MediaSort.TYPE)
-                .map { SortWithOrder(it, SortOrder.ASC) }
-        val mockQuery = MockQuery(sort = input)
-
-        val expected = listOf("SEARCH_MATCH", "POPULARITY", "TYPE")
-
-        val queryContainerBuilder = mockQuery.toQueryContainerBuilder()
-        val actual = queryContainerBuilder.getVariable("sort")
-
-        assertEquals(expected, actual)
-    }
 }

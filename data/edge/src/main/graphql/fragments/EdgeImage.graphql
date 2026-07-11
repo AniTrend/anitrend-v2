@@ -1,0 +1,7 @@
+fragment EdgeImage on SeriesImageAttributes {
+  height
+  locale
+  type
+  url
+  width
+}

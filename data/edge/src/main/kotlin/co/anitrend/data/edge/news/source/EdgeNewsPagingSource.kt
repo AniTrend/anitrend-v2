@@ -29,12 +29,11 @@ import co.anitrend.data.android.cache.model.CacheIdentity
 import co.anitrend.data.android.cleaner.contract.IClearDataHelper
 import co.anitrend.data.android.extensions.deferred
 import co.anitrend.data.android.paging.AbstractPagingMediator
-import co.anitrend.data.common.model.graph.toQueryContainerBuilder
+import co.anitrend.data.edge.graphql.NewsConnection
 import co.anitrend.data.edge.news.EdgeNewsController
 import co.anitrend.data.edge.news.converter.EdgeNewsEntityConverter
 import co.anitrend.data.edge.news.datasource.local.EdgeNewsLocalSource
 import co.anitrend.data.edge.news.datasource.remote.EdgeNewsRemoteSource
-import co.anitrend.data.edge.news.model.query.NewsConnectionQuery
 import co.anitrend.domain.news.entity.News
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -47,7 +46,6 @@ internal class EdgeNewsPagingSource(
     private val controller: EdgeNewsController,
     private val converter: EdgeNewsEntityConverter,
     private val clearDataHelper: IClearDataHelper,
-    private val query: NewsConnectionQuery,
     override val dispatcher: ISupportDispatcher,
 ) : AbstractPagingMediator<Int, News>() {
     private var nextCursor: String? = null
@@ -67,13 +65,12 @@ internal class EdgeNewsPagingSource(
     private suspend fun getNews(requestCallback: RequestCallback) {
         val deferred =
             deferred {
-                val builder =
-                    query
-                        .copy(
-                            after = nextCursor,
-                            limit = supportPagingHelper.pageSize,
-                        ).toQueryContainerBuilder(ignoreNulls = true)
-                remoteSource.getNewsConnection(builder)
+                remoteSource.getNewsConnection(
+                    NewsConnection.request(
+                        after = nextCursor,
+                        limit = supportPagingHelper.pageSize.toDouble(),
+                    ),
+                )
             }
         controller(deferred, requestCallback) {
             // Determine paging completion based on returned data size and/or "last" cursor

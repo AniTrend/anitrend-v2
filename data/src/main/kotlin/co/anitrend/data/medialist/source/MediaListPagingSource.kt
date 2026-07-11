@@ -38,8 +38,8 @@ import co.anitrend.data.medialist.MediaListPagedController
 import co.anitrend.data.medialist.datasource.local.MediaListLocalSource
 import co.anitrend.data.medialist.datasource.remote.MediaListRemoteSource
 import co.anitrend.data.medialist.entity.filter.MediaListQueryFilter
-import co.anitrend.data.medialist.model.query.MediaListQuery
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.data.graphql.anilist.GetMediaListPaged
+import co.anitrend.domain.medialist.model.MediaListParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -51,22 +51,91 @@ internal class MediaListPagingSource(
     private val controller: MediaListPagedController,
     private val filter: MediaListQueryFilter.Paged,
     private val clearDataHelper: IClearDataHelper,
-    private val query: MediaListQuery.Paged,
+    private val query: MediaListParam.Paged,
     override val dispatcher: ISupportDispatcher,
 ) : AbstractPagingMediator<Int, MediaEntityView.Core>() {
     fun pagingSourceFactory(): () -> PagingSource<Int, MediaEntityView.Core> =
         {
-            mediaLocalSource.rawPagingSource(filter.build(query.param))
+            mediaLocalSource.rawPagingSource(filter.build(query))
         }
 
     private suspend fun getMediaList(requestCallback: RequestCallback) {
         val deferred =
             deferred {
-                val queryBuilder =
-                    query.toQueryContainerBuilder(
-                        supportPagingHelper,
-                    )
-                remoteSource.getMediaListPaged(queryBuilder)
+                remoteSource.getMediaListPaged(
+                    GetMediaListPaged.request(
+                        compareWithAuthList = query.compareWithAuthList,
+                        completedAt =
+                            query.completedAt
+                                ?.toString()
+                                ?.toIntOrNull(),
+                        completedAt_greater =
+                            query.completedAt_greater
+                                ?.toString()
+                                ?.toIntOrNull(),
+                        completedAt_lesser =
+                            query.completedAt_lesser
+                                ?.toString()
+                                ?.toIntOrNull(),
+                        completedAt_like = query.completedAt_like?.toString(),
+                        id = query.id?.toInt(),
+                        isFollowing = query.isFollowing,
+                        mediaId = query.mediaId?.toInt(),
+                        notes = query.notes,
+                        notes_like = query.notes_like,
+                        sort =
+                            query.sort?.map {
+                                val baseName = it.sortable.name
+                                val enumName = if (it.order == co.anitrend.domain.common.sort.order.SortOrder.DESC) baseName + "_DESC" else baseName
+                                co.anitrend.data.graphql.anilist.MediaListSort
+                                    .valueOf(enumName)
+                            },
+                        startedAt =
+                            query.startedAt
+                                ?.toString()
+                                ?.toIntOrNull(),
+                        startedAt_greater =
+                            query.startedAt_greater
+                                ?.toString()
+                                ?.toIntOrNull(),
+                        startedAt_lesser =
+                            query.startedAt_lesser
+                                ?.toString()
+                                ?.toIntOrNull(),
+                        startedAt_like = query.startedAt_like?.toString(),
+                        status =
+                            query.status?.let {
+                                co.anitrend.data.graphql.anilist.MediaListStatus
+                                    .valueOf(it.name)
+                            },
+                        status_in =
+                            query.status_in?.map {
+                                co.anitrend.data.graphql.anilist.MediaListStatus
+                                    .valueOf(it.name)
+                            },
+                        status_not =
+                            query.status_not?.let {
+                                co.anitrend.data.graphql.anilist.MediaListStatus
+                                    .valueOf(it.name)
+                            },
+                        status_not_in =
+                            query.status_not_in?.map {
+                                co.anitrend.data.graphql.anilist.MediaListStatus
+                                    .valueOf(it.name)
+                            },
+                        type =
+                            co.anitrend.data.graphql.anilist.MediaType
+                                .valueOf(query.type.name),
+                        userId = query.userId?.toInt(),
+                        userName = query.userName,
+                        userId_in = query.userId_in?.map { it.toInt() },
+                        scoreFormat =
+                            co.anitrend.data.graphql.anilist.ScoreFormat
+                                .valueOf(query.scoreFormat.name),
+                        page = supportPagingHelper.page,
+                        perPage = supportPagingHelper.pageSize,
+                    ),
+                )
             }
 
         controller(deferred, requestCallback) {
@@ -107,13 +176,13 @@ internal class MediaListPagingSource(
 
     override suspend fun clearDataSource(context: CoroutineDispatcher) {
         clearDataHelper(context) {
-            if (query.param.userId != null) {
+            if (query.userId != null) {
                 localSource.clearByUserId(
-                    requireNotNull(query.param.userId),
+                    requireNotNull(query.userId),
                 )
-            } else if (query.param.userName != null) {
+            } else if (query.userName != null) {
                 localSource.clearByUserName(
-                    requireNotNull(query.param.userName),
+                    requireNotNull(query.userName),
                 )
             }
         }

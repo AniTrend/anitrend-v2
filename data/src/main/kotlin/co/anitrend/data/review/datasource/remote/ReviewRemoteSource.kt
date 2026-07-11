@@ -16,49 +16,41 @@
  */
 package co.anitrend.data.review.datasource.remote
 
-import co.anitrend.data.core.GRAPHQL
-import co.anitrend.data.core.api.factory.contract.IEndpointType
 import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.data.graphql.anilist.DeleteReviewVariables
+import co.anitrend.data.graphql.anilist.GetReviewPagedVariables
+import co.anitrend.data.graphql.anilist.GetReviewVariables
+import co.anitrend.data.graphql.anilist.RateReviewVariables
+import co.anitrend.data.graphql.anilist.SaveReviewVariables
 import co.anitrend.data.review.model.container.ReviewContainerModel
-import co.anitrend.retrofit.graphql.annotation.GraphQuery
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface ReviewRemoteSource {
-    @GRAPHQL
-    @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetReview")
+    @POST
     suspend fun getReview(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetReviewVariables>,
     ): Response<GraphQLResponse<ReviewContainerModel.Entry>>
 
-    @GRAPHQL
-    @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("GetReviewPaged")
+    @POST
     suspend fun getReviewPaged(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<GetReviewPagedVariables>,
     ): Response<GraphQLResponse<ReviewContainerModel.Paged>>
 
-    @GRAPHQL
-    @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("SaveReview")
+    @POST
     suspend fun saveReview(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<SaveReviewVariables>,
     ): Response<GraphQLResponse<ReviewContainerModel.SavedEntry>>
 
-    @GRAPHQL
-    @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("RateReview")
+    @POST
     suspend fun rateReview(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<RateReviewVariables>,
     ): Response<GraphQLResponse<ReviewContainerModel.RatedEntry>>
 
-    @GRAPHQL
-    @POST(IEndpointType.BASE_ENDPOINT_PATH)
-    @GraphQuery("DeleteReview")
+    @POST
     suspend fun deleteReview(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<DeleteReviewVariables>,
     ): Response<GraphQLResponse<ReviewContainerModel.DeletedEntry>>
 }

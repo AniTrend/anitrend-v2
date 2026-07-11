@@ -20,6 +20,7 @@
     <!-- https://developer.android.com/guide/topics/data/autobackup#XMLSyntax -->
     <!-- Exclude specific shared preferences that contain GCM registration Id -->
     <include domain="sharedpref" path="." />
+    <include domain="database" path="." />
     <exclude domain="database" path="unifiedpush-connector" />
     <exclude domain="database" path="unifiedpush-connector-journal" />
     <exclude domain="sharedpref" path="unifiedpush.connector.xml" />

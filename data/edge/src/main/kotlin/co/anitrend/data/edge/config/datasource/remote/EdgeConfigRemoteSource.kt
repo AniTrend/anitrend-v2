@@ -16,21 +16,18 @@
  */
 package co.anitrend.data.edge.config.datasource.remote
 
-import co.anitrend.data.core.GRAPHQL
 import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.edge.config.model.remote.EdgeConfigModel
 import co.anitrend.data.edge.core.api.factory.EdgeApiFactory
-import co.anitrend.retrofit.graphql.annotation.GraphQuery
-import co.anitrend.retrofit.graphql.model.request.QueryContainerBuilder
+import co.anitrend.retrofit.graphql.model.EmptyGraphQLVariables
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 internal interface EdgeConfigRemoteSource {
-    @GRAPHQL
-    @GraphQuery("GetConfig")
     @POST(EdgeApiFactory.BASE_ENDPOINT_PATH)
     suspend fun getConfig(
-        @Body queryContainer: QueryContainerBuilder,
+        @Body request: GraphQLRequest<EmptyGraphQLVariables>,
     ): Response<GraphQLResponse<EdgeConfigModel>>
 }

@@ -1,0 +1,5 @@
+fragment EdgeTrailer on SeriesTrailer {
+  id
+  thumbnail
+  site
+}

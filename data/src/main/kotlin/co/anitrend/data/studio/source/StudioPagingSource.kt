@@ -35,10 +35,12 @@ import co.anitrend.data.common.extension.from
 import co.anitrend.data.studio.StudioPagedController
 import co.anitrend.data.studio.datasource.local.StudioLocalSource
 import co.anitrend.data.studio.datasource.remote.StudioRemoteSource
+import co.anitrend.data.graphql.anilist.GetStudioPaged
+import co.anitrend.data.graphql.anilist.GetStudioPagedVariables
 import co.anitrend.data.studio.entity.StudioEntity
 import co.anitrend.data.studio.entity.filter.StudioQueryFilter
-import co.anitrend.data.studio.model.query.StudioQuery
-import co.anitrend.data.util.GraphUtil.toQueryContainerBuilder
+import co.anitrend.domain.studio.model.StudioParam
+import co.anitrend.retrofit.graphql.model.GraphQLRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -49,22 +51,37 @@ internal class StudioPagingSource(
     private val controller: StudioPagedController,
     private val clearDataHelper: IClearDataHelper,
     private val filter: StudioQueryFilter.Search,
-    private val query: StudioQuery,
+    private val query: StudioParam.Find,
     override val dispatcher: ISupportDispatcher,
 ) : AbstractPagingMediator<Int, StudioEntity>() {
     fun pagingSourceFactory(): () -> PagingSource<Int, StudioEntity> =
         {
-            localSource.rawPagingSource(filter.build(query.param))
+            localSource.rawPagingSource(filter.build(query))
         }
 
     private suspend fun getStudio(requestCallback: RequestCallback) {
         val deferred =
             deferred {
-                val queryBuilder =
-                    query.toQueryContainerBuilder(
-                        supportPagingHelper,
-                    )
-                remoteSource.getStudioPaged(queryBuilder)
+                remoteSource.getStudioPaged(
+                    GraphQLRequest(
+                        query = GetStudioPaged.document,
+                        operationName = GetStudioPaged.name,
+                        variables =
+                            GetStudioPagedVariables(
+                                page = supportPagingHelper.page,
+                                perPage = supportPagingHelper.pageSize,
+                                id_in = query.id_in?.map { it.toInt() },
+                                id_not = query.id_not?.toInt(),
+                                id_not_in = query.id_not_in?.map { it.toInt() },
+                                search = query.search,
+                                sort =
+                                    query.sort?.map {
+                                        co.anitrend.data.graphql.anilist.StudioSort
+                                            .valueOf(it.name)
+                                    },
+                            ),
+                    ),
+                )
             }
 
         controller(deferred, requestCallback) {
