@@ -27,7 +27,7 @@ import co.anitrend.arch.extension.util.pagination.contract.ISupportPagingHelper
 
 internal data class PageQuery(
     var page: Int,
-    @IntRange(from = 0, to = 50)
+    @param:IntRange(from = 0, to = 50)
     val perPage: Int = 30,
 ) : ISupportPagingHelper {
     /**

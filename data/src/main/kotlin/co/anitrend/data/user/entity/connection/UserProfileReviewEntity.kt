@@ -43,6 +43,8 @@ import co.anitrend.support.query.builder.annotation.EntitySchema
     indices = [
         Index(value = ["user_id", "review_id", "media_id"], unique = true),
         Index(value = ["user_id", "sort_index"]),
+        Index(value = ["review_id"]),
+        Index(value = ["media_id"]),
     ],
     foreignKeys = [
         ForeignKey(

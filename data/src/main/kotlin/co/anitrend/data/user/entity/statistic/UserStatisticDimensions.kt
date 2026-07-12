@@ -242,7 +242,7 @@ internal data class UserStatisticStatusEntity(
 
 @Entity(
     tableName = "user_statistic_staff",
-    indices = [Index(value = ["user_id", "media_type", "staff_id"], unique = true)],
+    indices = [Index(value = ["user_id", "media_type", "staff_id"], unique = true), Index(value = ["staff_id"])],
     foreignKeys = [
         ForeignKey(
             entity = UserEntity::class,
@@ -274,7 +274,7 @@ internal data class UserStatisticStaffEntity(
 
 @Entity(
     tableName = "user_statistic_studio",
-    indices = [Index(value = ["user_id", "media_type", "studio_id"], unique = true)],
+    indices = [Index(value = ["user_id", "media_type", "studio_id"], unique = true), Index(value = ["studio_id"])],
     foreignKeys = [
         ForeignKey(
             entity = UserEntity::class,
@@ -306,7 +306,7 @@ internal data class UserStatisticStudioEntity(
 
 @Entity(
     tableName = "user_statistic_tag",
-    indices = [Index(value = ["user_id", "media_type", "tag_id"], unique = true)],
+    indices = [Index(value = ["user_id", "media_type", "tag_id"], unique = true), Index(value = ["tag_id"])],
     foreignKeys = [
         ForeignKey(
             entity = UserEntity::class,
@@ -338,7 +338,7 @@ internal data class UserStatisticTagEntity(
 
 @Entity(
     tableName = "user_statistic_voice_actor",
-    indices = [Index(value = ["user_id", "media_type", "staff_id"], unique = true)],
+    indices = [Index(value = ["user_id", "media_type", "staff_id"], unique = true), Index(value = ["staff_id"])],
     foreignKeys = [
         ForeignKey(
             entity = UserEntity::class,

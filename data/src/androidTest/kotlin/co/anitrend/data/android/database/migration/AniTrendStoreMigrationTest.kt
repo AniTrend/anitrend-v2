@@ -96,6 +96,31 @@ class AniTrendStoreMigrationTest {
         assertTrue(columns.contains("media_average_score"))
     }
 
+    @Test
+    fun migrate23To24AddsForeignKeyIndices() {
+        helper.createDatabase(TEST_DB, 23).apply {
+            close()
+        }
+
+        val migrated = helper.runMigrationsAndValidate(TEST_DB, 24, true, *MIGRATIONS)
+        val indices = mutableSetOf<String>()
+
+        migrated.query("SELECT name FROM sqlite_master WHERE type = 'index'").use { cursor ->
+            val nameIndex = cursor.getColumnIndex("name")
+            while (cursor.moveToNext()) {
+                indices += cursor.getString(nameIndex)
+            }
+        }
+
+        assertTrue(indices.contains("index_user_statistic_staff_staff_id"))
+        assertTrue(indices.contains("index_user_statistic_studio_studio_id"))
+        assertTrue(indices.contains("index_user_statistic_tag_tag_id"))
+        assertTrue(indices.contains("index_user_statistic_voice_actor_staff_id"))
+        assertTrue(indices.contains("index_user_profile_favourite_media_media_id"))
+        assertTrue(indices.contains("index_user_profile_review_review_id"))
+        assertTrue(indices.contains("index_user_profile_review_media_id"))
+    }
+
     private companion object {
         const val TEST_DB = "migration-test"
     }
