@@ -37,6 +37,7 @@ import co.anitrend.navigation.AccountTaskRouter
 import co.anitrend.navigation.AuthRouter
 import co.anitrend.navigation.extensions.createOneTimeUniqueWorker
 import timber.log.Timber
+import androidx.core.net.toUri
 
 class AuthPresenter(
     context: Context,
@@ -72,7 +73,7 @@ class AuthPresenter(
 
     fun authorizationIssues(activity: FragmentActivity) {
         // Open FAQ page with information about what to do when a user cannot log in
-        val uri = Uri.parse(context.getString(co.anitrend.android.core.R.string.app_faq_page_link))
+        val uri = context.getString(co.anitrend.android.core.R.string.app_faq_page_link).toUri()
         runCatching {
             Timber.analytics {
                 logCurrentState(

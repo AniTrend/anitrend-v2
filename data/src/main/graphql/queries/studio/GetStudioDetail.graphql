@@ -3,7 +3,6 @@ query GetStudioDetail($id: Int, $scoreFormat: ScoreFormat) {
         favourites
         isAnimationStudio
         isFavourite
-        isFavouriteBlocked
         name
         siteUrl
         id
