@@ -397,3 +397,15 @@ If a required repo-local path is missing, stop and report the missing path befor
 - `data/core/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
 - `app/core/src/main/kotlin/co/anitrend/core/koin/Modules.kt`
 - `buildSrc/src/main/java/co/anitrend/buildSrc/plugins/components/ProjectDependencies.kt`
+
+## Repository Map
+
+A full codemap is available at `codemap.md` in the project root.
+
+Before working on any task, read `codemap.md` to understand:
+
+- Project architecture and entry points
+- Directory responsibilities and design patterns
+- Data flow and integration points between modules
+
+For deep work on a specific folder, also read that folder's `codemap.md`.
