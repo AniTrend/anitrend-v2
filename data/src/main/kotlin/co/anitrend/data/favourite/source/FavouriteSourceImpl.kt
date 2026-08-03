@@ -27,7 +27,7 @@ import co.anitrend.data.graphql.anilist.ToggleAnimeFavouriteVariables
 import co.anitrend.data.graphql.anilist.ToggleMangaFavourite
 import co.anitrend.data.graphql.anilist.ToggleMangaFavouriteVariables
 import co.anitrend.domain.favourite.model.FavouriteInput
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 

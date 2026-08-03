@@ -17,11 +17,11 @@
 package co.anitrend.data.recommendation.datasource.remote
 
 import co.anitrend.data.core.api.factory.contract.IEndpointType
-import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.GetRecommendationPagedVariables
 import co.anitrend.data.graphql.anilist.SaveRecommendationVariables
 import co.anitrend.data.recommendation.model.container.RecommendationModelContainer
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -29,11 +29,11 @@ import retrofit2.http.POST
 internal interface RecommendationRemoteSource {
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getRecommendationPaged(
-        @Body request: GraphQLRequest<GetRecommendationPagedVariables>,
+        @Body request: GraphQLOperationRequest<GetRecommendationPagedVariables>,
     ): Response<GraphQLResponse<RecommendationModelContainer.Paged>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun saveRecommendation(
-        @Body request: GraphQLRequest<SaveRecommendationVariables>,
+        @Body request: GraphQLOperationRequest<SaveRecommendationVariables>,
     ): Response<GraphQLResponse<RecommendationModelContainer.Detail>>
 }

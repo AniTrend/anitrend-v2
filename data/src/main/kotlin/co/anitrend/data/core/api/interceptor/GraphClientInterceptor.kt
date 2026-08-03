@@ -17,7 +17,6 @@
 package co.anitrend.data.core.api.interceptor
 
 import co.anitrend.data.auth.helper.contract.IAuthenticationHelper
-import co.anitrend.retrofit.graphql.converter.GraphConverter
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -36,7 +35,7 @@ internal class GraphClientInterceptor(
         val requestBuilder = original.newBuilder()
 
         requestBuilder
-            .header(CONTENT_TYPE, GraphConverter.MIME_TYPE)
+            .header(CONTENT_TYPE, GRAPHQL_MIME_TYPE)
             .header(ACCEPT, ACCEPT_TYPE)
             .header(CONTENT_LENGTH, contentLength.toString())
             .method(original.method, original.body)
@@ -54,6 +53,7 @@ internal class GraphClientInterceptor(
         private const val CONTENT_TYPE = "Content-Type"
         private const val ACCEPT = "Accept"
 
+        private const val GRAPHQL_MIME_TYPE = "application/graphql"
         private const val ACCEPT_TYPE = "application/json"
     }
 }

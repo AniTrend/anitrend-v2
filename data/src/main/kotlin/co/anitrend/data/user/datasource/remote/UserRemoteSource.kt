@@ -17,7 +17,7 @@
 package co.anitrend.data.user.datasource.remote
 
 import co.anitrend.data.core.api.factory.contract.IEndpointType
-import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.GetAnimeFavouritesVariables
 import co.anitrend.data.graphql.anilist.GetMangaFavouritesVariables
 import co.anitrend.data.graphql.anilist.GetUserPagedVariables
@@ -31,7 +31,7 @@ import co.anitrend.data.graphql.anilist.UpdateUserProfileVariables
 import co.anitrend.data.user.model.container.UserModelContainer
 import co.anitrend.data.user.model.container.UserSidecarModelContainer
 import co.anitrend.retrofit.graphql.model.EmptyGraphQLVariables
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -39,56 +39,56 @@ import retrofit2.http.POST
 internal interface UserRemoteSource {
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserByName(
-        @Body request: GraphQLRequest<GetUserVariables>,
+        @Body request: GraphQLOperationRequest<GetUserVariables>,
     ): Response<GraphQLResponse<UserModelContainer.User>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserPaged(
-        @Body request: GraphQLRequest<GetUserPagedVariables>,
+        @Body request: GraphQLOperationRequest<GetUserPagedVariables>,
     ): Response<GraphQLResponse<UserModelContainer.Paged>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserViewer(
-        @Body request: GraphQLRequest<EmptyGraphQLVariables>,
+        @Body request: GraphQLOperationRequest<EmptyGraphQLVariables>,
     ): Response<GraphQLResponse<UserModelContainer.Viewer>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserProfile(
-        @Body request: GraphQLRequest<GetUserProfileVariables>,
+        @Body request: GraphQLOperationRequest<GetUserProfileVariables>,
     ): Response<GraphQLResponse<UserModelContainer.Profile>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserWithStatistic(
-        @Body request: GraphQLRequest<GetUserWithStatisticVariables>,
+        @Body request: GraphQLOperationRequest<GetUserWithStatisticVariables>,
     ): Response<GraphQLResponse<UserModelContainer.WithStatistic>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserProfileOverview(
-        @Body request: GraphQLRequest<GetUserProfileOverviewVariables>,
+        @Body request: GraphQLOperationRequest<GetUserProfileOverviewVariables>,
     ): Response<GraphQLResponse<UserSidecarModelContainer.Overview>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getUserProfileFeed(
-        @Body request: GraphQLRequest<GetUserProfileFeedVariables>,
+        @Body request: GraphQLOperationRequest<GetUserProfileFeedVariables>,
     ): Response<GraphQLResponse<UserSidecarModelContainer.Feed>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun saveToggleFollow(
-        @Body request: GraphQLRequest<SaveToggleFollowUserVariables>,
+        @Body request: GraphQLOperationRequest<SaveToggleFollowUserVariables>,
     ): Response<GraphQLResponse<UserModelContainer.User>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun updateUserProfile(
-        @Body request: GraphQLRequest<UpdateUserProfileVariables>,
+        @Body request: GraphQLOperationRequest<UpdateUserProfileVariables>,
     ): Response<GraphQLResponse<UserModelContainer.Profile>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getAnimeFavourites(
-        @Body request: GraphQLRequest<GetAnimeFavouritesVariables>,
+        @Body request: GraphQLOperationRequest<GetAnimeFavouritesVariables>,
     ): Response<GraphQLResponse<UserSidecarModelContainer.AnimeFavourites>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMangaFavourites(
-        @Body request: GraphQLRequest<GetMangaFavouritesVariables>,
+        @Body request: GraphQLOperationRequest<GetMangaFavouritesVariables>,
     ): Response<GraphQLResponse<UserSidecarModelContainer.MangaFavourites>>
 }

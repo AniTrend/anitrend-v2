@@ -5,7 +5,7 @@ query GetFeedMediaPaged(
     $createdAt_greater: Int,
     $createdAt_lesser: Int,
     $hasReplies: Boolean,
-    $hasRepliesOrTypeText: Boolean,
+    $hasRepliesOrTypeText: Boolean!,
     $id_in: [Int],
     $id_not: Int,
     $id_not_in: [Int],

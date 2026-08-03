@@ -66,7 +66,7 @@ import co.anitrend.domain.user.entity.profile.ProfileFeed
 import co.anitrend.domain.user.entity.profile.ProfileOverview
 import co.anitrend.domain.user.model.UserParam
 import co.anitrend.retrofit.graphql.model.EmptyGraphQLVariables
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -154,7 +154,7 @@ internal class UserSourceImpl {
             val deferred =
                 deferred {
                     val request =
-                        GraphQLRequest<EmptyGraphQLVariables>(
+                        GraphQLOperationRequest<EmptyGraphQLVariables>(
                             query = GetUserViewer.document,
                             operationName = GetUserViewer.name,
                         )

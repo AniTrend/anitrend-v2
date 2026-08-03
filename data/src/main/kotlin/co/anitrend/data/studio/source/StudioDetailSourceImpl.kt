@@ -36,7 +36,7 @@ import co.anitrend.domain.media.entity.MediaStudioEntry
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.medialist.enums.ScoreFormat
 import co.anitrend.domain.studio.entity.StudioDetailData
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -114,7 +114,7 @@ internal class StudioDetailSourceImpl(
         val deferred =
             deferred {
                 remoteSource.getStudioDetail(
-                    GraphQLRequest(
+                    GraphQLOperationRequest(
                         query = GetStudioDetail.document,
                         operationName = GetStudioDetail.name,
                         variables =

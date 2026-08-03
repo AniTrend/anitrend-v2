@@ -40,7 +40,7 @@ import co.anitrend.data.common.extension.from
 import co.anitrend.data.graphql.anilist.GetCharacterPaged
 import co.anitrend.data.graphql.anilist.GetCharacterPagedVariables
 import co.anitrend.domain.character.model.CharacterParam
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -63,7 +63,7 @@ internal class CharacterPagingSource(
         val deferred =
             deferred {
                 remoteSource.getCharacterPaged(
-                    GraphQLRequest(
+                    GraphQLOperationRequest(
                         query = GetCharacterPaged.document,
                         operationName = GetCharacterPaged.name,
                         variables =

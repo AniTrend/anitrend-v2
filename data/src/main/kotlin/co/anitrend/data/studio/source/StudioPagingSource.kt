@@ -40,7 +40,7 @@ import co.anitrend.data.graphql.anilist.GetStudioPagedVariables
 import co.anitrend.data.studio.entity.StudioEntity
 import co.anitrend.data.studio.entity.filter.StudioQueryFilter
 import co.anitrend.domain.studio.model.StudioParam
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -63,7 +63,7 @@ internal class StudioPagingSource(
         val deferred =
             deferred {
                 remoteSource.getStudioPaged(
-                    GraphQLRequest(
+                    GraphQLOperationRequest(
                         query = GetStudioPaged.document,
                         operationName = GetStudioPaged.name,
                         variables =

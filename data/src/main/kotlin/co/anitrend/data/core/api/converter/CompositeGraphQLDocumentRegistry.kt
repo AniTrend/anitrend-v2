@@ -26,7 +26,7 @@ import co.anitrend.retrofit.graphql.model.GraphQLDocumentRegistry
  * 2. [fallback] is checked if [primary] returns null
  *
  * Used to combine AniList and Edge codegen registries into a single
- * composite registry for the shared [co.anitrend.retrofit.graphql.converter.GraphConverter].
+ * composite registry for the shared [co.anitrend.retrofit.graphql.converter.GraphQLConverterFactory].
  */
 internal class CompositeGraphQLDocumentRegistry(
     private val primary: GraphQLDocumentRegistry,

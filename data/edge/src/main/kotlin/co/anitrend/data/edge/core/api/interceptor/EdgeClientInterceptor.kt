@@ -16,7 +16,6 @@
  */
 package co.anitrend.data.edge.core.api.interceptor
 
-import co.anitrend.retrofit.graphql.converter.GraphConverter
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -28,7 +27,7 @@ internal class EdgeClientInterceptor : Interceptor {
         val requestBuilder = request.newBuilder()
 
         requestBuilder
-            .header(CONTENT_TYPE, GraphConverter.MIME_TYPE)
+            .header(CONTENT_TYPE, GRAPHQL_MIME_TYPE)
             .header(ACCEPT, ACCEPT_TYPE)
             .header(CONTENT_LENGTH, contentLength.toString())
             .method(request.method, request.body)
@@ -43,6 +42,7 @@ internal class EdgeClientInterceptor : Interceptor {
         private const val CONTENT_LENGTH = "Content-Length"
         private const val CONTENT_TYPE = "Content-Type"
 
+        private const val GRAPHQL_MIME_TYPE = "application/graphql"
         private const val ACCEPT_TYPE = "application/json"
     }
 }

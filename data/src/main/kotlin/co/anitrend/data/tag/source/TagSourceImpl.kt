@@ -29,7 +29,7 @@ import co.anitrend.data.tag.entity.filter.TagQueryFilter
 import co.anitrend.data.graphql.anilist.GetMediaTags
 import co.anitrend.data.tag.source.contract.TagSource
 import co.anitrend.domain.tag.entity.Tag
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -57,7 +57,7 @@ internal class TagSourceImpl(
         val deferred =
             deferred {
                 remoteSource.getMediaTags(
-                    GraphQLRequest(
+                    GraphQLOperationRequest(
                         query = GetMediaTags.document,
                         operationName = GetMediaTags.name,
                     ),

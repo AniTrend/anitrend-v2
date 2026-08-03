@@ -18,9 +18,9 @@ package co.anitrend.data.airing.datasource.remote
 
 import co.anitrend.data.airing.model.container.AiringScheduleModelContainer
 import co.anitrend.data.core.api.factory.contract.IEndpointType
-import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.GetAiringPagedVariables
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -28,6 +28,6 @@ import retrofit2.http.POST
 internal interface AiringRemoteSource {
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getAiringPaged(
-        @Body request: GraphQLRequest<GetAiringPagedVariables>,
+        @Body request: GraphQLOperationRequest<GetAiringPagedVariables>,
     ): Response<GraphQLResponse<AiringScheduleModelContainer.Paged>>
 }

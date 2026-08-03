@@ -23,7 +23,8 @@ import co.anitrend.data.android.controller.strategy.contract.ControllerStrategy
 import co.anitrend.data.android.extensions.Async
 import co.anitrend.data.android.mapper.DefaultMapper
 import co.anitrend.data.android.network.client.DeferrableNetworkClient
-import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLData
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -58,15 +59,21 @@ class GraphQLController<S, out D>(
 
         val error =
             response.errors
-                ?.onEach {
-                    Timber.w(it.toString())
-                }?.firstOrNull()
+                .onEach {
+                    Timber.w(it.message)
+                }.firstOrNull()
 
         /**
-         * Only throw if data is null while we have an error, [strategy] will catch
+         * Only throw if data is absent while we have an error, [strategy] will catch
          * the exception and emit a network state for the user to see
          */
-        if (error != null && response.data == null) {
+        val data =
+            when (val responseData = response.data) {
+                is GraphQLData.Present -> responseData.value
+                GraphQLData.Absent -> null
+            }
+
+        if (error != null && data == null) {
             throw RequestError(
                 topic = "Error with request",
                 description = error.message,
@@ -74,9 +81,9 @@ class GraphQLController<S, out D>(
             )
         }
 
-        response.data?.let {
-            val data = interceptor(it)
-            val mapped = mapper.onResponseMapFrom(data)
+        data?.let {
+            val transformed = interceptor(it)
+            val mapped = mapper.onResponseMapFrom(transformed)
             withContext(dispatcher) {
                 mapper.onResponseDatabaseInsert(mapped)
             }

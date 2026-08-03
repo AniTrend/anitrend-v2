@@ -19,9 +19,9 @@ package co.anitrend.data.auth.datasource.remote
 import co.anitrend.data.auth.model.JsonWebToken
 import co.anitrend.data.core.JSON
 import co.anitrend.data.core.api.factory.contract.IEndpointType
-import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.data.user.model.container.UserModelContainer
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import co.anitrend.retrofit.graphql.model.EmptyGraphQLVariables
 import retrofit2.Response
 import retrofit2.http.Body
@@ -43,6 +43,6 @@ internal interface AuthRemoteSource {
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getAuthenticatedUser(
         @Header("Authorization") authToken: String,
-        @Body request: GraphQLRequest<EmptyGraphQLVariables>,
+        @Body request: GraphQLOperationRequest<EmptyGraphQLVariables>,
     ): Response<GraphQLResponse<UserModelContainer.Viewer>>
 }

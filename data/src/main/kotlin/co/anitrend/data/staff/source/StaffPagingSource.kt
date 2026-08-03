@@ -40,7 +40,7 @@ import co.anitrend.data.staff.datasource.remote.StaffRemoteSource
 import co.anitrend.data.staff.entity.StaffEntity
 import co.anitrend.data.staff.entity.filter.StaffQueryFilter
 import co.anitrend.domain.staff.model.StaffParam
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -63,7 +63,7 @@ internal class StaffPagingSource(
         val deferred =
             deferred {
                 remoteSource.getStaffPaged(
-                    GraphQLRequest(
+                    GraphQLOperationRequest(
                         query = GetStaffPaged.document,
                         operationName = GetStaffPaged.name,
                         variables =

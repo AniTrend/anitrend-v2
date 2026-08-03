@@ -38,7 +38,7 @@ import co.anitrend.data.recommendation.datasource.local.connection.MediaRecommen
 import co.anitrend.data.recommendation.entity.connection.MediaRecommendationConnectionEntity
 import co.anitrend.data.recommendation.mapper.MediaRecommendationMapper
 import co.anitrend.domain.media.model.MediaParam
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.flow.first
 import org.threeten.bp.Instant
 
@@ -117,7 +117,7 @@ internal class MediaRecommendationsRemoteMediator(
         val deferred =
             deferred {
                 remoteSource.getMediaRecommendations(
-                    GraphQLRequest(
+                    GraphQLOperationRequest(
                         query = GetMediaWithSuggestion.document,
                         operationName = GetMediaWithSuggestion.name,
                         variables =

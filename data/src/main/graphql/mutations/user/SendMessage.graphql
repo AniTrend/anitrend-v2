@@ -2,14 +2,14 @@ mutation SendMessage(
     $id: Int,
     $locked: Boolean,
     $message: String,
-    $private: Boolean,
+    $isPrivate: Boolean,
     $recipientId: Int
 ) {
     SaveMessageActivity(
         id: $id,
         locked: $locked,
         message: $message,
-        private: $private,
+        private: $isPrivate,
         recipientId: $recipientId,
     ) {
         ... FeedMessage

@@ -17,12 +17,12 @@
 package co.anitrend.data.studio.datasource.remote
 
 import co.anitrend.data.core.api.factory.contract.IEndpointType
-import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.GetStudioDetailVariables
 import co.anitrend.data.graphql.anilist.GetStudioPagedVariables
 import co.anitrend.data.studio.model.remote.StudioDetailContainer
 import co.anitrend.data.studio.model.remote.StudioPagedContainer
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -30,11 +30,11 @@ import retrofit2.http.POST
 internal interface StudioRemoteSource {
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getStudioDetail(
-        @Body request: GraphQLRequest<GetStudioDetailVariables>,
+        @Body request: GraphQLOperationRequest<GetStudioDetailVariables>,
     ): Response<GraphQLResponse<StudioDetailContainer>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getStudioPaged(
-        @Body request: GraphQLRequest<GetStudioPagedVariables>,
+        @Body request: GraphQLOperationRequest<GetStudioPagedVariables>,
     ): Response<GraphQLResponse<StudioPagedContainer>>
 }

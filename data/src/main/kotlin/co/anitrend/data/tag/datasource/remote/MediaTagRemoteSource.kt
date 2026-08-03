@@ -17,10 +17,10 @@
 package co.anitrend.data.tag.datasource.remote
 
 import co.anitrend.data.core.api.factory.contract.IEndpointType
-import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.data.tag.model.remote.TagContainerModel
 import co.anitrend.retrofit.graphql.model.EmptyGraphQLVariables
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -28,6 +28,6 @@ import retrofit2.http.POST
 internal interface MediaTagRemoteSource {
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaTags(
-        @Body request: GraphQLRequest<EmptyGraphQLVariables>,
+        @Body request: GraphQLOperationRequest<EmptyGraphQLVariables>,
     ): Response<GraphQLResponse<TagContainerModel>>
 }

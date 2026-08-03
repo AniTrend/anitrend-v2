@@ -17,10 +17,10 @@
 package co.anitrend.data.genre.datasource.remote
 
 import co.anitrend.data.core.api.factory.contract.IEndpointType
-import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.data.genre.model.GenreCollection
 import co.anitrend.retrofit.graphql.model.EmptyGraphQLVariables
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -28,6 +28,6 @@ import retrofit2.http.POST
 internal interface MediaGenreRemoteSource {
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaGenres(
-        @Body request: GraphQLRequest<EmptyGraphQLVariables>,
+        @Body request: GraphQLOperationRequest<EmptyGraphQLVariables>,
     ): Response<GraphQLResponse<GenreCollection>>
 }

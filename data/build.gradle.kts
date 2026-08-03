@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.anitrend.emojify)
     implementation(libs.anitrend.emojify.contract)
 
+    implementation(libs.anitrend.retrofit.graphql.serialization.kotlinx)
+
     implementation(libs.anitrend.querybuilder.annotation)
     implementation(libs.anitrend.querybuilder.core)
     implementation(libs.anitrend.querybuilder.core.ext)
