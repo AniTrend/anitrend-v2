@@ -17,12 +17,12 @@
 package co.anitrend.data.android.network.graphql
 
 import co.anitrend.data.android.network.client.DeferrableNetworkClient
-import co.anitrend.data.core.api.model.GraphQLError
-import co.anitrend.data.core.api.model.GraphQLResponse
-import co.anitrend.data.core.extensions.typeToken
+import co.anitrend.retrofit.graphql.model.GraphQLData
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLResponseError
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineDispatcher
-import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
 
@@ -38,48 +38,41 @@ class GraphNetworkClient<R>(
 ) : DeferrableNetworkClient<GraphQLResponse<R>>() {
     private fun getGraphQLError(errorBodyString: String?): GraphQLResponse<R> {
         val body = requireNotNull(errorBodyString)
-        val type = typeToken<GraphQLResponse<Any?>>().type
-        return runCatching {
-            gson
-                .fromJson<GraphQLResponse<Any?>>(body, type)
-                .let { response ->
-                    GraphQLResponse<R>(
-                        errors = response.errors,
-                        extensions = response.extensions,
-                    )
-                }
-        }.onFailure(Timber::w)
-            .getOrDefault(
-                GraphQLResponse(
-                    errors =
-                        listOf(
-                            GraphQLError(
-                                message = body,
-                            ),
-                        ),
-                ),
-            )
+        val message = extractErrorMessage(body) ?: body
+        return GraphQLResponse(
+            data = GraphQLData.Absent,
+            errors = listOf(GraphQLResponseError(message = message)),
+        )
     }
 
-    private fun Response<GraphQLResponse<R>>.responseErrors(): GraphQLResponse<R> {
+    private fun extractErrorMessage(body: String): String? =
         runCatching {
-            val errorBodyString = errorBody()?.string()
-            getGraphQLError(errorBodyString).copy(data = null)
-        }.onSuccess { error ->
-            return error
-        }.onFailure { exception ->
-            Timber.w(exception)
-            return GraphQLResponse(
-                errors =
-                    listOf(
-                        GraphQLError(
-                            message = exception.message.orEmpty(),
-                        ),
-                    ),
-            )
-        }
+            gson
+                .fromJson(body, JsonObject::class.java)
+                ?.getAsJsonArray("errors")
+                ?.firstOrNull()
+                ?.asJsonObject
+                ?.get("message")
+                ?.asString
+        }.onFailure(Timber::w)
+            .getOrNull()
 
-        throw HttpException(this)
+    private fun Response<GraphQLResponse<R>>.responseErrors(): GraphQLResponse<R> {
+        val errorBodyString = errorBody()?.string()
+        return runCatching {
+            getGraphQLError(errorBodyString)
+        }.onFailure(Timber::w)
+            .getOrElse { exception ->
+                GraphQLResponse(
+                    data = GraphQLData.Absent,
+                    errors =
+                        listOf(
+                            GraphQLResponseError(
+                                message = exception.message.orEmpty(),
+                            ),
+                        ),
+                )
+            }
     }
 
     /**

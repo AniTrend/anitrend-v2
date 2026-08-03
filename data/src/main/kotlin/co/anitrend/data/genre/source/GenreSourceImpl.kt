@@ -29,7 +29,7 @@ import co.anitrend.data.genre.entity.filter.GenreQueryFilter
 import co.anitrend.data.genre.source.contract.GenreSource
 import co.anitrend.data.graphql.anilist.GetMediaGenres
 import co.anitrend.domain.genre.entity.Genre
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -57,7 +57,7 @@ internal class GenreSourceImpl(
         val deferred =
             deferred {
                 remoteSource.getMediaGenres(
-                    GraphQLRequest(query = GetMediaGenres.document, operationName = GetMediaGenres.name),
+                    GraphQLOperationRequest(query = GetMediaGenres.document, operationName = GetMediaGenres.name),
                 )
             }
 

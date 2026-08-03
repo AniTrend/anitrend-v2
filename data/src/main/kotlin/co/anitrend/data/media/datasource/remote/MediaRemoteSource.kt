@@ -17,7 +17,7 @@
 package co.anitrend.data.media.datasource.remote
 
 import co.anitrend.data.core.api.factory.contract.IEndpointType
-import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.GetMediaDetailVariables
 import co.anitrend.data.graphql.anilist.GetMediaPagedVariables
 import co.anitrend.data.graphql.anilist.GetMediaStatsVariables
@@ -30,7 +30,7 @@ import co.anitrend.data.media.model.container.MediaConnectionModelContainer
 import co.anitrend.data.media.model.container.MediaModelContainer
 import co.anitrend.data.media.model.container.MediaSidecarModelContainer
 import co.anitrend.data.media.model.container.MediaPeopleModelContainer
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -38,41 +38,41 @@ import retrofit2.http.POST
 internal interface MediaRemoteSource {
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaPaged(
-        @Body request: GraphQLRequest<GetMediaPagedVariables>,
+        @Body request: GraphQLOperationRequest<GetMediaPagedVariables>,
     ): Response<GraphQLResponse<MediaModelContainer.Paged>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaDetail(
-        @Body request: GraphQLRequest<GetMediaDetailVariables>,
+        @Body request: GraphQLOperationRequest<GetMediaDetailVariables>,
     ): Response<GraphQLResponse<MediaModelContainer.Detail>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaCharacters(
-        @Body request: GraphQLRequest<GetMediaWithCharacterVariables>,
+        @Body request: GraphQLOperationRequest<GetMediaWithCharacterVariables>,
     ): Response<GraphQLResponse<MediaPeopleModelContainer.Characters>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaStaff(
-        @Body request: GraphQLRequest<GetMediaWithStaffVariables>,
+        @Body request: GraphQLOperationRequest<GetMediaWithStaffVariables>,
     ): Response<GraphQLResponse<MediaPeopleModelContainer.Staff>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaRelations(
-        @Body request: GraphQLRequest<GetMediaWithRelationVariables>,
+        @Body request: GraphQLOperationRequest<GetMediaWithRelationVariables>,
     ): Response<GraphQLResponse<MediaConnectionModelContainer.Relations>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaRecommendations(
-        @Body request: GraphQLRequest<GetMediaWithSuggestionVariables>,
+        @Body request: GraphQLOperationRequest<GetMediaWithSuggestionVariables>,
     ): Response<GraphQLResponse<MediaConnectionModelContainer.Recommendations>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaStudios(
-        @Body request: GraphQLRequest<GetMediaWithStudioVariables>,
+        @Body request: GraphQLOperationRequest<GetMediaWithStudioVariables>,
     ): Response<GraphQLResponse<MediaSidecarModelContainer.Studios>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaStats(
-        @Body request: GraphQLRequest<GetMediaStatsVariables>,
+        @Body request: GraphQLOperationRequest<GetMediaStatsVariables>,
     ): Response<GraphQLResponse<MediaSidecarModelContainer.Stats>>
 }

@@ -31,7 +31,7 @@ androidx-work = "2.11.2"
 anitrend-arch = "1.9.2"
 anitrend-emojify = "2.2.0"
 anitrend-markdown = "0.12.1-alpha01"
-anitrend-retrofit = "0.12.2"
+anitrend-retrofit = "0.14.0"
 anitrend-querybuilder = "0.3.3"
 
 chuncker = "4.3.1"
@@ -202,6 +202,7 @@ anitrend-markdown = { module = "com.github.anitrend:support-markdown", version.r
 anitrend-retrofit-graphql-runtime = { module = "com.github.AniTrend.retrofit-graphql:runtime", version.ref = "anitrend-retrofit" }
 anitrend-retrofit-graphql-api = { module = "com.github.AniTrend.retrofit-graphql:api", version.ref = "anitrend-retrofit" }
 anitrend-retrofit-graphql-annotations = { module = "com.github.AniTrend.retrofit-graphql:annotations", version.ref = "anitrend-retrofit" }
+anitrend-retrofit-graphql-serialization-kotlinx = { module = "com.github.AniTrend.retrofit-graphql:serialization-kotlinx", version.ref = "anitrend-retrofit" }
 
 anitrend-querybuilder-annotation = { module = "com.github.anitrend.support-query-builder:annotations", version.ref = "anitrend-querybuilder" }
 anitrend-querybuilder-core = { module = "com.github.anitrend.support-query-builder:core", version.ref = "anitrend-querybuilder" }

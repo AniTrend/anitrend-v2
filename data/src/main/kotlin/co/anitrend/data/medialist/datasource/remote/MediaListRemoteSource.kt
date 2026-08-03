@@ -17,7 +17,7 @@
 package co.anitrend.data.medialist.datasource.remote
 
 import co.anitrend.data.core.api.factory.contract.IEndpointType
-import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.data.graphql.anilist.DeleteCustomListVariables
 import co.anitrend.data.graphql.anilist.DeleteMediaListItemVariables
 import co.anitrend.data.graphql.anilist.GetMediaListCollectionVariables
@@ -26,7 +26,7 @@ import co.anitrend.data.graphql.anilist.GetMediaListPagedVariables
 import co.anitrend.data.graphql.anilist.SaveMediaListEntriesVariables
 import co.anitrend.data.graphql.anilist.SaveMediaListEntryVariables
 import co.anitrend.data.medialist.model.container.MediaListContainerModel
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -34,36 +34,36 @@ import retrofit2.http.POST
 internal interface MediaListRemoteSource {
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaListPaged(
-        @Body request: GraphQLRequest<GetMediaListPagedVariables>,
+        @Body request: GraphQLOperationRequest<GetMediaListPagedVariables>,
     ): Response<GraphQLResponse<MediaListContainerModel.Paged>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaListCollection(
-        @Body request: GraphQLRequest<GetMediaListCollectionVariables>,
+        @Body request: GraphQLOperationRequest<GetMediaListCollectionVariables>,
     ): Response<GraphQLResponse<MediaListContainerModel.Collection>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun getMediaListEntry(
-        @Body request: GraphQLRequest<GetMediaListEntryVariables>,
+        @Body request: GraphQLOperationRequest<GetMediaListEntryVariables>,
     ): Response<GraphQLResponse<MediaListContainerModel.Entry>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun saveMediaListEntries(
-        @Body request: GraphQLRequest<SaveMediaListEntriesVariables>,
+        @Body request: GraphQLOperationRequest<SaveMediaListEntriesVariables>,
     ): Response<GraphQLResponse<MediaListContainerModel.SavedEntries>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun saveMediaListEntry(
-        @Body request: GraphQLRequest<SaveMediaListEntryVariables>,
+        @Body request: GraphQLOperationRequest<SaveMediaListEntryVariables>,
     ): Response<GraphQLResponse<MediaListContainerModel.SavedEntry>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun deleteMediaListEntry(
-        @Body request: GraphQLRequest<DeleteMediaListItemVariables>,
+        @Body request: GraphQLOperationRequest<DeleteMediaListItemVariables>,
     ): Response<GraphQLResponse<MediaListContainerModel.DeletedEntry>>
 
     @POST(IEndpointType.BASE_ENDPOINT_PATH)
     suspend fun deleteCustomList(
-        @Body request: GraphQLRequest<DeleteCustomListVariables>,
+        @Body request: GraphQLOperationRequest<DeleteCustomListVariables>,
     ): Response<GraphQLResponse<MediaListContainerModel.DeletedCustomList>>
 }

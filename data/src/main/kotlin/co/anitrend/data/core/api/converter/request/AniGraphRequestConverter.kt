@@ -20,8 +20,7 @@ import co.anitrend.data.BuildConfig
 import co.anitrend.data.core.AniTrendExperimentalFeature
 import co.anitrend.data.util.GraphUtil.minify
 import com.google.gson.Gson
-import co.anitrend.retrofit.graphql.converter.GraphConverter
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -29,20 +28,20 @@ import retrofit2.Converter
 
 internal class AniRequestConverter(
     private val gson: Gson,
-) : Converter<GraphQLRequest<*>, RequestBody> {
+) : Converter<GraphQLOperationRequest<*>, RequestBody> {
     @OptIn(AniTrendExperimentalFeature::class)
     internal fun serialize(
-        value: GraphQLRequest<*>,
+        value: GraphQLOperationRequest<*>,
         shrinkQuery: Boolean = !BuildConfig.DEBUG,
     ): String = gson.toJson(normalize(value, shrinkQuery))
 
-    override fun convert(value: GraphQLRequest<*>): RequestBody = serialize(value).toRequestBody(JSON_MIME_TYPE)
+    override fun convert(value: GraphQLOperationRequest<*>): RequestBody = serialize(value).toRequestBody(JSON_MIME_TYPE)
 
     @OptIn(AniTrendExperimentalFeature::class)
     private fun normalize(
-        value: GraphQLRequest<*>,
+        value: GraphQLOperationRequest<*>,
         shrinkQuery: Boolean,
-    ): GraphQLRequest<*> {
+    ): GraphQLOperationRequest<*> {
         val operationName = value.operationName.ifBlank { "<unknown>" }
         val normalizedQuery =
             value.query
@@ -54,7 +53,6 @@ internal class AniRequestConverter(
     }
 
     companion object {
-        internal val GRAPHQL_MIME_TYPE = GraphConverter.MIME_TYPE.toMediaType()
         internal val JSON_MIME_TYPE = "application/json".toMediaType()
         internal val XML_MIME_TYPE = "application/xml".toMediaType()
     }

@@ -71,7 +71,9 @@ import com.chuckerteam.chucker.api.RetentionManager
 import com.google.gson.GsonBuilder
 import com.google.gson.Strictness
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import co.anitrend.retrofit.graphql.converter.GraphQLConverterFactory
 import co.anitrend.retrofit.graphql.model.GraphQLDocumentRegistry
+import co.anitrend.retrofit.graphql.serialization.kotlinx.KotlinxGraphQLTransportCodec
 import co.anitrend.data.graphql.anilist.GeneratedGraphQLRegistry as AniListRegistry
 import co.anitrend.data.edge.graphql.GeneratedGraphQLRegistry as EdgeRegistry
 import kotlinx.serialization.json.Json
@@ -162,7 +164,11 @@ private val retrofitModule =
             AniTrendConverterFactory(
                 gson = get(),
                 jsonFactory = defaultJsonFactory.asConverterFactory(mimeType),
-                graphFactory = get<Json>().asConverterFactory(mimeType),
+                graphFactory =
+                    GraphQLConverterFactory.create(
+                        codec = KotlinxGraphQLTransportCodec(json = get<Json>()),
+                        registry = get<GraphQLDocumentRegistry>(),
+                    ),
                 xmlFactory = get<IFeedFactory>().provideConverterFactory(),
             )
         }

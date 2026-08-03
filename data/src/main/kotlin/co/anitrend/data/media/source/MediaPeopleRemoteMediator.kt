@@ -43,7 +43,7 @@ import co.anitrend.data.media.datasource.remote.MediaRemoteSource
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.model.MediaParam
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.flow.first
 import org.threeten.bp.Instant
 
@@ -127,7 +127,7 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
             val deferred =
                 deferred {
                     remoteSource.getMediaCharacters(
-                        GraphQLRequest(
+                        GraphQLOperationRequest(
                             query = GetMediaWithCharacter.document,
                             operationName = GetMediaWithCharacter.name,
                             variables =
@@ -224,7 +224,7 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
             val deferred =
                 deferred {
                     remoteSource.getMediaStaff(
-                        GraphQLRequest(
+                        GraphQLOperationRequest(
                             query = GetMediaWithStaff.document,
                             operationName = GetMediaWithStaff.name,
                             variables =

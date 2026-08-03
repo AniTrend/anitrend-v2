@@ -19,9 +19,9 @@ package co.anitrend.data.core.api.converter
 import co.anitrend.data.core.JSON
 import co.anitrend.data.core.XML
 import co.anitrend.data.core.api.converter.request.AniRequestConverter
-import co.anitrend.data.core.api.model.GraphQLResponse
 import com.google.gson.Gson
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -42,7 +42,7 @@ internal class AniTrendConverterFactory(
 
     private fun isGraphRequestType(type: Type): Boolean {
         val rawType = getRawType(type)
-        return GraphQLRequest::class.java.isAssignableFrom(rawType)
+        return GraphQLOperationRequest::class.java.isAssignableFrom(rawType)
     }
 
     private fun isGraphResponseType(type: Type): Boolean = GraphQLResponse::class.java.isAssignableFrom(getRawType(type))
@@ -99,7 +99,7 @@ internal class AniTrendConverterFactory(
      * @param type The generic type declared on the Call method
      *
      * @see Retrofit
-     * @see GraphConverter.responseBodyConverter
+     * @see GraphQLConverterFactory.responseBodyConverter
      */
     override fun responseBodyConverter(
         type: Type,

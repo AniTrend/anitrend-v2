@@ -3,8 +3,7 @@ package co.anitrend.data.core.api.converter.request
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import co.anitrend.retrofit.graphql.model.EmptyGraphQLVariables
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
-import co.anitrend.retrofit.graphql.converter.GraphConverter
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -16,11 +15,10 @@ class AniGraphRequestConverterTest {
     fun `convert serializes graphql request payload directly`() {
         val converter = AniRequestConverter(gson = Gson())
         val request =
-            GraphQLRequest<EmptyGraphQLVariables>(
+            GraphQLOperationRequest<EmptyGraphQLVariables>(
                 query = "query Viewer {\n  viewer { id }\n}",
                 operationName = "Viewer",
                 variables = EmptyGraphQLVariables,
-                extensions = emptyMap(),
             )
 
         val requestBody = converter.convert(request)
@@ -37,11 +35,10 @@ class AniGraphRequestConverterTest {
     fun `serialize minifies query when shrink mode is enabled`() {
         val converter = AniRequestConverter(gson = Gson())
         val request =
-            GraphQLRequest<EmptyGraphQLVariables>(
+            GraphQLOperationRequest<EmptyGraphQLVariables>(
                 query = "query Viewer {\n    viewer {\n        id\n    }\n}",
                 operationName = "Viewer",
                 variables = EmptyGraphQLVariables,
-                extensions = emptyMap(),
             )
 
         val payload = converter.serialize(request, shrinkQuery = true)
@@ -57,11 +54,10 @@ class AniGraphRequestConverterTest {
     fun `convert fails fast when query string is blank`() {
         val converter = AniRequestConverter(gson = Gson())
         val request =
-            GraphQLRequest<EmptyGraphQLVariables>(
+            GraphQLOperationRequest<EmptyGraphQLVariables>(
                 query = "   ",
                 operationName = "Viewer",
                 variables = EmptyGraphQLVariables,
-                extensions = emptyMap(),
             )
 
         val error =

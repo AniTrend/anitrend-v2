@@ -34,7 +34,7 @@ import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.domain.account.model.AccountParam
 import co.anitrend.data.graphql.anilist.GetUserViewer
 import co.anitrend.retrofit.graphql.model.EmptyGraphQLVariables
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
@@ -123,7 +123,7 @@ internal class AuthSourceImpl(
             deferred {
                 remoteSource.getAuthenticatedUser(
                     param.accessTokenBearer,
-                    GraphQLRequest<EmptyGraphQLVariables>(
+                    GraphQLOperationRequest<EmptyGraphQLVariables>(
                         query = GetUserViewer.document,
                         operationName = GetUserViewer.name,
                     ),

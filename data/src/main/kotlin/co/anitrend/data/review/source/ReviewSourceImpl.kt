@@ -189,7 +189,7 @@ internal sealed class ReviewSourceImpl {
                             body = mutation.body,
                             summary = mutation.summary,
                             score = mutation.score,
-                            `private` = mutation.private,
+                            isPrivate = mutation.private,
                         ),
                     )
                 }

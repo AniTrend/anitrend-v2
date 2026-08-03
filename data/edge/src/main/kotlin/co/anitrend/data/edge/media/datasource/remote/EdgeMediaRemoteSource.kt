@@ -16,11 +16,11 @@
  */
 package co.anitrend.data.edge.media.datasource.remote
 
-import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.data.edge.core.api.factory.EdgeApiFactory
 import co.anitrend.data.edge.graphql.GetMediaByIdVariables
 import co.anitrend.data.edge.media.model.remote.EdgeMediaModel
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -28,6 +28,6 @@ import retrofit2.http.POST
 internal interface EdgeMediaRemoteSource {
     @POST(EdgeApiFactory.BASE_ENDPOINT_PATH)
     suspend fun getMediaById(
-        @Body request: GraphQLRequest<GetMediaByIdVariables>,
+        @Body request: GraphQLOperationRequest<GetMediaByIdVariables>,
     ): Response<GraphQLResponse<EdgeMediaModel>>
 }

@@ -28,7 +28,7 @@ import co.anitrend.data.carousel.model.CarouselModel
 import co.anitrend.data.carousel.source.contract.CarouselSource
 import co.anitrend.data.common.extension.toFuzzyDateLike
 import co.anitrend.data.common.model.date.FuzzyDateModel
-import co.anitrend.data.core.api.model.GraphQLResponse
+import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.data.media.converter.MediaEntityViewConverter
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.data.graphql.anilist.Carousel
@@ -37,7 +37,7 @@ import co.anitrend.data.graphql.anilist.CarouselAnimeVariables
 import co.anitrend.data.graphql.anilist.CarouselManga
 import co.anitrend.data.graphql.anilist.CarouselMangaVariables
 import co.anitrend.data.graphql.anilist.CarouselVariables
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import co.anitrend.domain.carousel.entity.MediaCarousel
 import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.CoroutineDispatcher

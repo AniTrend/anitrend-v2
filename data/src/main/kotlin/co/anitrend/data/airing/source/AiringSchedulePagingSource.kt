@@ -40,7 +40,7 @@ import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.domain.airing.model.AiringParam
 import co.anitrend.domain.common.sort.order.SortOrder
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -64,7 +64,7 @@ internal class AiringSchedulePagingSource(
         val deferred =
             deferred {
                 remoteSource.getAiringPaged(
-                    GraphQLRequest(
+                    GraphQLOperationRequest(
                         query = GetAiringPaged.document,
                         operationName = GetAiringPaged.name,
                         variables =

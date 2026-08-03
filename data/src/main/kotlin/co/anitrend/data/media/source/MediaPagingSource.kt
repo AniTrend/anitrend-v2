@@ -42,7 +42,7 @@ import co.anitrend.data.media.entity.filter.MediaQueryFilter
 import co.anitrend.data.media.entity.view.MediaEntityView
 import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.domain.common.sort.order.SortOrder
-import co.anitrend.retrofit.graphql.model.GraphQLRequest
+import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 
@@ -66,7 +66,7 @@ internal class MediaPagingSource(
         val deferred =
             deferred {
                 remoteSource.getMediaPaged(
-                    GraphQLRequest(
+                    GraphQLOperationRequest(
                         query = GetMediaPaged.document,
                         operationName = GetMediaPaged.name,
                         variables =
