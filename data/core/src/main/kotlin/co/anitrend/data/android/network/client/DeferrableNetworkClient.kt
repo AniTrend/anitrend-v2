@@ -25,6 +25,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.Response
 import java.net.SocketTimeoutException
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * A network client that manages how requests should be run and when to retry
@@ -86,7 +87,7 @@ abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Async<Response
                         maxAttempts,
                         defaultDelay,
                         shouldRetry,
-                    ),
+                    ).milliseconds,
                 )
             }
         }

@@ -7,28 +7,28 @@ Use this reference after exporting a database with [export-chucker-db.sh](../scr
 Export a likely database from the device:
 
 ```bash
-.agents/skills/android-runtime-investigation/scripts/export-chucker-db.sh --package <package-name>
+./scripts/export-chucker-db.sh --package <package-name>
 ```
 
 Query the latest likely request rows:
 
 ```bash
-.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh --export-dir /tmp/anitrend-chucker/<export-dir>
+./scripts/query-chucker-db.sh --export-dir /tmp/<package-name>-chucker/<export-dir>
 ```
 
 Query rows matching a screen or endpoint keyword:
 
 ```bash
-.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
-  --export-dir /tmp/anitrend-chucker/<export-dir> \
+./scripts/query-chucker-db.sh \
+  --export-dir /tmp/<package-name>-chucker/<export-dir> \
   --filter media
 ```
 
 Include response-like body columns when they exist:
 
 ```bash
-.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
-  --export-dir /tmp/anitrend-chucker/<export-dir> \
+./scripts/query-chucker-db.sh \
+  --export-dir /tmp/<package-name>-chucker/<export-dir> \
   --filter recommendation \
   --show-response
 ```
@@ -81,7 +81,7 @@ sqlite3 -header -column /path/to/chucker.db \
 ## Investigation Patterns
 
 - GraphQL regression: filter by `graphql`, then compare response bodies to the current fragment or model contract.
-- Screen-specific failure: filter by screen language such as `media`, `relation`, or `recommendation` and check whether the matching responses are empty, null-heavy, or structurally different.
+- Screen-specific failure: filter by screen language such as correlated with request names and check whether the matching responses are empty, null-heavy, or structurally different.
 - Silent UI failure: when logcat is clean, prefer exported network evidence before changing UI assumptions.
 
 ## Decision Points

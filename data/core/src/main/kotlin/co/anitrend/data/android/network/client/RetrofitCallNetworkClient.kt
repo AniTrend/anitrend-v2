@@ -23,6 +23,7 @@ import retrofit2.Call
 import retrofit2.HttpException
 import retrofit2.Response
 import java.net.SocketTimeoutException
+import kotlin.time.Duration.Companion.milliseconds
 
 internal abstract class RetrofitCallNetworkClient<T> : AbstractNetworkClient<Call<T>, Response<T>>() {
     /**
@@ -78,7 +79,7 @@ internal abstract class RetrofitCallNetworkClient<T> : AbstractNetworkClient<Cal
                         maxAttempts,
                         defaultDelay,
                         shouldRetry,
-                    ),
+                    ).milliseconds,
                 )
             }
         }

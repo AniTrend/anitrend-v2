@@ -24,6 +24,7 @@ import okhttp3.Response
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
+import kotlin.time.Duration.Companion.milliseconds
 
 abstract class OkHttpCallNetworkClient : AbstractNetworkClient<Call, Response>() {
     class OkHttpException(
@@ -39,9 +40,7 @@ abstract class OkHttpCallNetworkClient : AbstractNetworkClient<Call, Response>()
     @Throws(Exception::class)
     protected open fun Response.bodyOrThrow(): ResponseBody {
         if (!isSuccessful) throw OkHttpException(this)
-        return requireNotNull(body) {
-            "Response was null"
-        }
+        return body
     }
 
     /**
@@ -84,7 +83,7 @@ abstract class OkHttpCallNetworkClient : AbstractNetworkClient<Call, Response>()
                         maxAttempts,
                         defaultDelay,
                         shouldRetry,
-                    ),
+                    ).milliseconds,
                 )
             }
         }

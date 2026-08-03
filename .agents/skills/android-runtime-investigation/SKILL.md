@@ -21,7 +21,7 @@ argument-hint: 'Describe the failing screen or behavior, installed variant, and 
 
 - A screen regressed after a data-contract or UI change and the failure is only visible at runtime.
 - You need to confirm whether a bug is caused by rendering, serialization, GraphQL payload shape, or stale local data.
-- AniTrend debug builds are installed and the app can be inspected through ADB.
+- Debug builds are installed and the app can be inspected through ADB.
 - The app has multiple installed flavors and you need to target the right package before collecting runtime evidence.
 
 ## Host Requirements
@@ -85,19 +85,20 @@ Decision point:
 Use the export helper to pull the Chucker database:
 
 ```bash
-.agents/skills/android-runtime-investigation/scripts/export-chucker-db.sh --package <package-name>
+./scripts/export-chucker-db.sh --package <package-name>
 ```
 
 Then query for the relevant endpoint or screen:
 
 ```bash
-.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
-  --export-dir /tmp/anitrend-chucker/<export-dir> \
+./scripts/query-chucker-db.sh \
+  --export-dir /tmp/<package-name>-chucker/<export-dir> \
   --filter <screen-or-endpoint-keyword>
 ```
 
 What to look for:
-- GraphQL field mismatches, nullability surprises, status/error payloads, stale responses.
+- If graphql based request/responses: GraphQL field mismatches, nullability surprises, status/error payloads, stale responses.
+- If rest based request/responses: property field mismatching, nullability surprises, status/error payloads, stale responses.
 
 7. Capture UI hierarchy and screenshot at the failure point.
 
@@ -110,14 +111,14 @@ adb -s <serial> exec-out screencap -p > /tmp/screen.png
 - Use `grep` against the XML dump to verify expected labels, text content, or missing nodes.
 - Cross-reference the screenshot with the dump to confirm layout and visibility.
 
-8. Inspect Room database when cache or local persistence is suspected.
+8. Inspect database when cache or local persistence is suspected (Room/Standard SQL support only).
 
 ```bash
 adb -s <serial> shell run-as <package-name> ls databases
-adb -s <serial> shell run-as <package-name> cat databases/anitrend-store > /tmp/anitrend-store.db
+adb -s <serial> shell run-as <package-name> cat databases/<database-name> > /tmp/<database-name>
 ```
 
-- Use `sqlite3 /tmp/anitrend-store.db ".tables"` to list tables.
+- Use `sqlite3 /tmp/<database-name>.db ".tables"` to list tables.
 - Query the relevant entity or connection table to check row count, nullability, and expected data.
 - If WAL mode may hide recent writes, copy the `-wal` and `-shm` sidecar files as well.
 
@@ -173,7 +174,7 @@ Decision point:
 Preferred path:
 
 ```bash
-.agents/skills/android-runtime-investigation/scripts/export-chucker-db.sh --package <package-name>
+./scripts/export-chucker-db.sh --package <package-name>
 ```
 
 This helper:
@@ -185,9 +186,9 @@ This helper:
 Then copy the main database and sidecar files to the host:
 
 ```bash
-mkdir -p /tmp/anitrend-chucker
+mkdir -p /tmp/<package-name>-chucker
 for suffix in '' '-wal' '-shm'; do
-  adb exec-out run-as <package-name> cat "databases/<db-name>${suffix}" > "/tmp/anitrend-chucker/<db-name>${suffix}" 2>/dev/null || true
+  adb exec-out run-as <package-name> cat "databases/<db-name>${suffix}" > "/tmp/<package-name>/<db-name>${suffix}" 2>/dev/null || true
 done
 ```
 
@@ -202,7 +203,7 @@ Quality check:
 Preferred path:
 
 ```bash
-.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh \
+./scripts/query-chucker-db.sh \
   --export-dir /tmp/anitrend-chucker/<export-dir> \
   --filter <screen-or-endpoint-keyword>
 ```
@@ -210,8 +211,8 @@ Preferred path:
 Useful variants:
 
 ```bash
-.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh --db /path/to/chucker.db --limit 20
-.agents/skills/android-runtime-investigation/scripts/query-chucker-db.sh --db /path/to/chucker.db --filter graphql --show-response
+./scripts/query-chucker-db.sh --db /path/to/chucker.db --limit 20
+./scripts/query-chucker-db.sh --db /path/to/chucker.db --filter graphql --show-response
 ```
 
 This helper:
@@ -225,8 +226,8 @@ This helper:
 - Inspect the schema before assuming table names.
 
 ```bash
-sqlite3 /tmp/anitrend-chucker/<db-name> ".tables"
-sqlite3 /tmp/anitrend-chucker/<db-name> "SELECT name, sql FROM sqlite_master WHERE type='table';"
+sqlite3 /tmp/<package-name>-chucker/<db-name> ".tables"
+sqlite3 /tmp/<package-name>-chucker/<db-name> "SELECT name, sql FROM sqlite_master WHERE type='table';"
 ```
 
 Decision point:
@@ -239,8 +240,8 @@ Decision point:
 Example investigation pattern:
 
 ```bash
-sqlite3 /tmp/anitrend-chucker/<db-name> "SELECT * FROM <transactions-table> ORDER BY id DESC LIMIT 20;"
-sqlite3 /tmp/anitrend-chucker/<db-name> "SELECT * FROM <response-table> WHERE <foreign-key> = <id>;"
+sqlite3 /tmp/<package-name>-chucker/<db-name> "SELECT * FROM <transactions-table> ORDER BY id DESC LIMIT 20;"
+sqlite3 /tmp/<package-name>-chucker/<db-name> "SELECT * FROM <response-table> WHERE <foreign-key> = <id>;"
 ```
 
 What to look for:
@@ -254,7 +255,7 @@ See [chucker-sqlite-queries.md](./references/chucker-sqlite-queries.md) for comm
 ## Completion Checklist
 
 - The correct emulator target and package were identified explicitly.
-- Runtime logcat evidence was captured for the repro window, including `AndroidRuntime` and `Timber` output.
+- Runtime logcat evidence was captured for the repro window, including `AndroidRuntime` and `Timber` (if part of project) output.
 - Chucker HTTP/GraphQL payloads were inspected when response shape mattered.
 - Room database state was inspected when cache or local persistence was suspected.
 - UIAutomator dump and screenshot were captured when rendering or visibility was questioned.

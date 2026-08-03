@@ -19,7 +19,6 @@ package co.anitrend.android.core.extensions
 import android.content.Context
 import android.content.ContextWrapper
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope

@@ -181,7 +181,5 @@ This file is the design constitution for AniTrend.
 
 ## 10) References
 
-- `.github/instructions/project-scope.instructions.md`
-- `.github/instructions/context.instructions.md`
 - `.agents/skills/product-designer/references/compose-material3-accessibility-handoff.md`
 - `.agents/skills/key-libraries/SKILL.md`

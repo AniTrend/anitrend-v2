@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -37,7 +38,7 @@ import androidx.core.graphics.drawable.toBitmap
 fun adaptiveIconPainterResource(
     @DrawableRes id: Int,
 ): Painter {
-    val res = LocalContext.current.resources
+    val res = LocalResources.current
     val theme = LocalContext.current.theme
 
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -58,13 +59,14 @@ fun adaptiveIconPainterResource(
 @Composable
 fun rememberSystemAnimDuration(systemAnimationDuration: SystemAnimationDuration = SystemAnimationDuration.SHORT): Int {
     val context = LocalContext.current
+    val resources = LocalResources.current
     return remember(context, systemAnimationDuration) {
-        context.resources.getInteger(systemAnimationDuration.duration)
+        resources.getInteger(systemAnimationDuration.duration)
     }
 }
 
 enum class SystemAnimationDuration(
-    @IntegerRes val duration: Int,
+    @param:IntegerRes val duration: Int,
 ) {
     SHORT(android.R.integer.config_shortAnimTime),
     MEDIUM(android.R.integer.config_mediumAnimTime),
