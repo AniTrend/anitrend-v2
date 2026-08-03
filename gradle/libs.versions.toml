@@ -31,7 +31,7 @@ androidx-work = "2.11.2"
 anitrend-arch = "1.9.2"
 anitrend-emojify = "2.2.0"
 anitrend-markdown = "0.12.1-alpha01"
-anitrend-retrofit = "0.12.2"
+anitrend-retrofit = "0.14.0"
 anitrend-querybuilder = "0.3.3"
 
 chuncker = "4.3.1"
