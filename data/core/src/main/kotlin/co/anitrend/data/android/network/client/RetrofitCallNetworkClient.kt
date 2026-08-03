@@ -74,12 +74,13 @@ internal abstract class RetrofitCallNetworkClient<T> : AbstractNetworkClient<Cal
                     lastKnownException = exception
                 }
                 delay(
-                    exception.getNextDelay(
-                        attempt,
-                        maxAttempts,
-                        defaultDelay,
-                        shouldRetry,
-                    ).milliseconds,
+                    exception
+                        .getNextDelay(
+                            attempt,
+                            maxAttempts,
+                            defaultDelay,
+                            shouldRetry,
+                        ).milliseconds,
                 )
             }
         }
