@@ -78,12 +78,13 @@ abstract class OkHttpCallNetworkClient : AbstractNetworkClient<Call, Response>()
                     lastKnownException = exception
                 }
                 delay(
-                    exception.getNextDelay(
-                        attempt,
-                        maxAttempts,
-                        defaultDelay,
-                        shouldRetry,
-                    ).milliseconds,
+                    exception
+                        .getNextDelay(
+                            attempt,
+                            maxAttempts,
+                            defaultDelay,
+                            shouldRetry,
+                        ).milliseconds,
                 )
             }
         }
