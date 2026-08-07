@@ -82,12 +82,13 @@ abstract class DeferrableNetworkClient<T> : AbstractNetworkClient<Async<Response
                     lastKnownException = exception
                 }
                 delay(
-                    exception.getNextDelay(
-                        attempt,
-                        maxAttempts,
-                        defaultDelay,
-                        shouldRetry,
-                    ).milliseconds,
+                    exception
+                        .getNextDelay(
+                            attempt,
+                            maxAttempts,
+                            defaultDelay,
+                            shouldRetry,
+                        ).milliseconds,
                 )
             }
         }
