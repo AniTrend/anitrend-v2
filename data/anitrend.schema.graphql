@@ -1,5 +1,7 @@
 directive @enum(subgraph: String, value: String) on ENUM_VALUE
 
+directive @example(subgraph: String, value: ObjMap) on ENUM | FIELD_DEFINITION | INPUT_OBJECT | OBJECT | SCALAR
+
 directive @extraSchemaDefinitionDirective(directives: _DirectiveExtensions) on OBJECT
 
 directive @httpOperation(httpMethod: HTTPMethod, isBinary: Boolean, jsonApiFields: Boolean, operationSpecificHeaders: [[String]], path: String, queryParamArgMap: ObjMap, queryStringOptions: ObjMap, queryStringOptionsByParam: ObjMap, requestBaseBody: ObjMap, subgraph: String) on FIELD_DEFINITION
@@ -8,6 +10,14 @@ directive @length(max: Int, min: Int, subgraph: String) on SCALAR
 
 directive @transport(headers: [[String]], kind: String, location: String, queryParams: [[String]], queryStringOptions: ObjMap, subgraph: String) on SCHEMA
 
+directive @typescript(subgraph: String, type: String) on ENUM | SCALAR
+
+"""Theme type classification (opening or ending)"""
+enum AnimeThemeType {
+  ED
+  OP
+}
+
 """Opening or ending theme with entries and song metadata"""
 type AnimeThemes {
   animethemeentries: [AnimeThemesEntry]
@@ -15,7 +25,7 @@ type AnimeThemes {
   sequence: Float
   slug: String!
   song: AnimeThemesSong
-  type: query_series_animethemes_items_type!
+  type: AnimeThemeType!
 }
 
 """Audio resource for an anime theme"""
@@ -171,12 +181,12 @@ type Episode {
 
 """Episode type classification"""
 enum EpisodeKind {
-  filler
-  main
-  ona
-  ova
-  recap
-  special
+  FILLER
+  MAIN
+  ONA
+  OVA
+  RECAP
+  SPECIAL
 }
 
 """Opening and ending theme songs"""
@@ -213,10 +223,35 @@ enum HTTPMethod {
   TRACE
 }
 
+"""Basic health metrics for the edge service"""
+type Health {
+  status: HealthStatus!
+
+  """ISO 8601 timestamp"""
+  timestamp: String!
+
+  """Uptime in milliseconds"""
+  uptime: Float!
+}
+
+enum HealthStatus {
+  healthy
+  unhealthy
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON
+
+type Mutation {
+  confirmInstallation(input: PushConfirmBody_Input, installationId: String!): PushInstallation
+  deleteInstallation(input: PushDeleteBody_Input, installationId: String!): PushAcknowledgment
+  registerInstallation(input: PushRegistrationBody_Input): PushInstallation
+  sendTestPush(installationId: String!): PushAcknowledgment
+  updatePreferences(input: PushPreferencesBody_Input, installationId: String!): PushAcknowledgment
+  updateProfile(input: PushProfileBody_Input, installationId: String!): PushAcknowledgment
+}
 
 """Schema representing a news document."""
 type News {
@@ -241,11 +276,17 @@ type NewsConnection {
   last: String
 }
 
+"""Locale for the news feed, e.g., en-GB, de-DE, fr-FR."""
+scalar NewsFeedLocale
+
 """A string that cannot be passed as an empty value"""
 scalar NonEmptyString
 
 """Floats that will have a value of 0 or more."""
 scalar NonNegativeFloat
+
+"""Integers that will have a value of 0 or more."""
+scalar NonNegativeInt
 
 scalar ObjMap
 
@@ -271,19 +312,192 @@ scalar PositiveFloat
 """Integers that will have a value greater than 0."""
 scalar PositiveInt
 
+"""Acknowledgment response for mutation operations"""
+type PushAcknowledgment {
+  """Installation identifier"""
+  installationId: String!
+
+  """UnifiedPush instance identifier"""
+  instance: String!
+}
+
+"""Challenge confirmation request body"""
+input PushConfirmBody_Input {
+  instance: NonEmptyString = "default"
+  token: NonEmptyString!
+}
+
+"""Installation deletion request body"""
+input PushDeleteBody_Input {
+  instance: NonEmptyString = "default"
+  reason: String
+}
+
+"""Push installation registration state"""
+type PushInstallation {
+  """Stable client-generated installation identifier"""
+  installationId: String!
+
+  """UnifiedPush instance identifier"""
+  instance: String!
+  status: PushInstallationStatus!
+}
+
+"""Lifecycle status of a push installation"""
+enum PushInstallationStatus {
+  ACTIVE
+  DISABLED
+  EXPIRED
+  PENDING
+  REVOKED
+}
+
+"""Topic preferences update request body"""
+input PushPreferencesBody_Input {
+  instance: NonEmptyString = "default"
+  topics: PushPreferencesTopics_Input!
+}
+
+"""Topic preference flags for the installation"""
+input PushPreferencesTopics_Input {
+  airing: Boolean
+  appAnnouncements: Boolean
+  mediaUpdates: Boolean
+  news: Boolean
+  sync: Boolean
+}
+
+"""Application build metadata for the profile"""
+input PushProfileApp_Input {
+  build: String
+  code: NonNegativeInt
+  source: String
+  version: String
+}
+
+"""Profile update request body"""
+input PushProfileBody_Input {
+  app: PushProfileApp_Input
+  capabilities: PushProfileCapabilities_Input
+  device: PushProfileDevice_Input
+  identity: PushProfileIdentity_Input
+  instance: NonEmptyString = "default"
+  locale: PushProfileLocale_Input
+  topics: PushProfileTopics_Input
+  views: PushProfileViews_Input
+}
+
+"""Push capability flags for the profile"""
+input PushProfileCapabilities_Input {
+  notificationRuntimePermission: Boolean
+  supportsRichNotifications: Boolean
+  supportsSilentSync: Boolean
+  unifiedPush: Boolean
+}
+
+enum PushProfileDevicePlatform {
+  ANDROID
+}
+
+"""Device hardware and SDK metadata for the profile"""
+input PushProfileDevice_Input {
+  manufacturer: String
+  model: String
+  platform: PushProfileDevicePlatform
+  sdk: NonNegativeInt
+}
+
+enum PushProfileIdentityProvider {
+  ANILIST
+}
+
+enum PushProfileIdentityState {
+  CLIENT_DECLARED
+}
+
+"""Identity provider linkage for the profile"""
+input PushProfileIdentity_Input {
+  anilistUserId: Int
+  provider: PushProfileIdentityProvider
+  state: PushProfileIdentityState
+}
+
+"""Locale and timezone for the profile"""
+input PushProfileLocale_Input {
+  language: String
+  region: String
+  timezone: String
+}
+
+"""Topic preference flags for the profile"""
+input PushProfileTopics_Input {
+  airing: Boolean
+  appAnnouncements: Boolean
+  mediaUpdates: Boolean
+  news: Boolean
+  sync: Boolean
+}
+
+"""Last view state for the profile"""
+input PushProfileViews_Input {
+  lastSeen: String
+  lastSeenAt: Float
+}
+
+"""Installation registration request body"""
+input PushRegistrationBody_Input {
+  appBuild: String
+  appCode: NonNegativeInt
+  appVersion: String
+  distributor: String
+  endpoint: URL!
+  installationId: NonEmptyString!
+  instance: NonEmptyString = "default"
+  keys: PushRegistrationKeys_Input!
+  locale: String
+  platform: PushRegistrationPlatform
+  timezone: String
+  topics: [PushRegistrationTopic] = []
+}
+
+"""Web Push subscription keys for the installation"""
+input PushRegistrationKeys_Input {
+  auth: NonEmptyString!
+  p256dh: NonEmptyString!
+}
+
+enum PushRegistrationPlatform {
+  ANDROID
+}
+
+"""Topic subscription for the installation"""
+enum PushRegistrationTopic {
+  APP_ANNOUNCEMENTS
+  NEWS
+  SYNC
+}
+
+"""VAPID public key for Android Web Push subscription"""
+type PushVapid {
+  """Base64url-encoded VAPID public key for Web Push subscription"""
+  applicationServerKey: String!
+}
+
 type Query {
   character(malId: Int, name: NonEmptyString): Character
   config: Config
-  episodes(after: String, before: String, end: Int, includeOrphans: Boolean, kind: queryInput_episodes_kind, limit: PositiveInt = 25, malId: Int!, specialsOnly: Boolean, start: Int): Episodes
+  episodes(after: String, before: String, end: Int, includeOrphans: Boolean, kind: EpisodeKind, limit: PositiveInt = 25, malId: Int!, specialsOnly: Boolean, start: Int): Episodes
+  health: Health
   index: JSON
   news(after: String, before: String, limit: PositiveFloat = 15): NewsConnection
   newsFeed(
     """Locale for the news feed, e.g., en-GB, de-DE, fr-FR."""
-    locale: queryInput_newsFeed_locale = "en-US"
+    locale: NewsFeedLocale = "en-US"
   ): [News]
   person(malId: Int, name: NonEmptyString): Person
   series(anilist: Int, mal: Int, notify: NonEmptyString, slug: NonEmptyString, tmdb: Int, trakt: Int, tvdb: Int): Series
   studio(malId: Int, name: NonEmptyString): Studio
+  vapid: PushVapid
 }
 
 """Aggregated media entity from multiple sources"""
@@ -299,19 +513,19 @@ type Series {
   description: String
   duration: Float
   fanart: String
-  format: query_series_format
+  format: SeriesFormat
   homepage: String
   images: [SeriesImageAttributes]!
   isAdult: Boolean
-  kind: query_series_kind!
+  kind: SeriesKind!
   mediaId: SeriesId!
   moreInfo: String
   networks: [SeriesNetwork]!
   publishedFrom: Float
   publishedTo: Float
   schedule: SeriesSchedule
-  source: query_series_source
-  status: query_series_status
+  source: SeriesSource
+  status: SeriesStatus
   title: SeriesTitle!
   trailers: [SeriesTrailer]!
   updatedAt: Float!
@@ -324,6 +538,15 @@ type SeriesCoverImage {
   extraLarge: String
   large: String
   medium: String
+}
+
+"""Media format classification"""
+enum SeriesFormat {
+  MOVIE
+  ONA
+  OVA
+  SPECIAL
+  TV
 }
 
 """Provider identifiers for a media entity"""
@@ -350,19 +573,38 @@ type SeriesId {
 type SeriesImageAttributes {
   height: Float!
   locale: String
-  type: query_series_images_items_type!
+  type: SeriesImageType!
   url: String!
   width: Float!
 }
 
+"""Image type classification (backdrop, poster, or logo)"""
+enum SeriesImageType {
+  BACKDROP
+  LOGO
+  POSTER
+}
+
+"""Media type classification (anime or manga)"""
+enum SeriesKind {
+  ANIME
+  MANGA
+}
+
 """Network or streaming service associated with the series"""
 type SeriesNetwork {
-  category: query_series_networks_items_category!
+  category: SeriesNetworkCategory!
   id: Float!
   isPrimary: Boolean!
   logoPath: String
   name: String!
   originCountry: String!
+}
+
+"""Network role classification"""
+enum SeriesNetworkCategory {
+  DISTRIBUTION
+  PRODUCTION
 }
 
 """Air date schedule for the series"""
@@ -385,6 +627,23 @@ type SeriesScheduleEpisode {
   runtime: Float
   seasonNumber: Float
   tmdbId: Float
+}
+
+"""Original source material for the media"""
+enum SeriesSource {
+  LIGHT_NOVEL
+  MANGA
+  ORIGINAL
+  OTHER
+  VIDEO_GAME
+  VISUAL_NOVEL
+}
+
+"""Current release status of the media"""
+enum SeriesStatus {
+  FINISHED
+  NOT_YET_RELEASED
+  RELEASING
 }
 
 """Multi-language titles for a media entity"""
@@ -430,59 +689,3 @@ A field whose value conforms to the standard URL format as specified in RFC3986:
 scalar URL
 
 scalar _DirectiveExtensions
-
-enum queryInput_episodes_kind {
-  filler
-  main
-  ona
-  ova
-  recap
-  special
-}
-
-"""Locale for the news feed, e.g., en-GB, de-DE, fr-FR."""
-scalar queryInput_newsFeed_locale
-
-enum query_series_animethemes_items_type {
-  ED
-  OP
-}
-
-enum query_series_format {
-  MOVIE
-  ONA
-  OVA
-  SPECIAL
-  TV
-}
-
-enum query_series_images_items_type {
-  BACKDROP
-  LOGO
-  POSTER
-}
-
-enum query_series_kind {
-  ANIME
-  MANGA
-}
-
-enum query_series_networks_items_category {
-  DISTRIBUTION
-  PRODUCTION
-}
-
-enum query_series_source {
-  LIGHT_NOVEL
-  MANGA
-  ORIGINAL
-  OTHER
-  VIDEO_GAME
-  VISUAL_NOVEL
-}
-
-enum query_series_status {
-  FINISHED
-  NOT_YET_RELEASED
-  RELEASING
-}

@@ -728,7 +728,9 @@ type GenreStats {
   timeWatched: Int
 }
 
-"""Page of data (Used for internal use only)"""
+"""
+Page of data. Limited to a max depth of 5000 entries. This is calculated as the page parameter multiplied by the perPage parameter.
+"""
 type InternalPage {
   activities(
     """Filter by the time the activity was created"""
@@ -959,6 +961,12 @@ type InternalPage {
 
     """Filter by the media's country of origin"""
     countryOfOrigin: CountryCode
+
+    """Filter by the media's country of origin (max 10,000 items)"""
+    countryOfOrigin_in: [CountryCode]
+
+    """Filter by the media's country of origin (max 10,000 items)"""
+    countryOfOrigin_not_in: [CountryCode]
 
     """Filter by the media's episode length"""
     duration: Int
@@ -1960,7 +1968,7 @@ type MediaEdge {
 
   """The type of relation to the parent model"""
   relationType(
-    """Provide 2 to use new version 2 of relation enum"""
+    """Provide 3 to use new version 3 of relation enum"""
     version: Int
   ): MediaRelation
 
@@ -2362,6 +2370,9 @@ enum MediaRelation {
 
   """Released before the relation"""
   PREQUEL
+
+  """Version 3 only. The media is set in the same universe as another media"""
+  SAME_UNIVERSE
 
   """Released after the relation"""
   SEQUEL
@@ -2960,7 +2971,7 @@ type Mutation {
     """The activity reply id, required for updating"""
     id: Int
 
-    """The reply text"""
+    """The reply text (Min: 2, Max: 8000)"""
     text: String
   ): ActivityReply
 
@@ -2975,7 +2986,7 @@ type Mutation {
 
   """Create or update a media list entry"""
   SaveMediaListEntry(
-    """Array of advanced scores"""
+    """Array of advanced scores (Min: 0, Max: 100)"""
     advancedScores: [Float]
 
     """When the entry was completed by the user"""
@@ -2993,28 +3004,32 @@ type Mutation {
     """The id of the media the entry is of"""
     mediaId: Int
 
-    """Text notes"""
+    """Text notes (Min: 0, Max: 6000)"""
     notes: String
 
-    """Priority of planning"""
+    """Priority of planning (Min: 0, Max: 255)"""
     priority: Int
 
     """If the entry should only be visible to authenticated user"""
     private: Boolean
 
-    """The amount of episodes/chapters consumed by the user"""
+    """The amount of episodes/chapters consumed by the user (Min: 0)"""
     progress: Int
 
-    """The amount of volumes read by the user"""
+    """The amount of volumes read by the user (Min: 0)"""
     progressVolumes: Int
 
-    """The amount of times the user has rewatched/read the media"""
+    """
+    The amount of times the user has rewatched/read the media (Min: 0, Max: 1000)
+    """
     repeat: Int
 
-    """The score of the media in the user's chosen scoring method"""
+    """
+    The score of the media in the user's chosen scoring method (Min: 0, Max: 100)
+    """
     score: Float
 
-    """The score of the media in 100 point"""
+    """The score of the media in 100 point (Min: 0, Max: 100)"""
     scoreRaw: Int
 
     """When the entry was started by the user"""
@@ -3035,7 +3050,7 @@ type Mutation {
     """If the activity should be locked. (Mod Only)"""
     locked: Boolean
 
-    """The activity message text"""
+    """The activity message text (Min: 2, Max: 10000)"""
     message: String
 
     """If the activity should be private"""
@@ -3059,7 +3074,7 @@ type Mutation {
 
   """Create or update a review"""
   SaveReview(
-    """The main review text. Min:2200 characters"""
+    """The main review text (Min: 2600)"""
     body: String
 
     """The review id, required for updating"""
@@ -3071,10 +3086,10 @@ type Mutation {
     """If the review should only be visible to its creator"""
     private: Boolean
 
-    """A short summary/preview of the review. Min:20, Max:120 characters"""
+    """The score of the review (Min: 0, Max: 100)"""
     score: Int
 
-    """A short summary/preview of the review. Min:20, Max:120 characters"""
+    """A short summary/preview of the review (Min: 20, Max: 120)"""
     summary: String
   ): Review
 
@@ -3086,13 +3101,13 @@ type Mutation {
     """If the activity should be locked. (Mod Only)"""
     locked: Boolean
 
-    """The activity text"""
+    """The activity text (Min: 5, Max: 10000)"""
     text: String
   ): TextActivity
 
   """Create or update a forum thread"""
   SaveThread(
-    """The main text body of the thread"""
+    """The main text body of the thread (Max: 30000)"""
     body: String
 
     """Forum categories the thread should be within"""
@@ -3110,13 +3125,13 @@ type Mutation {
     """If the thread should be stickied. (Mod Only)"""
     sticky: Boolean
 
-    """The title of the thread"""
+    """The title of the thread (Min: 6, Max: 120)"""
     title: String
   ): Thread
 
   """Create or update a thread comment"""
   SaveThreadComment(
-    """The comment markdown text"""
+    """The comment markdown text (Min: 1, Max: 12000)"""
     comment: String
 
     """The comment id, required for updating"""
@@ -3243,7 +3258,7 @@ type Mutation {
 
   """Update multiple media list entries to the same values"""
   UpdateMediaListEntries(
-    """Array of advanced scores"""
+    """Array of advanced scores (Min: 0, Max: 100)"""
     advancedScores: [Float]
 
     """When the entry was completed by the user"""
@@ -3255,28 +3270,32 @@ type Mutation {
     """The list entries ids to update"""
     ids: [Int]
 
-    """Text notes"""
+    """Text notes (Min: 0, Max: 6000)"""
     notes: String
 
-    """Priority of planning"""
+    """Priority of planning (Min: 0, Max: 255)"""
     priority: Int
 
     """If the entry should only be visible to authenticated user"""
     private: Boolean
 
-    """The amount of episodes/chapters consumed by the user"""
+    """The amount of episodes/chapters consumed by the user (Min: 0)"""
     progress: Int
 
-    """The amount of volumes read by the user"""
+    """The amount of volumes read by the user (Min: 0)"""
     progressVolumes: Int
 
-    """The amount of times the user has rewatched/read the media"""
+    """
+    The amount of times the user has rewatched/read the media (Min: 0, Max: 1000)
+    """
     repeat: Int
 
-    """The score of the media in the user's chosen scoring method"""
+    """
+    The score of the media in the user's chosen scoring method (Min: 0, Max: 100)
+    """
     score: Float
 
-    """The score of the media in 100 point"""
+    """The score of the media in 100 point (Min: 0, Max: 100)"""
     scoreRaw: Int
 
     """When the entry was started by the user"""
@@ -3290,7 +3309,7 @@ type Mutation {
     about: String
 
     """
-    Minutes between activity for them to be merged together. 0 is Never, Above 2 weeks (20160 mins) is Always.
+    Minutes between activity for them to be merged together. 0 is Never, Above 2 weeks (20160 mins) is Always. (Min: 0)
     """
     activityMergeTime: Int
 
@@ -3306,7 +3325,7 @@ type Mutation {
     """If the user should see media marked as adult-only"""
     displayAdultContent: Boolean
 
-    """Profile highlight color"""
+    """Profile highlight color (Max: 24)"""
     donatorBadge: String
 
     """The user's anime list options"""
@@ -3432,7 +3451,9 @@ enum NotificationType {
 """Notification union type"""
 union NotificationUnion = ActivityLikeNotification | ActivityMentionNotification | ActivityMessageNotification | ActivityReplyLikeNotification | ActivityReplyNotification | ActivityReplySubscribedNotification | AiringNotification | CharacterSubmissionUpdateNotification | FollowingNotification | MediaDataChangeNotification | MediaDeletionNotification | MediaMergeNotification | MediaSubmissionUpdateNotification | RelatedMediaAdditionNotification | StaffSubmissionUpdateNotification | ThreadCommentLikeNotification | ThreadCommentMentionNotification | ThreadCommentReplyNotification | ThreadCommentSubscribedNotification | ThreadLikeNotification
 
-"""Page of data"""
+"""
+Page of data. Limited to a max depth of 5000 entries. This is calculated as the page parameter multiplied by the perPage parameter.
+"""
 type Page {
   activities(
     """Filter by the time the activity was created"""
@@ -3650,6 +3671,12 @@ type Page {
 
     """Filter by the media's country of origin"""
     countryOfOrigin: CountryCode
+
+    """Filter by the media's country of origin (max 10,000 items)"""
+    countryOfOrigin_in: [CountryCode]
+
+    """Filter by the media's country of origin (max 10,000 items)"""
+    countryOfOrigin_not_in: [CountryCode]
 
     """Filter by the media's episode length"""
     duration: Int
@@ -4430,6 +4457,12 @@ type Query {
 
     """Filter by the media's country of origin"""
     countryOfOrigin: CountryCode
+
+    """Filter by the media's country of origin (max 10,000 items)"""
+    countryOfOrigin_in: [CountryCode]
+
+    """Filter by the media's country of origin (max 10,000 items)"""
+    countryOfOrigin_not_in: [CountryCode]
 
     """Filter by the media's episode length"""
     duration: Int
@@ -6181,6 +6214,8 @@ type User {
 
   """The user's banner images"""
   bannerImage: String
+
+  """List of active bans. Mod-only"""
   bans: Json
 
   """
@@ -6246,7 +6281,9 @@ type User {
   updatedAt: Int
 }
 
-"""A user's activity history stats."""
+"""
+A user's activity history stats for the previous 6 months. Refreshes only periodically
+"""
 type UserActivityHistory {
   """The amount of activity on the day"""
   amount: Int
