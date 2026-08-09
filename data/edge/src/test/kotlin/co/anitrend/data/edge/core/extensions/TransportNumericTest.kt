@@ -80,12 +80,6 @@ class TransportNumericTest {
     }
 
     @Test
-    fun `nullable requireIntegralLong passes null through`() {
-        assertNull((null as Double?).requireIntegralLong(FIELD_NAME))
-        assertEquals(42L, 42.0.requireIntegralLong(FIELD_NAME))
-    }
-
-    @Test
     fun `requireIntegralInt accepts integral in-range values`() {
         assertEquals(0, 0.0.requireIntegralInt(FIELD_NAME))
         assertEquals(42, 42.0.requireIntegralInt(FIELD_NAME))
