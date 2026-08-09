@@ -16,59 +16,144 @@
  */
 package co.anitrend.data.edge.episode.converter
 
-import co.anitrend.data.edge.episode.model.EdgeEpisodeModel
+import co.anitrend.data.edge.graphql.EpisodesData
+import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
+private const val MEDIA_ID = "media-id"
+
 class EdgeEpisodeConverterTest {
+    private val json =
+        Json {
+            ignoreUnknownKeys = true
+            coerceInputValues = true
+            isLenient = true
+        }
+
     @Test
-    fun `converter maps schema shaped episode into local entity`() {
-        val model =
-            EdgeEpisodeModel(
-                absoluteEpisodeNumber = 13,
-                aired = 1710000999L,
-                duration = 24,
-                episodeNumber = 1,
-                id = 1001L,
-                image = "image.jpg",
-                synopsis = "Episode synopsis",
-                title =
-                    EdgeEpisodeModel.EdgeEpisodeTitleModel(
-                        english = "Episode One",
-                        native = "Episode Native",
-                        romanji = "Episode Romaji",
-                    ),
-                poster = "poster.jpg",
-                seasonNumber = 2,
-                tvdbId = 2002L,
-                tvdbShowId = 3003L,
-            )
+    fun `generated episodes payload decodes and maps into local entity`() {
+        val payload =
+            """
+            {
+              "episodes": {
+                "data": [
+                  {
+                    "absoluteEpisodeNumber": 13,
+                    "aired": 1710000999,
+                    "airedAfterEpisodeNumber": null,
+                    "airedAfterSeasonNumber": null,
+                    "airedBeforeEpisodeNumber": null,
+                    "airedBeforeSeasonNumber": null,
+                    "duration": 24,
+                    "episodeNumber": 1,
+                    "id": 1001,
+                    "image": "image.jpg",
+                    "kind": "MAIN",
+                    "poster": "poster.jpg",
+                    "seasonNumber": 2,
+                    "synopsis": "Episode synopsis",
+                    "title": {
+                      "english": "Episode One",
+                      "native": "Episode Native",
+                      "romanji": "Episode Romaji"
+                    },
+                    "tmdbId": 7001,
+                    "tvdbId": 2002,
+                    "tvdbShowId": 3003,
+                    "url": "https://example.com/episode"
+                  }
+                ]
+              }
+            }
+            """.trimIndent()
 
-        val result = EdgeEpisodeConverter().convertFromOrNull("media-id" to model)
+        val result = json.decodeFromString<EpisodesData>(payload)
+        val model = assertNotNull(result.episodes?.data.orEmpty().first())
 
-        assertNotNull(result)
-        assertEquals("media-id", result.mediaId)
-        assertEquals(2, result.seasonNumber)
-        assertEquals(1, result.episodeNumber)
-        assertEquals("Episode One", result.name)
-        assertEquals("Episode synopsis", result.overview)
-        assertEquals(24, result.runtime)
-        assertEquals(1710000999L, result.airDate)
+        val mapped = EdgeEpisodeConverter().convertFromOrNull(MEDIA_ID to model)
+
+        assertNotNull(mapped)
+        assertEquals(MEDIA_ID, mapped.mediaId)
+        assertEquals(2, mapped.seasonNumber)
+        assertEquals(1, mapped.episodeNumber)
+        assertEquals("Episode One", mapped.name)
+        assertEquals("Episode synopsis", mapped.overview)
+        assertEquals("image.jpg", mapped.image)
+        assertEquals("poster.jpg", mapped.poster)
+        assertEquals(24, mapped.runtime)
+        assertEquals(13, mapped.absoluteEpisodeNumber)
+        assertEquals(1710000999L, mapped.airDate)
     }
 
     @Test
     fun `converter drops incomplete episode rows`() {
         val model =
-            EdgeEpisodeModel(
+            sampleEpisode(
                 aired = null,
-                episodeNumber = 1,
-                seasonNumber = 1,
             )
 
-        val result = EdgeEpisodeConverter().convertFromOrNull("media-id" to model)
+        val mapped = EdgeEpisodeConverter().convertFromOrNull(MEDIA_ID to model)
 
-        assertNull(result)
+        assertNull(mapped)
     }
+
+    @Test
+    fun `converter rejects fractional season numbers instead of truncating`() {
+        val model =
+            sampleEpisode(
+                seasonNumber = 1.5,
+            )
+
+        assertFailsWith<IllegalArgumentException> {
+            EdgeEpisodeConverter().convertFromOrNull(MEDIA_ID to model)
+        }
+    }
+
+    @Test
+    fun `converter rejects fractional episode numbers instead of truncating`() {
+        val model =
+            sampleEpisode(
+                episodeNumber = 1.5,
+            )
+
+        assertFailsWith<IllegalArgumentException> {
+            EdgeEpisodeConverter().convertFromOrNull(MEDIA_ID to model)
+        }
+    }
+
+    private fun sampleEpisode(
+        aired: Double? = 1710000999.0,
+        episodeNumber: Double = 1.0,
+        seasonNumber: Double = 2.0,
+    ) =
+        EpisodesData.EpisodesData(
+            absoluteEpisodeNumber = 13.0,
+            aired = aired,
+            airedAfterEpisodeNumber = null,
+            airedAfterSeasonNumber = null,
+            airedBeforeEpisodeNumber = null,
+            airedBeforeSeasonNumber = null,
+            duration = 24.0,
+            episodeNumber = episodeNumber,
+            id = 1001.0,
+            image = "image.jpg",
+            kind = null,
+            poster = "poster.jpg",
+            seasonNumber = seasonNumber,
+            synopsis = "Episode synopsis",
+            title =
+                EpisodesData.EpisodesDataTitle(
+                    english = "Episode One",
+                    native = "Episode Native",
+                    romanji = "Episode Romaji",
+                ),
+            tmdbId = 7001.0,
+            tvdbId = 2002.0,
+            tvdbShowId = 3003.0,
+            url = "https://example.com/episode",
+        )
 }

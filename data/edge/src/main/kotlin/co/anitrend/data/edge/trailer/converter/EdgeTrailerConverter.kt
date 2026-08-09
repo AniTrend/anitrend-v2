@@ -17,9 +17,9 @@
 package co.anitrend.data.edge.trailer.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.edge.graphql.GetMediaByIdData
 import co.anitrend.data.edge.trailer.EdgeTrailerEmbedded
 import co.anitrend.data.edge.trailer.entity.EdgeTrailerEntity
-import co.anitrend.data.edge.trailer.model.EdgeTrailerModel
 
 /**
  * Converts a (mediaId, TrailerModel) pair into [EdgeTrailerEntity].

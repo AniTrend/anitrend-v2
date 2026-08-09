@@ -17,9 +17,11 @@
 package co.anitrend.data.edge.image.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.edge.core.extensions.requireIntegralInt
+import co.anitrend.data.edge.graphql.GetMediaByIdData
+import co.anitrend.data.edge.graphql.SeriesImageType
 import co.anitrend.data.edge.image.EdgeImageWithMediaId
 import co.anitrend.data.edge.image.entity.EdgeMediaImageEntity
-import co.anitrend.data.edge.image.model.EdgeImageModel
 
 internal class EdgeImageConverter(
     override val fromType: (EdgeImageWithMediaId) -> EdgeMediaImageEntity = { model ->
@@ -27,13 +29,13 @@ internal class EdgeImageConverter(
             mediaId = model.first,
             type =
                 when (model.second.type) {
-                    EdgeImageModel.ImageType.BACKDROP -> EdgeMediaImageEntity.ImageType.BACKDROP
-                    EdgeImageModel.ImageType.LOGO -> EdgeMediaImageEntity.ImageType.LOGO
-                    EdgeImageModel.ImageType.POSTER -> EdgeMediaImageEntity.ImageType.POSTER
+                    SeriesImageType.BACKDROP -> EdgeMediaImageEntity.ImageType.BACKDROP
+                    SeriesImageType.LOGO -> EdgeMediaImageEntity.ImageType.LOGO
+                    SeriesImageType.POSTER -> EdgeMediaImageEntity.ImageType.POSTER
                 },
             url = model.second.url,
-            height = model.second.height,
-            width = model.second.width,
+            height = model.second.height.requireIntegralInt("image height"),
+            width = model.second.width.requireIntegralInt("image width"),
             locale = model.second.locale,
         )
     },

@@ -15,7 +15,7 @@ Block UI implementation until the GraphQL contract is coherent from generated do
 
 - A new `.graphql` query or mutation is added.
 - A paged result or connection shape changes.
-- A remote source request type, generated variables type, container model, or mapper changed and the contract needs auditing.
+- A remote source request type, generated variables type, response model (container or generated DTO root), or mapper changed and the contract needs auditing.
 - A feature is being scaffolded from an API spec and the data contract must be proven first.
 
 ## Repo Anchors
@@ -40,21 +40,36 @@ rg -n '<OperationName>' data/src/main/graphql data/edge/src/main/graphql data/sr
 ### 2. Validate the remote-source request contract
 
 ```bash
-rg -n 'GraphQLRequest<|Response<GraphQLResponse<' data/src/main/kotlin/co/anitrend/data data/edge/src/main/kotlin/co/anitrend/data/edge
+rg -n 'GraphQLOperationRequest<|Response<GraphQLResponse<' data/src/main/kotlin/co/anitrend/data data/edge/src/main/kotlin/co/anitrend/data/edge
 ```
 
-The remote source must use the generated `GraphQLRequest<...Variables>` type and return the
-matching `Response<GraphQLResponse<...>>` payload expected by the controller.
+The remote source must use the generated `GraphQLOperationRequest<...Variables>` type built from the
+generated operation object (document and operation name) and return the matching
+`Response<GraphQLResponse<...>>` payload expected by the controller. The request carries its
+document, so no registry lookup is involved in request conversion.
 
-### 3. Validate the container model contract
+Check scalar mapping in the generated variables class: every scalar argument declared in the
+`.graphql` document (Int, Float, String, and enum scalars) must be represented in the generated
+typed variables, and call sites must pass them through without manual payload reshaping.
+
+### 3. Validate the response model contract
+
+For AniList responses, the container model must expose the same operation name via
+`@SerialName("<OperationName>")` and must map to the same payload shape expected by the controller:
 
 ```bash
 rg -n '@SerialName\\("<OperationName>"\\)|class .*ContainerModel|interface .*ContainerModel' \
   data/src/main/kotlin/co/anitrend/data
 ```
 
-The container model must expose the same operation name via `@SerialName("<OperationName>")` and
-must map to the same payload shape expected by the controller.
+For Edge responses, the payload root is a generated DTO, not a hand-written container. Verify the
+remote source returns the generated root (`GetConfigData`, `NewsConnectionData`, `GetMediaByIdData`,
+or `EpisodesData`) and that the family converter maps that DTO to the stable entity:
+
+```bash
+rg -n 'GraphQLResponse<(GetConfigData|NewsConnectionData|GetMediaByIdData|EpisodesData)>' \
+  data/edge/src/main/kotlin/co/anitrend/data/edge
+```
 
 ### 4. Validate paged contracts strictly
 
@@ -76,8 +91,8 @@ For paged or connection results, confirm all of the following:
 Audit this chain in order:
 
 1. `.graphql` asset
-2. remote-source `GraphQLRequest<...Variables>` method
-3. container model `@SerialName`
+2. remote-source `GraphQLOperationRequest<...Variables>` method
+3. response model (`@SerialName` container for AniList, generated DTO root for Edge)
 4. `Types.kt` controller alias
 5. mapper and persistence target
 6. entity and entity-view converter
@@ -105,10 +120,13 @@ rg -n 'Param|entity|repository' data/src/main/kotlin/co/anitrend/domain
 
 Fail the audit if any of the following is true:
 
-- operation name differs between the `.graphql` document and the generated request type
-- container-model `@SerialName` differs from the operation name
+- operation name differs between the `.graphql` document and the generated operation object
+- AniList container-model `@SerialName` differs from the operation name
+- Edge remote source returns a non-generated response root, or the generated DTO root does not
+  match the operation
+- generated variables omit a scalar argument declared in the document
 - paged assets omit pagination metadata while repository contracts expose paged results
-- mapper/controller generics do not match the container-model payload
+- mapper/controller generics do not match the response-model payload
 - the domain param does not cover the required GraphQL variables
 - the contract reaches feature code before the data contract compiles cleanly
 

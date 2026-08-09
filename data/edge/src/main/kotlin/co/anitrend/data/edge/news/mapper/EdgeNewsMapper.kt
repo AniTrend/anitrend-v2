@@ -17,16 +17,22 @@
 package co.anitrend.data.edge.news.mapper
 
 import co.anitrend.data.android.mapper.DefaultMapper
+import co.anitrend.data.edge.graphql.NewsConnectionData
 import co.anitrend.data.edge.news.converter.EdgeNewsModelConverter
 import co.anitrend.data.edge.news.datasource.local.EdgeNewsLocalSource
 import co.anitrend.data.edge.news.entity.EdgeNewsEntity
-import co.anitrend.data.edge.news.model.remote.EdgeNewsConnectionModel
 
 internal class EdgeNewsMapper(
     private val localSource: EdgeNewsLocalSource,
     private val converter: EdgeNewsModelConverter,
-) : DefaultMapper<EdgeNewsConnectionModel, List<EdgeNewsEntity>>() {
-    override suspend fun onResponseMapFrom(source: EdgeNewsConnectionModel): List<EdgeNewsEntity> = converter.convertFrom(source.news.data)
+) : DefaultMapper<NewsConnectionData, List<EdgeNewsEntity>>() {
+    override suspend fun onResponseMapFrom(source: NewsConnectionData): List<EdgeNewsEntity> =
+        converter.convertFrom(
+            source.news
+                ?.data
+                .orEmpty()
+                .filterNotNull(),
+        )
 
     override suspend fun persist(data: List<EdgeNewsEntity>) {
         localSource.upsert(data)

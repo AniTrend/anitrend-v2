@@ -17,9 +17,9 @@
 package co.anitrend.data.edge.media
 
 import co.anitrend.data.android.controller.graphql.GraphQLController
+import co.anitrend.data.edge.graphql.GetMediaByIdData
 import co.anitrend.data.edge.media.entity.EdgeMediaEntity
-import co.anitrend.data.edge.media.model.remote.EdgeMediaModel
 
-// Controller now returns the raw EdgeMediaModel so orchestration layer can
+// Controller now returns the raw GetMediaByIdData so orchestration layer can
 // perform aggregate + slice persistence transactionally after network fetch.
-internal typealias EdgeMediaController = GraphQLController<EdgeMediaModel, EdgeMediaEntity>
+internal typealias EdgeMediaController = GraphQLController<GetMediaByIdData, EdgeMediaEntity>

@@ -2,6 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use subagent-driven-development (recommended) or executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> **Note:** The `QueryContainerBuilder` examples in this plan are historical and superseded.
+> Current implementation must use generated `GraphQLOperationRequest` operations built from codegen
+> output (operation document, name, and typed variables) as covered in
+> `.agents/skills/graphql-query-pattern/SKILL.md`.
+
 **Goal:** Implement full studio detail page with offline-first caching, GraphQL-backed studio + media data, and edge enrichment for studio logos.
 
 **Architecture:** Standard Genre data-layer pattern: `DefaultMapper` → `AbstractCoreDataSource` → `Repository` → `UseCase` → `ViewModel`. Flat response container for GraphQL (avoids sealed class deserialization). Edge enrichment via `MediaStudioEntryEnricher`.

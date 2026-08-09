@@ -31,7 +31,7 @@ and source wiring.
 ### Operation usage
 
 - `data/src/main/graphql/queries/media/GetMediaDetail.graphql` uses `... MediaExtended`
-- `data/src/main/kotlin/co/anitrend/data/media/datasource/remote/MediaRemoteSource.kt` binds a generated `GraphQLRequest<GetMediaDetailVariables>` request body
+- `data/src/main/kotlin/co/anitrend/data/media/datasource/remote/MediaRemoteSource.kt` binds a generated `GraphQLOperationRequest<GetMediaDetailVariables>` request body
 - `data/src/main/kotlin/co/anitrend/data/media/source/MediaSourceImpl.kt` calls `remoteSource.getMediaDetail(...)`
 
 ### Shape reasoning
@@ -39,6 +39,19 @@ and source wiring.
 - `MediaCore` extends base media shape and includes `trailer` and `mediaListEntry`.
 - `MediaModel.Core` includes base fields plus `trailer` and `mediaListEntry`.
 - This is a near 1:1 mapping by design and should be preserved when adding fields.
+
+## Generated Edge Response Roots
+
+Edge queries generate typed response DTO roots that remote sources return directly inside
+`Response<GraphQLResponse<...>>`:
+
+- `GetConfigData` for the config family
+- `NewsConnectionData` for the news family
+- `GetMediaByIdData` for series media enrichment (media, theme, trailer, network, image)
+- `EpisodesData` for the episode family
+
+Family converters map these generated DTOs to stable Edge entities. Do not hand-write mirror models
+for these roots; update the `.graphql` operation and regenerate instead.
 
 ## Field Introduction Decision Table
 

@@ -3,6 +3,11 @@
 Date: 2026-05-26
 Status: Draft
 
+> **Note:** The `QueryContainerBuilder` examples in this document are historical and superseded.
+> Current implementation must use generated `GraphQLOperationRequest` operations built from codegen
+> output (operation document, name, and typed variables) as covered in
+> `.agents/skills/graphql-query-pattern/SKILL.md`.
+
 ## Problem
 
 The studio detail screen (`StudioScreen`) exists as an empty scaffold with a back button.

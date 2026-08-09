@@ -16,6 +16,6 @@
  */
 package co.anitrend.data.edge.network
 
-import co.anitrend.data.edge.network.model.EdgeNetworkModel
+import co.anitrend.data.edge.graphql.GetMediaByIdData
 
-internal typealias EdgeNetworkEmbedded = Pair<String, EdgeNetworkModel>
+internal typealias EdgeNetworkEmbedded = Pair<String, GetMediaByIdData.SeriesNetworks>

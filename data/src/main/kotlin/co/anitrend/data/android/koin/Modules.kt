@@ -42,7 +42,6 @@ import co.anitrend.data.carousel.koin.carouselModules
 import co.anitrend.data.character.koin.characterModules
 import co.anitrend.data.core.api.converter.AniTrendConverterFactory
 import co.anitrend.data.core.api.converter.CompositeGraphQLDocumentRegistry
-import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import co.anitrend.data.core.api.factory.AniListApiFactory
 import co.anitrend.data.core.app.IAppInfo
 import co.anitrend.data.core.device.IDeviceInfo
@@ -80,6 +79,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import okhttp3.CookieJar
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -154,7 +154,7 @@ private val retrofitModule =
             }
         }
         factory {
-            val mimeType = AniRequestConverter.JSON_MIME_TYPE
+            val mimeType = "application/json".toMediaType()
             val defaultJsonFactory =
                 Json {
                     ignoreUnknownKeys = true
@@ -166,7 +166,13 @@ private val retrofitModule =
                 jsonFactory = defaultJsonFactory.asConverterFactory(mimeType),
                 graphFactory =
                     GraphQLConverterFactory.create(
-                        codec = KotlinxGraphQLTransportCodec(json = get<Json>()),
+                        // The codec copy inherits the shared response configuration
+                        // (serializers module, discriminator, decoding settings) while
+                        // opting into null omission for GraphQL request encoding.
+                        codec =
+                            KotlinxGraphQLTransportCodec(
+                                json = Json(get<Json>()) { explicitNulls = false },
+                            ),
                         registry = get<GraphQLDocumentRegistry>(),
                     ),
                 xmlFactory = get<IFeedFactory>().provideConverterFactory(),

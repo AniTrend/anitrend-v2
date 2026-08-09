@@ -18,7 +18,6 @@ package co.anitrend.data.util
 
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.data.common.extension.toPageQuery
-import co.anitrend.data.core.AniTrendExperimentalFeature
 import co.anitrend.domain.common.sort.contract.ISortWithOrder
 import co.anitrend.domain.common.sort.order.SortOrder
 
@@ -38,31 +37,6 @@ internal object GraphUtil {
      * Default per page loading limit for this application
      */
     const val PAGING_LIMIT = 30
-
-    /**
-     * Compacts the request body aiding in the shrinkage of the request payload
-     *
-     * @param shrink flag which allows or prevents minification
-     */
-    @AniTrendExperimentalFeature
-    internal fun String.minify(shrink: Boolean): String =
-        if (shrink) {
-            replace(
-                "\n\n",
-                " ",
-            ).replace(
-                '\t',
-                ' ',
-            ).replace(
-                '\n',
-                ' ',
-            ).replace(
-                "    ",
-                " ",
-            )
-        } else {
-            this
-        }
 
     /**
      * Applies order on sortable keys, if the key is not among the sort order exceptions

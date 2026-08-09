@@ -76,11 +76,16 @@ fun Scope.cacheLocalSource(): CacheDao
 
 ## GraphQL converter wiring
 
-The shared GraphQL wiring now lives in `data/src/main/kotlin/co/anitrend/data/android/koin/Modules.kt`.
+The shared GraphQL wiring lives in `data/src/main/kotlin/co/anitrend/data/android/koin/Modules.kt`.
 Key points:
-- generated AniList and Edge document registries are composed into one registry surface
-- `RegistryOnlyGraphProcessor` blocks runtime asset discovery fallback
-- `AniTrendConverterFactory` routes by request and response type, while preserving explicit JSON and XML converter overrides
+- generated AniList and Edge document registries are composed into one registry surface via
+  `CompositeGraphQLDocumentRegistry`
+- `GraphQLConverterFactory.create(...)` is wired explicitly with a `KotlinxGraphQLTransportCodec`
+  that reuses the shared `Json` configuration and opts into null omission for GraphQL request
+  encoding
+- `AniTrendConverterFactory` is the mixed-protocol router: XML and JSON annotated methods go to
+  their dedicated factories, `GraphQLOperationRequest` bodies and `GraphQLResponse` payloads go to
+  the GraphQL factory, and everything else falls back to Gson
 
 ## `data/core` as a transitive dependency
 

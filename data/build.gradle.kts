@@ -16,6 +16,7 @@
  */
 
 import co.anitrend.buildSrc.Libraries
+import co.anitrend.retrofit.graphql.codegen.config.SerializationBackend
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import kotlin.jvm.java
 
@@ -68,7 +69,18 @@ room {
 
 retrofitGraphQL {
     common {
+        // Request-side codegen surface for the AniList schema: operation constants,
+        // documents, hashes, and typed variables (with input objects and enums) are
+        // generated. Response models are deliberately not generated, the app retains
+        // hand-written response containers.
+        generateOperationConstants.set(true)
+        generateDocuments.set(true)
+        generateHashes.set(true)
         generateVariables.set(true)
+        generateResponses.set(false)
+        // Request bodies are serialized through KotlinxGraphQLTransportCodec, so
+        // generated variables, input objects, and enums need kotlinx metadata.
+        serializationBackend.set(SerializationBackend.KOTLINX)
     }
     packageName.set("co.anitrend.data.graphql.anilist")
     schema.set(file("schema.graphql"))

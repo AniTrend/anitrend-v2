@@ -18,16 +18,17 @@ package co.anitrend.data.edge.genre.converters
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
+import co.anitrend.data.edge.core.extensions.requireIntegralLong
 import co.anitrend.data.edge.genre.entity.EdgeGenreEntity
-import co.anitrend.data.edge.genre.model.EdgeGenreModel
+import co.anitrend.data.edge.graphql.GetConfigData
 
 internal class EdgeGenreModelConverter(
-    override val fromType: (EdgeGenreModel) -> EdgeGenreEntity = {
+    override val fromType: (GetConfigData.ConfigGenres) -> EdgeGenreEntity = {
         EdgeGenreEntity(
             configId = EdgeConfigEntity.DEFAULT_ID,
             name = it.name,
-            id = it.mediaId,
+            id = it.mediaId.requireIntegralLong("config genre mediaId"),
         )
     },
-    override val toType: (EdgeGenreEntity) -> EdgeGenreModel = { throw NotImplementedError() },
-) : SupportConverter<EdgeGenreModel, EdgeGenreEntity>()
+    override val toType: (EdgeGenreEntity) -> GetConfigData.ConfigGenres = { throw NotImplementedError() },
+) : SupportConverter<GetConfigData.ConfigGenres, EdgeGenreEntity>()

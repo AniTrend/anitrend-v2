@@ -32,8 +32,6 @@
 -dontwarn co.anitrend.data.android.paging.AbstractPagingSource
 -dontwarn co.anitrend.data.android.source.AbstractCoreDataSource
 -dontwarn co.anitrend.data.android.source.local.AbstractLocalSource
--dontwarn co.anitrend.data.core.AniTrendExperimentalFeature
--dontwarn co.anitrend.data.core.GRAPHQL
 -dontwarn co.anitrend.data.core.JSON
 -dontwarn co.anitrend.data.core.XML
 -dontwarn co.anitrend.data.core.api.factory.IEndpointFactory

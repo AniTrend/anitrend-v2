@@ -17,17 +17,20 @@
 package co.anitrend.data.edge.media.converters
 
 import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.edge.core.extensions.asEpochSeconds
+import co.anitrend.data.edge.core.extensions.requireIntegralInt
+import co.anitrend.data.edge.core.extensions.requireIntegralLong
+import co.anitrend.data.edge.graphql.GetMediaByIdData
 import co.anitrend.data.edge.media.entity.EdgeMediaCoverEntity
 import co.anitrend.data.edge.media.entity.EdgeMediaEntity
 import co.anitrend.data.edge.media.entity.EdgeMediaExternalIdsEntity
 import co.anitrend.data.edge.media.entity.EdgeMediaScheduleEntity
 import co.anitrend.data.edge.media.entity.EdgeMediaScheduleEpisodeEntity
 import co.anitrend.data.edge.media.entity.EdgeMediaTitleEntity
-import co.anitrend.data.edge.media.model.remote.EdgeMediaModel
 import co.anitrend.domain.media.enums.MediaType
 
-internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Series, EdgeMediaEntity>() {
-    override val fromType: (EdgeMediaModel.Series) -> EdgeMediaEntity = { model ->
+internal class EdgeMediaModelConverter : SupportConverter<GetMediaByIdData.Series, EdgeMediaEntity>() {
+    override val fromType: (GetMediaByIdData.Series) -> EdgeMediaEntity = { model ->
         EdgeMediaEntity(
             id = model.mediaId.asEntityId(),
             title =
@@ -37,24 +40,30 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Series,
                     japanese = model.title.japanese,
                     canonical = model.title.canonical,
                     harigana = model.title.harigana,
-                    synonyms = model.title.synonyms,
+                    synonyms = model.title.synonyms?.mapNotNull { it },
                 ),
-            format = model.format,
-            status = model.status,
+            format = model.format?.name,
+            status = model.status?.name,
             banner = model.banner,
             description = model.description,
             fanart = model.fanart,
             homepage = model.homepage,
-            airedEpisodes = model.airedEpisodes,
+            airedEpisodes = model.airedEpisodes.requireIntegralInt("media airedEpisodes"),
             broadcast = model.broadcast,
-            source = model.source,
+            source = model.source?.name,
             schedule =
                 model.schedule?.let {
                     EdgeMediaScheduleEntity(
-                        firstAirDate = it.firstAirDate,
-                        lastAirDate = it.lastAirDate,
-                        nextEpisodeId = it.nextEpisodeToAir?.id,
-                        lastEpisodeId = it.lastAiredEpisode?.id,
+                        firstAirDate = it.firstAirDate.asEpochSeconds("media schedule firstAirDate"),
+                        lastAirDate = it.lastAirDate.asEpochSeconds("media schedule lastAirDate"),
+                        nextEpisodeId =
+                            it.nextEpisodeToAir
+                                ?.id
+                                ?.requireIntegralLong("media schedule nextEpisodeToAir id"),
+                        lastEpisodeId =
+                            it.lastAiredEpisode
+                                ?.id
+                                ?.requireIntegralLong("media schedule lastAiredEpisode id"),
                         nextEpisode = it.nextEpisodeToAir?.toScheduleEpisode(),
                         lastEpisode = it.lastAiredEpisode?.toScheduleEpisode(),
                     )
@@ -68,57 +77,71 @@ internal class EdgeMediaModelConverter : SupportConverter<EdgeMediaModel.Series,
                 ),
             ageRating = model.ageRating,
             isAdult = model.isAdult,
-            kind = MediaType.valueOf(model.kind),
-            chapters = model.chapters,
-            volumes = model.volumes,
+            kind = MediaType.valueOf(model.kind.name),
+            chapters = model.chapters.requireIntegralInt("media chapters"),
+            volumes = model.volumes.requireIntegralInt("media volumes"),
             moreInfo = model.moreInfo,
-            publishedFrom = model.publishedFrom,
-            publishedTo = model.publishedTo,
+            publishedFrom = model.publishedFrom.asEpochSeconds("media publishedFrom"),
+            publishedTo = model.publishedTo.asEpochSeconds("media publishedTo"),
             externalIds =
                 EdgeMediaExternalIdsEntity(
-                    aniDb = model.mediaId.aniDb,
-                    aniList = model.mediaId.aniList,
+                    aniDb = model.mediaId.anidb.requireIntegralLong("media id anidb"),
+                    aniList = model.mediaId.anilist.requireIntegralLong("media id anilist"),
                     animePlanet = model.mediaId.animePlanet,
-                    aniSearch = model.mediaId.aniSearch,
+                    aniSearch = model.mediaId.anisearch.requireIntegralLong("media id anisearch"),
                     imdb = model.mediaId.imdb,
-                    kitsu = model.mediaId.kitsu,
-                    liveChart = model.mediaId.liveChart,
-                    myAnimeList = model.mediaId.myAnimeList,
+                    kitsu = model.mediaId.kitsu.requireIntegralLong("media id kitsu"),
+                    liveChart = model.mediaId.livechart.requireIntegralLong("media id livechart"),
+                    myAnimeList = model.mediaId.myanimelist.requireIntegralLong("media id myanimelist"),
                     notify = model.mediaId.notify,
-                    shoboi = model.mediaId.shoboi,
+                    shoboi = model.mediaId.shoboi.requireIntegralLong("media id shoboi"),
                     slug = model.mediaId.slug,
-                    tmdb = model.mediaId.tmdb,
-                    trakt = model.mediaId.trakt,
-                    tvDb = model.mediaId.tvDb,
-                    tvMaze = model.mediaId.tvMaze,
-                    tvRage = model.mediaId.tvRage,
+                    tmdb = model.mediaId.themoviedb.requireIntegralLong("media id themoviedb"),
+                    trakt = model.mediaId.trakt.requireIntegralLong("media id trakt"),
+                    tvDb = model.mediaId.tvdb.requireIntegralLong("media id tvdb"),
+                    tvMaze = model.mediaId.tvMazeId.requireIntegralLong("media id tvMazeId"),
+                    tvRage = model.mediaId.tvrage,
                 ),
-            updatedAt = model.updatedAt,
+            updatedAt = model.updatedAt.asEpochSeconds("media updatedAt"),
         )
     }
 
-    override val toType: (EdgeMediaEntity) -> EdgeMediaModel.Series = { _ ->
+    override val toType: (EdgeMediaEntity) -> GetMediaByIdData.Series = { _ ->
         throw NotImplementedError()
     }
 
-    private fun EdgeMediaModel.SeriesIdType.asEntityId(): String =
+    private fun GetMediaByIdData.SeriesMediaId.asEntityId(): String =
         notify
             ?: slug
-            ?: aniList?.toString()
-            ?: myAnimeList?.toString()
+            ?: anilist?.toString()
+            ?: myanimelist?.toString()
             ?: throw IllegalStateException("Series payload did not contain a stable identifier in mediaId")
 
-    private fun EdgeMediaModel.SeriesScheduleEpisodeType.toScheduleEpisode() =
+    private fun GetMediaByIdData.SeriesScheduleLastAiredEpisode.toScheduleEpisode() =
         EdgeMediaScheduleEpisodeEntity(
-            id = id,
-            airDate = airDate,
-            episodeNumber = episodeNumber,
+            id = id.requireIntegralLong("media schedule lastAiredEpisode id"),
+            airDate = airDate.asEpochSeconds("media schedule lastAiredEpisode airDate"),
+            episodeNumber = episodeNumber.requireIntegralInt("media schedule lastAiredEpisode episodeNumber"),
             image = image,
             name = name,
             overview = overview,
             productionCode = productionCode,
-            runtime = runtime,
-            seasonNumber = seasonNumber,
-            tmdbId = tmdbId,
+            runtime = runtime.requireIntegralInt("media schedule lastAiredEpisode runtime"),
+            seasonNumber = seasonNumber.requireIntegralInt("media schedule lastAiredEpisode seasonNumber"),
+            tmdbId = tmdbId.requireIntegralLong("media schedule lastAiredEpisode tmdbId"),
+        )
+
+    private fun GetMediaByIdData.SeriesScheduleNextEpisodeToAir.toScheduleEpisode() =
+        EdgeMediaScheduleEpisodeEntity(
+            id = id.requireIntegralLong("media schedule nextEpisodeToAir id"),
+            airDate = airDate.asEpochSeconds("media schedule nextEpisodeToAir airDate"),
+            episodeNumber = episodeNumber.requireIntegralInt("media schedule nextEpisodeToAir episodeNumber"),
+            image = image,
+            name = name,
+            overview = overview,
+            productionCode = productionCode,
+            runtime = runtime.requireIntegralInt("media schedule nextEpisodeToAir runtime"),
+            seasonNumber = seasonNumber.requireIntegralInt("media schedule nextEpisodeToAir seasonNumber"),
+            tmdbId = tmdbId.requireIntegralLong("media schedule nextEpisodeToAir tmdbId"),
         )
 }

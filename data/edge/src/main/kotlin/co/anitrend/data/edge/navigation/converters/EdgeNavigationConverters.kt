@@ -18,12 +18,12 @@ package co.anitrend.data.edge.navigation.converters
 
 import co.anitrend.arch.data.converter.SupportConverter
 import co.anitrend.data.edge.config.entity.EdgeConfigEntity
+import co.anitrend.data.edge.graphql.GetConfigData
 import co.anitrend.data.edge.navigation.entity.EdgeNavigationEntity
 import co.anitrend.data.edge.navigation.entity.EdgeNavigationGroupEntity
-import co.anitrend.data.edge.navigation.model.EdgeNavigationModel
 
 internal class EdgeNavigationModelConverter(
-    override val fromType: (EdgeNavigationModel) -> EdgeNavigationEntity = {
+    override val fromType: (GetConfigData.ConfigNavigation) -> EdgeNavigationEntity = {
         EdgeNavigationEntity(
             criteria = it.criteria,
             destination = it.destination,
@@ -37,5 +37,5 @@ internal class EdgeNavigationModelConverter(
             configId = EdgeConfigEntity.DEFAULT_ID,
         )
     },
-    override val toType: (EdgeNavigationEntity) -> EdgeNavigationModel = { throw NotImplementedError() },
-) : SupportConverter<EdgeNavigationModel, EdgeNavigationEntity>()
+    override val toType: (EdgeNavigationEntity) -> GetConfigData.ConfigNavigation = { throw NotImplementedError() },
+) : SupportConverter<GetConfigData.ConfigNavigation, EdgeNavigationEntity>()
