@@ -34,7 +34,7 @@ internal class CoilRequestClient(
     )
 
     @Throws(Exception::class)
-    suspend inline operator fun invoke(
+    suspend operator fun invoke(
         resource: HttpUrl,
         firstDelay: Long = 100,
         maxAttempts: Int = 3,
