@@ -63,7 +63,7 @@ square-okhttp = "5.4.0"
 square-retrofit = "3.0.0"
 unifiedpush-connector = "3.3.3"
 
-google-devtools-ksp = "2.3.10"
+google-devtools-ksp = "2.3.11"
 
 [plugins]
 jetbrains-kotlin-plugin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "jetbrains-kotlin" }
