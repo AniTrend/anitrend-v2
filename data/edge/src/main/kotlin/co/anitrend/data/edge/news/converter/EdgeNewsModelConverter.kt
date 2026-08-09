@@ -17,11 +17,12 @@
 package co.anitrend.data.edge.news.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.edge.core.extensions.asEpochSeconds
+import co.anitrend.data.edge.graphql.NewsConnectionData
 import co.anitrend.data.edge.news.entity.EdgeNewsEntity
-import co.anitrend.data.edge.news.model.remote.EdgeNewsConnectionModel
 
 internal class EdgeNewsModelConverter(
-    override val fromType: (List<EdgeNewsConnectionModel.News>) -> List<EdgeNewsEntity> = { items ->
+    override val fromType: (List<NewsConnectionData.NewsData>) -> List<EdgeNewsEntity> = { items ->
         items.map { item ->
             EdgeNewsEntity(
                 cursor = item.id,
@@ -29,14 +30,14 @@ internal class EdgeNewsModelConverter(
                 title = item.title,
                 url = item.link,
                 image = item.image,
-                source = item.category ?: item.area ?: item.genre ?: item.language,
-                publishedAt = item.publishedOn?.toLong(),
+                source = item.category ?: item.area ?: item.genre ?: item.lang,
+                publishedAt = item.publishedOn.asEpochSeconds("news publishedOn"),
                 description = item.description.ifBlank { item.content },
                 content = item.content.ifBlank { item.description },
             )
         }
     },
-    override val toType: (List<EdgeNewsEntity>) -> List<EdgeNewsConnectionModel.News> = { _ ->
+    override val toType: (List<EdgeNewsEntity>) -> List<NewsConnectionData.NewsData> = { _ ->
         throw NotImplementedError()
     },
-) : SupportConverter<List<EdgeNewsConnectionModel.News>, List<EdgeNewsEntity>>()
+) : SupportConverter<List<NewsConnectionData.NewsData>, List<EdgeNewsEntity>>()

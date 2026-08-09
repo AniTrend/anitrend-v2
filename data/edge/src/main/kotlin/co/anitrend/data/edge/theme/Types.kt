@@ -16,6 +16,6 @@
  */
 package co.anitrend.data.edge.theme
 
-import co.anitrend.data.edge.theme.model.EdgeThemeModel
+import co.anitrend.data.edge.graphql.GetMediaByIdData
 
-internal typealias EdgeThemeEmbedded = Pair<String, EdgeThemeModel>
+internal typealias EdgeThemeEmbedded = Pair<String, GetMediaByIdData.SeriesAnimethemes>

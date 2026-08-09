@@ -18,8 +18,8 @@ package co.anitrend.data.core.api.converter
 
 import co.anitrend.data.core.JSON
 import co.anitrend.data.core.XML
-import co.anitrend.data.core.api.converter.request.AniRequestConverter
 import com.google.gson.Gson
+import co.anitrend.retrofit.graphql.converter.GraphQLConverterFactory
 import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import okhttp3.RequestBody
@@ -48,15 +48,15 @@ internal class AniTrendConverterFactory(
     private fun isGraphResponseType(type: Type): Boolean = GraphQLResponse::class.java.isAssignableFrom(getRawType(type))
 
     /**
-     * Response body converter delegates logic processing to a child class that handles
-     * wrapping and deserialization of the json response data.
+     * Request body converter delegates GraphQL operation request serialization to the
+     * injected graph converter factory.
      *
      * @param parameterAnnotations All the annotation applied to request parameters
      * @param methodAnnotations All the annotation applied to the requesting method
      * @param retrofit The retrofit object representing the response
      * @param type The type of the parameter of the request
      *
-     * @see AniRequestConverter
+     * @see GraphQLConverterFactory.requestBodyConverter
      */
     override fun requestBodyConverter(
         type: Type,
@@ -80,7 +80,12 @@ internal class AniTrendConverterFactory(
                     retrofit,
                 )
             isGraphRequestType(type) ->
-                AniRequestConverter(gson = gson)
+                graphFactory.requestBodyConverter(
+                    type,
+                    parameterAnnotations,
+                    methodAnnotations,
+                    retrofit,
+                )
             else ->
                 GsonConverterFactory.create(gson).requestBodyConverter(
                     type,

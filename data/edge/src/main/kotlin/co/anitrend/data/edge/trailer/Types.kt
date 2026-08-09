@@ -16,6 +16,6 @@
  */
 package co.anitrend.data.edge.trailer
 
-import co.anitrend.data.edge.trailer.model.EdgeTrailerModel
+import co.anitrend.data.edge.graphql.GetMediaByIdData
 
-internal typealias EdgeTrailerEmbedded = Pair<String, EdgeTrailerModel>
+internal typealias EdgeTrailerEmbedded = Pair<String, GetMediaByIdData.SeriesTrailers>

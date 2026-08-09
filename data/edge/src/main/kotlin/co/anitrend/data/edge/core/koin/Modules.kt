@@ -25,7 +25,6 @@ import co.anitrend.data.edge.media.koin.edgeMediaModules
 import co.anitrend.data.edge.navigation.koin.edgeNavigationModule
 import co.anitrend.data.edge.network.koin.edgeNetworkModule
 import co.anitrend.data.edge.news.koin.edgeNewsModules
-import co.anitrend.data.edge.season.koin.edgeSeasonModules
 import co.anitrend.data.edge.theme.koin.edgeThemeModule
 import co.anitrend.data.edge.trailer.koin.edgeTrailerModule
 import org.koin.core.module.dsl.singleOf
@@ -48,7 +47,6 @@ val edgeModules =
             edgeNetworkModule,
             edgeTrailerModule,
             edgeThemeModule,
-            edgeSeasonModules,
             edgeEpisodeModules,
             edgeMediaModules,
         )

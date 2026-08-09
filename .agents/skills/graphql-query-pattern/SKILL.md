@@ -3,8 +3,9 @@ name: graphql-query-pattern
 description: >
   GraphQL controller and request lifecycle guide. Use when adding or refactoring AniList or Edge
   GraphQL requests, generated operation wiring, mappers, and error propagation in the data layer.
-  Covers generated `GraphQLRequest<...Variables>` usage, registry-backed document resolution,
-  `QueryContainerBuilder` compatibility boundaries, `Response<GraphQLResponse<*>>`, and the full
+  Covers generated `GraphQLOperationRequest<...Variables>` usage with carried documents, explicit
+  `KotlinxGraphQLTransportCodec` and `GraphQLConverterFactory` wiring, the shared
+  `AniTrendConverterFactory` mixed-protocol boundary, `Response<GraphQLResponse<*>>`, and the full
   request-to-Room pipeline.
 ---
 
@@ -12,9 +13,10 @@ description: >
 
 ## Overview
 
-AniTrend GraphQL calls now use generated operation documents under `src/main/graphql/**` and
-registry-backed request resolution through the `retrofit-graphql` codegen plugin. Network calls
-still follow the same controller pattern: Retrofit returns `Response<GraphQLResponse<*>>`,
+AniTrend GraphQL calls use generated operation documents under `src/main/graphql/**`. Each request
+is a neutral `GraphQLOperationRequest<...Variables>` that carries its own operation document and
+name, so the generated document registry is not consulted for request conversion. Network calls
+follow the same controller pattern: Retrofit returns `Response<GraphQLResponse<*>>`,
 `GraphQLController` validates and maps the payload, and mapper persistence keeps Room as the local
 source of truth.
 
@@ -23,11 +25,11 @@ source of truth.
 - `data/core/src/main/kotlin/co/anitrend/data/android/controller/graphql/GraphQLController.kt`
   for the response pipeline and error handling
 - `data/src/main/kotlin/co/anitrend/data/android/koin/Modules.kt`
-  for registry-first GraphQL converter wiring
+  for `GraphQLConverterFactory` and `KotlinxGraphQLTransportCodec` wiring
 - `data/src/main/kotlin/co/anitrend/data/core/api/converter/AniTrendConverterFactory.kt`
-  for request and response converter routing
-- `data/src/main/kotlin/co/anitrend/data/core/api/converter/request/AniGraphRequestConverter.kt`
-  for registry-backed document resolution and release minification
+  for the mixed-protocol request and response converter boundary
+- `data/src/main/kotlin/co/anitrend/data/core/api/converter/CompositeGraphQLDocumentRegistry.kt`
+  for how the generated AniList and Edge registries are combined
 - `data/src/main/graphql/**` and `data/edge/src/main/graphql/**`
   for the generated AniList and Edge operation documents
 - `buildSrc/src/main/java/co/anitrend/buildSrc/plugins/components/ProjectDependencies.kt`
@@ -36,10 +38,10 @@ source of truth.
 ## Request lifecycle
 
 ```
-Generated operation document + variables
-    → GraphQLRequest<...Variables>
-        → AniTrendConverterFactory / AniGraphRequestConverter
-            → registry-backed document resolution
+Generated operation document + typed variables
+    → GraphQLOperationRequest<...Variables> (carries document and operation name)
+        → AniTrendConverterFactory
+            → GraphQLConverterFactory (KotlinxGraphQLTransportCodec)
             → GraphQLController.invoke()
                 → validates GraphQLResponse (non-null, no errors)
                 → calls mapper.onResponseMapFrom()
@@ -58,9 +60,9 @@ Generated operation document + variables
    - Edge: `data/edge/src/main/graphql/**`
 2. Keep fragment composition under the matching `fragments/**` tree and prefer fragment reuse over
    duplicated inline field sets.
-3. Let the codegen task generate the operation object and typed variables class.
+3. Let the codegen task generate the operation object, its document, and the typed variables class.
 4. Define or update the Retrofit `interface` method in the existing remote source package, using a
-   generated `GraphQLRequest<...Variables>` body.
+   generated `GraphQLOperationRequest<...Variables>` body.
 5. Inject a `GraphQLController` per source class and feed the Retrofit response into it.
 
 ## Controller choice
@@ -70,21 +72,31 @@ Generated operation document + variables
 
 ## Remote source binding and type contract
 
-### Generated `GraphQLRequest<...Variables>`
-A generated request object carries the operation name, document identity, and typed variables.
+### Generated `GraphQLOperationRequest<...Variables>`
+
+A generated operation object exposes the document and operation name (for example
+`GetMediaGenres.document` and `GetMediaGenres.name`), and the generated typed variables class covers
+the operation arguments. Sources build a neutral `GraphQLOperationRequest` from these generated
+pieces. The request carries its document, so the registry is not consulted for request conversion.
 This is the preferred production request shape for both AniList and Edge GraphQL calls.
 
-### Registry-backed document resolution
-Generated registries are composed in Koin and passed into the GraphQL converter. Production wiring
-is registry-first, and the repo-local `RegistryOnlyGraphProcessor` intentionally blocks runtime
-asset discovery fallback.
+### Codec and converter wiring
 
-### `QueryContainerBuilder` compatibility boundary
-`QueryContainerBuilder` is still supported by the converter for compatibility utilities, but it is
-no longer the preferred production request path for migrated remote sources. New GraphQL work
-should start from generated request types unless a documented compatibility gap requires otherwise.
+`GraphQLConverterFactory.create(...)` is wired explicitly in Koin with a
+`KotlinxGraphQLTransportCodec` that reuses the shared `Json` configuration and opts into null
+omission for GraphQL request encoding (`explicitNulls = false`). A `CompositeGraphQLDocumentRegistry`
+combines the generated AniList and Edge registries for the factory.
+
+### Shared `AniTrendConverterFactory` mixed-protocol boundary
+
+`AniTrendConverterFactory` routes converters by annotation and type:
+
+- `XML` and `JSON` annotated methods go to the XML and JSON factories.
+- `GraphQLOperationRequest` bodies and `GraphQLResponse` payloads go to the GraphQL factory.
+- Everything else falls back to Gson.
 
 ### `Response<GraphQLResponse<*>>`
+
 - `Response<T>` is Retrofit's HTTP envelope.
 - `GraphQLResponse<T>` is the GraphQL data and errors envelope.
 - Both wrappers are stripped inside `GraphQLController` before mapped domain types reach the
@@ -94,7 +106,7 @@ A typical migrated method signature looks like:
 ```kotlin
 @POST(IEndpointType.BASE_ENDPOINT_PATH)
 suspend fun getMediaDetail(
-    @Body request: GraphQLRequest<GetMediaDetailVariables>,
+    @Body request: GraphQLOperationRequest<GetMediaDetailVariables>,
 ): Response<GraphQLResponse<MediaModelContainer.Detail>>
 ```
 
@@ -107,9 +119,13 @@ suspend fun getMediaDetail(
 
 ## Edge modeling rules
 
-For `:data:edge` remote models, keep the serialized shape faithful to the upstream schema:
+For `:data:edge` remote models, keep the generated shape faithful to the upstream schema:
 
-- **Converters** translate schema-shaped remote models into local entities.
+- Edge response roots are generated operation DTOs: `GetConfigData` (config),
+  `NewsConnectionData` (news), `GetMediaByIdData` (series media enrichment), and
+  `EpisodesData` (episode).
+- **Converters** translate these generated DTOs into stable local entities.
 - **Mappers** coordinate parsing, persistence, and cross-entity normalization.
 - **Entities and entity views** represent the persisted local shape.
-- Do **not** embed compatibility hacks or inferred IDs directly in the serialized model.
+- Do **not** embed compatibility hacks or inferred IDs directly in the serialized model, and do not
+  hand-write mirror models for generated response roots.

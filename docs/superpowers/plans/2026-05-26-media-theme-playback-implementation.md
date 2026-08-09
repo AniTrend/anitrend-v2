@@ -596,7 +596,7 @@ MediaTheme(
 Run:
 - `rtk gradlew :feature:media:testDebugUnitTest --tests "co.anitrend.media.component.compose.section.MediaThemeSectionSupportTest" --no-daemon`
 - `rtk gradlew :feature:media:testDebugUnitTest --tests "co.anitrend.media.component.compose.section.theme.ThemePlaybackControllerTest" --no-daemon`
-- `rtk gradlew :data:testDebugUnitTest --tests "co.anitrend.data.core.api.converter.request.AniGraphRequestConverterTest" --no-daemon`
+- `rtk gradlew :data:testDebugUnitTest --tests "co.anitrend.data.core.api.converter.AniTrendConverterFactoryTest" --no-daemon`
 
 Expected: PASS for all three targeted commands with no new warnings from `:feature:media` sources.
 

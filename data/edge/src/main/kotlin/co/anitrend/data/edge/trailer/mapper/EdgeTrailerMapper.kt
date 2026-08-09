@@ -17,11 +17,11 @@
 package co.anitrend.data.edge.trailer.mapper
 
 import co.anitrend.data.android.mapper.EmbedMapper
+import co.anitrend.data.edge.graphql.GetMediaByIdData
 import co.anitrend.data.edge.trailer.EdgeTrailerEmbedded
 import co.anitrend.data.edge.trailer.converter.EdgeTrailerConverter
 import co.anitrend.data.edge.trailer.datasource.EdgeTrailerLocalSource
 import co.anitrend.data.edge.trailer.entity.EdgeTrailerEntity
-import co.anitrend.data.edge.trailer.model.EdgeTrailerModel
 
 internal class EdgeTrailerMapper(
     override val localSource: EdgeTrailerLocalSource,
@@ -29,7 +29,7 @@ internal class EdgeTrailerMapper(
 ) : EmbedMapper<EdgeTrailerEmbedded, EdgeTrailerEntity>() {
     suspend fun onEmbedded(
         mediaId: String,
-        sources: List<EdgeTrailerModel>,
+        sources: List<GetMediaByIdData.SeriesTrailers>,
     ) {
         localSource.deleteByMediaId(mediaId)
         super.onEmbedded(sources.map { mediaId to it })

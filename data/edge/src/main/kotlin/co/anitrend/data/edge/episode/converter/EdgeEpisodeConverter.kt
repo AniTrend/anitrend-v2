@@ -17,9 +17,11 @@
 package co.anitrend.data.edge.episode.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.edge.core.extensions.asEpochSeconds
+import co.anitrend.data.edge.core.extensions.requireIntegralInt
 import co.anitrend.data.edge.episode.EdgeEpisodeEmbedded
 import co.anitrend.data.edge.episode.entity.EdgeEpisodeEntity
-import co.anitrend.data.edge.episode.model.EdgeEpisodeModel
+import co.anitrend.data.edge.graphql.EpisodesData
 
 /**
  * Converts a (mediaId, EpisodeModel) pair into [EdgeEpisodeEntity].
@@ -27,9 +29,9 @@ import co.anitrend.data.edge.episode.model.EdgeEpisodeModel
 internal class EdgeEpisodeConverter : SupportConverter<EdgeEpisodeEmbedded, EdgeEpisodeEntity>() {
     fun convertFromOrNull(pair: EdgeEpisodeEmbedded): EdgeEpisodeEntity? {
         val (mediaId, model) = pair
-        val seasonNumber = model.seasonNumber ?: return null
-        val episodeNumber = model.episodeNumber ?: return null
-        val airDate = model.aired ?: return null
+        val seasonNumber = model.seasonNumber.requireIntegralInt("episode seasonNumber") ?: return null
+        val episodeNumber = model.episodeNumber.requireIntegralInt("episode episodeNumber") ?: return null
+        val airDate = model.aired.asEpochSeconds("episode aired") ?: return null
 
         return EdgeEpisodeEntity(
             mediaId = mediaId,
@@ -39,8 +41,9 @@ internal class EdgeEpisodeConverter : SupportConverter<EdgeEpisodeEmbedded, Edge
             overview = model.synopsis,
             image = model.image,
             poster = model.poster,
-            runtime = model.duration,
-            absoluteEpisodeNumber = model.absoluteEpisodeNumber,
+            runtime = model.duration.requireIntegralInt("episode duration"),
+            absoluteEpisodeNumber =
+                model.absoluteEpisodeNumber.requireIntegralInt("episode absoluteEpisodeNumber"),
             airDate = airDate,
         )
     }

@@ -16,6 +16,6 @@
  */
 package co.anitrend.data.edge.episode
 
-import co.anitrend.data.edge.episode.model.EdgeEpisodeModel
+import co.anitrend.data.edge.graphql.EpisodesData
 
-internal typealias EdgeEpisodeEmbedded = Pair<String, EdgeEpisodeModel>
+internal typealias EdgeEpisodeEmbedded = Pair<String, EpisodesData.EpisodesData>

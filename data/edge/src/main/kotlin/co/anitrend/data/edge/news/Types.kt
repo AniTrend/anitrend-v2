@@ -19,14 +19,14 @@ package co.anitrend.data.edge.news
 import androidx.paging.PagingData
 import co.anitrend.arch.data.state.DataState
 import co.anitrend.data.android.controller.graphql.GraphQLController
+import co.anitrend.data.edge.graphql.NewsConnectionData
 import co.anitrend.data.edge.news.entity.EdgeNewsEntity
-import co.anitrend.data.edge.news.model.remote.EdgeNewsConnectionModel
 import co.anitrend.domain.news.entity.News
 import co.anitrend.domain.news.interactor.NewsUseCase
 import co.anitrend.domain.news.repository.INewsRepository
 import kotlinx.coroutines.flow.Flow
 
-internal typealias EdgeNewsController = GraphQLController<EdgeNewsConnectionModel, List<EdgeNewsEntity>>
+internal typealias EdgeNewsController = GraphQLController<NewsConnectionData, List<EdgeNewsEntity>>
 internal typealias NewsPagingRepository = INewsRepository.Paged<Flow<PagingData<News>>>
 internal typealias NewsSyncRepository = INewsRepository.Sync<DataState<Boolean>>
 

@@ -17,9 +17,10 @@
 package co.anitrend.data.edge.network.converter
 
 import co.anitrend.arch.data.converter.SupportConverter
+import co.anitrend.data.edge.core.extensions.requireIntegralLong
+import co.anitrend.data.edge.graphql.GetMediaByIdData
 import co.anitrend.data.edge.network.EdgeNetworkEmbedded
 import co.anitrend.data.edge.network.entity.EdgeNetworkEntity
-import co.anitrend.data.edge.network.model.EdgeNetworkModel
 
 /**
  * Converts a (mediaId, NetworkModel) pair into a persisted [EdgeNetworkEntity].
@@ -30,9 +31,9 @@ internal class EdgeNetworkConverter : SupportConverter<EdgeNetworkEmbedded, Edge
         val (mediaId, model) = pair
         EdgeNetworkEntity(
             mediaId = mediaId,
-            networkId = model.id,
+            networkId = model.id.requireIntegralLong("network id"),
             name = model.name,
-            category = model.category,
+            category = model.category.name,
             isPrimary = model.isPrimary,
             logoPath = model.logoPath,
             originCountry = model.originCountry,

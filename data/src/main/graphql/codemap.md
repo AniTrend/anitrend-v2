@@ -2,7 +2,7 @@
 
 ## Responsibility
 
-This directory contains AniList GraphQL operation assets used to generate Kotlin request, variable, and response model types for the main AniList data package.
+This directory contains AniList GraphQL operation assets used to generate Kotlin operation objects, typed variables, and enum types for the main AniList data package.
 
 ## Design Patterns
 
@@ -12,7 +12,7 @@ This directory contains AniList GraphQL operation assets used to generate Kotlin
 
 ## Data & Control Flow
 
-GraphQL files are consumed by code generation. Data sources then import generated operation objects, variables, and enum types, build `GraphQLRequest` objects, and submit them through Retrofit remote source interfaces.
+GraphQL files are consumed by code generation. Data sources then import generated operation objects (document and name) and typed variables, build `GraphQLOperationRequest<...Variables>` bodies, and submit them through Retrofit remote source interfaces. The neutral request carries its document through the shared `AniTrendConverterFactory` / `GraphQLConverterFactory` boundary, and `GraphQLController` validates responses before mappers persist to Room. AniList response payloads are declared against hand-written container models such as `MediaModelContainer.Detail`.
 
 ## Integration Points
 

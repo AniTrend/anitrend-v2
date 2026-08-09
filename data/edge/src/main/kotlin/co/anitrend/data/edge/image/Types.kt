@@ -16,6 +16,6 @@
  */
 package co.anitrend.data.edge.image
 
-import co.anitrend.data.edge.image.model.EdgeImageModel
+import co.anitrend.data.edge.graphql.GetMediaByIdData
 
-internal typealias EdgeImageWithMediaId = Pair<String, EdgeImageModel>
+internal typealias EdgeImageWithMediaId = Pair<String, GetMediaByIdData.SeriesImages>

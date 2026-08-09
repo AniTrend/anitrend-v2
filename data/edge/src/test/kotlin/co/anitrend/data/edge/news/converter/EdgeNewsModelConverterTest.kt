@@ -16,32 +16,119 @@
  */
 package co.anitrend.data.edge.news.converter
 
-import co.anitrend.data.edge.news.model.remote.EdgeNewsConnectionModel
+import co.anitrend.data.edge.graphql.NewsConnectionData
+import kotlinx.serialization.json.Json
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class EdgeNewsModelConverterTest {
+    private val json =
+        Json {
+            ignoreUnknownKeys = true
+            coerceInputValues = true
+            isLenient = true
+        }
+
     @Test
     fun `converter derives source and published timestamp from schema fields`() {
-        val news =
-            EdgeNewsConnectionModel.News(
-                area = "Anime",
-                category = "Editorial",
-                genre = "Feature",
-                id = "news-1",
-                language = "en",
-                title = "Title",
-                link = "https://example.com",
-                image = "https://example.com/image.jpg",
-                publishedOn = 1710000123.0,
-                description = "",
-                content = "Fallback content",
-            )
+        val payload =
+            """
+            {
+              "news": {
+                "count": 2,
+                "data": [
+                  {
+                    "area": "Anime",
+                    "category": "Editorial",
+                    "genre": "Feature",
+                    "id": "news-1",
+                    "lang": "en",
+                    "title": "Title",
+                    "link": "https://example.com",
+                    "image": "https://example.com/image.jpg",
+                    "publishedOn": 1710000123,
+                    "description": "",
+                    "content": "Fallback content"
+                  },
+                  {
+                    "area": "Manga",
+                    "category": null,
+                    "genre": null,
+                    "id": "news-2",
+                    "lang": "ja",
+                    "title": "Second",
+                    "link": "https://example.com/2",
+                    "image": null,
+                    "publishedOn": 1710000456,
+                    "description": "Real description",
+                    "content": ""
+                  }
+                ],
+                "first": "cursor-1",
+                "last": "cursor-2"
+              }
+            }
+            """.trimIndent()
 
-        val result = EdgeNewsModelConverter().convertFrom(listOf(news)).first()
+        val result = json.decodeFromString<NewsConnectionData>(payload)
+        val news = result.news?.data.orEmpty().filterNotNull()
 
-        assertEquals("Editorial", result.source)
-        assertEquals(1710000123L, result.publishedAt)
-        assertEquals("Fallback content", result.description)
+        val first = EdgeNewsModelConverter().convertFrom(news).first()
+
+        assertEquals("Editorial", first.source)
+        assertEquals(1710000123L, first.publishedAt)
+        assertEquals("Fallback content", first.description)
+
+        val second = EdgeNewsModelConverter().convertFrom(news)[1]
+        assertEquals("Manga", second.source)
+        assertEquals(1710000456L, second.publishedAt)
+        assertEquals("Real description", second.description)
+        assertEquals("Real description", second.content)
+    }
+
+    @Test
+    fun `converter rejects fractional published timestamps instead of truncating`() {
+        val payload =
+            """
+            {
+              "news": {
+                "count": 1,
+                "data": [
+                  {
+                    "area": null,
+                    "category": null,
+                    "genre": null,
+                    "id": "news-1",
+                    "lang": null,
+                    "title": "Title",
+                    "link": "https://example.com",
+                    "image": null,
+                    "publishedOn": 1710000123.5,
+                    "description": "Description",
+                    "content": "Content"
+                  }
+                ],
+                "first": null,
+                "last": null
+              }
+            }
+            """.trimIndent()
+
+        val result = json.decodeFromString<NewsConnectionData>(payload)
+        val news = result.news?.data.orEmpty().filterNotNull()
+
+        assertFailsWith<IllegalArgumentException> {
+            EdgeNewsModelConverter().convertFrom(news)
+        }
+    }
+
+    @Test
+    fun `converter handles absent paging root as empty page`() {
+        val result = json.decodeFromString<NewsConnectionData>("""{"news": null}""")
+
+        val news = result.news?.data.orEmpty().filterNotNull()
+        assertEquals(0, news.size)
+        assertEquals(emptyList(), EdgeNewsModelConverter().convertFrom(news))
     }
 }

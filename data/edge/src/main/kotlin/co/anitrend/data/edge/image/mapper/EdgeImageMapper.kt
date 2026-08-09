@@ -17,11 +17,11 @@
 package co.anitrend.data.edge.image.mapper
 
 import co.anitrend.data.android.mapper.EmbedMapper
+import co.anitrend.data.edge.graphql.GetMediaByIdData
 import co.anitrend.data.edge.image.EdgeImageWithMediaId
 import co.anitrend.data.edge.image.converter.EdgeImageConverter
 import co.anitrend.data.edge.image.datasource.EdgeImageLocalSource
 import co.anitrend.data.edge.image.entity.EdgeMediaImageEntity
-import co.anitrend.data.edge.image.model.EdgeImageModel
 
 internal class EdgeImageMapper(
     override val localSource: EdgeImageLocalSource,
@@ -29,7 +29,7 @@ internal class EdgeImageMapper(
 ) : EmbedMapper<EdgeImageWithMediaId, EdgeMediaImageEntity>() {
     suspend fun onEmbedded(
         mediaId: String,
-        sources: List<EdgeImageModel>,
+        sources: List<GetMediaByIdData.SeriesImages>,
     ) {
         localSource.deleteByMediaId(mediaId)
         super.onEmbedded(sources.map { mediaId to it })

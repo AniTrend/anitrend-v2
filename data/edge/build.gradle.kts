@@ -14,6 +14,8 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import co.anitrend.retrofit.graphql.codegen.config.SerializationBackend
+
 plugins {
     id("co.anitrend.plugin")
     id("kotlinx-serialization")
@@ -47,10 +49,21 @@ android {
     namespace = "co.anitrend.data.edge"
 }
 
-retrofitGraphQL {
-    common {
-        generateVariables.set(true)
-    }
+    retrofitGraphQL {
+        common {
+            // Codegen surface for the edge schema: operation constants, documents,
+            // hashes, typed variables (with input objects and enums), and response
+            // models are all generated.
+            generateOperationConstants.set(true)
+            generateDocuments.set(true)
+            generateHashes.set(true)
+            generateVariables.set(true)
+            generateResponses.set(true)
+            // Request bodies are serialized through KotlinxGraphQLTransportCodec, so
+            // generated variables, input objects, enums, and response models need
+            // kotlinx metadata.
+            serializationBackend.set(SerializationBackend.KOTLINX)
+        }
     packageName.set("co.anitrend.data.edge.graphql")
     schema.set(file("../anitrend.schema.graphql"))
     operations.from(fileTree("src/main/graphql") {
@@ -60,11 +73,12 @@ retrofitGraphQL {
         map("JSON", "kotlin.String")
         map("NonEmptyString", "kotlin.String")
         map("NonNegativeFloat", "kotlin.Double")
+        map("NonNegativeInt", "kotlin.Int")
         map("ObjMap", "kotlin.String")
         map("PositiveFloat", "kotlin.Double")
         map("PositiveInt", "kotlin.Int")
         map("URL", "kotlin.String")
         map("_DirectiveExtensions", "kotlin.String")
-        map("queryInput_newsFeed_locale", "kotlin.String")
+        map("NewsFeedLocale", "kotlin.String")
     }
 }

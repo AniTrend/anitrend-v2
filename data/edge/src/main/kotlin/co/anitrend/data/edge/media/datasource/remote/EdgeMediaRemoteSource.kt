@@ -18,8 +18,8 @@ package co.anitrend.data.edge.media.datasource.remote
 
 import co.anitrend.retrofit.graphql.model.GraphQLResponse
 import co.anitrend.data.edge.core.api.factory.EdgeApiFactory
+import co.anitrend.data.edge.graphql.GetMediaByIdData
 import co.anitrend.data.edge.graphql.GetMediaByIdVariables
-import co.anitrend.data.edge.media.model.remote.EdgeMediaModel
 import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
 import retrofit2.Response
 import retrofit2.http.Body
@@ -29,5 +29,5 @@ internal interface EdgeMediaRemoteSource {
     @POST(EdgeApiFactory.BASE_ENDPOINT_PATH)
     suspend fun getMediaById(
         @Body request: GraphQLOperationRequest<GetMediaByIdVariables>,
-    ): Response<GraphQLResponse<EdgeMediaModel>>
+    ): Response<GraphQLResponse<GetMediaByIdData>>
 }

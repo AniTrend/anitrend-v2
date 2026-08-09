@@ -21,30 +21,33 @@ import co.anitrend.data.edge.config.entity.EdgeConfigEntity
 import co.anitrend.data.edge.config.entity.EdgeConfigImageEntity
 import co.anitrend.data.edge.config.entity.EdgeConfigSettingsEntity
 import co.anitrend.data.edge.config.entity.view.EdgeConfigViewEntity
-import co.anitrend.data.edge.config.model.remote.EdgeConfigModel
+import co.anitrend.data.edge.graphql.GetConfigData
 import co.anitrend.domain.config.entity.Config
 
 internal class EdgeConfigModelConverter(
-    override val fromType: (EdgeConfigModel) -> EdgeConfigEntity = {
+    override val fromType: (GetConfigData) -> EdgeConfigEntity = { model ->
+        val config =
+            model.config
+                ?: throw IllegalStateException("Config payload did not contain a config root")
         EdgeConfigEntity(
             settings =
                 EdgeConfigSettingsEntity(
-                    analyticsEnabled = it.config.settings.analyticsEnabled,
-                    platformSource = it.config.settings.platformSource,
+                    analyticsEnabled = config.settings.analyticsEnabled,
+                    platformSource = config.settings.platformSource,
                 ),
             image =
                 EdgeConfigImageEntity(
-                    banner = it.config.image.banner,
-                    poster = it.config.image.poster,
-                    loading = it.config.image.loading,
-                    error = it.config.image.error,
-                    info = it.config.image.info,
-                    standard = it.config.image.default,
+                    banner = config.image.banner,
+                    poster = config.image.poster,
+                    loading = config.image.loading,
+                    error = config.image.error,
+                    info = config.image.info,
+                    standard = config.image.default,
                 ),
         )
     },
-    override val toType: (EdgeConfigEntity) -> EdgeConfigModel = { throw NotImplementedError() },
-) : SupportConverter<EdgeConfigModel, EdgeConfigEntity>()
+    override val toType: (EdgeConfigEntity) -> GetConfigData = { throw NotImplementedError() },
+) : SupportConverter<GetConfigData, EdgeConfigEntity>()
 
 internal class EdgeConfigEntityConverter(
     override val fromType: (EdgeConfigEntity) -> Config = {

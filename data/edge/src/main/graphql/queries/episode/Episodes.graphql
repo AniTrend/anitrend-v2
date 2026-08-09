@@ -3,7 +3,7 @@ query Episodes(
   $before: String,
   $end: Int,
   $includeOrphans: Boolean,
-  $kind: queryInput_episodes_kind,
+  $kind: EpisodeKind,
   $limit: PositiveInt,
   $malId: Int!,
   $specialsOnly: Boolean,

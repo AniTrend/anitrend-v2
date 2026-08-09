@@ -16,18 +16,6 @@
  */
 package co.anitrend.data.core
 
-@RequiresOptIn(
-    message = "Experimental feature, with potentially unstable API",
-    level = RequiresOptIn.Level.WARNING,
-)
-@Retention(AnnotationRetention.BINARY)
-@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
-annotation class AniTrendExperimentalFeature
-
-@Retention(AnnotationRetention.RUNTIME)
-@Target(AnnotationTarget.FUNCTION)
-annotation class GRAPHQL
-
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
 annotation class JSON

@@ -12,9 +12,9 @@ AniList GraphQL write operations for favourites, feed, forum, media lists, revie
 
 ## Data & Control Flow
 
-The GraphQL generator reads these files and emits Kotlin operation classes. Data sources import those generated classes, map domain params into generated variables, and pass requests through the shared GraphQL controller path.
+The GraphQL generator reads these files and emits Kotlin operation classes with generated operation documents and typed variables. Data sources import those generated classes, map domain params into generated variables, build `GraphQLOperationRequest<...Variables>` bodies, and pass them through the shared converter and `GraphQLController` path.
 
 ## Integration Points
 
 - Used by remote sources under `data/src/main/kotlin/co/anitrend/data/`.
-- Connected to Retrofit GraphQL requests through `GraphQLRequest` and the generated AniList namespace.
+- Connected to Retrofit GraphQL requests through `GraphQLOperationRequest<...Variables>` and the generated AniList namespace.
