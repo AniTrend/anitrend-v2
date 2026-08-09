@@ -82,12 +82,9 @@ internal class EdgeThemeConverter : SupportConverter<EdgeThemeEmbedded, EdgeThem
                 entry.videos
                     .orEmpty()
                     .filterNotNull()
+                    .filter { video -> video.link.isNotBlank() }
                     .forEach { video ->
                         val link = video.link
-                        if (link.isBlank()) {
-                            return@forEach
-                        }
-
                         val videoId = stableVideoId(video)
                         videoEntities +=
                             EdgeThemeVideoEntity(

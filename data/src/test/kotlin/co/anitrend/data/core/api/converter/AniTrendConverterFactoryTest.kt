@@ -39,6 +39,10 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.http.Body
 
+private const val OPERATION_NAME_KEY = "operationName"
+private const val QUERY_KEY = "query"
+private const val VARIABLES_KEY = "variables"
+
 class AniTrendConverterFactoryTest {
     private val edgeMediaRemoteSourceClass: Class<*> =
         Class.forName("co.anitrend.data.edge.media.datasource.remote.EdgeMediaRemoteSource")
@@ -66,11 +70,7 @@ class AniTrendConverterFactoryTest {
             gson = Gson(),
         )
 
-    /**
-     * Real retrofit-graphql 0.14.0 factory backed by the composite generated
-     * registries, mirroring the production wiring in the data Koin module.
-     */
-    private val realRegistry =
+    private val compositeGeneratedRegistry =
         CompositeGraphQLDocumentRegistry(
             primary = AniListRegistry,
             fallback = EdgeRegistry,
@@ -87,7 +87,7 @@ class AniTrendConverterFactoryTest {
                             explicitNulls = false
                         },
                 ),
-            registry = realRegistry,
+            registry = compositeGeneratedRegistry,
         )
 
     @Test
@@ -221,12 +221,12 @@ class AniTrendConverterFactoryTest {
                 operationName = GetMediaDetail.name,
             )
 
-        val envelope = encodeEnvelope(GetMediaDetailVariables::class.java, request)
+        val envelope = encodeRequestEnvelopeJson(GetMediaDetailVariables::class.java, request)
 
-        assertEquals(GetMediaDetail.name, envelope.getValue("operationName").jsonPrimitive.content)
-        assertEquals(GetMediaDetail.document, envelope.getValue("query").jsonPrimitive.content)
-        assertFalse(envelope.getValue("query").jsonPrimitive.content.isBlank())
-        assertTrue(envelope.getValue("variables") is JsonNull)
+        assertEquals(GetMediaDetail.name, envelope.getValue(OPERATION_NAME_KEY).jsonPrimitive.content)
+        assertEquals(GetMediaDetail.document, envelope.getValue(QUERY_KEY).jsonPrimitive.content)
+        assertFalse(envelope.getValue(QUERY_KEY).jsonPrimitive.content.isBlank())
+        assertTrue(envelope.getValue(VARIABLES_KEY) is JsonNull)
     }
 
     @Test
@@ -237,23 +237,23 @@ class AniTrendConverterFactoryTest {
                 operationName = GetMediaById.name,
             )
 
-        val envelope = encodeEnvelope(GetMediaByIdVariables::class.java, request)
+        val envelope = encodeRequestEnvelopeJson(GetMediaByIdVariables::class.java, request)
 
-        assertEquals(GetMediaById.name, envelope.getValue("operationName").jsonPrimitive.content)
-        assertEquals(GetMediaById.document, envelope.getValue("query").jsonPrimitive.content)
-        assertFalse(envelope.getValue("query").jsonPrimitive.content.isBlank())
-        assertTrue(envelope.getValue("variables") is JsonNull)
+        assertEquals(GetMediaById.name, envelope.getValue(OPERATION_NAME_KEY).jsonPrimitive.content)
+        assertEquals(GetMediaById.document, envelope.getValue(QUERY_KEY).jsonPrimitive.content)
+        assertFalse(envelope.getValue(QUERY_KEY).jsonPrimitive.content.isBlank())
+        assertTrue(envelope.getValue(VARIABLES_KEY) is JsonNull)
     }
 
     @Test
     fun `real GraphQL converter encodes AniList generated operation with variables as application json`() {
         val request = GetMediaDetail.request(id = 1337)
 
-        val envelope = encodeEnvelope(GetMediaDetailVariables::class.java, request)
+        val envelope = encodeRequestEnvelopeJson(GetMediaDetailVariables::class.java, request)
 
-        assertEquals(GetMediaDetail.name, envelope.getValue("operationName").jsonPrimitive.content)
-        assertEquals(GetMediaDetail.document, envelope.getValue("query").jsonPrimitive.content)
-        val variables = envelope.getValue("variables").jsonObject
+        assertEquals(GetMediaDetail.name, envelope.getValue(OPERATION_NAME_KEY).jsonPrimitive.content)
+        assertEquals(GetMediaDetail.document, envelope.getValue(QUERY_KEY).jsonPrimitive.content)
+        val variables = envelope.getValue(VARIABLES_KEY).jsonObject
         assertEquals(1337, variables.getValue("id").jsonPrimitive.content.toInt())
         assertFalse(variables.containsKey("type"))
         assertFalse(variables.containsKey("scoreFormat"))
@@ -263,11 +263,11 @@ class AniTrendConverterFactoryTest {
     fun `real GraphQL converter encodes Edge generated operation with variables as application json`() {
         val request = GetMediaById.request(id = 7331)
 
-        val envelope = encodeEnvelope(GetMediaByIdVariables::class.java, request)
+        val envelope = encodeRequestEnvelopeJson(GetMediaByIdVariables::class.java, request)
 
-        assertEquals(GetMediaById.name, envelope.getValue("operationName").jsonPrimitive.content)
-        assertEquals(GetMediaById.document, envelope.getValue("query").jsonPrimitive.content)
-        val variables = envelope.getValue("variables").jsonObject
+        assertEquals(GetMediaById.name, envelope.getValue(OPERATION_NAME_KEY).jsonPrimitive.content)
+        assertEquals(GetMediaById.document, envelope.getValue(QUERY_KEY).jsonPrimitive.content)
+        val variables = envelope.getValue(VARIABLES_KEY).jsonObject
         assertEquals(7331, variables.getValue("id").jsonPrimitive.content.toInt())
     }
 
@@ -275,11 +275,11 @@ class AniTrendConverterFactoryTest {
     fun `real GraphQL converter encodes Edge NewsConnection with supplied and omitted nullable variables as application json`() {
         val request = NewsConnection.request(after = "cursor-1")
 
-        val envelope = encodeEnvelope(NewsConnectionVariables::class.java, request)
+        val envelope = encodeRequestEnvelopeJson(NewsConnectionVariables::class.java, request)
 
-        assertEquals(NewsConnection.name, envelope.getValue("operationName").jsonPrimitive.content)
-        assertEquals(NewsConnection.document, envelope.getValue("query").jsonPrimitive.content)
-        val variables = envelope.getValue("variables").jsonObject
+        assertEquals(NewsConnection.name, envelope.getValue(OPERATION_NAME_KEY).jsonPrimitive.content)
+        assertEquals(NewsConnection.document, envelope.getValue(QUERY_KEY).jsonPrimitive.content)
+        val variables = envelope.getValue(VARIABLES_KEY).jsonObject
         assertEquals("cursor-1", variables.getValue("after").jsonPrimitive.content)
         assertFalse(variables.containsKey("before"))
         assertFalse(variables.containsKey("limit"))
@@ -287,10 +287,10 @@ class AniTrendConverterFactoryTest {
 
     @Test
     fun `composite registry resolves AniList and Edge generated operation documents and hashes`() {
-        assertEquals(GetMediaDetail.document, realRegistry.document(GetMediaDetail.name))
-        assertEquals(GetMediaDetail.sha256Hash, realRegistry.hash(GetMediaDetail.name))
-        assertEquals(GetMediaById.document, realRegistry.document(GetMediaById.name))
-        assertEquals(GetMediaById.sha256Hash, realRegistry.hash(GetMediaById.name))
+        assertEquals(GetMediaDetail.document, compositeGeneratedRegistry.document(GetMediaDetail.name))
+        assertEquals(GetMediaDetail.sha256Hash, compositeGeneratedRegistry.hash(GetMediaDetail.name))
+        assertEquals(GetMediaById.document, compositeGeneratedRegistry.document(GetMediaById.name))
+        assertEquals(GetMediaById.sha256Hash, compositeGeneratedRegistry.hash(GetMediaById.name))
     }
 
     private fun bodyParameter(method: Method): Pair<Type, Array<out Annotation>> {
@@ -342,11 +342,7 @@ class AniTrendConverterFactoryTest {
         return buffer.readUtf8()
     }
 
-    /**
-     * Encodes [request] through the real graph factory and parses the resulting
-     * application/json envelope, asserting the content type.
-     */
-    private fun encodeEnvelope(
+    private fun encodeRequestEnvelopeJson(
         variablesType: Type,
         request: GraphQLOperationRequest<*>,
     ): JsonObject {

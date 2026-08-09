@@ -47,160 +47,7 @@ class EdgeMediaModelConverterTest {
 
     @Test
     fun `generated series payload decodes and maps into edge media entity`() {
-        val payload =
-            """
-            {
-              "series": {
-                "title": {
-                  "canonical": "Canonical Title",
-                  "english": "English Title",
-                  "harigana": null,
-                  "japanese": "Japanese Title",
-                  "romaji": "Romaji Title",
-                  "synonyms": ["Synonym One", null]
-                },
-                "cover": {
-                  "color": "#FFFFFF",
-                  "extraLarge": "xl.jpg",
-                  "large": "large.jpg",
-                  "medium": "medium.jpg"
-                },
-                "banner": "banner.jpg",
-                "description": "Description",
-                "fanart": "fanart.jpg",
-                "format": "TV",
-                "homepage": "https://example.com",
-                "airedEpisodes": 12,
-                "broadcast": "Saturdays",
-                "source": "MANGA",
-                "status": "RELEASING",
-                "ageRating": "PG",
-                "isAdult": false,
-                "kind": "ANIME",
-                "chapters": null,
-                "volumes": null,
-                "moreInfo": "more",
-                "publishedFrom": 1600000000,
-                "publishedTo": null,
-                "mediaId": {
-                  "anidb": null,
-                  "anilist": 15125,
-                  "animePlanet": null,
-                  "anisearch": null,
-                  "imdb": null,
-                  "kitsu": null,
-                  "livechart": null,
-                  "myanimelist": 100,
-                  "notify": "notify-id",
-                  "shoboi": null,
-                  "slug": null,
-                  "themoviedb": 200,
-                  "trakt": null,
-                  "tvMazeId": null,
-                  "tvdb": 300,
-                  "tvrage": null
-                },
-                "images": [
-                  {
-                    "height": 1080,
-                    "locale": "en",
-                    "type": "BACKDROP",
-                    "url": "backdrop.jpg",
-                    "width": 1920
-                  }
-                ],
-                "schedule": {
-                  "firstAirDate": 1700000000,
-                  "lastAirDate": 1710000000,
-                  "lastAiredEpisode": {
-                    "airDate": 1710000000,
-                    "episodeNumber": 12,
-                    "id": 5001,
-                    "image": "still.jpg",
-                    "name": "Last Aired",
-                    "overview": "Overview",
-                    "productionCode": "PC1",
-                    "runtime": 24,
-                    "seasonNumber": 1,
-                    "tmdbId": 6001
-                  },
-                  "nextEpisodeToAir": {
-                    "airDate": 1710003600,
-                    "episodeNumber": 13,
-                    "id": 5002,
-                    "image": "still2.jpg",
-                    "name": "Next Episode",
-                    "overview": "Overview 2",
-                    "productionCode": "PC2",
-                    "runtime": 24,
-                    "seasonNumber": 1,
-                    "tmdbId": 6002
-                  }
-                },
-                "networks": [
-                  {
-                    "category": "DISTRIBUTION",
-                    "id": 77,
-                    "isPrimary": true,
-                    "logoPath": "logo/77.png",
-                    "name": "Network One",
-                    "originCountry": "JP"
-                  }
-                ],
-                "animethemes": [
-                  {
-                    "animethemeentries": [
-                      {
-                        "episodes": "1-12",
-                        "id": 100,
-                        "notes": "TV",
-                        "nsfw": false,
-                        "spoiler": false,
-                        "version": 1,
-                        "videos": [
-                          {
-                            "audio": {
-                              "id": 9000,
-                              "link": "audio.mp3"
-                            },
-                            "id": 1000,
-                            "link": "video.mp4",
-                            "lyrics": false,
-                            "nc": false,
-                            "overlap": null,
-                            "resolution": 1080,
-                            "source": "WEB",
-                            "subbed": false,
-                            "tags": null,
-                            "uncen": false
-                          }
-                        ]
-                      }
-                    ],
-                    "id": 1,
-                    "sequence": 1,
-                    "slug": "opening-1",
-                    "song": {
-                      "id": 50,
-                      "title": "OP 1"
-                    },
-                    "type": "OP"
-                  }
-                ],
-                "trailers": [
-                  {
-                    "id": "trailer-key",
-                    "site": "youtube",
-                    "thumbnail": "thumb.jpg"
-                  }
-                ],
-                "updatedAt": 1720000000,
-                "volumes": null
-              }
-            }
-            """.trimIndent()
-
-        val result = json.decodeFromString<GetMediaByIdData>(payload)
+        val result = json.decodeFromString<GetMediaByIdData>(generatedSeriesPayload)
 
         val series = assertNotNull(result.series)
         assertEquals(1, series.animethemes.orEmpty().size)
@@ -306,17 +153,17 @@ class EdgeMediaModelConverterTest {
 
         val images = series.images.orEmpty().mapNotNull { it }
         assertEquals(2, images.size)
-        val imageEntity = EdgeImageConverter().convertFrom("media-id" to images.first())
+        val imageEntity = EdgeImageConverter().convertFrom(MEDIA_ID to images.first())
         assertEquals(1080, imageEntity.height)
         assertEquals(1920, imageEntity.width)
         assertEquals(EdgeMediaImageEntity.ImageType.BACKDROP, imageEntity.type)
         assertEquals("en", imageEntity.locale)
 
-        val networkEntity = EdgeNetworkConverter().convertFrom("media-id" to series.networks.orEmpty().first()!!)
+        val networkEntity = EdgeNetworkConverter().convertFrom(MEDIA_ID to series.networks.orEmpty().first()!!)
         assertEquals(77L, networkEntity.networkId)
         assertEquals("PRODUCTION", networkEntity.category)
 
-        val trailerEntity = EdgeTrailerConverter().convertFrom("media-id" to series.trailers.orEmpty().first()!!)
+        val trailerEntity = EdgeTrailerConverter().convertFrom(MEDIA_ID to series.trailers.orEmpty().first()!!)
         assertEquals("trailer-key", trailerEntity.trailerId)
         assertEquals("youtube", trailerEntity.site)
         assertNull(trailerEntity.thumbnail)
@@ -335,14 +182,14 @@ class EdgeMediaModelConverterTest {
         val image = series.images.orEmpty().first()!!
 
         assertFailsWith<IllegalArgumentException> {
-            EdgeImageConverter().convertFrom("media-id" to image)
+            EdgeImageConverter().convertFrom(MEDIA_ID to image)
         }
     }
 
     @Test
     fun `converter maps generated enums to persisted values`() {
         val series =
-            sampleSeries(
+            sampleSeries().copy(
                 format = SeriesFormat.MOVIE,
                 source = SeriesSource.ORIGINAL,
                 status = SeriesStatus.FINISHED,
@@ -356,106 +203,257 @@ class EdgeMediaModelConverterTest {
         assertEquals("FINISHED", entity.status)
         assertEquals(MediaType.MANGA, entity.kind)
     }
-
-    private fun sampleMediaId(
-        anilist: Double? = 15125.0,
-        notify: String? = "notify-id",
-        slug: String? = null,
-    ) =
-        GetMediaByIdData.SeriesMediaId(
-            anidb = null,
-            anilist = anilist,
-            animePlanet = null,
-            anisearch = null,
-            imdb = null,
-            kitsu = null,
-            livechart = null,
-            myanimelist = 100.0,
-            notify = notify,
-            shoboi = null,
-            slug = slug,
-            themoviedb = 200.0,
-            trakt = null,
-            tvMazeId = null,
-            tvdb = 300.0,
-            tvrage = null,
-        )
-
-    private fun sampleImage(
-        url: String = "backdrop.jpg",
-        height: Double = 1080.0,
-        width: Double = 1920.0,
-        type: SeriesImageType = SeriesImageType.BACKDROP,
-    ) =
-        GetMediaByIdData.SeriesImages(
-            height = height,
-            locale = "en",
-            type = type,
-            url = url,
-            width = width,
-        )
-
-    private fun sampleNetwork() =
-        GetMediaByIdData.SeriesNetworks(
-            category = SeriesNetworkCategory.PRODUCTION,
-            id = 77.0,
-            isPrimary = true,
-            logoPath = "logo/77.png",
-            name = "Network One",
-            originCountry = "JP",
-        )
-
-    private fun sampleSeries(
-        mediaId: GetMediaByIdData.SeriesMediaId = sampleMediaId(),
-        images: List<GetMediaByIdData.SeriesImages> = emptyList(),
-        networks: List<GetMediaByIdData.SeriesNetworks> = emptyList(),
-        trailers: List<GetMediaByIdData.SeriesTrailers> = emptyList(),
-        format: SeriesFormat? = null,
-        source: SeriesSource? = null,
-        status: SeriesStatus? = null,
-        kind: SeriesKind = SeriesKind.ANIME,
-        updatedAt: Double = 1720000000.0,
-    ) =
-        GetMediaByIdData.Series(
-            ageRating = null,
-            airedEpisodes = 12.0,
-            animethemes = emptyList(),
-            banner = null,
-            broadcast = null,
-            chapters = null,
-            cover =
-                GetMediaByIdData.SeriesCover(
-                    color = null,
-                    extraLarge = null,
-                    large = null,
-                    medium = "medium.jpg",
-                ),
-            description = null,
-            fanart = null,
-            format = format,
-            homepage = null,
-            images = images,
-            isAdult = null,
-            kind = kind,
-            mediaId = mediaId,
-            moreInfo = null,
-            networks = networks,
-            publishedFrom = null,
-            publishedTo = null,
-            schedule = null,
-            source = source,
-            status = status,
-            title =
-                GetMediaByIdData.SeriesTitle(
-                    canonical = "Canonical Title",
-                    english = "English Title",
-                    harigana = null,
-                    japanese = null,
-                    romaji = "Romaji Title",
-                    synonyms = null,
-                ),
-            trailers = trailers,
-            updatedAt = updatedAt,
-            volumes = null,
-        )
 }
+
+private const val MEDIA_ID = "media-id"
+
+private val generatedSeriesPayload =
+    """
+    {
+      "series": {
+        "title": {
+          "canonical": "Canonical Title",
+          "english": "English Title",
+          "harigana": null,
+          "japanese": "Japanese Title",
+          "romaji": "Romaji Title",
+          "synonyms": ["Synonym One", null]
+        },
+        "cover": {
+          "color": "#FFFFFF",
+          "extraLarge": "xl.jpg",
+          "large": "large.jpg",
+          "medium": "medium.jpg"
+        },
+        "banner": "banner.jpg",
+        "description": "Description",
+        "fanart": "fanart.jpg",
+        "format": "TV",
+        "homepage": "https://example.com",
+        "airedEpisodes": 12,
+        "broadcast": "Saturdays",
+        "source": "MANGA",
+        "status": "RELEASING",
+        "ageRating": "PG",
+        "isAdult": false,
+        "kind": "ANIME",
+        "chapters": null,
+        "volumes": null,
+        "moreInfo": "more",
+        "publishedFrom": 1600000000,
+        "publishedTo": null,
+        "mediaId": {
+          "anidb": null,
+          "anilist": 15125,
+          "animePlanet": null,
+          "anisearch": null,
+          "imdb": null,
+          "kitsu": null,
+          "livechart": null,
+          "myanimelist": 100,
+          "notify": "notify-id",
+          "shoboi": null,
+          "slug": null,
+          "themoviedb": 200,
+          "trakt": null,
+          "tvMazeId": null,
+          "tvdb": 300,
+          "tvrage": null
+        },
+        "images": [
+          {
+            "height": 1080,
+            "locale": "en",
+            "type": "BACKDROP",
+            "url": "backdrop.jpg",
+            "width": 1920
+          }
+        ],
+        "schedule": {
+          "firstAirDate": 1700000000,
+          "lastAirDate": 1710000000,
+          "lastAiredEpisode": {
+            "airDate": 1710000000,
+            "episodeNumber": 12,
+            "id": 5001,
+            "image": "still.jpg",
+            "name": "Last Aired",
+            "overview": "Overview",
+            "productionCode": "PC1",
+            "runtime": 24,
+            "seasonNumber": 1,
+            "tmdbId": 6001
+          },
+          "nextEpisodeToAir": {
+            "airDate": 1710003600,
+            "episodeNumber": 13,
+            "id": 5002,
+            "image": "still2.jpg",
+            "name": "Next Episode",
+            "overview": "Overview 2",
+            "productionCode": "PC2",
+            "runtime": 24,
+            "seasonNumber": 1,
+            "tmdbId": 6002
+          }
+        },
+        "networks": [
+          {
+            "category": "DISTRIBUTION",
+            "id": 77,
+            "isPrimary": true,
+            "logoPath": "logo/77.png",
+            "name": "Network One",
+            "originCountry": "JP"
+          }
+        ],
+        "animethemes": [
+          {
+            "animethemeentries": [
+              {
+                "episodes": "1-12",
+                "id": 100,
+                "notes": "TV",
+                "nsfw": false,
+                "spoiler": false,
+                "version": 1,
+                "videos": [
+                  {
+                    "audio": {
+                      "id": 9000,
+                      "link": "audio.mp3"
+                    },
+                    "id": 1000,
+                    "link": "video.mp4",
+                    "lyrics": false,
+                    "nc": false,
+                    "overlap": null,
+                    "resolution": 1080,
+                    "source": "WEB",
+                    "subbed": false,
+                    "tags": null,
+                    "uncen": false
+                  }
+                ]
+              }
+            ],
+            "id": 1,
+            "sequence": 1,
+            "slug": "opening-1",
+            "song": {
+              "id": 50,
+              "title": "OP 1"
+            },
+            "type": "OP"
+          }
+        ],
+        "trailers": [
+          {
+            "id": "trailer-key",
+            "site": "youtube",
+            "thumbnail": "thumb.jpg"
+          }
+        ],
+        "updatedAt": 1720000000,
+        "volumes": null
+      }
+    }
+    """.trimIndent()
+
+private fun sampleMediaId(
+    anilist: Double? = 15125.0,
+    notify: String? = "notify-id",
+    slug: String? = null,
+) =
+    GetMediaByIdData.SeriesMediaId(
+        anidb = null,
+        anilist = anilist,
+        animePlanet = null,
+        anisearch = null,
+        imdb = null,
+        kitsu = null,
+        livechart = null,
+        myanimelist = 100.0,
+        notify = notify,
+        shoboi = null,
+        slug = slug,
+        themoviedb = 200.0,
+        trakt = null,
+        tvMazeId = null,
+        tvdb = 300.0,
+        tvrage = null,
+    )
+
+private fun sampleImage(
+    url: String = "backdrop.jpg",
+    height: Double = 1080.0,
+    width: Double = 1920.0,
+    type: SeriesImageType = SeriesImageType.BACKDROP,
+) =
+    GetMediaByIdData.SeriesImages(
+        height = height,
+        locale = "en",
+        type = type,
+        url = url,
+        width = width,
+    )
+
+private fun sampleNetwork() =
+    GetMediaByIdData.SeriesNetworks(
+        category = SeriesNetworkCategory.PRODUCTION,
+        id = 77.0,
+        isPrimary = true,
+        logoPath = "logo/77.png",
+        name = "Network One",
+        originCountry = "JP",
+    )
+
+private fun sampleSeries(
+    mediaId: GetMediaByIdData.SeriesMediaId = sampleMediaId(),
+    images: List<GetMediaByIdData.SeriesImages> = emptyList(),
+    networks: List<GetMediaByIdData.SeriesNetworks> = emptyList(),
+    trailers: List<GetMediaByIdData.SeriesTrailers> = emptyList(),
+    updatedAt: Double = 1720000000.0,
+) =
+    GetMediaByIdData.Series(
+        ageRating = null,
+        airedEpisodes = 12.0,
+        animethemes = emptyList(),
+        banner = null,
+        broadcast = null,
+        chapters = null,
+        cover =
+            GetMediaByIdData.SeriesCover(
+                color = null,
+                extraLarge = null,
+                large = null,
+                medium = "medium.jpg",
+            ),
+        description = null,
+        fanart = null,
+        format = null,
+        homepage = null,
+        images = images,
+        isAdult = null,
+        kind = SeriesKind.ANIME,
+        mediaId = mediaId,
+        moreInfo = null,
+        networks = networks,
+        publishedFrom = null,
+        publishedTo = null,
+        schedule = null,
+        source = null,
+        status = null,
+        title =
+            GetMediaByIdData.SeriesTitle(
+                canonical = "Canonical Title",
+                english = "English Title",
+                harigana = null,
+                japanese = null,
+                romaji = "Romaji Title",
+                synonyms = null,
+            ),
+        trailers = trailers,
+        updatedAt = updatedAt,
+        volumes = null,
+    )

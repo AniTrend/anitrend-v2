@@ -40,60 +40,18 @@ class EdgeThemeConverterTest {
 
     @Test
     fun `generated animetheme payload decodes and maps into theme entry and video entities`() {
-        val payload =
-            """
-            {
-              "animethemeentries": [
-                {
-                  "episodes": "1-12",
-                  "id": 200,
-                  "notes": "TV",
-                  "nsfw": false,
-                  "spoiler": false,
-                  "version": 2,
-                  "videos": [
-                    {
-                      "audio": {
-                        "id": 400,
-                        "link": "audio.mp3"
-                      },
-                      "id": 300,
-                      "link": "video.mp4",
-                      "lyrics": false,
-                      "nc": false,
-                      "overlap": null,
-                      "resolution": 1080,
-                      "source": "WEB",
-                      "subbed": false,
-                      "tags": null,
-                      "uncen": false
-                    }
-                  ]
-                }
-              ],
-              "id": 100,
-              "sequence": 1,
-              "slug": "opening-1",
-              "song": {
-                "id": 10,
-                "title": "Opening One"
-              },
-              "type": "OP"
-            }
-            """.trimIndent()
-
-        val model = json.decodeFromString<GetMediaByIdData.SeriesAnimethemes>(payload)
+        val model = json.decodeFromString<GetMediaByIdData.SeriesAnimethemes>(generatedThemePayload)
 
         assertTrue(model.isPersistable)
-        assertEquals("Opening One", model.name)
-        assertEquals("video.mp4", model.video)
+        assertEquals(SONG_TITLE, model.name)
+        assertEquals(VIDEO_LINK, model.video)
 
         val result = EdgeThemeConverter().convertFromOrNull("media-id" to model)
 
         assertNotNull(result)
         assertEquals("100", result.theme.themeId)
-        assertEquals("Opening One", result.theme.songTitle)
-        assertEquals("opening-1", result.theme.slug)
+        assertEquals(SONG_TITLE, result.theme.songTitle)
+        assertEquals(THEME_SLUG, result.theme.slug)
         assertEquals("OP", result.theme.type)
         assertEquals(1, result.theme.sequence)
         assertEquals(10L, result.theme.songId)
@@ -104,7 +62,7 @@ class EdgeThemeConverterTest {
         assertEquals(2, result.entries.first().version)
         assertEquals(1, result.videos.size)
         assertEquals("300", result.videos.first().videoId)
-        assertEquals("video.mp4", result.videos.first().link)
+        assertEquals(VIDEO_LINK, result.videos.first().link)
         assertEquals(1080, result.videos.first().resolution)
         assertEquals("WEB", result.videos.first().source)
         assertEquals(400L, result.videos.first().audioId)
@@ -180,7 +138,7 @@ class EdgeThemeConverterTest {
     fun `converter keeps multiple themes`() {
         val themes =
             listOf(
-                sampleTheme(id = 1.0, slug = "opening-1", song = GetMediaByIdData.SeriesAnimethemesSong(50.0, "OP 1")),
+                sampleTheme(id = 1.0, slug = THEME_SLUG, song = GetMediaByIdData.SeriesAnimethemesSong(50.0, "OP 1")),
                 sampleTheme(id = 2.0, slug = "ending-1", type = AnimeThemeType.ED, song = GetMediaByIdData.SeriesAnimethemesSong(51.0, "ED 1")),
             )
 
@@ -194,20 +152,19 @@ class EdgeThemeConverterTest {
 
     private fun sampleTheme(
         id: Double = 100.0,
-        sequence: Double? = 1.0,
-        slug: String = "opening-1",
+        slug: String = THEME_SLUG,
         type: AnimeThemeType = AnimeThemeType.OP,
         song: GetMediaByIdData.SeriesAnimethemesSong? =
             GetMediaByIdData.SeriesAnimethemesSong(
                 id = 10.0,
-                title = "Opening One",
+                title = SONG_TITLE,
             ),
         entries: List<GetMediaByIdData.SeriesAnimethemesAnimethemeentries> = listOf(sampleEntry()),
     ) =
         GetMediaByIdData.SeriesAnimethemes(
             animethemeentries = entries,
             id = id,
-            sequence = sequence,
+            sequence = 1.0,
             slug = slug,
             song = song,
             type = type,
@@ -232,7 +189,7 @@ class EdgeThemeConverterTest {
 
     private fun sampleVideo(
         id: Double = 300.0,
-        link: String = "video.mp4",
+        link: String = VIDEO_LINK,
         resolution: Double? = 1080.0,
         source: String? = "WEB",
         audio: GetMediaByIdData.SeriesAnimethemesAnimethemeentriesVideosAudio? =
@@ -255,3 +212,49 @@ class EdgeThemeConverterTest {
             uncen = false,
         )
 }
+
+private const val SONG_TITLE = "Opening One"
+private const val VIDEO_LINK = "video.mp4"
+private const val THEME_SLUG = "opening-1"
+
+private val generatedThemePayload =
+    """
+    {
+      "animethemeentries": [
+        {
+          "episodes": "1-12",
+          "id": 200,
+          "notes": "TV",
+          "nsfw": false,
+          "spoiler": false,
+          "version": 2,
+          "videos": [
+            {
+              "audio": {
+                "id": 400,
+                "link": "audio.mp3"
+              },
+              "id": 300,
+              "link": "video.mp4",
+              "lyrics": false,
+              "nc": false,
+              "overlap": null,
+              "resolution": 1080,
+              "source": "WEB",
+              "subbed": false,
+              "tags": null,
+              "uncen": false
+            }
+          ]
+        }
+      ],
+      "id": 100,
+      "sequence": 1,
+      "slug": "opening-1",
+      "song": {
+        "id": 10,
+        "title": "Opening One"
+      },
+      "type": "OP"
+    }
+    """.trimIndent()

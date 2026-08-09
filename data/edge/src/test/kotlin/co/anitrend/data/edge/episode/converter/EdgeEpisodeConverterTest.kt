@@ -24,6 +24,8 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
+private const val MEDIA_ID = "media-id"
+
 class EdgeEpisodeConverterTest {
     private val json =
         Json {
@@ -72,10 +74,10 @@ class EdgeEpisodeConverterTest {
         val result = json.decodeFromString<EpisodesData>(payload)
         val model = assertNotNull(result.episodes?.data.orEmpty().first())
 
-        val mapped = EdgeEpisodeConverter().convertFromOrNull("media-id" to model)
+        val mapped = EdgeEpisodeConverter().convertFromOrNull(MEDIA_ID to model)
 
         assertNotNull(mapped)
-        assertEquals("media-id", mapped.mediaId)
+        assertEquals(MEDIA_ID, mapped.mediaId)
         assertEquals(2, mapped.seasonNumber)
         assertEquals(1, mapped.episodeNumber)
         assertEquals("Episode One", mapped.name)
@@ -94,7 +96,7 @@ class EdgeEpisodeConverterTest {
                 aired = null,
             )
 
-        val mapped = EdgeEpisodeConverter().convertFromOrNull("media-id" to model)
+        val mapped = EdgeEpisodeConverter().convertFromOrNull(MEDIA_ID to model)
 
         assertNull(mapped)
     }
@@ -107,7 +109,7 @@ class EdgeEpisodeConverterTest {
             )
 
         assertFailsWith<IllegalArgumentException> {
-            EdgeEpisodeConverter().convertFromOrNull("media-id" to model)
+            EdgeEpisodeConverter().convertFromOrNull(MEDIA_ID to model)
         }
     }
 
@@ -119,7 +121,7 @@ class EdgeEpisodeConverterTest {
             )
 
         assertFailsWith<IllegalArgumentException> {
-            EdgeEpisodeConverter().convertFromOrNull("media-id" to model)
+            EdgeEpisodeConverter().convertFromOrNull(MEDIA_ID to model)
         }
     }
 
