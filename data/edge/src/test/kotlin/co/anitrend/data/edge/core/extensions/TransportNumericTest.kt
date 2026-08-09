@@ -35,9 +35,12 @@ class TransportNumericTest {
     }
 
     @Test
-    fun `requireIntegralLong rejects fractional values`() {
+    fun `requireIntegralLong and requireIntegralInt reject fractional values`() {
         assertFailsWith<IllegalArgumentException> {
             42.5.requireIntegralLong(FIELD_NAME)
+        }
+        assertFailsWith<IllegalArgumentException> {
+            42.5.requireIntegralInt(FIELD_NAME)
         }
     }
 
