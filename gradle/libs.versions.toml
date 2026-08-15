@@ -6,7 +6,7 @@ gradle-plugin = "9.3.1"
 
 androidx-activity = "1.13.0"
 androidx-appcompat = "1.8.0"
-androidx-compose-bom = "2026.06.01"
+androidx-compose-bom = "2026.08.00"
 androidx-compose-material3 = "1.4.0"
 androidx-core = "1.19.0"
 androidx-core-animation = "1.0.0"
