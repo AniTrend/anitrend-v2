@@ -59,7 +59,7 @@ mockk = "1.14.11"
 
 square-kotlinpoet = "2.3.0"
 square-leakcanary = "2.14"
-square-okhttp = "5.4.0"
+square-okhttp = "5.5.0"
 square-retrofit = "3.0.0"
 unifiedpush-connector = "3.3.3"
 
