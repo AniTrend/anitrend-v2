@@ -61,7 +61,7 @@ square-kotlinpoet = "2.3.0"
 square-leakcanary = "2.14"
 square-okhttp = "5.5.0"
 square-retrofit = "3.0.0"
-unifiedpush-connector = "3.3.4"
+unifiedpush-connector = "3.3.5"
 
 google-devtools-ksp = "2.3.11"
 
