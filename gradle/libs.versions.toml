@@ -300,7 +300,7 @@ square-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "s
 square-retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "square-retrofit" }
 square-retrofit-converter-simplexml = { module = "com.squareup.retrofit2:converter-simplexml", version.ref = "square-retrofit" }
 
-spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "8.10.0" }
+spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "8.10.1" }
 
 pintrest-ktlint-rule-engine = { module = "com.pinterest.ktlint:ktlint-rule-engine", version.ref = "ktlint" }
 pintrest-ktlint-ruleset-core = { module = "com.pinterest.ktlint:ktlint-cli-ruleset-core", version.ref = "ktlint" }
