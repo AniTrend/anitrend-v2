@@ -18,7 +18,7 @@
 #
 
 target_file=koin.properties
-target_directory=./app-core/src/main/resources/org/koin/core
+target_directory=./app/core/src/main/resources/org/koin/core
 
 target_path=$target_directory/$target_file
 

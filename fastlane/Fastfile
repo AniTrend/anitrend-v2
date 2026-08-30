@@ -1,0 +1,74 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  apk_path = "app/build/outputs/apk/google/release/app-release.apk"
+  skip_metadata_upload = false
+
+  desc "Test with gradle"
+  lane :verify do
+    gradle(
+      task: "test"
+    )
+  end
+
+  desc "Prepare release builds"
+  lane :build do
+    gradle(
+      task: "assemble",
+      build_type: "Release",
+    )
+  end
+
+  desc "Submit a new Beta Build to Google Play"
+  lane :submit_beta do
+    upload_to_play_store(
+      release_status: 'completed',
+      track: 'beta',
+      rollout: '1.0',
+      apk: apk_path,
+      sync_image_upload: true
+      skip_upload_images: skip_metadata_upload,
+      skip_upload_metadata: skip_metadata_upload,
+    )
+  end
+
+  desc "Submit a new Prod Build to Google Play"
+  lane :submit_prod do
+    upload_to_play_store(
+      release_status: 'draft',
+      track: 'production',
+      apk: apk_path,
+      sync_image_upload: true
+      skip_upload_images: skip_metadata_upload,
+      skip_upload_metadata: skip_metadata_upload,
+    )
+  end
+
+  desc "Deploy builds to Google Play"
+  lane :deploy do |options|
+    if options[:skip_tests].nil? || !options[:skip_tests]
+      verify
+    end
+
+    build
+    submit_beta
+    submit_prod
+  end
+
+end

@@ -409,7 +409,8 @@ jacoco.exec
 
 .kotlin/
 
-app/playstore-service-account.json
+# service account files 
+playstore-service-account.json
 
 docs/specs
 # Added by code-review-graph
