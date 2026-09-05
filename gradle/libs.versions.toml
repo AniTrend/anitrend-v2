@@ -2,7 +2,7 @@
 annotatedtext = "1.0.3"
 ktlint = "1.7.1"
 
-gradle-plugin = "9.3.2"
+gradle-plugin = "9.4.0"
 
 androidx-activity = "1.13.0"
 androidx-appcompat = "1.8.0"
