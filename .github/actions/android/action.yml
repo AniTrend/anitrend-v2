@@ -16,7 +16,7 @@ runs:
         chmod +x .github/scripts/action-swap-increase.sh
         bash .github/scripts/action-swap-increase.sh
     - name: Set up JDK
-      uses: actions/setup-java@v5
+      uses: actions/setup-java@v6
       with:
         java-version-file: '.java-version'
         distribution: 'adopt'
