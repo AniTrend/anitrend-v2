@@ -23,9 +23,13 @@ function  create_files {
     echo "$KEYSTORE_PROPERTIES" > keystore.properties.asc
     gpg -d --passphrase "$KEYSTORE_PROPERTIES_PASSPHRASE" --batch keystore.properties.asc > app/.config/keystore.properties
     echo "$KOIN_PROPERTIES" > koin.properties.asc
-    gpg -d --passphrase "$KOIN_PROPERTIES_PASSPHRASE" --batch koin.properties.asc > app-core/src/main/resources/org/koin/core/koin.properties
+    gpg -d --passphrase "$KOIN_PROPERTIES_PASSPHRASE" --batch koin.properties.asc > app/core/src/main/resources/org/koin/core/koin.properties
     echo "$GOOGLE_SERVICES" > google-services.json.asc
     gpg -d --passphrase "$GOOGLE_SERVICES_PASSPHRASE" --batch google-services.json.asc > app/google-services.json
+    echo "$PLAYSTORE_SERVICE_ACCOUNT" > playstore-service-account.json.asc
+    gpg -d --passphrase "$PLAYSTORE_SERVICE_ACCOUNT_PASSPHRASE" --batch playstore-service-account.json.asc > app/playstore-service-account.json
 }
 
 create_files
+
+bundle exec fastlane deploy skip_tests:false

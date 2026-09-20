@@ -1,0 +1,62 @@
+name: android-build
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  android-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4.3'
+          bundler-cache: true
+      - name: Build release APKs
+        run: bash .github/scripts/fastlane-deploy.sh
+        env:
+          KEYSTORE: ${{ secrets.KEYSTORE }}
+          KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
+          KEYSTORE_PROPERTIES: ${{ secrets.KEYSTORE_PROPERTIES }}
+          KEYSTORE_PROPERTIES_PASSPHRASE: ${{ secrets.KEYSTORE_PROPERTIES_PASSPHRASE }}
+          SECRETS_PROPERTIES: ${{ secrets.SECRETS_PROPERTIES }}
+          SECRETS_PROPERTIES_PASSPHRASE: ${{ secrets.SECRETS_PROPERTIES_PASSPHRASE }}
+          GOOGLE_SERVICES: ${{ secrets.GOOGLE_SERVICES }}
+          GOOGLE_SERVICES_PASSPHRASE: ${{ secrets.GOOGLE_SERVICES_PASSPHRASE }}
+          PLAYSTORE_SERVICE_ACCOUNT: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT }}
+          PLAYSTORE_SERVICE_ACCOUNT_PASSPHRASE: ${{ secrets.PLAYSTORE_SERVICE_ACCOUNT_PASSPHRASE }}
+      - name: Publish PlayStore APK
+        uses: actions/upload-artifact@v4
+        if: always() # always run even if the previous step fails
+        with:
+          name: app-release
+          path: app/build/outputs/apk/google/release
+      - name: Publish Github APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-github-release
+          path: app/build/outputs/apk/github/release
+      - name: Upload APKs to GitHub Release
+        run: |
+          files=$(find app/build/outputs/apk/ -type f -name '*.apk')
+          gh release upload "${{ github.ref_name }}" $files
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v5
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: '**/build/test-results/**/TEST-*.xml'
+          token: ${{ steps.app-token.outputs.token }}
