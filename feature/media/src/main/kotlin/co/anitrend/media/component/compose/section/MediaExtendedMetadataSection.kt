@@ -79,13 +79,23 @@ private fun FuzzyDate.precision(): MetadataDatePrecision =
 
 private fun FuzzyDate.localizedMetadataDate(dateHelper: AniTrendDateHelper): String? =
     when (precision()) {
-        MetadataDatePrecision.FULL -> dateHelper.convertToTextDate(this)?.toString()
-        MetadataDatePrecision.MONTH_YEAR ->
+        MetadataDatePrecision.FULL -> {
+            dateHelper.convertToTextDate(this)?.toString()
+        }
+
+        MetadataDatePrecision.MONTH_YEAR -> {
             DateTimeFormatter
                 .ofPattern("MMM yyyy", Locale.getDefault())
                 .format(LocalDate.of(year, month, 1))
-        MetadataDatePrecision.YEAR -> year.takeIf { it > 0 }?.toString()
-        MetadataDatePrecision.NONE -> null
+        }
+
+        MetadataDatePrecision.YEAR -> {
+            year.takeIf { it > 0 }?.toString()
+        }
+
+        MetadataDatePrecision.NONE -> {
+            null
+        }
     }
 
 @Composable

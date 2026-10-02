@@ -230,18 +230,20 @@ private fun channelLabel(channel: UpdateChannel): String =
 @Composable
 private fun heroDescription(uiState: UpdateUiState): String =
     when (uiState.checkState) {
-        UpdateCheckState.IDLE ->
+        UpdateCheckState.IDLE -> {
             stringResource(
                 R.string.summary_updater_overview,
                 uiState.version,
                 uiState.buildType,
             )
+        }
 
-        UpdateCheckState.MANUAL_ONLY ->
+        UpdateCheckState.MANUAL_ONLY -> {
             stringResource(
                 R.string.summary_updater_manual_check_result,
                 uiState.version,
             )
+        }
     }
 
 @Composable

@@ -41,19 +41,24 @@ internal class CarouselMapper(
     override suspend fun onResponseMapFrom(source: CarouselModel): List<MediaEntity> {
         val models =
             when (source) {
-                is CarouselModel.Anime ->
+                is CarouselModel.Anime -> {
                     source.airingSoon
                         ?.airingSchedules
                         ?.mapNotNull(AiringScheduleModel.Extended::media)
                         .orEmpty() +
                         source.anticipatedNexSeason?.media.orEmpty() +
                         source.popularThisSeason?.media.orEmpty()
+                }
 
-                is CarouselModel.Manga -> source.popularManhwa?.media.orEmpty()
-                is CarouselModel.Core ->
+                is CarouselModel.Manga -> {
+                    source.popularManhwa?.media.orEmpty()
+                }
+
+                is CarouselModel.Core -> {
                     source.allTimePopular?.media.orEmpty() +
                         source.recentlyAdded?.media.orEmpty() +
                         source.trendingRightNow?.media.orEmpty()
+                }
             }
 
         return mapper.onResponseMapFrom(models)

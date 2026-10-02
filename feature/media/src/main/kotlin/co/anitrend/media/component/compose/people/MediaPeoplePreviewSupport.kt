@@ -122,7 +122,9 @@ internal fun <T : Any> List<T>.previewCandidates(
 private fun MediaPerson.Character.characterRolePriority(): Int =
     when (role) {
         CharacterRole.MAIN -> 0
+
         CharacterRole.SUPPORTING -> 1
+
         CharacterRole.BACKGROUND,
         null,
         -> 2

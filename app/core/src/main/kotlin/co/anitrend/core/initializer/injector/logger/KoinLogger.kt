@@ -31,10 +31,22 @@ internal class KoinLogger(
         msg: MESSAGE,
     ) {
         when (level) {
-            Level.DEBUG -> Timber.tag(KOIN_TAG).v(msg)
-            Level.INFO -> Timber.tag(KOIN_TAG).i(msg)
-            Level.ERROR -> Timber.tag(KOIN_TAG).e(msg)
-            Level.WARNING -> Timber.tag(KOIN_TAG).w(msg)
+            Level.DEBUG -> {
+                Timber.tag(KOIN_TAG).v(msg)
+            }
+
+            Level.INFO -> {
+                Timber.tag(KOIN_TAG).i(msg)
+            }
+
+            Level.ERROR -> {
+                Timber.tag(KOIN_TAG).e(msg)
+            }
+
+            Level.WARNING -> {
+                Timber.tag(KOIN_TAG).w(msg)
+            }
+
             Level.NONE -> { /* logging disabled */ }
         }
     }

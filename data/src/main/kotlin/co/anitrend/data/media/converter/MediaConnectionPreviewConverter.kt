@@ -105,7 +105,7 @@ private fun MediaConnectionPreviewEntity.toAiringSchedule(): AiringSchedule? {
 
 private fun MediaConnectionPreviewEntity.toMediaCategory(): Media.Category =
     when (type) {
-        MediaType.ANIME ->
+        MediaType.ANIME -> {
             Media.Category.Anime(
                 episodes = episodes,
                 duration = 0,
@@ -113,12 +113,14 @@ private fun MediaConnectionPreviewEntity.toMediaCategory(): Media.Category =
                 premiered = null,
                 schedule = toAiringSchedule(),
             )
+        }
 
-        MediaType.MANGA ->
+        MediaType.MANGA -> {
             Media.Category.Manga(
                 chapters = chapters,
                 volumes = volumes,
             )
+        }
     }
 
 internal fun MediaConnectionPreviewEntity.toMedia(): Media =

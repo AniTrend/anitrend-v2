@@ -117,7 +117,13 @@ internal class EdgeNewsPagingSource(
                 clearDataSource(dispatcher.io)
                 invoke(requestType = Request.Type.INITIAL)
             }
-            LoadType.PREPEND -> MediatorResult.Success(true)
-            LoadType.APPEND -> invoke(requestType = Request.Type.AFTER)
+
+            LoadType.PREPEND -> {
+                MediatorResult.Success(true)
+            }
+
+            LoadType.APPEND -> {
+                invoke(requestType = Request.Type.AFTER)
+            }
         }
 }

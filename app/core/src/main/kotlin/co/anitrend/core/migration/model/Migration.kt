@@ -45,9 +45,13 @@ internal abstract class Migration(
      */
     override fun equals(other: Any?): Boolean =
         when (other) {
-            is Migration ->
+            is Migration -> {
                 startVersion == other.startVersion && endVersion == other.endVersion
-            else -> super.equals(other)
+            }
+
+            else -> {
+                super.equals(other)
+            }
         }
 
     override fun hashCode(): Int {

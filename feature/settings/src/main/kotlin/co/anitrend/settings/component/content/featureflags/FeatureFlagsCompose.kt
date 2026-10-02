@@ -82,7 +82,7 @@ private fun List<SettingItem>.withFeatureFlagScreenState(
 ): List<SettingItem> =
     map { item ->
         when (item) {
-            is SettingItem.SwitchSetting ->
+            is SettingItem.SwitchSetting -> {
                 if (item.id == FeatureFlag.EXPERIMENTAL_COMPOSE_UI.key) {
                     item.copy(
                         onValueChange = { enabled ->
@@ -92,7 +92,11 @@ private fun List<SettingItem>.withFeatureFlagScreenState(
                 } else {
                     item
                 }
-            else -> item
+            }
+
+            else -> {
+                item
+            }
         }
     }
 

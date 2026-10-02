@@ -62,17 +62,19 @@ private data class MediaRankPresentation(
 private fun IMediaRank.toSortings(): List<Sorting<MediaSort>> =
     listOf(
         when (type) {
-            MediaRankType.RATED ->
+            MediaRankType.RATED -> {
                 Sorting(
                     sortable = MediaSort.SCORE,
                     order = SortOrder.DESC,
                 )
+            }
 
-            MediaRankType.POPULAR ->
+            MediaRankType.POPULAR -> {
                 Sorting(
                     sortable = MediaSort.POPULARITY,
                     order = SortOrder.DESC,
                 )
+            }
         },
     )
 
@@ -114,13 +116,15 @@ private fun MediaRankBadge(
 ) {
     val (containerColor, contentColor) =
         when (rank.type) {
-            MediaRankType.RATED ->
+            MediaRankType.RATED -> {
                 MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.72f) to
                     MaterialTheme.colorScheme.onSecondaryContainer
+            }
 
-            MediaRankType.POPULAR ->
+            MediaRankType.POPULAR -> {
                 MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.72f) to
                     MaterialTheme.colorScheme.onTertiaryContainer
+            }
         }
 
     Surface(
@@ -145,19 +149,21 @@ private fun MediaRankLeadingIcon(
 ) {
     val (icon, containerColor, tint) =
         when (rank.type) {
-            MediaRankType.POPULAR ->
+            MediaRankType.POPULAR -> {
                 Triple(
                     Icons.AutoMirrored.Rounded.TrendingUp,
                     MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.45f),
                     MaterialTheme.colorScheme.onTertiaryContainer,
                 )
+            }
 
-            MediaRankType.RATED ->
+            MediaRankType.RATED -> {
                 Triple(
                     Icons.Rounded.StarRate,
                     MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.45f),
                     MaterialTheme.colorScheme.onSecondaryContainer,
                 )
+            }
         }
 
     Surface(

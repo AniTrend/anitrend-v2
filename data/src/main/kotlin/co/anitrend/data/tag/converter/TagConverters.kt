@@ -29,7 +29,7 @@ internal class TagConverter(
     private companion object : ISupportTransformer<TagModel, Tag> {
         override fun transform(source: TagModel) =
             when (source) {
-                is TagModel.Core ->
+                is TagModel.Core -> {
                     Tag.Core(
                         name = source.name,
                         description = source.description,
@@ -38,7 +38,9 @@ internal class TagConverter(
                         isAdult = source.isAdult ?: false,
                         id = source.id,
                     )
-                is TagModel.Extended ->
+                }
+
+                is TagModel.Extended -> {
                     Tag.Extended(
                         rank = source.rank ?: 0,
                         isMediaSpoiler = source.isMediaSpoiler ?: false,
@@ -50,6 +52,7 @@ internal class TagConverter(
                         isAdult = source.isAdult ?: false,
                         id = source.id,
                     )
+                }
             }
     }
 }

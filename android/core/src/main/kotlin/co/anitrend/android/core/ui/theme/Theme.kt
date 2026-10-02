@@ -192,8 +192,14 @@ fun AniTrendTheme3(
             themeHelper.dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
                 if (darkTheme) dynamicDarkColorScheme(view.context) else dynamicLightColorScheme(view.context)
             }
-            darkTheme -> DarkColorScheme
-            else -> LightColorScheme
+
+            darkTheme -> {
+                DarkColorScheme
+            }
+
+            else -> {
+                LightColorScheme
+            }
         }
     if (!view.isInEditMode) {
         SideEffect {

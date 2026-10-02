@@ -54,8 +54,11 @@ class MediaSubTitleWidget
             when (category) {
                 is Media.Category.Anime -> {
                     when (category.episodes) {
-                        0 -> builder.italic { append(unknown) }
-                        else ->
+                        0 -> {
+                            builder.italic { append(unknown) }
+                        }
+
+                        else -> {
                             builder.bold {
                                 append(
                                     resources.getQuantityString(
@@ -65,12 +68,17 @@ class MediaSubTitleWidget
                                     ),
                                 )
                             }
+                        }
                     }
                 }
+
                 is Media.Category.Manga -> {
                     when (category.chapters) {
-                        0 -> builder.italic { append(unknown) }
-                        else ->
+                        0 -> {
+                            builder.italic { append(unknown) }
+                        }
+
+                        else -> {
                             builder.bold {
                                 append(
                                     resources.getQuantityString(
@@ -80,6 +88,7 @@ class MediaSubTitleWidget
                                     ),
                                 )
                             }
+                        }
                     }
                 }
             }
