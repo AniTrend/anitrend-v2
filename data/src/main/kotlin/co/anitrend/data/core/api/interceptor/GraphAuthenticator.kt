@@ -48,9 +48,7 @@ internal class GraphAuthenticator(
         val requestBuilder = response.request.newBuilder()
         if (response.code == UNAUTHORIZED) {
             if (authenticationHelper.isAuthenticated) {
-                /**
-                 * TODO: Track the number of failed requests, given that the auth header exists and logout the user
-                 */
+                // TODO: Track the number of failed requests, given that the auth header exists and logout the user
                 runBlocking {
                     authenticationHelper.invalidateAuthenticationState()
                 }
