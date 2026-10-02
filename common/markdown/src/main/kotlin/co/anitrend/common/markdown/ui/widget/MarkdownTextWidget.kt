@@ -74,7 +74,7 @@ class MarkdownTextWidget
             attrs: AttributeSet?,
             styleAttr: Int?,
         ) {
-            /** Ellipsize won't work in this context probably because some of the characters will have /n */
+            // Ellipsize may not behave as expected when text includes newline characters.
             ellipsize = TextUtils.TruncateAt.END
             setTextIsSelectable(true)
             if (!isInEditMode) {
