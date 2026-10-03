@@ -111,7 +111,7 @@ fun ReviewBrowseCard(
         onClick = onOpen,
     ) {
         when (variant) {
-            ReviewCardVariant.Discover ->
+            ReviewCardVariant.Discover -> {
                 ReviewDiscoverCardContent(
                     review = review,
                     scoreFormat = scoreFormat,
@@ -120,8 +120,9 @@ fun ReviewBrowseCard(
                     isVotePending = isVotePending,
                     onVoteRequested = onVoteRequested,
                 )
+            }
 
-            ReviewCardVariant.InlineCommunity ->
+            ReviewCardVariant.InlineCommunity -> {
                 ReviewInlineCommunityCardContent(
                     review = review,
                     scoreFormat = scoreFormat,
@@ -130,6 +131,7 @@ fun ReviewBrowseCard(
                     isVotePending = isVotePending,
                     onVoteRequested = onVoteRequested,
                 )
+            }
         }
     }
 }
@@ -144,7 +146,7 @@ fun ReviewLoadingCard(
         modifier = modifier,
     ) {
         when (variant) {
-            ReviewCardVariant.Discover ->
+            ReviewCardVariant.Discover -> {
                 Row(
                     modifier =
                         Modifier
@@ -183,8 +185,9 @@ fun ReviewLoadingCard(
                         }
                     }
                 }
+            }
 
-            ReviewCardVariant.InlineCommunity ->
+            ReviewCardVariant.InlineCommunity -> {
                 Column(
                     modifier =
                         Modifier
@@ -215,6 +218,7 @@ fun ReviewLoadingCard(
                         ReviewSkeletonLine(width = 72.dp, height = 12.dp)
                     }
                 }
+            }
         }
     }
 }

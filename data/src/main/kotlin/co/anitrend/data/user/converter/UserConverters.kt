@@ -68,7 +68,7 @@ internal class UserModelConverter(
     private companion object : ISupportTransformer<UserModel, UserEntity> {
         override fun transform(source: UserModel): UserEntity =
             when (source) {
-                is UserModel.Core ->
+                is UserModel.Core -> {
                     UserEntity(
                         about =
                             UserEntity.About(
@@ -94,7 +94,9 @@ internal class UserModelConverter(
                         createdAt = source.createdAt,
                         id = source.id,
                     )
-                is UserModel.Extended ->
+                }
+
+                is UserModel.Extended -> {
                     UserEntity(
                         about =
                             UserEntity.About(
@@ -120,7 +122,9 @@ internal class UserModelConverter(
                         createdAt = source.createdAt,
                         id = source.id,
                     )
-                is UserModel.Viewer ->
+                }
+
+                is UserModel.Viewer -> {
                     UserEntity(
                         about =
                             UserEntity.About(
@@ -146,7 +150,9 @@ internal class UserModelConverter(
                         createdAt = source.createdAt,
                         id = source.id,
                     )
-                is UserModel.WithStatistic ->
+                }
+
+                is UserModel.WithStatistic -> {
                     UserEntity(
                         about =
                             UserEntity.About(
@@ -172,7 +178,11 @@ internal class UserModelConverter(
                         createdAt = source.createdAt,
                         id = source.id,
                     )
-                else -> error("Nothing to do with this type: $source")
+                }
+
+                else -> {
+                    error("Nothing to do with this type: $source")
+                }
             }
     }
 }
@@ -423,7 +433,7 @@ internal class UserGeneralOptionModelConverter(
     private companion object : ISupportTransformer<UserModel.WithOptions, UserGeneralOptionEntity> {
         override fun transform(source: UserModel.WithOptions) =
             when (source) {
-                is UserModel.Extended ->
+                is UserModel.Extended -> {
                     UserGeneralOptionEntity(
                         userId = source.id,
                         airingNotifications = false,
@@ -434,7 +444,9 @@ internal class UserGeneralOptionModelConverter(
                         timeZone = null,
                         staffNameLanguage = null,
                     )
-                is UserModel.Viewer ->
+                }
+
+                is UserModel.Viewer -> {
                     UserGeneralOptionEntity(
                         userId = source.id,
                         airingNotifications = source.options?.airingNotifications ?: false,
@@ -455,7 +467,11 @@ internal class UserGeneralOptionModelConverter(
                         timeZone = source.options?.timeZone,
                         staffNameLanguage = source.options?.staffNameLanguage ?: UserStaffNameLanguage.ROMAJI_WESTERN,
                     )
-                else -> error("$source type does not contain any models of type UserGeneralOption")
+                }
+
+                else -> {
+                    error("$source type does not contain any models of type UserGeneralOption")
+                }
             }
     }
 }
@@ -742,7 +758,7 @@ internal class UserViewEntityConverter(
 
         override fun transform(source: UserEntityView) =
             when (source) {
-                is UserEntityView.WithOptions ->
+                is UserEntityView.WithOptions -> {
                     User.Extended(
                         listOption =
                             UserMediaListOption(
@@ -815,7 +831,9 @@ internal class UserViewEntityConverter(
                                 source.mediaListOption.manga.listStatus(MediaType.MANGA, source),
                         id = source.user.id,
                     )
-                is UserEntityView.WithStatistic ->
+                }
+
+                is UserEntityView.WithStatistic -> {
                     User.WithStats(
                         listOption =
                             UserMediaListOption(
@@ -893,7 +911,9 @@ internal class UserViewEntityConverter(
                                 source.mediaListOption.manga.listStatus(MediaType.MANGA, source),
                         id = source.user.id,
                     )
-                is UserEntityView.Authenticated ->
+                }
+
+                is UserEntityView.Authenticated -> {
                     User.Authenticated(
                         unreadNotifications = source.notification.unreadNotifications,
                         listOption =
@@ -956,7 +976,11 @@ internal class UserViewEntityConverter(
                             ),
                         id = source.user.id,
                     )
-                else -> throw NotImplementedError("Instance of $source is not supported")
+                }
+
+                else -> {
+                    throw NotImplementedError("Instance of $source is not supported")
+                }
             }
     }
 }

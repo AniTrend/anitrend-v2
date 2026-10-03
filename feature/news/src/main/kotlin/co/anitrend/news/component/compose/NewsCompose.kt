@@ -81,32 +81,36 @@ fun NewsCompose(
                 .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
         when {
-            refreshState is LoadState.Loading ->
+            refreshState is LoadState.Loading -> {
                 NewsState(
                     title = stringResource(R.string.label_news_loading_title),
                     subtitle = stringResource(R.string.message_news_loading),
                 )
+            }
 
-            refreshState is LoadState.Error ->
+            refreshState is LoadState.Error -> {
                 NewsRetryState(
                     title = stringResource(R.string.label_news_error_title),
                     actionLabel = stringResource(R.string.action_news_retry),
                     onRetry = newsItems::retry,
                 )
+            }
 
-            newsItems.itemCount > 0 ->
+            newsItems.itemCount > 0 -> {
                 NewsFeed(
                     newsItems = List(newsItems.itemCount) { index -> newsItems[index] }.filterNotNull(),
                     appendState = newsItems.loadState.append,
                     onNewsClick = onNewsClick,
                     onRetry = newsItems::retry,
                 )
+            }
 
-            else ->
+            else -> {
                 NewsState(
                     title = stringResource(R.string.label_news_empty_title),
                     subtitle = stringResource(R.string.message_news_empty),
                 )
+            }
         }
     }
 }
@@ -163,7 +167,9 @@ private fun NewsFeed(
                 }
             }
 
-            else -> Unit
+            else -> {
+                Unit
+            }
         }
     }
 }

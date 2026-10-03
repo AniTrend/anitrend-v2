@@ -56,11 +56,15 @@ data class MediaCarousel(
      */
     override fun equals(other: Any?): Boolean =
         when (other) {
-            is MediaCarousel ->
+            is MediaCarousel -> {
                 other.id == id &&
                     other.carouselType == carouselType &&
                     other.mediaType == mediaType
-            else -> super.equals(other)
+            }
+
+            else -> {
+                super.equals(other)
+            }
         }
 
     override fun hashCode(): Int {

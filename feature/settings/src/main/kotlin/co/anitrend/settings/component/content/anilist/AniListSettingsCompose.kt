@@ -791,19 +791,25 @@ private fun syncStateLabel(
     hasData: Boolean,
 ): String =
     when (loadState) {
-        is LoadState.Error ->
+        is LoadState.Error -> {
             if (hasData) {
                 stringResource(R.string.label_settings_anilist_state_cached)
             } else {
                 stringResource(R.string.label_settings_anilist_state_unavailable)
             }
-        is LoadState.Loading ->
+        }
+
+        is LoadState.Loading -> {
             if (hasData) {
                 stringResource(R.string.label_settings_anilist_state_refreshing)
             } else {
                 stringResource(R.string.label_settings_anilist_state_loading)
             }
-        else -> stringResource(R.string.label_settings_anilist_state_synced)
+        }
+
+        else -> {
+            stringResource(R.string.label_settings_anilist_state_synced)
+        }
     }
 
 @Composable
@@ -829,33 +835,97 @@ private fun AniListSettingsGroup.description(): String =
 @Composable
 private fun AniListSettingsEntry.label(): String =
     when (this) {
-        AniListSettingsEntry.ProfileAbout -> stringResource(R.string.label_settings_anilist_profile_about)
-        AniListSettingsEntry.ProfileDonatorBadge -> stringResource(R.string.label_settings_anilist_profile_donator_badge)
-        AniListSettingsEntry.ProfileColor -> stringResource(R.string.label_settings_anilist_profile_color)
-        AniListSettingsEntry.TitleLanguage -> stringResource(R.string.label_settings_anilist_title_language)
-        AniListSettingsEntry.StaffNameLanguage -> stringResource(R.string.label_settings_anilist_staff_name_language)
-        AniListSettingsEntry.DisplayAdultContent -> stringResource(R.string.label_settings_anilist_display_adult_content)
-        AniListSettingsEntry.TimeZone -> stringResource(R.string.label_settings_anilist_timezone)
-        AniListSettingsEntry.AiringNotifications -> stringResource(R.string.label_settings_anilist_airing_notifications)
-        AniListSettingsEntry.NotificationOptions -> stringResource(R.string.label_settings_anilist_notification_options)
-        AniListSettingsEntry.AnimeScoreFormat -> stringResource(R.string.label_settings_anilist_anime_score_format)
-        AniListSettingsEntry.AnimeRowOrder -> stringResource(R.string.label_settings_anilist_anime_row_order)
-        AniListSettingsEntry.AnimeSectionOrder -> stringResource(R.string.label_settings_anilist_anime_section_order)
-        AniListSettingsEntry.AnimeSplitCompletedSection ->
+        AniListSettingsEntry.ProfileAbout -> {
+            stringResource(R.string.label_settings_anilist_profile_about)
+        }
+
+        AniListSettingsEntry.ProfileDonatorBadge -> {
+            stringResource(R.string.label_settings_anilist_profile_donator_badge)
+        }
+
+        AniListSettingsEntry.ProfileColor -> {
+            stringResource(R.string.label_settings_anilist_profile_color)
+        }
+
+        AniListSettingsEntry.TitleLanguage -> {
+            stringResource(R.string.label_settings_anilist_title_language)
+        }
+
+        AniListSettingsEntry.StaffNameLanguage -> {
+            stringResource(R.string.label_settings_anilist_staff_name_language)
+        }
+
+        AniListSettingsEntry.DisplayAdultContent -> {
+            stringResource(R.string.label_settings_anilist_display_adult_content)
+        }
+
+        AniListSettingsEntry.TimeZone -> {
+            stringResource(R.string.label_settings_anilist_timezone)
+        }
+
+        AniListSettingsEntry.AiringNotifications -> {
+            stringResource(R.string.label_settings_anilist_airing_notifications)
+        }
+
+        AniListSettingsEntry.NotificationOptions -> {
+            stringResource(R.string.label_settings_anilist_notification_options)
+        }
+
+        AniListSettingsEntry.AnimeScoreFormat -> {
+            stringResource(R.string.label_settings_anilist_anime_score_format)
+        }
+
+        AniListSettingsEntry.AnimeRowOrder -> {
+            stringResource(R.string.label_settings_anilist_anime_row_order)
+        }
+
+        AniListSettingsEntry.AnimeSectionOrder -> {
+            stringResource(R.string.label_settings_anilist_anime_section_order)
+        }
+
+        AniListSettingsEntry.AnimeSplitCompletedSection -> {
             stringResource(R.string.label_settings_anilist_anime_split_completed_section)
-        AniListSettingsEntry.AnimeCustomLists -> stringResource(R.string.label_settings_anilist_anime_custom_lists)
-        AniListSettingsEntry.AnimeAdvancedScoring -> stringResource(R.string.label_settings_anilist_anime_advanced_scoring)
-        AniListSettingsEntry.AnimeAdvancedScoringEnabled ->
+        }
+
+        AniListSettingsEntry.AnimeCustomLists -> {
+            stringResource(R.string.label_settings_anilist_anime_custom_lists)
+        }
+
+        AniListSettingsEntry.AnimeAdvancedScoring -> {
+            stringResource(R.string.label_settings_anilist_anime_advanced_scoring)
+        }
+
+        AniListSettingsEntry.AnimeAdvancedScoringEnabled -> {
             stringResource(R.string.label_settings_anilist_anime_advanced_scoring_enabled)
-        AniListSettingsEntry.MangaScoreFormat -> stringResource(R.string.label_settings_anilist_manga_score_format)
-        AniListSettingsEntry.MangaRowOrder -> stringResource(R.string.label_settings_anilist_manga_row_order)
-        AniListSettingsEntry.MangaSectionOrder -> stringResource(R.string.label_settings_anilist_manga_section_order)
-        AniListSettingsEntry.MangaSplitCompletedSection ->
+        }
+
+        AniListSettingsEntry.MangaScoreFormat -> {
+            stringResource(R.string.label_settings_anilist_manga_score_format)
+        }
+
+        AniListSettingsEntry.MangaRowOrder -> {
+            stringResource(R.string.label_settings_anilist_manga_row_order)
+        }
+
+        AniListSettingsEntry.MangaSectionOrder -> {
+            stringResource(R.string.label_settings_anilist_manga_section_order)
+        }
+
+        AniListSettingsEntry.MangaSplitCompletedSection -> {
             stringResource(R.string.label_settings_anilist_manga_split_completed_section)
-        AniListSettingsEntry.MangaCustomLists -> stringResource(R.string.label_settings_anilist_manga_custom_lists)
-        AniListSettingsEntry.MangaAdvancedScoring -> stringResource(R.string.label_settings_anilist_manga_advanced_scoring)
-        AniListSettingsEntry.MangaAdvancedScoringEnabled ->
+        }
+
+        AniListSettingsEntry.MangaCustomLists -> {
+            stringResource(R.string.label_settings_anilist_manga_custom_lists)
+        }
+
+        AniListSettingsEntry.MangaAdvancedScoring -> {
+            stringResource(R.string.label_settings_anilist_manga_advanced_scoring)
+        }
+
+        AniListSettingsEntry.MangaAdvancedScoringEnabled -> {
             stringResource(R.string.label_settings_anilist_manga_advanced_scoring_enabled)
+        }
     }
 
 private fun previewAniListSettingsUiState(): AniListSettingsUiState =

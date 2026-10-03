@@ -65,34 +65,41 @@ internal class AniTrendConverterFactory(
         retrofit: Retrofit,
     ): Converter<*, RequestBody>? =
         when {
-            hasAnnotation(methodAnnotations, XML::class.java) ->
+            hasAnnotation(methodAnnotations, XML::class.java) -> {
                 xmlFactory.requestBodyConverter(
                     type,
                     parameterAnnotations,
                     methodAnnotations,
                     retrofit,
                 )
-            hasAnnotation(methodAnnotations, JSON::class.java) ->
+            }
+
+            hasAnnotation(methodAnnotations, JSON::class.java) -> {
                 jsonFactory.requestBodyConverter(
                     type,
                     parameterAnnotations,
                     methodAnnotations,
                     retrofit,
                 )
-            isGraphRequestType(type) ->
+            }
+
+            isGraphRequestType(type) -> {
                 graphFactory.requestBodyConverter(
                     type,
                     parameterAnnotations,
                     methodAnnotations,
                     retrofit,
                 )
-            else ->
+            }
+
+            else -> {
                 GsonConverterFactory.create(gson).requestBodyConverter(
                     type,
                     parameterAnnotations,
                     methodAnnotations,
                     retrofit,
                 )
+            }
         }
 
     /**
@@ -112,29 +119,36 @@ internal class AniTrendConverterFactory(
         retrofit: Retrofit,
     ): Converter<ResponseBody, *>? =
         when {
-            hasAnnotation(annotations, XML::class.java) ->
+            hasAnnotation(annotations, XML::class.java) -> {
                 xmlFactory.responseBodyConverter(
                     type,
                     annotations,
                     retrofit,
                 )
-            hasAnnotation(annotations, JSON::class.java) ->
+            }
+
+            hasAnnotation(annotations, JSON::class.java) -> {
                 jsonFactory.responseBodyConverter(
                     type,
                     annotations,
                     retrofit,
                 )
-            isGraphResponseType(type) ->
+            }
+
+            isGraphResponseType(type) -> {
                 graphFactory.responseBodyConverter(
                     type,
                     annotations,
                     retrofit,
                 )
-            else ->
+            }
+
+            else -> {
                 GsonConverterFactory.create(gson).responseBodyConverter(
                     type,
                     annotations,
                     retrofit,
                 )
+            }
         }
 }

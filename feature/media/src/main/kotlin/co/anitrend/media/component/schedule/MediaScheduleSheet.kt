@@ -88,7 +88,9 @@ fun MediaScheduleSheet(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             )
             when {
-                items.isNotEmpty() -> ScheduleList(list = schedule)
+                items.isNotEmpty() -> {
+                    ScheduleList(list = schedule)
+                }
 
                 refreshState is LoadState.Loading -> {
                     Text(

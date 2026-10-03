@@ -111,15 +111,22 @@ private fun Tag.rememberAccentColor(spoilerLevel: MediaTagSpoilerLevel): Color {
 
     return remember(this, spoilerLevel, surface, errorColor, secondaryColor, defaultAccent) {
         when (spoilerLevel) {
-            MediaTagSpoilerLevel.MEDIA -> errorColor
-            MediaTagSpoilerLevel.GENERAL -> secondaryColor
-            MediaTagSpoilerLevel.NONE ->
+            MediaTagSpoilerLevel.MEDIA -> {
+                errorColor
+            }
+
+            MediaTagSpoilerLevel.GENERAL -> {
+                secondaryColor
+            }
+
+            MediaTagSpoilerLevel.NONE -> {
                 (this as? Tag.Extended)
                     ?.background
                     ?.let { background ->
                         runCatching { Color(background.asColorInt(surface)) }.getOrNull()
                     }
                     ?: defaultAccent
+            }
         }
     }
 }
@@ -368,21 +375,25 @@ private fun MediaTagInfoSheet(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 when (spoilerLevel) {
-                    MediaTagSpoilerLevel.MEDIA ->
+                    MediaTagSpoilerLevel.MEDIA -> {
                         TagBadge(
                             label = stringResource(R.string.label_media_tag_sheet_media_spoiler),
                             containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.5f),
                             contentColor = MaterialTheme.colorScheme.onErrorContainer,
                         )
+                    }
 
-                    MediaTagSpoilerLevel.GENERAL ->
+                    MediaTagSpoilerLevel.GENERAL -> {
                         TagBadge(
                             label = stringResource(R.string.label_media_tag_sheet_general_spoiler),
                             containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
                             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                         )
+                    }
 
-                    MediaTagSpoilerLevel.NONE -> Unit
+                    MediaTagSpoilerLevel.NONE -> {
+                        Unit
+                    }
                 }
 
                 if (tag.isAdult) {

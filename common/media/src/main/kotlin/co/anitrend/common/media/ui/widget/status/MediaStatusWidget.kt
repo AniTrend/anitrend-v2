@@ -47,6 +47,7 @@ class MediaStatusWidget
                             co.anitrend.android.core.R.color.orange_A700,
                         )
                 }
+
                 MediaStatus.RELEASING -> {
                     background =
                         context.getCompatDrawable(
@@ -54,6 +55,7 @@ class MediaStatusWidget
                             co.anitrend.android.core.R.color.blue_A700,
                         )
                 }
+
                 MediaStatus.CANCELLED -> {
                     background =
                         context.getCompatDrawable(
@@ -61,6 +63,7 @@ class MediaStatusWidget
                             co.anitrend.android.core.R.color.red_A700,
                         )
                 }
+
                 MediaStatus.FINISHED -> {
                     background =
                         context.getCompatDrawable(
@@ -68,7 +71,10 @@ class MediaStatusWidget
                             co.anitrend.android.core.R.color.green_A700,
                         )
                 }
-                else -> background = null
+
+                else -> {
+                    background = null
+                }
             }
         }
 

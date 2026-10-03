@@ -117,7 +117,7 @@ fun MediaDiscoverCompose(
                     .padding(horizontal = 16.dp, vertical = 16.dp),
         ) {
             when {
-                mediaItems.itemCount > 0 ->
+                mediaItems.itemCount > 0 -> {
                     MediaPagedBrowseContent(
                         mediaItems = mediaItems,
                         browseLayout = preferredViewMode,
@@ -132,24 +132,28 @@ fun MediaDiscoverCompose(
                             variant = variant,
                         )
                     }
+                }
 
-                refreshState is LoadState.Loading ->
+                refreshState is LoadState.Loading -> {
                     MediaDiscoverState(
                         title = stringResource(R.string.label_media_discover_loading_title),
                         subtitle = stringResource(R.string.message_media_discover_loading),
                     )
+                }
 
-                refreshState is LoadState.Error ->
+                refreshState is LoadState.Error -> {
                     MediaDiscoverRetryState(
                         title = stringResource(R.string.label_media_discover_error_title),
                         onRetry = mediaItems::retry,
                     )
+                }
 
-                else ->
+                else -> {
                     MediaDiscoverState(
                         title = stringResource(R.string.label_media_discover_empty_title),
                         subtitle = stringResource(R.string.message_media_discover_empty),
                     )
+                }
             }
         }
     }
