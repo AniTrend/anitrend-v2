@@ -175,9 +175,13 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
                     awaitResult(Request.Type.INITIAL, ::refreshCharacters)
                 }
 
-                LoadType.PREPEND -> MediatorResult.Success(true)
+                LoadType.PREPEND -> {
+                    MediatorResult.Success(true)
+                }
 
-                LoadType.APPEND -> awaitResult(Request.Type.AFTER, ::refreshCharacters)
+                LoadType.APPEND -> {
+                    awaitResult(Request.Type.AFTER, ::refreshCharacters)
+                }
             }
     }
 
@@ -267,9 +271,13 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
                     awaitResult(Request.Type.INITIAL, ::refreshStaff)
                 }
 
-                LoadType.PREPEND -> MediatorResult.Success(true)
+                LoadType.PREPEND -> {
+                    MediatorResult.Success(true)
+                }
 
-                LoadType.APPEND -> awaitResult(Request.Type.AFTER, ::refreshStaff)
+                LoadType.APPEND -> {
+                    awaitResult(Request.Type.AFTER, ::refreshStaff)
+                }
             }
     }
 }

@@ -155,19 +155,21 @@ private fun MediaListPagingContent(
 
     Box(modifier = modifier) {
         when {
-            refreshState is PagingLoadState.Loading ->
+            refreshState is PagingLoadState.Loading -> {
                 MediaListState(
                     title = stringResource(R.string.label_media_list_loading_title),
                     subtitle = stringResource(R.string.message_media_list_loading, selectedSection.displayLabel()),
                 )
+            }
 
-            refreshState is PagingLoadState.Error ->
+            refreshState is PagingLoadState.Error -> {
                 MediaListRetryState(
                     title = stringResource(R.string.label_media_list_error_title),
                     onRetry = mediaItems::retry,
                 )
+            }
 
-            mediaItems.itemCount > 0 ->
+            mediaItems.itemCount > 0 -> {
                 MediaPagedBrowseContent(
                     mediaItems = mediaItems,
                     browseLayout = browseLayout,
@@ -182,12 +184,14 @@ private fun MediaListPagingContent(
                         variant = variant,
                     )
                 }
+            }
 
-            else ->
+            else -> {
                 MediaListState(
                     title = stringResource(R.string.label_media_list_empty_title),
                     subtitle = stringResource(R.string.message_media_list_empty, selectedSection.displayLabel()),
                 )
+            }
         }
     }
 }
@@ -349,14 +353,17 @@ private fun MediaListInfo.sectionKey(): String =
 
 private fun MediaListRouter.MediaListParam.sectionKey(): String? =
     when (val selectedStatus = status) {
-        null ->
+        null -> {
             if (customListName != null) {
                 "custom:$customListName"
             } else {
                 null
             }
+        }
 
-        else -> "status:${selectedStatus.name}"
+        else -> {
+            "status:${selectedStatus.name}"
+        }
     }
 
 private fun MediaListInfo.displayLabel(): String =

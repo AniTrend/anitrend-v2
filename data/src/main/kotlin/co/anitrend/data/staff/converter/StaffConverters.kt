@@ -33,7 +33,7 @@ internal class StaffConverter(
     private companion object : ISupportTransformer<StaffModel, Staff> {
         override fun transform(source: StaffModel) =
             when (source) {
-                is StaffModel.Core ->
+                is StaffModel.Core -> {
                     Staff.Core(
                         age = source.age,
                         dateOfBirth = source.dateOfBirth?.asFuzzyDate(),
@@ -75,7 +75,9 @@ internal class StaffConverter(
                         siteUrl = source.siteUrl,
                         id = source.id,
                     )
-                is StaffModel.Extended ->
+                }
+
+                is StaffModel.Extended -> {
                     Staff.Extended(
                         age = source.age,
                         dateOfBirth = source.dateOfBirth?.asFuzzyDate(),
@@ -117,6 +119,7 @@ internal class StaffConverter(
                         siteUrl = source.siteUrl,
                         id = source.id,
                     )
+                }
             }
     }
 }

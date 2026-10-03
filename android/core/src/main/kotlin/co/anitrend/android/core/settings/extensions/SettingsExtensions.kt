@@ -53,6 +53,7 @@ suspend fun AbstractSetting<PreferredViewMode>.flowUpdating(
                     adapter.notifyDataSetChanged()
                 }
             }
+
             is GridLayoutManager -> {
                 val currentSpanCount = layoutManager.spanCount
                 if (currentSpanCount != newSpanCount) {

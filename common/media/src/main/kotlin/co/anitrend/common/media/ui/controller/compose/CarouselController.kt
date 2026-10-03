@@ -59,6 +59,7 @@ class CarouselController(
                         ),
                 )
             }
+
             MediaCarousel.CarouselType.ALL_TIME_POPULAR -> {
                 val titleResId =
                     when (mediaType) {

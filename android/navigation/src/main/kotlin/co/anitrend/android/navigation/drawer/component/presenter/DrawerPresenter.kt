@@ -132,16 +132,22 @@ class DrawerPresenter(
         model: Account?,
     ) {
         when (model) {
-            is Account.Authenticated ->
+            is Account.Authenticated -> {
                 imageView.using(
                     model.coverImage.toRequestImage(),
                     listOf(CircleCropTransformation()),
                 )
-            is Account.Anonymous ->
+            }
+
+            is Account.Anonymous -> {
                 imageView.using(
                     imageView.context.getCompatDrawable(model.imageRes),
                 )
-            else -> Timber.v("No authenticated account found")
+            }
+
+            else -> {
+                Timber.v("No authenticated account found")
+            }
         }
     }
 }

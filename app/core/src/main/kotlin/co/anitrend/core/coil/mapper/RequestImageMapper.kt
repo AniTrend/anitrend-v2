@@ -31,9 +31,12 @@ class RequestImageMapper(
 
     internal fun getImageUrlUsing(requestImage: RequestImage<*>): String =
         when (requestImage) {
-            is RequestImage.Media ->
+            is RequestImage.Media -> {
                 when (requestImage.type) {
-                    RequestImage.Media.ImageType.BANNER -> requestImage.image?.banner
+                    RequestImage.Media.ImageType.BANNER -> {
+                        requestImage.image?.banner
+                    }
+
                     RequestImage.Media.ImageType.POSTER -> {
                         when (powerSaverState) {
                             PowerSaverState.Disabled -> requestImage.image?.extraLarge
@@ -41,11 +44,14 @@ class RequestImageMapper(
                         }
                     }
                 }
-            is RequestImage.Cover ->
+            }
+
+            is RequestImage.Cover -> {
                 when (powerSaverState) {
                     PowerSaverState.Disabled -> requestImage.image?.large
                     else -> requestImage.image?.medium
                 }
+            }
         }.toString()
 
     /**

@@ -33,7 +33,7 @@ internal class CharacterConverter(
     private companion object : ISupportTransformer<CharacterModel, Character> {
         override fun transform(source: CharacterModel) =
             when (source) {
-                is CharacterModel.Core ->
+                is CharacterModel.Core -> {
                     Character.Core(
                         age = source.age,
                         dateOfBirth = source.dateOfBirth.asFuzzyDate(),
@@ -62,7 +62,11 @@ internal class CharacterConverter(
                         isFavouriteBlocked = source.isFavouriteBlocked,
                         id = source.id,
                     )
-                is CharacterModel.Extended -> TODO()
+                }
+
+                is CharacterModel.Extended -> {
+                    TODO()
+                }
             }
     }
 }

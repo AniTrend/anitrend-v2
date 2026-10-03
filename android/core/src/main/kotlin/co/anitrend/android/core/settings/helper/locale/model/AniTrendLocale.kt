@@ -77,7 +77,10 @@ enum class AniTrendLocale(
                     val default = Locale.getDefault()
                     default.asLocaleString()
                 }
-                else -> "$language$country"
+
+                else -> {
+                    "$language$country"
+                }
             }
 
         fun AniTrendLocale.asLocale(): Locale =

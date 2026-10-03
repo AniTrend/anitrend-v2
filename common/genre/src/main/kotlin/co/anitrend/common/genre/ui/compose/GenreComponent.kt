@@ -116,18 +116,20 @@ fun MediaGenreSection(
     modifier: Modifier = Modifier,
 ) {
     when (sectionMode) {
-        MediaGenreSectionMode.FLEX ->
+        MediaGenreSectionMode.FLEX -> {
             GenreFlowComponent(
                 genres = genres,
                 onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
                 modifier = modifier,
             )
+        }
 
-        else ->
+        else -> {
             GenresListComponent(
                 genres = genres,
                 onMediaDiscoverableItemClick = onMediaDiscoverableItemClick,
                 modifier = modifier,
             )
+        }
     }
 }

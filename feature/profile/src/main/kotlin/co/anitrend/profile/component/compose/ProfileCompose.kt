@@ -150,7 +150,7 @@ internal fun ProfileContent(
             }
 
             when (selectedSurfaceTab) {
-                ProfileSurfaceTab.Overview ->
+                ProfileSurfaceTab.Overview -> {
                     item {
                         ProfileOverviewTab(
                             user = user,
@@ -162,6 +162,7 @@ internal fun ProfileContent(
                             onMediaSelected = onMediaSelected,
                         )
                     }
+                }
 
                 ProfileSurfaceTab.Library -> {
                     item {
@@ -189,7 +190,7 @@ internal fun ProfileContent(
                     }
                 }
 
-                ProfileSurfaceTab.Activity ->
+                ProfileSurfaceTab.Activity -> {
                     item {
                         ProfileFeedTab(
                             state = feedState,
@@ -201,6 +202,7 @@ internal fun ProfileContent(
                             onRetry = onFeedRetry,
                         )
                     }
+                }
             }
         }
     }

@@ -108,21 +108,27 @@ internal data class ProfileLibraryPulseSummary(
 
 internal fun User.profileDetailsOrNull(): ProfileDetails? =
     when (this) {
-        is User.Extended ->
+        is User.Extended -> {
             ProfileDetails(
                 previousNames = previousNames,
                 listOption = listOption,
                 profileOption = profileOption,
                 mediaListStats = mediaListInfo,
             )
-        is User.WithStats ->
+        }
+
+        is User.WithStats -> {
             ProfileDetails(
                 previousNames = previousNames,
                 listOption = listOption,
                 profileOption = profileOption,
                 mediaListStats = mediaListStats,
             )
-        else -> null
+        }
+
+        else -> {
+            null
+        }
     }
 
 internal fun ProfileDetails.mediaListSections(tab: ProfileMediaTab): ProfileMediaListSections {
@@ -143,12 +149,16 @@ internal fun ProfileDetails.mediaListSections(tab: ProfileMediaTab): ProfileMedi
 
 internal fun User.statisticFor(tab: ProfileMediaTab): Statistic? =
     when (this) {
-        is User.WithStats ->
+        is User.WithStats -> {
             when (tab) {
                 ProfileMediaTab.Anime -> statistics.anime
                 ProfileMediaTab.Manga -> statistics.manga
             }
-        else -> null
+        }
+
+        else -> {
+            null
+        }
     }
 
 internal fun User.heroMetaItems(): List<ProfileHeroMetaItem> =
@@ -167,15 +177,28 @@ internal fun <T> profileSectionStateOf(
     isEmpty: (T) -> Boolean = { false },
 ): ProfileSectionState<T> =
     when {
-        loadState is LoadState.Loading && value == null -> ProfileSectionState.Loading
-        loadState is LoadState.Error && value != null && !isEmpty(value) ->
+        loadState is LoadState.Loading && value == null -> {
+            ProfileSectionState.Loading
+        }
+
+        loadState is LoadState.Error && value != null && !isEmpty(value) -> {
             ProfileSectionState.Partial(
                 data = value,
                 cause = loadState.details,
             )
-        loadState is LoadState.Error -> ProfileSectionState.Error(loadState.details)
-        value == null || isEmpty(value) -> ProfileSectionState.Empty
-        else -> ProfileSectionState.Content(value)
+        }
+
+        loadState is LoadState.Error -> {
+            ProfileSectionState.Error(loadState.details)
+        }
+
+        value == null || isEmpty(value) -> {
+            ProfileSectionState.Empty
+        }
+
+        else -> {
+            ProfileSectionState.Content(value)
+        }
     }
 
 internal fun ProfileOverview.favouriteGroups(): List<Pair<ProfileMediaTab, List<ProfileOverview.MediaPreview>>> =
@@ -261,7 +284,7 @@ internal fun ProfileDetails.libraryPulseSummary(displayUser: User): ProfileLibra
 
     val progressFootprint =
         when (displayUser) {
-            is User.WithStats ->
+            is User.WithStats -> {
                 listOfNotNull(
                     displayUser.statistics.anime
                         ?.minutesWatched
@@ -276,8 +299,11 @@ internal fun ProfileDetails.libraryPulseSummary(displayUser: User): ProfileLibra
                 ).joinToString(separator = " • ").ifBlank {
                     (animeTotal + mangaTotal).toHumanReadableQuantity(0)
                 }
+            }
 
-            else -> (animeTotal + mangaTotal).toHumanReadableQuantity(0)
+            else -> {
+                (animeTotal + mangaTotal).toHumanReadableQuantity(0)
+            }
         }
 
     val dominantStatus =
@@ -328,21 +354,25 @@ internal fun Statistic.preferredHeroChart(): ProfileStatsChart? =
 
 internal fun Statistic.secondaryChart(): ProfileStatsChart? =
     when (preferredHeroChart()) {
-        ProfileStatsChart.ScoreDistribution ->
+        ProfileStatsChart.ScoreDistribution -> {
             if (statusEntries().isNotEmpty()) {
                 ProfileStatsChart.StatusDistribution
             } else {
                 null
             }
+        }
 
-        ProfileStatsChart.StatusDistribution ->
+        ProfileStatsChart.StatusDistribution -> {
             if (scoreEntries().isNotEmpty()) {
                 ProfileStatsChart.ScoreDistribution
             } else {
                 null
             }
+        }
 
-        null -> null
+        null -> {
+            null
+        }
     }
 
 internal fun Statistic.scoreEntries(): List<ProfileScoreEntry> =
@@ -401,7 +431,7 @@ internal fun List<ProfileScoreEntry>.axisValues(labelCount: Int): List<Int> {
 
 private fun Statistic.scoreStatistics(): List<StatisticScore> =
     when (this) {
-        is Statistic.Anime ->
+        is Statistic.Anime -> {
             scores
                 .orEmpty()
                 .filterIsInstance<MediaStatistic.Anime.Score>()
@@ -411,7 +441,9 @@ private fun Statistic.scoreStatistics(): List<StatisticScore> =
                         count = it.count,
                     )
                 }
-        is Statistic.Manga ->
+        }
+
+        is Statistic.Manga -> {
             scores
                 .orEmpty()
                 .filterIsInstance<MediaStatistic.Manga.Score>()
@@ -421,11 +453,12 @@ private fun Statistic.scoreStatistics(): List<StatisticScore> =
                         count = it.count,
                     )
                 }
+        }
     }
 
 private fun Statistic.statusStatistics(): List<StatisticStatus> =
     when (this) {
-        is Statistic.Anime ->
+        is Statistic.Anime -> {
             statuses
                 .orEmpty()
                 .filterIsInstance<MediaStatistic.Anime.Status>()
@@ -435,7 +468,9 @@ private fun Statistic.statusStatistics(): List<StatisticStatus> =
                         count = it.count,
                     )
                 }
-        is Statistic.Manga ->
+        }
+
+        is Statistic.Manga -> {
             statuses
                 .orEmpty()
                 .filterIsInstance<MediaStatistic.Manga.Status>()
@@ -445,6 +480,7 @@ private fun Statistic.statusStatistics(): List<StatisticStatus> =
                         count = it.count,
                     )
                 }
+        }
     }
 
 private fun niceAxisStep(value: Int): Int {

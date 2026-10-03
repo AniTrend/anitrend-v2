@@ -785,6 +785,7 @@ private fun mediaQuickFacts(state: MediaListEditorState): String {
                 parts += stringResource(R.string.label_media_list_editor_episode_count, it)
             }
         }
+
         is Media.Category.Manga -> {
             category.chapters.takeIf { it > 0 }?.let {
                 parts += stringResource(R.string.label_media_list_editor_chapter_count, it)
@@ -853,7 +854,10 @@ private fun scoreFormatMax(scoreFormat: ScoreFormat): Float =
         ScoreFormat.POINT_10,
         ScoreFormat.POINT_10_DECIMAL,
         -> 10f
+
         ScoreFormat.POINT_100 -> 100f
+
         ScoreFormat.POINT_3 -> 3f
+
         ScoreFormat.POINT_5 -> 5f
     }

@@ -79,7 +79,10 @@ class MediaDiscoverContent : AniTrendComposition() {
                 openMediaFilterDialog()
                 true
             }
-            else -> super.onOptionsItemSelected(item)
+
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
 
     override fun onCreateView(

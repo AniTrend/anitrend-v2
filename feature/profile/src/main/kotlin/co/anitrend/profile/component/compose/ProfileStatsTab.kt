@@ -54,27 +54,34 @@ internal fun ProfileStatsTab(
         )
 
         when (state) {
-            ProfileSectionState.Loading ->
+            ProfileSectionState.Loading -> {
                 StatsStateSection(
                     message = stringResource(R.string.message_profile_stats_loading),
                     onRetry = null,
                 )
+            }
 
-            is ProfileSectionState.Error ->
+            is ProfileSectionState.Error -> {
                 StatsStateSection(
                     message = stringResource(R.string.message_profile_stats_unavailable),
                     onRetry = onRetry,
                 )
+            }
 
-            ProfileSectionState.Empty ->
+            ProfileSectionState.Empty -> {
                 StatsStateSection(
                     message = stringResource(R.string.message_profile_stats_unavailable),
                     onRetry = null,
                 )
+            }
 
-            is ProfileSectionState.Content -> StatsTabContent(statistic = state.data)
+            is ProfileSectionState.Content -> {
+                StatsTabContent(statistic = state.data)
+            }
 
-            is ProfileSectionState.Partial -> StatsTabContent(statistic = state.data)
+            is ProfileSectionState.Partial -> {
+                StatsTabContent(statistic = state.data)
+            }
         }
     }
 }

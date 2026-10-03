@@ -94,8 +94,9 @@ class BottomDrawerContent(
         get() =
             drawerViewModel.events.mapNotNull { event ->
                 when (event) {
-                    is co.anitrend.android.navigation.drawer.model.internal.DrawerEvent.Navigate ->
+                    is co.anitrend.android.navigation.drawer.model.internal.DrawerEvent.Navigate -> {
                         DrawerLegacyNavigationAdapter.toLegacy(event.item)
+                    }
                 }
             }
 
@@ -152,8 +153,14 @@ class BottomDrawerContent(
                     )
                     1F
                 }
-                SandwichState.OPEN -> 0F
-                SandwichState.SETTLING -> return
+
+                SandwichState.OPEN -> {
+                    0F
+                }
+
+                SandwichState.SETTLING -> {
+                    return
+                }
             }
         sandwichAnimator?.cancel()
         sandwichAnimator =
@@ -220,6 +227,7 @@ class BottomDrawerContent(
                     profileImageView.isFocusable = false
                 }
             }
+
             else -> {
                 with(requireBinding()) {
                     sheetForegroundContainer.visible()
@@ -335,12 +343,22 @@ class BottomDrawerContent(
             toggleSandwich()
         } else {
             when (behavior.state) {
-                BottomSheetBehavior.STATE_EXPANDED -> show()
-                BottomSheetBehavior.STATE_HIDDEN -> show()
+                BottomSheetBehavior.STATE_EXPANDED -> {
+                    show()
+                }
+
+                BottomSheetBehavior.STATE_HIDDEN -> {
+                    show()
+                }
+
                 BottomSheetBehavior.STATE_COLLAPSED,
                 BottomSheetBehavior.STATE_HALF_EXPANDED,
-                -> dismiss()
+                -> {
+                    dismiss()
+                }
+
                 BottomSheetBehavior.STATE_DRAGGING -> { }
+
                 BottomSheetBehavior.STATE_SETTLING -> { }
             }
         }
