@@ -74,19 +74,50 @@ internal class DrawerConfigMapper(
 
     private fun String.toDrawerDestination(): DrawerDestination? =
         when (this) {
-            "/home" -> DrawerDestination.Home
-            "/discover" -> DrawerDestination.Discover
-            "/social" -> DrawerDestination.Social
-            "/reviews" -> DrawerDestination.Reviews
-            "/suggestions" -> DrawerDestination.Suggestions
-            "/animelist" -> DrawerDestination.AnimeList
-            "/mangalist" -> DrawerDestination.MangaList
-            "/news" -> DrawerDestination.News
-            "/forum/recent" -> DrawerDestination.Forums
-            "/episodes" -> DrawerDestination.Episodes
-            else ->
+            "/home" -> {
+                DrawerDestination.Home
+            }
+
+            "/discover" -> {
+                DrawerDestination.Discover
+            }
+
+            "/social" -> {
+                DrawerDestination.Social
+            }
+
+            "/reviews" -> {
+                DrawerDestination.Reviews
+            }
+
+            "/suggestions" -> {
+                DrawerDestination.Suggestions
+            }
+
+            "/animelist" -> {
+                DrawerDestination.AnimeList
+            }
+
+            "/mangalist" -> {
+                DrawerDestination.MangaList
+            }
+
+            "/news" -> {
+                DrawerDestination.News
+            }
+
+            "/forum/recent" -> {
+                DrawerDestination.Forums
+            }
+
+            "/episodes" -> {
+                DrawerDestination.Episodes
+            }
+
+            else -> {
                 takeIf {
                     startsWith("https://") || startsWith("http://")
                 }?.let(DrawerDestination::ExternalUrl)
+            }
         }
 }

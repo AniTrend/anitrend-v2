@@ -95,12 +95,21 @@ internal fun StudioDetailContent(
     val uiState = studioDetailUiState(state = state, loadState = loadState)
 
     when (uiState) {
-        is StudioDetailUiState.Populated ->
+        is StudioDetailUiState.Populated -> {
             StudioPopulatedContent(data = uiState.data, onSeeAllMediaClick = onSeeAllMediaClick, modifier = modifier)
-        StudioDetailUiState.Loading -> StudioLoadingState(modifier = modifier)
-        StudioDetailUiState.Empty -> StudioInfoState(text = "No studio details available.", modifier = modifier)
-        is StudioDetailUiState.Error ->
+        }
+
+        StudioDetailUiState.Loading -> {
+            StudioLoadingState(modifier = modifier)
+        }
+
+        StudioDetailUiState.Empty -> {
+            StudioInfoState(text = "No studio details available.", modifier = modifier)
+        }
+
+        is StudioDetailUiState.Error -> {
             StudioErrorState(text = uiState.message, onRetry = onRetry, modifier = modifier)
+        }
     }
 }
 
@@ -113,9 +122,18 @@ private fun studioDetailUiState(
             val details = loadState.details.message?.takeIf(String::isNotBlank)
             StudioDetailUiState.Error(details ?: "Unable to load studio details.")
         }
-        state != null -> StudioDetailUiState.Populated(state)
-        loadState !is LoadState.Loading -> StudioDetailUiState.Empty
-        else -> StudioDetailUiState.Loading
+
+        state != null -> {
+            StudioDetailUiState.Populated(state)
+        }
+
+        loadState !is LoadState.Loading -> {
+            StudioDetailUiState.Empty
+        }
+
+        else -> {
+            StudioDetailUiState.Loading
+        }
     }
 
 @Composable

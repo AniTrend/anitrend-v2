@@ -81,6 +81,7 @@ private fun TagItem(
                             null
                         }
                     }
+
                     else -> {
                         if (tag.isGeneralSpoiler) {
                             Icons.Rounded.Warning

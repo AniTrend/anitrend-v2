@@ -43,19 +43,25 @@ internal class FavouriteSourceImpl {
             val deferred =
                 deferred {
                     when (val action = mutation) {
-                        is FavouriteInput.ToggleAnime ->
+                        is FavouriteInput.ToggleAnime -> {
                             remoteSource.toggleAnimeFavorite(
                                 ToggleAnimeFavourite.request(
                                     animeId = action.animeId?.toInt(),
                                 ),
                             )
-                        is FavouriteInput.ToggleManga ->
+                        }
+
+                        is FavouriteInput.ToggleManga -> {
                             remoteSource.toggleMangaFavorite(
                                 ToggleMangaFavourite.request(
                                     mangaId = action.mangaId?.toInt(),
                                 ),
                             )
-                        else -> error("Unsupported favourite mutation: ${action::class.simpleName}")
+                        }
+
+                        else -> {
+                            error("Unsupported favourite mutation: ${action::class.simpleName}")
+                        }
                     }
                 }
 

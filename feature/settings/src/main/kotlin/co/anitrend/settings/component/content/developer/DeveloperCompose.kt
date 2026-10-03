@@ -113,21 +113,25 @@ private fun List<SettingItem>.withDeveloperScreenState(
 ): List<SettingItem> =
     map { item ->
         when (item) {
-            is SettingItem.SwitchSetting ->
+            is SettingItem.SwitchSetting -> {
                 when (item.id) {
-                    "heap_dump" ->
+                    "heap_dump" -> {
                         item.copy(
                             onValueChange = { newValue ->
                                 onStateChange(state.updateAutomaticHeapDump(newValue, developerSettings))
                             },
                         )
-                    "show_leak_launcher" ->
+                    }
+
+                    "show_leak_launcher" -> {
                         item.copy(
                             onValueChange = { newValue ->
                                 onStateChange(state.updateShowLeakLauncher(newValue, developerSettings))
                             },
                         )
-                    "clear_db_on_refresh" ->
+                    }
+
+                    "clear_db_on_refresh" -> {
                         item.copy(
                             onValueChange = { newValue ->
                                 onStateChange(
@@ -135,9 +139,17 @@ private fun List<SettingItem>.withDeveloperScreenState(
                                 )
                             },
                         )
-                    else -> item
+                    }
+
+                    else -> {
+                        item
+                    }
                 }
-            else -> item
+            }
+
+            else -> {
+                item
+            }
         }
     }
 

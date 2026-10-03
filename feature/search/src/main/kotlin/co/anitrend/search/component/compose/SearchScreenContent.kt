@@ -159,7 +159,7 @@ fun SearchScreenContent(
                     }
                 }
 
-                SearchScope.ALL ->
+                SearchScope.ALL -> {
                     if (!hasSubmittedSearch.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
@@ -174,8 +174,9 @@ fun SearchScreenContent(
                             modifier = Modifier.weight(1f),
                         )
                     }
+                }
 
-                SearchScope.ANIME ->
+                SearchScope.ANIME -> {
                     if (!hasSubmittedSearch.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
@@ -190,8 +191,9 @@ fun SearchScreenContent(
                             modifier = Modifier.weight(1f),
                         )
                     }
+                }
 
-                SearchScope.MANGA ->
+                SearchScope.MANGA -> {
                     if (!hasSubmittedSearch.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
@@ -206,8 +208,9 @@ fun SearchScreenContent(
                             modifier = Modifier.weight(1f),
                         )
                     }
+                }
 
-                SearchScope.USERS ->
+                SearchScope.USERS -> {
                     if (!hasSubmittedQuery.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
@@ -221,8 +224,9 @@ fun SearchScreenContent(
                             modifier = Modifier.weight(1f),
                         )
                     }
+                }
 
-                SearchScope.STUDIOS ->
+                SearchScope.STUDIOS -> {
                     if (!hasSubmittedQuery.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
@@ -236,8 +240,9 @@ fun SearchScreenContent(
                             modifier = Modifier.weight(1f),
                         )
                     }
+                }
 
-                SearchScope.STAFF ->
+                SearchScope.STAFF -> {
                     if (!hasSubmittedQuery.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
@@ -251,8 +256,9 @@ fun SearchScreenContent(
                             modifier = Modifier.weight(1f),
                         )
                     }
+                }
 
-                SearchScope.CHARACTERS ->
+                SearchScope.CHARACTERS -> {
                     if (!hasSubmittedQuery.value) {
                         SearchState(
                             title = stringResource(R.string.label_search_idle_title),
@@ -266,6 +272,7 @@ fun SearchScreenContent(
                             modifier = Modifier.weight(1f),
                         )
                     }
+                }
             }
         }
     }

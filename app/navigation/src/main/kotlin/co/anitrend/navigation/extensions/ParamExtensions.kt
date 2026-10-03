@@ -46,9 +46,13 @@ inline fun <reified T : IParam> T.asBundle() = bundleOf(nameOf<T>() to this)
 inline fun <reified T : IParam> Bundle.fromBundle(): T? {
     val name = nameOf<T>()
     return when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU ->
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
             getParcelable(name, T::class.java)
-        else -> getParcelable(name)
+        }
+
+        else -> {
+            getParcelable(name)
+        }
     }
 }
 

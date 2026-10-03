@@ -97,7 +97,7 @@ fun MediaPagedBrowseContent(
     val mediaPreferenceData = remember(scoreFormat) { MediaPreferenceData(scoreFormat = scoreFormat) }
 
     when (val listVariant = browseLayout.listVariantOrNull()) {
-        null ->
+        null -> {
             MediaPagedBrowseGrid(
                 mediaItems = mediaItems,
                 browseLayout = browseLayout,
@@ -108,8 +108,9 @@ fun MediaPagedBrowseContent(
                 keys = keys,
                 modifier = modifier,
             )
+        }
 
-        else ->
+        else -> {
             MediaPagedBrowseList(
                 mediaItems = mediaItems,
                 mediaPreferenceData = mediaPreferenceData,
@@ -121,6 +122,7 @@ fun MediaPagedBrowseContent(
                 modifier = modifier,
                 listSupportingContent = listSupportingContent,
             )
+        }
     }
 }
 
@@ -188,7 +190,9 @@ private fun MediaPagedBrowseGrid(
                 }
             }
 
-            else -> Unit
+            else -> {
+                Unit
+            }
         }
     }
 }
@@ -254,7 +258,9 @@ private fun MediaPagedBrowseList(
                 }
             }
 
-            else -> Unit
+            else -> {
+                Unit
+            }
         }
     }
 }

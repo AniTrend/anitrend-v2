@@ -34,11 +34,17 @@ class AlignmentTagHandler private constructor() : SimpleTagHandler() {
     ): Any {
         val alignment: Layout.Alignment =
             when {
-                tag.attributes().containsKey("center") ->
+                tag.attributes().containsKey("center") -> {
                     Layout.Alignment.ALIGN_CENTER
-                tag.attributes().containsKey("end") ->
+                }
+
+                tag.attributes().containsKey("end") -> {
                     Layout.Alignment.ALIGN_OPPOSITE
-                else -> Layout.Alignment.ALIGN_NORMAL
+                }
+
+                else -> {
+                    Layout.Alignment.ALIGN_NORMAL
+                }
             }
 
         return AlignmentSpan.Standard(alignment)

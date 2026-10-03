@@ -83,8 +83,14 @@ internal class ThemeHelper(
             @Suppress("DEPRECATION") // Until I figure out a way to apply decorations using window controller
             val systemUiOptions = window.decorView.systemUiVisibility
             when (AppCompatDelegate.getDefaultNightMode()) {
-                AppCompatDelegate.MODE_NIGHT_NO -> applyDayModeDecorations(systemUiOptions)
-                AppCompatDelegate.MODE_NIGHT_YES -> applyNightModeDecorations(systemUiOptions)
+                AppCompatDelegate.MODE_NIGHT_NO -> {
+                    applyDayModeDecorations(systemUiOptions)
+                }
+
+                AppCompatDelegate.MODE_NIGHT_YES -> {
+                    applyNightModeDecorations(systemUiOptions)
+                }
+
                 else -> {
                     // According to Google/IO other ui options like auto and follow system
                     // will be deprecated in the future
@@ -109,14 +115,17 @@ internal class ThemeHelper(
             )
         } else {
             when (theme.useNightMode) {
-                true ->
+                true -> {
                     AppCompatDelegate.setDefaultNightMode(
                         AppCompatDelegate.MODE_NIGHT_NO,
                     )
-                else ->
+                }
+
+                else -> {
                     AppCompatDelegate.setDefaultNightMode(
                         AppCompatDelegate.MODE_NIGHT_YES,
                     )
+                }
             }
         }
     }

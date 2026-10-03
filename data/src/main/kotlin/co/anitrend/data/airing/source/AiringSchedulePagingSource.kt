@@ -154,7 +154,11 @@ internal class AiringSchedulePagingSource(
                 clearDataSource(dispatcher.io)
                 return invoke(requestType = Request.Type.INITIAL)
             }
-            PREPEND -> MediatorResult.Success(true)
+
+            PREPEND -> {
+                MediatorResult.Success(true)
+            }
+
             APPEND -> {
                 return invoke(requestType = Request.Type.AFTER)
             }

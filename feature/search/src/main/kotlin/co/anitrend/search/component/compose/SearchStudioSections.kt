@@ -102,24 +102,27 @@ internal fun StudioSearchSection(
                 }
             }
 
-            refreshState is LoadState.Loading ->
+            refreshState is LoadState.Loading -> {
                 SearchState(
                     title = stringResource(R.string.label_search_loading_title),
                     subtitle = stringResource(R.string.message_search_loading),
                 )
+            }
 
-            refreshState is LoadState.Error ->
+            refreshState is LoadState.Error -> {
                 SearchState(
                     title = stringResource(R.string.label_search_error_title),
                     subtitle = stringResource(R.string.message_search_error),
                     onRetry = items::retry,
                 )
+            }
 
-            else ->
+            else -> {
                 SearchState(
                     title = stringResource(R.string.label_search_empty_title),
                     subtitle = stringResource(R.string.message_search_empty),
                 )
+            }
         }
     }
 }
@@ -155,24 +158,27 @@ internal fun StudioDrillDown(
             }
         }
 
-        refreshState is LoadState.Loading ->
+        refreshState is LoadState.Loading -> {
             SearchState(
                 title = stringResource(R.string.label_search_loading_title),
                 subtitle = stringResource(R.string.message_search_loading),
             )
+        }
 
-        refreshState is LoadState.Error ->
+        refreshState is LoadState.Error -> {
             SearchState(
                 title = stringResource(R.string.label_search_error_title),
                 subtitle = stringResource(R.string.message_search_error),
                 onRetry = items::retry,
             )
+        }
 
-        else ->
+        else -> {
             SearchState(
                 title = stringResource(R.string.label_search_empty_title),
                 subtitle = stringResource(R.string.message_search_empty),
             )
+        }
     }
 }
 
