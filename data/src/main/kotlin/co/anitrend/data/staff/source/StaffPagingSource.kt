@@ -137,8 +137,12 @@ internal class StaffPagingSource(
                 invoke(requestType = Request.Type.INITIAL)
             }
 
-            PREPEND -> MediatorResult.Success(true)
+            PREPEND -> {
+                MediatorResult.Success(true)
+            }
 
-            APPEND -> invoke(requestType = Request.Type.AFTER)
+            APPEND -> {
+                invoke(requestType = Request.Type.AFTER)
+            }
         }
 }

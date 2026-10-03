@@ -45,7 +45,7 @@ class MediaPeopleScreen : AniTrendScreen() {
                     selectedSection = peopleParam.initialSection,
                     onSelectSection = { section ->
                         when (section) {
-                            MediaPeopleRouter.Section.CHARACTERS ->
+                            MediaPeopleRouter.Section.CHARACTERS -> {
                                 MediaCharactersRouter.startActivity(
                                     context = this@MediaPeopleScreen,
                                     navPayload =
@@ -55,8 +55,9 @@ class MediaPeopleScreen : AniTrendScreen() {
                                                 mediaTitle = peopleParam.mediaTitle,
                                             ).asNavPayload(),
                                 )
+                            }
 
-                            MediaPeopleRouter.Section.STAFF ->
+                            MediaPeopleRouter.Section.STAFF -> {
                                 MediaStaffRouter.startActivity(
                                     context = this@MediaPeopleScreen,
                                     navPayload =
@@ -66,6 +67,7 @@ class MediaPeopleScreen : AniTrendScreen() {
                                                 mediaTitle = peopleParam.mediaTitle,
                                             ).asNavPayload(),
                                 )
+                            }
                         }
                         finish()
                     },

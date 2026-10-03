@@ -29,7 +29,7 @@ internal class StudioConverter(
     private companion object : ISupportTransformer<StudioModel, Studio> {
         override fun transform(source: StudioModel) =
             when (source) {
-                is StudioModel.Core ->
+                is StudioModel.Core -> {
                     Studio.Core(
                         favourites = source.favourites ?: 0,
                         isAnimationStudio = source.isAnimationStudio,
@@ -40,7 +40,9 @@ internal class StudioConverter(
                         siteUrl = source.siteUrl,
                         id = source.id,
                     )
-                is StudioModel.Extended ->
+                }
+
+                is StudioModel.Extended -> {
                     Studio.Extended(
                         favourites = source.favourites ?: 0,
                         isAnimationStudio = source.isAnimationStudio,
@@ -51,6 +53,7 @@ internal class StudioConverter(
                         siteUrl = source.siteUrl,
                         id = source.id,
                     )
+                }
             }
     }
 }

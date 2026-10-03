@@ -174,11 +174,13 @@ internal sealed class AiringQueryFilter<T> : FilterQueryBuilder<T>() {
         private fun order(filter: AiringParam.Find) {
             filter.sort?.forEach { sort ->
                 when (sort.sortable) {
-                    AiringSort.TIME ->
+                    AiringSort.TIME -> {
                         requireBuilder().orderBy(
                             AiringScheduleEntitySchema.timeUntilAiring.asColumn(airingTable),
                             sort.order,
                         )
+                    }
+
                     else -> {
                         val qualifier = sort.sortable.name.lowercase()
                         requireBuilder().orderBy(qualifier.asColumn(airingTable), sort.order)

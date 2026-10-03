@@ -85,23 +85,28 @@ fun LogViewerScreen(
             onFilterSelected = { filter = it },
         )
         when (val state = logState) {
-            is LogUiState.Error ->
+            is LogUiState.Error -> {
                 SettingsSectionCard(
                     title = stringResource(R.string.title_settings_log_unavailable),
                     description = state.message,
                 ) {}
-            LogUiState.Loading ->
+            }
+
+            LogUiState.Loading -> {
                 Box(modifier = Modifier.fillMaxWidth().padding(top = 32.dp)) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(48.dp).align(Alignment.Center),
                     )
                 }
-            is LogUiState.Success ->
+            }
+
+            is LogUiState.Success -> {
                 LogViewerContent(
                     state = state,
                     filter = filter,
                     filterLabel = filterLabels[filter.labelIndex],
                 )
+            }
         }
     }
 }

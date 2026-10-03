@@ -52,51 +52,69 @@ internal sealed class MediaListQueryFilter<T : MediaListParam.Entries> : FilterQ
     protected fun order(filter: T) {
         filter.sort?.forEach { sort ->
             when (sort.sortable) {
-                MediaListSort.ADDED_TIME ->
+                MediaListSort.ADDED_TIME -> {
                     requireBuilder().orderBy(
                         MediaListEntitySchema.createdAt.asColumn(mediaListTable),
                         sort.order,
                     )
-                MediaListSort.FINISHED_ON ->
+                }
+
+                MediaListSort.FINISHED_ON -> {
                     requireBuilder().orderBy(
                         MediaListEntitySchema.completedAt.asColumn(mediaListTable),
                         sort.order,
                     )
-                MediaListSort.MEDIA_POPULARITY ->
+                }
+
+                MediaListSort.MEDIA_POPULARITY -> {
                     requireBuilder().orderBy(
                         MediaEntitySchema.popularity.asColumn(mediaTable),
                         sort.order,
                     )
-                MediaListSort.MEDIA_TITLE_ENGLISH ->
+                }
+
+                MediaListSort.MEDIA_TITLE_ENGLISH -> {
                     requireBuilder().orderBy(
                         MediaEntitySchema.titleEnglish.asColumn(mediaTable),
                         sort.order,
                     )
-                MediaListSort.MEDIA_TITLE_NATIVE ->
+                }
+
+                MediaListSort.MEDIA_TITLE_NATIVE -> {
                     requireBuilder().orderBy(
                         MediaEntitySchema.titleOriginal.asColumn(mediaTable),
                         sort.order,
                     )
-                MediaListSort.MEDIA_TITLE_ROMAJI ->
+                }
+
+                MediaListSort.MEDIA_TITLE_ROMAJI -> {
                     requireBuilder().orderBy(
                         MediaEntitySchema.titleRomaji.asColumn(mediaTable),
                         sort.order,
                     )
-                MediaListSort.REPEAT ->
+                }
+
+                MediaListSort.REPEAT -> {
                     requireBuilder().orderBy(
                         MediaListEntitySchema.repeatCount.asColumn(mediaListTable),
                         sort.order,
                     )
-                MediaListSort.STARTED_ON ->
+                }
+
+                MediaListSort.STARTED_ON -> {
                     requireBuilder().orderBy(
                         MediaListEntitySchema.startedAt.asColumn(mediaListTable),
                         sort.order,
                     )
-                MediaListSort.UPDATED_TIME ->
+                }
+
+                MediaListSort.UPDATED_TIME -> {
                     requireBuilder().orderBy(
                         MediaListEntitySchema.updatedAt.asColumn(mediaListTable),
                         sort.order,
                     )
+                }
+
                 else -> {
                     val qualifier = sort.sortable.name.lowercase()
                     requireBuilder().orderBy(qualifier.asColumn(mediaListTable), sort.order)

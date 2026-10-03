@@ -120,17 +120,19 @@ fun MediaPeopleRoute(
 
             Box(modifier = Modifier.weight(1f)) {
                 when (selectedSection) {
-                    MediaPeopleRouter.Section.CHARACTERS ->
+                    MediaPeopleRouter.Section.CHARACTERS -> {
                         CharactersPane(
                             characters = characters,
                             onRetry = characters::retry,
                         )
+                    }
 
-                    MediaPeopleRouter.Section.STAFF ->
+                    MediaPeopleRouter.Section.STAFF -> {
                         StaffPane(
                             staff = staff,
                             onRetry = staff::retry,
                         )
+                    }
                 }
             }
         }
@@ -148,18 +150,21 @@ private fun CharactersPane(
         characters.itemCount > 0 -> {
             CharacterGrid(characters = characters)
         }
+
         refreshState is PagingLoadState.Loading -> {
             CenteredPeopleState(
                 title = stringResource(R.string.label_media_people_characters_loading),
                 subtitle = stringResource(R.string.message_media_people_characters_loading),
             )
         }
+
         refreshState is PagingLoadState.Error -> {
             RetryPeopleState(
                 title = stringResource(R.string.label_media_people_characters_error_title),
                 onRetry = onRetry,
             )
         }
+
         else -> {
             CenteredPeopleState(
                 title = stringResource(R.string.label_media_people_characters_empty_title),
@@ -180,18 +185,21 @@ private fun StaffPane(
         staff.itemCount > 0 -> {
             StaffList(staff = staff)
         }
+
         refreshState is PagingLoadState.Loading -> {
             CenteredPeopleState(
                 title = stringResource(R.string.label_media_people_staff_loading),
                 subtitle = stringResource(R.string.message_media_people_staff_loading),
             )
         }
+
         refreshState is PagingLoadState.Error -> {
             RetryPeopleState(
                 title = stringResource(R.string.label_media_people_staff_error_title),
                 onRetry = onRetry,
             )
         }
+
         else -> {
             CenteredPeopleState(
                 title = stringResource(R.string.label_media_people_staff_empty_title),
@@ -276,7 +284,9 @@ private fun CharacterGrid(
                 }
             }
 
-            else -> Unit
+            else -> {
+                Unit
+            }
         }
     }
 }
@@ -348,7 +358,9 @@ private fun StaffList(
                 }
             }
 
-            else -> Unit
+            else -> {
+                Unit
+            }
         }
     }
 }

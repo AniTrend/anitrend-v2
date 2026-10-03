@@ -73,6 +73,7 @@ abstract class FilterQueryBuilder<F> {
                 Timber.d("Reusing existing builder instance, filter hash has not changed")
                 asSupportSQLiteQuery()
             }
+
             else -> {
                 val filterHash = filter.hashCode()
                 Timber.d("Creating new builder instance, old != new filter has: $hash -> $filterHash")
@@ -103,6 +104,7 @@ abstract class FilterQueryBuilder<F> {
                         orderByAsc(projection)
                     }
                 }
+
                 false -> {
                     if (sortOrder == SortOrder.DESC) {
                         orderByDescCollate(projection)

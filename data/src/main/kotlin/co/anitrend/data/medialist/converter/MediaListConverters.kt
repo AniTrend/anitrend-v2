@@ -36,7 +36,7 @@ internal class MediaListModelConverter(
     private companion object : ISupportTransformer<MediaListModel, MediaListEntity> {
         override fun transform(source: MediaListModel) =
             when (source) {
-                is MediaListModel.Extended ->
+                is MediaListModel.Extended -> {
                     MediaListEntity(
                         mediaType = source.media.type,
                         completedAt = source.completedAt?.toFuzzyDateInt(),
@@ -57,7 +57,9 @@ internal class MediaListModelConverter(
                         userName = source.user.name,
                         id = source.id,
                     )
-                is MediaListModel.Core ->
+                }
+
+                is MediaListModel.Core -> {
                     MediaListEntity(
                         mediaType = source.mediaCategory?.type ?: MediaType.ANIME,
                         completedAt = source.completedAt?.toFuzzyDateInt(),
@@ -78,6 +80,7 @@ internal class MediaListModelConverter(
                         userName = source.user.name,
                         id = source.id,
                     )
+                }
             }
     }
 }
@@ -94,17 +97,20 @@ internal class MediaListEntityViewConverter(
                     is MediaListEntityView.WithMedia -> source.media.type
                 }
             return when (mediaType) {
-                MediaType.ANIME ->
+                MediaType.ANIME -> {
                     MediaListProgress.Anime(
                         episodeProgress = source.mediaList.progress,
                         repeatedCount = source.mediaList.repeatCount,
                     )
-                MediaType.MANGA ->
+                }
+
+                MediaType.MANGA -> {
                     MediaListProgress.Manga(
                         chapterProgress = source.mediaList.progress,
                         volumeProgress = source.mediaList.progressVolumes,
                         repeatedCount = source.mediaList.repeatCount,
                     )
+                }
             }
         }
 

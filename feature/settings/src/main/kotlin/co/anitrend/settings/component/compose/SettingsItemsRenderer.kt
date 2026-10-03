@@ -38,7 +38,10 @@ fun SettingsItemsList(
             key = { blocks[it].id },
         ) { index ->
             when (val block = blocks[index]) {
-                is SettingsBlock.SingleItem -> RenderStandaloneItem(item = block.item)
+                is SettingsBlock.SingleItem -> {
+                    RenderStandaloneItem(item = block.item)
+                }
+
                 is SettingsBlock.Section -> {
                     SettingsSectionCard(title = block.header.title) {
                         block.items.forEachIndexed { itemIndex, item ->
@@ -62,7 +65,7 @@ fun SettingsItemsList(
 @Composable
 private fun RenderStandaloneItem(item: SettingItem) {
     when (item) {
-        is SettingItem.HintCard ->
+        is SettingItem.HintCard -> {
             AniTrendHintCard(
                 title = item.title,
                 description = item.description,
@@ -71,19 +74,24 @@ private fun RenderStandaloneItem(item: SettingItem) {
                 actionLabel = item.actionLabel,
                 onClick = item.onClick,
             )
+        }
 
-        is SettingItem.CategoryHeader -> Unit
-        else ->
+        is SettingItem.CategoryHeader -> {
+            Unit
+        }
+
+        else -> {
             SettingsSectionCard {
                 RenderSectionItem(item = item)
             }
+        }
     }
 }
 
 @Composable
 private fun RenderSectionItem(item: SettingItem) {
     when (item) {
-        is SettingItem.SwitchSetting ->
+        is SettingItem.SwitchSetting -> {
             SettingsToggleRow(
                 title = item.title,
                 summary = item.summary,
@@ -92,8 +100,9 @@ private fun RenderSectionItem(item: SettingItem) {
                 checked = item.onClick(),
                 onCheckedChange = item.onValueChange,
             )
+        }
 
-        is SettingItem.ClickableSetting ->
+        is SettingItem.ClickableSetting -> {
             SettingsValueRow(
                 title = item.title,
                 summary = item.summary,
@@ -102,11 +111,13 @@ private fun RenderSectionItem(item: SettingItem) {
                 enabled = item.enabled,
                 onClick = item.onClick,
             )
+        }
 
-        is SettingItem.DialogSetting<*> ->
+        is SettingItem.DialogSetting<*> -> {
             PreferenceDialog(item = item)
+        }
 
-        is SettingItem.SliderSetting ->
+        is SettingItem.SliderSetting -> {
             AniTrendSliderItem(
                 value = item.value,
                 onValueChange = item.onValueChange,
@@ -116,10 +127,13 @@ private fun RenderSectionItem(item: SettingItem) {
                 extraInfo = item.extraInfo,
                 progress = item.progress,
             )
+        }
 
         is SettingItem.CategoryHeader,
         is SettingItem.HintCard,
-        -> Unit
+        -> {
+            Unit
+        }
     }
 }
 

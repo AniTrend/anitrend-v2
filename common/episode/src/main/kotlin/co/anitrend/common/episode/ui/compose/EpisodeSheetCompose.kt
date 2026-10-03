@@ -191,7 +191,7 @@ fun EpisodeSheetScreen(
 ) {
     AniTrendSheet(onDismiss = onDismiss, dragHandle = null) {
         when (episode) {
-            null ->
+            null -> {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     CircularProgressIndicator(
                         modifier =
@@ -201,14 +201,16 @@ fun EpisodeSheetScreen(
                                 .align(Alignment.Center),
                     )
                 }
+            }
 
-            else ->
+            else -> {
                 EpisodeSheetContent(
                     episode = episode,
                     onPlayClick = onPlayClick,
                     onPublisherClick = onPublisherClick,
                     onDownloadClick = onDownloadClick,
                 )
+            }
         }
     }
 }

@@ -33,15 +33,30 @@ class DefaultSpacingDecorator(
 ) : RecyclerView.ItemDecoration() {
     private fun isVerticalOrientation(recyclerView: RecyclerView): Boolean =
         when (val layoutManager = recyclerView.layoutManager) {
-            is FlexboxLayoutManager -> layoutManager.flexDirection == FlexDirection.COLUMN
-            is LinearLayoutManager -> layoutManager.orientation == LinearLayoutManager.VERTICAL
-            is GridLayoutManager -> layoutManager.orientation == GridLayoutManager.VERTICAL
-            is StaggeredGridLayoutManager -> layoutManager.orientation == StaggeredGridLayoutManager.VERTICAL
+            is FlexboxLayoutManager -> {
+                layoutManager.flexDirection == FlexDirection.COLUMN
+            }
+
+            is LinearLayoutManager -> {
+                layoutManager.orientation == LinearLayoutManager.VERTICAL
+            }
+
+            is GridLayoutManager -> {
+                layoutManager.orientation == GridLayoutManager.VERTICAL
+            }
+
+            is StaggeredGridLayoutManager -> {
+                layoutManager.orientation == StaggeredGridLayoutManager.VERTICAL
+            }
+
             null -> {
                 Timber.v("Recycler does not have a layout manager attached to it yet, returning true")
                 true
             }
-            else -> throw NotImplementedError("Not sure how to handle $layoutManager")
+
+            else -> {
+                throw NotImplementedError("Not sure how to handle $layoutManager")
+            }
         }
 
     /**
