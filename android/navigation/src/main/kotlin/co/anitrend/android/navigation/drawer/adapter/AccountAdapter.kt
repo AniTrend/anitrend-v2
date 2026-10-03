@@ -61,7 +61,10 @@ class AccountAdapter(
                 val item = getItem(position)
                 item.toAccountType() ?: viewType
             }
-            else -> viewType
+
+            else -> {
+                viewType
+            }
         }
 
     /**

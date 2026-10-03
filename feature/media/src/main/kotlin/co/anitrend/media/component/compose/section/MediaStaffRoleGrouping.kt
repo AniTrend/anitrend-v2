@@ -59,7 +59,10 @@ private fun MediaPerson.Staff.roleGroup(): MediaStaffRoleGroup {
             MediaStaffRoleGroup.ORIGINAL_CREATOR
         }
 
-        normalized.contains("director") -> MediaStaffRoleGroup.DIRECTOR
+        normalized.contains("director") -> {
+            MediaStaffRoleGroup.DIRECTOR
+        }
+
         normalized.contains("writer") ||
             normalized.contains("screenplay") ||
             normalized.contains("script") ||
@@ -73,7 +76,9 @@ private fun MediaPerson.Staff.roleGroup(): MediaStaffRoleGroup {
             MediaStaffRoleGroup.PRODUCER
         }
 
-        else -> MediaStaffRoleGroup.OTHER
+        else -> {
+            MediaStaffRoleGroup.OTHER
+        }
     }
 }
 

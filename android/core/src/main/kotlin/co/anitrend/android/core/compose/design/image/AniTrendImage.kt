@@ -91,7 +91,10 @@ fun AniTrendImage(
                                     image.extraLarge ?: image.large ?: image.medium
                                 }
                             }
-                            else -> image.large ?: image.medium
+
+                            else -> {
+                                image.large ?: image.medium
+                            }
                         } ?: return@combinedClickable
 
                     onClick?.invoke(

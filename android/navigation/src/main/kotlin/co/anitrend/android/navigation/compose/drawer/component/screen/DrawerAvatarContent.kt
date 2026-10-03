@@ -38,17 +38,22 @@ internal sealed interface DrawerAvatarContent {
 
 internal fun resolveDrawerAvatarContent(account: Account?): DrawerAvatarContent =
     when (account) {
-        is Account.Authenticated ->
+        is Account.Authenticated -> {
             DrawerAvatarContent.RemoteImage(
                 image = account.coverImage,
             )
-        is Account.Anonymous ->
+        }
+
+        is Account.Anonymous -> {
             DrawerAvatarContent.AdaptiveLocalImage(
                 imageRes = account.imageRes,
                 contentDescriptionRes = account.titleRes,
             )
-        else ->
+        }
+
+        else -> {
             DrawerAvatarContent.TintedIcon(
                 iconRes = co.anitrend.core.R.mipmap.ic_launcher_foreground,
             )
+        }
     }

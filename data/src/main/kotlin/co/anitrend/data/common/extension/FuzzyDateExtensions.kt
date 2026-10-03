@@ -120,8 +120,14 @@ internal fun IFuzzyDateModel.toFuzzyDateLike(): FuzzyDateLike {
                     ""
                 }
             }
-            month <= 9 -> "0$month"
-            else -> "$month"
+
+            month <= 9 -> {
+                "0$month"
+            }
+
+            else -> {
+                "$month"
+            }
         }
     val fuzzyDateDay =
         when {
@@ -132,8 +138,14 @@ internal fun IFuzzyDateModel.toFuzzyDateLike(): FuzzyDateLike {
                     ""
                 }
             }
-            day <= 9 -> "0$day"
-            else -> "$day"
+
+            day <= 9 -> {
+                "0$day"
+            }
+
+            else -> {
+                "$day"
+            }
         }
 
     return "$fuzzyDateYear$fuzzyDateMonth$fuzzyDateDay"

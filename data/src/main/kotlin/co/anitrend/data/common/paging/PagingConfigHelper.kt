@@ -63,6 +63,7 @@ internal object PagingConfigHelper {
                     }
                 }
             }
+
             Request.Type.AFTER -> {
                 Timber.v("Triggered request: $requestType on paging helper configuration")
                 if (pagingHelper.isInitialAfterFirstLoad()) {
@@ -74,6 +75,7 @@ internal object PagingConfigHelper {
                     }
                 }
             }
+
             else -> {
                 // We won't be support paging before a first item
                 Timber.v("Ignoring request: $requestType on paging helper configuration")

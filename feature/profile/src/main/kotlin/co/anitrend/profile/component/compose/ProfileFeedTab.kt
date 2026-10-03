@@ -66,25 +66,28 @@ internal fun ProfileFeedTab(
         )
 
         when (state) {
-            ProfileSectionState.Loading ->
+            ProfileSectionState.Loading -> {
                 ProfileActivityStateSection(
                     message = stringResource(R.string.message_profile_feed_loading),
                     onRetry = null,
                 )
+            }
 
-            is ProfileSectionState.Error ->
+            is ProfileSectionState.Error -> {
                 ProfileActivityStateSection(
                     message = stringResource(R.string.message_profile_feed_empty),
                     onRetry = onRetry,
                 )
+            }
 
-            ProfileSectionState.Empty ->
+            ProfileSectionState.Empty -> {
                 ProfileActivityStateSection(
                     message = stringResource(R.string.message_profile_feed_empty),
                     onRetry = null,
                 )
+            }
 
-            is ProfileSectionState.Content ->
+            is ProfileSectionState.Content -> {
                 FeedContent(
                     feed = state.data,
                     selectedFilter = selectedFilter,
@@ -92,8 +95,9 @@ internal fun ProfileFeedTab(
                     onMediaSelected = onMediaSelected,
                     onReviewSelected = onReviewSelected,
                 )
+            }
 
-            is ProfileSectionState.Partial ->
+            is ProfileSectionState.Partial -> {
                 FeedContent(
                     feed = state.data,
                     selectedFilter = selectedFilter,
@@ -101,6 +105,7 @@ internal fun ProfileFeedTab(
                     onMediaSelected = onMediaSelected,
                     onReviewSelected = onReviewSelected,
                 )
+            }
         }
     }
 }

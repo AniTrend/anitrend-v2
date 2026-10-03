@@ -152,16 +152,22 @@ import org.koin.compose.koinInject
 
 private fun Float.asDisplayRating(scoreFormat: ScoreFormat): IMediaRating =
     when (scoreFormat) {
-        ScoreFormat.POINT_3 ->
+        ScoreFormat.POINT_3 -> {
             when (toInt()) {
                 1 -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.BAD)
                 2 -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.NEUTRAL)
                 3 -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.GOOD)
                 else -> IMediaRating.Mood(IMediaRating.Mood.Sentiment.NONE)
             }
+        }
 
-        ScoreFormat.POINT_10_DECIMAL -> IMediaRating.Text(format(1))
-        else -> IMediaRating.Text(toInt().toString())
+        ScoreFormat.POINT_10_DECIMAL -> {
+            IMediaRating.Text(format(1))
+        }
+
+        else -> {
+            IMediaRating.Text(toInt().toString())
+        }
     }
 
 private fun Media.Extended.personalRating(scoreFormat: ScoreFormat): IMediaRating? =

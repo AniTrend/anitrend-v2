@@ -48,17 +48,20 @@ internal class MediaConverter(
             mediaType: MediaType,
         ): MediaListProgress =
             when (source.mediaCategory?.type ?: mediaType) {
-                MediaType.ANIME ->
+                MediaType.ANIME -> {
                     MediaListProgress.Anime(
                         episodeProgress = source.progress ?: 0,
                         repeatedCount = source.repeat ?: 0,
                     )
-                MediaType.MANGA ->
+                }
+
+                MediaType.MANGA -> {
                     MediaListProgress.Manga(
                         chapterProgress = source.progress ?: 0,
                         volumeProgress = source.progressVolumes ?: 0,
                         repeatedCount = source.repeat ?: 0,
                     )
+                }
             }
 
         private fun MediaModel.createSiteUrl(): Media.SiteUrl =
@@ -120,7 +123,7 @@ internal class MediaConverter(
 
         override fun transform(source: MediaModel) =
             when (source) {
-                is MediaModel.Media ->
+                is MediaModel.Media -> {
                     Media.Core(
                         countryCode = source.countryOfOrigin,
                         description = source.description,
@@ -222,7 +225,7 @@ internal class MediaConverter(
                             ),
                         category =
                             when (source.type) {
-                                MediaType.ANIME ->
+                                MediaType.ANIME -> {
                                     Media.Category.Anime(
                                         source.episodes ?: 0,
                                         source.duration ?: 0,
@@ -238,12 +241,14 @@ internal class MediaConverter(
                                             )
                                         },
                                     )
+                                }
 
-                                else ->
+                                else -> {
                                     Media.Category.Manga(
                                         source.chapters ?: 0,
                                         source.volumes ?: 0,
                                     )
+                                }
                             },
                         isAdult = source.isAdult,
                         isFavourite = source.isFavourite,
@@ -251,7 +256,9 @@ internal class MediaConverter(
                         id = source.id,
                         mediaList = null,
                     )
-                is MediaModel.Core ->
+                }
+
+                is MediaModel.Core -> {
                     Media.Core(
                         countryCode = source.countryOfOrigin,
                         description = source.description,
@@ -353,7 +360,7 @@ internal class MediaConverter(
                             ),
                         category =
                             when (source.type) {
-                                MediaType.ANIME ->
+                                MediaType.ANIME -> {
                                     Media.Category.Anime(
                                         source.episodes ?: 0,
                                         source.duration ?: 0,
@@ -369,11 +376,14 @@ internal class MediaConverter(
                                             )
                                         },
                                     )
-                                else ->
+                                }
+
+                                else -> {
                                     Media.Category.Manga(
                                         source.chapters ?: 0,
                                         source.volumes ?: 0,
                                     )
+                                }
                             },
                         isAdult = source.isAdult,
                         isFavourite = source.isFavourite,
@@ -381,7 +391,9 @@ internal class MediaConverter(
                         id = source.id,
                         mediaList = source.createMediaList(),
                     )
-                is MediaModel.Extended ->
+                }
+
+                is MediaModel.Extended -> {
                     Media.Extended(
                         background = null,
                         ageRating = null,
@@ -504,7 +516,7 @@ internal class MediaConverter(
                             ),
                         category =
                             when (source.type) {
-                                MediaType.ANIME ->
+                                MediaType.ANIME -> {
                                     Media.Category.Anime(
                                         source.episodes ?: 0,
                                         source.duration ?: 0,
@@ -520,11 +532,14 @@ internal class MediaConverter(
                                             )
                                         },
                                     )
-                                else ->
+                                }
+
+                                else -> {
                                     Media.Category.Manga(
                                         source.chapters ?: 0,
                                         source.volumes ?: 0,
                                     )
+                                }
                             },
                         isAdult = source.isAdult,
                         isFavourite = source.isFavourite,
@@ -532,6 +547,7 @@ internal class MediaConverter(
                         id = source.id,
                         mediaList = source.createMediaList(),
                     )
+                }
             }
     }
 }

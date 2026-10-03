@@ -74,7 +74,10 @@ class NavigationAdapter(
                 val item = getItem(position)
                 item.toNavType() ?: viewType
             }
-            else -> viewType
+
+            else -> {
+                viewType
+            }
         }
 
     /**

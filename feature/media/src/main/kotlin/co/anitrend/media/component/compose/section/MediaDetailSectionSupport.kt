@@ -51,7 +51,10 @@ internal fun partitionMediaTags(tags: List<Tag>): MediaTagPartition {
 
     tags.forEach { tag ->
         when (tag.spoilerLevel()) {
-            MediaTagSpoilerLevel.NONE -> safeTags += tag
+            MediaTagSpoilerLevel.NONE -> {
+                safeTags += tag
+            }
+
             MediaTagSpoilerLevel.GENERAL -> {
                 spoilerTags += tag
                 generalSpoilerCount += 1

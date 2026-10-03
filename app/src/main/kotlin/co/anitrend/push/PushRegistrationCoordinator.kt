@@ -41,14 +41,21 @@ internal class PushRegistrationCoordinator(
 ) {
     init {
         when (ensureRegistered()) {
-            PushRegistrationResult.RegisteredExistingDistributor ->
+            PushRegistrationResult.RegisteredExistingDistributor -> {
                 Timber.i("UnifiedPush registration refreshed")
-            PushRegistrationResult.RegisteredSavedDistributor ->
+            }
+
+            PushRegistrationResult.RegisteredSavedDistributor -> {
                 Timber.i("UnifiedPush distributor selected automatically and registered")
-            PushRegistrationResult.SkippedNoDistributorAvailable ->
+            }
+
+            PushRegistrationResult.SkippedNoDistributorAvailable -> {
                 Timber.i("UnifiedPush registration skipped because no distributor is installed")
-            PushRegistrationResult.SkippedDistributorSelectionRequired ->
+            }
+
+            PushRegistrationResult.SkippedDistributorSelectionRequired -> {
                 Timber.i("UnifiedPush registration skipped because distributor selection requires user input")
+            }
         }
     }
 

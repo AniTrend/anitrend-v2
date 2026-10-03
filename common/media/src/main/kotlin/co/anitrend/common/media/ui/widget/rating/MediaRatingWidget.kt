@@ -139,6 +139,7 @@ internal class MediaRatingWidget
                         mediaAverageScore.text = mediaScoreDefault
                     }
                 }
+
                 ScoreFormat.POINT_10 -> {
                     if (mediaList.isValid()) {
                         mediaAverageScore.text = requireNotNull(mediaList).score.toInt().toString()
@@ -146,6 +147,7 @@ internal class MediaRatingWidget
                         mediaAverageScore.text = (score.mean / 10f).toString()
                     }
                 }
+
                 ScoreFormat.POINT_5 -> {
                     if (mediaList.isValid()) {
                         mediaAverageScore.text = requireNotNull(mediaList).score.toInt().toString()
@@ -153,6 +155,7 @@ internal class MediaRatingWidget
                         mediaAverageScore.text = mediaScoreDefault
                     }
                 }
+
                 ScoreFormat.POINT_10_DECIMAL -> {
                     if (mediaList.isValid()) {
                         mediaAverageScore.text = requireNotNull(mediaList).score.format(1)
@@ -161,6 +164,7 @@ internal class MediaRatingWidget
                         mediaAverageScore.text = scoreFormatted.format(1)
                     }
                 }
+
                 ScoreFormat.POINT_3 -> {
                     val faceDefault = context.getCompatDrawable(R.drawable.ic_face)
                     val faceNeutral = context.getCompatDrawable(R.drawable.ic_face_neutral)
@@ -192,7 +196,10 @@ internal class MediaRatingWidget
                         )
                     }
                 }
-                else -> mediaAverageScore.text = score.average.toString()
+
+                else -> {
+                    mediaAverageScore.text = score.average.toString()
+                }
             }
         }
 
@@ -222,31 +229,45 @@ internal class MediaRatingWidget
 
             mediaListStatusIndicator.visible()
             when (media.mediaList?.status) {
-                MediaListStatus.COMPLETED ->
+                MediaListStatus.COMPLETED -> {
                     mediaListStatusIndicator.setImageDrawable(
                         context.getCompatDrawable(R.drawable.ic_completed, tintColor),
                     )
-                MediaListStatus.CURRENT ->
+                }
+
+                MediaListStatus.CURRENT -> {
                     mediaListStatusIndicator.setImageDrawable(
                         context.getCompatDrawable(R.drawable.ic_current, tintColor),
                     )
-                MediaListStatus.DROPPED ->
+                }
+
+                MediaListStatus.DROPPED -> {
                     mediaListStatusIndicator.setImageDrawable(
                         context.getCompatDrawable(R.drawable.ic_dropped, tintColor),
                     )
-                MediaListStatus.PAUSED ->
+                }
+
+                MediaListStatus.PAUSED -> {
                     mediaListStatusIndicator.setImageDrawable(
                         context.getCompatDrawable(R.drawable.ic_paused, tintColor),
                     )
-                MediaListStatus.PLANNING ->
+                }
+
+                MediaListStatus.PLANNING -> {
                     mediaListStatusIndicator.setImageDrawable(
                         context.getCompatDrawable(R.drawable.ic_planning, tintColor),
                     )
-                MediaListStatus.REPEATING ->
+                }
+
+                MediaListStatus.REPEATING -> {
                     mediaListStatusIndicator.setImageDrawable(
                         context.getCompatDrawable(R.drawable.ic_repeat, tintColor),
                     )
-                else -> throw NotImplementedError("`${media.mediaList?.status}` is not catered for")
+                }
+
+                else -> {
+                    throw NotImplementedError("`${media.mediaList?.status}` is not catered for")
+                }
             }
         }
 

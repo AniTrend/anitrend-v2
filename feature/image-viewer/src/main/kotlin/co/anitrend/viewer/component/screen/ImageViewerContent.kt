@@ -185,7 +185,10 @@ private fun ZoomableImagePage(
         )
 
         when (pageState) {
-            ImagePageState.LOADING -> CircularProgressIndicator(modifier = Modifier.size(32.dp), color = Color.White)
+            ImagePageState.LOADING -> {
+                CircularProgressIndicator(modifier = Modifier.size(32.dp), color = Color.White)
+            }
+
             ImagePageState.ERROR -> {
                 Text(
                     text = stringResource(R.string.label_image_viewer_load_error),
@@ -195,7 +198,10 @@ private fun ZoomableImagePage(
                     modifier = Modifier.padding(horizontal = 24.dp),
                 )
             }
-            ImagePageState.SUCCESS -> Unit
+
+            ImagePageState.SUCCESS -> {
+                Unit
+            }
         }
     }
 

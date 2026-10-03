@@ -88,7 +88,10 @@ class SettingsPresenter(
     private fun labelForSeconds(seconds: Int): String {
         val minutes = seconds / 60
         return when {
-            minutes < 60 -> context.getString(co.anitrend.settings.R.string.label_settings_sync_every_minutes, minutes)
+            minutes < 60 -> {
+                context.getString(co.anitrend.settings.R.string.label_settings_sync_every_minutes, minutes)
+            }
+
             minutes % 60 == 0 -> {
                 val hours = minutes / 60
                 if (hours == 1) {
@@ -97,6 +100,7 @@ class SettingsPresenter(
                     context.getString(co.anitrend.settings.R.string.label_settings_sync_every_hours, hours)
                 }
             }
+
             else -> {
                 val hours = minutes / 60
                 val rem = minutes % 60
@@ -142,22 +146,32 @@ class SettingsPresenter(
     private fun localeValue(): String {
         val localeSettings = settings as ILocaleSettings
         return when (localeSettings.locale.value) {
-            AniTrendLocale.AUTOMATIC -> context.getString(co.anitrend.android.core.R.string.global_label_system)
-            else ->
+            AniTrendLocale.AUTOMATIC -> {
+                context.getString(co.anitrend.android.core.R.string.global_label_system)
+            }
+
+            else -> {
                 localeSettings.locale.value
                     .asLocale()
                     .getDisplayName(localeSettings.locale.value.asLocale())
+            }
         }
     }
 
     private fun notificationValue(): String {
         val notificationSettings = settings as INotificationSettings
         return when {
-            !context.hasNotificationPermissionFor(NotificationConfig.GENERAL) ->
+            !context.hasNotificationPermissionFor(NotificationConfig.GENERAL) -> {
                 context.getString(co.anitrend.settings.R.string.label_settings_state_permission_required)
-            notificationSettings.isNotificationsEnabled.value ->
+            }
+
+            notificationSettings.isNotificationsEnabled.value -> {
                 context.getString(co.anitrend.settings.R.string.label_settings_state_enabled)
-            else -> context.getString(co.anitrend.settings.R.string.label_settings_state_off)
+            }
+
+            else -> {
+                context.getString(co.anitrend.settings.R.string.label_settings_state_off)
+            }
         }
     }
 
