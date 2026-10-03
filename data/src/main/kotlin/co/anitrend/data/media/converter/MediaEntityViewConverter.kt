@@ -320,7 +320,7 @@ internal class MediaEntityViewConverter(
                     ),
                 category =
                     when (media.type) {
-                        MediaType.ANIME ->
+                        MediaType.ANIME -> {
                             Media.Category.Anime(
                                 media.episodes ?: edge?.media?.airedEpisodes ?: 0,
                                 media.duration ?: edge
@@ -355,12 +355,14 @@ internal class MediaEntityViewConverter(
                                         )
                                     },
                             )
+                        }
 
-                        MediaType.MANGA ->
+                        MediaType.MANGA -> {
                             Media.Category.Manga(
                                 media.chapters ?: edge?.media?.chapters ?: 0,
                                 media.volumes ?: edge?.media?.volumes ?: 0,
                             )
+                        }
                     },
                 isAdult = media.isAdult ?: edge?.media?.isAdult,
                 isFavourite = media.isFavourite,
@@ -414,8 +416,11 @@ internal class MediaEntityViewConverter(
 
         override fun transform(source: MediaEntityView) =
             when (source) {
-                is MediaEntityView.Core -> source.createMedia()
-                is MediaEntityView.Extended ->
+                is MediaEntityView.Core -> {
+                    source.createMedia()
+                }
+
+                is MediaEntityView.Extended -> {
                     source.createMedia().let { media ->
                         val edge = source.edge
                         val edgeTrailers = edge?.createTrailers(source.media.trailer).orEmpty()
@@ -511,6 +516,7 @@ internal class MediaEntityViewConverter(
                             mediaList = media.mediaList,
                         )
                     }
+                }
             }
     }
 }

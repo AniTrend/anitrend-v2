@@ -135,6 +135,7 @@ class MediaListEditorState(
                 is MediaListProgress.Anime -> {
                     repeatText = sanitizeWholeNumberInput(prog.repeated.toString(), max = null)
                 }
+
                 is MediaListProgress.Manga -> {
                     volumeProgressText = sanitizeWholeNumberInput(prog.volumeProgress.toString(), totalVolumes)
                     repeatText = sanitizeWholeNumberInput(prog.repeated.toString(), max = null)
@@ -162,16 +163,21 @@ class MediaListEditorState(
                 }
                 selectedEndDate = dateHelper.convertToFuzzyDate(nowMillis)
             }
+
             MediaListStatus.CURRENT -> {
                 selectedStartDate = dateHelper.convertToFuzzyDate(nowMillis)
             }
+
             MediaListStatus.REPEATING -> {
                 progressText = "0"
                 if (mediaType == MediaType.MANGA) {
                     volumeProgressText = "0"
                 }
             }
-            else -> Unit
+
+            else -> {
+                Unit
+            }
         }
     }
 
@@ -372,7 +378,7 @@ class MediaListEditorState(
     private fun sanitizeScoreInput(value: String): String {
         val cleaned =
             when (scoreFormat) {
-                ScoreFormat.POINT_10_DECIMAL ->
+                ScoreFormat.POINT_10_DECIMAL -> {
                     value
                         .replace(Regex("[^0-9.]"), "")
                         .trimStart('.')
@@ -387,7 +393,11 @@ class MediaListEditorState(
                             val fractional = parts.getOrNull(1)?.take(1) ?: ""
                             if (fractional.isEmpty()) integer else "$integer.$fractional"
                         }
-                else -> value.substringBefore('.').filter(Char::isDigit)
+                }
+
+                else -> {
+                    value.substringBefore('.').filter(Char::isDigit)
+                }
             }
         if (cleaned.isBlank()) {
             return ""

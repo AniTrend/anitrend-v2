@@ -56,11 +56,14 @@ class AppInfo(
     private fun installationSource(context: Context): String {
         val packageManager = context.packageManager
         return when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ->
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
                 packageManager.getInstallSourceInfo(context.packageName).installingPackageName
-            else ->
+            }
+
+            else -> {
                 @Suppress("DEPRECATION")
                 packageManager.getInstallerPackageName(context.packageName)
+            }
         } ?: "StandAloneInstall"
     }
 

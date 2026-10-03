@@ -197,17 +197,20 @@ fun MediaPeopleSection(
                     onItemClick = onCharacterClick,
                 )
             }
+
             charactersRefreshState == null || charactersRefreshState is androidx.paging.LoadState.Loading -> {
                 MediaHubSectionLoadingState(
                     title = stringResource(R.string.label_media_people_characters_loading),
                 )
             }
+
             charactersRefreshState is androidx.paging.LoadState.Error -> {
                 PeopleSubsectionErrorState(
                     title = stringResource(R.string.label_media_people_characters_error_title),
                     onRetry = onRetryCharacters,
                 )
             }
+
             else -> {
                 MediaHubSectionEmptyState(
                     title = stringResource(R.string.label_media_people_characters_empty_title),
@@ -229,17 +232,20 @@ fun MediaPeopleSection(
                     onItemClick = onStaffClick,
                 )
             }
+
             staffRefreshState == null || staffRefreshState is androidx.paging.LoadState.Loading -> {
                 MediaHubSectionLoadingState(
                     title = stringResource(R.string.label_media_people_staff_loading),
                 )
             }
+
             staffRefreshState is androidx.paging.LoadState.Error -> {
                 PeopleSubsectionErrorState(
                     title = stringResource(R.string.label_media_people_staff_error_title),
                     onRetry = onRetryStaff,
                 )
             }
+
             else -> {
                 MediaHubSectionEmptyState(
                     title = stringResource(R.string.label_media_people_staff_empty_title),

@@ -91,7 +91,13 @@ internal class EpisodePagingSource(
                 clearDataSource(dispatcher.io)
                 invoke(requestType = Request.Type.INITIAL)
             }
-            LoadType.PREPEND -> MediatorResult.Success(endOfPaginationReached = true)
-            LoadType.APPEND -> MediatorResult.Success(endOfPaginationReached = true)
+
+            LoadType.PREPEND -> {
+                MediatorResult.Success(endOfPaginationReached = true)
+            }
+
+            LoadType.APPEND -> {
+                MediatorResult.Success(endOfPaginationReached = true)
+            }
         }
 }

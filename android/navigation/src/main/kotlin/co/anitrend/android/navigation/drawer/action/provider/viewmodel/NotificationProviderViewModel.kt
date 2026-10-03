@@ -31,7 +31,10 @@ internal class NotificationProviderViewModel(
     val unreadNotifications: LiveData<Int> =
         model.map { user ->
             when (user) {
-                is User.Authenticated -> user.unreadNotifications
+                is User.Authenticated -> {
+                    user.unreadNotifications
+                }
+
                 else -> {
                     Timber.w("Type of $user does not have `unreadNotifications` property")
                     0

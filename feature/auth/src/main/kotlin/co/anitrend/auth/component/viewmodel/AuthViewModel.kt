@@ -44,15 +44,19 @@ class AuthViewModel(
                     is Authentication.Authenticate -> {
                         LoadState.Loading()
                     }
-                    is Authentication.Error ->
+
+                    is Authentication.Error -> {
                         LoadState.Error(
                             RequestError(
                                 topic = state.title,
                                 description = state.message,
                             ),
                         )
+                    }
 
-                    else -> LoadState.Idle()
+                    else -> {
+                        LoadState.Idle()
+                    }
                 }
             }.asLiveData(viewModelScope.coroutineContext)
 
@@ -69,6 +73,7 @@ class AuthViewModel(
                     )
                 state.postValue(result)
             }
+
             else -> {
                 Timber.i("AuthState.invoke triggered with param: $authentication")
             }

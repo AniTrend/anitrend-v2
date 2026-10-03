@@ -176,31 +176,35 @@ fun AiringRoute(
 
             Box(modifier = Modifier.weight(1f)) {
                 when {
-                    airings.itemCount > 0 ->
+                    airings.itemCount > 0 -> {
                         AiringGrid(
                             airings = airings,
                             browseLayout = preferredViewMode,
                             scoreFormat = scoreFormat,
                             onMediaItemClick = onMediaItemClick,
                         )
+                    }
 
-                    refreshState is LoadState.Loading ->
+                    refreshState is LoadState.Loading -> {
                         AiringState(
                             title = stringResource(R.string.label_airing_loading_title),
                             subtitle = stringResource(R.string.message_airing_loading),
                         )
+                    }
 
-                    refreshState is LoadState.Error ->
+                    refreshState is LoadState.Error -> {
                         RetryAiringState(
                             title = stringResource(R.string.label_airing_error_title),
                             onRetry = airings::retry,
                         )
+                    }
 
-                    else ->
+                    else -> {
                         AiringState(
                             title = stringResource(R.string.label_airing_empty_title),
                             subtitle = stringResource(R.string.message_airing_empty),
                         )
+                    }
                 }
             }
         }
@@ -283,7 +287,9 @@ private fun AiringGrid(
                 }
             }
 
-            else -> Unit
+            else -> {
+                Unit
+            }
         }
     }
 }

@@ -24,13 +24,16 @@ internal object DrawerLegacyNavigationAdapter {
     fun map(entries: List<DrawerEntry>): List<Navigation> =
         entries.mapNotNull { entry ->
             when (entry) {
-                is DrawerEntry.Header ->
+                is DrawerEntry.Header -> {
                     Navigation.Group(
                         titleRes = entry.titleRes,
                         groupId = entry.groupId,
                     )
+                }
 
-                is DrawerEntry.Item -> toLegacy(entry)
+                is DrawerEntry.Item -> {
+                    toLegacy(entry)
+                }
             }
         }
 
@@ -68,23 +71,54 @@ internal object DrawerLegacyNavigationAdapter {
     @IdRes
     fun legacyMenuIdFor(destination: DrawerDestination): Int? =
         when (destination) {
-            DrawerDestination.Home -> R.id.navigation_home
-            DrawerDestination.Discover -> R.id.navigation_discover
-            DrawerDestination.Social -> R.id.navigation_social
-            DrawerDestination.Reviews -> R.id.navigation_reviews
-            DrawerDestination.Suggestions -> R.id.navigation_suggestions
-            DrawerDestination.AnimeList -> R.id.navigation_anime_list
-            DrawerDestination.MangaList -> R.id.navigation_manga_list
-            DrawerDestination.News -> R.id.navigation_news
-            DrawerDestination.Forums -> R.id.navigation_forum
-            DrawerDestination.Episodes -> R.id.navigation_episodes
-            is DrawerDestination.ExternalUrl ->
+            DrawerDestination.Home -> {
+                R.id.navigation_home
+            }
+
+            DrawerDestination.Discover -> {
+                R.id.navigation_discover
+            }
+
+            DrawerDestination.Social -> {
+                R.id.navigation_social
+            }
+
+            DrawerDestination.Reviews -> {
+                R.id.navigation_reviews
+            }
+
+            DrawerDestination.Suggestions -> {
+                R.id.navigation_suggestions
+            }
+
+            DrawerDestination.AnimeList -> {
+                R.id.navigation_anime_list
+            }
+
+            DrawerDestination.MangaList -> {
+                R.id.navigation_manga_list
+            }
+
+            DrawerDestination.News -> {
+                R.id.navigation_news
+            }
+
+            DrawerDestination.Forums -> {
+                R.id.navigation_forum
+            }
+
+            DrawerDestination.Episodes -> {
+                R.id.navigation_episodes
+            }
+
+            is DrawerDestination.ExternalUrl -> {
                 when (destination.url) {
                     PATREON_URL -> R.id.navigation_donate
                     DISCORD_URL -> R.id.navigation_discord
                     FAQ_URL -> R.id.navigation_faq
                     else -> null
                 }
+            }
         }
 
     private const val PATREON_URL = "https://www.patreon.com/wax911"

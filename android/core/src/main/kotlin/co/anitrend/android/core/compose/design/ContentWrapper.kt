@@ -178,19 +178,25 @@ fun <P : IParam> ContentWrapper(
 
     AnimatedContent(targetState = loadState) { state ->
         when (state) {
-            is LoadState.Error ->
+            is LoadState.Error -> {
                 ErrorContent(
                     config = config,
                     state = state,
                     onClick = onClick,
                     modifier = Modifier.fillMaxSize().padding(32.dp),
                 )
-            is LoadState.Loading ->
+            }
+
+            is LoadState.Loading -> {
                 LoadingContent(
                     config = config,
                     modifier = Modifier.fillMaxSize().padding(32.dp),
                 )
-            else -> content()
+            }
+
+            else -> {
+                content()
+            }
         }
     }
 
@@ -216,23 +222,25 @@ private fun ContentWrapperPreview(
         )
     PreviewTheme {
         when (loadState) {
-            is LoadState.Error ->
+            is LoadState.Error -> {
                 ErrorContent(
                     config = config,
                     state = loadState,
                     modifier = modifier,
                     onClick = {},
                 )
+            }
 
-            is LoadState.Loading ->
+            is LoadState.Loading -> {
                 LoadingContent(
                     config = config,
                     modifier = modifier,
                 )
+            }
 
             is LoadState.Idle,
             is LoadState.Success,
-            ->
+            -> {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     Column(modifier = modifier.padding(16.dp)) {
                         Text(text = "What are you doing here?")
@@ -242,6 +250,7 @@ private fun ContentWrapperPreview(
                         }
                     }
                 }
+            }
         }
     }
 }

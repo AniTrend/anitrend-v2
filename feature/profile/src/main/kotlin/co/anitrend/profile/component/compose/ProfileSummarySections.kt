@@ -500,17 +500,29 @@ internal fun ProfileStatsOverviewSection(
         subtitle = stringResource(R.string.subtitle_profile_section_stats_overview),
     ) {
         when (state) {
-            is ProfileSectionState.Content -> StatsOverviewContent(statistic = state.data)
-            is ProfileSectionState.Partial -> StatsOverviewContent(statistic = state.data)
-            ProfileSectionState.Loading ->
+            is ProfileSectionState.Content -> {
+                StatsOverviewContent(statistic = state.data)
+            }
+
+            is ProfileSectionState.Partial -> {
+                StatsOverviewContent(statistic = state.data)
+            }
+
+            ProfileSectionState.Loading -> {
                 ProfileMessageState(
                     message = stringResource(R.string.message_profile_stats_loading),
                 )
-            is ProfileSectionState.Error -> ProfileRetryState(onRetry = onRetry)
-            ProfileSectionState.Empty ->
+            }
+
+            is ProfileSectionState.Error -> {
+                ProfileRetryState(onRetry = onRetry)
+            }
+
+            ProfileSectionState.Empty -> {
                 ProfileMessageState(
                     message = stringResource(R.string.message_profile_stats_unavailable),
                 )
+            }
         }
     }
 }
@@ -726,6 +738,7 @@ internal fun statsMetricItems(statistic: Statistic): List<Pair<String, String>> 
                     ),
                 )
             }
+
             is Statistic.Manga -> {
                 add(
                     stringLabelAndValue(
@@ -745,18 +758,21 @@ internal fun statsMetricItems(statistic: Statistic): List<Pair<String, String>> 
 
 internal fun topGenreEntries(statistic: Statistic): List<Pair<String, Int>> =
     when (statistic) {
-        is Statistic.Anime ->
+        is Statistic.Anime -> {
             statistic.genres
                 .orEmpty()
                 .filterIsInstance<MediaStatistic.Anime.Genre>()
                 .sortedByDescending(MediaStatistic.Anime.Genre::count)
                 .map { it.genre to it.count }
-        is Statistic.Manga ->
+        }
+
+        is Statistic.Manga -> {
             statistic.genres
                 .orEmpty()
                 .filterIsInstance<MediaStatistic.Manga.Genre>()
                 .sortedByDescending(MediaStatistic.Manga.Genre::count)
                 .map { it.genre to it.count }
+        }
     }
 
 internal fun List<ProfileScoreEntry>.toScoreBarEntries(): List<ScoreDistributionBarEntry> =

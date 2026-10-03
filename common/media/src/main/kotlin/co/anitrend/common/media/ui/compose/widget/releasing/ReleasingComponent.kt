@@ -87,17 +87,20 @@ fun MediaReleaseStatus(
     modifier: Modifier = Modifier,
 ) {
     when (val category = media.category) {
-        is Media.Category.Anime ->
+        is Media.Category.Anime -> {
             AiringSchedule(
                 media = media,
                 modifier = modifier,
             )
-        is Media.Category.Manga ->
+        }
+
+        is Media.Category.Manga -> {
             MangaQuantity(
                 category = category,
                 status = media.status,
                 image = media.image,
                 modifier = modifier,
             )
+        }
     }
 }

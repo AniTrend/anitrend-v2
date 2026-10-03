@@ -371,7 +371,9 @@ private fun recommendationRationaleLabel(recommendation: MediaRecommendationEntr
 private fun recommendationVoteLabel(rating: RecommendationRating?): String? =
     when (rating) {
         RecommendationRating.RATE_UP -> stringResource(R.string.label_media_recommendations_vote_up)
+
         RecommendationRating.RATE_DOWN -> stringResource(R.string.label_media_recommendations_vote_down)
+
         RecommendationRating.NO_RATING,
         null,
         -> null
@@ -394,17 +396,19 @@ private fun buildQuickFacts(media: Media): List<String> =
 @Composable
 private fun Media.Category.quickFactLabel(): String? =
     when (this) {
-        is Media.Category.Anime ->
+        is Media.Category.Anime -> {
             episodes.takeIf { it > 0 }?.let {
                 pluralStringResource(R.plurals.label_media_connection_episodes_short, it, it)
             }
+        }
 
-        is Media.Category.Manga ->
+        is Media.Category.Manga -> {
             chapters.takeIf { it > 0 }?.let {
                 pluralStringResource(R.plurals.label_media_connection_chapters_short, it, it)
             } ?: volumes.takeIf { it > 0 }?.let {
                 pluralStringResource(R.plurals.label_media_connection_volumes_short, it, it)
             }
+        }
     }
 
 @Composable

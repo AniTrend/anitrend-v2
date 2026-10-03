@@ -46,7 +46,7 @@ internal class AiringModelConverter(
     private companion object : ISupportTransformer<AiringScheduleModel, AiringScheduleEntity> {
         override fun transform(source: AiringScheduleModel) =
             when (source) {
-                is AiringScheduleModel.Core ->
+                is AiringScheduleModel.Core -> {
                     AiringScheduleEntity(
                         airingAt = source.airingAt,
                         episode = source.episode,
@@ -54,7 +54,9 @@ internal class AiringModelConverter(
                         timeUntilAiring = source.timeUntilAiring,
                         id = source.id,
                     )
-                is AiringScheduleModel.Extended ->
+                }
+
+                is AiringScheduleModel.Extended -> {
                     AiringScheduleEntity(
                         airingAt = source.airingAt,
                         episode = source.episode,
@@ -62,6 +64,7 @@ internal class AiringModelConverter(
                         timeUntilAiring = source.timeUntilAiring,
                         id = source.id,
                     )
+                }
             }
     }
 }
