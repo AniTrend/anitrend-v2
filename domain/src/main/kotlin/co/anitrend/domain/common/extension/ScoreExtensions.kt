@@ -21,15 +21,28 @@ import java.util.Locale
 
 fun Int.asFormattedScore(scoreFormat: ScoreFormat): String =
     when (scoreFormat) {
-        ScoreFormat.POINT_100 -> "$this/100"
-        ScoreFormat.POINT_10 -> "${this / 10}/10"
-        ScoreFormat.POINT_10_DECIMAL -> String.format(Locale.US, "%.1f/10", this / 10f)
-        ScoreFormat.POINT_5 -> "${this * 5 / 100}/5"
-        ScoreFormat.POINT_3 ->
+        ScoreFormat.POINT_100 -> {
+            "$this/100"
+        }
+
+        ScoreFormat.POINT_10 -> {
+            "${this / 10}/10"
+        }
+
+        ScoreFormat.POINT_10_DECIMAL -> {
+            String.format(Locale.US, "%.1f/10", this / 10f)
+        }
+
+        ScoreFormat.POINT_5 -> {
+            "${this * 5 / 100}/5"
+        }
+
+        ScoreFormat.POINT_3 -> {
             when (this) {
                 in 67..100 -> "3/3"
                 in 34..66 -> "2/3"
                 in 1..33 -> "1/3"
                 else -> "0/3"
             }
+        }
     }

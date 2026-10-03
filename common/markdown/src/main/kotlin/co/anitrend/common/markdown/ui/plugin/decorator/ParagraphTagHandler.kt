@@ -62,6 +62,7 @@ class ParagraphTagHandler private constructor() : TagHandler() {
                             spans.add(AlignmentSpan.Standard(Layout.Alignment.ALIGN_OPPOSITE))
                         }
                     }
+
                     MARGIN_LEFT -> {
                         val attribute = property.value()
                         if (attribute.contains("px")) {
@@ -74,7 +75,10 @@ class ParagraphTagHandler private constructor() : TagHandler() {
                             Timber.v("$MARGIN_LEFT has unknown unit $property")
                         }
                     }
-                    else -> Timber.v("Not sure how to handle $property")
+
+                    else -> {
+                        Timber.v("Not sure how to handle $property")
+                    }
                 }
             }
         }

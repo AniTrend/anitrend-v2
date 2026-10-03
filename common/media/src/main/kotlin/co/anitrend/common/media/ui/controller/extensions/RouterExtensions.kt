@@ -48,19 +48,23 @@ fun FragmentActivity.handleMediaItemNavigation(
     settings: IUserSettings,
 ) {
     when (param) {
-        is MediaRouter.MediaParam ->
+        is MediaRouter.MediaParam -> {
             MediaRouter.startActivity(
                 context = this,
                 navPayload = param.asNavPayload(),
             )
+        }
 
-        is MediaListEditorRouter.MediaListEditorParam ->
+        is MediaListEditorRouter.MediaListEditorParam -> {
             window.decorView.openMediaListSheetFor(
                 mediaListParam = param,
                 settings = settings,
             )
+        }
 
-        else -> Unit
+        else -> {
+            Unit
+        }
     }
 }
 

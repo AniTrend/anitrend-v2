@@ -35,6 +35,7 @@ class DeepLinkViewModel : ViewModel() {
             null -> {
                 Timber.w(DeepLinkException.MissingIntentData())
             }
+
             else -> {
                 val intent = DeepLinkRouter.forMatchingIntent(uri.toString())
                 if (intent == null) {

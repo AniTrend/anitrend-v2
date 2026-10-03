@@ -280,20 +280,23 @@ internal object MediaListRoute : Route(
         val scoreFormat = (env as IAniTrendEnvironment).settings.scoreFormat
         val payload =
             when (identifier?.isDigitsOnly()) {
-                true ->
+                true -> {
                     MediaListRouter
                         .MediaListParam(
                             userId = identifier.toLongOrNull(),
                             scoreFormat = scoreFormat.value,
                             type = mediaType,
                         ).asNavPayload()
-                else ->
+                }
+
+                else -> {
                     MediaListRouter
                         .MediaListParam(
                             userName = identifier,
                             scoreFormat = scoreFormat.value,
                             type = mediaType,
                         ).asNavPayload()
+                }
             }
         return MediaListRouter.forActivity(env.context, payload)
     }
@@ -311,16 +314,19 @@ internal object UserRoute : Route(
         val identifier = params["id"]
         val payload =
             when (identifier?.isDigitsOnly()) {
-                true ->
+                true -> {
                     ProfileRouter
                         .ProfileParam(
                             userId = identifier.toLongOrNull(),
                         ).asNavPayload()
-                else ->
+                }
+
+                else -> {
                     ProfileRouter
                         .ProfileParam(
                             userName = identifier,
                         ).asNavPayload()
+                }
             }
         return ProfileRouter.forActivity(env.context, payload)
     }
@@ -339,16 +345,19 @@ internal object UserStatsRoute : Route(
         val identifier = params["id"]
         val payload =
             when (identifier?.isDigitsOnly()) {
-                true ->
+                true -> {
                     ProfileRouter
                         .ProfileParam(
                             userId = identifier.toLongOrNull(),
                         ).asNavPayload()
-                else ->
+                }
+
+                else -> {
                     ProfileRouter
                         .ProfileParam(
                             userName = identifier,
                         ).asNavPayload()
+                }
             }
         return ProfileRouter.forActivity(env.context, payload)
     }
@@ -366,16 +375,19 @@ internal object UserFavouritesRoute : Route(
         val identifier = params["id"]
         val payload =
             when (identifier?.isDigitsOnly()) {
-                true ->
+                true -> {
                     ProfileRouter
                         .ProfileParam(
                             userId = identifier.toLongOrNull(),
                         ).asNavPayload()
-                else ->
+                }
+
+                else -> {
                     ProfileRouter
                         .ProfileParam(
                             userName = identifier,
                         ).asNavPayload()
+                }
             }
         return ProfileRouter.forActivity(env.context, payload)
     }
@@ -393,16 +405,19 @@ internal object UserReviewRoute : Route(
         val identifier = params["id"]
         val payload =
             when (identifier?.isDigitsOnly()) {
-                true ->
+                true -> {
                     ProfileRouter
                         .ProfileParam(
                             userId = identifier.toLongOrNull(),
                         ).asNavPayload()
-                else ->
+                }
+
+                else -> {
                     ProfileRouter
                         .ProfileParam(
                             userName = identifier,
                         ).asNavPayload()
+                }
             }
         return ProfileRouter.forActivity(env.context, payload)
     }

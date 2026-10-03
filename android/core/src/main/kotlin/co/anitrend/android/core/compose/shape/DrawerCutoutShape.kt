@@ -127,7 +127,10 @@ class DrawerCutoutShape(
                 path.lineTo(width, 0f)
                 return
             }
-            is DrawerCutoutGeometry.Cutout -> drawCutout(path, width, geometry)
+
+            is DrawerCutoutGeometry.Cutout -> {
+                drawCutout(path, width, geometry)
+            }
         }
     }
 

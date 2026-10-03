@@ -82,31 +82,40 @@ internal sealed class ReviewQueryFilter<T> : FilterQueryBuilder<T>() {
         private fun order(filter: ReviewParam.Paged) {
             filter.sort?.forEach { sort ->
                 when (sort.sortable) {
-                    ReviewSort.CREATED_AT ->
+                    ReviewSort.CREATED_AT -> {
                         requireBuilder().orderBy(
                             ReviewEntitySchema.createdAt.asColumn(reviewTable),
                             sort.order,
                         )
-                    ReviewSort.ID ->
+                    }
+
+                    ReviewSort.ID -> {
                         requireBuilder().orderBy(
                             ReviewEntitySchema.id.asColumn(reviewTable),
                             sort.order,
                         )
-                    ReviewSort.RATING ->
+                    }
+
+                    ReviewSort.RATING -> {
                         requireBuilder().orderBy(
                             ReviewEntitySchema.rating.asColumn(reviewTable),
                             sort.order,
                         )
-                    ReviewSort.SCORE ->
+                    }
+
+                    ReviewSort.SCORE -> {
                         requireBuilder().orderBy(
                             ReviewEntitySchema.score.asColumn(reviewTable),
                             sort.order,
                         )
-                    ReviewSort.UPDATED_AT ->
+                    }
+
+                    ReviewSort.UPDATED_AT -> {
                         requireBuilder().orderBy(
                             ReviewEntitySchema.updatedAt.asColumn(reviewTable),
                             sort.order,
                         )
+                    }
                 }
             }
         }

@@ -111,6 +111,7 @@ abstract class AniTrendSelectionContent<B : ViewBinding, M> :
                     submitList(model)
                 }
             }
+
             else -> {}
         }
     }

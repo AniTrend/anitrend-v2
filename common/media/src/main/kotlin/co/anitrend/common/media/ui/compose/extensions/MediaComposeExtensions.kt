@@ -77,7 +77,9 @@ fun Media.genreMetaLine(): String? =
 fun MediaBrowseLayout.listVariantOrNull(): MediaBrowseListVariant? =
     when (this) {
         MediaBrowseLayout.DETAILED -> MediaBrowseListVariant.DETAILED
+
         MediaBrowseLayout.SUMMARY -> MediaBrowseListVariant.SUMMARY
+
         MediaBrowseLayout.COMFORTABLE,
         MediaBrowseLayout.COMPACT,
         -> null
@@ -88,7 +90,9 @@ fun MediaBrowseLayout.isListLayout(): Boolean = listVariantOrNull() != null
 fun MediaBrowseLayout.gridColumns(): Int =
     when (this) {
         MediaBrowseLayout.COMFORTABLE -> 2
+
         MediaBrowseLayout.COMPACT -> 3
+
         MediaBrowseLayout.DETAILED,
         MediaBrowseLayout.SUMMARY,
         -> 1
