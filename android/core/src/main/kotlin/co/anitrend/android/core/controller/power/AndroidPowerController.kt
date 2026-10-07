@@ -59,13 +59,18 @@ internal class AndroidPowerController(
             settings.isPowerSaverOn.value -> {
                 PowerSaverState.Enabled(PowerSaverState.Reason.PREFERENCE)
             }
+
             powerManager?.isPowerSaveMode == true -> {
                 PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_POWER_SAVER)
             }
+
             isBackgroundDataRestricted() -> {
                 PowerSaverState.Enabled(PowerSaverState.Reason.SYSTEM_DATA_SAVER)
             }
-            else -> PowerSaverState.Disabled
+
+            else -> {
+                PowerSaverState.Disabled
+            }
         }
 
     @SuppressLint("BatteryLife")

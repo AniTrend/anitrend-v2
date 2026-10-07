@@ -150,7 +150,10 @@ private fun SyncIntervalSection(
 private fun labelForSeconds(seconds: Int): String {
     val minutes = seconds / 60
     return when {
-        minutes < 60 -> stringResource(R.string.label_settings_sync_every_minutes, minutes)
+        minutes < 60 -> {
+            stringResource(R.string.label_settings_sync_every_minutes, minutes)
+        }
+
         minutes % 60 == 0 -> {
             val hours = minutes / 60
             if (hours ==
@@ -161,6 +164,7 @@ private fun labelForSeconds(seconds: Int): String {
                 stringResource(R.string.label_settings_sync_every_hours, hours)
             }
         }
+
         else -> {
             val hours = minutes / 60
             val rem = minutes % 60

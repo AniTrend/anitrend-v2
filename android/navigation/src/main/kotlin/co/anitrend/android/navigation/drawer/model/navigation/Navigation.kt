@@ -44,12 +44,16 @@ sealed class Navigation {
          */
         override fun equals(other: Any?): Boolean =
             when (other) {
-                is Menu ->
+                is Menu -> {
                     other.id == id &&
                         other.titleRes == titleRes &&
                         other.isChecked == isChecked &&
                         other.isCheckable == isCheckable
-                else -> super.equals(other)
+                }
+
+                else -> {
+                    super.equals(other)
+                }
             }
 
         override fun hashCode(): Int {

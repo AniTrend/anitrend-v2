@@ -224,7 +224,7 @@ internal fun FormatAwareScoreControl(
             ScoreFormat.POINT_10,
             ScoreFormat.POINT_100,
             ScoreFormat.POINT_10_DECIMAL,
-            ->
+            -> {
                 NumericStepperRow(
                     label = scoreFormat.alias.toString(),
                     value = scoreText,
@@ -236,22 +236,25 @@ internal fun FormatAwareScoreControl(
                     canDecrement = scoreText.isNotBlank(),
                     canIncrement = true,
                 )
+            }
 
-            ScoreFormat.POINT_3 ->
+            ScoreFormat.POINT_3 -> {
                 DiscreteScoreSurface {
                     MoodScoreSelector(
                         selectedValue = scoreText.toIntOrNull() ?: 0,
                         onValueSelected = onDiscreteScoreSelected,
                     )
                 }
+            }
 
-            ScoreFormat.POINT_5 ->
+            ScoreFormat.POINT_5 -> {
                 DiscreteScoreSurface {
                     StarScoreSelector(
                         selectedValue = scoreText.toIntOrNull() ?: 0,
                         onValueSelected = onDiscreteScoreSelected,
                     )
                 }
+            }
         }
     }
 }

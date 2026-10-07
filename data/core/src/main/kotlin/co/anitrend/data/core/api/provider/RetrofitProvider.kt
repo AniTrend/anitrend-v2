@@ -62,6 +62,7 @@ object RetrofitProvider {
                 Timber.d("Using cached retrofit instance for endpoint: $config")
                 reference
             }
+
             else -> {
                 Timber.d("Creating new retrofit instance for endpoint: $config")
                 val retrofit = create(scope, config)

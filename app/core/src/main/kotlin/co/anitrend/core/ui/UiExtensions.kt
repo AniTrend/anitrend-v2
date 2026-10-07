@@ -186,7 +186,10 @@ inline fun <reified T : ViewModel> ViewGroup.viewModel(
                     parameters = parameters,
                 )
             }
-            else -> throw NotImplementedError("Not sure how to handle view model retrieval for $this")
+
+            else -> {
+                throw NotImplementedError("Not sure how to handle view model retrieval for $this")
+            }
         }
     }
 
@@ -212,6 +215,9 @@ inline fun <reified T : ViewModel> AbstractActionProvider.sharedViewModel(
                     parameters = parameters,
                 )
             }
-            else -> throw NotImplementedError("Not sure how to handle view model retrieval for $this")
+
+            else -> {
+                throw NotImplementedError("Not sure how to handle view model retrieval for $this")
+            }
         }
     }

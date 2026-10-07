@@ -175,6 +175,7 @@ private fun StackRating(
                     modifier = Modifier.size(if (compact) 20.dp else 24.dp),
                 )
             }
+
             is IMediaRating.Text -> {
                 // Normalize zero-like values to null so we render the placeholder
                 val normalized: String? = rating.score.takeUnless { it.isZeroLike() }

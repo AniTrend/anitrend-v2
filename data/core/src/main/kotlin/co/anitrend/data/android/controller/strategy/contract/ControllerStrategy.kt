@@ -41,6 +41,7 @@ abstract class ControllerStrategy<D> {
                     cause,
                 )
             }
+
             is HttpException -> {
                 // TODO: inspect a range of error codes and provide the user with an appropriate message
                 RequestError(
@@ -49,6 +50,7 @@ abstract class ControllerStrategy<D> {
                     cause,
                 )
             }
+
             is UnknownHostException -> {
                 RequestError(
                     networkMessage.connectivityErrorTittle,
@@ -56,6 +58,7 @@ abstract class ControllerStrategy<D> {
                     cause,
                 )
             }
+
             else -> {
                 if (cause == null) {
                     RequestError(

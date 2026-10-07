@@ -161,8 +161,12 @@ internal class MediaRecommendationsRemoteMediator(
                 awaitResult(Request.Type.INITIAL, ::refreshRecommendations)
             }
 
-            LoadType.PREPEND -> MediatorResult.Success(true)
+            LoadType.PREPEND -> {
+                MediatorResult.Success(true)
+            }
 
-            LoadType.APPEND -> awaitResult(Request.Type.AFTER, ::refreshRecommendations)
+            LoadType.APPEND -> {
+                awaitResult(Request.Type.AFTER, ::refreshRecommendations)
+            }
         }
 }
