@@ -19,7 +19,7 @@ runs:
       uses: actions/setup-java@v6
       with:
         java-version-file: '.java-version'
-        distribution: 'temurin'
+        distribution: 'jetbrains'
         cache: 'gradle'
         cache-dependency-path: ./gradle/libs.versions.toml
     - name: Setup Gradle
