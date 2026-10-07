@@ -119,7 +119,7 @@ class MediaScreen : AniTrendScreen() {
                         },
                         onPeopleClick = { param ->
                             when (param.initialSection) {
-                                MediaPeopleRouter.Section.CHARACTERS ->
+                                MediaPeopleRouter.Section.CHARACTERS -> {
                                     MediaCharactersRouter.startActivity(
                                         context = this@MediaScreen,
                                         navPayload =
@@ -129,8 +129,9 @@ class MediaScreen : AniTrendScreen() {
                                                     mediaTitle = param.mediaTitle,
                                                 ).asNavPayload(),
                                     )
+                                }
 
-                                MediaPeopleRouter.Section.STAFF ->
+                                MediaPeopleRouter.Section.STAFF -> {
                                     MediaStaffRouter.startActivity(
                                         context = this@MediaScreen,
                                         navPayload =
@@ -140,6 +141,7 @@ class MediaScreen : AniTrendScreen() {
                                                     mediaTitle = param.mediaTitle,
                                                 ).asNavPayload(),
                                     )
+                                }
                             }
                         },
                         onStudioClick = { param ->

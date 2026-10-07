@@ -176,35 +176,40 @@ private fun ProfileLibraryStatusSection(
         )
 
         when (state) {
-            ProfileSectionState.Loading ->
+            ProfileSectionState.Loading -> {
                 ProfileCompactStateSurface(
                     message = stringResource(R.string.message_profile_stats_loading),
                     modifier = Modifier.padding(horizontal = SectionHorizontalPadding),
                 )
+            }
 
-            is ProfileSectionState.Error ->
+            is ProfileSectionState.Error -> {
                 ProfileCompactStateSurface(
                     message = stringResource(R.string.message_profile_stats_unavailable),
                     modifier = Modifier.padding(horizontal = SectionHorizontalPadding),
                     actionLabel = stringResource(co.anitrend.core.R.string.label_text_action_retry),
                     onAction = onRetry,
                 )
+            }
 
-            ProfileSectionState.Empty ->
+            ProfileSectionState.Empty -> {
                 ProfileCompactStateSurface(
                     message = stringResource(R.string.message_profile_stats_unavailable),
                     modifier = Modifier.padding(horizontal = SectionHorizontalPadding),
                 )
+            }
 
-            is ProfileSectionState.Content ->
+            is ProfileSectionState.Content -> {
                 LibraryStatusContent(
                     statistic = state.data,
                 )
+            }
 
-            is ProfileSectionState.Partial ->
+            is ProfileSectionState.Partial -> {
                 LibraryStatusContent(
                     statistic = state.data,
                 )
+            }
         }
     }
 }
@@ -256,39 +261,44 @@ private fun ProfileLibraryRecentUpdatesSection(
         )
 
         when (state) {
-            ProfileSectionState.Loading ->
+            ProfileSectionState.Loading -> {
                 ProfileCompactStateSurface(
                     message = stringResource(R.string.message_profile_overview_loading),
                     modifier = Modifier.padding(horizontal = SectionHorizontalPadding),
                 )
+            }
 
-            is ProfileSectionState.Error ->
+            is ProfileSectionState.Error -> {
                 ProfileCompactStateSurface(
                     message = stringResource(R.string.message_profile_library_recent_updates_empty),
                     modifier = Modifier.padding(horizontal = SectionHorizontalPadding),
                     actionLabel = stringResource(co.anitrend.core.R.string.label_text_action_retry),
                     onAction = onRetry,
                 )
+            }
 
-            ProfileSectionState.Empty ->
+            ProfileSectionState.Empty -> {
                 ProfileCompactStateSurface(
                     message = stringResource(R.string.message_profile_library_recent_updates_empty),
                     modifier = Modifier.padding(horizontal = SectionHorizontalPadding),
                 )
+            }
 
-            is ProfileSectionState.Content ->
+            is ProfileSectionState.Content -> {
                 LibraryRecentUpdatesContent(
                     overview = state.data,
                     selectedTab = selectedTab,
                     onMediaSelected = onMediaSelected,
                 )
+            }
 
-            is ProfileSectionState.Partial ->
+            is ProfileSectionState.Partial -> {
                 LibraryRecentUpdatesContent(
                     overview = state.data,
                     selectedTab = selectedTab,
                     onMediaSelected = onMediaSelected,
                 )
+            }
         }
     }
 }
@@ -403,7 +413,9 @@ private fun libraryCollectionMetricItems(
                 )
             }
 
-            null -> Unit
+            null -> {
+                Unit
+            }
         }
     }
 

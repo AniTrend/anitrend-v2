@@ -21,6 +21,7 @@ jobs:
     needs: [wrapper-validation]
     steps:
       - uses: actions/create-github-app-token@v3
+        if: github.event_name == 'push'
         id: app-token
         with:
           client-id: ${{ secrets.APP_ID }}
@@ -30,13 +31,19 @@ jobs:
         uses: ./.github/actions/android
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/develop' }}
-      - name: Run spotless apply
+      - name: Check spotless formatting
+        if: github.event_name == 'pull_request'
+        run: ./gradlew spotlessCheck
+      - name: Apply spotless formatting
+        if: github.event_name == 'push'
         run: ./gradlew spotlessApply
       - name: Check for changes
+        if: github.event_name == 'push'
         run: |
           git diff --exit-code || exit 0
         continue-on-error: true
       - name: Create Pull Request
+        if: github.event_name == 'push'
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ steps.app-token.outputs.token }}

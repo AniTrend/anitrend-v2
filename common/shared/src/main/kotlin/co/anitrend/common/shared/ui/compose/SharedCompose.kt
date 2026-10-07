@@ -57,12 +57,16 @@ fun DefaultScaffold(
         bottomBar = {
             if (showBottomBar) {
                 when {
-                    bottomBar != null -> bottomBar()
-                    onBackPress != null || bottomBarActions != null ->
+                    bottomBar != null -> {
+                        bottomBar()
+                    }
+
+                    onBackPress != null || bottomBarActions != null -> {
                         DefaultBottomAppBar(
                             onBackPress = onBackPress,
                             actions = bottomBarActions ?: {},
                         )
+                    }
                 }
             }
         },

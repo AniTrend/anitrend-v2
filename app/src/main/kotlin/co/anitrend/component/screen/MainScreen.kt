@@ -214,6 +214,7 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
                 SearchRouter.startActivity(this)
                 return true
             }
+
             R.id.action_settings -> {
                 SettingsRouter.startActivity(this)
                 return true
@@ -320,6 +321,7 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
                         fragment = MediaCarouselRouter.forFragment(),
                     )
                 }
+
                 co.anitrend.android.navigation.drawer.R.id.navigation_discover -> {
                     viewModel.state.selectedTitle = co.anitrend.android.navigation.drawer.R.string.navigation_discover
                     FragmentItem(
@@ -337,42 +339,49 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
                                 ).asBundle(),
                     )
                 }
+
                 co.anitrend.android.navigation.drawer.R.id.navigation_social -> {
                     viewModel.state.selectedTitle = co.anitrend.android.navigation.drawer.R.string.navigation_social
                     FragmentItem(
                         fragment = FeedRouter.forFragment(),
                     )
                 }
+
                 co.anitrend.android.navigation.drawer.R.id.navigation_reviews -> {
                     viewModel.state.selectedTitle = co.anitrend.android.navigation.drawer.R.string.navigation_review
                     FragmentItem(
                         fragment = ReviewDiscoverRouter.forFragment(),
                     )
                 }
+
                 co.anitrend.android.navigation.drawer.R.id.navigation_suggestions -> {
                     viewModel.state.selectedTitle = co.anitrend.android.navigation.drawer.R.string.navigation_suggestions
                     FragmentItem(
                         fragment = SuggestionRouter.forFragment(),
                     )
                 }
+
                 co.anitrend.android.navigation.drawer.R.id.navigation_news -> {
                     viewModel.state.selectedTitle = co.anitrend.android.navigation.drawer.R.string.navigation_news
                     FragmentItem(
                         fragment = NewsRouter.forFragment(),
                     )
                 }
+
                 co.anitrend.android.navigation.drawer.R.id.navigation_forum -> {
                     viewModel.state.selectedTitle = co.anitrend.android.navigation.drawer.R.string.navigation_forums
                     FragmentItem(
                         fragment = ForumRouter.forFragment(),
                     )
                 }
+
                 co.anitrend.android.navigation.drawer.R.id.navigation_episodes -> {
                     viewModel.state.selectedTitle = co.anitrend.android.navigation.drawer.R.string.navigation_episodes
                     FragmentItem(
                         fragment = EpisodeRouter.forFragment(),
                     )
                 }
+
                 co.anitrend.android.navigation.drawer.R.id.navigation_anime_list -> {
                     viewModel.state.selectedTitle = co.anitrend.android.navigation.drawer.R.string.navigation_anime_list
                     FragmentItem(
@@ -386,6 +395,7 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
                         tag = MediaType.ANIME.name,
                     )
                 }
+
                 co.anitrend.android.navigation.drawer.R.id.navigation_manga_list -> {
                     viewModel.state.selectedTitle = co.anitrend.android.navigation.drawer.R.string.navigation_manga_list
                     FragmentItem(
@@ -399,19 +409,25 @@ class MainScreen : AniTrendBoundScreen<MainScreenBinding>() {
                         tag = MediaType.MANGA.name,
                     )
                 }
+
                 co.anitrend.android.navigation.drawer.R.id.navigation_donate -> {
                     presenter.redirectToPatreon()
                     null
                 }
+
                 co.anitrend.android.navigation.drawer.R.id.navigation_discord -> {
                     presenter.redirectToDiscord()
                     null
                 }
+
                 co.anitrend.android.navigation.drawer.R.id.navigation_faq -> {
                     presenter.redirectToFAQ()
                     null
                 }
-                else -> null
+
+                else -> {
+                    null
+                }
             }
 
         lifecycleScope.launch {

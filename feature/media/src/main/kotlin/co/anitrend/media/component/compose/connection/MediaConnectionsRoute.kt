@@ -237,11 +237,21 @@ private fun RelationGroupedList(
                 Text(
                     text =
                         when (group.bucket) {
-                            MediaRelationBucket.STORY_CONTINUITY -> stringResource(R.string.title_media_related_group_story_continuity)
-                            MediaRelationBucket.SOURCE_AND_ADAPTATION ->
+                            MediaRelationBucket.STORY_CONTINUITY -> {
+                                stringResource(R.string.title_media_related_group_story_continuity)
+                            }
+
+                            MediaRelationBucket.SOURCE_AND_ADAPTATION -> {
                                 stringResource(R.string.title_media_related_group_source_adaptation)
-                            MediaRelationBucket.SIDE_PATHS -> stringResource(R.string.title_media_related_group_side_paths)
-                            MediaRelationBucket.SHARED_UNIVERSE -> stringResource(R.string.title_media_related_group_shared_universe)
+                            }
+
+                            MediaRelationBucket.SIDE_PATHS -> {
+                                stringResource(R.string.title_media_related_group_side_paths)
+                            }
+
+                            MediaRelationBucket.SHARED_UNIVERSE -> {
+                                stringResource(R.string.title_media_related_group_shared_universe)
+                            }
                         },
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
@@ -314,7 +324,9 @@ private fun RecommendationGrid(
                 }
             }
 
-            else -> Unit
+            else -> {
+                Unit
+            }
         }
     }
 }

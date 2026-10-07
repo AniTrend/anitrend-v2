@@ -110,7 +110,7 @@ fun ReviewDiscoverRoute(
 
             Box(modifier = Modifier.weight(1f)) {
                 when {
-                    reviews.itemCount > 0 ->
+                    reviews.itemCount > 0 -> {
                         ReviewDiscoverList(
                             reviews = reviews,
                             scoreFormat = scoreFormat,
@@ -139,22 +139,26 @@ fun ReviewDiscoverRoute(
                                 }
                             },
                         )
+                    }
 
-                    refreshState is LoadState.Loading ->
+                    refreshState is LoadState.Loading -> {
                         ReviewDiscoverLoadingState()
+                    }
 
-                    refreshState is LoadState.Error ->
+                    refreshState is LoadState.Error -> {
                         ReviewDiscoverRetryState(
                             title = stringResource(R.string.label_review_discover_error_title),
                             subtitle = stringResource(R.string.message_review_discover_error),
                             onRetry = reviews::retry,
                         )
+                    }
 
-                    else ->
+                    else -> {
                         ReviewDiscoverState(
                             title = stringResource(R.string.label_review_discover_empty_title),
                             subtitle = stringResource(R.string.message_review_discover_empty),
                         )
+                    }
                 }
             }
         }
@@ -218,7 +222,9 @@ private fun ReviewDiscoverList(
                 }
             }
 
-            else -> Unit
+            else -> {
+                Unit
+            }
         }
     }
 }

@@ -99,27 +99,37 @@ class CarouselContent(
                     mediaPreferenceData = controller.mediaPreferenceData(settings),
                     carouselItemClick = { param ->
                         when (param) {
-                            is MediaDiscoverRouter.MediaDiscoverParam ->
+                            is MediaDiscoverRouter.MediaDiscoverParam -> {
                                 MediaDiscoverRouter.startActivity(
                                     context = requireContext(),
                                     navPayload = param.asNavPayload(),
                                 )
-                            is MediaRouter.MediaParam ->
+                            }
+
+                            is MediaRouter.MediaParam -> {
                                 MediaRouter.startActivity(
                                     context = requireContext(),
                                     navPayload = param.asNavPayload(),
                                 )
-                            is MediaListEditorRouter.MediaListEditorParam ->
+                            }
+
+                            is MediaListEditorRouter.MediaListEditorParam -> {
                                 view?.openMediaListSheetFor(
                                     mediaListParam = param,
                                     settings = settings,
                                 )
-                            is AiringRouter.AiringParam ->
+                            }
+
+                            is AiringRouter.AiringParam -> {
                                 AiringRouter.startActivity(
                                     context = requireContext(),
                                     navPayload = param.asNavPayload(),
                                 )
-                            else -> Timber.e(UnsupportedOperationException("Param with type $param does not have a valid matcher"))
+                            }
+
+                            else -> {
+                                Timber.e(UnsupportedOperationException("Param with type $param does not have a valid matcher"))
+                            }
                         }
                     },
                 )

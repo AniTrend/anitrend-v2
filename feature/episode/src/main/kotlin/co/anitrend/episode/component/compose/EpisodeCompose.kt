@@ -70,31 +70,35 @@ fun EpisodeCompose(
                 .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
         when {
-            episodes.itemCount > 0 ->
+            episodes.itemCount > 0 -> {
                 EpisodeFeed(
                     episodes = episodes,
                     onEpisodeClick = onEpisodeClick,
                 )
+            }
 
-            refreshState is LoadState.Loading ->
+            refreshState is LoadState.Loading -> {
                 EpisodeState(
                     title = stringResource(R.string.label_episode_loading_title),
                     subtitle = stringResource(R.string.message_episode_loading),
                 )
+            }
 
-            refreshState is LoadState.Error ->
+            refreshState is LoadState.Error -> {
                 EpisodeRetryState(
                     title = stringResource(R.string.label_episode_error_title),
                     subtitle = stringResource(R.string.message_episode_error),
                     actionLabel = stringResource(R.string.action_episode_retry),
                     onRetry = episodes::retry,
                 )
+            }
 
-            else ->
+            else -> {
                 EpisodeState(
                     title = stringResource(R.string.label_episode_empty_title),
                     subtitle = stringResource(R.string.message_episode_empty),
                 )
+            }
         }
     }
 }
@@ -151,7 +155,9 @@ private fun EpisodeFeed(
                 }
             }
 
-            else -> Unit
+            else -> {
+                Unit
+            }
         }
     }
 }

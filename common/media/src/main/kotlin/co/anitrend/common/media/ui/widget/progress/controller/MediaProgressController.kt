@@ -76,7 +76,10 @@ internal class MediaProgressController(
                     category.episodes
                 }
             }
-            is Media.Category.Manga -> category.chapters
+
+            is Media.Category.Manga -> {
+                category.chapters
+            }
         }
     }
 
@@ -110,11 +113,15 @@ internal class MediaProgressController(
                     finishFuzzyDate = dateHelper.fuzzyDateNow()
                     MediaListStatus.COMPLETED
                 }
+
                 requireMediaList().status == MediaListStatus.PLANNING -> {
                     startFuzzyDate = dateHelper.fuzzyDateNow()
                     MediaListStatus.CURRENT
                 }
-                else -> requireMediaList().status
+
+                else -> {
+                    requireMediaList().status
+                }
             }
 
         val progressVolumes =
