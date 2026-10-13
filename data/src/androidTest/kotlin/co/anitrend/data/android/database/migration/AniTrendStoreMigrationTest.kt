@@ -19,6 +19,7 @@ package co.anitrend.data.android.database.migration
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.platform.app.InstrumentationRegistry
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -119,6 +120,68 @@ class AniTrendStoreMigrationTest {
         assertTrue(indices.contains("index_user_profile_favourite_media_media_id"))
         assertTrue(indices.contains("index_user_profile_review_review_id"))
         assertTrue(indices.contains("index_user_profile_review_media_id"))
+    }
+
+    @Test
+    fun migrate24To25ClearsCachedNavigation() {
+        helper.createDatabase(TEST_DB, 24).apply {
+            execSQL(
+                """
+                INSERT INTO edge_config (
+                    id, settings_analytics_enabled, settings_platform_source,
+                    image_banner, image_poster, image_loading, image_error,
+                    image_info, image_standard
+                ) VALUES (1, 0, NULL, 'banner', 'poster', 'loading', 'error', 'info', 'standard')
+                """.trimIndent(),
+            )
+            execSQL("INSERT INTO cache_log (request, cache_item_id, timestamp) VALUES ('CONFIG', 1, 0)")
+            execSQL(
+                """
+                INSERT INTO edge_config_navigation (
+                    config_id, criteria, destination, i18n, icon,
+                    group_authenticated, group_i18n
+                ) VALUES (1, 'home', 'home', 'navigation.home', 'ic_home', 0, 'navigation.group.guest')
+                """.trimIndent(),
+            )
+            execSQL(
+                """
+                INSERT INTO edge_config_navigation (
+                    config_id, criteria, destination, i18n, icon,
+                    group_authenticated, group_i18n
+                ) VALUES (1, 'home', 'home', 'navigation.home', 'ic_home', 0, 'navigation.group.guest')
+                """.trimIndent(),
+            )
+            execSQL(
+                """
+                INSERT INTO edge_config_navigation (
+                    config_id, criteria, destination, i18n, icon,
+                    group_authenticated, group_i18n
+                ) VALUES (1, 'discover', 'discover', 'navigation.discover', 'ic_discover', 0, 'navigation.group.guest')
+                """.trimIndent(),
+            )
+            close()
+        }
+
+        val migrated = helper.runMigrationsAndValidate(TEST_DB, 25, true, *MIGRATIONS)
+        val navigationCount =
+            migrated
+                .query("SELECT COUNT(*) FROM edge_config_navigation")
+                .use { cursor ->
+                    cursor.moveToFirst()
+                    cursor.getInt(0)
+                }
+
+        assertEquals(0, navigationCount)
+
+        val configCacheCount =
+            migrated
+                .query("SELECT COUNT(*) FROM cache_log WHERE request = 'CONFIG' AND cache_item_id = 1")
+                .use { cursor ->
+                    cursor.moveToFirst()
+                    cursor.getInt(0)
+                }
+        assertEquals(0, configCacheCount)
+        migrated.close()
     }
 
     private companion object {

@@ -120,7 +120,7 @@ class EdgeConfigModelConverterTest {
     }
 
     @Test
-    fun `navigation converter ignores generated key at the persistence boundary`() {
+    fun `navigation converter maps stable persistence key`() {
         val result = json.decodeFromString<GetConfigData>(configPayload)
         val navigation = result.config?.navigation.orEmpty().mapNotNull { it }
 
@@ -133,9 +133,11 @@ class EdgeConfigModelConverterTest {
         assertEquals(false, first.group.authenticated)
         assertEquals("navigation.group.guest", first.group.i18n)
         assertEquals(EdgeConfigEntity.DEFAULT_ID, first.configId)
+        assertEquals("airing", first.key)
 
         val second = EdgeNavigationModelConverter().convertFrom(navigation[1])
         assertEquals(true, second.group.authenticated)
+        assertEquals("list", second.key)
     }
 
     @Test

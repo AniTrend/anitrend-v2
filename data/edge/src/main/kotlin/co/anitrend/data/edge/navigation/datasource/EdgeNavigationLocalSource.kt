@@ -17,7 +17,10 @@
 package co.anitrend.data.edge.navigation.datasource
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.edge.navigation.entity.EdgeNavigationEntity
 
@@ -36,4 +39,28 @@ abstract class EdgeNavigationLocalSource : AbstractLocalSource<EdgeNavigationEnt
         """,
     )
     abstract override suspend fun clear()
+
+    @Query(
+        """
+        delete from edge_config_navigation
+        where config_id = :configId
+        """,
+    )
+    abstract suspend fun clearByConfigId(configId: Long)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun insertOrReplaceByKey(entities: List<EdgeNavigationEntity>)
+
+    /**
+     * Atomically replaces the config's navigation snapshot. The unique config/key index
+     * collapses duplicate keys in a single network response.
+     */
+    @Transaction
+    open suspend fun replaceByConfigId(
+        configId: Long,
+        entities: List<EdgeNavigationEntity>,
+    ) {
+        clearByConfigId(configId)
+        insertOrReplaceByKey(entities)
+    }
 }

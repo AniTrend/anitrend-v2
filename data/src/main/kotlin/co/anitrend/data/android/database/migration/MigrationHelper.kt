@@ -312,4 +312,14 @@ internal val MIGRATIONS =
                 "CREATE INDEX IF NOT EXISTS `index_user_profile_review_media_id` ON `user_profile_review` (`media_id`)",
             )
         },
+        // v24 did not persist ConfigNavigation.key; clear cached rows and freshness before adding its unique index.
+        migrationOfStatements(24, 25) {
+            arrayOf(
+                "DELETE FROM `cache_log` WHERE `request` = 'CONFIG' AND `cache_item_id` = 1",
+                "DELETE FROM `edge_config_navigation`",
+                "ALTER TABLE `edge_config_navigation` ADD COLUMN `key` TEXT NOT NULL DEFAULT ''",
+                "DROP INDEX IF EXISTS `index_edge_config_navigation_config_id_id`",
+                "CREATE UNIQUE INDEX IF NOT EXISTS `index_edge_config_navigation_config_id_key` ON `edge_config_navigation` (`config_id`, `key`)",
+            )
+        },
     )
