@@ -30,13 +30,14 @@ class AppInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val builder = request.newBuilder()
-        builder.header(APP_NAME, appInfo.label)
+        builder.header(APP_ID, PRODUCT_IDENTITY)
+        builder.header(APP_PACKAGE, appInfo.packageName)
         builder.header(APP_VERSION, appInfo.version)
-        builder.header(APP_BUILD, appInfo.build)
         builder.header(APP_CODE, appInfo.code)
         builder.header(APP_SOURCE, appInfo.source)
         builder.header(APP_LOCALE, appInfo.locale)
         builder.header(APP_BUILD_TYPE, appInfo.buildType)
+        builder.header(APP_DEVICE_BUILD_ID, appInfo.build)
 
         atomicRequestId.get().also { requestId ->
             if (requestId.isNotBlank()) {
@@ -50,13 +51,17 @@ class AppInterceptor(
     }
 
     private companion object {
-        const val APP_NAME = "x-app-name"
+        const val APP_ID = "x-app-id"
+        const val APP_PACKAGE = "x-app-package"
         const val APP_VERSION = "x-app-version"
-        const val APP_BUILD = "x-app-build"
         const val APP_CODE = "x-app-code"
         const val APP_SOURCE = "x-app-source"
         const val APP_LOCALE = "x-app-locale"
         const val APP_BUILD_TYPE = "x-app-build-type"
+        const val APP_DEVICE_BUILD_ID = "x-device-build-id"
         const val APP_REQUEST_ID = "x-request-id"
+
+        /** Product identity required by the on-the-edge client header contract. */
+        const val PRODUCT_IDENTITY = "ANITREND_V2"
     }
 }
