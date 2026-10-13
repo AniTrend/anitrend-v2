@@ -25,10 +25,10 @@ import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.media.model.container.MediaModelContainer
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.get
 import kotlin.test.DefaultAsserter.assertEquals
-import kotlin.test.Test
 import kotlin.test.assertNotNull
 import kotlin.time.ExperimentalTime
 
@@ -49,14 +49,14 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
     @Before
     fun setUp() {
         assertNotNull(pageModel?.data)
-        runTest(dispatchers.io) {
+        runTest {
             populateDatabase(pageModel!!.data!!)
         }
     }
 
     @Test
     fun getMediaById() =
-        runTest(dispatchers.io) {
+        runTest {
             val id: Long = 16498
             val title =
                 MediaEntity.Title(
@@ -69,7 +69,7 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
             val entityFlow = store.mediaDao().mediaByIdFlow(id)
 
             entityFlow.test {
-                val entity = expectMostRecentItem()
+                val entity = awaitItem()
                 // for some reason tests clear the native field
                 assertEquals("", title, entity?.media?.title)
 
@@ -80,7 +80,7 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
 
     @Test
     fun getMediaWithAiringById() =
-        runTest(dispatchers.io) {
+        runTest {
             val id: Long = 5114
             val title =
                 MediaEntity.Title(
@@ -93,7 +93,7 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
             val entityFlow = store.mediaDao().mediaByIdFlow(id)
 
             entityFlow.test {
-                val entity = expectMostRecentItem()
+                val entity = awaitItem()
                 // for some reason tests clear the native field
                 assertEquals("", title, entity?.media?.title)
 

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 22,
-    "identityHash": "3d8698067886faff0bf6496539934d49",
+    "identityHash": "47a7dc1d76560971283caa44c678100b",
     "entities": [
       {
         "tableName": "cache_log",
@@ -3843,7 +3843,7 @@
       },
       {
         "tableName": "media_studio_connection",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `entry_id` INTEGER NOT NULL, `studio_id` INTEGER NOT NULL, `studio_name` TEXT NOT NULL, `studio_favourites` INTEGER, `studio_is_animation` INTEGER, `studio_site_url` TEXT, `media_title` TEXT, `media_cover_image_large` TEXT, `media_cover_image_medium` TEXT, `media_format` TEXT, `media_start_year` INTEGER, `media_average_score` INTEGER, `is_main` INTEGER NOT NULL, `sort_index` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`media_id` INTEGER NOT NULL, `entry_id` INTEGER NOT NULL, `studio_id` INTEGER NOT NULL, `studio_name` TEXT NOT NULL, `studio_favourites` INTEGER, `studio_is_animation` INTEGER, `studio_site_url` TEXT, `is_main` INTEGER NOT NULL, `sort_index` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)",
         "fields": [
           {
             "fieldPath": "mediaId",
@@ -3883,36 +3883,6 @@
             "fieldPath": "studioSiteUrl",
             "columnName": "studio_site_url",
             "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "mediaTitle",
-            "columnName": "media_title",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "mediaCoverImageLarge",
-            "columnName": "media_cover_image_large",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "mediaCoverImageMedium",
-            "columnName": "media_cover_image_medium",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "mediaFormat",
-            "columnName": "media_format",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "mediaStartYear",
-            "columnName": "media_start_year",
-            "affinity": "INTEGER"
-          },
-          {
-            "fieldPath": "mediaAverageScore",
-            "columnName": "media_average_score",
-            "affinity": "INTEGER"
           },
           {
             "fieldPath": "isMain",
@@ -6467,7 +6437,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3d8698067886faff0bf6496539934d49')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '47a7dc1d76560971283caa44c678100b')"
     ]
   }
 }
