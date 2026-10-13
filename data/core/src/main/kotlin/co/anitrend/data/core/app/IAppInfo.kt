@@ -24,4 +24,5 @@ interface IAppInfo {
     val code: String
     val label: String
     val buildType: String
+    val packageName: String
 }

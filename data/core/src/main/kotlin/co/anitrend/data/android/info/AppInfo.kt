@@ -33,6 +33,7 @@ class AppInfo(
     override val code: String = versionCode(context)
     override val label: String = applicationLabel(context)
     override val buildType: String = BuildConfig.BUILD_TYPE
+    override val packageName: String = context.packageName
 
     private fun versionCode(context: Context): String {
         val packageManager = context.packageManager
