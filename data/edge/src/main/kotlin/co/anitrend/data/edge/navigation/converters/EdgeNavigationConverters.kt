@@ -29,6 +29,7 @@ internal class EdgeNavigationModelConverter(
             destination = it.destination,
             i18n = it.i18n,
             icon = it.icon,
+            key = it.key,
             group =
                 EdgeNavigationGroupEntity(
                     authenticated = it.group.authenticated,

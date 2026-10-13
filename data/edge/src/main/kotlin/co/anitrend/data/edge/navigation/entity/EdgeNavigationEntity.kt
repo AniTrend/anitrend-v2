@@ -42,7 +42,7 @@ data class EdgeNavigationGroupEntity(
         ),
     ],
     indices = [
-        Index(value = ["config_id", "id"], unique = true),
+        Index(value = ["config_id", "key"], unique = true),
         Index(value = ["config_id"]),
     ],
 )
@@ -54,5 +54,6 @@ data class EdgeNavigationEntity(
     @Embedded(prefix = "group_") val group: EdgeNavigationGroupEntity,
     @ColumnInfo(name = "i18n") val i18n: String,
     @ColumnInfo(name = "icon") val icon: String,
+    @ColumnInfo(name = "key", defaultValue = "''") val key: String,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") override val id: Long = 0,
 ) : IEntityId<Long>

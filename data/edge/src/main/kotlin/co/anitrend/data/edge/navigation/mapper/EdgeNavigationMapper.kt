@@ -17,6 +17,7 @@
 package co.anitrend.data.edge.navigation.mapper
 
 import co.anitrend.data.android.mapper.EmbedMapper
+import co.anitrend.data.edge.config.entity.EdgeConfigEntity
 import co.anitrend.data.edge.graphql.GetConfigData
 import co.anitrend.data.edge.navigation.converters.EdgeNavigationModelConverter
 import co.anitrend.data.edge.navigation.datasource.EdgeNavigationLocalSource
@@ -25,4 +26,17 @@ import co.anitrend.data.edge.navigation.entity.EdgeNavigationEntity
 internal class EdgeNavigationMapper(
     override val localSource: EdgeNavigationLocalSource,
     override val converter: EdgeNavigationModelConverter,
-) : EmbedMapper<GetConfigData.ConfigNavigation, EdgeNavigationEntity>()
+) : EmbedMapper<GetConfigData.ConfigNavigation, EdgeNavigationEntity>() {
+    /**
+     * Replaces the config's navigation snapshot using the stable server key.
+     *
+     * The DAO's unique index collapses duplicate keys from one response and the scoped
+     * delete removes entries that disappeared from later responses.
+     */
+    override suspend fun persist(data: List<EdgeNavigationEntity>) {
+        localSource.replaceByConfigId(
+            configId = EdgeConfigEntity.DEFAULT_ID,
+            entities = data,
+        )
+    }
+}
