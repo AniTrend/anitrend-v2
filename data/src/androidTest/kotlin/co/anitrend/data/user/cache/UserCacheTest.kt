@@ -21,6 +21,7 @@ import co.anitrend.data.android.cache.helper.instantInFuture
 import co.anitrend.data.core.CoreTestSuite
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.inject
 import org.threeten.bp.Instant
@@ -41,6 +42,7 @@ internal class UserCacheTest : CoreTestSuite() {
         }
     }
 
+    @Test
     fun testUserViewCache() =
         runBlocking(dispatchers.io) {
             assertTrue(viewCache.hasBeenRequested(identity))
