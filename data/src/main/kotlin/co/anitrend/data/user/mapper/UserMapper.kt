@@ -27,6 +27,7 @@ import co.anitrend.data.user.converter.UserModelConverter
 import co.anitrend.data.user.converter.UserStatisticPayload
 import co.anitrend.data.user.converter.UserStatisticModelConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
+import co.anitrend.data.user.datasource.local.name.UserPreviousNameLocalSource
 import co.anitrend.data.user.datasource.local.option.UserGeneralOptionLocalSource
 import co.anitrend.data.user.datasource.local.option.UserMediaOptionLocalSource
 import co.anitrend.data.user.datasource.local.statistic.UserStatisticLocalSource
@@ -186,8 +187,10 @@ internal sealed class UserMapper<S, D> : DefaultMapper<S, D>() {
     }
 
     class PreviousNameEmbed(
-        override val localSource: AbstractLocalSource<UserPreviousNameEntity>,
+        override val localSource: UserPreviousNameLocalSource,
     ) : EmbedMapper<PreviousNameEmbed.Item, UserPreviousNameEntity>() {
+        suspend fun clearForUser(userId: Long) = localSource.clearForUser(userId)
+
         override val converter =
             object : SupportConverter<Item, UserPreviousNameEntity>() {
                 /**

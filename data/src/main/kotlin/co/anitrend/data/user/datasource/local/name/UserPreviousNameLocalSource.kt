@@ -36,4 +36,11 @@ internal abstract class UserPreviousNameLocalSource : AbstractLocalSource<UserPr
         """,
     )
     abstract override suspend fun clear()
+
+    @Query(
+        """
+        delete from user_previous_name where user_id = :userId
+        """,
+    )
+    abstract suspend fun clearForUser(userId: Long)
 }

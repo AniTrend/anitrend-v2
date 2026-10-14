@@ -33,6 +33,7 @@ internal class UserProfileWriter(
         localSource.upsert(user)
         generalOptionMapper.persistEmbedded()
         mediaOptionMapper.persistEmbedded()
+        previousNameMapper.clearForUser(user.id)
         previousNameMapper.persistEmbedded()
     }
 }

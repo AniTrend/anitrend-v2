@@ -19,12 +19,9 @@ package co.anitrend.data.auth.koin
 import co.anitrend.data.android.extensions.graphQLController
 import co.anitrend.data.auth.AuthUserInteractor
 import co.anitrend.data.auth.mapper.AuthenticatedUserWriter
-import co.anitrend.data.auth.mapper.AuthenticatedUserWriterContract
 import co.anitrend.data.auth.mapper.AuthMapper
 import co.anitrend.data.auth.mapper.UserGeneralOptionWriter
-import co.anitrend.data.auth.mapper.UserGeneralOptionWriterContract
 import co.anitrend.data.auth.mapper.UserMediaOptionWriter
-import co.anitrend.data.auth.mapper.UserMediaOptionWriterContract
 import co.anitrend.data.auth.repository.AuthRepositoryImpl
 import co.anitrend.data.auth.source.AuthSourceImpl
 import co.anitrend.data.auth.source.contract.AuthSource
@@ -33,6 +30,7 @@ import co.anitrend.data.core.extensions.aniListApi
 import co.anitrend.data.core.extensions.store
 import co.anitrend.data.core.extensions.transaction
 import co.anitrend.data.user.mapper.UserMapper
+import co.anitrend.data.user.settings.IUserSettings
 import org.koin.dsl.module
 
 private val sourceModule =
@@ -58,33 +56,33 @@ private val sourceModule =
 private val mapperModule =
     module {
         factory {
+            val generalOptionMapper = get<UserMapper.GeneralOptionEmbed>()
+            val mediaOptionMapper = get<UserMapper.MediaOptionEmbed>()
+            val notificationMapper = get<UserMapper.NotificationEmbed>()
+            val userSettings = get<IUserSettings>()
+            val userLocalSource = store().userDao()
+
             AuthMapper(
-                generalOptionMapper = get(),
-                mediaOptionMapper = get(),
-                notificationMapper = get(),
-                writer = get(),
+                generalOptionMapper = generalOptionMapper,
+                mediaOptionMapper = mediaOptionMapper,
+                notificationMapper = notificationMapper,
+                writer =
+                    AuthenticatedUserWriter(
+                        generalOptionWriter =
+                            UserGeneralOptionWriter(
+                                settings = userSettings,
+                                mapper = generalOptionMapper,
+                            ),
+                        mediaOptionWriter =
+                            UserMediaOptionWriter(
+                                settings = userSettings,
+                                mapper = mediaOptionMapper,
+                            ),
+                        notificationMapper = notificationMapper,
+                        localSource = userLocalSource,
+                    ),
                 transactionRunner = transaction(),
                 converter = get(),
-            )
-        }
-        factory<AuthenticatedUserWriterContract> {
-            AuthenticatedUserWriter(
-                generalOptionWriter = get(),
-                mediaOptionWriter = get(),
-                notificationMapper = get<UserMapper.NotificationEmbed>(),
-                localSource = store().userDao(),
-            )
-        }
-        factory<UserGeneralOptionWriterContract> {
-            UserGeneralOptionWriter(
-                settings = get(),
-                mapper = get(),
-            )
-        }
-        factory<UserMediaOptionWriterContract> {
-            UserMediaOptionWriter(
-                settings = get(),
-                mapper = get(),
             )
         }
     }
