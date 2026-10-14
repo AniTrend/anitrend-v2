@@ -21,11 +21,17 @@ import co.anitrend.data.media.datasource.local.MediaLocalSource
 import co.anitrend.data.media.entity.MediaEntity
 
 internal fun interface MediaPagedWriterContract {
-    suspend fun persist(entities: List<MediaEntity>)
+    suspend fun persist(
+        entities: List<MediaEntity>,
+        airingPersistence: PersistEmbedded,
+    )
 }
 
 internal fun interface MediaDetailWriterContract {
-    suspend fun persist(entity: MediaEntity)
+    suspend fun persist(
+        entity: MediaEntity,
+        airingPersistence: PersistEmbedded,
+    )
 }
 
 internal fun interface MediaEmbedWriterContract {
@@ -33,21 +39,29 @@ internal fun interface MediaEmbedWriterContract {
 }
 
 internal fun interface MediaEmbedWithAiringWriterContract {
-    suspend fun persist(entities: List<MediaEntity>)
+    suspend fun persist(
+        entities: List<MediaEntity>,
+        airingPersistence: PersistEmbedded,
+    )
 }
 
 internal fun interface MediaEmbedWithMediaListWriterContract {
-    suspend fun persist(entities: List<MediaEntity>)
+    suspend fun persist(
+        entities: List<MediaEntity>,
+        airingPersistence: PersistEmbedded,
+    )
 }
 
 internal class MediaPagedWriter(
     private val localSource: MediaLocalSource,
     private val tagPersistence: PersistEmbedded,
     private val genrePersistence: PersistEmbedded,
-    private val airingPersistence: PersistEmbedded,
     private val mediaListPersistence: PersistEmbedded,
 ) : MediaPagedWriterContract {
-    override suspend fun persist(entities: List<MediaEntity>) {
+    override suspend fun persist(
+        entities: List<MediaEntity>,
+        airingPersistence: PersistEmbedded,
+    ) {
         localSource.upsert(entities)
         tagPersistence.persistEmbedded()
         genrePersistence.persistEmbedded()
@@ -62,10 +76,12 @@ internal class MediaDetailWriter(
     private val rankPersistence: PersistEmbedded,
     private val tagPersistence: PersistEmbedded,
     private val genrePersistence: PersistEmbedded,
-    private val airingPersistence: PersistEmbedded,
     private val mediaListPersistence: PersistEmbedded,
 ) : MediaDetailWriterContract {
-    override suspend fun persist(entity: MediaEntity) {
+    override suspend fun persist(
+        entity: MediaEntity,
+        airingPersistence: PersistEmbedded,
+    ) {
         localSource.upsert(entity)
         linkPersistence.persistEmbedded()
         rankPersistence.persistEmbedded()
@@ -92,9 +108,11 @@ internal class MediaEmbedWithAiringWriter(
     private val localSource: MediaLocalSource,
     private val tagPersistence: PersistEmbedded,
     private val genrePersistence: PersistEmbedded,
-    private val airingPersistence: PersistEmbedded,
 ) : MediaEmbedWithAiringWriterContract {
-    override suspend fun persist(entities: List<MediaEntity>) {
+    override suspend fun persist(
+        entities: List<MediaEntity>,
+        airingPersistence: PersistEmbedded,
+    ) {
         localSource.upsert(entities)
         tagPersistence.persistEmbedded()
         genrePersistence.persistEmbedded()
@@ -106,10 +124,12 @@ internal class MediaEmbedWithMediaListWriter(
     private val localSource: MediaLocalSource,
     private val tagPersistence: PersistEmbedded,
     private val genrePersistence: PersistEmbedded,
-    private val airingPersistence: PersistEmbedded,
     private val mediaListPersistence: PersistEmbedded,
 ) : MediaEmbedWithMediaListWriterContract {
-    override suspend fun persist(entities: List<MediaEntity>) {
+    override suspend fun persist(
+        entities: List<MediaEntity>,
+        airingPersistence: PersistEmbedded,
+    ) {
         localSource.upsert(entities)
         tagPersistence.persistEmbedded()
         genrePersistence.persistEmbedded()

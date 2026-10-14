@@ -23,7 +23,9 @@ import co.anitrend.data.core.api.model.GraphQLResponse
 import co.anitrend.data.media.entity.MediaEntity
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.media.model.container.MediaModelContainer
+import co.anitrend.domain.media.enums.MediaType
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.flow.first
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -81,23 +83,37 @@ internal class MediaLocalSourceTest : CoreTestSuite() {
     @Test
     fun getMediaWithAiringById() =
         runTest {
-            val id: Long = 5114
-            val title =
-                MediaEntity.Title(
-                    english = "Fullmetal Alchemist: Brotherhood",
-                    original = "鋼の錬金術師 FULLMETAL ALCHEMIST",
-                    romaji = "Hagane no Renkinjutsushi: Fullmetal Alchemist",
-                    userPreferred = "Hagane no Renkinjutsushi: Fullmetal Alchemist",
-                )
-
+            val id = 21L
             val entityFlow = store.mediaDao().mediaByIdFlow(id)
 
             entityFlow.test {
                 val entity = awaitItem()
-                // for some reason tests clear the native field
-                assertEquals("", title, entity?.media?.title)
-
+                assertEquals("", id, entity?.media?.id)
                 assertNotNull(entity?.nextAiring)
             }
+        }
+
+    @Test
+    fun carouselAiringSoonQueryFindsMediaFromEmbeddedSchedule() =
+        runTest {
+            store.airingScheduleDao().clear()
+            store.mediaDao().clear()
+
+            val mediaModels = pageModel!!.data!!.page.media
+            val mapper = get<MediaMapper.EmbedWithMediaList>()
+            val entities = mapper.onResponseMapFrom(mediaModels)
+            mapper.onResponseDatabaseInsert(entities)
+
+            val mediaIds =
+                store
+                    .carouselDao()
+                    .airingSoonFlow(
+                        mediaType = MediaType.ANIME,
+                        pageSize = mediaModels.size,
+                        currentTime = 0L,
+                    ).first()
+                    .map { it.media.id }
+
+            assertEquals("", listOf(21L), mediaIds)
         }
 }

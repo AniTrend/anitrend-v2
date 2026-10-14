@@ -329,7 +329,6 @@ private val mapperModule =
                 localSource = store().mediaDao(),
                 tagPersistence = get<co.anitrend.data.tag.mapper.TagMapper.Embed>(),
                 genrePersistence = get<co.anitrend.data.genre.mapper.GenreMapper.Embed>(),
-                airingPersistence = get<co.anitrend.data.airing.mapper.AiringMapper.Embed>(),
                 mediaListPersistence = get<co.anitrend.data.medialist.mapper.MediaListMapper.Embed>(),
             )
         }
@@ -340,7 +339,6 @@ private val mapperModule =
                 rankPersistence = get<co.anitrend.data.rank.mapper.RankMapper.Embed>(),
                 tagPersistence = get<co.anitrend.data.tag.mapper.TagMapper.Embed>(),
                 genrePersistence = get<co.anitrend.data.genre.mapper.GenreMapper.Embed>(),
-                airingPersistence = get<co.anitrend.data.airing.mapper.AiringMapper.Embed>(),
                 mediaListPersistence = get<co.anitrend.data.medialist.mapper.MediaListMapper.Embed>(),
             )
         }
@@ -356,7 +354,6 @@ private val mapperModule =
                 localSource = store().mediaDao(),
                 tagPersistence = get<co.anitrend.data.tag.mapper.TagMapper.Embed>(),
                 genrePersistence = get<co.anitrend.data.genre.mapper.GenreMapper.Embed>(),
-                airingPersistence = get<co.anitrend.data.airing.mapper.AiringMapper.Embed>(),
             )
         }
         factory<MediaEmbedWithMediaListWriterContract> {
@@ -364,7 +361,6 @@ private val mapperModule =
                 localSource = store().mediaDao(),
                 tagPersistence = get<co.anitrend.data.tag.mapper.TagMapper.Embed>(),
                 genrePersistence = get<co.anitrend.data.genre.mapper.GenreMapper.Embed>(),
-                airingPersistence = get<co.anitrend.data.airing.mapper.AiringMapper.Embed>(),
                 mediaListPersistence = get<co.anitrend.data.medialist.mapper.MediaListMapper.Embed>(),
             )
         }

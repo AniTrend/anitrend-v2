@@ -24,18 +24,25 @@ class MediaWriterTest {
     @Test
     fun `paged writer flushes tag genre airing and media list after local upsert`() = runBlocking {
         val localSource = FakeMediaLocalSource()
+        val tag = FakePersistEmbedded()
+        val genre = FakePersistEmbedded()
+        val airing = FakePersistEmbedded()
+        val mediaList = FakePersistEmbedded()
         val writer =
             MediaPagedWriter(
                 localSource = localSource,
-                tagPersistence = FakePersistEmbedded(),
-                genrePersistence = FakePersistEmbedded(),
-                airingPersistence = FakePersistEmbedded(),
-                mediaListPersistence = FakePersistEmbedded(),
+                tagPersistence = tag,
+                genrePersistence = genre,
+                mediaListPersistence = mediaList,
             )
 
-        writer.persist(listOf(mediaEntity(1L), mediaEntity(2L)))
+        writer.persist(listOf(mediaEntity(1L), mediaEntity(2L)), airingPersistence = airing)
 
         assertEquals(listOf(1L, 2L), localSource.upsertedListIds)
+        assertEquals(1, tag.invocationCount)
+        assertEquals(1, genre.invocationCount)
+        assertEquals(1, airing.invocationCount)
+        assertEquals(1, mediaList.invocationCount)
     }
 
     @Test
@@ -54,11 +61,10 @@ class MediaWriterTest {
                 rankPersistence = rank,
                 tagPersistence = tag,
                 genrePersistence = genre,
-                airingPersistence = airing,
                 mediaListPersistence = mediaList,
             )
 
-        writer.persist(mediaEntity(3L))
+        writer.persist(mediaEntity(3L), airingPersistence = airing)
 
         assertEquals(listOf(3L), localSource.upsertedSingleIds)
         assertEquals(1, link.invocationCount)
@@ -94,10 +100,9 @@ class MediaWriterTest {
                 localSource = localSource,
                 tagPersistence = tag,
                 genrePersistence = genre,
-                airingPersistence = airing,
             )
 
-        writer.persist(listOf(mediaEntity(7L)))
+        writer.persist(listOf(mediaEntity(7L)), airingPersistence = airing)
 
         assertEquals(listOf(7L), localSource.upsertedListIds)
         assertEquals(1, tag.invocationCount)
@@ -117,11 +122,10 @@ class MediaWriterTest {
                 localSource = localSource,
                 tagPersistence = tag,
                 genrePersistence = genre,
-                airingPersistence = airing,
                 mediaListPersistence = mediaList,
             )
 
-        writer.persist(listOf(mediaEntity(11L)))
+        writer.persist(listOf(mediaEntity(11L)), airingPersistence = airing)
 
         assertEquals(listOf(11L), localSource.upsertedListIds)
         assertEquals(1, tag.invocationCount)
