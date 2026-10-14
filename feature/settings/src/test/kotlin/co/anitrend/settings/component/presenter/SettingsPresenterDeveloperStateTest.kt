@@ -53,6 +53,7 @@ class SettingsPresenterDeveloperStateTest {
                         showLeakLauncher = true,
                         clearDataOnSwipeRefresh = true,
                     ),
+                onEditEdgeApiBaseUrl = {},
                 navigateTo = {},
             )
 
@@ -86,6 +87,7 @@ class SettingsPresenterDeveloperStateTest {
                         showLeakLauncher = false,
                         clearDataOnSwipeRefresh = false,
                     ),
+                onEditEdgeApiBaseUrl = {},
                 navigateTo = {},
             )
 
@@ -115,12 +117,37 @@ class SettingsPresenterDeveloperStateTest {
                         showLeakLauncher = false,
                         clearDataOnSwipeRefresh = false,
                     ),
+                onEditEdgeApiBaseUrl = {},
                 navigateTo = { destination = it },
             )
 
         items.clickableSetting(id = "feature_flags").onClick()
 
         assertEquals(SettingsRouter.Destination.FEATURE_FLAGS, destination)
+    }
+
+    @Test
+    fun `given Edge API override when creating developer items then row shows value and opens editor`() {
+        val presenter = settingsPresenter()
+        var editRequested = false
+
+        val items =
+            presenter.getDeveloperSettingsItems(
+                state =
+                    SettingsPresenter.DeveloperSettingsState(
+                        automaticHeapDump = false,
+                        showLeakLauncher = false,
+                        clearDataOnSwipeRefresh = false,
+                        edgeApiBaseUrl = "http://10.0.2.2:8800",
+                    ),
+                onEditEdgeApiBaseUrl = { editRequested = true },
+                navigateTo = {},
+            )
+        val edgeApiBaseUrl = items.clickableSetting(id = "edge_api_base_url")
+
+        assertEquals("http://10.0.2.2:8800", edgeApiBaseUrl.currentValue?.invoke())
+        edgeApiBaseUrl.onClick()
+        assertTrue(editRequested)
     }
 
     @Test

@@ -17,12 +17,14 @@
 package co.anitrend.settings.component.content.developer
 
 import co.anitrend.arch.extension.settings.BooleanSetting
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import co.anitrend.data.settings.developer.IDeveloperSettings
 import co.anitrend.data.settings.refresh.IRefreshBehaviourSettings
 import io.mockk.every
 import io.mockk.mockk
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class DeveloperScreenStateTest {
@@ -56,6 +58,50 @@ class DeveloperScreenStateTest {
         assertEquals(true, automaticHeapDump.value)
         assertEquals(true, showLeakLauncher.value)
         assertEquals(true, clearDataOnSwipeRefresh.value)
+    }
+
+    @Test
+    fun `edge API base URL accepts HTTP host roots`() {
+        assertTrue(isValidEdgeApiBaseUrl("https://api.anitrend.co"))
+        assertTrue(isValidEdgeApiBaseUrl("http://10.0.2.2:8800/"))
+    }
+
+    @Test
+    fun `edge API base URL rejects invalid or path-specific URLs`() {
+        assertFalse(isValidEdgeApiBaseUrl(""))
+        assertFalse(isValidEdgeApiBaseUrl("ftp://api.anitrend.co"))
+        assertFalse(isValidEdgeApiBaseUrl("https://api.anitrend.co/graphql"))
+    }
+
+    @Test
+    fun `given Edge API base URL changes when updating state then normalized value persists and blank clears`() {
+        val edgeApiBaseUrl = mockk<AbstractSetting<String?>>()
+        var storedValue: String? = "https://old.example"
+        every { edgeApiBaseUrl.value } answers { storedValue }
+        every { edgeApiBaseUrl.value = any() } answers {
+            storedValue = firstArg()
+            Unit
+        }
+        val developerSettings =
+            mockk<IDeveloperSettings> {
+                every { this@mockk.edgeApiBaseUrl } returns edgeApiBaseUrl
+            }
+        val state =
+            DeveloperScreenState(
+                automaticHeapDump = false,
+                showLeakLauncher = false,
+                clearDataOnSwipeRefresh = false,
+                edgeApiBaseUrl = storedValue,
+            )
+                .updateEdgeApiBaseUrl(" http://10.0.2.2:8800 ", developerSettings)
+
+        assertEquals("http://10.0.2.2:8800", state.edgeApiBaseUrl)
+        assertEquals("http://10.0.2.2:8800", storedValue)
+
+        val clearedState = state.updateEdgeApiBaseUrl(" \t ", developerSettings)
+
+        assertEquals(null, clearedState.edgeApiBaseUrl)
+        assertEquals(null, storedValue)
     }
 
     private fun booleanSetting(initial: Boolean): BooleanSetting {

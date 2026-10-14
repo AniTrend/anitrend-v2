@@ -25,8 +25,10 @@ import co.anitrend.data.core.app.IAppInfo
 import co.anitrend.data.core.device.IDeviceInfo
 import co.anitrend.data.core.extensions.defaultBuilder
 import co.anitrend.data.edge.BuildConfig
+import co.anitrend.data.edge.core.api.interceptor.EdgeBaseUrlInterceptor
 import co.anitrend.data.edge.core.api.interceptor.EdgeClientInterceptor
 import co.anitrend.data.edge.core.api.interceptor.EdgeCookieInterceptor
+import co.anitrend.data.settings.developer.IDeveloperSettings
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -37,6 +39,7 @@ import org.koin.core.scope.Scope
 internal class EdgeApiFactory(
     private val deviceInfo: IDeviceInfo,
     private val appInfo: IAppInfo,
+    private val developerSettings: IDeveloperSettings,
     private val cookieJar: CookieJar,
 ) : IEndpointFactory {
     override val endpointType =
@@ -62,13 +65,21 @@ internal class EdgeApiFactory(
                     AppInterceptor(
                         appInfo = appInfo,
                     ),
-                ).addInterceptor(
-                    EdgeClientInterceptor(),
-                ).addInterceptor(
-                    EdgeCookieInterceptor(
-                        cookieJar = cookieJar,
-                    ),
                 )
+        if (BuildConfig.DEBUG) {
+            builder.addInterceptor(
+                EdgeBaseUrlInterceptor {
+                    developerSettings.edgeApiBaseUrl.value
+                },
+            )
+        }
+        builder
+            .addInterceptor(EdgeClientInterceptor())
+            .addInterceptor(
+                EdgeCookieInterceptor(
+                    cookieJar = cookieJar,
+                ),
+            )
         return builder.build()
     }
 

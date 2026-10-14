@@ -276,6 +276,14 @@ class Settings(
             preference = this,
         )
 
+    override val edgeApiBaseUrl =
+        NullableStringSetting(
+            key = R.string.settings_developer_edge_api_base_url,
+            default = null,
+            resources = context.resources,
+            preference = this,
+        )
+
     override val featureFlags =
         SetSetting(
             key = R.string.settings_feature_flags,

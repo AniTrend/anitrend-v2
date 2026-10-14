@@ -21,4 +21,7 @@ import co.anitrend.arch.extension.settings.contract.AbstractSetting
 interface IDeveloperSettings {
     val automaticHeapDump: AbstractSetting<Boolean>
     val showLeakLauncher: AbstractSetting<Boolean>
+
+    /** Optional Edge GraphQL host override. Null keeps the app-configured host. */
+    val edgeApiBaseUrl: AbstractSetting<String?>
 }

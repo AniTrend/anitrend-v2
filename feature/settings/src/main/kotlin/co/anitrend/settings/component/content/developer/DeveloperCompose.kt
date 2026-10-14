@@ -16,33 +16,44 @@
  */
 package co.anitrend.settings.component.content.developer
 
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import co.anitrend.android.core.ui.AniTrendPreview
 import co.anitrend.android.core.ui.theme.preview.PreviewTheme
 import co.anitrend.data.settings.developer.IDeveloperSettings
 import co.anitrend.data.settings.refresh.IRefreshBehaviourSettings
 import co.anitrend.navigation.SettingsRouter
+import co.anitrend.settings.R
 import co.anitrend.settings.component.compose.SettingsItemsList
 import co.anitrend.settings.component.compose.previewDeveloperData
 import co.anitrend.settings.component.presenter.SettingsPresenter
 import co.anitrend.settings.model.SettingItem
+import java.net.URI
 import org.koin.compose.koinInject
 
 internal data class DeveloperScreenState(
     val automaticHeapDump: Boolean,
     val showLeakLauncher: Boolean,
     val clearDataOnSwipeRefresh: Boolean,
+    val edgeApiBaseUrl: String? = null,
 ) {
     fun asPresenterState() =
         SettingsPresenter.DeveloperSettingsState(
             automaticHeapDump = automaticHeapDump,
             showLeakLauncher = showLeakLauncher,
             clearDataOnSwipeRefresh = clearDataOnSwipeRefresh,
+            edgeApiBaseUrl = edgeApiBaseUrl,
         )
 
     fun updateAutomaticHeapDump(
@@ -68,6 +79,15 @@ internal data class DeveloperScreenState(
         refreshBehaviourSettings.clearDataOnSwipeRefresh.value = newValue
         return copy(clearDataOnSwipeRefresh = newValue)
     }
+
+    fun updateEdgeApiBaseUrl(
+        newValue: String?,
+        developerSettings: IDeveloperSettings,
+    ): DeveloperScreenState {
+        val normalizedValue = newValue?.trim()?.takeIf { it.isNotEmpty() }
+        developerSettings.edgeApiBaseUrl.value = normalizedValue
+        return copy(edgeApiBaseUrl = normalizedValue)
+    }
 }
 
 @Composable
@@ -85,9 +105,13 @@ fun DeveloperScreen(
                     automaticHeapDump = developerSettings.automaticHeapDump.value,
                     showLeakLauncher = developerSettings.showLeakLauncher.value,
                     clearDataOnSwipeRefresh = refreshBehaviourSettings.clearDataOnSwipeRefresh.value,
+                    edgeApiBaseUrl = developerSettings.edgeApiBaseUrl.value,
                 ),
             )
         }
+    var isEdgeApiBaseUrlDialogOpen by remember { mutableStateOf(false) }
+    var edgeApiBaseUrlDraft by remember { mutableStateOf("") }
+    var isEdgeApiBaseUrlInvalid by remember { mutableStateOf(false) }
 
     DeveloperContent(
         modifier = modifier,
@@ -96,6 +120,11 @@ fun DeveloperScreen(
                 .getDeveloperSettingsItems(
                     state = state.asPresenterState(),
                     navigateTo = navigateTo,
+                    onEditEdgeApiBaseUrl = {
+                        edgeApiBaseUrlDraft = state.edgeApiBaseUrl.orEmpty()
+                        isEdgeApiBaseUrlInvalid = false
+                        isEdgeApiBaseUrlDialogOpen = true
+                    },
                 ).withDeveloperScreenState(
                     state = state,
                     onStateChange = { state = it },
@@ -103,6 +132,38 @@ fun DeveloperScreen(
                     refreshBehaviourSettings = refreshBehaviourSettings,
                 ),
     )
+    if (isEdgeApiBaseUrlDialogOpen) {
+        EdgeApiBaseUrlDialog(
+            value = edgeApiBaseUrlDraft,
+            isInvalid = isEdgeApiBaseUrlInvalid,
+            onValueChange = {
+                edgeApiBaseUrlDraft = it
+                isEdgeApiBaseUrlInvalid = false
+            },
+            onDismiss = {
+                isEdgeApiBaseUrlDialogOpen = false
+                isEdgeApiBaseUrlInvalid = false
+            },
+            onSave = {
+                val candidate = edgeApiBaseUrlDraft.trim()
+                when {
+                    candidate.isEmpty() -> {
+                        state = state.updateEdgeApiBaseUrl(null, developerSettings)
+                        isEdgeApiBaseUrlDialogOpen = false
+                    }
+
+                    isValidEdgeApiBaseUrl(candidate) -> {
+                        state = state.updateEdgeApiBaseUrl(candidate.trimEnd('/'), developerSettings)
+                        isEdgeApiBaseUrlDialogOpen = false
+                    }
+
+                    else -> {
+                        isEdgeApiBaseUrlInvalid = true
+                    }
+                }
+            },
+        )
+    }
 }
 
 private fun List<SettingItem>.withDeveloperScreenState(
@@ -152,6 +213,64 @@ private fun List<SettingItem>.withDeveloperScreenState(
             }
         }
     }
+
+@Composable
+private fun EdgeApiBaseUrlDialog(
+    value: String,
+    isInvalid: Boolean,
+    onValueChange: (String) -> Unit,
+    onDismiss: () -> Unit,
+    onSave: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.preference_title_developer_edge_api_base_url)) },
+        text = {
+            OutlinedTextField(
+                value = value,
+                onValueChange = onValueChange,
+                label = { Text(stringResource(R.string.preference_title_developer_edge_api_base_url)) },
+                placeholder = { Text(stringResource(R.string.placeholder_settings_developer_edge_api_base_url)) },
+                supportingText = {
+                    Text(
+                        stringResource(
+                            if (isInvalid) {
+                                R.string.error_settings_developer_edge_api_base_url_invalid
+                            } else {
+                                R.string.hint_settings_developer_edge_api_base_url
+                            },
+                        ),
+                    )
+                },
+                isError = isInvalid,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = onSave) {
+                Text(stringResource(R.string.action_settings_developer_edge_api_base_url_save))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.action_settings_close))
+            }
+        },
+    )
+}
+
+internal fun isValidEdgeApiBaseUrl(value: String): Boolean {
+    val uri = runCatching { URI(value.trim()) }.getOrNull() ?: return false
+    val scheme = uri.scheme
+    return (scheme.equals("http", ignoreCase = true) || scheme.equals("https", ignoreCase = true)) &&
+        !uri.host.isNullOrBlank() &&
+        (uri.port == -1 || uri.port in 1..65535) &&
+        (uri.rawPath.isNullOrEmpty() || uri.rawPath == "/") &&
+        uri.rawQuery == null &&
+        uri.rawFragment == null &&
+        uri.rawUserInfo == null
+}
 
 @Composable
 private fun DeveloperContent(

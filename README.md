@@ -38,6 +38,11 @@ To get started with development, follow these steps:
 
 The Git hooks will ensure your branch names follow the required format: `<type>/<description>` where type is one of: `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `build`, `ci`, or `revert`.
 
+## Developer Settings
+
+Debug builds expose **Settings > Developer > Edge API base URL** for testing against another AniTrend Edge GraphQL host. The override is persisted and applies to subsequent Edge requests. Clear the field to use the host configured at build time. Enter an HTTP or HTTPS host root without a path; Edge requests retain `/graphql`. Android emulators can reach services on the host machine through `10.0.2.2`.
+
+
 ## Sponsors
 
 > Big thanks to **[POEditor](https://poeditor.com)** for supporting the open source movement! AniTrend was approved for a free localization project. 
