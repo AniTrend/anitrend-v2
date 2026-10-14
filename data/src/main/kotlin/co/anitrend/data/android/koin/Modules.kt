@@ -98,8 +98,9 @@ private val coreModule =
             binds(IAniTrendStore.BINDINGS.toList())
         }
         single<IDeviceInfo>(createdAtStart = true) {
+            val context = androidContext()
             DeviceInfo(
-                platformUserAgent = WebSettings.getDefaultUserAgent(androidContext()),
+                platformUserAgent = { WebSettings.getDefaultUserAgent(context) },
             )
         }
         singleOf(::AppInfo) {

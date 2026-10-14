@@ -19,15 +19,20 @@ package co.anitrend.data.android.koin
 import android.content.ContextWrapper
 import android.content.pm.ApplicationInfo
 import androidx.test.platform.app.InstrumentationRegistry
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import co.anitrend.data.auth.settings.IAuthenticationSettings
 import co.anitrend.data.settings.refresh.IRefreshBehaviourSettings
 import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.data.testModules
 import co.anitrend.data.android.network.model.NetworkMessage
 import io.mockk.mockk
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
@@ -36,6 +41,11 @@ import org.koin.test.mock.MockProviderRule
 class ModulesTest : KoinTest {
     @get:Rule
     val mockProviderRule = MockProviderRule.create { mockk() }
+
+    @After
+    fun clearGlobalKoin() {
+        stopKoin()
+    }
 
     @Test
     fun verifyKoinDependencyGraph() {
@@ -47,7 +57,12 @@ class ModulesTest : KoinTest {
                         nonLocalizedLabel = "AniTrend test"
                     }
             }
-        checkModules {
+        checkModules(
+            parameters = {
+                withParameter<OkHttpClient.Builder> { HttpLoggingInterceptor.Level.BODY }
+                withParameter<ChuckerInterceptor> { emptySet<String>() }
+            },
+        ) {
             allowOverride(true)
             androidContext(context)
             modules(

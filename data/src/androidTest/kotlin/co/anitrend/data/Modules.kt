@@ -22,11 +22,15 @@ import co.anitrend.arch.extension.dispatchers.SupportDispatcher
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.data.android.database.AniTrendStore
 import co.anitrend.data.android.database.common.IAniTrendStore
+import co.anitrend.data.settings.developer.IDeveloperSettings
+import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.data.android.koin.dataModules
 import co.anitrend.data.genre.koin.genreModules
 import co.anitrend.data.media.koin.mediaModules
 import co.anitrend.data.tag.koin.tagModules
 import okhttp3.mockwebserver.MockWebServer
+import io.wax911.emojify.EmojiManager
+import io.mockk.mockk
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.binds
@@ -40,6 +44,9 @@ private val data =
         single {
             MockWebServer()
         }
+        single<IUserSettings> { mockk(relaxed = true) }
+        single<IDeveloperSettings> { mockk(relaxed = true) }
+        single<EmojiManager> { mockk(relaxed = true) }
     }
 
 private val store =

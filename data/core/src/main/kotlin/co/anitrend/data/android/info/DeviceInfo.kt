@@ -20,13 +20,13 @@ import android.os.Build
 import co.anitrend.data.core.device.IDeviceInfo
 
 class DeviceInfo(
-    platformUserAgent: String,
+    private val platformUserAgent: () -> String,
 ) : IDeviceInfo {
     override val manufacturer: String = Build.MANUFACTURER
     override val model: String = Build.MODEL
     override val sdkVersion: Int = Build.VERSION.SDK_INT
     override val releaseVersion: String = Build.VERSION.RELEASE
-    override val userAgent: String = createUserAgent(platformUserAgent)
+    override val userAgent: String by lazy { createUserAgent(platformUserAgent()) }
 
     private fun createUserAgent(platformUserAgent: String): String {
         val deviceInfo = "(${Build.MANUFACTURER} ${Build.MODEL})"
