@@ -58,7 +58,6 @@ import co.anitrend.data.user.mapper.UserMapper
 import co.anitrend.data.user.mapper.UserProfileConnectionMapper
 import co.anitrend.data.user.mapper.UserProfileFeedMapper
 import co.anitrend.data.user.mapper.UserProfileWriter
-import co.anitrend.data.user.mapper.UserProfileWriterContract
 import co.anitrend.data.user.mapper.UserProfileOverviewMapper
 import co.anitrend.data.user.mapper.UserProfileFeedWriter
 import co.anitrend.data.user.mapper.UserProfileFeedWriterContract
@@ -288,22 +287,25 @@ private val mapperModule =
             )
         }
         factory {
+            val generalOptionMapper = get<UserMapper.GeneralOptionEmbed>()
+            val mediaOptionMapper = get<UserMapper.MediaOptionEmbed>()
+            val previousNameMapper = get<UserMapper.PreviousNameEmbed>()
+            val userLocalSource = store().userDao()
+
             UserMapper.Profile(
-                generalOptionMapper = get(),
-                mediaOptionMapper = get(),
-                previousNameMapper = get(),
-                writer = get(),
-                localSource = store().userDao(),
+                generalOptionMapper = generalOptionMapper,
+                mediaOptionMapper = mediaOptionMapper,
+                previousNameMapper = previousNameMapper,
+                writer =
+                    UserProfileWriter(
+                        localSource = userLocalSource,
+                        generalOptionMapper = generalOptionMapper,
+                        mediaOptionMapper = mediaOptionMapper,
+                        previousNameMapper = previousNameMapper,
+                    ),
+                localSource = userLocalSource,
                 transactionRunner = transaction(),
                 converter = get(),
-            )
-        }
-        factory<UserProfileWriterContract> {
-            UserProfileWriter(
-                localSource = store().userDao(),
-                generalOptionMapper = get(),
-                mediaOptionMapper = get(),
-                previousNameMapper = get(),
             )
         }
         factory {

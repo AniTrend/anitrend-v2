@@ -16,8 +16,10 @@
  */
 package co.anitrend.data.auth.koin
 
+import androidx.room.RoomDatabase
 import co.anitrend.data.android.database.common.IAniTrendStore
-import co.anitrend.data.auth.mapper.AuthenticatedUserWriterContract
+import co.anitrend.data.auth.mapper.AuthMapper
+import co.anitrend.data.user.converter.UserModelConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.mapper.UserMapper
 import co.anitrend.data.user.settings.IUserSettings
@@ -32,7 +34,7 @@ import kotlin.test.assertNotNull
 
 class AuthModulesTest {
     @Test
-    fun authenticatedUserWriterResolvesFromAuthModules() {
+    fun authModulesResolveAuthMapper() {
         stopKoin()
 
         val store = mockk<IAniTrendStore>()
@@ -43,6 +45,8 @@ class AuthModulesTest {
                 module {
                     single<IAniTrendStore> { store }
                     single<IUserSettings> { mockk(relaxed = true) }
+                    single<RoomDatabase> { mockk(relaxed = true) }
+                    single<UserModelConverter> { mockk(relaxed = true) }
                     factoryOf(::mockGeneralOptionEmbed)
                     factoryOf(::mockMediaOptionEmbed)
                     factoryOf(::mockNotificationEmbed)
@@ -51,7 +55,7 @@ class AuthModulesTest {
             )
         }
 
-        assertNotNull(org.koin.java.KoinJavaComponent.getKoin().get<AuthenticatedUserWriterContract>())
+        assertNotNull(org.koin.java.KoinJavaComponent.getKoin().get<AuthMapper>())
         stopKoin()
     }
 }

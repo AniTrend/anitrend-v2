@@ -20,13 +20,13 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.sqlite.db.SupportSQLiteQuery
 import co.anitrend.data.android.database.common.TransactionRunner
-import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.user.converter.UserGeneralOptionModelConverter
 import co.anitrend.data.user.converter.UserMediaOptionModelConverter
 import co.anitrend.data.user.converter.UserModelConverter
 import co.anitrend.data.user.converter.UserStatisticPayload
 import co.anitrend.data.user.converter.UserStatisticModelConverter
 import co.anitrend.data.user.datasource.local.UserLocalSource
+import co.anitrend.data.user.datasource.local.name.UserPreviousNameLocalSource
 import co.anitrend.data.user.datasource.local.option.UserGeneralOptionLocalSource
 import co.anitrend.data.user.datasource.local.option.UserMediaOptionLocalSource
 import co.anitrend.data.user.entity.UserEntity
@@ -317,7 +317,9 @@ class UserMapperTest {
         }
     }
 
-    private class FakeUserPreviousNameLocalSource : AbstractLocalSource<UserPreviousNameEntity>() {
+    private class FakeUserPreviousNameLocalSource : UserPreviousNameLocalSource() {
+        override suspend fun clearForUser(userId: Long) {
+        }
         override suspend fun count(): Int = 0
 
         override suspend fun clear() {
