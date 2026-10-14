@@ -55,6 +55,8 @@
 
     <string name="settings_auto_heap_dump" translatable="false">_autoHeapDump</string>
     <string name="settings_show_leak_launcher" translatable="false">_showLeakLauncher</string>
+    <!-- SharedPreferences key for the debug Edge API base URL override. -->
+    <string name="settings_developer_edge_api_base_url" translatable="false">_edgeApiBaseUrl</string>
     <string name="settings_experimental_compose_ui" translatable="false">_experimentalComposeUi</string>
     <string name="settings_feature_flags" translatable="false">_featureFlags</string>
 </resources>

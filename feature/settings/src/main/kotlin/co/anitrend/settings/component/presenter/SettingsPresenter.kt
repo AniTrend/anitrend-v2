@@ -70,6 +70,7 @@ class SettingsPresenter(
         val automaticHeapDump: Boolean,
         val showLeakLauncher: Boolean,
         val clearDataOnSwipeRefresh: Boolean,
+        val edgeApiBaseUrl: String? = null,
     )
 
     data class FeatureFlagSettingsState(
@@ -380,6 +381,7 @@ class SettingsPresenter(
     fun getDeveloperSettingsItems(
         state: DeveloperSettingsState,
         navigateTo: (SettingsRouter.Destination) -> Unit,
+        onEditEdgeApiBaseUrl: () -> Unit,
     ): List<SettingItem> {
         if (!BuildConfig.DEBUG) {
             return listOf(
@@ -413,6 +415,21 @@ class SettingsPresenter(
                 icon = Icons.Outlined.WorkHistory,
                 currentValue = { context.getString(co.anitrend.settings.R.string.label_settings_state_runtime) },
                 onClick = { navigateTo(SettingsRouter.Destination.TASK) },
+            ),
+            SettingItem.CategoryHeader(
+                id = "developer_settings_network",
+                title = context.getString(co.anitrend.settings.R.string.preference_category_title_developer_network),
+            ),
+            SettingItem.ClickableSetting(
+                id = "edge_api_base_url",
+                title = context.getString(co.anitrend.settings.R.string.preference_title_developer_edge_api_base_url),
+                summary = context.getString(co.anitrend.settings.R.string.preference_summary_developer_edge_api_base_url),
+                icon = Icons.Outlined.DeveloperBoard,
+                currentValue = {
+                    state.edgeApiBaseUrl?.takeIf { it.isNotBlank() }
+                        ?: context.getString(co.anitrend.settings.R.string.label_settings_state_default)
+                },
+                onClick = onEditEdgeApiBaseUrl,
             ),
             SettingItem.CategoryHeader(
                 id = "developer_settings_runtime_behavior",

@@ -127,6 +127,20 @@
     <string name="preference_title_experimental_compose_ui">Experimental Compose UI</string>
     <string name="preference_summary_experimental_compose_ui">Enable in-development Compose UI features (may be unstable)</string>
 
+    <!-- Category grouping configurable network targets in the debug developer screen -->
+    <string name="preference_category_title_developer_network">Network</string>
+    <!-- Row label for changing the Edge GraphQL host in developer settings -->
+    <string name="preference_title_developer_edge_api_base_url">Edge API base URL</string>
+    <!-- Explains where the Edge base URL applies and how to restore the app default -->
+    <string name="preference_summary_developer_edge_api_base_url">Change the host used for Edge GraphQL requests. Leave blank to use the app default.</string>
+    <!-- Example host root for the Edge base URL text field -->
+    <string name="placeholder_settings_developer_edge_api_base_url">https://api.example.test</string>
+    <!-- Guidance for the Edge URL editor; blank resets the app default and requests use /graphql -->
+    <string name="hint_settings_developer_edge_api_base_url">Enter an HTTP or HTTPS host root. Leave blank to use the app default. Requests use /graphql.</string>
+    <!-- Error shown when the Edge URL is not an HTTP or HTTPS host root -->
+    <string name="error_settings_developer_edge_api_base_url_invalid">Enter an HTTP or HTTPS host root without a path, query, or fragment.</string>
+    <!-- Button label to save the Edge API base URL in developer settings -->
+    <string name="action_settings_developer_edge_api_base_url_save">Save</string>
     <!-- Synchronization screen -->
     <!-- Category -->
 

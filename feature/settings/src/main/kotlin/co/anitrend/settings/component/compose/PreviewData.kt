@@ -160,6 +160,17 @@ internal fun previewDeveloperData(): List<SettingItem> =
             onClick = { },
         ),
         SettingItem.CategoryHeader(
+            id = "developer_settings_network",
+            title = stringResource(R.string.preference_category_title_developer_network),
+        ),
+        SettingItem.ClickableSetting(
+            id = "edge_api_base_url",
+            title = stringResource(R.string.preference_title_developer_edge_api_base_url),
+            summary = stringResource(R.string.preference_summary_developer_edge_api_base_url),
+            icon = Icons.Default.DeveloperBoard,
+            onClick = { },
+        ),
+        SettingItem.CategoryHeader(
             id = "developer_settings_runtime_behavior",
             title = stringResource(R.string.preference_category_title_developer_runtime_behavior),
         ),
