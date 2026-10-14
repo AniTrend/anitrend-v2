@@ -23,6 +23,8 @@ import co.anitrend.data.favourite.mapper.FavouriteMapper
 import co.anitrend.data.favourite.repository.FavouriteRepository
 import co.anitrend.data.favourite.source.FavouriteSourceImpl
 import co.anitrend.data.favourite.source.contract.FavouriteSource
+import co.anitrend.data.favourite.FavouriteToggleRepository
+import co.anitrend.data.favourite.ToggleFavouriteInteractor
 import co.anitrend.data.favourite.usecase.FavouriteInteractor
 import org.koin.dsl.module
 
@@ -49,7 +51,7 @@ private val mapperModule =
 
 private val useCaseModule =
     module {
-        factory {
+        factory<ToggleFavouriteInteractor> {
             FavouriteInteractor.Toggle(
                 repository = get(),
             )
@@ -58,7 +60,7 @@ private val useCaseModule =
 
 private val repositoryModule =
     module {
-        factory {
+        factory<FavouriteToggleRepository> {
             FavouriteRepository(
                 source = get(),
             )
