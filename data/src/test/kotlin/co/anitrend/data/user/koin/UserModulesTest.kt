@@ -20,9 +20,7 @@ import androidx.room.RoomDatabase
 import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.media.mapper.MediaMapper
 import co.anitrend.data.user.mapper.UserProfileFeedMapper
-import co.anitrend.data.user.mapper.UserProfileFeedWriterContract
 import co.anitrend.data.user.mapper.UserProfileOverviewMapper
-import co.anitrend.data.user.mapper.UserProfileOverviewWriterContract
 import io.mockk.every
 import io.mockk.mockk
 import org.koin.core.context.GlobalContext.stopKoin
@@ -54,7 +52,6 @@ class UserModulesTest {
             )
         }
 
-        assertNotNull(getKoin().get<UserProfileOverviewWriterContract>())
         assertNotNull(getKoin().get<UserProfileOverviewMapper>())
         stopKoin()
     }
@@ -81,7 +78,6 @@ class UserModulesTest {
             )
         }
 
-        assertNotNull(getKoin().get<UserProfileFeedWriterContract>())
         assertNotNull(getKoin().get<UserProfileFeedMapper>())
         stopKoin()
     }

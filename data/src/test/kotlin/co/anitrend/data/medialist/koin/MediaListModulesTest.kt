@@ -20,7 +20,7 @@ import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.customlist.mapper.CustomListMapper
 import co.anitrend.data.customscore.mapper.CustomScoreMapper
 import co.anitrend.data.media.mapper.MediaMapper
-import co.anitrend.data.medialist.mapper.MediaListWriterContract
+import co.anitrend.data.medialist.mapper.MediaListMapper
 import co.anitrend.data.user.mapper.UserMapper
 import io.mockk.every
 import io.mockk.mockk
@@ -53,7 +53,7 @@ class MediaListModulesTest {
             )
         }
 
-        assertNotNull(getKoin().get<MediaListWriterContract>())
+        assertNotNull(getKoin().get<MediaListMapper.Paged>())
         stopKoin()
     }
 }
