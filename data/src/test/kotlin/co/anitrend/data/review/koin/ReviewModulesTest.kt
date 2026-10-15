@@ -18,7 +18,7 @@ package co.anitrend.data.review.koin
 
 import co.anitrend.data.android.database.common.IAniTrendStore
 import co.anitrend.data.media.mapper.MediaMapper
-import co.anitrend.data.review.mapper.ReviewWriterContract
+import co.anitrend.data.review.mapper.ReviewMapper
 import co.anitrend.data.user.mapper.UserMapper
 import io.mockk.every
 import io.mockk.mockk
@@ -32,7 +32,7 @@ import kotlin.test.assertNotNull
 
 class ReviewModulesTest {
     @Test
-    fun reviewModulesResolveEntryWriterPath() {
+    fun reviewModulesResolvePagedMapperPath() {
         stopKoin()
 
         val store = mockk<IAniTrendStore>()
@@ -49,7 +49,7 @@ class ReviewModulesTest {
             )
         }
 
-        assertNotNull(getKoin().get<ReviewWriterContract>())
+        assertNotNull(getKoin().get<ReviewMapper.Paged>())
         stopKoin()
     }
 }
