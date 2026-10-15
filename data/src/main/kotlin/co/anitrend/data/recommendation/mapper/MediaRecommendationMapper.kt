@@ -17,6 +17,7 @@
 package co.anitrend.data.recommendation.mapper
 
 import co.anitrend.data.android.mapper.DefaultMapper
+import co.anitrend.data.core.railway.OutCome
 import co.anitrend.data.media.converter.MediaConverter
 import co.anitrend.data.media.converter.toConnectionPreviewEntity
 import co.anitrend.data.media.model.container.MediaConnectionModelContainer
@@ -53,6 +54,18 @@ internal class MediaRecommendationMapper(
         }
 
         localSource.upsertConnections(data)
+    }
+
+    /**
+     * Recommendation snapshots must persist even when empty: [persist] clears the
+     * requested media's stale rows from an empty snapshot, which the generic
+     * empty-collection validity gate in [DefaultMapper] would otherwise skip.
+     */
+    override suspend fun onResponseDatabaseInsert(mappedData: List<MediaRecommendationConnectionEntity>) {
+        val outcome = persistChanges(mappedData)
+        if (outcome is OutCome.Fail) {
+            handleException(outcome.errors)
+        }
     }
 
     override suspend fun onResponseMapFrom(source: MediaConnectionModelContainer.Recommendations): List<MediaRecommendationConnectionEntity> {

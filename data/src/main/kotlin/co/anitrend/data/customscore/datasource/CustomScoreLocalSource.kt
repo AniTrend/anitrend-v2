@@ -17,6 +17,8 @@
 package co.anitrend.data.customscore.datasource
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.customscore.entity.CustomScoreEntity
@@ -44,4 +46,10 @@ internal abstract class CustomScoreLocalSource : AbstractLocalSource<CustomScore
     """,
     )
     abstract suspend fun clear(scoreName: String)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract override suspend fun upsert(attribute: CustomScoreEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract override suspend fun upsert(attribute: List<CustomScoreEntity>)
 }

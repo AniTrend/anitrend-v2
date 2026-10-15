@@ -17,6 +17,8 @@
 package co.anitrend.data.user.datasource.local.option
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
@@ -36,4 +38,10 @@ internal abstract class UserMediaOptionLocalSource : AbstractLocalSource<UserMed
         """,
     )
     abstract override suspend fun clear()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract override suspend fun upsert(attribute: UserMediaOptionEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract override suspend fun upsert(attribute: List<UserMediaOptionEntity>)
 }

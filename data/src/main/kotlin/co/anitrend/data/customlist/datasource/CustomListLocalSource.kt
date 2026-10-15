@@ -17,6 +17,8 @@
 package co.anitrend.data.customlist.datasource
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.customlist.entity.CustomListEntity
@@ -47,4 +49,10 @@ internal abstract class CustomListLocalSource : AbstractLocalSource<CustomListEn
         listName: String,
         userId: Long,
     )
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract override suspend fun upsert(attribute: CustomListEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract override suspend fun upsert(attribute: List<CustomListEntity>)
 }

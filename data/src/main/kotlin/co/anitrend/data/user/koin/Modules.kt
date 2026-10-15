@@ -60,11 +60,8 @@ import co.anitrend.data.user.mapper.UserProfileFeedMapper
 import co.anitrend.data.user.mapper.UserProfileWriter
 import co.anitrend.data.user.mapper.UserProfileOverviewMapper
 import co.anitrend.data.user.mapper.UserProfileFeedWriter
-import co.anitrend.data.user.mapper.UserProfileFeedWriterContract
 import co.anitrend.data.user.mapper.UserProfileOverviewWriter
-import co.anitrend.data.user.mapper.UserProfileOverviewWriterContract
 import co.anitrend.data.user.mapper.UserStatisticPersistenceWriter
-import co.anitrend.data.user.mapper.UserStatisticPersistenceWriterContract
 import co.anitrend.data.user.mapper.UserStatisticWriter
 import co.anitrend.data.user.mapper.UserStatisticWriterContract
 import co.anitrend.data.user.repository.UserRepository
@@ -348,17 +345,16 @@ private val mapperModule =
             )
         }
         factory {
+            val userMapper = get<UserMapper.Embed>()
             UserMapper.Statistic(
-                userMapper = get(),
-                writer = get(),
+                userMapper = userMapper,
+                writer =
+                    UserStatisticPersistenceWriter(
+                        userPersistence = userMapper,
+                        statisticWriter = get<UserStatisticWriterContract>(),
+                    ),
                 converter = get(),
                 transactionRunner = transaction(),
-            )
-        }
-        factory<UserStatisticPersistenceWriterContract> {
-            UserStatisticPersistenceWriter(
-                userPersistence = get<UserMapper.Embed>(),
-                statisticWriter = get(),
             )
         }
         factory<UserStatisticWriterContract> {
@@ -366,37 +362,40 @@ private val mapperModule =
                 localSource = store().userStatisticDao(),
             )
         }
-        factory<UserProfileOverviewWriterContract> {
-            UserProfileOverviewWriter(
-                mediaPersistence = get<MediaMapper.Embed>(),
-                favouritePersistence = get<UserProfileConnectionMapper.FavouriteEmbed>(),
-                statusPersistence = get<StatusMapper.Activity.Embed>(),
-            )
-        }
-        factory<UserProfileFeedWriterContract> {
-            UserProfileFeedWriter(
-                mediaPersistence = get<MediaMapper.Embed>(),
-                reviewPreviewPersistence = get<ReviewMapper.PreviewEmbed>(),
-                reviewConnectionPersistence = get<UserProfileConnectionMapper.ReviewEmbed>(),
-                statusPersistence = get<StatusMapper.Activity.Embed>(),
-            )
-        }
         factory {
+            val favouriteEmbedMapper = get<UserProfileConnectionMapper.FavouriteEmbed>()
+            val statusEmbedMapper = get<StatusMapper.Activity.Embed>()
+            val mediaEmbedMapper = get<MediaMapper.Embed>()
             UserProfileOverviewMapper(
-                favouriteEmbedMapper = get(),
-                statusEmbedMapper = get(),
-                mediaEmbedMapper = get<MediaMapper.Embed>(),
-                writer = get(),
+                favouriteEmbedMapper = favouriteEmbedMapper,
+                statusEmbedMapper = statusEmbedMapper,
+                mediaEmbedMapper = mediaEmbedMapper,
+                writer =
+                    UserProfileOverviewWriter(
+                        mediaPersistence = mediaEmbedMapper,
+                        favouritePersistence = favouriteEmbedMapper,
+                        statusPersistence = statusEmbedMapper,
+                    ),
                 transactionRunner = transaction(),
             )
         }
         factory {
+            val reviewConnectionMapper = get<UserProfileConnectionMapper.ReviewEmbed>()
+            val reviewPreviewMapper = get<ReviewMapper.PreviewEmbed>()
+            val statusEmbedMapper = get<StatusMapper.Activity.Embed>()
+            val mediaEmbedMapper = get<MediaMapper.Embed>()
             UserProfileFeedMapper(
-                reviewConnectionMapper = get<UserProfileConnectionMapper.ReviewEmbed>(),
-                reviewPreviewMapper = get<ReviewMapper.PreviewEmbed>(),
-                statusEmbedMapper = get<StatusMapper.Activity.Embed>(),
-                mediaEmbedMapper = get<MediaMapper.Embed>(),
-                writer = get(),
+                reviewConnectionMapper = reviewConnectionMapper,
+                reviewPreviewMapper = reviewPreviewMapper,
+                statusEmbedMapper = statusEmbedMapper,
+                mediaEmbedMapper = mediaEmbedMapper,
+                writer =
+                    UserProfileFeedWriter(
+                        mediaPersistence = mediaEmbedMapper,
+                        reviewPreviewPersistence = reviewPreviewMapper,
+                        reviewConnectionPersistence = reviewConnectionMapper,
+                        statusPersistence = statusEmbedMapper,
+                    ),
                 transactionRunner = transaction(),
             )
         }

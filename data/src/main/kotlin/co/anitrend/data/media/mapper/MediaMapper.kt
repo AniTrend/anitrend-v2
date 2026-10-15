@@ -53,7 +53,7 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
          * Save [data] into your desired local source
          */
         override suspend fun persist(data: List<MediaEntity>) {
-            writer.persist(data, airingMapper)
+            writer.persist(data)
         }
 
         /**
@@ -101,7 +101,7 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         override val converter: MediaModelConverter,
     ) : MediaMapper<MediaModelContainer.Detail, MediaEntity>() {
         override suspend fun persist(data: MediaEntity) {
-            writer.persist(data, airingMapper)
+            writer.persist(data)
         }
 
         /**
@@ -181,7 +181,7 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         override val converter: MediaModelConverter,
     ) : EmbedMapper<MediaModel, MediaEntity>() {
         override suspend fun persist(data: List<MediaEntity>) {
-            writer.persist(data, airingMapper)
+            writer.persist(data)
         }
 
         /**
@@ -224,7 +224,7 @@ internal sealed class MediaMapper<S, D> : DefaultMapper<S, D>() {
         override val converter: MediaModelConverter,
     ) : EmbedMapper<MediaModel, MediaEntity>() {
         override suspend fun persist(data: List<MediaEntity>) {
-            writer.persist(data, airingMapper)
+            writer.persist(data)
         }
 
         /**

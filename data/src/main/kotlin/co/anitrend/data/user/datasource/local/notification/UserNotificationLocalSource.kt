@@ -17,6 +17,8 @@
 package co.anitrend.data.user.datasource.local.notification
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import co.anitrend.data.android.source.local.AbstractLocalSource
 import co.anitrend.data.user.entity.notification.UserNotificationEntity
@@ -36,4 +38,10 @@ internal abstract class UserNotificationLocalSource : AbstractLocalSource<UserNo
         """,
     )
     abstract override suspend fun clear()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract override suspend fun upsert(attribute: UserNotificationEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract override suspend fun upsert(attribute: List<UserNotificationEntity>)
 }
