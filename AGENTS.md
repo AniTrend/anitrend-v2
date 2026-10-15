@@ -58,6 +58,7 @@ Follow instruction precedence in this order:
 | ADB install, package, or device connectivity troubleshooting | `AGENTS.md` | `.agents/skills/adb-device-workflow/SKILL.md` |
 | UI planning, hierarchy, or product-facing screen refinements | `AGENTS.md` | `.agents/skills/anitrend-product-designer/SKILL.md` |
 | External integrations and stack context | `AGENTS.md` | `.agents/skills/key-libraries/SKILL.md` |
+| Missing staged sidecars or partial Room joins | `AGENTS.md` | `.agents/skills/staged-sidecar-persistence/SKILL.md` |
 
 ## High-Value Skill Anchors
 
@@ -80,6 +81,8 @@ inventing a new pattern or reading broad areas of the codebase:
   `.agents/skills/mockk-testing-patterns/SKILL.md` for test shape, DI graph checks, and MockK examples.
 - `.agents/skills/android-runtime-investigation/SKILL.md` and
   `.agents/skills/android-runtime-investigation/references/chucker-sqlite-queries.md` for runtime evidence-first debugging.
+- `.agents/skills/staged-sidecar-persistence/SKILL.md` for missing sidecar rows, partial Room
+  joins, and EmbedMapper/writer Koin ownership wiring.
 - `.agents/skills/anitrend-product-designer/SKILL.md` and its `references/` folder for UI planning output and reviewable design handoff.
 
 ## Project Purpose and Scope

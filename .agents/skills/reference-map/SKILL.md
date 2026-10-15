@@ -46,6 +46,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 | Koin DI wiring | `AGENTS.md` | `.agents/skills/koin-module-wiring/SKILL.md` |
 | Room entity + migration pattern | `AGENTS.md` | `.agents/skills/room-entity-pattern/SKILL.md` |
 | CacheRequest collision / empty UI with no crash | `AGENTS.md` | `.agents/skills/cache-request-isolation/SKILL.md` |
+| Missing sidecar rows or partial Room joins despite successful responses | `AGENTS.md` | `.agents/skills/staged-sidecar-persistence/SKILL.md` |
 | GraphQL controller lifecycle, generated `GraphQLOperationRequest<...Variables>` with carried documents, `KotlinxGraphQLTransportCodec` and `GraphQLConverterFactory` wiring, shared `AniTrendConverterFactory` mixed-protocol boundary, `Response<GraphQLResponse<*>>` | `AGENTS.md` | `.agents/skills/graphql-query-pattern/SKILL.md` |
 | Shared data infrastructure role, `ControllerStrategy`, `OnlineStrategy`, `OfflineStrategy`, `ScopeExtensions`, `graphQLController` Koin wiring | `AGENTS.md` | `.agents/skills/data-android-infrastructure/SKILL.md` |
 | GraphQL fragment-to-model mapping and remote source wiring | `AGENTS.md` | `.agents/skills/mapping-graphql-models/SKILL.md` |
@@ -71,6 +72,7 @@ anchors across `android`, `app`, `feature`, `common`, `task`, `domain`, `data`, 
 | Add DI bindings | `AGENTS.md` | `.agents/skills/koin-module-wiring/SKILL.md` |
 | Add or update Room entities | `AGENTS.md` | `.agents/skills/room-entity-pattern/SKILL.md` |
 | Debug empty-UI / silent cache bypass | `AGENTS.md` | `.agents/skills/cache-request-isolation/SKILL.md` |
+| Debug missing sidecar rows, partial Room joins, or change EmbedMapper/writer wiring | `AGENTS.md` | `.agents/skills/staged-sidecar-persistence/SKILL.md` |
 | Add a new GraphQL-backed repository or source | `AGENTS.md` | `.agents/skills/data-state-pattern/SKILL.md` then `.agents/skills/graphql-query-pattern/SKILL.md` |
 | Add or change GraphQL query flow | `AGENTS.md` | `.agents/skills/graphql-query-pattern/SKILL.md` |
 | Understand `ControllerStrategy`, choose `OnlineStrategy` vs `OfflineStrategy`, or understand `ScopeExtensions` / shared data infrastructure | `AGENTS.md` | `.agents/skills/data-android-infrastructure/SKILL.md` |
