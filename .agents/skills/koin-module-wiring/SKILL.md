@@ -79,3 +79,7 @@ parent Gradle module first, then add that parent aggregator to `app/core/src/mai
   Koin resolution test.
 - Task Koin files should bind workers and router providers only. Repository, source, mapper, and
   controller bindings stay in the owning data module.
+- A mapper and its writer must share the same factory-local embed instances: construct the writer
+  inline in the mapper's `factory` from the resolved `get<...>()` references instead of binding a
+  standalone writer factory that resolves its own embeds. See
+  `.agents/skills/staged-sidecar-persistence/SKILL.md` for the drain-ownership rule and checks.

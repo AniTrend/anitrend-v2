@@ -204,6 +204,8 @@ import co.anitrend.data.android.cache.model.CacheRequest
 
 ## Related Skills
 
+- `.agents/skills/staged-sidecar-persistence/SKILL.md` — valid payload with absent sidecar rows
+  is stage/drain ownership, not a cache collision
 - `.agents/skills/android-runtime-investigation/SKILL.md` — broader evidence-first ADB workflow
 - `.agents/skills/adb-device-workflow/SKILL.md` — device connection, install, logcat
 - `.agents/skills/room-entity-pattern/SKILL.md` — entity/DAO/mapper patterns
