@@ -17,6 +17,8 @@
 package co.anitrend.data.user.datasource.local.connection
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import co.anitrend.data.android.source.local.AbstractLocalSource
@@ -49,4 +51,10 @@ internal abstract class UserProfileFavouriteMediaLocalSource : AbstractLocalSour
         """,
     )
     abstract suspend fun clearByUserId(userId: Long)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract override suspend fun upsert(attribute: UserProfileFavouriteMediaEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract override suspend fun upsert(attribute: List<UserProfileFavouriteMediaEntity>)
 }

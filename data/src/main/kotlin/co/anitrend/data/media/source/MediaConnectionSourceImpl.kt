@@ -111,6 +111,10 @@ internal sealed class MediaConnectionSourceImpl {
                 .flowOn(dispatcher.computation)
 
         override suspend fun refreshRecommendations(requestCallback: RequestCallback): Boolean {
+            mapper.onRequest(
+                mediaId = query.id,
+                page = 1,
+            )
             val deferred =
                 deferred {
                     remoteSource.getMediaRecommendations(

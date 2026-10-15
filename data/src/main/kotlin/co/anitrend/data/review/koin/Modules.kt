@@ -38,7 +38,6 @@ import co.anitrend.data.review.converter.ReviewModelConverter
 import co.anitrend.data.review.entity.filter.ReviewQueryFilter
 import co.anitrend.data.review.mapper.ReviewMapper
 import co.anitrend.data.review.mapper.ReviewWriter
-import co.anitrend.data.review.mapper.ReviewWriterContract
 import co.anitrend.data.review.repository.ReviewRepository
 import co.anitrend.data.review.source.ReviewSourceImpl
 import co.anitrend.data.review.source.contract.ReviewSource
@@ -123,18 +122,18 @@ private val cacheModule =
 
 private val mapperModule =
     module {
-        factory<ReviewWriterContract> {
-            ReviewWriter(
-                mediaPersistence = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>(),
-                userPersistence = get<co.anitrend.data.user.mapper.UserMapper.Embed>(),
-                localSource = store().reviewDao(),
-            )
-        }
         factory {
+            val mediaMapper = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>()
+            val localSource = store().reviewDao()
             ReviewMapper.Entry(
-                mediaMapper = get(),
-                writer = get(),
-                localSource = store().reviewDao(),
+                mediaMapper = mediaMapper,
+                writer =
+                    ReviewWriter(
+                        mediaPersistence = mediaMapper,
+                        userPersistence = get<co.anitrend.data.user.mapper.UserMapper.Embed>(),
+                        localSource = localSource,
+                    ),
+                localSource = localSource,
                 converter = get(),
             )
         }
@@ -157,11 +156,19 @@ private val mapperModule =
             )
         }
         factory {
+            val mediaMapper = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>()
+            val userMapper = get<co.anitrend.data.user.mapper.UserMapper.Embed>()
+            val localSource = store().reviewDao()
             ReviewMapper.Paged(
-                mediaMapper = get(),
-                userMapper = get(),
-                writer = get(),
-                localSource = store().reviewDao(),
+                mediaMapper = mediaMapper,
+                userMapper = userMapper,
+                writer =
+                    ReviewWriter(
+                        mediaPersistence = mediaMapper,
+                        userPersistence = userMapper,
+                        localSource = localSource,
+                    ),
+                localSource = localSource,
                 converter = get(),
             )
         }

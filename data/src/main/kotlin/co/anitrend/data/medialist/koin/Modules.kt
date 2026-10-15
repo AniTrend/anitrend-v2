@@ -41,11 +41,8 @@ import co.anitrend.data.medialist.converter.MediaListModelConverter
 import co.anitrend.data.medialist.entity.filter.MediaListQueryFilter
 import co.anitrend.data.medialist.mapper.MediaListMapper
 import co.anitrend.data.medialist.mapper.MediaListEmbedWithMediaWriter
-import co.anitrend.data.medialist.mapper.MediaListEmbedWithMediaWriterContract
 import co.anitrend.data.medialist.mapper.MediaListEmbedWriter
-import co.anitrend.data.medialist.mapper.MediaListEmbedWriterContract
 import co.anitrend.data.medialist.mapper.MediaListWriter
-import co.anitrend.data.medialist.mapper.MediaListWriterContract
 import co.anitrend.data.medialist.repository.MediaListRepository
 import co.anitrend.data.medialist.source.MediaListSourceImpl
 import co.anitrend.data.medialist.source.contract.MediaListSource
@@ -160,30 +157,6 @@ private val cacheModule =
 
 private val mapperModule =
     module {
-        factory<MediaListWriterContract> {
-            MediaListWriter(
-                userPersistence = get<co.anitrend.data.user.mapper.UserMapper.Embed>(),
-                mediaPersistence = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>(),
-                localSource = store().mediaListDao(),
-                customListPersistence = get<co.anitrend.data.customlist.mapper.CustomListMapper>(),
-                customScorePersistence = get<co.anitrend.data.customscore.mapper.CustomScoreMapper>(),
-            )
-        }
-        factory<MediaListEmbedWriterContract> {
-            MediaListEmbedWriter(
-                userPersistence = get<co.anitrend.data.user.mapper.UserMapper.Embed>(),
-                localSource = store().mediaListDao(),
-                customListPersistence = get<co.anitrend.data.customlist.mapper.CustomListMapper>(),
-                customScorePersistence = get<co.anitrend.data.customscore.mapper.CustomScoreMapper>(),
-            )
-        }
-        factory<MediaListEmbedWithMediaWriterContract> {
-            MediaListEmbedWithMediaWriter(
-                userPersistence = get<co.anitrend.data.user.mapper.UserMapper.Embed>(),
-                mediaPersistence = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>(),
-                localSource = store().mediaListDao(),
-            )
-        }
         factory {
             MediaListMapper.DeletedEntry(
                 localSource = store().mediaListDao(),
@@ -197,76 +170,154 @@ private val mapperModule =
             )
         }
         factory {
+            val userMapper = get<co.anitrend.data.user.mapper.UserMapper.Embed>()
+            val mediaMapper = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>()
+            val customListMapper = get<co.anitrend.data.customlist.mapper.CustomListMapper>()
+            val customScoreMapper = get<co.anitrend.data.customscore.mapper.CustomScoreMapper>()
+            val localSource = store().mediaListDao()
             MediaListMapper.Entry(
-                userMapper = get(),
-                mediaMapper = get(),
-                customListMapper = get(),
-                customScoreMapper = get(),
-                writer = get(),
-                localSource = store().mediaListDao(),
+                userMapper = userMapper,
+                mediaMapper = mediaMapper,
+                customListMapper = customListMapper,
+                customScoreMapper = customScoreMapper,
+                writer =
+                    MediaListWriter(
+                        userPersistence = userMapper,
+                        mediaPersistence = mediaMapper,
+                        localSource = localSource,
+                        customListPersistence = customListMapper,
+                        customScorePersistence = customScoreMapper,
+                    ),
+                localSource = localSource,
                 converter = get(),
             )
         }
         factory {
+            val userMapper = get<co.anitrend.data.user.mapper.UserMapper.Embed>()
+            val mediaMapper = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>()
+            val customListMapper = get<co.anitrend.data.customlist.mapper.CustomListMapper>()
+            val customScoreMapper = get<co.anitrend.data.customscore.mapper.CustomScoreMapper>()
+            val localSource = store().mediaListDao()
             MediaListMapper.SaveEntry(
-                userMapper = get(),
-                mediaMapper = get(),
-                customListMapper = get(),
-                customScoreMapper = get(),
-                writer = get(),
-                localSource = store().mediaListDao(),
+                userMapper = userMapper,
+                mediaMapper = mediaMapper,
+                customListMapper = customListMapper,
+                customScoreMapper = customScoreMapper,
+                writer =
+                    MediaListWriter(
+                        userPersistence = userMapper,
+                        mediaPersistence = mediaMapper,
+                        localSource = localSource,
+                        customListPersistence = customListMapper,
+                        customScorePersistence = customScoreMapper,
+                    ),
+                localSource = localSource,
                 converter = get(),
             )
         }
         factory {
+            val userMapper = get<co.anitrend.data.user.mapper.UserMapper.Embed>()
+            val mediaMapper = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>()
+            val customListMapper = get<co.anitrend.data.customlist.mapper.CustomListMapper>()
+            val customScoreMapper = get<co.anitrend.data.customscore.mapper.CustomScoreMapper>()
+            val localSource = store().mediaListDao()
             MediaListMapper.SaveEntries(
-                userMapper = get(),
-                mediaMapper = get(),
-                customListMapper = get(),
-                customScoreMapper = get(),
-                writer = get(),
-                localSource = store().mediaListDao(),
+                userMapper = userMapper,
+                mediaMapper = mediaMapper,
+                customListMapper = customListMapper,
+                customScoreMapper = customScoreMapper,
+                writer =
+                    MediaListWriter(
+                        userPersistence = userMapper,
+                        mediaPersistence = mediaMapper,
+                        localSource = localSource,
+                        customListPersistence = customListMapper,
+                        customScorePersistence = customScoreMapper,
+                    ),
+                localSource = localSource,
                 converter = get(),
             )
         }
         factory {
+            val userMapper = get<co.anitrend.data.user.mapper.UserMapper.Embed>()
+            val mediaMapper = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>()
+            val customListMapper = get<co.anitrend.data.customlist.mapper.CustomListMapper>()
+            val customScoreMapper = get<co.anitrend.data.customscore.mapper.CustomScoreMapper>()
+            val localSource = store().mediaListDao()
             MediaListMapper.Paged(
-                userMapper = get(),
-                mediaMapper = get(),
-                customListMapper = get(),
-                customScoreMapper = get(),
-                writer = get(),
-                localSource = store().mediaListDao(),
+                userMapper = userMapper,
+                mediaMapper = mediaMapper,
+                customListMapper = customListMapper,
+                customScoreMapper = customScoreMapper,
+                writer =
+                    MediaListWriter(
+                        userPersistence = userMapper,
+                        mediaPersistence = mediaMapper,
+                        localSource = localSource,
+                        customListPersistence = customListMapper,
+                        customScorePersistence = customScoreMapper,
+                    ),
+                localSource = localSource,
                 converter = get(),
             )
         }
         factory {
+            val userMapper = get<co.anitrend.data.user.mapper.UserMapper.Embed>()
+            val mediaMapper = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>()
+            val customListMapper = get<co.anitrend.data.customlist.mapper.CustomListMapper>()
+            val customScoreMapper = get<co.anitrend.data.customscore.mapper.CustomScoreMapper>()
+            val localSource = store().mediaListDao()
             MediaListMapper.Collection(
-                userMapper = get(),
-                mediaMapper = get(),
-                customListMapper = get(),
-                customScoreMapper = get(),
-                writer = get(),
-                localSource = store().mediaListDao(),
+                userMapper = userMapper,
+                mediaMapper = mediaMapper,
+                customListMapper = customListMapper,
+                customScoreMapper = customScoreMapper,
+                writer =
+                    MediaListWriter(
+                        userPersistence = userMapper,
+                        mediaPersistence = mediaMapper,
+                        localSource = localSource,
+                        customListPersistence = customListMapper,
+                        customScorePersistence = customScoreMapper,
+                    ),
+                localSource = localSource,
                 converter = get(),
             )
         }
         factory {
+            val userMapper = get<co.anitrend.data.user.mapper.UserMapper.Embed>()
+            val customListMapper = get<co.anitrend.data.customlist.mapper.CustomListMapper>()
+            val customScoreMapper = get<co.anitrend.data.customscore.mapper.CustomScoreMapper>()
+            val localSource = store().mediaListDao()
             MediaListMapper.Embed(
-                userMapper = get(),
-                customListMapper = get(),
-                customScoreMapper = get(),
-                writer = get(),
-                localSource = store().mediaListDao(),
+                userMapper = userMapper,
+                customListMapper = customListMapper,
+                customScoreMapper = customScoreMapper,
+                writer =
+                    MediaListEmbedWriter(
+                        userPersistence = userMapper,
+                        localSource = localSource,
+                        customListPersistence = customListMapper,
+                        customScorePersistence = customScoreMapper,
+                    ),
+                localSource = localSource,
                 converter = get(),
             )
         }
         factory {
+            val userMapper = get<co.anitrend.data.user.mapper.UserMapper.Embed>()
+            val mediaMapper = get<co.anitrend.data.media.mapper.MediaMapper.EmbedWithAiring>()
+            val localSource = store().mediaListDao()
             MediaListMapper.EmbedWithMedia(
-                userMapper = get(),
-                mediaMapper = get(),
-                writer = get(),
-                localSource = store().mediaListDao(),
+                userMapper = userMapper,
+                mediaMapper = mediaMapper,
+                writer =
+                    MediaListEmbedWithMediaWriter(
+                        userPersistence = userMapper,
+                        mediaPersistence = mediaMapper,
+                        localSource = localSource,
+                    ),
+                localSource = localSource,
                 converter = get(),
             )
         }
