@@ -124,7 +124,7 @@ internal sealed class UserStatisticAnimeModel : IStatisticModel {
 
     @Serializable
     data class Tag(
-        @SerialName("tag") val tag: TagModel?,
+        @SerialName("tag") val tag: TagModel.Core?,
         @SerialName("count") override val count: Int,
         @SerialName("meanScore") override val meanScore: Float,
         @SerialName("mediaIds") override val mediaIds: List<Long>,

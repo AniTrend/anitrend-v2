@@ -23,8 +23,14 @@ import co.anitrend.data.core.extensions.koinOf
 import co.anitrend.data.medialist.entity.view.CustomListCountView
 import co.anitrend.data.medialist.entity.view.MediaListCountView
 import co.anitrend.data.staff.converter.StaffEntityConverter
+import co.anitrend.data.staff.converter.StaffModelConverter
+import co.anitrend.data.staff.entity.StaffEntity
 import co.anitrend.data.studio.converter.StudioEntityConverter
+import co.anitrend.data.studio.converter.StudioModelConverter
+import co.anitrend.data.studio.entity.StudioEntity
 import co.anitrend.data.tag.converter.TagEntityConverter
+import co.anitrend.data.tag.converter.TagModelConverter
+import co.anitrend.data.tag.entity.TagEntity
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.option.UserGeneralOptionEntity
 import co.anitrend.data.user.entity.option.UserMediaOptionEntity
@@ -201,6 +207,9 @@ internal data class UserStatisticPayload(
     val studios: List<UserStatisticStudioEntity>,
     val tags: List<UserStatisticTagEntity>,
     val voiceActors: List<UserStatisticVoiceActorEntity>,
+    val tagParents: List<TagEntity> = emptyList(),
+    val staffParents: List<StaffEntity> = emptyList(),
+    val studioParents: List<StudioEntity> = emptyList(),
 )
 
 internal class UserStatisticModelConverter(
@@ -208,8 +217,60 @@ internal class UserStatisticModelConverter(
     override val toType: (UserStatisticPayload) -> UserModel.WithStatistic = { throw NotImplementedError() },
 ) : SupportConverter<UserModel.WithStatistic, UserStatisticPayload>() {
     private companion object : ISupportTransformer<UserModel.WithStatistic, UserStatisticPayload> {
-        override fun transform(source: UserModel.WithStatistic) =
-            UserStatisticPayload(
+        override fun transform(source: UserModel.WithStatistic): UserStatisticPayload {
+            val tagConverter = koinOf<TagModelConverter>()
+            val staffConverter = koinOf<StaffModelConverter>()
+            val studioConverter = koinOf<StudioModelConverter>()
+            val tagParents =
+                (
+                    source.statistics
+                        ?.anime
+                        ?.tags
+                        .orEmpty()
+                        .mapNotNull { it.tag } +
+                        source.statistics
+                            ?.manga
+                            ?.tags
+                            .orEmpty()
+                            .mapNotNull { it.tag }
+                ).map { tagConverter.convertFrom(it) }.distinctBy { it.id }
+            val staffParents =
+                (
+                    source.statistics
+                        ?.anime
+                        ?.staff
+                        .orEmpty()
+                        .mapNotNull { it.staff } +
+                        source.statistics
+                            ?.manga
+                            ?.staff
+                            .orEmpty()
+                            .mapNotNull { it.staff } +
+                        source.statistics
+                            ?.anime
+                            ?.voiceActors
+                            .orEmpty()
+                            .mapNotNull { it.voiceActor } +
+                        source.statistics
+                            ?.manga
+                            ?.voiceActors
+                            .orEmpty()
+                            .mapNotNull { it.voiceActor }
+                ).map { staffConverter.convertFrom(it) }.distinctBy { it.id }
+            val studioParents =
+                (
+                    source.statistics
+                        ?.anime
+                        ?.studios
+                        .orEmpty()
+                        .mapNotNull { it.studio } +
+                        source.statistics
+                            ?.manga
+                            ?.studios
+                            .orEmpty()
+                            .mapNotNull { it.studio }
+                ).map { studioConverter.convertFrom(it) }.distinctBy { it.id }
+            return UserStatisticPayload(
                 statistic =
                     UserWithStatisticEntity(
                         statistic =
@@ -360,7 +421,11 @@ internal class UserStatisticModelConverter(
                                 )
                             }
                         },
+                tagParents = tagParents,
+                staffParents = staffParents,
+                studioParents = studioParents,
             )
+        }
     }
 }
 

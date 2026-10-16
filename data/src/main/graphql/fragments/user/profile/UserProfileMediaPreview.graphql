@@ -13,10 +13,20 @@ fragment UserProfileMediaPreview on Media {
     chapters
     volumes
     isFavourite
+    isReviewBlocked
     meanScore
     averageScore
+    favourites
     siteUrl
     mediaListEntry {
+        id
+        mediaId
+        createdAt
+        user {
+            id
+            name
+            siteUrl
+        }
         status
         progress
         progressVolumes

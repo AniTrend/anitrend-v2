@@ -360,6 +360,9 @@ private val mapperModule =
         factory<UserStatisticWriterContract> {
             UserStatisticWriter(
                 localSource = store().userStatisticDao(),
+                tagLocalSource = store().tagDao(),
+                staffLocalSource = store().staffDao(),
+                studioLocalSource = store().studioDao(),
             )
         }
         factory {
