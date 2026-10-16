@@ -51,7 +51,7 @@ import co.anitrend.data.studio.converter.MediaStudioConnectionEntityConverter
 import co.anitrend.data.studio.converter.MediaStudioEntryEnricher
 import co.anitrend.data.studio.datasource.local.connection.MediaStudioConnectionLocalSource
 import co.anitrend.data.studio.mapper.MediaStudioMapper
-import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.data.util.GraphUtil.applySortOrderUsing
 import co.anitrend.domain.media.entity.Media
 import co.anitrend.domain.media.entity.MediaStats
 import co.anitrend.domain.media.entity.MediaStudioEntry
@@ -166,8 +166,7 @@ internal class MediaSourceImpl {
                             id = query.id.toInt(),
                             sort =
                                 query.sort?.map {
-                                    val baseName = (it.sortable as Enum<*>).name
-                                    val enumName = if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
+                                    val enumName = it.applySortOrderUsing()
                                     co.anitrend.data.graphql.anilist.StudioSort
                                         .valueOf(enumName)
                                 },

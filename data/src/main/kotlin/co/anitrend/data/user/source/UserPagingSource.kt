@@ -38,7 +38,7 @@ import co.anitrend.data.user.datasource.local.UserLocalSource
 import co.anitrend.data.user.datasource.remote.UserRemoteSource
 import co.anitrend.data.user.entity.UserEntity
 import co.anitrend.data.user.entity.filter.UserQueryFilter
-import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.data.util.GraphUtil.applySortOrderUsing
 import co.anitrend.domain.user.model.UserParam
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -68,9 +68,7 @@ internal class UserPagingSource(
                         search = query.search,
                         sort =
                             query.sort?.map {
-                                val baseName = (it.sortable as Enum<*>).name
-                                val enumName =
-                                    if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
+                                val enumName = it.applySortOrderUsing()
                                 co.anitrend.data.graphql.anilist.UserSort
                                     .valueOf(enumName)
                             },
