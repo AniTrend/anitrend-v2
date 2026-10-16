@@ -27,6 +27,8 @@ import co.anitrend.data.user.settings.IUserSettings
 import co.anitrend.data.android.koin.dataModules
 import co.anitrend.data.genre.koin.genreModules
 import co.anitrend.data.media.koin.mediaModules
+import co.anitrend.data.staff.koin.staffModules
+import co.anitrend.data.studio.koin.studioModules
 import co.anitrend.data.tag.koin.tagModules
 import okhttp3.mockwebserver.MockWebServer
 import io.wax911.emojify.EmojiManager
@@ -67,7 +69,8 @@ private val provider =
         }
     }
 
-internal val testModules = listOf(data, store, provider) + mediaModules + genreModules + tagModules + dataModules
+internal val testModules =
+    listOf(data, store, provider) + mediaModules + genreModules + tagModules + staffModules + studioModules + dataModules
 
 internal fun initializeKoin(context: Context) =
     startKoin {
