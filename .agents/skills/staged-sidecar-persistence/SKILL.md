@@ -19,6 +19,8 @@ Decide which failure class the evidence shows before touching code:
 |---|---|---|
 | Request never fired or failed (cache log, Chucker error) | Request absent | source/cache policy; cross-check `cache-request-isolation` skill before assuming a cache collision |
 | Response 200 with valid payload, primary rows present, sidecar rows absent | Stage/drain ownership | this skill: `onEmbedded` site vs its actual `persistEmbedded()` drainer |
+| Response 200 with valid payload, no rows at all | Deserialization gate | decode the captured payload into its container model: missing required fields (fragment selections vs model) and sealed-class discriminator mismatches throw before any mapper runs |
+| Sidecar rows carry fk parents (tag/staff/studio) the write path never stages | Parent staging | the enclosing transaction rolls back every row including the summary row; persist parent entities before junction rows |
 | Sidecar rows present but a join returns fewer rows than the response | Partial join | the actual query (INNER JOIN, filters); query evidence, not guesswork |
 
 Enum reuse alone is not a cache collision: `cache_log` identity is `request + cache_item_id`;
