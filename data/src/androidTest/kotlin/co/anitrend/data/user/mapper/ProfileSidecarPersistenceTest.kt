@@ -20,6 +20,9 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import co.anitrend.data.auth.mapper.AuthMapper
 import co.anitrend.data.core.IsolatedSidecarTestSuite
 import co.anitrend.data.media.model.MediaModel
+import co.anitrend.data.staff.model.StaffModel
+import co.anitrend.data.studio.model.StudioModel
+import co.anitrend.data.tag.model.remote.TagModel
 import co.anitrend.data.user.converter.UserModelConverter
 import co.anitrend.data.user.entity.connection.UserProfileFavouriteMediaEntity
 import co.anitrend.data.user.entity.connection.UserProfileReviewEntity
@@ -27,6 +30,8 @@ import co.anitrend.data.user.entity.option.UserMediaOptionEntity
 import co.anitrend.data.user.model.UserModel
 import co.anitrend.data.user.model.container.UserModelContainer
 import co.anitrend.data.user.model.option.UserOptionsModel
+import co.anitrend.data.user.model.statistics.UserStatisticModel
+import co.anitrend.data.user.model.statistics.media.UserStatisticAnimeModel
 import co.anitrend.data.user.model.container.UserSidecarModelContainer
 import co.anitrend.domain.media.enums.MediaFormat
 import co.anitrend.domain.media.enums.MediaStatus
@@ -57,7 +62,92 @@ internal class ProfileSidecarPersistenceTest : IsolatedSidecarTestSuite() {
                             name = "stats-user",
                             siteUrl = "https://anilist.co/user/stats-user",
                             id = userId,
-                            statistics = null,
+                            statistics =
+                                UserModel.WithStatistic.Statistic(
+                                    anime =
+                                        UserStatisticModel.Anime(
+                                            minutesWatched = 54_676,
+                                            episodesWatched = 2_319,
+                                            count = 80,
+                                            countries = null,
+                                            formats = null,
+                                            genres = null,
+                                            lengths = null,
+                                            meanScore = 67.4f,
+                                            releaseYears = null,
+                                            scores = null,
+                                            staff =
+                                                listOf(
+                                                    UserStatisticAnimeModel.Staff(
+                                                        staff = StaffModel.Core(id = 97_007),
+                                                        count = 1,
+                                                        meanScore = 80f,
+                                                        mediaIds = listOf(21_450L),
+                                                        minutesWatched = 60,
+                                                    ),
+                                                ),
+                                            standardDeviation = 12.8f,
+                                            startYears = null,
+                                            statuses = null,
+                                            studios =
+                                                listOf(
+                                                    UserStatisticAnimeModel.Studio(
+                                                        studio =
+                                                            StudioModel.Core(
+                                                                isAnimationStudio = true,
+                                                                isFavourite = false,
+                                                                name = "Kyoto Animation",
+                                                                siteUrl = "https://anilist.co/studio/21",
+                                                                id = 21,
+                                                            ),
+                                                        count = 1,
+                                                        meanScore = 80f,
+                                                        mediaIds = listOf(21_450L),
+                                                        minutesWatched = 60,
+                                                    ),
+                                                ),
+                                            tags =
+                                                listOf(
+                                                    UserStatisticAnimeModel.Tag(
+                                                        tag = TagModel.Core(name = "War", id = 111),
+                                                        count = 1,
+                                                        meanScore = 80f,
+                                                        mediaIds = listOf(21_450L),
+                                                        minutesWatched = 60,
+                                                    ),
+                                                ),
+                                            voiceActors =
+                                                listOf(
+                                                    UserStatisticAnimeModel.VoiceActor(
+                                                        voiceActor = StaffModel.Core(id = 97_007),
+                                                        count = 1,
+                                                        meanScore = 80f,
+                                                        mediaIds = listOf(21_450L),
+                                                        minutesWatched = 60,
+                                                    ),
+                                                ),
+                                        ),
+                                    manga =
+                                        UserStatisticModel.Manga(
+                                            chaptersRead = 1_200,
+                                            volumesRead = 300,
+                                            count = 15,
+                                            countries = null,
+                                            formats = null,
+                                            genres = null,
+                                            lengths = null,
+                                            meanScore = 70f,
+                                            releaseYears = null,
+                                            scores = null,
+                                            staff = null,
+                                            standardDeviation = 10f,
+                                            startYears = null,
+                                            statuses = null,
+                                            studios = null,
+                                            tags = null,
+                                            voiceActors = null,
+                                        ),
+                                ),
                         ),
                 )
 
@@ -66,6 +156,10 @@ internal class ProfileSidecarPersistenceTest : IsolatedSidecarTestSuite() {
             assertNotNull(database.userDao().userById(userId))
             assertEquals(1, database.userDao().count())
             assertEquals(1, database.userStatisticDao().count())
+            // dimension rows carry fk parents the write path must stage itself
+            assertEquals(1, database.tagDao().count())
+            assertEquals(1, database.staffDao().count())
+            assertEquals(1, database.studioDao().count())
         }
 
     @Test
