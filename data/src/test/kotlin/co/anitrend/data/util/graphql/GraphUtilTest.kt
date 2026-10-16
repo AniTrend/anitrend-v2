@@ -17,10 +17,12 @@
 package co.anitrend.data.util.graphql
 
 import co.anitrend.data.util.GraphUtil.applySortOrderUsing
+import co.anitrend.domain.character.enums.CharacterSort
 import co.anitrend.domain.common.sort.SortWithOrder
 import co.anitrend.domain.common.sort.order.SortOrder
 import co.anitrend.domain.media.enums.MediaSort
 import co.anitrend.domain.medialist.enums.MediaListSort
+import co.anitrend.domain.staff.enums.StaffSort
 import org.junit.jupiter.api.Assertions.assertEquals
 import kotlin.test.Test
 
@@ -63,6 +65,28 @@ class GraphUtilTest {
         val expected = "PROGRESS_VOLUMES"
 
         val sortWithOrder = SortWithOrder(MediaListSort.PROGRESS_VOLUMES, SortOrder.ASC)
+
+        val actual = sortWithOrder.applySortOrderUsing()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `sorting helper keeps relevance character sort without postfix`() {
+        val expected = "RELEVANCE"
+
+        val sortWithOrder = SortWithOrder(CharacterSort.RELEVANCE, SortOrder.DESC)
+
+        val actual = sortWithOrder.applySortOrderUsing()
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `sorting helper keeps relevance staff sort without postfix`() {
+        val expected = "RELEVANCE"
+
+        val sortWithOrder = SortWithOrder(StaffSort.RELEVANCE, SortOrder.DESC)
 
         val actual = sortWithOrder.applySortOrderUsing()
 

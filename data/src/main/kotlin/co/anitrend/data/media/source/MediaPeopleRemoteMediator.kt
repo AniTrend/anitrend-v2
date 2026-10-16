@@ -40,7 +40,7 @@ import co.anitrend.data.media.entity.connection.MediaCharacterConnectionEntity
 import co.anitrend.data.media.entity.connection.MediaStaffConnectionEntity
 import co.anitrend.data.media.mapper.MediaPeopleMapper
 import co.anitrend.data.media.datasource.remote.MediaRemoteSource
-import co.anitrend.domain.common.sort.order.SortOrder
+import co.anitrend.data.util.GraphUtil.applySortOrderUsing
 import co.anitrend.domain.media.entity.MediaPerson
 import co.anitrend.domain.media.model.MediaParam
 import co.anitrend.retrofit.graphql.model.request.GraphQLOperationRequest
@@ -142,8 +142,7 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
                                         },
                                     sort =
                                         query.sort?.map {
-                                            val baseName = (it.sortable as Enum<*>).name
-                                            val enumName = if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
+                                            val enumName = it.applySortOrderUsing()
                                             co.anitrend.data.graphql.anilist.CharacterSort
                                                 .valueOf(enumName)
                                         },
@@ -238,8 +237,7 @@ internal sealed class MediaPeopleRemoteMediator<V : Any>(
                                     perPage = supportPagingHelper.pageSize,
                                     sort =
                                         query.sort?.map {
-                                            val baseName = (it.sortable as Enum<*>).name
-                                            val enumName = if (it.order == SortOrder.DESC) baseName + "_DESC" else baseName
+                                            val enumName = it.applySortOrderUsing()
                                             co.anitrend.data.graphql.anilist.StaffSort
                                                 .valueOf(enumName)
                                         },
