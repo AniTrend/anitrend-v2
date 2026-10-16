@@ -16,6 +16,9 @@
  */
 package co.anitrend.data.user.mapper
 
+import co.anitrend.data.staff.datasource.local.StaffLocalSource
+import co.anitrend.data.studio.datasource.local.StudioLocalSource
+import co.anitrend.data.tag.datasource.local.TagLocalSource
 import co.anitrend.data.user.converter.UserStatisticPayload
 import co.anitrend.data.user.datasource.local.statistic.UserStatisticLocalSource
 
@@ -25,8 +28,15 @@ internal fun interface UserStatisticWriterContract {
 
 internal class UserStatisticWriter(
     private val localSource: UserStatisticLocalSource,
+    private val tagLocalSource: TagLocalSource,
+    private val staffLocalSource: StaffLocalSource,
+    private val studioLocalSource: StudioLocalSource,
 ) : UserStatisticWriterContract {
     override suspend fun persist(payload: UserStatisticPayload) {
+        // dimension rows carry fk parents which must exist before the inserts below
+        tagLocalSource.upsert(payload.tagParents)
+        staffLocalSource.upsert(payload.staffParents)
+        studioLocalSource.upsert(payload.studioParents)
         localSource.upsert(payload.statistic)
         localSource.upsertCountries(payload.countries)
         localSource.upsertFormats(payload.formats)
