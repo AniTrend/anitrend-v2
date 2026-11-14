@@ -17,7 +17,7 @@ jobs:
 
   spotless:
     name: Spotless Lint
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: [wrapper-validation]
     steps:
       - uses: actions/create-github-app-token@v3
@@ -60,7 +60,7 @@ jobs:
   unit-test:
     name: Unit Test
     needs: [wrapper-validation, spotless]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
     - uses: actions/checkout@v7
     - name: Common setup
