@@ -34,7 +34,7 @@ anitrend-markdown = "0.12.1-alpha01"
 anitrend-retrofit = "0.14.0"
 anitrend-querybuilder = "0.3.3"
 
-chuncker = "4.3.1"
+chuncker = "4.4.0"
 
 coil = "2.7.0"
 
